@@ -1,0 +1,361 @@
+"""Load item names and stat lines from the Sunken City map."""
+
+from __future__ import annotations
+
+import re
+import struct
+import zlib
+from dataclasses import dataclass, field
+from pathlib import Path
+
+MAP_PATH = Path(r"c:\Users\eseid\Documents\Warcraft III\Maps\Download\Sunken City v2.5.2a.w3x")
+WTS_PATH = Path(r"C:\Users\eseid\AppData\Local\Temp\sunken_city\war3map.wts")
+
+OTHER_HEROES = (
+    "Death Knight",
+    "Demon Hunter",
+    "Witch Doctor",
+    "Windmaster",
+    "Tidewarrior",
+    "Necromancer",
+    "Berserker",
+    "Warlock",
+    "Warrior",
+    "Paladin",
+    "Shaman",
+    "Hunter",
+    "Rogue",
+    "Druid",
+    "Mage",
+    "Monk",
+    "Siren",
+    "Tinker",
+)
+
+
+def _crypt_table():
+    seed = 0x00100001
+    table = [0] * 0x500
+    for index1 in range(0x100):
+        index2 = index1
+        for _ in range(5):
+            seed = (seed * 125 + 3) % 0x2AAAAB
+            temp1 = (seed & 0xFFFF) << 0x10
+            seed = (seed * 125 + 3) % 0x2AAAAB
+            temp2 = seed & 0xFFFF
+            table[index2] = (temp1 | temp2) & 0xFFFFFFFF
+            index2 += 0x100
+    return table
+
+
+CT = _crypt_table()
+
+
+def _hash_string(text: str, hash_type: int) -> int:
+    seed1 = 0x7FED7FED
+    seed2 = 0xEEEEEEEE
+    for ch in text.replace("/", "\\").upper():
+        code = ord(ch)
+        seed1 = (CT[(hash_type << 8) + code] ^ ((seed1 + seed2) & 0xFFFFFFFF)) & 0xFFFFFFFF
+        seed2 = (code + seed1 + seed2 + ((seed2 << 5) & 0xFFFFFFFF) + 3) & 0xFFFFFFFF
+    return seed1
+
+
+def _decrypt(raw: bytes, key: int) -> bytes:
+    seed = 0xEEEEEEEE
+    key &= 0xFFFFFFFF
+    size = len(raw) & ~3
+    out = bytearray()
+    for offset in range(0, size, 4):
+        seed = (seed + CT[0x400 + (key & 0xFF)]) & 0xFFFFFFFF
+        value = struct.unpack_from("<I", raw, offset)[0]
+        value = (value ^ ((key + seed) & 0xFFFFFFFF)) & 0xFFFFFFFF
+        key = ((((~key) << 0x15) & 0xFFFFFFFF) + 0x11111111) | (key >> 0x0B)
+        key &= 0xFFFFFFFF
+        seed = (value + seed + ((seed << 5) & 0xFFFFFFFF) + 3) & 0xFFFFFFFF
+        out += struct.pack("<I", value)
+    out += raw[size:]
+    return bytes(out)
+
+
+class _Reader:
+    def __init__(self, blob: bytes):
+        self.blob = blob
+        self.offset = 0
+
+    def u32(self) -> int:
+        value = struct.unpack_from("<I", self.blob, self.offset)[0]
+        self.offset += 4
+        return value
+
+    def i32(self) -> int:
+        value = struct.unpack_from("<i", self.blob, self.offset)[0]
+        self.offset += 4
+        return value
+
+    def f32(self) -> float:
+        value = struct.unpack_from("<f", self.blob, self.offset)[0]
+        self.offset += 4
+        return value
+
+    def raw4(self) -> bytes:
+        value = self.blob[self.offset : self.offset + 4]
+        self.offset += 4
+        return value
+
+    def cstr(self) -> str:
+        end = self.blob.index(0, self.offset)
+        raw = self.blob[self.offset : end]
+        self.offset = end + 1
+        return raw.decode("utf-8", "replace")
+
+
+def _extract(path: Path, name: str) -> bytes:
+    data = path.read_bytes()
+    _version, shift = struct.unpack_from("<HH", data, 12)
+    hash_off, block_off, hash_n, block_n = struct.unpack_from("<IIII", data, 16)
+    sector_size = 512 << shift
+    hashes = _decrypt(data[hash_off : hash_off + hash_n * 16], _hash_string("(hash table)", 3))
+    blocks = _decrypt(data[block_off : block_off + block_n * 16], _hash_string("(block table)", 3))
+    entries = [struct.unpack_from("<IIHHI", hashes, i * 16) for i in range(hash_n)]
+    slot = _hash_string(name, 0) % hash_n
+    name_a, name_b = _hash_string(name, 1), _hash_string(name, 2)
+    found = None
+    for _ in range(hash_n):
+        hash_a, hash_b, _loc, _plat, block_index = entries[slot]
+        if block_index == 0xFFFFFFFF:
+            break
+        if hash_a == name_a and hash_b == name_b and block_index != 0xFFFFFFFE:
+            found = block_index
+            break
+        slot = (slot + 1) % hash_n
+    if found is None:
+        raise FileNotFoundError(name)
+    file_pos, comp_size, file_size, flags = struct.unpack_from("<IIII", blocks, found * 16)
+    raw = data[file_pos : file_pos + comp_size]
+    encrypted = bool(flags & 0x00010000)
+    compressed = bool(flags & 0x00000200)
+    key = _hash_string(name, 3)
+    if not compressed:
+        blob = _decrypt(raw, key) if encrypted else raw
+        return blob[:file_size]
+    sectors = (file_size + sector_size - 1) // sector_size
+    table_bytes = (sectors + 1) * 4
+    table = _decrypt(raw[:table_bytes], (key - 1) & 0xFFFFFFFF) if encrypted else raw[:table_bytes]
+    offsets = list(struct.unpack("<" + "I" * (sectors + 1), table[:table_bytes]))
+    out = bytearray()
+    for index in range(sectors):
+        chunk = raw[offsets[index] : offsets[index + 1]]
+        remain = file_size - len(out)
+        if encrypted:
+            chunk = _decrypt(chunk, (key + index) & 0xFFFFFFFF)
+        if len(chunk) == min(sector_size, remain):
+            out += chunk
+        else:
+            out += zlib.decompress(chunk[1:])
+    return bytes(out[:file_size])
+
+
+def _parse_objects(blob: bytes) -> dict[str, dict]:
+    reader = _Reader(blob)
+    version = reader.u32()
+    objects: dict[str, dict] = {}
+    for _table in range(2):
+        count = reader.u32()
+        for _ in range(count):
+            base = reader.raw4().decode("latin1")
+            new = reader.raw4().decode("latin1")
+            sets = reader.u32() if version >= 3 else 1
+            mods: dict[str, list] = {}
+            for _set in range(sets):
+                if version >= 3:
+                    reader.u32()
+                mod_count = reader.u32()
+                for _mod in range(mod_count):
+                    mod_id = reader.raw4().decode("latin1")
+                    value_type = reader.u32()
+                    if value_type == 0:
+                        value = reader.i32()
+                    elif value_type in (1, 2):
+                        value = reader.f32()
+                    elif value_type == 3:
+                        value = reader.cstr()
+                    else:
+                        raise RuntimeError(f"bad object type {value_type}")
+                    if version > 0:
+                        reader.raw4()
+                    mods.setdefault(mod_id, []).append(value)
+            rawcode = new if new.strip("\x00") else base
+            if rawcode.strip("\x00"):
+                objects[rawcode] = mods
+    return objects
+
+
+def _load_strings(path: Path) -> dict[int, str]:
+    text = path.read_text(encoding="utf-8", errors="replace")
+    strings = {}
+    for match in re.finditer(r"STRING\s+(\d+)\s*\r?\n\{\r?\n(.*?)\r?\n\}", text, re.S):
+        strings[int(match.group(1))] = match.group(2)
+    return strings
+
+
+def _resolve(value: str, strings: dict[int, str]) -> str:
+    match = re.fullmatch(r"TRIGSTR_(\d+)", value or "")
+    if not match:
+        return value or ""
+    text = strings.get(int(match.group(1)), "")
+    text = re.sub(r"\|c[0-9a-fA-F]{8}|\|r", "", text)
+    text = text.replace("|n", "\n").replace("\r\n", "\n").replace("\r", "\n")
+    return text
+
+
+def _sum_ints(pattern: str, text: str) -> int:
+    return sum(int(float(match)) for match in re.findall(pattern, text, flags=re.I | re.M))
+
+
+def _sum_floats(pattern: str, text: str) -> float:
+    return sum(float(match.replace(",", ".")) for match in re.findall(pattern, text, flags=re.I | re.M))
+
+
+def _first_float(pattern: str, text: str) -> float:
+    match = re.search(pattern, text, flags=re.I)
+    if not match:
+        return 0.0
+    return float(match.group(1).replace(",", "."))
+
+
+def _execute(tip: str) -> tuple[float, float]:
+    matches = re.findall(
+        r"(\d+)% more damage to enemies below (\d+(?:[.,]\d+)?)% of maximum health",
+        tip,
+        flags=re.I,
+    )
+    if not matches:
+        return 0.0, 0.0
+    percent = sum(int(amount) for amount, _threshold in matches) / 100
+    threshold = float(matches[0][1].replace(",", ".")) / 100
+    return percent, threshold
+
+
+def _signed_pct(line_pattern: str, text: str) -> int:
+    total = 0
+    for sign, number in re.findall(line_pattern, text, flags=re.I | re.M):
+        total += int(number) if sign == "+" else -int(number)
+    return total
+
+
+@dataclass
+class Item:
+    rawcode: str
+    name: str
+    tip: str
+    intel: int = 0
+    strength: int = 0
+    agility: int = 0
+    all_stats: int = 0
+    potency: int = 0
+    mastery: int = 0
+    damage: int = 0
+    mana: int = 0
+    crit: float = 0.0
+    crit_rating: float = 0.0
+    haste: float = 0.0
+    attack_speed: float = 0.0
+    damage_pct: float = 0.0
+    cooldown_add: float = 0.0
+    cdr_pct: float = 0.0
+    stun_chance: float = 0.0
+    stun_duration: float = 0.0
+    spell_crit: bool = False
+    double_attack_potency: bool = False
+    auto_pct: float = 0.0
+    execute_pct: float = 0.0
+    execute_below: float = 0.0
+    armor_pen: float = 0.0
+    crit_as: float = 0.0
+    crit_as_duration: float = 0.0
+    stab_chance: float = 0.0
+    stab_ratio: float = 0.0
+
+    @property
+    def offense(self) -> int:
+        return (
+            self.intel
+            + self.all_stats
+            + self.potency
+            + self.mastery
+            + self.damage
+            + self.mana // 20
+            + int(self.crit)
+            + int(self.haste)
+            + int(self.attack_speed)
+            + int(self.damage_pct)
+        )
+
+
+def _parse_tip(tip: str) -> dict:
+    lines = tip.split("\n")
+    stat_text = "\n".join(line for line in lines if line.startswith("+") or "Equip:" in line or "Increases" in line)
+    return {
+        "intel": _sum_ints(r"^\+(\d+) Intelligence\b", "\n".join(lines)),
+        "strength": _sum_ints(r"^\+(\d+) Strength\b", "\n".join(lines)),
+        "agility": _sum_ints(r"^\+(\d+) Agility\b", "\n".join(lines)),
+        "all_stats": _sum_ints(r"^\+(\d+) All Stats\b", "\n".join(lines)),
+        "potency": _sum_ints(r"^\+(\d+) Potency\b", "\n".join(lines)),
+        "mastery": _sum_ints(r"^\+(\d+) Mastery\b", "\n".join(lines)),
+        "damage": _sum_ints(r"^\+(\d+) Damage\b", "\n".join(lines)),
+        "mana": _sum_ints(r"^\+(\d+) Mana\b", "\n".join(lines)),
+        "crit": _sum_ints(r"^\+(\d+)% Critical Strike\b", "\n".join(lines))
+        + _sum_ints(r"Critical Strike by (\d+)%", stat_text),
+        "crit_rating": _sum_ints(r"Critical Strike bonus damage is increased by additional (\d+)%", tip) / 100,
+        "haste": _sum_ints(r"^\+(\d+)% Haste\b", "\n".join(lines))
+        + _sum_ints(r"Haste by (\d+)%", stat_text),
+        "attack_speed": _signed_pct(r"^([+-])(\d+)% Attack Speed\b", "\n".join(lines)),
+        "damage_pct": _sum_ints(r"all sources by (\d+)%", tip)
+        + _sum_ints(r"Magical and Physical Type effects by (\d+)%", tip),
+        "cooldown_add": _sum_floats(r"cooldowns of all abilities by (\d+(?:[.,]\d+)?) second", tip),
+        "cdr_pct": _sum_ints(r"abilities have their base cooldown reduced by (\d+)%", tip) / 100,
+        "stun_chance": _sum_ints(r"(\d+)% chance to Stun you", tip) / 100,
+        "stun_duration": _first_float(r"Stun you for (\d+(?:[.,]\d+)?)", tip),
+        "spell_crit": "Magical Type effects benefit from Critical Strike" in tip,
+        "double_attack_potency": "Potency at double effectiveness" in tip,
+        "auto_pct": _sum_ints(r"auto-attacks by (\d+)%", tip) / 100,
+        "execute_pct": _execute(tip)[0],
+        "execute_below": _execute(tip)[1],
+        "armor_pen": _sum_ints(r"ignore (\d+) of the target's Armor", tip),
+        "crit_as": _sum_ints(r"Critical Strikes grant you (\d+)% Attack Speed for", tip) / 100,
+        "crit_as_duration": _first_float(r"Attack Speed for (\d+(?:[.,]\d+)?) second", tip),
+        "stab_chance": _sum_ints(r"(\d+)% chance to stab", tip) / 100,
+        "stab_ratio": _sum_ints(r"stab the target with darkness, dealing Attrition damage equal to (\d+)%", tip) / 100,
+    }
+
+
+def _blocked_for_priest(name: str, tip: str) -> bool:
+    blob = f"{name}\n{tip}"
+    if "Priest" in blob:
+        return False
+    return any(hero in blob for hero in OTHER_HEROES)
+
+
+def load_items() -> list[Item]:
+    strings = _load_strings(WTS_PATH)
+    skin = _parse_objects(_extract(MAP_PATH, "war3mapSkin.w3t"))
+    items: list[Item] = []
+    for rawcode, mods in skin.items():
+        if "unam" not in mods or "utub" not in mods:
+            continue
+        name = _resolve(mods["unam"][0], strings).strip()
+        tip = _resolve(mods["utub"][0], strings).strip()
+        if not name:
+            continue
+        stats = _parse_tip(tip)
+        item = Item(
+            rawcode=rawcode,
+            name=name,
+            tip=tip,
+            **{key: value for key, value in stats.items() if key != "spell_crit"},
+            spell_crit=stats["spell_crit"],
+        )
+        items.append(item)
+    items.sort(key=lambda item: item.name)
+    return items
