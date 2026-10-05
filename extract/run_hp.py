@@ -14,6 +14,20 @@ from sunken_sim.shadow import Build, _ignored_lines, simulate
 from build_spec_canvas import write_all
 
 OUT = Path(__file__).with_name("hp-sims.json")
+TOP100 = Path(__file__).with_name("shadow-top100.json")
+
+# The eight talents for this Shadow run. Smite, Empyreal Blaze, Blinding Light
+# and Dark Evangelism stay out.
+SHADOW_TALENTS = {
+    "I0KF": "Dark Torment",
+    "I0PU": "Insanity",
+    "I0PS": "Catharsis",
+    "I0HL": "Psychic Link",
+    "I0SB": "Answered Prayers",
+    "I0SC": "Touch of the Naaru",
+    "I0HP": "Cosmic Horrors",
+    "I0SA": "Clairvoyance",
+}
 
 
 def source_of(item: Item, shop_ids: set[str]) -> str:
@@ -77,10 +91,27 @@ def payload(label: str, build: Build, shop_ids: set[str], targets: int) -> dict:
     }
 
 
+def _top_codes() -> set[str]:
+    rows = json.loads(TOP100.read_text(encoding="utf-8"))
+    return {row["rawcode"] for row in rows}
+
+
 def main() -> None:
     catalog = load_items()
     shop, drop, legendaries = pools_for(catalog)
-    print(f"shop {len(shop)} drop {len(drop)} legendaries {len(legendaries)}", flush=True)
+    allowed = _top_codes()
+    shop = [item for item in shop if item.rawcode in allowed]
+    drop = [item for item in drop if item.rawcode in allowed]
+    legendaries = [item for item in legendaries if item.rawcode in allowed]
+    kept = {item.rawcode for item in shop + drop + legendaries}
+    missing = sorted(allowed - kept)
+    if missing:
+        raise SystemExit(f"топ-100 нет в пуле: {', '.join(missing)}")
+    print(
+        f"shop {len(shop)} drop {len(drop)} legendaries {len(legendaries)} "
+        f"топ {len(kept)} таланты {len(SHADOW_TALENTS)}",
+        flush=True,
+    )
     shop_ids = {item.rawcode for item in shop}
     pools = (
         ("mixed", shop + drop + legendaries),
@@ -107,7 +138,7 @@ def main() -> None:
                 print(f"уже есть {key}", flush=True)
                 continue
             print(f"старт {key} {len(pool)}", flush=True)
-            build, dps = search_pool(pool, seed, targets)
+            build, dps = search_pool(pool, seed, targets, talents=SHADOW_TALENTS)
             legend = [item.name for item in build.items if item.rawcode in LEGENDARIES]
             print(f"{key} {dps:.1f} legendary {legend} " + ", ".join(item.name for item in build.items), flush=True)
             results[key] = payload(label, build, shop_ids, targets)

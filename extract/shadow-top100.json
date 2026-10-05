@@ -1,0 +1,602 @@
+[
+  {
+    "name": "Atiesh, Greatstaff of the Guardian",
+    "rawcode": "I048",
+    "source": "Legendary",
+    "shadow": 225.8
+  },
+  {
+    "name": "Unbound Power Core",
+    "rawcode": "I0FW",
+    "source": "Shop",
+    "shadow": 222.5
+  },
+  {
+    "name": "Elemental Orb (Fire)",
+    "rawcode": "I07O",
+    "source": "Shop",
+    "shadow": 218.0
+  },
+  {
+    "name": "The Darkglaive",
+    "rawcode": "fgrd",
+    "source": "Drop",
+    "shadow": 201.4
+  },
+  {
+    "name": "Staff of Galactic Fury",
+    "rawcode": "I0JO",
+    "source": "Shop",
+    "shadow": 197.1
+  },
+  {
+    "name": "Harness of Beyond",
+    "rawcode": "I07P",
+    "source": "Drop",
+    "shadow": 191.5
+  },
+  {
+    "name": "Sulfuron Gloves",
+    "rawcode": "I0QT",
+    "source": "Shop",
+    "shadow": 191.1
+  },
+  {
+    "name": "Cursed Skull",
+    "rawcode": "I02K",
+    "source": "Drop",
+    "shadow": 178.8
+  },
+  {
+    "name": "Lightning Rod",
+    "rawcode": "I07F",
+    "source": "Shop",
+    "shadow": 178.2
+  },
+  {
+    "name": "Orb of Unstable Magic",
+    "rawcode": "I04J",
+    "source": "Shop",
+    "shadow": 178.1
+  },
+  {
+    "name": "Elemental Orb (Shadow)",
+    "rawcode": "I0NT",
+    "source": "Shop",
+    "shadow": 176.8
+  },
+  {
+    "name": "Sulfuras, Hand of Ragnaros",
+    "rawcode": "I0BR",
+    "source": "Legendary",
+    "shadow": 176.6
+  },
+  {
+    "name": "Arcpower Stone",
+    "rawcode": "I0E2",
+    "source": "Shop",
+    "shadow": 176.3
+  },
+  {
+    "name": "Arcpower Stone",
+    "rawcode": "I0MM",
+    "source": "Shop",
+    "shadow": 176.3
+  },
+  {
+    "name": "Arcpower Stone",
+    "rawcode": "I0MT",
+    "source": "Shop",
+    "shadow": 176.3
+  },
+  {
+    "name": "Arcpower Stone",
+    "rawcode": "I0O5",
+    "source": "Shop",
+    "shadow": 176.3
+  },
+  {
+    "name": "Celestial Crown",
+    "rawcode": "I0C2",
+    "source": "Shop",
+    "shadow": 174.0
+  },
+  {
+    "name": "Diamond Ring",
+    "rawcode": "I00D",
+    "source": "Shop",
+    "shadow": 173.9
+  },
+  {
+    "name": "Hood of Dark Deeds",
+    "rawcode": "tgrh",
+    "source": "Drop",
+    "shadow": 172.8
+  },
+  {
+    "name": "Sigil of Al'ar",
+    "rawcode": "I09E",
+    "source": "Legendary",
+    "shadow": 172.3
+  },
+  {
+    "name": "Sarthas, Hand of Neptulon",
+    "rawcode": "I0HU",
+    "source": "Legendary",
+    "shadow": 170.8
+  },
+  {
+    "name": "Infinity Breaker",
+    "rawcode": "I0NI",
+    "source": "Shop",
+    "shadow": 170.5
+  },
+  {
+    "name": "Nightfall",
+    "rawcode": "I04F",
+    "source": "Shop",
+    "shadow": 169.8
+  },
+  {
+    "name": "Tome of Supreme Power",
+    "rawcode": "I05E",
+    "source": "Shop",
+    "shadow": 169.2
+  },
+  {
+    "name": "Serpent Staff",
+    "rawcode": "I00O",
+    "source": "Shop",
+    "shadow": 168.8
+  },
+  {
+    "name": "Nightborne Scepter",
+    "rawcode": "I0FU",
+    "source": "Drop",
+    "shadow": 168.7
+  },
+  {
+    "name": "Rexxar's Hunting Guise",
+    "rawcode": "I04A",
+    "source": "Legendary",
+    "shadow": 168.7
+  },
+  {
+    "name": "Belt of Ulduar",
+    "rawcode": "I0D8",
+    "source": "Shop",
+    "shadow": 168.2
+  },
+  {
+    "name": "Signet of the Swarm",
+    "rawcode": "I07W",
+    "source": "Shop",
+    "shadow": 168.1
+  },
+  {
+    "name": "Chromatic Hourglass",
+    "rawcode": "I06O",
+    "source": "Shop",
+    "shadow": 166.7
+  },
+  {
+    "name": "Razorwind",
+    "rawcode": "I05X",
+    "source": "Shop",
+    "shadow": 164.7
+  },
+  {
+    "name": "Skyfeather Crown",
+    "rawcode": "I01F",
+    "source": "Shop",
+    "shadow": 164.5
+  },
+  {
+    "name": "The Zircon Star",
+    "rawcode": "I0DF",
+    "source": "Drop",
+    "shadow": 164.4
+  },
+  {
+    "name": "Qiraji Talisman",
+    "rawcode": "I0C9",
+    "source": "Drop",
+    "shadow": 164.3
+  },
+  {
+    "name": "Aruzal, Fang of Neltharion",
+    "rawcode": "I052",
+    "source": "Legendary",
+    "shadow": 163.8
+  },
+  {
+    "name": "Staff of the Magister",
+    "rawcode": "I0HK",
+    "source": "Drop",
+    "shadow": 163.8
+  },
+  {
+    "name": "Forbidden Seal",
+    "rawcode": "I04K",
+    "source": "Shop",
+    "shadow": 161.5
+  },
+  {
+    "name": "Scepter of Tides",
+    "rawcode": "I07S",
+    "source": "Shop",
+    "shadow": 161.5
+  },
+  {
+    "name": "Beacon of the Naaru",
+    "rawcode": "I0SG",
+    "source": "Drop",
+    "shadow": 161.2
+  },
+  {
+    "name": "Hand of the Magi",
+    "rawcode": "I06M",
+    "source": "Shop",
+    "shadow": 161.1
+  },
+  {
+    "name": "Epic Hearthstone Card",
+    "rawcode": "I09K",
+    "source": "Shop",
+    "shadow": 160.5
+  },
+  {
+    "name": "Forbidden Seal",
+    "rawcode": "I04G",
+    "source": "Shop",
+    "shadow": 160.1
+  },
+  {
+    "name": "Echo of the Night Forest",
+    "rawcode": "I0T1",
+    "source": "Shop",
+    "shadow": 160.0
+  },
+  {
+    "name": "Gorehowl, Edge of Hellscream",
+    "rawcode": "I044",
+    "source": "Legendary",
+    "shadow": 159.9
+  },
+  {
+    "name": "Runic Gauntlets",
+    "rawcode": "I06R",
+    "source": "Shop",
+    "shadow": 159.9
+  },
+  {
+    "name": "Thunder God's Vigor",
+    "rawcode": "I08T",
+    "source": "Shop",
+    "shadow": 158.9
+  },
+  {
+    "name": "Black Raven",
+    "rawcode": "I0HR",
+    "source": "Shop",
+    "shadow": 158.8
+  },
+  {
+    "name": "Hand of Hatred",
+    "rawcode": "sor3",
+    "source": "Drop",
+    "shadow": 158.1
+  },
+  {
+    "name": "Manual of Dark Arts",
+    "rawcode": "I09J",
+    "source": "Drop",
+    "shadow": 158.1
+  },
+  {
+    "name": "Arbiter Helm",
+    "rawcode": "I0SN",
+    "source": "Shop",
+    "shadow": 157.7
+  },
+  {
+    "name": "Amplifying Bracers",
+    "rawcode": "I0IK",
+    "source": "Shop",
+    "shadow": 157.5
+  },
+  {
+    "name": "Amplifying Bracers",
+    "rawcode": "I0P1",
+    "source": "Shop",
+    "shadow": 157.5
+  },
+  {
+    "name": "Crown of the Highlord",
+    "rawcode": "I066",
+    "source": "Shop",
+    "shadow": 157.5
+  },
+  {
+    "name": "Sealed Maiden's Spaulders",
+    "rawcode": "I0SE",
+    "source": "Drop",
+    "shadow": 157.4
+  },
+  {
+    "name": "Void Hunter",
+    "rawcode": "I02N",
+    "source": "Shop",
+    "shadow": 156.9
+  },
+  {
+    "name": "Forbidden Seal",
+    "rawcode": "I06U",
+    "source": "Shop",
+    "shadow": 156.6
+  },
+  {
+    "name": "Bloodlord's Regalia",
+    "rawcode": "I05V",
+    "source": "Shop",
+    "shadow": 156.3
+  },
+  {
+    "name": "Convergence of Fates",
+    "rawcode": "I07L",
+    "source": "Drop",
+    "shadow": 156.3
+  },
+  {
+    "name": "Maelstrom's Fury",
+    "rawcode": "I02T",
+    "source": "Shop",
+    "shadow": 156.3
+  },
+  {
+    "name": "Shugi Staff",
+    "rawcode": "rots",
+    "source": "Drop",
+    "shadow": 156.2
+  },
+  {
+    "name": "Iron Cleaver",
+    "rawcode": "I055",
+    "source": "Shop",
+    "shadow": 156.0
+  },
+  {
+    "name": "Motion-powered Enhancer Cape",
+    "rawcode": "I0HZ",
+    "source": "Drop",
+    "shadow": 155.5
+  },
+  {
+    "name": "Silent Messenger",
+    "rawcode": "I0QN",
+    "source": "Shop",
+    "shadow": 155.5
+  },
+  {
+    "name": "Mantle of Sacred Water",
+    "rawcode": "I0SD",
+    "source": "Drop",
+    "shadow": 155.4
+  },
+  {
+    "name": "Cleric Rod",
+    "rawcode": "I054",
+    "source": "Shop",
+    "shadow": 155.1
+  },
+  {
+    "name": "Arcane Ring",
+    "rawcode": "I029",
+    "source": "Drop",
+    "shadow": 154.9
+  },
+  {
+    "name": "Scepter of Azjol-Nerub",
+    "rawcode": "I02P",
+    "source": "Drop",
+    "shadow": 154.7
+  },
+  {
+    "name": "Witchwood Sword",
+    "rawcode": "I0ID",
+    "source": "Shop",
+    "shadow": 154.7
+  },
+  {
+    "name": "Witchwood Sword",
+    "rawcode": "I0ST",
+    "source": "Shop",
+    "shadow": 154.7
+  },
+  {
+    "name": "Faerie Charm",
+    "rawcode": "I0FE",
+    "source": "Shop",
+    "shadow": 154.5
+  },
+  {
+    "name": "Ledger of Knowledge",
+    "rawcode": "I0J3",
+    "source": "Drop",
+    "shadow": 154.5
+  },
+  {
+    "name": "Robes of Sinful Halo",
+    "rawcode": "I0SI",
+    "source": "Drop",
+    "shadow": 154.5
+  },
+  {
+    "name": "Shard of Infinity",
+    "rawcode": "I03C",
+    "source": "Drop",
+    "shadow": 154.5
+  },
+  {
+    "name": "Viper",
+    "rawcode": "I026",
+    "source": "Shop",
+    "shadow": 154.3
+  },
+  {
+    "name": "Topaz Amulet",
+    "rawcode": "I0BD",
+    "source": "Drop",
+    "shadow": 154.0
+  },
+  {
+    "name": "Seal of Anubisath",
+    "rawcode": "pomn",
+    "source": "Drop",
+    "shadow": 153.8
+  },
+  {
+    "name": "Predaplant Thorn",
+    "rawcode": "I05W",
+    "source": "Shop",
+    "shadow": 153.3
+  },
+  {
+    "name": "Belt of Anubisath",
+    "rawcode": "I0UF",
+    "source": "Drop",
+    "shadow": 153.1
+  },
+  {
+    "name": "Aruthar's Warblade",
+    "rawcode": "I0J2",
+    "source": "Drop",
+    "shadow": 153.0
+  },
+  {
+    "name": "Darkflayer Skull",
+    "rawcode": "shrs",
+    "source": "Drop",
+    "shadow": 152.8
+  },
+  {
+    "name": "Tidebringer",
+    "rawcode": "I03O",
+    "source": "Drop",
+    "shadow": 152.4
+  },
+  {
+    "name": "Shroud of the Nathrezim",
+    "rawcode": "I0NF",
+    "source": "Shop",
+    "shadow": 152.3
+  },
+  {
+    "name": "Silver Bow",
+    "rawcode": "I01Z",
+    "source": "Shop",
+    "shadow": 152.3
+  },
+  {
+    "name": "Pipe of Deew",
+    "rawcode": "I00L",
+    "source": "Drop",
+    "shadow": 152.0
+  },
+  {
+    "name": "Earthshaper",
+    "rawcode": "I0AL",
+    "source": "Shop",
+    "shadow": 151.7
+  },
+  {
+    "name": "Forbidden Seal",
+    "rawcode": "I04B",
+    "source": "Shop",
+    "shadow": 151.7
+  },
+  {
+    "name": "Forbidden Seal",
+    "rawcode": "I056",
+    "source": "Shop",
+    "shadow": 151.7
+  },
+  {
+    "name": "Forbidden Seal",
+    "rawcode": "I0A5",
+    "source": "Shop",
+    "shadow": 151.7
+  },
+  {
+    "name": "Unstable Energy Rod",
+    "rawcode": "I0VD",
+    "source": "Shop",
+    "shadow": 151.7
+  },
+  {
+    "name": "Apocalypse",
+    "rawcode": "I07U",
+    "source": "Shop",
+    "shadow": 151.6
+  },
+  {
+    "name": "Greatstaff of Elune",
+    "rawcode": "I085",
+    "source": "Shop",
+    "shadow": 151.5
+  },
+  {
+    "name": "Sulfuron Hammer",
+    "rawcode": "sor8",
+    "source": "Drop",
+    "shadow": 151.2
+  },
+  {
+    "name": "Hellcleaver",
+    "rawcode": "I07R",
+    "source": "Drop",
+    "shadow": 151.1
+  },
+  {
+    "name": "Skull of Ravius",
+    "rawcode": "I071",
+    "source": "Drop",
+    "shadow": 151.0
+  },
+  {
+    "name": "Jade Forest Sabatons",
+    "rawcode": "I0IF",
+    "source": "Shop",
+    "shadow": 150.8
+  },
+  {
+    "name": "Raging Core Pendant",
+    "rawcode": "I0SZ",
+    "source": "Shop",
+    "shadow": 150.6
+  },
+  {
+    "name": "Raging Core Pendant",
+    "rawcode": "I0T0",
+    "source": "Shop",
+    "shadow": 150.6
+  },
+  {
+    "name": "Staff of Kil'jaeden",
+    "rawcode": "I07K",
+    "source": "Shop",
+    "shadow": 150.5
+  },
+  {
+    "name": "Nightborne Pendant",
+    "rawcode": "I003",
+    "source": "Shop",
+    "shadow": 150.4
+  },
+  {
+    "name": "Elemental Orb (Frost)",
+    "rawcode": "I0NS",
+    "source": "Shop",
+    "shadow": 150.3
+  }
+]
