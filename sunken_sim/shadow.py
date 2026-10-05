@@ -1052,10 +1052,12 @@ def simulate(
     counter: dict | None = None,
     bound_spell: str | None = None,
     spec: str = "shadow",
+    *,
+    use_history: bool = True,
 ) -> Report:
     from sunken_sim.history import recall, remember
 
-    if not (counter is not None and bound_spell is None):
+    if use_history and not (counter is not None and bound_spell is None):
         cached = recall("priest", spec, build, targets, bound_spell)
         if cached is not None:
             return cached
@@ -1064,13 +1066,15 @@ def simulate(
         best_counter = None
         for spell in _cast_spells(build, spec):
             trial_counter: dict | None = {"targets": targets} if counter is not None else None
-            report = simulate(build, targets, trial_counter, spell, spec)
+            report = simulate(build, targets, trial_counter, spell, spec, use_history=use_history)
             if best_report is None or report.dps > best_report.dps:
                 best_report = report
                 best_counter = trial_counter
         if counter is not None and best_counter is not None:
             counter.clear()
             counter.update(best_counter)
+        if not use_history:
+            return best_report
         return remember("priest", spec, best_report, bound_spell)
     stats = character(build)
     key = _timeline_key(build, stats, spec, targets, bound_spell)
@@ -1092,23 +1096,21 @@ def simulate(
             return Report(build, 0.0, 0.0, {}, actions, stats, targets, mana_left=mana_left)
     total, sources = score_events(events, build, stats, spec=spec, windows=windows)
     mode = next((name for code, name in ORB_MODE.items() if _wears(build, code)), None)
-    return remember(
-        "priest",
-        spec,
-        Report(
-            build,
-            total / FIGHT,
-            total,
-            sources,
-            actions,
-            stats,
-            targets,
-            mode,
-            bound_spell,
-            mana_left,
-        ),
+    report = Report(
+        build,
+        total / FIGHT,
+        total,
+        sources,
+        actions,
+        stats,
+        targets,
+        mode,
         bound_spell,
+        mana_left,
     )
+    if not use_history:
+        return report
+    return remember("priest", spec, report, bound_spell)
 
 
 def _item_score(item: Item) -> float:

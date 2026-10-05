@@ -9,6 +9,7 @@ from __future__ import annotations
 import atexit
 import json
 import sqlite3
+import time
 from pathlib import Path
 
 from sunken_sim.shadow import Build, Report
@@ -32,13 +33,30 @@ def _connect() -> sqlite3.Connection:
     global _CONN
     if _CONN is None:
         _PATH.parent.mkdir(exist_ok=True)
-        _CONN = sqlite3.connect(_PATH, timeout=60)
+        _CONN = sqlite3.connect(_PATH, timeout=120)
         _CONN.execute("PRAGMA journal_mode=WAL")
         _CONN.execute("PRAGMA synchronous=NORMAL")
+        _CONN.execute("PRAGMA busy_timeout=120000")
         _CONN.execute(
             "CREATE TABLE IF NOT EXISTS sims (key TEXT PRIMARY KEY, payload TEXT NOT NULL)"
         )
     return _CONN
+
+
+def release() -> None:
+    """Commit and close before a process pool forks.
+
+    A worker must not inherit the parent's open write transaction. That lock
+    made every parallel slice fail with "database is locked".
+    """
+    global _CONN, _PENDING
+    if _CONN is None:
+        return
+    if _PENDING:
+        _CONN.commit()
+        _PENDING = 0
+    _CONN.close()
+    _CONN = None
 
 
 def _dump(value):
@@ -90,10 +108,19 @@ def remember(engine: str, spec: str, report: Report, bound_spell: str | None) ->
     }
     _MEMORY[key] = payload
     connection = _connect()
-    connection.execute(
-        "INSERT OR IGNORE INTO sims (key, payload) VALUES (?, ?)",
-        (key, json.dumps(payload, ensure_ascii=False)),
-    )
+    text = json.dumps(payload, ensure_ascii=False)
+    for attempt in range(8):
+        try:
+            connection.execute(
+                "INSERT OR IGNORE INTO sims (key, payload) VALUES (?, ?)",
+                (key, text),
+            )
+            break
+        except sqlite3.OperationalError:
+            connection.rollback()
+            if attempt == 7:
+                raise
+            time.sleep(0.25 * (attempt + 1))
     _PENDING += 1
     if _PENDING >= 100:
         connection.commit()

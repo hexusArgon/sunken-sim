@@ -217,6 +217,9 @@ def _search_options(
     best_dps = -1.0
     best = None
     print(f"симуляций {stage} {len(options)}", flush=True)
+    from sunken_sim.history import release
+
+    release()
     with ProcessPoolExecutor(
         max_workers=workers,
         initializer=_init_stage,
@@ -387,7 +390,15 @@ def _exhaustive_slice(task: tuple) -> tuple[int, float, int]:
     def consider(chosen: list[Item]) -> None:
         nonlocal seen, best, records
         seen += 1
-        dps = simulate(Build(frozenset(), frozenset(), tuple(chosen), 0, 0, 0, 0), targets, spec=spec).dps
+        # DPS only. Saving every sextuple locks the shared history file across
+        # the forked slices and does not fit on disk. Talent and glyph passes
+        # still remember a fight.
+        dps = simulate(
+            Build(frozenset(), frozenset(), tuple(chosen), 0, 0, 0, 0),
+            targets,
+            spec=spec,
+            use_history=False,
+        ).dps
         if seen % 20000 == 0:
             print(f"срез {first} {seen} лучший {best:.1f}", flush=True)
         if dps <= best:
@@ -407,7 +418,7 @@ def _exhaustive_slice(task: tuple) -> tuple[int, float, int]:
                 "talent_dps": talent_dps,
                 "talents": list(talents),
                 "glyphs": list(glyphs),
-                "items": names,
+                "items": [item.rawcode for item in chosen],
             },
         )
 
@@ -463,6 +474,9 @@ def _exhaustive_item_sets(
         f"полный перебор шестёрок, срезов {len(tasks)}, части {label} из {parts}, процессы {workers}",
         flush=True,
     )
+    from sunken_sim.history import release
+
+    release()
     total = 0
     with ProcessPoolExecutor(max_workers=workers) as pool:
         for first, seen, records in pool.map(_exhaustive_slice, tasks):
@@ -472,8 +486,11 @@ def _exhaustive_item_sets(
     if not path.exists():
         return [Build(frozenset(), frozenset(), greedy, 0, 0, 0, 0)]
     saved = json.loads(path.read_text(encoding="utf-8"))
-    by_name = {item.name: item for item in items}
-    chosen = tuple(by_name[name] for name in saved["items"])
+    by_code = {item.rawcode: item for item in items}
+    by_name: dict[str, Item] = {}
+    for item in items:
+        by_name.setdefault(item.name, item)
+    chosen = tuple(by_code[token] if token in by_code else by_name[token] for token in saved["items"])
     print(f"лучшая шестёрка без талантов {saved['item_dps']:.1f}", flush=True)
     return [Build(frozenset(), frozenset(), chosen, 0, 0, 0, 0)]
 
