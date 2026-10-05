@@ -14,7 +14,7 @@ import re
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
-from sunken_sim.library import MAP_PATH, WTS_PATH, Item, _extract, _load_strings, _parse_objects, load_items
+from sunken_sim.library import MAP_PATH, Item, _extract, _parse_objects, load_items, map_script, map_strings
 from sunken_sim.stacking import ORBS, allows_copies
 from sunken_sim.shadow import (
     FIGHT,
@@ -585,10 +585,7 @@ def shop_codes() -> set[str]:
 
 
 def _map_script() -> str:
-    from pathlib import Path
-
-    script = Path(r"C:\Users\eseid\AppData\Local\Temp\sunken_city\war3map.j").read_text(encoding="utf-8", errors="replace")
-    return script.replace("\r\n", "\n").replace("\r", "\n")
+    return map_script()
 
 
 def _shop_body(script: str) -> str:
@@ -748,7 +745,7 @@ def _guide_ignored(item: Item, names: set[str]) -> bool:
 
 def epic_codes() -> set[str]:
     """Items whose name is the map's epic purple."""
-    strings = _load_strings(WTS_PATH)
+    strings = map_strings()
     skin = _parse_objects(_extract(MAP_PATH, "war3mapSkin.w3t"))
     found = set()
     for code, mods in skin.items():

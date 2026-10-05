@@ -6,6 +6,7 @@ import re
 import struct
 import zlib
 from dataclasses import dataclass, field
+from functools import lru_cache
 from pathlib import Path
 
 MAP_PATH = Path(__file__).resolve().parents[1] / "maps" / "Sunken City v2.5.2a.w3x"
@@ -110,14 +111,73 @@ class _Reader:
         return raw.decode("utf-8", "replace")
 
 
-def _extract(path: Path, name: str) -> bytes:
-    data = path.read_bytes()
+@lru_cache(maxsize=2)
+def _map_bytes(path: str) -> bytes:
+    return Path(path).read_bytes()
+
+
+def _archive_tables(data: bytes):
     _version, shift = struct.unpack_from("<HH", data, 12)
     hash_off, block_off, hash_n, block_n = struct.unpack_from("<IIII", data, 16)
     sector_size = 512 << shift
     hashes = _decrypt(data[hash_off : hash_off + hash_n * 16], _hash_string("(hash table)", 3))
     blocks = _decrypt(data[block_off : block_off + block_n * 16], _hash_string("(block table)", 3))
-    entries = [struct.unpack_from("<IIHHI", hashes, i * 16) for i in range(hash_n)]
+    entries = [struct.unpack_from("<IIHHI", hashes, index * 16) for index in range(hash_n)]
+    return sector_size, entries, blocks
+
+
+def _table_key(encrypted: int, plain: int) -> int | None:
+    """File key minus one, from the known first sector offset."""
+    for low in range(256):
+        seed = (0xEEEEEEEE + CT[0x400 + low]) & 0xFFFFFFFF
+        key = ((encrypted ^ plain) - seed) & 0xFFFFFFFF
+        if (key & 0xFF) == low:
+            return key
+    return None
+
+
+def _decode_block(
+    data: bytes,
+    sector_size: int,
+    file_pos: int,
+    comp_size: int,
+    file_size: int,
+    flags: int,
+    key: int,
+    limit: int | None = None,
+) -> bytes:
+    raw = data[file_pos : file_pos + comp_size]
+    encrypted = bool(flags & 0x00010000)
+    compressed = bool(flags & 0x00000200)
+    if not compressed:
+        blob = _decrypt(raw, key) if encrypted else raw
+        return blob[: file_size if limit is None else min(file_size, limit)]
+    sectors = (file_size + sector_size - 1) // sector_size
+    table_bytes = (sectors + 1) * 4
+    table = _decrypt(raw[:table_bytes], (key - 1) & 0xFFFFFFFF) if encrypted else raw[:table_bytes]
+    offsets = list(struct.unpack("<" + "I" * (sectors + 1), table[:table_bytes]))
+    out = bytearray()
+    last = sectors if limit is None else min(sectors, (limit + sector_size - 1) // sector_size)
+    for index in range(last):
+        chunk = raw[offsets[index] : offsets[index + 1]]
+        remain = file_size - len(out)
+        if encrypted:
+            chunk = _decrypt(chunk, (key + index) & 0xFFFFFFFF)
+        if len(chunk) == min(sector_size, remain):
+            out += chunk
+        else:
+            out += zlib.decompress(chunk[1:])
+        if limit is not None and len(out) >= limit:
+            break
+    if limit is not None:
+        return bytes(out[:limit])
+    return bytes(out[:file_size])
+
+
+def _extract(path: Path, name: str) -> bytes:
+    data = _map_bytes(str(path))
+    sector_size, entries, blocks = _archive_tables(data)
+    hash_n = len(entries)
     slot = _hash_string(name, 0) % hash_n
     name_a, name_b = _hash_string(name, 1), _hash_string(name, 2)
     found = None
@@ -132,28 +192,67 @@ def _extract(path: Path, name: str) -> bytes:
     if found is None:
         raise FileNotFoundError(name)
     file_pos, comp_size, file_size, flags = struct.unpack_from("<IIII", blocks, found * 16)
-    raw = data[file_pos : file_pos + comp_size]
-    encrypted = bool(flags & 0x00010000)
-    compressed = bool(flags & 0x00000200)
-    key = _hash_string(name, 3)
-    if not compressed:
-        blob = _decrypt(raw, key) if encrypted else raw
-        return blob[:file_size]
-    sectors = (file_size + sector_size - 1) // sector_size
-    table_bytes = (sectors + 1) * 4
-    table = _decrypt(raw[:table_bytes], (key - 1) & 0xFFFFFFFF) if encrypted else raw[:table_bytes]
-    offsets = list(struct.unpack("<" + "I" * (sectors + 1), table[:table_bytes]))
-    out = bytearray()
-    for index in range(sectors):
-        chunk = raw[offsets[index] : offsets[index + 1]]
-        remain = file_size - len(out)
-        if encrypted:
-            chunk = _decrypt(chunk, (key + index) & 0xFFFFFFFF)
-        if len(chunk) == min(sector_size, remain):
-            out += chunk
-        else:
-            out += zlib.decompress(chunk[1:])
-    return bytes(out[:file_size])
+    return _decode_block(data, sector_size, file_pos, comp_size, file_size, flags, _hash_string(name, 3))
+
+
+def _extract_script(path: Path) -> bytes:
+    """The map script is stored without the usual war3map.j name."""
+    data = _map_bytes(str(path))
+    sector_size, entries, blocks = _archive_tables(data)
+    seen: set[int] = set()
+    candidates: list[tuple[int, int, int, int, int]] = []
+    for _hash_a, _hash_b, _loc, _plat, block_index in entries:
+        if block_index in (0xFFFFFFFF, 0xFFFFFFFE) or block_index in seen:
+            continue
+        seen.add(block_index)
+        file_pos, comp_size, file_size, flags = struct.unpack_from("<IIII", blocks, block_index * 16)
+        if file_size < 1000 or not (flags & 0x00000200):
+            continue
+        candidates.append((file_size, file_pos, comp_size, flags, block_index))
+    candidates.sort(reverse=True)
+    for file_size, file_pos, comp_size, flags, _block_index in candidates:
+        sectors = (file_size + sector_size - 1) // sector_size
+        table_bytes = (sectors + 1) * 4
+        encrypted_first = struct.unpack_from("<I", data, file_pos)[0]
+        table_key = _table_key(encrypted_first, table_bytes)
+        if table_key is None:
+            continue
+        file_key = (table_key + 1) & 0xFFFFFFFF
+        try:
+            head = _decode_block(data, sector_size, file_pos, comp_size, file_size, flags, file_key, 32)
+        except Exception:
+            continue
+        head = head.lstrip(b"\xef\xbb\xbf")
+        if head.startswith((b"globals", b"function", b"//")):
+            return _decode_block(data, sector_size, file_pos, comp_size, file_size, flags, file_key)
+    raise FileNotFoundError("war3map.j")
+
+
+def _map_text(name: str) -> str:
+    try:
+        blob = _extract(MAP_PATH, name)
+    except FileNotFoundError:
+        if name != "war3map.j":
+            raise
+        blob = _extract_script(MAP_PATH)
+    return blob.decode("utf-8", "replace").replace("\r\n", "\n").replace("\r", "\n")
+
+
+@lru_cache(maxsize=1)
+def map_script() -> str:
+    return _map_text("war3map.j")
+
+
+def _parse_strings(text: str) -> dict[int, str]:
+    strings = {}
+    for match in re.finditer(r"STRING\s+(\d+)\s*\r?\n\{\r?\n(.*?)\r?\n\}", text, re.S):
+        strings[int(match.group(1))] = match.group(2)
+    return strings
+
+
+@lru_cache(maxsize=1)
+def map_strings() -> dict[int, str]:
+    return _parse_strings(_map_text("war3map.wts"))
 
 
 def _parse_objects(blob: bytes) -> dict[str, dict]:
@@ -192,11 +291,7 @@ def _parse_objects(blob: bytes) -> dict[str, dict]:
 
 
 def _load_strings(path: Path) -> dict[int, str]:
-    text = path.read_text(encoding="utf-8", errors="replace")
-    strings = {}
-    for match in re.finditer(r"STRING\s+(\d+)\s*\r?\n\{\r?\n(.*?)\r?\n\}", text, re.S):
-        strings[int(match.group(1))] = match.group(2)
-    return strings
+    return _parse_strings(path.read_text(encoding="utf-8", errors="replace"))
 
 
 def _resolve(value: str, strings: dict[int, str]) -> str:
@@ -342,7 +437,7 @@ def _blocked_for_priest(name: str, tip: str) -> bool:
 
 
 def load_items() -> list[Item]:
-    strings = _load_strings(WTS_PATH)
+    strings = map_strings()
     skin = _parse_objects(_extract(MAP_PATH, "war3mapSkin.w3t"))
     items: list[Item] = []
     for rawcode, mods in skin.items():

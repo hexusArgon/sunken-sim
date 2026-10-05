@@ -28,12 +28,9 @@ _FIELD_BY_VARIABLE = {
 
 
 def _script() -> str:
-    from pathlib import Path
+    from sunken_sim.library import map_script
 
-    script = Path(r"C:\Users\eseid\AppData\Local\Temp\sunken_city\war3map.j").read_text(
-        encoding="utf-8", errors="replace"
-    )
-    return script.replace("\r\n", "\n").replace("\r", "\n")
+    return map_script()
 
 
 def _bodies(script: str) -> dict[str, str]:
