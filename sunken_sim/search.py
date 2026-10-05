@@ -323,12 +323,26 @@ def _triples_seq(
     return best_dps, best
 
 
+def _share() -> tuple[int, int]:
+    parts = int(os.environ.get("SUNKEN_PARTS", "1"))
+    part = int(os.environ.get("SUNKEN_PART", "0"))
+    if parts < 1 or not 0 <= part < parts:
+        raise SystemExit(f"SUNKEN_PART={part} SUNKEN_PARTS={parts}")
+    return part, parts
+
+
+def _record_path(spec: str, targets: int) -> Path:
+    folder = Path(__file__).resolve().parents[1] / "extract" / "exhaustive"
+    folder.mkdir(exist_ok=True)
+    part, parts = _share()
+    name = f"{spec}-{targets}.json" if parts == 1 else f"{spec}-{targets}-part{part}.json"
+    return folder / name
+
+
 def _write_record(spec: str, targets: int, payload: dict) -> None:
     import time
 
-    folder = Path(__file__).resolve().parents[1] / "extract" / "exhaustive"
-    folder.mkdir(exist_ok=True)
-    path = folder / f"{spec}-{targets}.json"
+    path = _record_path(spec, targets)
     lock = path.with_suffix(".lock")
     while True:
         try:
@@ -428,18 +442,22 @@ def _exhaustive_item_sets(
     items = list(catalog)
     floor, greedy = _greedy_floor(items, targets)
     workers = max(1, (os.cpu_count() or 2) - 1)
+    part, parts = _share()
     tasks = [
         (index, items, targets, _SPEC, floor, talent_codes, glyph_codes)
         for index in range(len(items))
+        if index % parts == part
     ]
-    print(f"полный перебор шестёрок, срезов {len(tasks)}, процессы {workers}", flush=True)
+    print(
+        f"полный перебор шестёрок, срезов {len(tasks)}, часть {part + 1}/{parts}, процессы {workers}",
+        flush=True,
+    )
     total = 0
     with ProcessPoolExecutor(max_workers=workers) as pool:
         for first, seen, records in pool.map(_exhaustive_slice, tasks):
             total += seen
             print(f"сдан срез {first}, всего шестёрок {total}, новых {records}", flush=True)
-    folder = Path(__file__).resolve().parents[1] / "extract" / "exhaustive"
-    path = folder / f"{_SPEC}-{targets}.json"
+    path = _record_path(_SPEC, targets)
     if not path.exists():
         return [Build(frozenset(), frozenset(), greedy, 0, 0, 0, 0)]
     saved = json.loads(path.read_text(encoding="utf-8"))
