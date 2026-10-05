@@ -8,7 +8,7 @@ import zlib
 from dataclasses import dataclass, field
 from pathlib import Path
 
-MAP_PATH = Path(r"c:\Users\eseid\Documents\Warcraft III\Maps\Download\Sunken City v2.5.2a.w3x")
+MAP_PATH = Path(__file__).resolve().parents[1] / "maps" / "Sunken City v2.5.2a.w3x"
 WTS_PATH = Path(r"C:\Users\eseid\AppData\Local\Temp\sunken_city\war3map.wts")
 
 OTHER_HEROES = (
