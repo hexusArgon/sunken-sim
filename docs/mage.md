@@ -82,7 +82,7 @@ Frostbite: Chill ×1,08, Freeze ×1,12, пока висит дебафф. Дли
 
 Проверка тех же боёв: кастерская связка на лавочных вещах давала 2743 DPS, автоатаковая — 1782. Формула удара автоатаку над кастером не ставила. Ошибался порядок поиска.
 
-Сид вещей теперь свой у спека и держит глифы, пока таланты ещё не выбраны: Frost — Archmage, Frostfire Bolt, Freezeburn; Arcane — Archmage, Arcane Surge, Amplification; Fire — Archmage, Burning Fury, Pyromaniac. Дальше порядок из общего гайда: восемь шестёрок, на каждой своя ротация всех троек талантов, кроме Runemastery, глифы после.
+Сид вещей тогда был свой у спека и держал глифы, пока таланты ещё не выбраны: Frost — Archmage, Frostfire Bolt, Freezeburn; Arcane — Archmage, Arcane Surge, Amplification; Fire — Archmage, Burning Fury, Pyromaniac. Текущий порядок — в общем гайде.
 
 ## Классовые вещи
 
