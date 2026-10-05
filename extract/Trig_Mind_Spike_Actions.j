@@ -1,0 +1,4 @@
+function Trig_Mind_Spike_Actions takes nothing returns nothing
+set udg_MindSpike_Target=GetSpellTargetUnit()
+call TriggerExecute(gg_trg_Mind_Spike_Damage)
+endfunction

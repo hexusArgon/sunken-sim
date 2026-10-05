@@ -1,0 +1,8 @@
+function Trig_Shadow_Word_Pain_Actions takes nothing returns nothing
+set udg_ShadowWord_Target=GetSpellTargetUnit()
+call ConditionalTriggerExecute(gg_trg_Shadow_Word_Pain_Apply)
+if(Trig_Shadow_Word_Pain_Func003C())then
+call TriggerExecute(gg_trg_Divine_Image_Resonate)
+else
+endif
+endfunction

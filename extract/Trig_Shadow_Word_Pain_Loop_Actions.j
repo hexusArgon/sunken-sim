@@ -1,0 +1,6 @@
+function Trig_Shadow_Word_Pain_Loop_Actions takes nothing returns nothing
+call StartTimerBJ(udg_ShadowWord_Timer,false,(1/(1+udg_CDR[GetConvertedPlayerId(GetOwningPlayer(udg_Hero_Priest))])))
+set udg_HoTSys_ShadowWord=GetUnitsInRectMatching(GetPlayableMapRect(),Condition(function Trig_Shadow_Word_Pain_Loop_Func002002002))
+call ForGroupBJ(udg_HoTSys_ShadowWord,function Trig_Shadow_Word_Pain_Loop_Func003A)
+call DestroyGroup(udg_HoTSys_ShadowWord)
+endfunction

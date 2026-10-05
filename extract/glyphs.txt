@@ -1,0 +1,95 @@
+I0HC | Animosity
+  Offensive Glyph Grants you 12% Critical Strike chance and increases the damage dealt by Critical Strikes by 15%.
+
+I0EN | Arc Striking
+  Utility Glyph Each of your attacks reduces the remaining cooldown of your Q ability by 8% plus additional 0,25 seconds. Your Q spellcasts refund 40% of their mana cost.
+
+I0HA | Astral Shift
+  Defensive Glyph Reduces any damage taken by 1% for every 4% of missing health.
+
+I0GZ | Battle Frenzy
+  Offensive Glyph Gives your attacks 18% chance to grant you 32% Attack Speed for 5 seconds. Battle Frenzy must wear off before occuring again.
+
+I0OH | Beastfury
+  Offensive Glyph Your summons spawn with 25% Critical Strike chance.
+
+I0H6 | Blood Violence
+  Offensive Glyph Dealing damage from any source has 3% chance to cause the enemy flesh to explode, dealing 20 Attrition damage (+160% of Primary Attribute).
+
+I0H1 | Bloodthirst
+  Defensive Glyph Causes your hero to restore health equal to 10% of any damage dealt.
+
+I0HB | Class Mastery
+  Utility Glyph After casting your Q hotkey ability, your hero will gain Class Mastery for 4 seconds, which provides one of the following effects depending on his primary attribute:  • Strength: increases Armor by 4 and upon taking damage your hero restores 3 health plus 12% of all mitigated damage to the lowest health hero. This is a Healing Type effect. • Ag
+
+I0EJ | Fortune
+  Utility Glyph Increases your Luck by additional 15%.
+
+I0NB | Commandership
+  Utility Glyph Grants you 20% Pet Damage and reduces the damage taken by your summons by 12%.
+
+I0E8 | Crippling
+  Support Glyph Your attacks apply Cripple on the target for 4 seconds, which reduces the damage dealt by attacks by 20% and Movement Speed by 25%.
+
+I0EI | Dampening
+  Defenisve Glyph Grants you 20% Spell Damage Reduction.
+
+I0EM | Deep Healing
+  Support Glyph Increases your Healing Power by additional 20%.
+
+I0NA | Devotion
+  Support Glyph Your Healing Type spellcasts cause all nearby allies to regenerate 0,75 mana per second, increased by amount equal to 0,4% of their maximum mana for 4 seconds.
+
+I0HD | Diamond Skin
+  Defensive Glyph Reduces damage taken from attacks by 10%.
+
+I07B | Fortitude
+  Utility Glyph Boosts your Primary Attribute by 4 and additional 2 per Hero Level.
+
+I0JA | Glass Cannon
+  Offensive Glyph Multiplicatively increases damage dealt from all sources by 15%, but all of your units take 10% more damage.
+
+I0H3 | Hellfire
+  Offensive Glyph Deals 3 damage and additional amount equal to 3 times your hero level to all enemy units within 400 range every 1,25 seconds. Damage dealt is modified based on the amount of targets hit:  • 1 enemy: 200% damage • 2-3 enemies: 100% damage • 4+ enemies: 50% damage
+
+I0CB | Lightforce
+  Defensive Glyph Taking damage while below 70% of maximum health shields the hero with holy energy, making him invulnerable for 4 seconds. This effect cannot occur more than once every 35 seconds. Invulnerable heroes will be ignored by enemy units.
+
+I0H2 | Magic Find
+  Support Glyph Increases item drop chances from all enemy units by 20% for the party and increases the odds of enemies dropping higher quality items. This Glyph stacks with other player's Magic Find Glyphs.
+
+I0GY | Mana Shield
+  Defensive Glyph Reduces any damage taken by amount equal to 2% of your maximum mana.
+
+I0OF | Mindhaste
+  Utility Glyph Increases your Haste by 7% and reduces the cooldown of all abilities by 0,2 seconds.
+
+I0EH | Protecting
+  Support Glyph Reduces the damage taken by allied heroes by 12%, but increases the damage your hero takes by 10%. Damage reduction does not stack across multiple Glyphs of Protecting.
+
+I01H | Provoking
+  Support Glyph Increases the duration of your Taunting effects by 25% and reduces the damage taunted enemies deal by 7%.
+
+I0EL | Recovery
+  Defensive Glyph Grants you 2 Health per second (+0,75% of maximum Health). Also causes Health Regeneration to become a Healing Type effect.
+
+I0H4 | Renewal
+  Support Glyph Your spellcasts have 40% chance to restore 40 health (+130% of Primary Attribute) to all friendly units within 700 range. This is a Healing Type effect.
+
+I0H0 | Replenishment
+  Utility Glyph Causes you to regenerate 1,5 mana (+0,75% of maximum Mana) each second.
+
+I0OG | Siphoning
+  Defensive Glyph Whenever another hero gets healed by a Healing Type effect, you restore health equal to 25% of the healed amount. Overhealing amount is not applied to this effect.
+
+I0EK | Supremacy
+  Utility Glyph Increases your Mastery by 20.
+
+I0H5 | Thunder
+  Offensive Glyph Your spellcasts have 18% chance to call down lightnings that deal 35 (+200% of Primary Attribute) to enemy units within 600 range.
+
+I0OI | Trepidation
+  Support Glyph Affects enemies in 600 range with Trepidation Aura, which causes them to take 8% more damage from allied units, not including your own units. This effect does not stack.
+
+I0AV | Unsealed Power
+  Offensive Glyph Increases the damage dealt by Magical and Physical Type effects by 18%.

@@ -1,0 +1,563 @@
+{
+  "5-mixed": {
+    "label": "mixed",
+    "targets": 5,
+    "dps": 2263.1,
+    "total": 67893,
+    "talents": [
+      "Archmage",
+      "Arcane Surge",
+      "Amplification"
+    ],
+    "glyphs": [
+      "Unsealed Power",
+      "Thunder",
+      "Glass Cannon"
+    ],
+    "points": {
+      "crit": 0,
+      "potency": 5,
+      "luck": 0,
+      "mastery": 0
+    },
+    "stats": {
+      "int": 203.0,
+      "ad": 163.25,
+      "potency": 2.5,
+      "mastery": 18.0,
+      "crit": 0.0,
+      "rating": 0.0,
+      "haste": 0.26,
+      "attack_speed": 0.274,
+      "mana_max": 1846.0,
+      "swing": 1.5698587127158556,
+      "bomb_period": 0.75,
+      "hydra_swing": 0.0
+    },
+    "sources": [
+      {
+        "name": "Arcane Blast",
+        "amount": 32604.2
+      },
+      {
+        "name": "Ring of Frost",
+        "amount": 11731.8
+      },
+      {
+        "name": "Thunder",
+        "amount": 10590.7
+      },
+      {
+        "name": "Всплеск огня",
+        "amount": 5406.1
+      },
+      {
+        "name": "Living Bomb",
+        "amount": 3038.3
+      },
+      {
+        "name": "Автоатака",
+        "amount": 2671.0
+      },
+      {
+        "name": "Взрыв Living Bomb",
+        "amount": 1850.7
+      }
+    ],
+    "orb_mode": "Fire",
+    "bound_spell": "Arcane Blast",
+    "actions": [
+      {
+        "time": 0.0,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 0.45,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 0.9,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 2.92,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 6.06,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 6.51,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 9.2,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 9.65,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 12.34,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 12.79,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 15.48,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 18.62,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 19.07,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 19.52,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 21.76,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 24.9,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 25.35,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 28.04,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 28.49,
+        "spell": "Ring of Frost"
+      }
+    ],
+    "items": [
+      {
+        "name": "Elemental Orb",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+15% Attack Speed\n+10% Haste\n+6 All Stats\nUse: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)\nFire: Attacks splash for 20 damage and additional 35% of Primary Attribute.\nFrost: Attacks Chill the target, reducing its movement speed by 50% and its attack speed by 25% for 4 seconds.\nShadow: Attacks ignore 6 of the target's Armor."
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
+      {
+        "name": "Atiesh, Greatstaff of the Guardian",
+        "source": "Mysterious Wanderer",
+        "tip": "Binds to Player\n+20 to Primary Attribute\n+10 Mastery\n+250 Mana\nEquip: Increases the damage dealt by Magical Type effects by 20%.\nEquip: Your abilities have their base cooldown reduced by 13%."
+      },
+      {
+        "name": "Diamond Ring",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+8% Haste\n+8 Mastery\n+7 All Stats\nUse: Binds the last spell you've cast to this item. (Cooldown: 30 seconds)\nEquip: Your bound spell has its base cooldown reduced by 30%."
+      },
+      {
+        "name": "The Darkglaive",
+        "source": "Random drop",
+        "tip": "+12 to Primary Attribute\n+8% Haste\n+6 Agility\nEquip: Increases the damage dealt by Magical Type effects by 30%.\nEquip: Reduces the effectiveness of Healing Type effects on your hero by 30%."
+      }
+    ],
+    "ignored": [
+      {
+        "item": "Elemental Orb",
+        "lines": [
+          "Use: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)"
+        ]
+      },
+      {
+        "item": "Diamond Ring",
+        "lines": [
+          "Use: Binds the last spell you've cast to this item. (Cooldown: 30 seconds)"
+        ]
+      },
+      {
+        "item": "The Darkglaive",
+        "lines": [
+          "Equip: Reduces the effectiveness of Healing Type effects on your hero by 30%."
+        ]
+      }
+    ],
+    "mana_left": 45.4
+  },
+  "5-shop": {
+    "label": "shop",
+    "targets": 5,
+    "dps": 2199.3,
+    "total": 65978,
+    "talents": [
+      "Supernova",
+      "Archmage",
+      "Lava Spawn"
+    ],
+    "glyphs": [
+      "Unsealed Power",
+      "Thunder",
+      "Glass Cannon"
+    ],
+    "points": {
+      "crit": 0,
+      "potency": 0,
+      "luck": 0,
+      "mastery": 0
+    },
+    "stats": {
+      "int": 294.0,
+      "ad": 231.5,
+      "potency": 0.0,
+      "mastery": 10.0,
+      "crit": 0.0,
+      "rating": 0.0,
+      "haste": 0.1,
+      "attack_speed": 0.222,
+      "mana_max": 2483.0,
+      "swing": 1.6366612111292962,
+      "bomb_period": 0.75,
+      "hydra_swing": 0.0
+    },
+    "sources": [
+      {
+        "name": "Ring of Frost",
+        "amount": 14696.4
+      },
+      {
+        "name": "Supernova",
+        "amount": 10299.2
+      },
+      {
+        "name": "Thunder",
+        "amount": 7815.4
+      },
+      {
+        "name": "Arcane Blast",
+        "amount": 7280.5
+      },
+      {
+        "name": "Всплеск огня",
+        "amount": 6913.1
+      },
+      {
+        "name": "Living Bomb",
+        "amount": 4652.8
+      },
+      {
+        "name": "Hydra",
+        "amount": 4468.9
+      },
+      {
+        "name": "Клив Hydra",
+        "amount": 3575.1
+      },
+      {
+        "name": "Автоатака",
+        "amount": 3534.1
+      },
+      {
+        "name": "Взрыв Living Bomb",
+        "amount": 2741.9
+      }
+    ],
+    "orb_mode": "Fire",
+    "bound_spell": null,
+    "actions": [
+      {
+        "time": 0.0,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 0.45,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 0.9,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 7.9,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 8.35,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 12.81,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 16.08,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 16.53,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 24.26,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 24.71,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 25.16,
+        "spell": "Ring of Frost"
+      }
+    ],
+    "items": [
+      {
+        "name": "Elemental Orb",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+15% Attack Speed\n+10% Haste\n+6 All Stats\nUse: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)\nFire: Attacks splash for 20 damage and additional 35% of Primary Attribute.\nFrost: Attacks Chill the target, reducing its movement speed by 50% and its attack speed by 25% for 4 seconds.\nShadow: Attacks ignore 6 of the target's Armor."
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
+      {
+        "name": "Atiesh, Greatstaff of the Guardian",
+        "source": "Mysterious Wanderer",
+        "tip": "Binds to Player\n+20 to Primary Attribute\n+10 Mastery\n+250 Mana\nEquip: Increases the damage dealt by Magical Type effects by 20%.\nEquip: Your abilities have their base cooldown reduced by 13%."
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      }
+    ],
+    "ignored": [
+      {
+        "item": "Elemental Orb",
+        "lines": [
+          "Use: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)"
+        ]
+      }
+    ],
+    "mana_left": 84.3
+  },
+  "5-drop": {
+    "label": "drop",
+    "targets": 5,
+    "dps": 1788.8,
+    "total": 53665,
+    "talents": [
+      "Supernova",
+      "Archmage",
+      "Arcane Surge"
+    ],
+    "glyphs": [
+      "Unsealed Power",
+      "Thunder",
+      "Glass Cannon"
+    ],
+    "points": {
+      "crit": 0,
+      "potency": 5,
+      "luck": 0,
+      "mastery": 0
+    },
+    "stats": {
+      "int": 160.0,
+      "ad": 131.0,
+      "potency": 2.5,
+      "mastery": 10,
+      "crit": 0,
+      "rating": 0.0,
+      "haste": 0.21000000000000002,
+      "attack_speed": 0.252,
+      "mana_max": 1545.0,
+      "swing": 1.597444089456869,
+      "bomb_period": 0.75,
+      "hydra_swing": 0.0
+    },
+    "mana_left": 48.6,
+    "sources": [
+      {
+        "name": "Arcane Blast",
+        "amount": 16083.0
+      },
+      {
+        "name": "Ring of Frost",
+        "amount": 13240.0
+      },
+      {
+        "name": "Thunder",
+        "amount": 8474.7
+      },
+      {
+        "name": "Supernova",
+        "amount": 8285.6
+      },
+      {
+        "name": "Living Bomb",
+        "amount": 3424.2
+      },
+      {
+        "name": "Взрыв Living Bomb",
+        "amount": 2119.0
+      },
+      {
+        "name": "Автоатака",
+        "amount": 2038.0
+      }
+    ],
+    "orb_mode": null,
+    "bound_spell": null,
+    "actions": [
+      {
+        "time": 0.0,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 0.45,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 0.9,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 4.54,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 4.99,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 7.74,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 9.34,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 9.79,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 14.13,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 14.58,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 15.03,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 18.92,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 19.37,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 22.12,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 23.71,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 24.16,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 28.51,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 28.96,
+        "spell": "Arcane Blast"
+      }
+    ],
+    "items": [
+      {
+        "name": "Atiesh, Greatstaff of the Guardian",
+        "source": "Mysterious Wanderer",
+        "tip": "Binds to Player\n+20 to Primary Attribute\n+10 Mastery\n+250 Mana\nEquip: Increases the damage dealt by Magical Type effects by 20%.\nEquip: Your abilities have their base cooldown reduced by 13%."
+      },
+      {
+        "name": "The Darkglaive",
+        "source": "Random drop",
+        "tip": "+12 to Primary Attribute\n+8% Haste\n+6 Agility\nEquip: Increases the damage dealt by Magical Type effects by 30%.\nEquip: Reduces the effectiveness of Healing Type effects on your hero by 30%."
+      },
+      {
+        "name": "Harness of Beyond",
+        "source": "Random drop",
+        "tip": "+30 Intelligence\n-10 Strength\nEquip: Your abilities have their base cooldown reduced by 8%.\n\"Power has a price...\""
+      },
+      {
+        "name": "Cursed Skull",
+        "source": "Random drop",
+        "tip": "+25 All Stats\n+15 Health per second\nEquip: Your Health Regeneration inflicts Spell damage to your Hero instead of restoring health. Health Regeneration now only works during combat."
+      },
+      {
+        "name": "Nightborne Scepter",
+        "source": "Random drop",
+        "tip": "+12 to Primary Attribute\n+8% Attack Speed\nEquip: Increases the damage dealt by Magical Type effects by 12%.\nEquip: Grants you and nearby allies Brilliance Aura, which provides 4 mana per 5 seconds. Auras with the same name do not stack."
+      },
+      {
+        "name": "The Zircon Star",
+        "source": "Random drop",
+        "tip": "+13 to Primary Attribute\n+13% Haste\n\"Produces a quiet hum when placed on the finger.\""
+      }
+    ],
+    "ignored": [
+      {
+        "item": "The Darkglaive",
+        "lines": [
+          "Equip: Reduces the effectiveness of Healing Type effects on your hero by 30%."
+        ]
+      },
+      {
+        "item": "Cursed Skull",
+        "lines": [
+          "Equip: Your Health Regeneration inflicts Spell damage to your Hero instead of restoring health. Health Regeneration now only works during combat."
+        ]
+      },
+      {
+        "item": "Nightborne Scepter",
+        "lines": [
+          "Equip: Grants you and nearby allies Brilliance Aura, which provides 4 mana per 5 seconds. Auras with the same name do not stack."
+        ]
+      }
+    ]
+  }
+}

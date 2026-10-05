@@ -1,0 +1,51 @@
+Shadow Priest, уровень 6, 1 цель, 30 секунд
+DPS 2095.2    урон 62857
+
+Таланты: Catharsis, Insanity, Touch of the Naaru
+Глифы: Fortitude, Glass Cannon, Unsealed Power
+Очки навыков: Potency 5, Mastery 0
+Предметы:
+  Tablet of Life
+  Aruzal, Fang of Neltharion
+  Gar'thok's Axe
+  Heart of Wyrmrest
+  Predaplant Thorn
+  Razorwind
+
+Интеллект 116   сила атаки 337.0   Potency 18.5   Mastery 0
+крит 60%   рейтинг крита 0.50   спешка 18.0%   скорость атаки 155.8%
+мана 1757   взмах 0.78 с   тик Shadow Word: Pain 0.85 с
+
+Источники урона
+  Автоатака                                   59.8%    1253.6 dps
+  Mind Spike                                  17.7%     370.1 dps
+  Shadow Word: Pain                            8.0%     168.2 dps
+  Void Rift                                    6.1%     127.9 dps
+  Naaru                                        5.6%     117.9 dps
+  Shadow Word: Pain (удар при обновлении)      2.7%      57.5 dps
+
+Порядок кнопок
+   0.00  Shadow Word: Pain
+   0.30  Divine Image
+   0.60  Mind Spike
+   0.90  Void Rift
+   7.04  Mind Spike
+   9.38  Shadow Word: Pain
+  10.95  Void Rift
+  14.07  Mind Spike
+  16.42  Divine Image
+  18.76  Shadow Word: Pain
+  21.11  Mind Spike
+  21.41  Void Rift
+  27.37  Mind Spike
+  28.15  Shadow Word: Pain
+
+Эффекты предметов, которые симулятор не считает:
+  Aruzal, Fang of Neltharion: Equip: Your hero deals 18% more damage to enemies below 25% of maximum health.
+
+Как считается бой
+Цель на полном здоровье, броня 0, множитель типа урона 1.
+Ранги умений 1. Между кнопками пауза 0.3 с, отдельного ГКД в карте нет.
+Крит и Thunder взяты ожиданием, без случайного броска.
+Naaru бьёт раз в секунду, 10 с, пока живёт призванный образ.
+Уникальные проки предметов вне статов в урон не входят.

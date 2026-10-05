@@ -266,6 +266,8 @@ class Item:
     cdr_pct: float = 0.0
     stun_chance: float = 0.0
     stun_duration: float = 0.0
+    cast_stun_chance: float = 0.0
+    cast_stun_duration: float = 0.0
     spell_crit: bool = False
     double_attack_potency: bool = False
     auto_pct: float = 0.0
@@ -315,8 +317,10 @@ def _parse_tip(tip: str) -> dict:
         + _sum_ints(r"Magical and Physical Type effects by (\d+)%", tip),
         "cooldown_add": _sum_floats(r"cooldowns of all abilities by (\d+(?:[.,]\d+)?) second", tip),
         "cdr_pct": _sum_ints(r"abilities have their base cooldown reduced by (\d+)%", tip) / 100,
-        "stun_chance": _sum_ints(r"(\d+)% chance to Stun you", tip) / 100,
-        "stun_duration": _first_float(r"Stun you for (\d+(?:[.,]\d+)?)", tip),
+        "stun_chance": _sum_ints(r"(\d+)% chance to Stun you", "\n".join(line for line in lines if "spellcasts have" not in line.lower())) / 100,
+        "stun_duration": _first_float(r"Stun you for (\d+(?:[.,]\d+)?)", "\n".join(line for line in lines if "spellcasts have" not in line.lower())),
+        "cast_stun_chance": _sum_ints(r"spellcasts have (\d+)% chance to stun you", tip) / 100,
+        "cast_stun_duration": _first_float(r"spellcasts have \d+% chance to stun you for (\d+(?:[.,]\d+)?)", tip),
         "spell_crit": "Magical Type effects benefit from Critical Strike" in tip,
         "double_attack_potency": "Potency at double effectiveness" in tip,
         "auto_pct": _sum_ints(r"auto-attacks by (\d+)%", tip) / 100,

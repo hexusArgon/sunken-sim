@@ -1,0 +1,55 @@
+Таланты: Catharsis, Insanity, Clairvoyance
+Глифы: Unsealed Power, Animosity, Glass Cannon
+Очки: крит 5, Potency 0, Luck 0, Mastery 0
+Поиск дал 2866.6 DPS, полный прогон 2866.6 DPS
+
+Shadow Priest, уровень 6, 1 цел., 30 секунд
+DPS 2866.6    урон 85998
+
+Таланты: I0PS, I0PU, I0SA
+Глифы: I0AV, I0HC, I0JA
+Очки навыков: крит 5, Potency 0, Luck 0, Mastery 0
+Предметы:
+  Heart of Wyrmrest
+  Gar'thok's Axe
+  Tablet of Life
+  Aruzal, Fang of Neltharion
+  Nightfall
+  Ardite Impaler
+
+Интеллект 100   сила атаки 335.0   Potency 0.0   Mastery 0
+крит 88%   рейтинг крита 0.70   спешка 0.0%   скорость атаки 143.8%
+мана 1745   взмах 0.82 с   тик Shadow Word: Pain 1.00 с
+
+Источники урона
+  Автоатака                                   53.7%    1539.4 dps
+  Mind Spike                                  20.0%     574.3 dps
+  Void Rift                                    8.9%     253.8 dps
+  Shadow Word: Pain                            7.2%     206.0 dps
+  Naaru                                        6.5%     186.6 dps
+  Shadow Word: Pain (удар при обновлении)      3.7%     106.6 dps
+
+Порядок кнопок
+   0.00  Shadow Word: Pain
+   0.30  Divine Image
+   0.60  Mind Spike
+   0.90  Void Rift
+   9.02  Shadow Word: Pain
+   9.32  Mind Spike
+  11.48  Void Rift
+  16.41  Divine Image
+  18.05  Shadow Word: Pain
+  18.35  Mind Spike
+  22.15  Void Rift
+  27.07  Shadow Word: Pain
+  27.37  Mind Spike
+
+Эффекты предметов, которые симулятор не считает:
+  Aruzal, Fang of Neltharion: Equip: Your hero deals 18% more damage to enemies below 25% of maximum health.
+
+Как считается бой
+Цель на полном здоровье, броня 0, множитель типа урона 1.
+Ранги умений 1. Между кнопками пауза 0.3 с, отдельного ГКД в карте нет.
+Крит и Thunder взяты ожиданием, без случайного броска.
+Naaru бьёт раз в секунду, 10 с, пока живёт призванный образ.
+Уникальные проки предметов вне статов в урон не входят.

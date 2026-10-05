@@ -1,0 +1,461 @@
+{
+  "mixed": {
+    "label": "mixed",
+    "dps": 829.5,
+    "total": 24886,
+    "talents": [
+      "Catharsis",
+      "Insanity",
+      "Clairvoyance"
+    ],
+    "glyphs": [
+      "Unsealed Power",
+      "Animosity",
+      "Glass Cannon"
+    ],
+    "points": {
+      "crit": 5,
+      "potency": 0,
+      "luck": 0,
+      "mastery": 0
+    },
+    "stats": {
+      "int": 85,
+      "ad": 118.75,
+      "potency": 8.0,
+      "mastery": 15,
+      "crit": 73,
+      "rating": 0.9,
+      "haste": 0.12,
+      "attack_speed": 0.45799999999999996,
+      "mana_max": 870,
+      "swing": 1.3717421124828533,
+      "swp_period": 0.8928571428571428
+    },
+    "sources": [
+      {
+        "name": "Shadow Word: Pain",
+        "amount": 7130.8
+      },
+      {
+        "name": "Автоатака",
+        "amount": 6571.7
+      },
+      {
+        "name": "Mind Spike",
+        "amount": 4407.5
+      },
+      {
+        "name": "Naaru",
+        "amount": 3182.2
+      },
+      {
+        "name": "Void Rift",
+        "amount": 2510.2
+      },
+      {
+        "name": "Shadow Word: Pain (удар при обновлении)",
+        "amount": 1084.0
+      }
+    ],
+    "actions": [
+      {
+        "time": 0.0,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 0.45,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 0.9,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 1.35,
+        "spell": "Void Rift"
+      },
+      {
+        "time": 8.66,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 10.03,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 11.4,
+        "spell": "Void Rift"
+      },
+      {
+        "time": 15.52,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 16.89,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 19.63,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 21.0,
+        "spell": "Void Rift"
+      },
+      {
+        "time": 25.12,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 29.23,
+        "spell": "Shadow Word: Pain"
+      }
+    ],
+    "items": [
+      {
+        "name": "Ardite Impaler",
+        "source": "Shop Item",
+        "tip": "Crit Relic\n+20% Attack Speed\n+10% Critical Strike\n+10 Damage\nEquip: Increases the damage dealt by your auto-attacks by 10%.\nEquip: Critical Strike bonus damage is increased by additional 25%."
+      },
+      {
+        "name": "Harness of Beyond",
+        "source": "Random drop",
+        "tip": "+30 Intelligence\n-10 Strength\nEquip: Your abilities have their base cooldown reduced by 8%.\n\"Power has a price...\""
+      },
+      {
+        "name": "Celestial Crown",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+15 All Stats\n+15 Mastery\n+12% Haste"
+      },
+      {
+        "name": "Nightfall",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+13 to Primary Attribute\n+100 Mana\n+8% Critical Strike\nEquip: Your Magical Type effects benefit from Critical Strike chance and Critical Strike modifiers, allowing them to be Critical, dealing 65% more damage, but will not trigger effects that activate on Critical Strikes."
+      },
+      {
+        "name": "Aruzal, Fang of Neltharion",
+        "source": "Mysterious Wanderer",
+        "tip": "Binds to Player\n+35 Damage\n+15% Attack Speed\n+15% Critical Strike\nEquip: Critical Strike bonus damage is increased by additional 30%.\nEquip: Your hero deals 18% more damage to enemies below 25% of maximum health."
+      },
+      {
+        "name": "Predaplant Thorn",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+15% Critical Strike\n+8 Potency\nEquip: The attacks of your hero and summons benefit from Potency at double effectiveness.\nEquip: Critical Strike bonus damage is increased by additional 20% for your hero and summons."
+      }
+    ],
+    "ignored": []
+  },
+  "shop": {
+    "label": "shop",
+    "dps": 766.5,
+    "total": 22996,
+    "talents": [
+      "Catharsis",
+      "Insanity",
+      "Clairvoyance"
+    ],
+    "glyphs": [
+      "Unsealed Power",
+      "Animosity",
+      "Glass Cannon"
+    ],
+    "points": {
+      "crit": 4,
+      "potency": 1,
+      "luck": 0,
+      "mastery": 0
+    },
+    "stats": {
+      "int": 55,
+      "ad": 119.25,
+      "potency": 8.5,
+      "mastery": 15,
+      "crit": 84,
+      "rating": 0.9,
+      "haste": 0.12,
+      "attack_speed": 0.45799999999999996,
+      "mana_max": 660,
+      "swing": 1.3717421124828533,
+      "swp_period": 0.8928571428571428
+    },
+    "sources": [
+      {
+        "name": "Автоатака",
+        "amount": 7226.7
+      },
+      {
+        "name": "Shadow Word: Pain",
+        "amount": 6301.9
+      },
+      {
+        "name": "Mind Spike",
+        "amount": 3691.0
+      },
+      {
+        "name": "Naaru",
+        "amount": 2832.0
+      },
+      {
+        "name": "Void Rift",
+        "amount": 2022.7
+      },
+      {
+        "name": "Shadow Word: Pain (удар при обновлении)",
+        "amount": 921.2
+      }
+    ],
+    "actions": [
+      {
+        "time": 0.0,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 0.45,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 0.9,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 1.35,
+        "spell": "Void Rift"
+      },
+      {
+        "time": 10.03,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 10.48,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 11.4,
+        "spell": "Void Rift"
+      },
+      {
+        "time": 16.89,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 19.63,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 20.08,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 22.38,
+        "spell": "Void Rift"
+      },
+      {
+        "time": 29.23,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 29.68,
+        "spell": "Mind Spike"
+      }
+    ],
+    "items": [
+      {
+        "name": "Celestial Crown",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+15 All Stats\n+15 Mastery\n+12% Haste"
+      },
+      {
+        "name": "Aruzal, Fang of Neltharion",
+        "source": "Mysterious Wanderer",
+        "tip": "Binds to Player\n+35 Damage\n+15% Attack Speed\n+15% Critical Strike\nEquip: Critical Strike bonus damage is increased by additional 30%.\nEquip: Your hero deals 18% more damage to enemies below 25% of maximum health."
+      },
+      {
+        "name": "Nightfall",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+13 to Primary Attribute\n+100 Mana\n+8% Critical Strike\nEquip: Your Magical Type effects benefit from Critical Strike chance and Critical Strike modifiers, allowing them to be Critical, dealing 65% more damage, but will not trigger effects that activate on Critical Strikes."
+      },
+      {
+        "name": "Ardite Impaler",
+        "source": "Shop Item",
+        "tip": "Crit Relic\n+20% Attack Speed\n+10% Critical Strike\n+10 Damage\nEquip: Increases the damage dealt by your auto-attacks by 10%.\nEquip: Critical Strike bonus damage is increased by additional 25%."
+      },
+      {
+        "name": "Predaplant Thorn",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+15% Critical Strike\n+8 Potency\nEquip: The attacks of your hero and summons benefit from Potency at double effectiveness.\nEquip: Critical Strike bonus damage is increased by additional 20% for your hero and summons."
+      },
+      {
+        "name": "Silent Messenger",
+        "source": "Shop Item",
+        "tip": "Crit Relic\n+23 Damage\n+12% Critical Strike\nEquip: Your attacks ignore 3 of the target's Armor.\nEquip: Your Critical Strikes grant you 28% Attack Speed for 3 seconds."
+      }
+    ],
+    "ignored": [
+      {
+        "item": "Silent Messenger",
+        "lines": [
+          "Equip: Your attacks ignore 3 of the target's Armor.",
+          "Equip: Your Critical Strikes grant you 28% Attack Speed for 3 seconds."
+        ]
+      }
+    ]
+  },
+  "drop": {
+    "label": "drop",
+    "dps": 613.4,
+    "total": 18402,
+    "talents": [
+      "Catharsis",
+      "Insanity",
+      "Touch of the Naaru"
+    ],
+    "glyphs": [
+      "Unsealed Power",
+      "Animosity",
+      "Glass Cannon"
+    ],
+    "points": {
+      "crit": 5,
+      "potency": 0,
+      "luck": 0,
+      "mastery": 0
+    },
+    "stats": {
+      "int": 95,
+      "ad": 141.25,
+      "potency": 0.0,
+      "mastery": 0,
+      "crit": 67,
+      "rating": 0.44999999999999996,
+      "haste": 0.05,
+      "attack_speed": 0.198,
+      "mana_max": 840,
+      "swing": 1.669449081803005,
+      "swp_period": 0.9523809523809523
+    },
+    "sources": [
+      {
+        "name": "Shadow Word: Pain",
+        "amount": 5118.2
+      },
+      {
+        "name": "Mind Spike",
+        "amount": 4884.4
+      },
+      {
+        "name": "Автоатака",
+        "amount": 4185.1
+      },
+      {
+        "name": "Naaru",
+        "amount": 2285.9
+      },
+      {
+        "name": "Void Rift",
+        "amount": 1928.7
+      }
+    ],
+    "actions": [
+      {
+        "time": 0.0,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 0.45,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 0.9,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 1.35,
+        "spell": "Void Rift"
+      },
+      {
+        "time": 6.81,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 10.15,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 10.6,
+        "spell": "Void Rift"
+      },
+      {
+        "time": 13.49,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 16.83,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 20.16,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 20.61,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 21.06,
+        "spell": "Void Rift"
+      },
+      {
+        "time": 26.84,
+        "spell": "Mind Spike"
+      }
+    ],
+    "items": [
+      {
+        "name": "Harness of Beyond",
+        "source": "Random drop",
+        "tip": "+30 Intelligence\n-10 Strength\nEquip: Your abilities have their base cooldown reduced by 8%.\n\"Power has a price...\""
+      },
+      {
+        "name": "Cursed Skull",
+        "source": "Random drop",
+        "tip": "+25 All Stats\n+15 Health per second\nEquip: Your Health Regeneration inflicts Spell damage to your Hero instead of restoring health. Health Regeneration now only works during combat."
+      },
+      {
+        "name": "Aruzal, Fang of Neltharion",
+        "source": "Mysterious Wanderer",
+        "tip": "Binds to Player\n+35 Damage\n+15% Attack Speed\n+15% Critical Strike\nEquip: Critical Strike bonus damage is increased by additional 30%.\nEquip: Your hero deals 18% more damage to enemies below 25% of maximum health."
+      },
+      {
+        "name": "Netherspike",
+        "source": "Random drop",
+        "tip": "+5% Critical Strike\nEquip: Your Magical Type effects benefit from Critical Strike chance and Critical Strike modifiers, allowing them to be Critical, dealing 50% more damage, but will not trigger effects that activate on Critical Strikes."
+      },
+      {
+        "name": "Decapitator",
+        "source": "Random drop",
+        "tip": "+30% Critical Strike\n+15 Damage\n-30% Attack Speed\n\"Let the heads roll...\""
+      },
+      {
+        "name": "Sinister Deathblade",
+        "source": "Random drop",
+        "tip": "+20% Attack Speed\n+10 Damage\n+5% Haste\nEquip: Your attacks have 6% chance to stab the target with darkness, dealing Attrition damage equal to 150% of your Attack Damage. This effect is registered as a Chaos type basic attack. As such it gains all benefits of basic attacks.\nEquip: You take 20% more Spell damage."
+      }
+    ],
+    "ignored": [
+      {
+        "item": "Cursed Skull",
+        "lines": [
+          "Equip: Your Health Regeneration inflicts Spell damage to your Hero instead of restoring health. Health Regeneration now only works during combat."
+        ]
+      },
+      {
+        "item": "Sinister Deathblade",
+        "lines": [
+          "Equip: Your attacks have 6% chance to stab the target with darkness, dealing Attrition damage equal to 150% of your Attack Damage. This effect is registered as a Chaos type basic attack. As such it gains all benefits of basic attacks.",
+          "Equip: You take 20% more Spell damage."
+        ]
+      }
+    ]
+  }
+}

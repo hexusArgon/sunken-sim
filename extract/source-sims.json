@@ -1,0 +1,286 @@
+{
+  "shop": {
+    "label": "shop",
+    "dps": 1116.9,
+    "total": 33506,
+    "talents": [
+      "Catharsis",
+      "Insanity",
+      "Answered Prayers"
+    ],
+    "glyphs": [
+      "Unsealed Power",
+      "Animosity",
+      "Glass Cannon"
+    ],
+    "points": {
+      "crit": 5,
+      "potency": 0,
+      "luck": 0,
+      "mastery": 0
+    },
+    "stats": {
+      "int": 47,
+      "ad": 68.25,
+      "potency": 24.0,
+      "mastery": 14,
+      "crit": 52,
+      "rating": 0.35,
+      "haste": 0.26,
+      "attack_speed": 0.396,
+      "mana_max": 604,
+      "swing": 1.4326647564469914,
+      "swp_period": 0.7936507936507936
+    },
+    "sources": [
+      {
+        "name": "Shadow Word: Pain",
+        "amount": 12937.2
+      },
+      {
+        "name": "Naaru",
+        "amount": 7705.6
+      },
+      {
+        "name": "Автоатака",
+        "amount": 5638.3
+      },
+      {
+        "name": "Mind Spike",
+        "amount": 4145.5
+      },
+      {
+        "name": "Void Rift",
+        "amount": 3079.0
+      }
+    ],
+    "actions": [
+      {
+        "time": 0.0,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 0.3,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 0.6,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 0.9,
+        "spell": "Void Rift"
+      },
+      {
+        "time": 7.16,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 8.6,
+        "spell": "Void Rift"
+      },
+      {
+        "time": 10.03,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 11.46,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 12.89,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 15.76,
+        "spell": "Void Rift"
+      },
+      {
+        "time": 18.62,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 20.06,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 22.92,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 23.22,
+        "spell": "Void Rift"
+      },
+      {
+        "time": 24.36,
+        "spell": "Mind Spike"
+      }
+    ],
+    "items": [
+      {
+        "name": "Diamond Ring",
+        "tip": "Shop Item\n+8% Haste\n+8 Mastery\n+7 All Stats\nUse: Binds the last spell you've cast to this item. (Cooldown: 30 seconds)\nEquip: Your bound spell has its base cooldown reduced by 30%."
+      },
+      {
+        "name": "Razorwind",
+        "tip": "Shop Item\n+32% Attack Speed\n+18% Haste\n+8 Potency"
+      },
+      {
+        "name": "Nightfall",
+        "tip": "Shop Item\n+13 to Primary Attribute\n+100 Mana\n+8% Critical Strike\nEquip: Your Magical Type effects benefit from Critical Strike chance and Critical Strike modifiers, allowing them to be Critical, dealing 65% more damage, but will not trigger effects that activate on Critical Strikes."
+      },
+      {
+        "name": "Predaplant Thorn",
+        "tip": "Shop Item\n+15% Critical Strike\n+8 Potency\nEquip: The attacks of your hero and summons benefit from Potency at double effectiveness.\nEquip: Critical Strike bonus damage is increased by additional 20% for your hero and summons."
+      },
+      {
+        "name": "Silent Messenger",
+        "tip": "Crit Relic\n+23 Damage\n+12% Critical Strike\nEquip: Your attacks ignore 3 of the target's Armor.\nEquip: Your Critical Strikes grant you 28% Attack Speed for 3 seconds."
+      },
+      {
+        "name": "Black Raven",
+        "tip": "Attrition Relic\n+8 Potency\n+6 to Primary Attribute\n+6 Mastery\nEquip: Damaging an enemy causes 7 shadow blasts, each dealing 30 spell damage. Cannot occur more than once every 2 seconds."
+      }
+    ]
+  },
+  "drop": {
+    "label": "drop",
+    "dps": 2538.4,
+    "total": 76153,
+    "talents": [
+      "Catharsis",
+      "Insanity",
+      "Clairvoyance"
+    ],
+    "glyphs": [
+      "Unsealed Power",
+      "Animosity",
+      "Glass Cannon"
+    ],
+    "points": {
+      "crit": 5,
+      "potency": 0,
+      "luck": 0,
+      "mastery": 0
+    },
+    "stats": {
+      "int": 100,
+      "ad": 325.0,
+      "potency": 4.0,
+      "mastery": 10,
+      "crit": 75,
+      "rating": 0.44999999999999996,
+      "haste": 0.0,
+      "attack_speed": 1.238,
+      "mana_max": 1645,
+      "swing": 0.8936550491510277,
+      "swp_period": 1.0
+    },
+    "sources": [
+      {
+        "name": "Автоатака",
+        "amount": 44361.8
+      },
+      {
+        "name": "Mind Spike",
+        "amount": 13229.1
+      },
+      {
+        "name": "Void Rift",
+        "amount": 5741.5
+      },
+      {
+        "name": "Shadow Word: Pain",
+        "amount": 5491.8
+      },
+      {
+        "name": "Naaru",
+        "amount": 4650.0
+      },
+      {
+        "name": "Shadow Word: Pain (удар при обновлении)",
+        "amount": 2678.8
+      }
+    ],
+    "actions": [
+      {
+        "time": 0.0,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 0.3,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 0.6,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 0.9,
+        "spell": "Void Rift"
+      },
+      {
+        "time": 8.94,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 9.24,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 11.62,
+        "spell": "Void Rift"
+      },
+      {
+        "time": 16.98,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 17.28,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 18.77,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 22.34,
+        "spell": "Void Rift"
+      },
+      {
+        "time": 25.92,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 28.6,
+        "spell": "Shadow Word: Pain"
+      }
+    ],
+    "items": [
+      {
+        "name": "Gar'thok's Axe",
+        "tip": "+100 Damage\n+400 Health\n+50% Attack Speed\n+30% Critical Strike"
+      },
+      {
+        "name": "Heart of Wyrmrest",
+        "tip": "+60 Damage\n+30 All Stats\n+30% Attack Speed\n+20 Mana per 5 seconds\n\"Milennias ago before any race set foot to the world, the Titans created the Five Dragon Aspects who should protect the world of any great evil, but without interfering in the normal deeds of the mortals. The Dragons needed a place to rest at, so the Titans created the Wyrmrest Temple using this Hammer imbued with ancient power.\""
+      },
+      {
+        "name": "Tablet of Life",
+        "tip": "+45 Damage\n+30 All Stats\n+750 Mana\n+1000 Health\n\"This seems to be the source of power that caused the temple to rise from the bottom of the sea. There appears to be a lot of symbols describing something, but you don't understand them. The thing you know, though, is that it's filled with power.\""
+      },
+      {
+        "name": "Aruzal, Fang of Neltharion",
+        "tip": "Binds to Player\n+35 Damage\n+15% Attack Speed\n+15% Critical Strike\nEquip: Critical Strike bonus damage is increased by additional 30%.\nEquip: Your hero deals 18% more damage to enemies below 25% of maximum health."
+      },
+      {
+        "name": "Netherspike",
+        "tip": "+5% Critical Strike\nEquip: Your Magical Type effects benefit from Critical Strike chance and Critical Strike modifiers, allowing them to be Critical, dealing 50% more damage, but will not trigger effects that activate on Critical Strikes."
+      },
+      {
+        "name": "Rexxar's Hunting Guise",
+        "tip": "Binds to Player\n+12 to Primary Attribute\n+10 Mastery\n+4 Potency\n+20% Pet Damage\nEquip: Reduces the damage taken by your summons by 12%.\nEquip: Grants all of your nearby summons Rexxar's Fury which increases the damage dealt by auto-attacks by 40%."
+      }
+    ]
+  }
+}

@@ -1,0 +1,592 @@
+{
+  "1-mixed": {
+    "label": "mixed",
+    "targets": 1,
+    "dps": 1154.9,
+    "total": 34648,
+    "talents": [
+      "Psychic Link",
+      "Empyreal Blaze",
+      "Insanity"
+    ],
+    "glyphs": [
+      "Fortitude",
+      "Unsealed Power",
+      "Glass Cannon"
+    ],
+    "points": {
+      "crit": 0,
+      "potency": 5,
+      "luck": 0,
+      "mastery": 0
+    },
+    "stats": {
+      "int": 204.0,
+      "ad": 163.0,
+      "potency": 10.5,
+      "mastery": 10.0,
+      "crit": 0.0,
+      "rating": 0.0,
+      "haste": 0.36,
+      "attack_speed": 0.566,
+      "mana_max": 1853.0,
+      "swing": 1.277139208173691,
+      "swp_period": 0.7352941176470589
+    },
+    "sources": [
+      {
+        "name": "Shadow Word: Pain",
+        "amount": 11753.7
+      },
+      {
+        "name": "Mind Spike",
+        "amount": 8904.3
+      },
+      {
+        "name": "Radiance",
+        "amount": 4327.6
+      },
+      {
+        "name": "Автоатака",
+        "amount": 4133.9
+      },
+      {
+        "name": "Naaru",
+        "amount": 3547.1
+      },
+      {
+        "name": "Empyreal Blaze",
+        "amount": 1301.9
+      },
+      {
+        "name": "Shadow Word: Pain (удар при обновлении)",
+        "amount": 679.8
+      }
+    ],
+    "orb_mode": "Shadow",
+    "mana_left": 98.8,
+    "bound_spell": null,
+    "actions": [
+      {
+        "time": 0.0,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 0.45,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 0.9,
+        "spell": "Radiance"
+      },
+      {
+        "time": 1.35,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 8.19,
+        "spell": "Radiance"
+      },
+      {
+        "time": 8.64,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 12.02,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 13.29,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 14.57,
+        "spell": "Radiance"
+      },
+      {
+        "time": 15.02,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 20.96,
+        "spell": "Radiance"
+      },
+      {
+        "time": 21.41,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 23.51,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 26.07,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 27.34,
+        "spell": "Radiance"
+      },
+      {
+        "time": 27.79,
+        "spell": "Mind Spike"
+      }
+    ],
+    "items": [
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
+      {
+        "name": "Atiesh, Greatstaff of the Guardian",
+        "source": "Mysterious Wanderer",
+        "tip": "Binds to Player\n+20 to Primary Attribute\n+10 Mastery\n+250 Mana\nEquip: Increases the damage dealt by Magical Type effects by 20%.\nEquip: Your abilities have their base cooldown reduced by 13%."
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
+      {
+        "name": "The Darkglaive",
+        "source": "Random drop",
+        "tip": "+12 to Primary Attribute\n+8% Haste\n+6 Agility\nEquip: Increases the damage dealt by Magical Type effects by 30%.\nEquip: Reduces the effectiveness of Healing Type effects on your hero by 30%."
+      },
+      {
+        "name": "Elemental Orb",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+15% Attack Speed\n+10% Haste\n+6 All Stats\nUse: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)\nFire: Attacks splash for 20 damage and additional 35% of Primary Attribute.\nFrost: Attacks Chill the target, reducing its movement speed by 50% and its attack speed by 25% for 4 seconds.\nShadow: Attacks ignore 6 of the target's Armor."
+      },
+      {
+        "name": "Razorwind",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+32% Attack Speed\n+18% Haste\n+8 Potency"
+      }
+    ],
+    "ignored": [
+      {
+        "item": "The Darkglaive",
+        "lines": [
+          "Equip: Reduces the effectiveness of Healing Type effects on your hero by 30%."
+        ]
+      },
+      {
+        "item": "Elemental Orb",
+        "lines": [
+          "Use: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)"
+        ]
+      }
+    ]
+  },
+  "5-mixed": {
+    "label": "mixed",
+    "targets": 5,
+    "dps": 1807.7,
+    "total": 54231,
+    "talents": [
+      "Psychic Link",
+      "Dark Torment",
+      "Empyreal Blaze"
+    ],
+    "glyphs": [
+      "Unsealed Power",
+      "Thunder",
+      "Glass Cannon"
+    ],
+    "points": {
+      "crit": 0,
+      "potency": 5,
+      "luck": 0,
+      "mastery": 0
+    },
+    "stats": {
+      "int": 133.0,
+      "ad": 109.75,
+      "potency": 18.5,
+      "mastery": 10.0,
+      "crit": 0.0,
+      "rating": 0.0,
+      "haste": 0.54,
+      "attack_speed": 0.886,
+      "mana_max": 1356.0,
+      "swing": 1.0604453870625663,
+      "swp_period": 0.6493506493506493
+    },
+    "sources": [
+      {
+        "name": "Shadow Word: Pain",
+        "amount": 19630.3
+      },
+      {
+        "name": "Thunder",
+        "amount": 7206.0
+      },
+      {
+        "name": "Empyreal Blaze",
+        "amount": 5661.8
+      },
+      {
+        "name": "Всплеск огня",
+        "amount": 5629.2
+      },
+      {
+        "name": "Mind Spike",
+        "amount": 4656.6
+      },
+      {
+        "name": "Radiance",
+        "amount": 3509.8
+      },
+      {
+        "name": "Автоатака",
+        "amount": 2944.2
+      },
+      {
+        "name": "Naaru",
+        "amount": 2737.1
+      },
+      {
+        "name": "Shadow Word: Pain (удар при обновлении)",
+        "amount": 2256.1
+      }
+    ],
+    "orb_mode": "Fire",
+    "mana_left": 83.6,
+    "bound_spell": null,
+    "actions": [
+      {
+        "time": 0.0,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 0.45,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 0.9,
+        "spell": "Radiance"
+      },
+      {
+        "time": 1.35,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 3.92,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 6.04,
+        "spell": "Radiance"
+      },
+      {
+        "time": 6.49,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 8.16,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 11.34,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 11.79,
+        "spell": "Radiance"
+      },
+      {
+        "time": 12.24,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 12.69,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 16.33,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 17.39,
+        "spell": "Radiance"
+      },
+      {
+        "time": 17.84,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 20.57,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 21.63,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 22.69,
+        "spell": "Radiance"
+      },
+      {
+        "time": 23.14,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 24.81,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 27.99,
+        "spell": "Radiance"
+      },
+      {
+        "time": 28.44,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 28.89,
+        "spell": "Shadow Word: Pain"
+      }
+    ],
+    "items": [
+      {
+        "name": "Elemental Orb",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+15% Attack Speed\n+10% Haste\n+6 All Stats\nUse: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)\nFire: Attacks splash for 20 damage and additional 35% of Primary Attribute.\nFrost: Attacks Chill the target, reducing its movement speed by 50% and its attack speed by 25% for 4 seconds.\nShadow: Attacks ignore 6 of the target's Armor."
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
+      {
+        "name": "Atiesh, Greatstaff of the Guardian",
+        "source": "Mysterious Wanderer",
+        "tip": "Binds to Player\n+20 to Primary Attribute\n+10 Mastery\n+250 Mana\nEquip: Increases the damage dealt by Magical Type effects by 20%.\nEquip: Your abilities have their base cooldown reduced by 13%."
+      },
+      {
+        "name": "Razorwind",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+32% Attack Speed\n+18% Haste\n+8 Potency"
+      },
+      {
+        "name": "The Darkglaive",
+        "source": "Random drop",
+        "tip": "+12 to Primary Attribute\n+8% Haste\n+6 Agility\nEquip: Increases the damage dealt by Magical Type effects by 30%.\nEquip: Reduces the effectiveness of Healing Type effects on your hero by 30%."
+      },
+      {
+        "name": "Razorwind",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+32% Attack Speed\n+18% Haste\n+8 Potency"
+      }
+    ],
+    "ignored": [
+      {
+        "item": "Elemental Orb",
+        "lines": [
+          "Use: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)"
+        ]
+      },
+      {
+        "item": "The Darkglaive",
+        "lines": [
+          "Equip: Reduces the effectiveness of Healing Type effects on your hero by 30%."
+        ]
+      }
+    ]
+  },
+  "5-shop": {
+    "label": "shop",
+    "targets": 5,
+    "dps": 1553.1,
+    "total": 46594,
+    "talents": [
+      "Psychic Link",
+      "Dark Torment",
+      "Empyreal Blaze"
+    ],
+    "glyphs": [
+      "Unsealed Power",
+      "Thunder",
+      "Glass Cannon"
+    ],
+    "points": {
+      "crit": 0,
+      "potency": 0,
+      "luck": 0,
+      "mastery": 0
+    },
+    "stats": {
+      "int": 176.0,
+      "ad": 142.0,
+      "potency": 16.0,
+      "mastery": 10.0,
+      "crit": 0.0,
+      "rating": 0.0,
+      "haste": 0.46,
+      "attack_speed": 0.8620000000000001,
+      "mana_max": 1657.0,
+      "swing": 1.0741138560687433,
+      "swp_period": 0.684931506849315
+    },
+    "sources": [
+      {
+        "name": "Shadow Word: Pain",
+        "amount": 14420.6
+      },
+      {
+        "name": "Всплеск огня",
+        "amount": 6870.2
+      },
+      {
+        "name": "Thunder",
+        "amount": 5936.8
+      },
+      {
+        "name": "Mind Spike",
+        "amount": 4472.2
+      },
+      {
+        "name": "Empyreal Blaze",
+        "amount": 4420.9
+      },
+      {
+        "name": "Автоатака",
+        "amount": 3610.3
+      },
+      {
+        "name": "Radiance",
+        "amount": 2723.1
+      },
+      {
+        "name": "Naaru",
+        "amount": 2269.1
+      },
+      {
+        "name": "Shadow Word: Pain (удар при обновлении)",
+        "amount": 1871.1
+      }
+    ],
+    "orb_mode": "Fire",
+    "mana_left": 98.2,
+    "bound_spell": null,
+    "actions": [
+      {
+        "time": 0.0,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 0.45,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 0.9,
+        "spell": "Radiance"
+      },
+      {
+        "time": 1.35,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 5.02,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 7.17,
+        "spell": "Radiance"
+      },
+      {
+        "time": 7.62,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 10.39,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 12.54,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 13.62,
+        "spell": "Radiance"
+      },
+      {
+        "time": 14.07,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 15.76,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 20.06,
+        "spell": "Radiance"
+      },
+      {
+        "time": 20.51,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 20.96,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 24.63,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 25.08,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 26.78,
+        "spell": "Radiance"
+      },
+      {
+        "time": 27.23,
+        "spell": "Mind Spike"
+      }
+    ],
+    "items": [
+      {
+        "name": "Elemental Orb",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+15% Attack Speed\n+10% Haste\n+6 All Stats\nUse: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)\nFire: Attacks splash for 20 damage and additional 35% of Primary Attribute.\nFrost: Attacks Chill the target, reducing its movement speed by 50% and its attack speed by 25% for 4 seconds.\nShadow: Attacks ignore 6 of the target's Armor."
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
+      {
+        "name": "Atiesh, Greatstaff of the Guardian",
+        "source": "Mysterious Wanderer",
+        "tip": "Binds to Player\n+20 to Primary Attribute\n+10 Mastery\n+250 Mana\nEquip: Increases the damage dealt by Magical Type effects by 20%.\nEquip: Your abilities have their base cooldown reduced by 13%."
+      },
+      {
+        "name": "Razorwind",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+32% Attack Speed\n+18% Haste\n+8 Potency"
+      },
+      {
+        "name": "Razorwind",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+32% Attack Speed\n+18% Haste\n+8 Potency"
+      }
+    ],
+    "ignored": [
+      {
+        "item": "Elemental Orb",
+        "lines": [
+          "Use: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)"
+        ]
+      }
+    ]
+  }
+}

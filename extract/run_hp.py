@@ -11,6 +11,8 @@ from sunken_sim.library import Item, load_items
 from sunken_sim.search import GLYPHS, LEGENDARIES, TALENTS, pools_for, search_pool
 from sunken_sim.shadow import Build, _ignored_lines, simulate
 
+from build_spec_canvas import write_all
+
 OUT = Path(__file__).with_name("hp-sims.json")
 
 
@@ -59,6 +61,9 @@ def payload(label: str, build: Build, shop_ids: set[str], targets: int) -> dict:
             {"name": name, "amount": round(amount, 1)}
             for name, amount in sorted(report.sources.items(), key=lambda row: -row[1])
         ],
+        "orb_mode": report.orb_mode,
+        "mana_left": round(report.mana_left, 1),
+        "bound_spell": report.bound_spell,
         "actions": [{"time": round(moment, 2), "spell": spell} for moment, spell in report.actions],
         "items": [
             {
@@ -95,7 +100,7 @@ def main() -> None:
     out = OUT.with_name("target-sims.json")
     if out.exists():
         results = json.loads(out.read_text(encoding="utf-8"))
-    for targets in (1, 2, 3, 4, 5):
+    for targets in (5,):
         for label, pool in pools:
             key = f"{targets}-{label}"
             if key in results:
@@ -107,6 +112,7 @@ def main() -> None:
             print(f"{key} {dps:.1f} legendary {legend} " + ", ".join(item.name for item in build.items), flush=True)
             results[key] = payload(label, build, shop_ids, targets)
             out.write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
+            write_all()
     print("готово", flush=True)
 
 

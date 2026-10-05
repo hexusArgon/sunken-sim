@@ -1,0 +1,6 @@
+Aruzal, Fang of Neltharion: +35 Damage | +15% Attack Speed | +15% Critical Strike
+Gar'thok's Axe: +100 Damage | +400 Health | +50% Attack Speed | +30% Critical Strike
+Heart of Wyrmrest: +60 Damage | +30 All Stats | +30% Attack Speed | +20 Mana per 5 seconds
+Predaplant Thorn: +15% Critical Strike | +8 Potency
+Razorwind: +32% Attack Speed | +18% Haste | +8 Potency
+Tablet of Life: +45 Damage | +30 All Stats | +750 Mana | +1000 Health

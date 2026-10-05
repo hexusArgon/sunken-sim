@@ -1,0 +1,681 @@
+{
+  "5-mixed": {
+    "label": "mixed",
+    "targets": 5,
+    "dps": 5064.1,
+    "total": 151924,
+    "talents": [
+      "Archmage",
+      "Burning Fury",
+      "Greater Pyroblast"
+    ],
+    "glyphs": [
+      "Fortitude",
+      "Unsealed Power",
+      "Glass Cannon"
+    ],
+    "points": {
+      "crit": 5,
+      "potency": 0,
+      "luck": 0,
+      "mastery": 0
+    },
+    "stats": {
+      "int": 113.0,
+      "ad": 95.75,
+      "potency": 11.0,
+      "mastery": 28,
+      "crit": 5,
+      "rating": 0.0,
+      "haste": 0.42,
+      "attack_speed": 0.7699999999999999,
+      "mana_max": 1216.0,
+      "swing": 2.0,
+      "bomb_period": 0.75,
+      "hydra_swing": 0.8874801901743264
+    },
+    "sources": [
+      {
+        "name": "Pyroblast",
+        "amount": 70190.9
+      },
+      {
+        "name": "Hydra",
+        "amount": 36110.3
+      },
+      {
+        "name": "Клив Hydra",
+        "amount": 24073.5
+      },
+      {
+        "name": "Ring of Frost",
+        "amount": 9818.8
+      },
+      {
+        "name": "Arcane Blast",
+        "amount": 4307.6
+      },
+      {
+        "name": "Living Bomb",
+        "amount": 3461.9
+      },
+      {
+        "name": "Взрыв Living Bomb",
+        "amount": 2282.9
+      },
+      {
+        "name": "Автоатака",
+        "amount": 1677.6
+      }
+    ],
+    "orb_mode": "Shadow",
+    "bound_spell": "Hydra",
+    "actions": [
+      {
+        "time": 0.0,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 0.45,
+        "spell": "Hydra"
+      },
+      {
+        "time": 0.9,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 1.35,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 3.8,
+        "spell": "Hydra"
+      },
+      {
+        "time": 4.25,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 5.8,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 7.8,
+        "spell": "Hydra"
+      },
+      {
+        "time": 8.25,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 8.7,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 11.8,
+        "spell": "Hydra"
+      },
+      {
+        "time": 12.25,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 13.8,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 15.8,
+        "spell": "Hydra"
+      },
+      {
+        "time": 16.25,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 16.7,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 19.8,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 20.25,
+        "spell": "Hydra"
+      },
+      {
+        "time": 21.8,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 23.8,
+        "spell": "Hydra"
+      },
+      {
+        "time": 24.25,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 24.7,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 27.8,
+        "spell": "Hydra"
+      },
+      {
+        "time": 28.25,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 28.7,
+        "spell": "Living Bomb"
+      }
+    ],
+    "items": [
+      {
+        "name": "Atiesh, Greatstaff of the Guardian",
+        "source": "Mysterious Wanderer",
+        "tip": "Binds to Player\n+20 to Primary Attribute\n+10 Mastery\n+250 Mana\nEquip: Increases the damage dealt by Magical Type effects by 20%.\nEquip: Your abilities have their base cooldown reduced by 13%."
+      },
+      {
+        "name": "Elemental Orb",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+15% Attack Speed\n+10% Haste\n+6 All Stats\nUse: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)\nFire: Attacks splash for 20 damage and additional 35% of Primary Attribute.\nFrost: Attacks Chill the target, reducing its movement speed by 50% and its attack speed by 25% for 4 seconds.\nShadow: Attacks ignore 6 of the target's Armor."
+      },
+      {
+        "name": "Diamond Ring",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+8% Haste\n+8 Mastery\n+7 All Stats\nUse: Binds the last spell you've cast to this item. (Cooldown: 30 seconds)\nEquip: Your bound spell has its base cooldown reduced by 30%."
+      },
+      {
+        "name": "Felo'melorn",
+        "source": "Random drop",
+        "tip": "+20% Attack Speed\n+6% Haste\n+3 Potency\nClasses: Mage\nEquip: Reduces the cooldown of Hydra by 3 seconds."
+      },
+      {
+        "name": "Razorwind",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+32% Attack Speed\n+18% Haste\n+8 Potency"
+      },
+      {
+        "name": "Staff of Galactic Fury",
+        "source": "Shop Item",
+        "tip": "Magical Caster Relic\n+16 to Primary Attribute\n+10 Mastery\nEquip: Increases the damage dealt by Magical Type effects by 30%.\nEquip: Increases your base attack cooldown by 20%."
+      }
+    ],
+    "ignored": [
+      {
+        "item": "Elemental Orb",
+        "lines": [
+          "Use: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)"
+        ]
+      },
+      {
+        "item": "Diamond Ring",
+        "lines": [
+          "Use: Binds the last spell you've cast to this item. (Cooldown: 30 seconds)"
+        ]
+      },
+      {
+        "item": "Felo'melorn",
+        "lines": [
+          "Equip: Reduces the cooldown of Hydra by 3 seconds."
+        ]
+      }
+    ],
+    "mana_left": 28.5
+  },
+  "5-shop": {
+    "label": "shop",
+    "targets": 5,
+    "dps": 5900.4,
+    "total": 177011,
+    "talents": [
+      "Archmage",
+      "Lava Spawn",
+      "Greater Pyroblast"
+    ],
+    "glyphs": [
+      "Unsealed Power",
+      "Thunder",
+      "Glass Cannon"
+    ],
+    "points": {
+      "crit": 0,
+      "potency": 0,
+      "luck": 5,
+      "mastery": 0
+    },
+    "stats": {
+      "int": 90.0,
+      "ad": 78.5,
+      "potency": 24.0,
+      "mastery": 20.0,
+      "crit": 0.0,
+      "rating": 0.0,
+      "haste": 0.6399999999999999,
+      "attack_speed": 1.1820000000000002,
+      "mana_max": 1055.0,
+      "swing": 2.0,
+      "bomb_period": 0.75,
+      "hydra_swing": 0.7421150278293135
+    },
+    "mana_left": 16.6,
+    "sources": [
+      {
+        "name": "Pyroblast",
+        "amount": 84043.3
+      },
+      {
+        "name": "Hydra",
+        "amount": 32646.7
+      },
+      {
+        "name": "Клив Hydra",
+        "amount": 26117.4
+      },
+      {
+        "name": "Ring of Frost",
+        "amount": 10750.3
+      },
+      {
+        "name": "Thunder",
+        "amount": 7944.8
+      },
+      {
+        "name": "Arcane Blast",
+        "amount": 5452.2
+      },
+      {
+        "name": "Living Bomb",
+        "amount": 5037.9
+      },
+      {
+        "name": "Взрыв Living Bomb",
+        "amount": 3484.4
+      },
+      {
+        "name": "Автоатака",
+        "amount": 1534.1
+      }
+    ],
+    "orb_mode": "Shadow",
+    "bound_spell": null,
+    "actions": [
+      {
+        "time": 0.0,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 0.45,
+        "spell": "Hydra"
+      },
+      {
+        "time": 0.9,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 1.35,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 3.8,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 5.8,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 7.8,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 8.25,
+        "spell": "Hydra"
+      },
+      {
+        "time": 8.7,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 9.8,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 11.8,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 13.8,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 14.25,
+        "spell": "Hydra"
+      },
+      {
+        "time": 14.7,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 15.8,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 17.8,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 19.8,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 20.25,
+        "spell": "Hydra"
+      },
+      {
+        "time": 20.7,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 21.8,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 23.8,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 25.8,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 26.25,
+        "spell": "Hydra"
+      },
+      {
+        "time": 26.7,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 27.8,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 29.8,
+        "spell": "Arcane Blast"
+      }
+    ],
+    "items": [
+      {
+        "name": "Atiesh, Greatstaff of the Guardian",
+        "source": "Mysterious Wanderer",
+        "tip": "Binds to Player\n+20 to Primary Attribute\n+10 Mastery\n+250 Mana\nEquip: Increases the damage dealt by Magical Type effects by 20%.\nEquip: Your abilities have their base cooldown reduced by 13%."
+      },
+      {
+        "name": "Razorwind",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+32% Attack Speed\n+18% Haste\n+8 Potency"
+      },
+      {
+        "name": "Razorwind",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+32% Attack Speed\n+18% Haste\n+8 Potency"
+      },
+      {
+        "name": "Elemental Orb",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+15% Attack Speed\n+10% Haste\n+6 All Stats\nUse: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)\nFire: Attacks splash for 20 damage and additional 35% of Primary Attribute.\nFrost: Attacks Chill the target, reducing its movement speed by 50% and its attack speed by 25% for 4 seconds.\nShadow: Attacks ignore 6 of the target's Armor."
+      },
+      {
+        "name": "Razorwind",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+32% Attack Speed\n+18% Haste\n+8 Potency"
+      },
+      {
+        "name": "Staff of Galactic Fury",
+        "source": "Shop Item",
+        "tip": "Magical Caster Relic\n+16 to Primary Attribute\n+10 Mastery\nEquip: Increases the damage dealt by Magical Type effects by 30%.\nEquip: Increases your base attack cooldown by 20%."
+      }
+    ],
+    "ignored": [
+      {
+        "item": "Elemental Orb",
+        "lines": [
+          "Use: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)"
+        ]
+      }
+    ]
+  },
+  "5-drop": {
+    "label": "drop",
+    "targets": 5,
+    "dps": 4255.2,
+    "total": 127657,
+    "talents": [
+      "Archmage",
+      "Lava Spawn",
+      "Greater Pyroblast"
+    ],
+    "glyphs": [
+      "Unsealed Power",
+      "Hellfire",
+      "Glass Cannon"
+    ],
+    "points": {
+      "crit": 0,
+      "potency": 0,
+      "luck": 5,
+      "mastery": 0
+    },
+    "stats": {
+      "int": 129.0,
+      "ad": 107.75,
+      "potency": 3.0,
+      "mastery": 20,
+      "crit": 0,
+      "rating": 0.0,
+      "haste": 0.34,
+      "attack_speed": 0.272,
+      "mana_max": 1328.0,
+      "swing": 2.0,
+      "bomb_period": 0.75,
+      "hydra_swing": 1.1627906976744187
+    },
+    "mana_left": 37.5,
+    "sources": [
+      {
+        "name": "Pyroblast",
+        "amount": 74444.4
+      },
+      {
+        "name": "Hydra",
+        "amount": 18438.8
+      },
+      {
+        "name": "Клив Hydra",
+        "amount": 14751.0
+      },
+      {
+        "name": "Ring of Frost",
+        "amount": 9091.8
+      },
+      {
+        "name": "Arcane Blast",
+        "amount": 3820.8
+      },
+      {
+        "name": "Living Bomb",
+        "amount": 2783.4
+      },
+      {
+        "name": "Взрыв Living Bomb",
+        "amount": 1753.9
+      },
+      {
+        "name": "Автоатака",
+        "amount": 1408.9
+      },
+      {
+        "name": "Hellfire",
+        "amount": 1164.4
+      }
+    ],
+    "orb_mode": null,
+    "bound_spell": null,
+    "actions": [
+      {
+        "time": 0.0,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 0.45,
+        "spell": "Hydra"
+      },
+      {
+        "time": 0.9,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 1.35,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 5.8,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 6.25,
+        "spell": "Hydra"
+      },
+      {
+        "time": 6.7,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 7.8,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 9.8,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 11.8,
+        "spell": "Hydra"
+      },
+      {
+        "time": 12.25,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 13.8,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 14.25,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 17.8,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 18.25,
+        "spell": "Hydra"
+      },
+      {
+        "time": 18.7,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 21.8,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 22.25,
+        "spell": "Ring of Frost"
+      },
+      {
+        "time": 22.7,
+        "spell": "Hydra"
+      },
+      {
+        "time": 23.15,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 25.8,
+        "spell": "Living Bomb"
+      },
+      {
+        "time": 27.8,
+        "spell": "Hydra"
+      },
+      {
+        "time": 28.25,
+        "spell": "Arcane Blast"
+      },
+      {
+        "time": 28.7,
+        "spell": "Ring of Frost"
+      }
+    ],
+    "items": [
+      {
+        "name": "Atiesh, Greatstaff of the Guardian",
+        "source": "Mysterious Wanderer",
+        "tip": "Binds to Player\n+20 to Primary Attribute\n+10 Mastery\n+250 Mana\nEquip: Increases the damage dealt by Magical Type effects by 20%.\nEquip: Your abilities have their base cooldown reduced by 13%."
+      },
+      {
+        "name": "Harness of Beyond",
+        "source": "Random drop",
+        "tip": "+30 Intelligence\n-10 Strength\nEquip: Your abilities have their base cooldown reduced by 8%.\n\"Power has a price...\""
+      },
+      {
+        "name": "Felo'melorn",
+        "source": "Random drop",
+        "tip": "+20% Attack Speed\n+6% Haste\n+3 Potency\nClasses: Mage\nEquip: Reduces the cooldown of Hydra by 3 seconds."
+      },
+      {
+        "name": "The Darkglaive",
+        "source": "Random drop",
+        "tip": "+12 to Primary Attribute\n+8% Haste\n+6 Agility\nEquip: Increases the damage dealt by Magical Type effects by 30%.\nEquip: Reduces the effectiveness of Healing Type effects on your hero by 30%."
+      },
+      {
+        "name": "Staff of the Kirin'tor",
+        "source": "Random drop",
+        "tip": "+10 Mastery\n+7% Haste\n+6 Intelligence\nClasses: Mage\nEquip: Increases the proc chance of Arcane Spell Mastery by additional 5%.\nEquip: Increases the damage reduction of Frost Spell Mastery by additional 5%.\nEquip: Increases the proc chance of Fire Spell Mastery by additional 5%."
+      },
+      {
+        "name": "The Zircon Star",
+        "source": "Random drop",
+        "tip": "+13 to Primary Attribute\n+13% Haste\n\"Produces a quiet hum when placed on the finger.\""
+      }
+    ],
+    "ignored": [
+      {
+        "item": "Felo'melorn",
+        "lines": [
+          "Equip: Reduces the cooldown of Hydra by 3 seconds."
+        ]
+      },
+      {
+        "item": "The Darkglaive",
+        "lines": [
+          "Equip: Reduces the effectiveness of Healing Type effects on your hero by 30%."
+        ]
+      },
+      {
+        "item": "Staff of the Kirin'tor",
+        "lines": [
+          "Equip: Increases the proc chance of Arcane Spell Mastery by additional 5%.",
+          "Equip: Increases the damage reduction of Frost Spell Mastery by additional 5%.",
+          "Equip: Increases the proc chance of Fire Spell Mastery by additional 5%."
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,618 @@
+{
+  "1-mixed": {
+    "label": "mixed",
+    "targets": 1,
+    "dps": 668.0,
+    "total": 20041,
+    "talents": [
+      "Smite",
+      "Insanity",
+      "Clairvoyance"
+    ],
+    "glyphs": [
+      "Unsealed Power",
+      "Animosity",
+      "Glass Cannon"
+    ],
+    "points": {
+      "crit": 5,
+      "potency": 0,
+      "luck": 0,
+      "mastery": 0
+    },
+    "stats": {
+      "int": 115.0,
+      "ad": 173.25,
+      "potency": 0.0,
+      "mastery": 0,
+      "crit": 62,
+      "rating": 0.7000000000000001,
+      "haste": 0.1,
+      "attack_speed": 0.7988676741806653,
+      "mana_max": 980.0,
+      "swing": 1.111810517641852,
+      "swp_period": 0.9090909090909091
+    },
+    "sources": [
+      {
+        "name": "Автоатака",
+        "amount": 14649.4
+      },
+      {
+        "name": "Mind Spike",
+        "amount": 4420.3
+      },
+      {
+        "name": "Smite",
+        "amount": 971.4
+      }
+    ],
+    "orb_mode": "Shadow",
+    "mana_left": 97.9,
+    "bound_spell": null,
+    "actions": [
+      {
+        "time": 0.0,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 0.45,
+        "spell": "Renew"
+      },
+      {
+        "time": 7.57,
+        "spell": "Renew"
+      },
+      {
+        "time": 9.79,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 14.24,
+        "spell": "Renew"
+      },
+      {
+        "time": 18.69,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 20.91,
+        "spell": "Renew"
+      },
+      {
+        "time": 27.58,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 28.03,
+        "spell": "Renew"
+      }
+    ],
+    "items": [
+      {
+        "name": "Aruzal, Fang of Neltharion",
+        "source": "Mysterious Wanderer",
+        "tip": "Binds to Player\n+35 Damage\n+15% Attack Speed\n+15% Critical Strike\nEquip: Critical Strike bonus damage is increased by additional 30%.\nEquip: Your hero deals 18% more damage to enemies below 25% of maximum health."
+      },
+      {
+        "name": "Silent Messenger",
+        "source": "Shop Item",
+        "tip": "Crit Relic\n+23 Damage\n+12% Critical Strike\nEquip: Your attacks ignore 3 of the target's Armor.\nEquip: Your Critical Strikes grant you 28% Attack Speed for 3 seconds."
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
+      {
+        "name": "Elemental Orb",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+15% Attack Speed\n+10% Haste\n+6 All Stats\nUse: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)\nFire: Attacks splash for 20 damage and additional 35% of Primary Attribute.\nFrost: Attacks Chill the target, reducing its movement speed by 50% and its attack speed by 25% for 4 seconds.\nShadow: Attacks ignore 6 of the target's Armor."
+      },
+      {
+        "name": "Sulfuron Gloves",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+14 to Primary Attribute\n+9 Damage\n+4 Armor\nEquip: Increases your Magical and Physical Type effectiveness by 13%, increased by an additional amount up to 25% based on the target's current Health.\nEquip: Increases the base cooldown of all abilities by 10%. This effect stacks additively."
+      },
+      {
+        "name": "Ardite Impaler",
+        "source": "Shop Item",
+        "tip": "Crit Relic\n+20% Attack Speed\n+10% Critical Strike\n+10 Damage\nEquip: Increases the damage dealt by your auto-attacks by 10%.\nEquip: Critical Strike bonus damage is increased by additional 25%."
+      }
+    ],
+    "ignored": [
+      {
+        "item": "Silent Messenger",
+        "lines": [
+          "Equip: Your attacks ignore 3 of the target's Armor.",
+          "Equip: Your Critical Strikes grant you 28% Attack Speed for 3 seconds."
+        ]
+      },
+      {
+        "item": "Elemental Orb",
+        "lines": [
+          "Use: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)"
+        ]
+      },
+      {
+        "item": "Sulfuron Gloves",
+        "lines": [
+          "Equip: Increases your Magical and Physical Type effectiveness by 13%, increased by an additional amount up to 25% based on the target's current Health."
+        ]
+      }
+    ]
+  },
+  "1-shop": {
+    "label": "shop",
+    "targets": 1,
+    "dps": 668.0,
+    "total": 20041,
+    "talents": [
+      "Smite",
+      "Insanity",
+      "Clairvoyance"
+    ],
+    "glyphs": [
+      "Unsealed Power",
+      "Animosity",
+      "Glass Cannon"
+    ],
+    "points": {
+      "crit": 5,
+      "potency": 0,
+      "luck": 0,
+      "mastery": 0
+    },
+    "stats": {
+      "int": 115.0,
+      "ad": 173.25,
+      "potency": 0.0,
+      "mastery": 0,
+      "crit": 62,
+      "rating": 0.7000000000000001,
+      "haste": 0.1,
+      "attack_speed": 0.7988676741806653,
+      "mana_max": 980.0,
+      "swing": 1.111810517641852,
+      "swp_period": 0.9090909090909091
+    },
+    "sources": [
+      {
+        "name": "Автоатака",
+        "amount": 14649.4
+      },
+      {
+        "name": "Mind Spike",
+        "amount": 4420.3
+      },
+      {
+        "name": "Smite",
+        "amount": 971.4
+      }
+    ],
+    "orb_mode": "Shadow",
+    "mana_left": 97.9,
+    "bound_spell": null,
+    "actions": [
+      {
+        "time": 0.0,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 0.45,
+        "spell": "Renew"
+      },
+      {
+        "time": 7.57,
+        "spell": "Renew"
+      },
+      {
+        "time": 9.79,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 14.24,
+        "spell": "Renew"
+      },
+      {
+        "time": 18.69,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 20.91,
+        "spell": "Renew"
+      },
+      {
+        "time": 27.58,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 28.03,
+        "spell": "Renew"
+      }
+    ],
+    "items": [
+      {
+        "name": "Aruzal, Fang of Neltharion",
+        "source": "Mysterious Wanderer",
+        "tip": "Binds to Player\n+35 Damage\n+15% Attack Speed\n+15% Critical Strike\nEquip: Critical Strike bonus damage is increased by additional 30%.\nEquip: Your hero deals 18% more damage to enemies below 25% of maximum health."
+      },
+      {
+        "name": "Silent Messenger",
+        "source": "Shop Item",
+        "tip": "Crit Relic\n+23 Damage\n+12% Critical Strike\nEquip: Your attacks ignore 3 of the target's Armor.\nEquip: Your Critical Strikes grant you 28% Attack Speed for 3 seconds."
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
+      {
+        "name": "Elemental Orb",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+15% Attack Speed\n+10% Haste\n+6 All Stats\nUse: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)\nFire: Attacks splash for 20 damage and additional 35% of Primary Attribute.\nFrost: Attacks Chill the target, reducing its movement speed by 50% and its attack speed by 25% for 4 seconds.\nShadow: Attacks ignore 6 of the target's Armor."
+      },
+      {
+        "name": "Sulfuron Gloves",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+14 to Primary Attribute\n+9 Damage\n+4 Armor\nEquip: Increases your Magical and Physical Type effectiveness by 13%, increased by an additional amount up to 25% based on the target's current Health.\nEquip: Increases the base cooldown of all abilities by 10%. This effect stacks additively."
+      },
+      {
+        "name": "Ardite Impaler",
+        "source": "Shop Item",
+        "tip": "Crit Relic\n+20% Attack Speed\n+10% Critical Strike\n+10 Damage\nEquip: Increases the damage dealt by your auto-attacks by 10%.\nEquip: Critical Strike bonus damage is increased by additional 25%."
+      }
+    ],
+    "ignored": [
+      {
+        "item": "Silent Messenger",
+        "lines": [
+          "Equip: Your attacks ignore 3 of the target's Armor.",
+          "Equip: Your Critical Strikes grant you 28% Attack Speed for 3 seconds."
+        ]
+      },
+      {
+        "item": "Elemental Orb",
+        "lines": [
+          "Use: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)"
+        ]
+      },
+      {
+        "item": "Sulfuron Gloves",
+        "lines": [
+          "Equip: Increases your Magical and Physical Type effectiveness by 13%, increased by an additional amount up to 25% based on the target's current Health."
+        ]
+      }
+    ]
+  },
+  "5-mixed": {
+    "label": "mixed",
+    "targets": 5,
+    "dps": 1015.5,
+    "total": 30465,
+    "talents": [
+      "Smite",
+      "Empyreal Blaze",
+      "Insanity"
+    ],
+    "glyphs": [
+      "Unsealed Power",
+      "Thunder",
+      "Glass Cannon"
+    ],
+    "points": {
+      "crit": 0,
+      "potency": 5,
+      "luck": 0,
+      "mastery": 0
+    },
+    "stats": {
+      "int": 156.0,
+      "ad": 185.0,
+      "potency": 10.5,
+      "mastery": 0.0,
+      "crit": 27.0,
+      "rating": 0.3,
+      "haste": 0.28,
+      "attack_speed": 0.8386098124020764,
+      "mana_max": 1267.0,
+      "swing": 1.0877783782667152,
+      "swp_period": 0.78125
+    },
+    "sources": [
+      {
+        "name": "Всплеск огня",
+        "amount": 7320.8
+      },
+      {
+        "name": "Автоатака",
+        "amount": 7034.4
+      },
+      {
+        "name": "Thunder",
+        "amount": 4750.4
+      },
+      {
+        "name": "Smite",
+        "amount": 4508.6
+      },
+      {
+        "name": "Mind Spike",
+        "amount": 4241.2
+      },
+      {
+        "name": "Empyreal Blaze",
+        "amount": 2609.7
+      }
+    ],
+    "orb_mode": "Fire",
+    "mana_left": 98.7,
+    "bound_spell": null,
+    "actions": [
+      {
+        "time": 0.0,
+        "spell": "Radiance"
+      },
+      {
+        "time": 0.45,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 0.9,
+        "spell": "Renew"
+      },
+      {
+        "time": 6.79,
+        "spell": "Renew"
+      },
+      {
+        "time": 7.88,
+        "spell": "Radiance"
+      },
+      {
+        "time": 8.33,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 13.32,
+        "spell": "Renew"
+      },
+      {
+        "time": 16.58,
+        "spell": "Radiance"
+      },
+      {
+        "time": 17.03,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 19.84,
+        "spell": "Renew"
+      },
+      {
+        "time": 25.28,
+        "spell": "Radiance"
+      },
+      {
+        "time": 25.73,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 26.18,
+        "spell": "Renew"
+      }
+    ],
+    "items": [
+      {
+        "name": "Elemental Orb",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+15% Attack Speed\n+10% Haste\n+6 All Stats\nUse: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)\nFire: Attacks splash for 20 damage and additional 35% of Primary Attribute.\nFrost: Attacks Chill the target, reducing its movement speed by 50% and its attack speed by 25% for 4 seconds.\nShadow: Attacks ignore 6 of the target's Armor."
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
+      {
+        "name": "Aruzal, Fang of Neltharion",
+        "source": "Mysterious Wanderer",
+        "tip": "Binds to Player\n+35 Damage\n+15% Attack Speed\n+15% Critical Strike\nEquip: Critical Strike bonus damage is increased by additional 30%.\nEquip: Your hero deals 18% more damage to enemies below 25% of maximum health."
+      },
+      {
+        "name": "Silent Messenger",
+        "source": "Shop Item",
+        "tip": "Crit Relic\n+23 Damage\n+12% Critical Strike\nEquip: Your attacks ignore 3 of the target's Armor.\nEquip: Your Critical Strikes grant you 28% Attack Speed for 3 seconds."
+      },
+      {
+        "name": "Razorwind",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+32% Attack Speed\n+18% Haste\n+8 Potency"
+      }
+    ],
+    "ignored": [
+      {
+        "item": "Elemental Orb",
+        "lines": [
+          "Use: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)"
+        ]
+      },
+      {
+        "item": "Silent Messenger",
+        "lines": [
+          "Equip: Your attacks ignore 3 of the target's Armor.",
+          "Equip: Your Critical Strikes grant you 28% Attack Speed for 3 seconds."
+        ]
+      }
+    ]
+  },
+  "5-shop": {
+    "label": "shop",
+    "targets": 5,
+    "dps": 1015.5,
+    "total": 30465,
+    "talents": [
+      "Smite",
+      "Empyreal Blaze",
+      "Insanity"
+    ],
+    "glyphs": [
+      "Unsealed Power",
+      "Thunder",
+      "Glass Cannon"
+    ],
+    "points": {
+      "crit": 0,
+      "potency": 5,
+      "luck": 0,
+      "mastery": 0
+    },
+    "stats": {
+      "int": 156.0,
+      "ad": 185.0,
+      "potency": 10.5,
+      "mastery": 0.0,
+      "crit": 27.0,
+      "rating": 0.3,
+      "haste": 0.28,
+      "attack_speed": 0.8386098124020764,
+      "mana_max": 1267.0,
+      "swing": 1.0877783782667152,
+      "swp_period": 0.78125
+    },
+    "sources": [
+      {
+        "name": "Всплеск огня",
+        "amount": 7320.8
+      },
+      {
+        "name": "Автоатака",
+        "amount": 7034.4
+      },
+      {
+        "name": "Thunder",
+        "amount": 4750.4
+      },
+      {
+        "name": "Smite",
+        "amount": 4508.6
+      },
+      {
+        "name": "Mind Spike",
+        "amount": 4241.2
+      },
+      {
+        "name": "Empyreal Blaze",
+        "amount": 2609.7
+      }
+    ],
+    "orb_mode": "Fire",
+    "mana_left": 98.7,
+    "bound_spell": null,
+    "actions": [
+      {
+        "time": 0.0,
+        "spell": "Radiance"
+      },
+      {
+        "time": 0.45,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 0.9,
+        "spell": "Renew"
+      },
+      {
+        "time": 6.79,
+        "spell": "Renew"
+      },
+      {
+        "time": 7.88,
+        "spell": "Radiance"
+      },
+      {
+        "time": 8.33,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 13.32,
+        "spell": "Renew"
+      },
+      {
+        "time": 16.58,
+        "spell": "Radiance"
+      },
+      {
+        "time": 17.03,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 19.84,
+        "spell": "Renew"
+      },
+      {
+        "time": 25.28,
+        "spell": "Radiance"
+      },
+      {
+        "time": 25.73,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 26.18,
+        "spell": "Renew"
+      }
+    ],
+    "items": [
+      {
+        "name": "Elemental Orb",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+15% Attack Speed\n+10% Haste\n+6 All Stats\nUse: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)\nFire: Attacks splash for 20 damage and additional 35% of Primary Attribute.\nFrost: Attacks Chill the target, reducing its movement speed by 50% and its attack speed by 25% for 4 seconds.\nShadow: Attacks ignore 6 of the target's Armor."
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
+      {
+        "name": "Aruzal, Fang of Neltharion",
+        "source": "Mysterious Wanderer",
+        "tip": "Binds to Player\n+35 Damage\n+15% Attack Speed\n+15% Critical Strike\nEquip: Critical Strike bonus damage is increased by additional 30%.\nEquip: Your hero deals 18% more damage to enemies below 25% of maximum health."
+      },
+      {
+        "name": "Silent Messenger",
+        "source": "Shop Item",
+        "tip": "Crit Relic\n+23 Damage\n+12% Critical Strike\nEquip: Your attacks ignore 3 of the target's Armor.\nEquip: Your Critical Strikes grant you 28% Attack Speed for 3 seconds."
+      },
+      {
+        "name": "Razorwind",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+32% Attack Speed\n+18% Haste\n+8 Potency"
+      }
+    ],
+    "ignored": [
+      {
+        "item": "Elemental Orb",
+        "lines": [
+          "Use: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)"
+        ]
+      },
+      {
+        "item": "Silent Messenger",
+        "lines": [
+          "Equip: Your attacks ignore 3 of the target's Armor.",
+          "Equip: Your Critical Strikes grant you 28% Attack Speed for 3 seconds."
+        ]
+      }
+    ]
+  }
+}

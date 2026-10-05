@@ -1,0 +1,8 @@
+function Trig_Haunt_Periodic_Actions takes nothing returns nothing
+set udg_HoTSys_Haunt=GetUnitsInRectMatching(GetPlayableMapRect(),Condition(function Trig_Haunt_Periodic_Func001002002))
+call TriggerExecute(gg_trg_Get_Haunt_Periodic_Damage)
+call ForGroupBJ(udg_HoTSys_Haunt,function Trig_Haunt_Periodic_Func003A)
+call TriggerExecute(gg_trg_Get_Haunt_Tick_Rate)
+call StartTimerBJ(udg_Haunt_Timer,false,(1/ udg_Haunt_TickRate))
+call DestroyGroup(udg_HoTSys_Haunt)
+endfunction

@@ -8,14 +8,18 @@ again whenever a slot can be replaced. Nothing is ranked by reading tooltip text
 from __future__ import annotations
 
 import itertools
+import json
 import os
 import re
 from concurrent.futures import ProcessPoolExecutor
+from pathlib import Path
 
-from sunken_sim.library import Item, load_items
+from sunken_sim.library import MAP_PATH, WTS_PATH, Item, _extract, _load_strings, _parse_objects, load_items
+from sunken_sim.stacking import ORBS, allows_copies
 from sunken_sim.shadow import (
     FIGHT,
     SKILL_POINTS,
+    MIND_AMPLIFIER,
     Build,
     character,
     compile_events,
@@ -24,18 +28,12 @@ from sunken_sim.shadow import (
 )
 
 TALENTS = {
-    "I0J6": "Prayer of Mending",
     "I0KF": "Dark Torment",
     "I0KG": "Smite",
-    "I0HJ": "Divine Empowerment",
     "I0PS": "Catharsis",
-    "I0PW": "Echo of Light",
     "I0SB": "Answered Prayers",
     "I0HL": "Psychic Link",
-    "I0MR": "Tears of the Gods",
     "I0PU": "Insanity",
-    "I0PV": "Power Word: Shield",
-    "I0J1": "Holy Waters",
     "I0MJ": "Empyreal Blaze",
     "I0KH": "Blinding Light",
     "I0HP": "Cosmic Horrors",
@@ -88,6 +86,8 @@ POINT_SPLITS = tuple(
 
 _ITEMS: tuple[Item, ...] = ()
 _TARGETS = 1
+_SPEC = "shadow"
+_SIM_ENGINE = "priest"
 
 
 def _score_stats(compiled: dict, stats: dict, potency: float, crit: float, mastery_stat: float, luck: float) -> float:
@@ -95,12 +95,31 @@ def _score_stats(compiled: dict, stats: dict, potency: float, crit: float, maste
 
 
 def _best_points(counter: dict, build: Build) -> tuple[float, tuple[int, int, int, int]]:
+    if counter.get("engine") == "mage":
+        from sunken_sim.mage import best_points
+
+        return best_points(counter, build)
+    targets = counter.get("targets", 1)
+    spec = counter.get("spec", _SPEC)
     bare = Build(build.talents, build.glyphs, build.items, 0, 0, 0, 0)
     stats = character(bare)
-    compiled = compile_events(counter["events"], bare, stats)
     best_dps = -1.0
     best = (0, SKILL_POINTS, 0, 0)
+    compiled_by_crit: dict[int, dict] = {}
     for crit_points, potency_points, luck_points, mastery_points in POINT_SPLITS:
+        compiled = compiled_by_crit.get(crit_points)
+        if compiled is None:
+            pointed = Build(build.talents, build.glyphs, build.items, 0, 0, crit_points, 0)
+            fresh: dict = {"targets": targets}
+            simulate(pointed, targets, fresh, spec=spec)
+            compiled = compile_events(
+                fresh["events"],
+                bare,
+                stats,
+                spec,
+                fresh.get("windows"),
+            )
+            compiled_by_crit[crit_points] = compiled
         dps = _score_stats(
             compiled,
             stats,
@@ -115,103 +134,378 @@ def _best_points(counter: dict, build: Build) -> tuple[float, tuple[int, int, in
     return best_dps, best
 
 
-def _init_worker(items: tuple[Item, ...], targets: int) -> None:
-    global _ITEMS, _TARGETS
+def _call_sim(build: Build, targets: int, counter: dict, bound: str | None = None):
+    if _SIM_ENGINE == "mage":
+        from sunken_sim.mage import simulate as mage_simulate
+
+        return mage_simulate(build, targets, counter, bound, _SPEC)
+    return simulate(build, targets, counter, bound, _SPEC)
+
+
+def _init_worker(items: tuple[Item, ...], targets: int, spec: str, engine: str = "priest") -> None:
+    global _ITEMS, _TARGETS, _SPEC, _SIM_ENGINE
     _ITEMS = items
     _TARGETS = targets
+    _SPEC = spec
+    _SIM_ENGINE = engine
 
 
-def _eval_chunk(combos: list[tuple[tuple[str, ...], tuple[str, ...]]]) -> tuple:
+def _evaluate(build: Build, targets: int) -> tuple[float, tuple[int, int, int, int]]:
+    """One fight with zero skill points. Points are chosen once, on the winning build."""
+    bare = Build(build.talents, build.glyphs, build.items, 0, 0, 0, 0)
+    if _SIM_ENGINE == "mage":
+        from sunken_sim.mage import simulate as mage_simulate
+
+        return mage_simulate(bare, targets, spec=_SPEC).dps, (0, 0, 0, 0)
+    return simulate(bare, targets, spec=_SPEC).dps, (0, 0, 0, 0)
+
+
+_FIXED_TALENTS: frozenset[str] = frozenset()
+_FIXED_GLYPHS: frozenset[str] = frozenset()
+
+
+def _init_stage(
+    items: tuple[Item, ...],
+    targets: int,
+    spec: str,
+    engine: str,
+    fixed_talents: frozenset[str],
+    fixed_glyphs: frozenset[str],
+) -> None:
+    global _FIXED_TALENTS, _FIXED_GLYPHS
+    _init_worker(items, targets, spec, engine)
+    _FIXED_TALENTS = fixed_talents
+    _FIXED_GLYPHS = fixed_glyphs
+
+
+def _eval_talent_chunk(talent_sets: list[tuple[str, ...]]) -> tuple:
     best_dps = -1.0
     best = None
-    for talents, glyphs in combos:
-        build = Build(frozenset(talents), frozenset(glyphs), _ITEMS, 0, 0)
-        counter: dict = {"targets": _TARGETS}
-        simulate(build, _TARGETS, counter)
-        dps, points = _best_points(counter, build)
+    for talents in talent_sets:
+        build = Build(frozenset(talents), _FIXED_GLYPHS, _ITEMS, 0, 0)
+        dps, points = _evaluate(build, _TARGETS)
         if dps > best_dps:
             best_dps = dps
-            best = (dps, talents, glyphs, points)
+            best = (dps, talents, points)
     return best
 
 
-def _best_talents(items: tuple[Item, ...], targets: int = 1) -> tuple[float, Build]:
-    talent_sets = list(itertools.combinations(sorted(TALENTS), 3))
-    glyph_sets = list(itertools.combinations(sorted(GLYPHS), 3))
-    combos = [(talents, glyphs) for talents in talent_sets for glyphs in glyph_sets]
-    workers = max(1, (os.cpu_count() or 2) - 1)
-    chunk = 2500
-    parts = [combos[index : index + chunk] for index in range(0, len(combos), chunk)]
+def _eval_glyph_chunk(glyph_sets: list[tuple[str, ...]]) -> tuple:
     best_dps = -1.0
-    best_combo = None
-    print(f"симуляций талантов и глифов {len(combos)}", flush=True)
-    with ProcessPoolExecutor(max_workers=workers, initializer=_init_worker, initargs=(items, targets)) as pool:
-        for index, result in enumerate(pool.map(_eval_chunk, parts), start=1):
+    best = None
+    for glyphs in glyph_sets:
+        build = Build(_FIXED_TALENTS, frozenset(glyphs), _ITEMS, 0, 0)
+        dps, points = _evaluate(build, _TARGETS)
+        if dps > best_dps:
+            best_dps = dps
+            best = (dps, glyphs, points)
+    return best
+
+
+def _search_options(
+    items: tuple[Item, ...],
+    targets: int,
+    options: list[tuple[str, ...]],
+    stage: str,
+    fixed_talents: frozenset[str],
+    fixed_glyphs: frozenset[str],
+) -> tuple:
+    workers = max(1, (os.cpu_count() or 2) - 1)
+    chunk = 400
+    parts = [options[index : index + chunk] for index in range(0, len(options), chunk)]
+    worker = _eval_talent_chunk if stage == "talents" else _eval_glyph_chunk
+    best_dps = -1.0
+    best = None
+    print(f"симуляций {stage} {len(options)}", flush=True)
+    with ProcessPoolExecutor(
+        max_workers=workers,
+        initializer=_init_stage,
+        initargs=(items, targets, _SPEC, _SIM_ENGINE, fixed_talents, fixed_glyphs),
+    ) as pool:
+        for result in pool.map(worker, parts):
             if result is not None and result[0] > best_dps:
                 best_dps = result[0]
-                best_combo = result
-            if index % 40 == 0:
-                print(f"  {index}/{len(parts)} лучший {best_dps:.1f}", flush=True)
-    assert best_combo is not None
-    _dps, talents, glyphs, points = best_combo
-    build = Build(frozenset(talents), frozenset(glyphs), items, points[1], points[3], points[0], points[2])
-    return best_dps, build
+                best = result
+    assert best is not None
+    return best
+
+
+def _talent_picks(items: tuple[Item, ...] | list[Item]) -> int:
+    if any(item.rawcode == MIND_AMPLIFIER for item in items):
+        return 4
+    return 3
+
+
+def _best_talent_set(
+    items: tuple[Item, ...],
+    glyphs: frozenset[str],
+    targets: int,
+    talents: dict[str, str] | None,
+) -> tuple[float, Build]:
+    picks = _talent_picks(items)
+    options = list(itertools.combinations(sorted(talents or TALENTS), picks))
+    dps, chosen, points = _search_options(items, targets, options, "talents", frozenset(), glyphs)
+    build = Build(frozenset(chosen), glyphs, items, points[1], points[3], points[0], points[2])
+    return dps, build
+
+
+def _best_glyph_set(items: tuple[Item, ...], talents: frozenset[str], targets: int) -> tuple[float, Build]:
+    options = list(itertools.combinations(sorted(GLYPHS), 3))
+    dps, chosen, points = _search_options(items, targets, options, "glyphs", talents, frozenset())
+    build = Build(talents, frozenset(chosen), items, points[1], points[3], points[0], points[2])
+    return dps, build
 
 
 def _dps_of(build: Build) -> float:
-    counter: dict = {"targets": 1}
-    simulate(build, 1, counter)
-    return _best_points(counter, build)[0]
+    return _evaluate(build, 1)[0]
 
 
-def _fill_items(base: Build, catalog: list[Item], targets: int = 1) -> Build:
+def _can_add(chosen: list[Item], candidate: Item, ignore: Item | None = None) -> bool:
+    if not _equip_ok(chosen, candidate, ignore):
+        return False
+    if any(item.rawcode == candidate.rawcode and item is not ignore for item in chosen):
+        return allows_copies(candidate.rawcode)
+    return True
+
+
+def _item_kind(item: Item) -> str:
+    if item.rawcode in LEGENDARIES:
+        return "leg"
+    if item.rawcode in ORBS:
+        return "orb"
+    if allows_copies(item.rawcode):
+        return "stack"
+    return "one"
+
+
+def _greedy_floor(catalog: list[Item], targets: int) -> tuple[float, tuple[Item, ...]]:
     chosen: list[Item] = []
-    points = (base.crit_points, base.potency_points, base.luck_points, base.mastery_points)
+    best_dps = 0.0
     for _slot in range(6):
         best_item = None
-        best_dps = -1.0
-        owned = {item.rawcode for item in chosen}
+        best = -1.0
         for item in catalog:
-            if item.rawcode in owned or not _equip_ok(chosen, item):
+            if not _can_add(chosen, item):
                 continue
-            trial = Build(base.talents, base.glyphs, tuple(chosen + [item]), points[1], points[3], points[0], points[2])
-            counter: dict = {"targets": targets}
-            simulate(trial, targets, counter)
-            dps, new_points = _best_points(counter, trial)
-            if dps > best_dps:
-                best_dps = dps
+            dps, _points = _evaluate(Build(frozenset(), frozenset(), tuple(chosen + [item]), 0, 0, 0, 0), targets)
+            if dps > best:
+                best = dps
                 best_item = item
-                points = new_points
         if best_item is None:
             break
         chosen.append(best_item)
-    return Build(base.talents, base.glyphs, tuple(chosen), points[1], points[3], points[0], points[2])
+        best_dps = best
+    print(f"порог жадного набора {best_dps:.1f}", flush=True)
+    return best_dps, tuple(chosen)
+
+
+def _triples_seq(
+    items: tuple[Item, ...],
+    targets: int,
+    spec: str,
+    codes: tuple[str, ...],
+    talents: frozenset[str],
+    glyphs: frozenset[str],
+    stage: str,
+) -> tuple[float, tuple[str, ...]]:
+    best_dps = -1.0
+    best: tuple[str, ...] = ()
+    picks = _talent_picks(items) if stage == "talents" else 3
+    for chosen_codes in itertools.combinations(codes, picks):
+        if stage == "talents":
+            build = Build(frozenset(chosen_codes), glyphs, items, 0, 0, 0, 0)
+        else:
+            build = Build(talents, frozenset(chosen_codes), items, 0, 0, 0, 0)
+        dps = simulate(build, targets, spec=spec).dps
+        if dps > best_dps:
+            best_dps = dps
+            best = chosen_codes
+    return best_dps, best
+
+
+def _write_record(spec: str, targets: int, payload: dict) -> None:
+    import time
+
+    folder = Path(__file__).resolve().parents[1] / "extract" / "exhaustive"
+    folder.mkdir(exist_ok=True)
+    path = folder / f"{spec}-{targets}.json"
+    lock = path.with_suffix(".lock")
+    while True:
+        try:
+            fd = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            break
+        except FileExistsError:
+            time.sleep(0.05)
+    try:
+        if path.exists():
+            old = json.loads(path.read_text(encoding="utf-8"))
+            if old.get("item_dps", -1) >= payload["item_dps"]:
+                return
+        tmp = path.with_suffix(".tmp")
+        tmp.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+        os.replace(tmp, path)
+    finally:
+        os.close(fd)
+        os.remove(lock)
+
+
+def _exhaustive_slice(task: tuple) -> tuple[int, float, int]:
+    first, items, targets, spec, floor, talent_codes, glyph_codes = task
+    kind = _item_kind(items[first])
+    if kind == "stack":
+        starts = range(1, 7)
+    else:
+        starts = (1,)
+    seen = 0
+    best = floor
+    records = 0
+
+    def consider(chosen: list[Item]) -> None:
+        nonlocal seen, best, records
+        seen += 1
+        dps = simulate(Build(frozenset(), frozenset(), tuple(chosen), 0, 0, 0, 0), targets, spec=spec).dps
+        if seen % 20000 == 0:
+            print(f"срез {first} {seen} лучший {best:.1f}", flush=True)
+        if dps <= best:
+            return
+        best = dps
+        records += 1
+        names = [item.name for item in chosen]
+        print(f"новый набор {spec} {targets} {dps:.1f} {', '.join(names)}", flush=True)
+        talent_dps, talents = _triples_seq(tuple(chosen), targets, spec, talent_codes, frozenset(), frozenset(), "talents")
+        glyph_dps, glyphs = _triples_seq(tuple(chosen), targets, spec, glyph_codes, frozenset(talents), frozenset(), "glyphs")
+        _write_record(
+            spec,
+            targets,
+            {
+                "dps": glyph_dps,
+                "item_dps": dps,
+                "talent_dps": talent_dps,
+                "talents": list(talents),
+                "glyphs": list(glyphs),
+                "items": names,
+            },
+        )
+
+    def walk(start: int, left: int, has_leg: bool, has_orb: bool, chosen: list[Item]) -> None:
+        if left == 0:
+            consider(chosen)
+            return
+        for index in range(start, len(items)):
+            item = items[index]
+            tag = _item_kind(item)
+            if tag == "leg" and has_leg:
+                continue
+            if tag == "orb" and has_orb:
+                continue
+            copies = left if tag == "stack" else 1
+            for count in range(1, copies + 1):
+                chosen.extend([item] * count)
+                walk(index + 1, left - count, has_leg or tag == "leg", has_orb or tag == "orb", chosen)
+                del chosen[-count:]
+
+    for count in starts:
+        if count > 6:
+            break
+        chosen = [items[first]] * count
+        walk(
+            first + 1,
+            6 - count,
+            kind == "leg",
+            kind == "orb",
+            chosen,
+        )
+    print(f"срез {first} конец {seen} лучший {best:.1f} новых {records}", flush=True)
+    return first, seen, records
+
+
+def _exhaustive_item_sets(
+    catalog: list[Item],
+    targets: int,
+    talent_codes: tuple[str, ...],
+    glyph_codes: tuple[str, ...],
+) -> list[Build]:
+    items = list(catalog)
+    floor, greedy = _greedy_floor(items, targets)
+    workers = max(1, (os.cpu_count() or 2) - 1)
+    tasks = [
+        (index, items, targets, _SPEC, floor, talent_codes, glyph_codes)
+        for index in range(len(items))
+    ]
+    print(f"полный перебор шестёрок, срезов {len(tasks)}, процессы {workers}", flush=True)
+    total = 0
+    with ProcessPoolExecutor(max_workers=workers) as pool:
+        for first, seen, records in pool.map(_exhaustive_slice, tasks):
+            total += seen
+            print(f"сдан срез {first}, всего шестёрок {total}, новых {records}", flush=True)
+    folder = Path(__file__).resolve().parents[1] / "extract" / "exhaustive"
+    path = folder / f"{_SPEC}-{targets}.json"
+    if not path.exists():
+        return [Build(frozenset(), frozenset(), greedy, 0, 0, 0, 0)]
+    saved = json.loads(path.read_text(encoding="utf-8"))
+    by_name = {item.name: item for item in items}
+    chosen = tuple(by_name[name] for name in saved["items"])
+    print(f"лучшая шестёрка без талантов {saved['item_dps']:.1f}", flush=True)
+    return [Build(frozenset(), frozenset(), chosen, 0, 0, 0, 0)]
+
+
+def _fill_item_sets(base: Build, catalog: list[Item], targets: int = 1, talent_codes: tuple[str, ...] | None = None) -> list[Build]:
+    if _SIM_ENGINE == "mage":
+        return _beam_item_sets(base, catalog, targets)
+    codes = talent_codes or tuple(sorted(TALENTS))
+    return _exhaustive_item_sets(catalog, targets, codes, tuple(sorted(GLYPHS)))
+
+
+def _beam_item_sets(base: Build, catalog: list[Item], targets: int = 1) -> list[Build]:
+    """Mage still uses a short list. Priest walks every legal sextuple."""
+    beam: list[tuple[tuple[Item, ...], tuple[int, int, int, int]]] = [((), (0, 0, 0, 0))]
+    width = 8
+    for _slot in range(6):
+        found: list[tuple[float, tuple[Item, ...], tuple[int, int, int, int]]] = []
+        seen: set[tuple[str, ...]] = set()
+        for chosen, points in beam:
+            owned = list(chosen)
+            for item in catalog:
+                if not _can_add(owned, item):
+                    continue
+                trial_items = chosen + (item,)
+                key = tuple(sorted(piece.rawcode for piece in trial_items))
+                if key in seen:
+                    continue
+                seen.add(key)
+                trial = Build(frozenset(), frozenset(), trial_items, 0, 0, 0, 0)
+                dps, _points = _evaluate(trial, targets)
+                found.append((dps, trial_items, (0, 0, 0, 0)))
+        found.sort(key=lambda row: row[0], reverse=True)
+        beam = [(items, points) for _dps, items, points in found[:width]]
+        if not beam:
+            break
+    return [Build(base.talents, base.glyphs, items, 0, 0, 0, 0) for items, _points in beam]
+
+
+def _fill_items(base: Build, catalog: list[Item], targets: int = 1) -> Build:
+    return _fill_item_sets(base, catalog, targets)[0]
 
 
 def _swap_items(base: Build, catalog: list[Item], targets: int = 1) -> Build:
     chosen = list(base.items)
     points = (base.crit_points, base.potency_points, base.luck_points, base.mastery_points)
-    counter: dict = {"targets": targets}
-    simulate(base, targets, counter)
-    best_dps, points = _best_points(counter, base)
+    best_dps, points = _evaluate(base, targets)
     improved = True
     passes = 0
-    while improved and passes < 4:
+    while improved and passes < 8:
         improved = False
         passes += 1
         for slot in range(len(chosen)):
-            owned = {item.rawcode for index, item in enumerate(chosen) if index != slot}
             for item in catalog:
-                if item.rawcode in owned or item.rawcode == chosen[slot].rawcode:
+                if item.rawcode == chosen[slot].rawcode:
                     continue
-                if not _equip_ok(chosen, item, ignore=chosen[slot]):
+                if not _can_add(chosen, item, ignore=chosen[slot]):
                     continue
                 trial_items = chosen.copy()
                 trial_items[slot] = item
                 trial = Build(base.talents, base.glyphs, tuple(trial_items), points[1], points[3], points[0], points[2])
-                counter = {"targets": targets}
-                simulate(trial, targets, counter)
-                dps, new_points = _best_points(counter, trial)
+                dps, new_points = _evaluate(trial, targets)
                 if dps > best_dps + 0.05:
                     best_dps = dps
                     chosen = trial_items
@@ -220,21 +514,69 @@ def _swap_items(base: Build, catalog: list[Item], targets: int = 1) -> Build:
     return Build(base.talents, base.glyphs, tuple(chosen), points[1], points[3], points[0], points[2])
 
 
-def search_pool(catalog: list[Item], seed: Build, targets: int = 1) -> tuple[Build, float]:
-    geared = _fill_items(seed, catalog, targets)
-    geared = _swap_items(geared, catalog, targets)
-    print(f"предметы готовы, {len(catalog)} в пуле, цели {targets}", flush=True)
-    _dps, with_gear = _best_talents(geared.items, targets)
-    print("таланты с предметами готовы", flush=True)
-    if with_gear.talents != geared.talents or with_gear.glyphs != geared.glyphs:
-        geared = _swap_items(with_gear, catalog, targets)
-    else:
-        geared = with_gear
-    counter: dict = {"targets": targets}
-    simulate(geared, targets, counter)
-    dps, points = _best_points(counter, geared)
-    final = Build(geared.talents, geared.glyphs, geared.items, points[1], points[3], points[0], points[2])
-    return final, dps
+def search_pool(
+    catalog: list[Item],
+    seed: Build,
+    targets: int = 1,
+    spec: str = "shadow",
+    talents: dict[str, str] | None = None,
+    engine: str = "priest",
+) -> tuple[Build, float]:
+    global _SPEC, _SIM_ENGINE
+    _SPEC = spec
+    _SIM_ENGINE = engine
+    finished = _finish_builds(seed, catalog, targets, talents)
+    best_build, _zero_dps = max(finished, key=lambda row: row[1])
+    counter = {"targets": targets, "spec": spec, "engine": engine, "full_points": True}
+    _dps, points = _best_points(counter, best_build)
+    final = Build(best_build.talents, best_build.glyphs, best_build.items, points[1], points[3], points[0], points[2])
+    return final, _dps
+
+
+def _finish_builds(
+    seed: Build,
+    catalog: list[Item],
+    targets: int,
+    talents: dict[str, str] | None,
+) -> list[tuple[Build, float]]:
+    item_sets = _fill_item_sets(seed, catalog, targets, tuple(sorted(talents or TALENTS)))
+    print(f"предметов {len(item_sets)} шестёрок, пул {len(catalog)}, цели {targets}", flush=True)
+    finished: list[tuple[Build, float]] = []
+    for index, geared in enumerate(item_sets, start=1):
+        print(f"шестёрка {index}/{len(item_sets)}", flush=True)
+        _talent_dps, with_talents = _best_talent_set(geared.items, frozenset(), targets, talents)
+        dps, with_glyphs = _best_glyph_set(with_talents.items, with_talents.talents, targets)
+        print(f"  {dps:.1f}", flush=True)
+        finished.append((with_glyphs, dps))
+    return finished
+
+
+def search_categories(
+    catalog: list[Item],
+    seed: Build,
+    shop_ids: set[str],
+    targets: int = 1,
+    spec: str = "shadow",
+    talents: dict[str, str] | None = None,
+    engine: str = "priest",
+) -> dict[str, tuple[Build, float]]:
+    global _SPEC, _SIM_ENGINE
+    _SPEC = spec
+    _SIM_ENGINE = engine
+    finished = _finish_builds(seed, catalog, targets, talents)
+    best_build, _best_dps = max(finished, key=lambda row: row[1])
+    counter = {"targets": targets, "spec": spec, "engine": engine, "full_points": True}
+    pointed_dps, points = _best_points(counter, best_build)
+    pointed = Build(
+        best_build.talents,
+        best_build.glyphs,
+        best_build.items,
+        points[1],
+        points[3],
+        points[0],
+        points[2],
+    )
+    return {"mixed": (pointed, pointed_dps)}
 
 
 def shop_codes() -> set[str]:
@@ -263,6 +605,7 @@ def _shop_body(script: str) -> str:
 
 
 LEGENDARIES = frozenset({"I052", "I048", "I053", "I04A", "I0HU", "I09E", "I044", "I0BR"})
+EPIC_NAME_COLOR = "007c2abb"
 EXCLUSIVE = (frozenset({"I07O", "I0NS", "I0NT"}),)
 
 
@@ -363,13 +706,79 @@ def is_quest_item(item: Item) -> bool:
     return "Quest Reward" in item.tip or "Quest Item" in item.tip
 
 
+def _ignored_names_in(path: Path) -> set[str]:
+    marker = "Эти вещи в пул не входят:"
+    names: set[str] = set()
+    if not path.exists():
+        return names
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if marker not in line:
+            continue
+        raw = line.split(marker, 1)[1].strip().rstrip(".")
+        parts = [part.strip() for part in raw.split(",") if part.strip()]
+        index = 0
+        while index < len(parts):
+            if parts[index] == "Pridwen" and index + 1 < len(parts) and parts[index + 1].startswith("Guard of Tirion"):
+                names.add("Pridwen, Guard of Tirion")
+                index += 2
+                continue
+            names.add(parts[index])
+            index += 1
+    return names
+
+
+def ignored_item_names(hero_class: str | None = None) -> set[str]:
+    """Names the guides list as out of the pool.
+
+    The general guide applies to every hero. Priest and mage guides add the
+    attack weapons those casters skip.
+    """
+    docs = Path(__file__).resolve().parents[1] / "docs"
+    names = _ignored_names_in(docs / "guide.md")
+    extra = {"Priest": "priest.md", "Mage": "mage.md"}
+    if hero_class in extra:
+        names |= _ignored_names_in(docs / extra[hero_class])
+    return names
+
+
+def _guide_ignored(item: Item, names: set[str]) -> bool:
+    plain = item.name.removesuffix(" (Recipe)")
+    return item.name in names or plain in names
+
+
+def epic_codes() -> set[str]:
+    """Items whose name is the map's epic purple."""
+    strings = _load_strings(WTS_PATH)
+    skin = _parse_objects(_extract(MAP_PATH, "war3mapSkin.w3t"))
+    found = set()
+    for code, mods in skin.items():
+        if "unam" not in mods:
+            continue
+        raw_id = str(mods["unam"][0])
+        if not raw_id.startswith("TRIGSTR_"):
+            continue
+        raw = strings.get(int(raw_id.split("_")[1]), "")
+        if EPIC_NAME_COLOR in raw.lower():
+            found.add(code)
+    return found
+
+
 def pools_for(catalog: list[Item], hero_class: str = "Priest") -> tuple[list[Item], list[Item], list[Item]]:
     shop, drop, legendaries = split_catalog(catalog)
     foreign = set().union(*(codes for name, codes in class_item_codes().items() if name != hero_class))
 
-    def allowed(item: Item) -> bool:
-        return item.rawcode not in foreign and not is_quest_item(item)
+    epics = epic_codes()
+    ignored = ignored_item_names(hero_class)
 
+    def allowed(item: Item) -> bool:
+        return (
+            item.rawcode not in foreign
+            and not is_quest_item(item)
+            and not _guide_ignored(item, ignored)
+            and (item.rawcode in epics or item.rawcode in LEGENDARIES)
+        )
+
+    legendaries = [item for item in legendaries if allowed(item)]
     return (
         [item for item in shop if allowed(item)],
         [item for item in drop if allowed(item)],
