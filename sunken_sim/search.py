@@ -323,19 +323,29 @@ def _triples_seq(
     return best_dps, best
 
 
-def _share() -> tuple[int, int]:
+def _share() -> tuple[frozenset[int], int]:
+    """Which slice residues this machine owns.
+
+    SUNKEN_PARTS is the number of residues. SUNKEN_PART is one residue or a
+    comma-separated list. A stronger machine lists several residues.
+    """
     parts = int(os.environ.get("SUNKEN_PARTS", "1"))
-    part = int(os.environ.get("SUNKEN_PART", "0"))
-    if parts < 1 or not 0 <= part < parts:
-        raise SystemExit(f"SUNKEN_PART={part} SUNKEN_PARTS={parts}")
-    return part, parts
+    raw = os.environ.get("SUNKEN_PART", "0")
+    chosen = frozenset(int(piece) for piece in raw.split(",") if piece.strip())
+    if parts < 1 or not chosen or any(part < 0 or part >= parts for part in chosen):
+        raise SystemExit(f"SUNKEN_PART={raw} SUNKEN_PARTS={parts}")
+    return chosen, parts
 
 
 def _record_path(spec: str, targets: int) -> Path:
     folder = Path(__file__).resolve().parents[1] / "extract" / "exhaustive"
     folder.mkdir(exist_ok=True)
-    part, parts = _share()
-    name = f"{spec}-{targets}.json" if parts == 1 else f"{spec}-{targets}-part{part}.json"
+    chosen, parts = _share()
+    if parts == 1 and chosen == frozenset({0}):
+        name = f"{spec}-{targets}.json"
+    else:
+        label = "-".join(str(part) for part in sorted(chosen))
+        name = f"{spec}-{targets}-part{label}.json"
     return folder / name
 
 
@@ -442,14 +452,15 @@ def _exhaustive_item_sets(
     items = list(catalog)
     floor, greedy = _greedy_floor(items, targets)
     workers = max(1, (os.cpu_count() or 2) - 1)
-    part, parts = _share()
+    chosen, parts = _share()
     tasks = [
         (index, items, targets, _SPEC, floor, talent_codes, glyph_codes)
         for index in range(len(items))
-        if index % parts == part
+        if index % parts in chosen
     ]
+    label = ",".join(str(part) for part in sorted(chosen))
     print(
-        f"полный перебор шестёрок, срезов {len(tasks)}, часть {part + 1}/{parts}, процессы {workers}",
+        f"полный перебор шестёрок, срезов {len(tasks)}, части {label} из {parts}, процессы {workers}",
         flush=True,
     )
     total = 0
