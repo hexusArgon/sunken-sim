@@ -1057,7 +1057,10 @@ def simulate(
 ) -> Report:
     from sunken_sim.history import recall, remember
 
-    if use_history and not (counter is not None and bound_spell is None):
+    # History keeps the report, not the event tape. Skill points need that
+    # tape. Diamond Ring fills it from each bound spell, so a cached report
+    # on those calls would leave the tape empty.
+    if use_history and counter is None:
         cached = recall("priest", spec, build, targets, bound_spell)
         if cached is not None:
             return cached

@@ -132,7 +132,9 @@ def simulate(
 
     if spec not in SPECS:
         raise ValueError(spec)
-    if not (counter is not None and bound_spell is None):
+    # History keeps the report, not the compiled fight. Diamond Ring asks
+    # once per bound spell, and those calls must still fill the counter.
+    if counter is None:
         cached = recall("mage", spec, build, targets, bound_spell)
         if cached is not None:
             return cached
