@@ -136,6 +136,28 @@ class ProtocolTest(unittest.TestCase):
         )
         self.assertEqual(parse_progress(text), (1200, 3000))
         self.assertIn("лучший DPS 12.3", text)
+        paced = status_text(
+            worker="kivor",
+            hero="paladin",
+            spec="retribution",
+            pool="mixed",
+            targets=5,
+            start=0,
+            end=10,
+            done=4,
+            left=7,
+            best=1,
+            elapsed=125,
+            remaining=200,
+            rate=40,
+            rate_max=80,
+            rate_min=12,
+            cpu=63,
+        )
+        self.assertEqual(parse_progress(paced), (4, 7))
+        self.assertIn("прошло 2:05 · осталось 3:20", paced)
+        self.assertIn("бои/с 40 · макс 80 · мин 12", paced)
+        self.assertIn("ЦП 63%", paced)
         final = status_text(
             worker="kivor",
             hero="priest",

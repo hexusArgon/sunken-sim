@@ -7,6 +7,7 @@ import re
 
 PRIEST_SPECS = ("shadow", "discipline", "holy")
 MAGE_SPECS = ("frost", "arcane", "fire")
+PALADIN_SPECS = ("retribution", "protection", "holy")
 POOLS = ("mixed", "shop", "drop")
 
 POOL_LABEL = {
@@ -14,7 +15,7 @@ POOL_LABEL = {
     "shop": "только Shop",
     "drop": "только Random drop",
 }
-HERO_LABEL = {"priest": "жрец", "mage": "маг"}
+HERO_LABEL = {"priest": "жрец", "mage": "маг", "paladin": "паладин"}
 
 CONTROL = "sunken-farm-control "
 JOB = "sunken-farm-job "
@@ -23,6 +24,25 @@ STOP = "sunken-farm-stop "
 
 def grouped(value: int) -> str:
     return f"{value:,}".replace(",", " ")
+
+
+def clock(seconds: float | None) -> str:
+    if seconds is None:
+        return "—"
+    whole = max(0, int(seconds))
+    hours, rem = divmod(whole, 3600)
+    minutes, secs = divmod(rem, 60)
+    if hours:
+        return f"{hours}:{minutes:02d}:{secs:02d}"
+    return f"{minutes}:{secs:02d}"
+
+
+def rate_text(value: float | None) -> str:
+    if value is None:
+        return "—"
+    if value >= 10:
+        return str(int(round(value)))
+    return f"{value:.1f}"
 
 
 def parse_int(text: str) -> int:
@@ -36,7 +56,9 @@ def resolve_hero_spec(hero: str | None, spec: str | None) -> tuple[str, str]:
     spec = (spec or "shadow").strip().lower()
     hero = hero.strip().lower() if hero else None
     if hero is None:
-        if spec in MAGE_SPECS:
+        if spec in ("retribution", "protection"):
+            hero = "paladin"
+        elif spec in MAGE_SPECS:
             hero = "mage"
         elif spec in PRIEST_SPECS:
             hero = "priest"
@@ -46,6 +68,8 @@ def resolve_hero_spec(hero: str | None, spec: str | None) -> tuple[str, str]:
         raise ValueError(f"у жреца нет специализации {spec}")
     if hero == "mage" and spec not in MAGE_SPECS:
         raise ValueError(f"у мага нет специализации {spec}")
+    if hero == "paladin" and spec not in PALADIN_SPECS:
+        raise ValueError(f"у паладина нет специализации {spec}")
     if hero not in HERO_LABEL:
         raise ValueError(f"нет класса {hero}")
     return hero, spec
@@ -104,6 +128,8 @@ def format_job(job: dict) -> str:
         "channel": str(job["channel"]),
         "status": str(job["status"]),
     }
+    if job.get("preset"):
+        payload["preset"] = job["preset"]
     body = _dump(JOB, payload)
     return f"{job['worker']}: чанки {payload['start']}–{payload['end']}\n{body}"
 
@@ -153,6 +179,12 @@ def status_text(
     errors: int = 0,
     final: bool = False,
     stopped: bool = False,
+    elapsed: float | None = None,
+    remaining: float | None = None,
+    rate: float | None = None,
+    rate_max: float | None = None,
+    rate_min: float | None = None,
+    cpu: float | None = None,
 ) -> str:
     lines = []
     if final and stopped:
@@ -171,6 +203,10 @@ def status_text(
         lines.append("лучший DPS ещё нет")
     else:
         lines.append(f"лучший DPS {best:.1f}")
+    if elapsed is not None or rate is not None or cpu is not None:
+        lines.append(f"прошло {clock(elapsed)} · осталось {clock(remaining)}")
+        lines.append(f"бои/с {rate_text(rate)} · макс {rate_text(rate_max)} · мин {rate_text(rate_min)}")
+        lines.append(f"ЦП {rate_text(cpu)}%")
     if errors:
         lines.append(f"ошибок {grouped(errors)}")
     if final and done:
@@ -198,7 +234,7 @@ def presence_text(rows: list[tuple[str, int, int]]) -> str:
 
 
 def command_body(name: str) -> dict:
-    specs = ["shadow", "discipline", "holy", "frost", "arcane", "fire"]
+    specs = ["shadow", "discipline", "holy", "frost", "arcane", "fire", "retribution", "protection"]
     return {
         "name": name,
         "type": 1,
@@ -209,12 +245,28 @@ def command_body(name: str) -> dict:
             {"type": 3, "name": "end", "description": "Последний чанк, включительно", "required": False},
             {
                 "type": 3,
+                "name": "preset",
+                "description": "Готовый набор вещей и талантов",
+                "required": False,
+                "choices": [{"name": "Paladin Retribution top 89", "value": "retribution-top89"}],
+            },
+            {
+                "type": 4,
+                "name": "share",
+                "description": "Доля чанков в процентах",
+                "required": False,
+                "min_value": 1,
+                "max_value": 100,
+            },
+            {
+                "type": 3,
                 "name": "hero",
                 "description": "Класс",
                 "required": False,
                 "choices": [
                     {"name": "Жрец", "value": "priest"},
                     {"name": "Маг", "value": "mage"},
+                    {"name": "Паладин", "value": "paladin"},
                 ],
             },
             {

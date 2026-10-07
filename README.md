@@ -12,6 +12,8 @@ python extract/run_hp.py
 
 Поиск жреца Shadow на 5 целях. Результат пишется в `extract/target-sims.json`.
 
+Паладин: `python extract/one_slot_paladin.py`. Специализации Retribution, Protection и Holy. В Discord это `hero: paladin`.
+
 ## Несколько компьютеров
 
 Каждая машина клонирует репозиторий и запускает своего воркера. Ключ Discord бота в `.env`, образец в `.env.example`.

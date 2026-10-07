@@ -314,25 +314,39 @@ class Farm:
             hero, spec = resolve_hero_spec(options.get("hero"), options.get("spec"))
             pool = resolve_pool(options.get("pool"))
             targets = resolve_targets(options.get("targets"))
-            if "start" not in options and "end" not in options:
-                space, _items = await asyncio.to_thread(load, hero, spec, pool)
+            preset = options.get("preset") or None
+            share = options.get("share")
+            if share is not None:
+                share = int(share)
+                if share < 1 or share > 100:
+                    raise ValueError("доля от 1 до 100")
+
+            def space_of():
+                return load(hero, spec, pool, preset)
+
+            if "start" not in options and "end" not in options and share is None:
+                space, _items = await asyncio.to_thread(space_of)
                 await interaction.edit_original_response(
                     content=size_text(worker=name, hero=hero, spec=spec, pool=pool, targets=targets, total=space.total)
                 )
                 return
-            if "start" not in options or "end" not in options:
-                raise ValueError("нужны оба края диапазона: start и end")
-            start = parse_int(str(options["start"]))
-            end = parse_int(str(options["end"]))
-            if end < start:
-                raise ValueError("end меньше start")
             await interaction.edit_original_response(content="Считаю размер пространства…")
-            space, _items = await asyncio.to_thread(load, hero, spec, pool)
+            space, _items = await asyncio.to_thread(space_of)
             if space.total <= 0:
                 raise ValueError("в этом пространстве нет чанков")
-            if start >= space.total or end >= space.total:
-                raise ValueError(f"последний чанк {grouped(space.total - 1)}")
-            await self.enqueue(interaction, name, hero, spec, pool, targets, start, end)
+            if share is not None and "start" not in options and "end" not in options:
+                count = max(1, space.total * share // 100)
+                start, end = 0, min(space.total, count) - 1
+            else:
+                if "start" not in options or "end" not in options:
+                    raise ValueError("нужны оба края диапазона: start и end")
+                start = parse_int(str(options["start"]))
+                end = parse_int(str(options["end"]))
+                if end < start:
+                    raise ValueError("end меньше start")
+                if start >= space.total or end >= space.total:
+                    raise ValueError(f"последний чанк {grouped(space.total - 1)}")
+            await self.enqueue(interaction, name, hero, spec, pool, targets, start, end, preset)
         except (ValueError, RuntimeError) as exc:
             await interaction.edit_original_response(content=str(exc)[:1900])
         except Exception as exc:
@@ -349,6 +363,7 @@ class Farm:
         targets: int,
         start: int,
         end: int,
+        preset: str | None = None,
     ) -> None:
         for message in await self.channel_messages():
             job = parse_job(message.get("content") or "")
@@ -384,6 +399,7 @@ class Farm:
             "targets": targets,
             "channel": self.channel,
             "status": str(status["id"]),
+            "preset": preset or "",
         }
         posted = await asyncio.to_thread(self.rest.send, self.channel, format_job(job))
         job["job_message"] = str(posted["id"])

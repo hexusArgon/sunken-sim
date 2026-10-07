@@ -16,23 +16,25 @@ CACHE_VERSION = 1
 SHADOW_TALENTS = ("I0HL", "I0HP", "I0KF", "I0PS", "I0PU", "I0SA", "I0SB", "I0SC")
 RUNEMASTERY = "I0Q8"
 
-_MEMORY: dict[tuple[str, str, str], tuple[Space, dict]] = {}
+_MEMORY: dict[tuple[str, str, str, str], tuple[Space, dict]] = {}
+PRESETS = {"retribution-top89": "paladin-retribution-top89.json"}
 
 
-def load(hero: str, spec: str, pool: str) -> tuple[Space, dict]:
-    key = (hero, spec, pool)
+def load(hero: str, spec: str, pool: str, preset: str | None = None) -> tuple[Space, dict]:
+    key = (hero, spec, pool, preset or "")
     cached = _MEMORY.get(key)
     if cached is not None:
         return cached
-    space, items = _from_disk(hero, spec, pool)
+    space, items = _from_disk(hero, spec, pool, preset)
     _MEMORY[key] = (space, items)
     return space, items
 
 
-def _from_disk(hero: str, spec: str, pool: str) -> tuple[Space, dict]:
-    pieces, talents, glyphs, talent_names, glyph_names, items, picks_with = _parts(hero, spec, pool)
+def _from_disk(hero: str, spec: str, pool: str, preset: str | None = None) -> tuple[Space, dict]:
+    pieces, talents, glyphs, talent_names, glyph_names, items, picks_with = _parts(hero, spec, pool, preset)
     digest = _digest(pieces, talents, glyphs, picks_with, items)
-    path = data_dir() / "cache" / f"{hero}-{spec}-{pool}-{digest}.pkl"
+    label = preset or pool
+    path = data_dir() / "cache" / f"{hero}-{spec}-{label}-{digest}.pkl"
     if path.exists():
         try:
             with path.open("rb") as handle:
@@ -60,7 +62,7 @@ def _from_disk(hero: str, spec: str, pool: str) -> tuple[Space, dict]:
     return space, items
 
 
-def _parts(hero: str, spec: str, pool: str):
+def _parts(hero: str, spec: str, pool: str, preset: str | None = None):
     from sunken_sim.library import load_items
     from sunken_sim.mage import TALENTS as MAGE_TALENTS
     from sunken_sim.search import GLYPHS, TALENTS, _item_kind, pools_for
@@ -68,7 +70,9 @@ def _parts(hero: str, spec: str, pool: str):
 
     catalog = load_items()
     by_code = {item.rawcode: item for item in catalog}
-    class_name = "Priest" if hero == "priest" else "Mage"
+    if preset:
+        return _preset_parts(hero, spec, preset, by_code)
+    class_name = {"priest": "Priest", "mage": "Mage", "paladin": "Paladin"}[hero]
     shop, drop, legendaries = pools_for(catalog, class_name)
     if hero == "priest" and spec == "shadow":
         shop, drop, legendaries = _shadow_top(shop, drop, legendaries)
@@ -91,7 +95,7 @@ def _parts(hero: str, spec: str, pool: str):
             Piece(
                 code,
                 _item_kind(item),
-                amp=hero == "priest" and code == MIND_AMPLIFIER,
+                amp=code == MIND_AMPLIFIER,
                 name=item.name,
             )
         )
@@ -99,6 +103,12 @@ def _parts(hero: str, spec: str, pool: str):
     if hero == "mage":
         talents = sorted(code for code in MAGE_TALENTS if code != RUNEMASTERY)
         talent_names = MAGE_TALENTS
+        picks_with = 3
+    elif hero == "paladin":
+        from sunken_sim.paladin import TALENTS as PALADIN_TALENTS
+
+        talent_names = PALADIN_TALENTS
+        talents = sorted(PALADIN_TALENTS)
         picks_with = 3
     else:
         talent_names = TALENTS
@@ -109,6 +119,39 @@ def _parts(hero: str, spec: str, pool: str):
         picks_with = 4
     glyphs = sorted(GLYPHS)
     return pieces, talents, glyphs, talent_names, dict(GLYPHS), items, picks_with
+
+
+def _preset_parts(hero: str, spec: str, preset: str, by_code: dict):
+    from pathlib import Path
+
+    from sunken_sim.paladin import TALENTS as PALADIN_TALENTS
+    from sunken_sim.search import GLYPHS, _item_kind
+    from sunken_sim.shadow import MIND_AMPLIFIER
+
+    filename = PRESETS.get(preset)
+    if filename is None:
+        raise RuntimeError(f"нет набора {preset}")
+    path = Path(__file__).resolve().parents[1] / "extract" / filename
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if data.get("hero") != hero or data.get("spec") != spec:
+        raise RuntimeError(f"набор {preset} собран для {data.get('hero')} {data.get('spec')}")
+    missing = [code for code in data["items"] if code not in by_code]
+    if missing:
+        raise RuntimeError("нет предметов: " + ", ".join(missing))
+    unknown = [code for code in data["talents"] if code not in PALADIN_TALENTS]
+    if unknown:
+        raise RuntimeError("нет талантов: " + ", ".join(unknown))
+    pieces = []
+    items = {}
+    for code in sorted(set(data["items"])):
+        item = by_code[code]
+        pieces.append(Piece(code, _item_kind(item), amp=code == MIND_AMPLIFIER, name=item.name))
+        items[code] = item
+    if len(pieces) < 6:
+        raise RuntimeError(f"в наборе {preset} меньше шести предметов")
+    talents = sorted(data["talents"])
+    picks_with = 4 if any(piece.amp for piece in pieces) else 3
+    return pieces, talents, sorted(GLYPHS), PALADIN_TALENTS, dict(GLYPHS), items, picks_with
 
 
 def _shadow_top(shop, drop, legendaries):

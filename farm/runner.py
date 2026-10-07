@@ -9,6 +9,7 @@ import time
 import traceback
 from concurrent.futures import FIRST_COMPLETED, ProcessPoolExecutor, wait
 
+from farm.cpu import cpu_percent
 from farm.paths import atomic_write, data_dir
 from farm.protocol import grouped, status_text
 from farm.space import Space
@@ -102,10 +103,11 @@ def eval_index(index: int) -> dict:
     except KeyError as exc:
         raise RuntimeError(f"нет предмета {exc}") from exc
     build = Build(frozenset(talent_codes), frozenset(glyph_codes), equipped, 0, 0, 0, 0)
-    dps, points = score_build(_HERO, _SPEC, _TARGETS, build)
+    dps, points, fights = score_build(_HERO, _SPEC, _TARGETS, build)
     crit, potency, luck, mastery = points
     return {
         "dps": dps,
+        "fights": fights,
         "chunk": index,
         "items": [{"name": item.name, "code": item.rawcode} for item in equipped],
         "talents": sorted(_SPACE.talent_names.get(code, code) for code in talent_codes),
@@ -122,7 +124,7 @@ def _load_checkpoint(job: dict, board: Board) -> tuple[int, set[int], int]:
         saved = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
         return int(job["start"]), set(), 0
-    same = all(saved.get(key) == job[key] for key in ("start", "end", "hero", "spec", "pool", "targets"))
+    same = all(saved.get(key) == job.get(key) for key in ("start", "end", "hero", "spec", "pool", "targets", "preset"))
     if not same:
         return int(job["start"]), set(), 0
     for row in saved.get("top") or []:
@@ -139,6 +141,7 @@ def _save_checkpoint(job: dict, done_up_to: int, ahead: set[int], board: Board, 
         "spec": job["spec"],
         "pool": job["pool"],
         "targets": job["targets"],
+        "preset": job.get("preset") or "",
         "done_up_to": done_up_to,
         "ahead": sorted(ahead),
         "errors": errors,
@@ -191,13 +194,32 @@ def run_job(job: dict, box: dict, tick) -> dict:
     done_up_to, ahead, errors = _load_checkpoint(job, board)
     done_up_to = _sweep(max(done_up_to, start), ahead)
     last_tick = 0.0
+    started = time.monotonic()
+    fights = 0
+    window_fights = 0
+    window_at = started
+    rate = None
+    rate_max = None
+    rate_min = None
 
     def finished() -> int:
         return (done_up_to - start) + len(ahead)
 
     def emit(final: bool = False) -> None:
-        nonlocal last_tick
+        nonlocal last_tick, window_fights, window_at, rate, rate_max, rate_min
+        now = time.monotonic()
+        elapsed = now - started
+        span = now - window_at
+        if span >= 1 and fights > window_fights:
+            rate = (fights - window_fights) / span
+            rate_max = rate if rate_max is None else max(rate_max, rate)
+            rate_min = rate if rate_min is None else min(rate_min, rate)
+            window_fights = fights
+            window_at = now
         done = finished()
+        remaining = None
+        if done and elapsed > 0 and total > done:
+            remaining = elapsed * (total - done) / done
         text = status_text(
             worker=job["worker"],
             hero=job["hero"],
@@ -212,6 +234,12 @@ def run_job(job: dict, box: dict, tick) -> dict:
             errors=errors,
             final=final,
             stopped=bool(box.get("stop")) and done < total,
+            elapsed=elapsed,
+            remaining=remaining,
+            rate=rate,
+            rate_max=rate_max,
+            rate_min=rate_min,
+            cpu=cpu_percent(),
         )
         try:
             tick(text)
@@ -239,7 +267,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
         emit(final=True)
         return {"path": path, "done": finished(), "left": 0, "stopped": False, "errors": errors}
 
-    space, items = load(job["hero"], job["spec"], job["pool"])
+    space, items = load(job["hero"], job["spec"], job["pool"], job.get("preset") or None)
     release()
     ctx = multiprocessing.get_context("spawn")
     span = end_ex - done_up_to
@@ -293,6 +321,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
                     row = None
                 if row is not None:
                     board.add(row)
+                    fights += int(row.get("fights") or 0)
                 done_up_to = note_finished(done_up_to, ahead, index)
             done_up_to = _sweep(done_up_to, ahead)
             if time.monotonic() - last_tick >= 5:
