@@ -7,6 +7,7 @@ again whenever a slot can be replaced. Nothing is ranked by reading tooltip text
 
 from __future__ import annotations
 
+import hashlib
 import itertools
 import json
 import os
@@ -376,8 +377,49 @@ def _write_record(spec: str, targets: int, payload: dict) -> None:
         os.remove(lock)
 
 
+def _done_path(items: list[Item], spec: str, targets: int) -> Path:
+    folder = Path(__file__).resolve().parents[1] / "extract" / "exhaustive"
+    folder.mkdir(exist_ok=True)
+    chosen, parts = _share()
+    label = "-".join(str(part) for part in sorted(chosen))
+    key = hashlib.sha1(",".join(item.rawcode for item in items).encode()).hexdigest()[:12]
+    return folder / f"{spec}-{targets}-part{label}-{key}-done.txt"
+
+
+def _load_done(path: Path) -> set[int]:
+    if not path.exists():
+        return set()
+    found = set()
+    for line in path.read_text(encoding="utf-8").split():
+        if line.strip().isdigit():
+            found.add(int(line))
+    return found
+
+
+def _mark_done(path: Path, index: int) -> None:
+    path.parent.mkdir(exist_ok=True)
+    lock = path.with_suffix(".lock")
+    while True:
+        try:
+            fd = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            break
+        except FileExistsError:
+            import time
+
+            time.sleep(0.05)
+    try:
+        done = _load_done(path)
+        if index in done:
+            return
+        with path.open("a", encoding="utf-8") as handle:
+            handle.write(f"{index}\n")
+    finally:
+        os.close(fd)
+        os.remove(lock)
+
+
 def _exhaustive_slice(task: tuple) -> tuple[int, float, int]:
-    first, items, targets, spec, floor, talent_codes, glyph_codes = task
+    first, items, targets, spec, floor, talent_codes, glyph_codes, done_path = task
     kind = _item_kind(items[first])
     if kind == "stack":
         starts = range(1, 7)
@@ -451,6 +493,7 @@ def _exhaustive_slice(task: tuple) -> tuple[int, float, int]:
             chosen,
         )
     print(f"срез {first} конец {seen} лучший {best:.1f} новых {records}", flush=True)
+    _mark_done(Path(done_path), first)
     return first, seen, records
 
 
@@ -464,24 +507,30 @@ def _exhaustive_item_sets(
     floor, greedy = _greedy_floor(items, targets)
     workers = max(1, (os.cpu_count() or 2) - 1)
     chosen, parts = _share()
+    done_path = _done_path(items, _SPEC, targets)
+    done = _load_done(done_path)
     tasks = [
-        (index, items, targets, _SPEC, floor, talent_codes, glyph_codes)
+        (index, items, targets, _SPEC, floor, talent_codes, glyph_codes, str(done_path))
         for index in range(len(items))
-        if index % parts in chosen
+        if index % parts in chosen and index not in done
     ]
     label = ",".join(str(part) for part in sorted(chosen))
     print(
-        f"полный перебор шестёрок, срезов {len(tasks)}, части {label} из {parts}, процессы {workers}",
+        f"полный перебор шестёрок, срезов {len(tasks)}, уже сдано {len(done & set(range(len(items))))}, "
+        f"части {label} из {parts}, процессы {workers}",
         flush=True,
     )
     from sunken_sim.history import release
 
     release()
     total = 0
-    with ProcessPoolExecutor(max_workers=workers) as pool:
-        for first, seen, records in pool.map(_exhaustive_slice, tasks):
-            total += seen
-            print(f"сдан срез {first}, всего шестёрок {total}, новых {records}", flush=True)
+    if tasks:
+        with ProcessPoolExecutor(max_workers=workers) as pool:
+            for first, seen, records in pool.map(_exhaustive_slice, tasks):
+                total += seen
+                print(f"сдан срез {first}, всего шестёрок {total}, новых {records}", flush=True)
+    else:
+        print("все срезы этого пула уже сданы", flush=True)
     path = _record_path(_SPEC, targets)
     if not path.exists():
         return [Build(frozenset(), frozenset(), greedy, 0, 0, 0, 0)]

@@ -1,0 +1,194 @@
+{
+  "5-mixed": {
+    "label": "mixed",
+    "targets": 5,
+    "dps": 2410.6,
+    "total": 72319,
+    "talents": [
+      "Psychic Link",
+      "Dark Torment",
+      "Insanity"
+    ],
+    "glyphs": [
+      "Unsealed Power",
+      "Thunder",
+      "Glass Cannon"
+    ],
+    "points": {
+      "crit": 0,
+      "potency": 5,
+      "luck": 0,
+      "mastery": 0
+    },
+    "stats": {
+      "int": 188.0,
+      "ad": 151.0,
+      "potency": 10.5,
+      "mastery": 10.0,
+      "crit": 0.0,
+      "rating": 0.0,
+      "haste": 0.36000000000000004,
+      "attack_speed": 0.566,
+      "mana_max": 1741.0,
+      "swing": 1.277139208173691,
+      "swp_period": 0.7352941176470588
+    },
+    "sources": [
+      {
+        "name": "Void Rift",
+        "amount": 22556.4
+      },
+      {
+        "name": "Shadow Word: Pain",
+        "amount": 19678.6
+      },
+      {
+        "name": "Thunder",
+        "amount": 7901.6
+      },
+      {
+        "name": "Mind Spike",
+        "amount": 6381.6
+      },
+      {
+        "name": "Всплеск огня",
+        "amount": 6166.9
+      },
+      {
+        "name": "Naaru",
+        "amount": 3535.6
+      },
+      {
+        "name": "Автоатака",
+        "amount": 3150.4
+      },
+      {
+        "name": "Shadow Word: Pain (удар при обновлении)",
+        "amount": 2948.2
+      }
+    ],
+    "orb_mode": "Fire",
+    "mana_left": 97.3,
+    "bound_spell": null,
+    "actions": [
+      {
+        "time": 0.0,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 0.45,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 0.9,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 1.35,
+        "spell": "Void Rift"
+      },
+      {
+        "time": 5.63,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 8.19,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 9.46,
+        "spell": "Void Rift"
+      },
+      {
+        "time": 10.74,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 13.29,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 14.57,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 15.85,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 18.4,
+        "spell": "Void Rift"
+      },
+      {
+        "time": 20.96,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 21.41,
+        "spell": "Mind Spike"
+      },
+      {
+        "time": 26.07,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 26.52,
+        "spell": "Divine Image"
+      },
+      {
+        "time": 26.97,
+        "spell": "Void Rift"
+      },
+      {
+        "time": 28.69,
+        "spell": "Mind Spike"
+      }
+    ],
+    "items": [
+      {
+        "name": "Elemental Orb",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+15% Attack Speed\n+10% Haste\n+6 All Stats\nUse: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)\nFire: Attacks splash for 20 damage and additional 35% of Primary Attribute.\nFrost: Attacks Chill the target, reducing its movement speed by 50% and its attack speed by 25% for 4 seconds.\nShadow: Attacks ignore 6 of the target's Armor."
+      },
+      {
+        "name": "Razorwind",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+32% Attack Speed\n+18% Haste\n+8 Potency"
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
+      {
+        "name": "The Darkglaive",
+        "source": "Random drop",
+        "tip": "+12 to Primary Attribute\n+8% Haste\n+6 Agility\nEquip: Increases the damage dealt by Magical Type effects by 30%.\nEquip: Reduces the effectiveness of Healing Type effects on your hero by 30%."
+      },
+      {
+        "name": "Atiesh, Greatstaff of the Guardian",
+        "source": "Mysterious Wanderer",
+        "tip": "Binds to Player\n+20 to Primary Attribute\n+10 Mastery\n+250 Mana\nEquip: Increases the damage dealt by Magical Type effects by 20%.\nEquip: Your abilities have their base cooldown reduced by 13%."
+      }
+    ],
+    "ignored": [
+      {
+        "item": "Elemental Orb",
+        "lines": [
+          "Use: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)"
+        ]
+      },
+      {
+        "item": "The Darkglaive",
+        "lines": [
+          "Equip: Reduces the effectiveness of Healing Type effects on your hero by 30%."
+        ]
+      }
+    ]
+  }
+}

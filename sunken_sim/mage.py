@@ -127,12 +127,14 @@ def simulate(
     counter: dict | None = None,
     bound_spell: str | None = None,
     spec: str = "frost",
+    *,
+    use_history: bool = True,
 ) -> Report:
     from sunken_sim.history import recall, remember
 
     if spec not in SPECS:
         raise ValueError(spec)
-    if not (counter is not None and bound_spell is None):
+    if use_history and not (counter is not None and bound_spell is None):
         cached = recall("mage", spec, build, targets, bound_spell)
         if cached is not None:
             return cached
@@ -144,13 +146,15 @@ def simulate(
             if spell == "Evocation":
                 continue
             trial_counter: dict | None = {"targets": targets} if counter is not None else None
-            report = simulate(build, targets, trial_counter, spell, spec)
+            report = simulate(build, targets, trial_counter, spell, spec, use_history=use_history)
             if best_report is None or report.dps > best_report.dps:
                 best_report = report
                 best_counter = trial_counter
         if counter is not None and best_counter is not None:
             counter.clear()
             counter.update(best_counter)
+        if not use_history:
+            return best_report
         return remember("mage", spec, best_report, bound_spell)
 
     stats = sheet(build)
@@ -586,12 +590,10 @@ def simulate(
     shown = dict(stats)
     shown["bomb_period"] = bomb_period
     shown["hydra_swing"] = hydra_gap(0.0) if spec == "fire" else 0.0
-    return remember(
-        "mage",
-        spec,
-        Report(build, total / FIGHT, total, sources, actions, shown, targets, mode, bound_spell, mana_left),
-        bound_spell,
-    )
+    report = Report(build, total / FIGHT, total, sources, actions, shown, targets, mode, bound_spell, mana_left)
+    if not use_history:
+        return report
+    return remember("mage", spec, report, bound_spell)
 
 
 def _magic(codes, when: float, mana: float, evocation: bool) -> tuple[float, float]:

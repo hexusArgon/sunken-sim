@@ -17,7 +17,6 @@ from sunken_sim.shadow import Build, Report
 _PATH = Path(__file__).resolve().parents[1] / "extract" / "sim-history.sqlite"
 _CONN: sqlite3.Connection | None = None
 _MEMORY: dict[str, dict] = {}
-_PENDING = 0
 
 
 def sim_key(engine: str, spec: str, build: Build, targets: int, bound_spell: str | None) -> str:
@@ -33,7 +32,10 @@ def _connect() -> sqlite3.Connection:
     global _CONN
     if _CONN is None:
         _PATH.parent.mkdir(exist_ok=True)
-        _CONN = sqlite3.connect(_PATH, timeout=120)
+        # Autocommit. A deferred read plus a batched write held the lock until
+        # the next commit, and rollback on "database is locked" threw away the
+        # fights still sitting in that transaction.
+        _CONN = sqlite3.connect(_PATH, timeout=120, isolation_level=None)
         _CONN.execute("PRAGMA journal_mode=WAL")
         _CONN.execute("PRAGMA synchronous=NORMAL")
         _CONN.execute("PRAGMA busy_timeout=120000")
@@ -43,20 +45,20 @@ def _connect() -> sqlite3.Connection:
     return _CONN
 
 
-def release() -> None:
-    """Commit and close before a process pool forks.
-
-    A worker must not inherit the parent's open write transaction. That lock
-    made every parallel slice fail with "database is locked".
-    """
-    global _CONN, _PENDING
+def _drop_connection() -> None:
+    global _CONN
     if _CONN is None:
         return
-    if _PENDING:
-        _CONN.commit()
-        _PENDING = 0
     _CONN.close()
     _CONN = None
+
+
+def release() -> None:
+    """Close before a process pool forks.
+
+    A worker must not inherit the parent's open connection.
+    """
+    _drop_connection()
 
 
 def _dump(value):
@@ -93,7 +95,6 @@ def recall(engine: str, spec: str, build: Build, targets: int, bound_spell: str 
 
 
 def remember(engine: str, spec: str, report: Report, bound_spell: str | None) -> Report:
-    global _PENDING
     key = sim_key(engine, spec, report.build, report.targets, bound_spell)
     payload = {
         "dps": report.dps,
@@ -107,32 +108,22 @@ def remember(engine: str, spec: str, report: Report, bound_spell: str | None) ->
         "mana_left": report.mana_left,
     }
     _MEMORY[key] = payload
-    connection = _connect()
     text = json.dumps(payload, ensure_ascii=False)
-    for attempt in range(8):
+    for attempt in range(20):
         try:
-            connection.execute(
+            _connect().execute(
                 "INSERT OR IGNORE INTO sims (key, payload) VALUES (?, ?)",
                 (key, text),
             )
-            break
+            return report
         except sqlite3.OperationalError:
-            connection.rollback()
-            if attempt == 7:
-                raise
-            time.sleep(0.25 * (attempt + 1))
-    _PENDING += 1
-    if _PENDING >= 100:
-        connection.commit()
-        _PENDING = 0
+            _drop_connection()
+            time.sleep(min(2.0, 0.05 * (attempt + 1)))
     return report
 
 
 def flush() -> None:
-    global _PENDING
-    if _CONN is not None and _PENDING:
-        _CONN.commit()
-        _PENDING = 0
+    return None
 
 
 atexit.register(flush)

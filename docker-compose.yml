@@ -1,0 +1,7 @@
+services:
+  farm:
+    build: .
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      - ./farm-data:/app/farm-data

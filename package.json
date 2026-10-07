@@ -1,0 +1,7 @@
+{
+  "name": "sunken-farm",
+  "private": true,
+  "scripts": {
+    "start": "python -m pip install -q -r requirements.txt && python run_farm.py"
+  }
+}

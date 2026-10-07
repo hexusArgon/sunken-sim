@@ -1081,8 +1081,8 @@ def simulate(
     cached = _TIMELINE.get(key)
     if cached is None:
         events, actions, windows, mana_left = _fight_events(build, stats, spec, targets, bound_spell)
-        if len(_TIMELINE) >= 8000:
-            _TIMELINE.clear()
+        while len(_TIMELINE) >= 8000:
+            _TIMELINE.pop(next(iter(_TIMELINE)))
         _TIMELINE[key] = (events, actions, windows, mana_left)
     else:
         events, actions, windows, mana_left = cached

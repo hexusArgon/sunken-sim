@@ -1,0 +1,9 @@
+.git
+**/__pycache__
+**/*.pyc
+farm-data
+.env
+extract/**/*.sqlite
+extract/**/*.sqlite-*
+extract/**/*.log
+extract/exhaustive
