@@ -1,7 +1,11 @@
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from sunken_sim.library import map_wts_text
 from pathlib import Path
 import re, sys
 sys.stdout.reconfigure(encoding="utf-8")
-wts = Path(r"C:\Users\eseid\AppData\Local\Temp\sunken_city\war3map.wts").read_text(encoding="utf-8", errors="replace")
+wts = map_wts_text()
 for m in re.finditer(r"Each point of Mastery.{0,220}", wts):
     print(m.group(0).replace("\n", " ")[:240])
     print("---")

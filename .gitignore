@@ -2,5 +2,8 @@ __pycache__/
 *.py[cod]
 *.sqlite
 *.sqlite3
+*.sqlite-wal
+*.sqlite-shm
+*.xlsx
 .env
 farm-data/

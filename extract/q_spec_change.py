@@ -1,9 +1,13 @@
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from sunken_sim.library import map_script
 import re
 import sys
 from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8")
-script = Path(r"C:\Users\eseid\AppData\Local\Temp\sunken_city\war3map.j").read_text(encoding="utf-8", errors="replace")
+script = map_script()
 script = script.replace("\r\n", "\n").replace("\r", "\n")
 
 # specialization change and priest ability lists

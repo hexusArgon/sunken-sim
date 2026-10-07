@@ -6,13 +6,13 @@ import struct
 import sys
 from pathlib import Path
 
-sys.path.insert(0, r"C:\Users\eseid\sunken-sim")
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.stdout.reconfigure(encoding="utf-8")
 
-from sunken_sim.library import MAP_PATH, WTS_PATH, _extract, _load_strings, _parse_objects, load_items
+from sunken_sim.library import MAP_PATH, _extract, _load_strings, _parse_objects, load_items, map_script
 from sunken_sim.search import LEGENDARIES
 
-script = Path(r"C:\Users\eseid\AppData\Local\Temp\sunken_city\war3map.j").read_text(encoding="utf-8", errors="replace")
+script = map_script()
 script = script.replace("\r\n", "\n").replace("\r", "\n")
 
 bodies = {}
@@ -201,6 +201,6 @@ print("rows", len(rows), counts)
 print("unknown ability fields", sorted(unknown))
 print("ring", next(row for row in rows if row["code"] == "I00D"))
 
-out = Path(r"C:\Users\eseid\sunken-sim\extract\stack-rows.json")
+out = Path(__file__).resolve().parent / "stack-rows.json"
 out.write_text(json.dumps({"counts": counts, "rows": rows}, ensure_ascii=False), encoding="utf-8")
 print("wrote", out)

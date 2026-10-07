@@ -1,10 +1,10 @@
 from pathlib import Path
 import sys
 sys.stdout.reconfigure(encoding="utf-8")
-sys.path.insert(0, r"C:\Users\eseid\sunken-sim")
-from sunken_sim.library import _extract, _parse_objects, _load_strings, _resolve, MAP_PATH, WTS_PATH
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from sunken_sim.library import _extract, _parse_objects, _load_strings, _resolve, MAP_PATH, map_strings
 
-strings = _load_strings(WTS_PATH)
+strings = map_strings()
 skin = _parse_objects(_extract(MAP_PATH, "war3mapSkin.w3t"))
 for code in ("I07O", "I0NS", "I0NT", "I0ET", "I06A", "I0AZ"):
     mods = skin.get(code)

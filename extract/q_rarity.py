@@ -2,9 +2,9 @@ import re
 import sys
 from pathlib import Path
 
-sys.path.insert(0, r"C:\Users\eseid\sunken-sim")
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.stdout.reconfigure(encoding="utf-8")
-from sunken_sim.library import MAP_PATH, WTS_PATH, _extract, _load_strings, _parse_objects, _resolve, load_items
+from sunken_sim.library import MAP_PATH, _extract, _load_strings, _parse_objects, _resolve, load_items, map_script, map_strings
 from sunken_sim.search import LEGENDARIES, _map_script, pools_for, shop_codes
 
 script = _map_script()
@@ -25,7 +25,7 @@ print("drop not epic", len(drop_ids - epics))
 print("shop not in any drop table", len(shop_ids - epics - rares - uncommons - commons))
 
 # color on raw name before strip
-strings = _load_strings(WTS_PATH)
+strings = map_strings()
 skin = _parse_objects(_extract(MAP_PATH, "war3mapSkin.w3t"))
 colors = {}
 for code, mods in skin.items():

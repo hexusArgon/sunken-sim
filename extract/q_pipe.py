@@ -1,15 +1,15 @@
 from pathlib import Path
 import sys
-sys.path.insert(0, r"C:\Users\eseid\sunken-sim")
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.stdout.reconfigure(encoding="utf-8")
-from sunken_sim.library import load_items
+from sunken_sim.library import load_items, map_script
 by = {i.rawcode: i for i in load_items()}
 item = by["I00L"]
 print(item.name)
 print(item.tip)
 print("parsed stun", item.stun_chance, item.stun_duration, "flat", item.cooldown_add)
 
-script = Path(r"C:\Users\eseid\AppData\Local\Temp\sunken_city\war3map.j").read_text(encoding="utf-8", errors="replace")
+script = map_script()
 script = script.replace("\r\n", "\n").replace("\r", "\n")
 print("mentions", script.count("'I00L'"))
 start = 0

@@ -2,11 +2,11 @@ import struct
 import sys
 from pathlib import Path
 
-sys.path.insert(0, r"C:\Users\eseid\sunken-sim")
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.stdout.reconfigure(encoding="utf-8")
-from sunken_sim.library import MAP_PATH, WTS_PATH, _extract, _load_strings, _parse_objects, _resolve
+from sunken_sim.library import MAP_PATH, _extract, _load_strings, _parse_objects, _resolve, map_strings
 
-strings = _load_strings(WTS_PATH)
+strings = map_strings()
 units = _parse_objects(_extract(MAP_PATH, "war3map.w3u"))
 priest = units.get("O009") or units.get("H00I")
 print("priest keys", "O009" in units, "sample unit ids", [c for c in units if c.startswith("O") or "priest" in c.lower()][:20])

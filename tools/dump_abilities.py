@@ -2,7 +2,7 @@ import struct
 import zlib
 from pathlib import Path
 
-MAP = Path(r"c:\Users\eseid\Documents\Warcraft III\Maps\Download\Sunken City v2.5.2a.w3x")
+MAP = Path(__file__).resolve().parents[1] / "maps" / "Sunken City v2.5.2a.w3x"
 
 
 def crypt_table():

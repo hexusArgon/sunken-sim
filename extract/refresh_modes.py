@@ -4,14 +4,14 @@ import json
 import sys
 from pathlib import Path
 
-sys.path.insert(0, r"C:\Users\eseid\sunken-sim")
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.stdout.reconfigure(encoding="utf-8")
 
 from sunken_sim.library import load_items
 from sunken_sim.search import GLYPHS, TALENTS
 from sunken_sim.shadow import ORB_MODE, Build, simulate
 
-PATH = Path(r"C:\Users\eseid\sunken-sim\extract\target-sims.json")
+PATH = Path(__file__).resolve().parent / "target-sims.json"
 data = json.loads(PATH.read_text(encoding="utf-8"))
 talent_code = {name: code for code, name in TALENTS.items()}
 glyph_code = {name: code for code, name in GLYPHS.items()}

@@ -2,8 +2,8 @@ import re
 import sys
 from pathlib import Path
 
-sys.path.insert(0, r"C:\Users\eseid\sunken-sim")
-from sunken_sim.library import load_items
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from sunken_sim.library import load_items, map_script
 
 wanted = ("Cursed Skull", "Sinister Deathblade", "Silent Messenger")
 items = {item.name: item for item in load_items()}
@@ -13,7 +13,7 @@ for name in wanted:
     print(item.tip)
     print()
 
-script = Path(r"C:\Users\eseid\AppData\Local\Temp\sunken_city\war3map.j").read_text(encoding="utf-8", errors="replace")
+script = map_script()
 script = script.replace("\r\n", "\n").replace("\r", "\n")
 for code in (items["Silent Messenger"].rawcode, items["Sinister Deathblade"].rawcode, items["Cursed Skull"].rawcode):
     print("====", code, script.count(f"'{code}'"))

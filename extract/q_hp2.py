@@ -1,10 +1,11 @@
+from pathlib import Path
 import statistics
 import sys
-sys.path.insert(0, r"C:\Users\eseid\sunken-sim")
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.stdout.reconfigure(encoding="utf-8")
-from sunken_sim.library import _extract, _parse_objects, _load_strings, _resolve, MAP_PATH, WTS_PATH
+from sunken_sim.library import _extract, _parse_objects, _load_strings, _resolve, MAP_PATH, map_strings
 
-strings = _load_strings(WTS_PATH)
+strings = map_strings()
 units = _parse_objects(_extract(MAP_PATH, "war3map.w3u"))
 skip_words = ("dummy", "portal", "chest", "picker", "barrel", "effect", "spawn", "waypoint", "camera", "circle", "region")
 

@@ -1,14 +1,14 @@
 from pathlib import Path
 import sys
-sys.path.insert(0, r"C:\Users\eseid\sunken-sim")
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.stdout.reconfigure(encoding="utf-8")
-from sunken_sim.library import MAP_PATH, _extract, _parse_objects
+from sunken_sim.library import MAP_PATH, _extract, _parse_objects, map_script
 
 units = _parse_objects(_extract(MAP_PATH, "war3map.w3u"))
 print("uhab", units["O009"].get("uhab"))
 print("uacq", units["O009"].get("uacq"))
 
-script = Path(r"C:\Users\eseid\AppData\Local\Temp\sunken_city\war3map.j").read_text(encoding="utf-8", errors="replace")
+script = map_script()
 script = script.replace("\r\n", "\n").replace("\r", "\n")
 for code in ("A0GB", "A0JK", "A0MH"):
     print("\n====", code, script.count(f"'{code}'"))

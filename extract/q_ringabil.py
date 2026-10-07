@@ -2,7 +2,7 @@ import struct
 import sys
 from pathlib import Path
 
-sys.path.insert(0, r"C:\Users\eseid\sunken-sim")
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from sunken_sim.library import _extract, _parse_objects, MAP_PATH
 
 items = _parse_objects(_extract(MAP_PATH, "war3map.w3t"))

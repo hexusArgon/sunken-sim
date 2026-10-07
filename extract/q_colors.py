@@ -1,13 +1,14 @@
+from pathlib import Path
 import re
 import sys
 from collections import defaultdict
 
-sys.path.insert(0, r"C:\Users\eseid\sunken-sim")
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.stdout.reconfigure(encoding="utf-8")
-from sunken_sim.library import MAP_PATH, WTS_PATH, _extract, _load_strings, _parse_objects, _resolve, load_items
+from sunken_sim.library import MAP_PATH, _extract, _load_strings, _parse_objects, _resolve, load_items, map_strings
 from sunken_sim.search import LEGENDARIES
 
-strings = _load_strings(WTS_PATH)
+strings = map_strings()
 skin = _parse_objects(_extract(MAP_PATH, "war3mapSkin.w3t"))
 by = {item.rawcode: item for item in load_items()}
 groups = defaultdict(list)

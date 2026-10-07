@@ -2,7 +2,7 @@ import json
 import sys
 from pathlib import Path
 
-sys.path.insert(0, r"C:\Users\eseid\sunken-sim")
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from sunken_sim.library import load_items
 from sunken_sim.search import LEGENDARIES, epic_codes
 
@@ -46,7 +46,7 @@ def explain_blocked(text: str) -> str:
             sentences.append(piece + ".")
     return " ".join(sentences)
 
-data = json.loads(Path(r"C:\Users\eseid\sunken-sim\extract\stack-rows.json").read_text(encoding="utf-8"))
+data = json.loads(Path(__file__).resolve().parent / "stack-rows.json".read_text(encoding="utf-8"))
 tips = {item.rawcode: tip_of(item.tip) for item in load_items()}
 keep = epic_codes() | set(LEGENDARIES)
 rows = [
@@ -142,6 +142,6 @@ export default function ItemSelfStack() {{
 }}
 """
 # The f-string above doubled braces for JSX. Fix the shown.length which I escaped wrong.
-path = Path(r"C:\Users\eseid\.cursor\projects\c-Users-eseid-sunken-sim\canvases\item-self-stack.canvas.tsx")
+path = Path(__file__).resolve().parents[1] / "canvases" / "item-self-stack.canvas.tsx"
 path.write_text(text, encoding="utf-8")
 print("wrote", path, "chars", path.stat().st_size)

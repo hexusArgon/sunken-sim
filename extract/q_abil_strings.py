@@ -1,10 +1,11 @@
+from pathlib import Path
 import struct
 import sys
-sys.path.insert(0, r"C:\Users\eseid\sunken-sim")
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.stdout.reconfigure(encoding="utf-8")
-from sunken_sim.library import MAP_PATH, WTS_PATH, _extract, _load_strings, _parse_objects, _resolve
+from sunken_sim.library import MAP_PATH, _extract, _load_strings, _parse_objects, _resolve, map_strings
 
-strings = _load_strings(WTS_PATH)
+strings = map_strings()
 units = _parse_objects(_extract(MAP_PATH, "war3map.w3u"))
 print("O009 fields", list(units["O009"].keys()))
 print("uabi", units["O009"].get("uabi"))

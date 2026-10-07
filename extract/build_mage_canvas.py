@@ -4,8 +4,8 @@ import json
 import sys
 from pathlib import Path
 
-ROOT = Path(r"C:\Users\eseid\sunken-sim\extract")
-CANVAS_DIR = Path(r"C:\Users\eseid\.cursor\projects\c-Users-eseid-sunken-sim\canvases")
+ROOT = Path(__file__).resolve().parent
+CANVAS_DIR = Path(__file__).resolve().parents[1] / "canvases"
 CANVAS = CANVAS_DIR / "mage-sims.canvas.tsx"
 
 sys.path.insert(0, str(ROOT.parent))

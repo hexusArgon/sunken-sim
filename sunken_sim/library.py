@@ -10,7 +10,6 @@ from functools import lru_cache
 from pathlib import Path
 
 MAP_PATH = Path(__file__).resolve().parents[1] / "maps" / "Sunken City v2.5.2a.w3x"
-WTS_PATH = Path(r"C:\Users\eseid\AppData\Local\Temp\sunken_city\war3map.wts")
 
 OTHER_HEROES = (
     "Death Knight",
@@ -241,6 +240,11 @@ def _map_text(name: str) -> str:
 @lru_cache(maxsize=1)
 def map_script() -> str:
     return _map_text("war3map.j")
+
+
+@lru_cache(maxsize=1)
+def map_wts_text() -> str:
+    return _map_text("war3map.wts")
 
 
 def _parse_strings(text: str) -> dict[int, str]:

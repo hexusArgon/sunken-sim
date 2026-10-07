@@ -1,13 +1,14 @@
+from pathlib import Path
 import re
 import sys
-sys.path.insert(0, r"C:\Users\eseid\sunken-sim")
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.stdout.reconfigure(encoding="utf-8")
-from sunken_sim.library import MAP_PATH, WTS_PATH, _extract, _load_strings, _parse_objects, load_items
+from sunken_sim.library import MAP_PATH, _extract, _load_strings, _parse_objects, load_items, map_script, map_strings
 from sunken_sim.search import _map_script, pools_for
 
 script = _map_script()
 epics = set(re.findall(r"set udg_Drops_Epic\[\d+\]='(.{4})'", script))
-strings = _load_strings(WTS_PATH)
+strings = map_strings()
 skin = _parse_objects(_extract(MAP_PATH, "war3mapSkin.w3t"))
 
 def color_of(code):

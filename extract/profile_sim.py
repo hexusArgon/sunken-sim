@@ -1,7 +1,8 @@
+from pathlib import Path
 import cProfile
 import pstats
 import sys
-sys.path.insert(0, r"C:\Users\eseid\sunken-sim")
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from sunken_sim.library import load_items
 from sunken_sim.search import _best_points
 from sunken_sim.shadow import Build, simulate

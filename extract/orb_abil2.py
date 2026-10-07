@@ -1,11 +1,11 @@
 from pathlib import Path
 import struct, sys
 sys.stdout.reconfigure(encoding="utf-8")
-sys.path.insert(0, r"C:\Users\eseid\sunken-sim")
-from sunken_sim.library import _extract, _load_strings, _resolve
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from sunken_sim.library import _extract, _load_strings, _resolve, map_strings
 
-MAP = Path(r"c:\Users\eseid\Documents\Warcraft III\Maps\Download\Sunken City v2.5.2a.w3x")
-strings = _load_strings(Path(r"C:\Users\eseid\AppData\Local\Temp\sunken_city\war3map.wts"))
+MAP = Path(__file__).resolve().parents[1] / "maps" / "Sunken City v2.5.2a.w3x"
+strings = map_strings()
 blob = _extract(MAP, "war3map.w3a")
 want = {"A0AM", "A0AO", "A0AT", "A0AU", "A06G"}
 

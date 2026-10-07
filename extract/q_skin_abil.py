@@ -2,11 +2,11 @@ import struct
 import sys
 from pathlib import Path
 
-sys.path.insert(0, r"C:\Users\eseid\sunken-sim")
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.stdout.reconfigure(encoding="utf-8")
-from sunken_sim.library import MAP_PATH, WTS_PATH, _extract, _load_strings, _resolve
+from sunken_sim.library import MAP_PATH, _extract, _load_strings, _resolve, map_strings
 
-strings = _load_strings(WTS_PATH)
+strings = map_strings()
 want = {"A0GC", "A0GK", "A0CP", "A0H2", "A0D1", "A06N", "A08B", "A0QG", "A0MC", "A0KI", "A0MI", "A0GS", "A0GB", "A0JK", "A0MH"}
 
 def scan(filename):

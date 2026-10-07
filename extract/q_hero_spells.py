@@ -2,11 +2,11 @@ import struct
 import sys
 from pathlib import Path
 
-sys.path.insert(0, r"C:\Users\eseid\sunken-sim")
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.stdout.reconfigure(encoding="utf-8")
-from sunken_sim.library import MAP_PATH, WTS_PATH, _extract, _load_strings, _resolve
+from sunken_sim.library import MAP_PATH, _extract, _load_strings, _resolve, map_script, map_strings
 
-strings = _load_strings(WTS_PATH)
+strings = map_strings()
 blob = _extract(MAP_PATH, "war3mapSkin.w3a")
 
 def u32(data, i):
@@ -61,7 +61,7 @@ for _table in range(2):
             for row in texts:
                 print(" ", row)
 
-script = Path(r"C:\Users\eseid\AppData\Local\Temp\sunken_city\war3map.j").read_text(encoding="utf-8", errors="replace")
+script = map_script()
 script = script.replace("\r\n", "\n").replace("\r", "\n")
 i = script.find("function DivineImageIcon")
 print("\n==== DivineImageIcon ====")

@@ -3,8 +3,8 @@
 import json
 from pathlib import Path
 
-ROOT = Path(r"C:\Users\eseid\sunken-sim\extract")
-CANVAS_DIR = Path(r"C:\Users\eseid\.cursor\projects\c-Users-eseid-sunken-sim\canvases")
+ROOT = Path(__file__).resolve().parent
+CANVAS_DIR = Path(__file__).resolve().parents[1] / "canvases"
 CANVAS = CANVAS_DIR / "priest-sims.canvas.tsx"
 SHADOW = CANVAS_DIR / "shadow-priest-sim.canvas.tsx"
 

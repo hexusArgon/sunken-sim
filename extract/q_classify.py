@@ -4,14 +4,14 @@ import re
 import sys
 from pathlib import Path
 
-sys.path.insert(0, r"C:\Users\eseid\sunken-sim")
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.stdout.reconfigure(encoding="utf-8")
 
-from sunken_sim.library import _extract, _load_strings, _parse_objects, _resolve, MAP_PATH, WTS_PATH, load_items
+from sunken_sim.library import _extract, _load_strings, _parse_objects, _resolve, MAP_PATH, load_items, map_script, map_strings
 
-script = Path(r"C:\Users\eseid\AppData\Local\Temp\sunken_city\war3map.j").read_text(encoding="utf-8", errors="replace")
+script = map_script()
 script = script.replace("\r\n", "\n").replace("\r", "\n")
-strings = _load_strings(WTS_PATH)
+strings = map_strings()
 
 bodies = {}
 for match in re.finditer(r"function (Trig_\w+) takes nothing returns", script):
