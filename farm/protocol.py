@@ -17,6 +17,17 @@ POOL_LABEL = {
 }
 HERO_LABEL = {"priest": "жрец", "mage": "маг", "paladin": "паладин"}
 
+NOTIFY_USER_ID = "229350465668775936"  # hexus_argon
+
+
+def mention(text: str) -> str:
+    return f"<@{NOTIFY_USER_ID}> {text}"[:2000]
+
+
+def allowed_mentions() -> dict:
+    return {"parse": [], "users": [NOTIFY_USER_ID]}
+
+
 CONTROL = "sunken-farm-control "
 JOB = "sunken-farm-job "
 STOP = "sunken-farm-stop "
@@ -220,7 +231,7 @@ def size_text(*, worker: str, hero: str, spec: str, pool: str, targets: int, tot
         (
             f"{worker}: {HERO_LABEL[hero]} · {spec} · {POOL_LABEL[pool]} · {targets} целей",
             f"всего чанков {grouped(total)} (номера 0–{grouped(last)})",
-            "один чанк — шестёрка предметов, таланты и глифы; DPS после лучших пяти очков",
+            "один чанк — шестёрка предметов. Таланты, глифы и очки навыков считаются, только если она обошла жадный порог",
             f"запуск: /{worker} start:0 end:{last}",
         )
     )

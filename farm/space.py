@@ -1,12 +1,12 @@
 """Numbered chunks.
 
-A chunk is one legal six-item loadout, one talent combination and one glyph
-combination. Loadouts that include Mind Amplifier use four talents. The rest
-use three. Glyphs are always a triple. Skill points are scored inside the
-chunk, so they do not add more numbers.
+A chunk is one legal six-item loadout. Talents, glyphs and skill points are
+not separate numbers: a worker scores them only when the item DPS beats the
+greedy floor, the same way extract/run_hp.py does.
 
 Item sets are combinations in rawcode order: one legendary, one orb, a
 stacking item may fill several slots, everything else is a single copy.
+Sets that include Mind Amplifier are numbered after the sets that do not.
 """
 
 from __future__ import annotations
@@ -54,12 +54,8 @@ class Space:
         self.dp_with = self._counts(True)
         self.count_without = self._cell(self.dp_without, 0, slots, 0, 0, 0)
         self.count_with = self._cell(self.dp_with, 0, slots, 0, 0, 0)
-        self.glyph_n = math.comb(len(glyphs), glyph_picks)
-        self.width_without = math.comb(len(talents), picks_without) * self.glyph_n
-        self.width_with = math.comb(len(talents), picks_with) * self.glyph_n
-        self.block_without = self.count_without * self.width_without
-        self.block_with = self.count_with * self.width_with
-        self.total = self.block_without + self.block_with
+        self.glyph_n = math.comb(len(glyphs), glyph_picks) if glyphs else 0
+        self.total = self.count_without + self.count_with
 
     def _idx(self, item: int, slots: int, leg: int, orb: int, amp: int) -> int:
         return ((((item * self._span + slots) * 2 + leg) * 2 + orb) * 2 + amp)
@@ -175,15 +171,8 @@ class Space:
     def decode(self, index: int) -> tuple[tuple[str, ...], tuple[str, ...], tuple[str, ...]]:
         if index < 0 or index >= self.total:
             raise IndexError(index)
-        if index < self.block_without:
-            item_rank, rest = divmod(index, self.width_without)
-            talent_rank, glyph_rank = divmod(rest, self.glyph_n)
-            items = self._unrank_items(self.dp_without, item_rank)
-            talents = self._unrank_comb(talent_rank, self.talents, self.picks_without)
+        if index < self.count_without:
+            items = self._unrank_items(self.dp_without, index)
         else:
-            item_rank, rest = divmod(index - self.block_without, self.width_with)
-            talent_rank, glyph_rank = divmod(rest, self.glyph_n)
-            items = self._unrank_items(self.dp_with, item_rank)
-            talents = self._unrank_comb(talent_rank, self.talents, self.picks_with)
-        glyphs = self._unrank_comb(glyph_rank, self.glyphs, self.glyph_picks)
-        return items, talents, glyphs
+            items = self._unrank_items(self.dp_with, index - self.count_without)
+        return items, (), ()

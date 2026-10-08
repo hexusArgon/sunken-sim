@@ -11,7 +11,7 @@ from farm.paths import data_dir
 from farm.protocol import grouped
 from farm.space import Piece, Space
 
-CACHE_VERSION = 1
+CACHE_VERSION = 2
 # Same eight talents as the current Shadow search.
 SHADOW_TALENTS = ("I0HL", "I0HP", "I0KF", "I0PS", "I0PU", "I0SA", "I0SB", "I0SC")
 RUNEMASTERY = "I0Q8"

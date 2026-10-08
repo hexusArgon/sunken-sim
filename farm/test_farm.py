@@ -13,11 +13,12 @@ from farm.protocol import (
     parse_int,
     parse_job,
     parse_progress,
+    mention,
     parse_stop,
     resolve_hero_spec,
     status_text,
 )
-from farm.runner import Board, Boards, add_one, build_group, note_finished
+from farm.runner import Board, Boards, add_one, build_group, note_finished, note_span
 from farm.space import Piece, Space
 
 
@@ -90,11 +91,9 @@ class SpaceTest(unittest.TestCase):
             glyph_picks=2,
         )
         rows = []
-        for must, picks in ((False, 2), (True, 3)):
+        for must in (False, True):
             for items in legal_sets(pieces, 2, must):
-                for talent in itertools.combinations(talents, picks):
-                    for glyph in itertools.combinations(glyphs, 2):
-                        rows.append((items, talent, glyph))
+                rows.append((items, (), ()))
         self.assertEqual(space.total, len(rows))
         self.assertGreater(space.total, 0)
         decoded = [space.decode(index) for index in range(space.total)]
@@ -174,6 +173,8 @@ class ProtocolTest(unittest.TestCase):
         )
         self.assertIsNone(parse_progress(final))
         self.assertIn("остановлен", final)
+        self.assertTrue(mention("готово").startswith("<@229350465668775936> "))
+        self.assertLessEqual(len(mention("x" * 3000)), 2000)
 
     def test_job_roundtrip(self) -> None:
         job = {
@@ -231,6 +232,11 @@ class BoardTest(unittest.TestCase):
         done = note_finished(done, ahead, 0)
         self.assertEqual((done, ahead), (2, set()))
         self.assertEqual(note_finished(done, ahead, 1), 2)
+        spans: list[tuple[int, int]] = []
+        done = note_span(0, spans, 20, 30)
+        self.assertEqual((done, spans), (0, [(20, 30)]))
+        done = note_span(done, spans, 0, 20)
+        self.assertEqual((done, spans), (30, []))
 
     def test_three_source_tops(self) -> None:
         self.assertEqual(build_group(["shop", "drop"]), "shop_random")
@@ -245,19 +251,6 @@ class BoardTest(unittest.TestCase):
         self.assertEqual(boards.by_group["drop"].rows()[0]["chunk"], 2)
         self.assertEqual(boards.ranked(boards.overall)[0]["place"], 1)
         self.assertEqual(boards.ranked(boards.overall)[0]["chunk"], 3)
-
-    def test_naked_item_top_keeps_ten(self) -> None:
-        from sunken_sim.search import _insert_item_top
-
-        rows: list[dict] = []
-        for index in range(12):
-            rows = _insert_item_top(rows, float(index), [f"I{index:03d}"])
-        self.assertEqual(len(rows), 10)
-        self.assertEqual(rows[0]["items"], ["I011"])
-        self.assertEqual(rows[-1]["item_dps"], 2.0)
-        again = _insert_item_top(rows, 5.0, ["I005"])
-        self.assertEqual(len(again), 10)
-        self.assertEqual(sum(1 for row in again if row["items"] == ["I005"]), 1)
 
     def test_process_pool_starts(self) -> None:
         context = get_context("spawn")

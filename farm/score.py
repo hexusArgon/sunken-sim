@@ -1,8 +1,96 @@
-"""DPS of one chunk, including the best five skill points."""
+"""Item DPS of one sextuple, then talents, glyphs and skill points if it wins."""
 
 from __future__ import annotations
 
-from sunken_sim.shadow import Build
+import itertools
+
+from sunken_sim.shadow import MIND_AMPLIFIER, Build
+
+
+def item_dps(hero: str, spec: str, targets: int, items: tuple) -> float:
+    bare = Build(frozenset(), frozenset(), items, 0, 0, 0, 0)
+    return _fight(hero, spec, targets, bare)
+
+
+def greedy_floor(hero: str, spec: str, targets: int, pieces: list, items: dict) -> float:
+    """Same gate as run_hp: six greedy slots, no talents and no glyphs."""
+    chosen: list = []
+    best = 0.0
+    for _slot in range(6):
+        best_piece = None
+        best_dps = -1.0
+        for piece in pieces:
+            if not _can_take(chosen, piece):
+                continue
+            trial = tuple(chosen + [items[piece.code]])
+            dps = item_dps(hero, spec, targets, trial)
+            if dps > best_dps:
+                best_dps = dps
+                best_piece = piece
+        if best_piece is None:
+            break
+        chosen.append(items[best_piece.code])
+        best = best_dps
+    return best
+
+
+def finish_sextuple(
+    hero: str,
+    spec: str,
+    targets: int,
+    equipped: tuple,
+    talent_codes: list[str],
+    glyph_codes: list[str],
+    picks_without: int,
+    picks_with: int,
+    glyph_picks: int,
+) -> tuple[float, tuple[str, ...], tuple[str, ...], tuple[int, int, int, int], int]:
+    """Best talents, then glyphs, then five skill points. One fight each."""
+    picks = picks_with if any(item.rawcode == MIND_AMPLIFIER for item in equipped) else picks_without
+    fights = 0
+    best_talents: tuple[str, ...] = ()
+    best_dps = -1.0
+    for combo in itertools.combinations(talent_codes, picks):
+        dps = _fight(hero, spec, targets, Build(frozenset(combo), frozenset(), equipped, 0, 0, 0, 0))
+        fights += 1
+        if dps > best_dps:
+            best_dps = dps
+            best_talents = combo
+    best_glyphs: tuple[str, ...] = ()
+    for combo in itertools.combinations(glyph_codes, glyph_picks):
+        dps = _fight(hero, spec, targets, Build(frozenset(best_talents), frozenset(combo), equipped, 0, 0, 0, 0))
+        fights += 1
+        if dps > best_dps:
+            best_dps = dps
+            best_glyphs = combo
+    pointed, points, point_fights = score_build(
+        hero,
+        spec,
+        targets,
+        Build(frozenset(best_talents), frozenset(best_glyphs), equipped, 0, 0, 0, 0),
+    )
+    return pointed, best_talents, best_glyphs, points, fights + point_fights
+
+
+def _can_take(chosen: list, piece) -> bool:
+    codes = [item.rawcode for item in chosen]
+    if piece.amp or piece.kind in ("leg", "orb", "one"):
+        return piece.code not in codes
+    return piece.kind == "stack"
+
+
+def _fight(hero: str, spec: str, targets: int, build: Build) -> float:
+    if hero == "mage":
+        from sunken_sim.mage import simulate
+
+        return simulate(build, targets, spec=spec, use_history=False).dps
+    if hero == "paladin":
+        from sunken_sim.paladin import simulate
+
+        return simulate(build, targets, spec).dps
+    from sunken_sim.shadow import simulate
+
+    return simulate(build, targets, spec=spec, use_history=False).dps
 
 
 def score_build(hero: str, spec: str, targets: int, build: Build) -> tuple[float, tuple[int, int, int, int], int]:

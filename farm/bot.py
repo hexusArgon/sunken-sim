@@ -23,6 +23,7 @@ from farm.protocol import (
     format_job,
     format_stop,
     grouped,
+    mention,
     parse_control,
     parse_int,
     parse_job,
@@ -75,6 +76,7 @@ class Farm:
         self.mirror_sent: dict[str, str] = {}
         self.status_texts: dict[str, str] = {}
         self.running = False
+        self._pinged_error = ""
         self.box = {"stop": False, "job_id": ""}
         self.current_job: dict | None = None
         self.tasks: set[asyncio.Task] = set()
@@ -568,12 +570,14 @@ class Farm:
     async def execute(self, job: dict) -> None:
         try:
             result = await asyncio.to_thread(run_job, job, self.box, self.sync_tick)
+            self._pinged_error = ""
             if result.get("stopped") and not result.get("done"):
                 await self.abort(job)
                 return
             path = result.get("path") or ""
+            finished = not result.get("stopped")
             if path and result.get("done"):
-                uploaded = await self.send_file(job, path)
+                uploaded = await self.send_file(job, path, notify=finished)
             else:
                 uploaded = True
             if uploaded:
@@ -581,18 +585,31 @@ class Farm:
                 await self.delete_marks(job)
             else:
                 self.write_active({"done": True, "uploaded": False, "job": job, "path": path})
+                if finished:
+                    await self.ping(job, f"{job['worker']}: прогон закончился, файл не ушёл")
         except Exception as exc:
             traceback.print_exc()
             try:
                 self.rest.edit(str(job["channel"]), str(job["status"]), f"{job['worker']}: ошибка\n{exc}"[:1900])
             except RestError:
                 pass
+            note = str(exc)
+            if self._pinged_error != note:
+                self._pinged_error = note
+                await self.ping(job, f"{job['worker']}: прогон остановился из-за ошибки\n{exc}")
             await asyncio.sleep(30)
         finally:
             self.running = False
             self.current_job = None
 
-    async def send_file(self, job: dict, path: str) -> bool:
+    async def ping(self, job: dict, text: str) -> None:
+        channel = str(job.get("channel") or self.channel)
+        try:
+            await asyncio.to_thread(self.rest.send, channel, mention(text))
+        except RestError as exc:
+            self.log(f"пинг не ушёл: {exc}")
+
+    async def send_file(self, job: dict, path: str, *, notify: bool = False) -> bool:
         from pathlib import Path
 
         file_path = Path(path)
@@ -602,6 +619,8 @@ class Farm:
             f"{job['worker']}: топ-10 Shop+Random, Shop only и Random only, чанки {grouped(int(job['start']))}–{grouped(int(job['end']))}, "
             f"{job['spec']}, {job['pool']}, {job['targets']} целей"
         )
+        if notify:
+            text = mention(text)
         try:
             await asyncio.to_thread(
                 self.rest.upload,
@@ -617,7 +636,7 @@ class Farm:
 
     async def upload_and_clear(self, active: dict) -> None:
         job = active["job"]
-        if await self.send_file(job, active.get("path") or ""):
+        if await self.send_file(job, active.get("path") or "", notify=True):
             self.clear_active()
             await self.delete_marks(job)
 

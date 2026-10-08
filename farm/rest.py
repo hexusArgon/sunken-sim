@@ -8,6 +8,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
+from farm.protocol import allowed_mentions
+
 _API = "https://discord.com/api/v10"
 
 
@@ -79,7 +81,11 @@ class Rest:
             self._request("DELETE", f"{route}/{current['id']}")
 
     def send(self, channel: str, content: str) -> dict:
-        return self._request("POST", f"/channels/{channel}/messages", {"content": content})
+        return self._request(
+            "POST",
+            f"/channels/{channel}/messages",
+            {"content": content, "allowed_mentions": allowed_mentions()},
+        )
 
     def edit(self, channel: str, message: str, content: str) -> dict:
         return self._request("PATCH", f"/channels/{channel}/messages/{message}", {"content": content})
@@ -114,7 +120,7 @@ class Rest:
             f"--{boundary}\r\n"
             f'Content-Disposition: form-data; name="payload_json"\r\n'
             f"Content-Type: application/json\r\n\r\n"
-            f"{json.dumps({'content': content}, ensure_ascii=False)}\r\n"
+            f"{json.dumps({'content': content, 'allowed_mentions': allowed_mentions()}, ensure_ascii=False)}\r\n"
             f"--{boundary}\r\n"
             f'Content-Disposition: form-data; name="files[0]"; filename="{filename}"\r\n'
             f"Content-Type: application/json\r\n\r\n"
