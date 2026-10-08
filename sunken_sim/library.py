@@ -377,6 +377,7 @@ class Item:
     crit_as_duration: float = 0.0
     stab_chance: float = 0.0
     stab_ratio: float = 0.0
+    armor: int = 0
 
     @property
     def offense(self) -> int:
@@ -430,6 +431,7 @@ def _parse_tip(tip: str) -> dict:
         "crit_as_duration": _first_float(r"Attack Speed for (\d+(?:[.,]\d+)?) second", tip),
         "stab_chance": _sum_ints(r"(\d+)% chance to stab", tip) / 100,
         "stab_ratio": _sum_ints(r"stab the target with darkness, dealing Attrition damage equal to (\d+)%", tip) / 100,
+        "armor": _signed_pct(r"^([+-])(\d+) Armor\b", "\n".join(lines)),
     }
 
 

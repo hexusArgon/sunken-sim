@@ -1,0 +1,100 @@
+I0OT Righteousness
+I09Y Divine Toll
+I09R Divine Knowledge
+I069 Holy Avenger
+I064 Divine Hammer
+I04C Divine Storm
+I09L Beacon of Light
+I01J Zeal
+I0NG Hammer of Justice
+I0MD Next Page
+I0I1 Guarded by the Light
+I09Z Barrier of Faith
+I0OR Holy Aura
+I0OQ Sacred Touch
+I0G8 Hammer Mastery
+I0OU Redemption
+I0OS Judgement
+I0NC Crusade
+I0ND Infusion of Light
+I0MC Previous Page
+
+SPAWN
+function Trig_Blessed_Hammer_Spawn_Actions takes nothing returns nothing
+set udg_BH_Pala_Point=GetUnitLoc(udg_Hero_Paladin)
+set udg_FacingReal_Generic=GetUnitFacing(udg_Hero_Paladin)
+set udg_BH_Offset_Point=PolarProjectionBJ(udg_BH_Pala_Point,100.00,udg_FacingReal_Generic)
+if(Trig_Blessed_Hammer_Spawn_Func006C())then
+call CreateNUnitsAtLoc(1,'h02H',GetOwningPlayer(udg_Hero_Paladin),udg_BH_Offset_Point,udg_FacingReal_Generic)
+set udg_BH_Unit=GetLastCreatedUnit()
+else
+set udg_BH_Unit=GroupPickRandomUnit(udg_BH_FreeGroup)
+call GroupRemoveUnitSimple(udg_BH_Unit,udg_BH_FreeGroup)
+call SetUnitPositionLocFacingBJ(udg_BH_Unit,udg_BH_Offset_Point,udg_FacingReal_Generic)
+call SetUnitAnimation(udg_BH_Unit,"birth")
+endif
+call RemoveLocation(udg_BH_Offset_Point)
+set udg_BH_CustomValue=GetUnitUserData(udg_BH_Unit)
+set udg_BH_Angle[udg_BH_CustomValue]=udg_FacingReal_Generic
+set udg_BH_Distance[udg_BH_CustomValue]=100.00
+set udg_BH_TickCount[udg_BH_CustomValue]=0
+if(Trig_Blessed_Hammer_Spawn_Func013C())then
+set udg_BH_Duration[udg_BH_CustomValue]=12.00
+else
+set udg_BH_Duration[udg_BH_CustomValue]=9.00
+endif
+call GroupAddUnitSimple(udg_BH_Unit,udg_BH_HammerGroup)
+if(Trig_Blessed_Hammer_Spawn_Func016C())then
+call EnableTrigger(gg_trg_Blessed_Hammer_Rotation)
+else
+endif
+set bj_wantDestroyGroup=true
+call ForGroupBJ(GetUnitsInRangeOfLocAll(350.00,udg_BH_Pala_Point),function Trig_Blessed_Hammer_Spawn_Func018A)
+call RemoveLocation(udg_BH_Pala_Point)
+
+TIPS
+
+#1846
+Strikes the target dealing moderate amount of damage. If the target is below 30% of it's maximum health, Crusader Strike will deal 100 extra damage.
+
+Level 1 - 75 damage.
+Level 2 - 145 damage.
+Level 3 - 280 damage.
+Level 4 - 360 damage.
+
+Taunting ability
+Cooldown: 5 seconds.
+
+#2852
+Strikes the target dealing moderate amount of damage. If the target is below 30% of it's maximum health, Crusader Strike will deal 100 extra damage.
+
+Deals 145 damage, 
+
+Taunting ability
+Cooldown: 5 seconds.
+
+#2885
+Strikes the target dealing moderate amount of damage. If the target is below 30% of it's maximum health, Crusader Strike will deal 10 extra damage.
+
+Deals 280 damage, 
+
+Taunting ability
+Cooldown: 5 seconds.
+
+#2927
+Strikes the target dealing moderate amount of damage. If the target is below 30% of it's maximum health, Crusader Strike will deal 100 extra damage.
+
+Deals 360 damage, 
+
+Taunting ability
+Cooldown: 5 seconds.
+
+#11389
+Each attack applies Righteous Fury on the target for 5 seconds which reduces Attack Speed by 18%. Every 3rd attack causes 5 Magical damage (+200% of Strength). Each level of Crusader Strike increases the damage of this effect by additional 25.
+
+#11425
+Specializations affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different Specializations.
+
+Retribution:
+• Increases the damage of Crusader Strike by 10%, increased by additional 1% per point of Mastery.
+• The Paladin's base attack cooldown is reduced by 3% for each currently active Blessed Hammer.

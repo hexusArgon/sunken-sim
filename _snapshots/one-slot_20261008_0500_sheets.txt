@@ -1,0 +1,3 @@
+spreadsheet 1Cnn9KJfwdI9pKEZMR_6T-xKCO674TsqYP5Bb4bsCj6w
+before creating Paladin
+Priest	1867684363	{'rowCount': 239, 'columnCount': 13, 'frozenRowCount': 1}

@@ -132,10 +132,17 @@ def run_spec(spec: str, pools: tuple[tuple[str, list], ...], shop_ids: set[str],
                 print(f"уже есть {spec} {key}", flush=True)
                 continue
             print(f"старт {spec} {key} {len(pool)}", flush=True)
-            build, dps = search_pool(pool, seed, targets, spec, MAGE_TALENTS, "mage")
-            names = ", ".join(item.name for item in build.items)
-            print(f"{spec} {key} {dps:.1f} {names}", flush=True)
-            results[key] = payload(label, build, shop_ids, targets, spec)
+            found = search_pool(pool, seed, targets, spec, MAGE_TALENTS, "mage")
+            tops = []
+            for place, (build, dps) in enumerate(found, start=1):
+                names = ", ".join(item.name for item in build.items)
+                print(f"{spec} {key} #{place} {dps:.1f} {names}", flush=True)
+                row = payload(label, build, shop_ids, targets, spec)
+                row["place"] = place
+                tops.append(row)
+            best = dict(tops[0])
+            best["top"] = tops
+            results[key] = best
             out.write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
             write_all()
     print(f"{spec} готово", flush=True)

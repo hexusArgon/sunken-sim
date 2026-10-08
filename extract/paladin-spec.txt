@@ -1,0 +1,123 @@
+spec change body 26648 Hero_Paladin 1
+
+==== 0 12123 ====
+lzSetAbilityIcon('A0I0',"ReplaceableTextures\\CommandButtons\\BTNFrostPresence.blp")
+call BlzSetAbilityIcon('A0I9',"ReplaceableTextures\\CommandButtons\\PASFrostPresence.blp")
+call UnitRemoveAbilityBJ('A038',udg_Hero_DeathKnight)
+call UnitAddAbilityBJ('A085',udg_Hero_DeathKnight)
+else
+endif
+endif
+endif
+else
+endif
+if(Trig_Specialization_Change_Func001Func012Func006C())then
+set udg_Mastery_Unit=udg_Hero_Paladin
+if(Trig_Specialization_Change_Func001Func012Func006Func002C())then
+call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
+call BlzSetAbilityIcon('A0JM',"ReplaceableTextures\\CommandButtons\\BTNPalaProtection.blp")
+else
+if(Trig_Specialization_Change_Func001Func012Func006Func002Func001C())then
+call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),3)
+call BlzSetAbilityIcon('A0JM',"ReplaceableTextures\\CommandButtons\\BTNHolyBolt.blp")
+else
+if(Trig_Specialization_Change_Func001Func012Func006Func002Func001Func001C())then
+call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
+call BlzSetAbilityIcon('A0JM',"ReplaceableTextures\\CommandButtons\\BTNRetribution.blp")
+else
+endif
+endif
+endif
+else
+endif
+if(Trig_Specialization_Change_Func001Func012Func008C())then
+set udg_Mastery_Unit=udg_Hero_Monk
+if(Trig_Specialization_Change_Func001Func012Func008Func002C())then
+call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
+call BlzSetAbilityIcon('A040',"ReplaceableTextures\\CommandButtons\\BTNBrewmasterSpec.blp")
+call UnitRemoveAbilityBJ('A0OM',udg_Hero_Monk)
+call UnitAddAbilityBJ('A0R7',udg_Hero_Monk)
+else
+if(Trig_Specialization_Change_Func001Func012Func008Func002Func001C())then
+call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),3)
+call BlzSetAbilityIcon('A040',"ReplaceableTextures\\CommandButtons\\BTNMistweaverSpec.blp")
+call UnitRemoveAbilityBJ('A0R7',udg_Hero_Monk)
+call UnitAddAbilityBJ('A0R6',udg_Hero_Monk)
+else
+if(Trig_Specialization_Change_Func001Func012Func008Func002Func001Func001C())then
+call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
+call BlzSetAbilityIcon('A040',"ReplaceableTextures\\CommandButtons\\BTNWindwalkerSpec.blp")
+call UnitRemoveAbilityBJ('A0R6',udg_Hero_Monk)
+call UnitAddAbilityBJ('A0OM',udg_Hero_Monk)
+else
+endif
+endif
+endif
+else
+endif
+if(Trig_Specialization_Change_Func001Func012Func010C())then
+set udg_Mastery_Unit=udg_Hero_DragonSentinel
+if(Trig_Specialization_Change_Func001Func012Func010Func002C())then
+call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
+call BlzSetAbilityIcon(GetSpellAbilityId(),"ReplaceableTextures\\Com
+
+==== strings ====
+760: |cffe74d3eCrusader Strike|r now causes |cffe74d3eDivine Storm|r which unleashes a whirl of holy hammers, dealing |cffffcc0020|r |c000099ffMagical|r damage |c00cd7004(+100% of Strength) (+100% of Intelligence) (+100% of Mastery)|r to all nea
+1048: Reduces all damage taken by the Paladin by |cffffcc008%|r. |  | If an allied Hero takes lethal damage, they will restore |cffffcc0050%|r of the Paladin's maximum health instead. This is a |c0000cc33Healing|r Type effect. Cannot occur more than 
+3227: Type: |c000099ffMagical|r | Throws a hammer in front of the Paladin that spirals outward for |cffffcc009|r seconds, dealing damage |c00cd7004(+45% of Strength)|r to enemies hit and causes their next attack to deal less damage. Enemies within 
+3302: Doubles the maximum health scaling of |cffe74d3eHoly Light|r and whenever the Paladin casts |cffe74d3eHoly Light|r on a target, a |cffe74d3eBeacon of Light|r heal will be cast on all other allied heroes within |cffffcc00500|r range. |cffe74
+3881: Grants the Paladin |cffe74d3eHoly Aura|r which affects allied units within |cffffcc00600|r range and increases the healing taken from |c0000cc33Healing|r Type effects by |cffffcc0015%|r.
+4418: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+4420: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+4713: +160 Health | +90 Mana | |c005ddf26Use: Deals 250 |cff83d5fcspell|c005ddf26 damage to a targeted enemy unit. (Cooldown: 90 seconds)|r | |c00eccf11"The Deathlords are rumored to have been mighty Paladins once. One of their order turned from the li
+4817: Pick Blood Elf |c00f58cbaPaladin|r
+5181: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+5187: (Paladin)
+5341: Type: |c000099ffMagical|r | Throws a hammer in front of the Paladin that spirals outward for |cffffcc009|r seconds, dealing damage |c00cd7004(+45% of Strength)|r to enemies hit and causes their next attack to deal less damage. Enemies within 
+5600: +4 Agility | +4 Intelligence | |c005ddf26Use: Creates 2 Skeleton Warriors from a corpse that last 30 seconds. (Cooldown: 18 seconds)|r | |c00eccf11"An ancient blade that was used by a mighty undead lord to revive the corpses of enemy armies. The 
+6314: Type: |c000099ffMagical|r | Throws a hammer in front of the Paladin that spirals outward for |cffffcc009|r seconds, dealing damage |c00cd7004(+45% of Strength)|r to enemies hit and causes their next attack to deal less damage. Enemies within 
+6316: Type: |c000099ffMagical|r | Throws a hammer in front of the Paladin that spirals outward for |cffffcc009|r seconds, dealing damage |c00cd7004(+45% of Strength)|r to enemies hit and causes their next attack to deal less damage. Enemies within 
+6317: Type: |c000099ffMagical|r | Throws a hammer in front of the Paladin that spirals outward for |cffffcc009|r seconds, dealing damage |c00cd7004(+45% of Strength)|r to enemies hit and causes their next attack to deal less damage. Enemies within 
+6677: Type: |c000099ffMagical|r | Throws a hammer in front of the Paladin that spirals outward for |cffffcc009|r seconds, dealing damage |c00cd7004(+45% of Strength)|r to enemies hit and causes their next attack to deal less damage. Enemies within 
+6913: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+7770: Type: |c000099ffMagical|r | Throws a hammer in front of the Paladin that spirals outward for |cffffcc009|r seconds, dealing damage |c00cd7004(+45% of Strength)|r to enemies hit and causes their next attack to deal less damage. Enemies within 
+8096: Type: |c000099ffMagical|r | Throws a hammer in front of the Paladin that spirals outward for |cffffcc009|r seconds, dealing damage |c00cd7004(+45% of Strength)|r to enemies hit and causes their next attack to deal less damage. Enemies within 
+8284: Type: |c000099ffMagical|r, |c0000cc33Healing|r | Causes the next attack of the Paladin to cause damage |c00cd7004(+275% of Strength)|r and to restore health |c00cd7004(+4% of maximum Health)|r. The target will also get |cfff6a002Taunted|r for
+8458: |c00f58cbaPaladin|r
+8466: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+9092: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+9117: Type: |c000099ffMagical|r | Throws a hammer in front of the Paladin that spirals outward for |cffffcc009|r seconds, dealing damage |c00cd7004(+45% of Strength)|r to enemies hit and causes their next attack to deal less damage. Enemies within 
+9318: Type: |c000099ffMagical|r, |c0000cc33Healing|r | Causes the next attack of the Paladin to cause damage |c00cd7004(+275% of Strength)|r and to restore health |c00cd7004(+4% of maximum Health)|r. The target will also get |cfff6a002Taunted|r for
+9525: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+9651: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+9754: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+9790: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+9949: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+9964: (Paladin)
+10005: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+10082: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+10143: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+10265: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+10394: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+10474: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+10486: Type: |c000099ffMagical|r, |c0000cc33Healing|r | Causes the next attack of the Paladin to cause damage |c00cd7004(+275% of Strength)|r and to restore health |c00cd7004(+4% of maximum Health)|r. The target will also get |cfff6a002Taunted|r for
+10704: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+10796: Type: |c000099ffMagical|r, |c0000cc33Healing|r | Causes the next attack of the Paladin to cause damage |c00cd7004(+275% of Strength)|r and to restore health |c00cd7004(+4% of maximum Health)|r. The target will also get |cfff6a002Taunted|r for
+10829: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+10894: Type: |c000099ffMagical|r, |c0000cc33Healing|r | Causes the next attack of the Paladin to cause damage |c00cd7004(+275% of Strength)|r and to restore health |c00cd7004(+4% of maximum Health)|r. The target will also get |cfff6a002Taunted|r for
+11073: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+11176: The Mastery stat grants you a different bonus depending on your hero class. Click this button to display your current amount of Mastery. |  | Paladin: |c00eccf11Righteous Protector|r | Each point of Mastery increases the damage reduction of Divin
+11425: |cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r. |  | |cfff6b687Retribution:|r | |cffffcc00•|r Increases
+11516: Boosts Attack Speed and Haste. Also increases the damage of Crusader Strike for each Blessed Hammer. | Classes: |c00f58cbaPaladin|r
+11518: +18% Attack Speed | +14% Haste | Classes: |c00f58cbaPaladin|r | |c005ddf26Equip: Crusader Strike deals 5% more damage for each Blessed Hammer.|r
+11520: Boosts Strength and Intelligence. Also reduces the cooldown of Holy Light. | Classes: |c00f58cbaPaladin|r
+11522: +12 Strength | +12 Intelligence | Classes: |c00f58cbaPaladin|r | |c005ddf26Equip: Reduces the cooldown of Holy Light by 1,8 seconds.|r
+11524: Boosts Mastery, Haste and Armor. Also applies Divine Protection on yourself when targeting allies with it. | Classes: |c00f58cbaPaladin|r
+11526: +8 Mastery | +5% Haste | +5 Armor | Classes: |c00f58cbaPaladin|r | |c005ddf26Equip: Casting Divine Protection on an ally also applies it on yourself.|r
+11528: Boosts Strength and Haste. Also allows you to benefit from the Divine Toll Talent. | Classes: |c00f58cbaPaladin|r
+11530: +12 Strength | +10% Haste | Classes: |c00f58cbaPaladin|r | |c005ddf26Equip: Allows you to benefit from the Divine Toll Talent.|r
+12411: Type: |c000099ffMagical|r | Throws a hammer in front of the Paladin that spirals outward for |cffffcc009|r seconds, dealing damage |c00cd7004(+45% of Strength)|r to enemies hit and causes their next attack to deal less damage. Enemies within 
+12413: Type: |c000099ffMagical|r | Throws a hammer in front of the Paladin that spirals outward for |cffffcc009|r seconds, dealing damage |c00cd7004(+45% of Strength)|r to enemies hit and causes their next attack to deal less damage. Enemies within 
+12414: Type: |c000099ffMagical|r | Throws a hammer in front of the Paladin that spirals outward for |cffffcc009|r seconds, dealing damage |c00cd7004(+45% of Strength)|r to enemies hit and causes their next attack to deal less damage. Enemies within 
+12415: Type: |c000099ffMagical|r | Throws a hammer in front of the Paladin that spirals outward for |cffffcc009|r seconds, dealing damage |c00cd7004(+45% of Strength)|r to enemies hit and causes their next attack to deal less damage. Enemies within 
+string hits 58

@@ -1,4 +1,4 @@
-"""Five-letter name of this computer. Stable across restarts."""
+"""Name of this computer. Stable across restarts. It is also the Discord command."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from pathlib import Path
 
 from farm.paths import ROOT, data_dir
 
-_WORD = re.compile(r"[a-z]{5}")
+_WORD = re.compile(r"[a-z][a-z0-9_-]{0,31}")
 _CONS = "bcdfghjklmnpqrstvwxyz"
 _VOWELS = "aeiou"
 
@@ -39,7 +39,7 @@ def worker_name() -> str:
     forced = os.environ.get("WORKER_NAME", "").strip().lower()
     if forced:
         if not _WORD.fullmatch(forced):
-            raise SystemExit("WORKER_NAME — пять латинских букв, например kivor")
+            raise SystemExit("WORKER_NAME — имя команды Discord: латиница, цифры, _ и -, до 32 знаков")
         path.write_text(forced, encoding="utf-8")
         return forced
     if path.exists():

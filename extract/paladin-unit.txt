@@ -1,0 +1,61 @@
+unit udg_Hero_Paladin=null
+set udg_Hero_Paladin=GetSoldUnit()
+--- create ---
+CreateNUnitsAtLoc(1,'n045',GetOwningPlayer(udg_Hero_Paladin
+CreateNUnitsAtLoc(1,'h02H',GetOwningPlayer(udg_Hero_Paladin
+--- crusader context ---
+UnitDamageTargetBJ(udg_DamageEventSource,udg_DamageEventTarget,udg_RighteousFury_Damage,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
+if(Trig_PreDamage_Heroes_Func002Func004Func012Func004Func007Func007C())then
+set udg_TempPoint_DamageEngine=GetUnitLoc(udg_DamageEventSource)
+set bj_wantDestroyGroup=true
+call ForGroupBJ(GetUnitsInRangeOfLocAll(500.00,udg_TempPoint_DamageEngine),function Trig_PreDamage_Heroes_Func002Func004Func012Func004Func007Func007Func003A)
+call RemoveLocation(udg_TempPoint_DamageEngine)
+else
+endif
+call AddSpecialEffectTargetUnitBJ("origin",udg_DamageEventTarget,"war3mapImported\\HolyBlast.mdx")
+call DestroyEffectBJ(GetLastCreatedEffectBJ())
+else
+endif
+else
+endif
+if(Trig_PreDamage_Heroes_Func002Func004Func012Func006C())then
+call UnitRemoveBuffBJ('B050',udg_DamageEventSource)
+set udg_CrusaderStrike_Damage=(((90.00*I2R(GetUnitAbilityLevelSwapped('A0GE',udg_Hero_Paladin)))+30.00)+(2.75*I2R(GetHeroStatBJ(bj_HEROSTAT_STR,udg_Hero_Paladin,true))))
+if(Trig_PreDamage_Heroes_Func002Func004Func012Func006Func004C())then
+set udg_CrusaderStrike_Damage=(udg_CrusaderStrike_Damage*(1.10+(0.01*I2R(udg_Mastery_Stat[GetConvertedPlayerId(GetOwningPlayer(udg_Hero_Paladin))]))))
+else
+endif
+if(Trig_PreDamage_Heroes_Func002Func004Func012Func006Func005C())then
+set udg_CrusaderStrike_Damage=(udg_CrusaderStrike_Damage*(1+(0.05*I2R(CountUnitsInGroup(udg_BH_HammerGroup)))))
+else
+endif
+set udg_NextDamageType=udg_DamageTypeMagical
+call UnitDamageTargetBJ(udg_DamageEventSource,udg_DamageEventTarget,udg_CrusaderStrike_Damage,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
+set udg_Taunt_Attempter=udg_DamageEventSource
+set udg_Taunt_Target=udg_DamageEventTarget
+set udg_Taunt_Duration=3.00
+call Conditional
+
+--- str 2274 ---
+Crusader Strike
+
+--- str 8113 ---
+Crusader Strike
+
+--- str 3079 ---
+Divine Storm
+
+--- str 3505 ---
+Blessed Hammer
+
+--- str 4000 ---
+Judgement
+
+--- str 261 ---
+Beacon of Light
+
+--- str 1188 ---
+Divine Toll
+
+--- str 307 ---
+Divine Protection

@@ -64,6 +64,7 @@ class Farm:
         self.rest = Rest(token)
         self.app_id = ""
         self.control_id = ""
+        self.control_channel = channel
         self.lock = asyncio.Lock()
         self.client: discord.Client | None = None
         self.gateway_task: asyncio.Task | None = None
@@ -98,6 +99,16 @@ class Farm:
         if path.exists():
             path.unlink()
 
+    def log(self, text: str) -> None:
+        print(text, flush=True)
+        try:
+            path = data_dir() / "bot.log"
+            with path.open("a", encoding="utf-8") as handle:
+                stamp = datetime.now().isoformat(timespec="seconds")
+                handle.write(f"{stamp} {text}\n")
+        except OSError:
+            pass
+
     async def run(self) -> None:
         while True:
             try:
@@ -123,44 +134,58 @@ class Farm:
         )
         print(f"Компьютер {self.name}. Команда /{self.name}", flush=True)
 
-    async def channel_messages(self) -> list[dict]:
-        pins, recent = await asyncio.gather(
-            asyncio.to_thread(self.rest.pins, self.channel),
-            asyncio.to_thread(self.rest.recent, self.channel),
-        )
+    async def channel_messages(self, channel: str | None = None) -> list[dict]:
+        channel = channel or self.channel
+        recent = await asyncio.to_thread(self.rest.recent, channel)
+        pins: list = []
+        try:
+            pins = await asyncio.to_thread(self.rest.pins, channel)
+        except RestError as exc:
+            self.log(f"закрепления недоступны: {exc}")
         found: dict[str, dict] = {}
         for message in list(pins) + list(recent):
             found[str(message["id"])] = message
         return list(found.values())
 
     async def ensure_control(self) -> str:
-        controls = await self._controls()
+        controls = await self._controls_all()
         if not controls:
             created = await asyncio.to_thread(self.rest.send, self.channel, format_control("", []))
-            await asyncio.sleep(1)
-            controls = await self._controls()
-            if not controls:
-                controls = [created]
+            controls = [created]
         controls.sort(key=lambda message: int(message["id"]))
-        keep = str(controls[0]["id"])
+        keep = controls[0]
+        self.control_channel = str(keep.get("channel_id") or self.channel)
+        keep_id = str(keep["id"])
         for extra in controls[1:]:
             try:
-                await asyncio.to_thread(self.rest.delete, self.channel, extra["id"])
+                await asyncio.to_thread(self.rest.delete, str(extra.get("channel_id") or self.control_channel), extra["id"])
             except RestError:
                 pass
         try:
-            await asyncio.to_thread(self.rest.pin, self.channel, keep)
+            await asyncio.to_thread(self.rest.pin, self.control_channel, keep_id)
         except RestError as exc:
-            print(
+            self.log(
                 "Не закрепил служебное сообщение. Боту нужно право Manage Messages, "
-                "иначе команда пропадёт из истории канала.",
-                exc,
-                flush=True,
+                f"иначе команда пропадёт из истории канала. {exc}"
             )
-        return keep
+        return keep_id
 
-    async def _controls(self) -> list[dict]:
-        return [message for message in await self.channel_messages() if parse_control(message.get("content") or "")]
+    async def _controls_all(self) -> list[dict]:
+        try:
+            channels = await asyncio.to_thread(self.rest.guild_channels, self.guild)
+        except RestError as exc:
+            self.log(f"список каналов: {exc}")
+            channels = [{"id": self.channel, "type": 0}]
+        found = []
+        for row in channels:
+            if row.get("type") not in (0, None):
+                continue
+            try:
+                messages = await asyncio.to_thread(self.rest.recent, str(row["id"]))
+            except RestError:
+                continue
+            found.extend(message for message in messages if parse_control(message.get("content") or ""))
+        return found
 
     async def leader_forever(self) -> None:
         while True:
@@ -177,7 +202,7 @@ class Farm:
 
     async def leader_once(self) -> None:
         async with self.lock:
-            message = await asyncio.to_thread(self.rest.get_message, self.channel, self.control_id)
+            message = await asyncio.to_thread(self.rest.get_message, self.control_channel, self.control_id)
             state = parse_control(message.get("content") or "") or {"leader": "", "watch": []}
             foreign = state["leader"] not in ("", self.name) and message_age(message) <= STALE_SECONDS
             rows: list[tuple[str, int, int]] = []
@@ -185,11 +210,11 @@ class Farm:
                 watch, rows = await self._collect_watch(state["watch"])
                 await asyncio.to_thread(
                     self.rest.edit,
-                    self.channel,
+                    self.control_channel,
                     self.control_id,
                     format_control(self.name, watch),
                 )
-                confirm = await asyncio.to_thread(self.rest.get_message, self.channel, self.control_id)
+                confirm = await asyncio.to_thread(self.rest.get_message, self.control_channel, self.control_id)
                 confirmed = parse_control(confirm.get("content") or "") or {"leader": ""}
                 foreign = confirmed["leader"] != self.name
         if foreign:
@@ -303,10 +328,23 @@ class Farm:
         await interaction.response.defer()
         self._track(self.dispatch(interaction))
 
+    async def show(self, interaction: discord.Interaction, text: str) -> None:
+        text = text[:1900]
+        try:
+            await asyncio.wait_for(interaction.edit_original_response(content=text), timeout=15)
+            return
+        except Exception as exc:
+            self.log(f"ответ команды: {exc}")
+        try:
+            await asyncio.to_thread(self.rest.edit_original, self.app_id, interaction.token, text)
+        except RestError as exc:
+            self.log(f"webhook ответа: {exc}")
+
     async def dispatch(self, interaction: discord.Interaction) -> None:
         data = interaction.data or {}
         name = str(data.get("name") or "")
         options = {opt["name"]: opt.get("value") for opt in data.get("options") or []}
+        self.log(f"команда /{name}")
         try:
             if options.get("stop"):
                 await self.stop_worker(interaction, name)
@@ -326,11 +364,12 @@ class Farm:
 
             if "start" not in options and "end" not in options and share is None:
                 space, _items = await asyncio.to_thread(space_of)
-                await interaction.edit_original_response(
-                    content=size_text(worker=name, hero=hero, spec=spec, pool=pool, targets=targets, total=space.total)
+                await self.show(
+                    interaction,
+                    size_text(worker=name, hero=hero, spec=spec, pool=pool, targets=targets, total=space.total),
                 )
                 return
-            await interaction.edit_original_response(content="Считаю размер пространства…")
+            await self.show(interaction, "Считаю размер пространства…")
             space, _items = await asyncio.to_thread(space_of)
             if space.total <= 0:
                 raise ValueError("в этом пространстве нет чанков")
@@ -346,12 +385,30 @@ class Farm:
                     raise ValueError("end меньше start")
                 if start >= space.total or end >= space.total:
                     raise ValueError(f"последний чанк {grouped(space.total - 1)}")
+            left = end - start + 1
+            await self.show(
+                interaction,
+                status_text(
+                    worker=name,
+                    hero=hero,
+                    spec=spec,
+                    pool=pool,
+                    targets=targets,
+                    start=start,
+                    end=end,
+                    done=0,
+                    left=left,
+                    best=None,
+                    elapsed=0,
+                ),
+            )
             await self.enqueue(interaction, name, hero, spec, pool, targets, start, end, preset)
         except (ValueError, RuntimeError) as exc:
-            await interaction.edit_original_response(content=str(exc)[:1900])
+            await self.show(interaction, str(exc))
         except Exception as exc:
             traceback.print_exc()
-            await interaction.edit_original_response(content=f"ошибка: {exc}"[:1900])
+            self.log(f"команда /{name}: {exc}")
+            await self.show(interaction, f"ошибка: {exc}")
 
     async def enqueue(
         self,
@@ -365,12 +422,11 @@ class Farm:
         end: int,
         preset: str | None = None,
     ) -> None:
-        for message in await self.channel_messages():
+        channel = str(interaction.channel_id or self.channel)
+        for message in await self.channel_messages(channel):
             job = parse_job(message.get("content") or "")
             if job and job["worker"] == name:
-                await interaction.edit_original_response(
-                    content=f"{name} уже считает. Остановка: команда /{name} с галкой stop"
-                )
+                await self.show(interaction, f"{name} уже считает. Остановка: команда /{name} с галкой stop")
                 return
         import secrets
 
@@ -386,8 +442,9 @@ class Farm:
             done=0,
             left=left,
             best=None,
+            elapsed=0,
         )
-        status = await asyncio.to_thread(self.rest.send, self.channel, text)
+        status = await asyncio.to_thread(self.rest.send, channel, text)
         job = {
             "id": secrets.token_hex(4),
             "worker": name,
@@ -397,34 +454,34 @@ class Farm:
             "spec": spec,
             "pool": pool,
             "targets": targets,
-            "channel": self.channel,
+            "channel": channel,
             "status": str(status["id"]),
             "preset": preset or "",
         }
-        posted = await asyncio.to_thread(self.rest.send, self.channel, format_job(job))
+        posted = await asyncio.to_thread(self.rest.send, channel, format_job(job))
         job["job_message"] = str(posted["id"])
         try:
-            await asyncio.to_thread(self.rest.pin, self.channel, job["job_message"])
+            await asyncio.to_thread(self.rest.pin, channel, job["job_message"])
         except RestError as exc:
-            print(f"не закрепил задачу: {exc}", flush=True)
+            self.log(f"не закрепил задачу: {exc}")
+        self.mirrors[job["status"]] = interaction.token
+        self.status_texts[job["status"]] = text
         async with self.lock:
-            message = await asyncio.to_thread(self.rest.get_message, self.channel, self.control_id)
+            message = await asyncio.to_thread(self.rest.get_message, self.control_channel, self.control_id)
             state = parse_control(message.get("content") or "") or {"leader": self.name, "watch": []}
-            state["watch"].append({"channel": self.channel, "message": job["status"], "worker": name})
+            state["watch"].append({"channel": channel, "message": job["status"], "worker": name})
             await asyncio.to_thread(
                 self.rest.edit,
-                self.channel,
+                self.control_channel,
                 self.control_id,
                 format_control(self.name, state["watch"]),
             )
-        self.mirrors[job["status"]] = interaction.token
-        self.status_texts[job["status"]] = text
-        await interaction.edit_original_response(content=text)
-        print(f"задача {job['id']} для {name}: {start}–{end}", flush=True)
+        self.log(f"задача {job['id']} для {name}: {start}–{end}")
 
     async def stop_worker(self, interaction: discord.Interaction, name: str) -> None:
         found = None
-        messages = await self.channel_messages()
+        channel = str(interaction.channel_id or self.channel)
+        messages = await self.channel_messages(channel)
         for message in messages:
             job = parse_job(message.get("content") or "")
             if job and job["worker"] == name:
@@ -434,22 +491,21 @@ class Farm:
         if found is None and self.current_job and self.current_job.get("worker") == name:
             found = self.current_job
         if found is None:
-            await interaction.edit_original_response(content=f"{name} сейчас не считает")
+            await self.show(interaction, f"{name} сейчас не считает")
             return
         for message in messages:
             if parse_stop(message.get("content") or "") == found["id"]:
-                await interaction.edit_original_response(content=f"{name} уже останавливается")
+                await self.show(interaction, f"{name} уже останавливается")
                 return
-        posted = await asyncio.to_thread(self.rest.send, self.channel, format_stop(found["id"]))
+        job_channel = str(found.get("channel") or channel)
+        posted = await asyncio.to_thread(self.rest.send, job_channel, format_stop(found["id"]))
         try:
-            await asyncio.to_thread(self.rest.pin, self.channel, posted["id"])
+            await asyncio.to_thread(self.rest.pin, job_channel, posted["id"])
         except RestError as exc:
-            print(f"не закрепил остановку: {exc}", flush=True)
+            self.log(f"не закрепил остановку: {exc}")
         if self.box.get("job_id") == found["id"]:
             self.box["stop"] = True
-        await interaction.edit_original_response(
-            content=f"Останавливаю {name}. Топ на момент остановки придёт файлом."
-        )
+        await self.show(interaction, f"Останавливаю {name}. Топ на момент остановки придёт файлом.")
 
     async def worker_forever(self) -> None:
         while True:
@@ -543,7 +599,7 @@ class Farm:
         if not file_path.exists():
             return False
         text = (
-            f"{job['worker']}: топ-10 DPS, чанки {grouped(int(job['start']))}–{grouped(int(job['end']))}, "
+            f"{job['worker']}: топ-10 Shop+Random, Shop only и Random only, чанки {grouped(int(job['start']))}–{grouped(int(job['end']))}, "
             f"{job['spec']}, {job['pool']}, {job['targets']} целей"
         )
         try:
@@ -589,7 +645,8 @@ class Farm:
         await self.delete_marks(job)
 
     async def delete_marks(self, job: dict) -> None:
-        messages = await self.channel_messages()
+        channel = str(job.get("channel") or self.channel)
+        messages = await self.channel_messages(channel)
         doomed = []
         if job.get("job_message"):
             doomed.append(str(job["job_message"]))
@@ -602,7 +659,7 @@ class Farm:
                 doomed.append(str(message["id"]))
         for message_id in dict.fromkeys(doomed):
             try:
-                await asyncio.to_thread(self.rest.delete, self.channel, message_id)
+                await asyncio.to_thread(self.rest.delete, channel, message_id)
             except RestError:
                 pass
 

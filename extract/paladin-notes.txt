@@ -1,0 +1,478 @@
+
+==== specs 1173 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Protection:|r
+|cffffcc00•|r Increases the damage reduction of |cffe74d3eDivine Protection|r by |cffffcc005%|r, increased by |cffffcc000,3%|r per point of Mastery.
+|c00eccf11•|rReduces the cooldown of |cffe74d3eArdent Defender|r by |cffffcc0030|r seconds.
+
+==== specs 1849 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Demolitions:|r
+|cffffcc00•|r Increases the damage of |cffe74d3eHoming Missiles|r by |cffffcc0010%|r, increased by |cffffcc001%|r per point of Mastery.
+|cffffcc00•|r Replaces |cffe74d3eIon Grenade|r with |cffe74d3eNapalm|r.
+
+==== specs 2130 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Fire:|r
+|cffffcc00•|r Increases the damage of |cffe74d3ePyroblast|r by |cffffcc000,75%|r per point of Mastery.
+|cffffcc00•|r Replaces |cffe74d3eBlizzard|r with |cffe74d3eHydra|r.
+
+==== specs 3004 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Upheaval:|r
+|cffffcc00•|r Increases the tick rate of |c00e74d3eWindstorm|r by |cffffcc0010%|r, increased by additional |cffffcc000,6%|r per point of Mastery.
+|cffffcc00•|r Dealing damage from any source has |cff33937f3,5%|r chance to reset the cooldown of |c00e74d3eWindstorm|r.
+
+==== specs 3101 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Unholy:|r
+|cffffcc00•|r Increases the tick rate of |cff9482c9Outbreak|r by |cffffcc0010%|r, increased by |cffffcc000,5%|r per point of Mastery.
+|cffffcc00•|r Replaces |cffe74d3eEmpower Rune Weapon|r with |cffe74d3ePlaguebearer|r.
+
+==== specs 3158 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Sharpshooter:|r
+|cffffcc00•|r Increases the damage of |cffe74d3eTidal Shot|r by |cffffcc0010%|r, increased by |cffffcc001%|r per point of Mastery.
+|cffffcc00•|r After |cffe74d3eTidal Shot|r deals damage, it has |cff33937f25%|r chance to hurl forth a wave that causes |cffffcc0040%|r of the damage to all enemies it passes through.
+
+==== specs 3242 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Demonology:|r
+|cffffcc00•|r Increases the Attack Speed of your |cffabd473Demons|r by |cffffcc008%|r, increased by |cffffcc000,6%|r per point of Mastery.
+|cffffcc00•|r |cffe74d3eSummon Felguard|r now summons |cffffcc002|r |cffabd473Felguards|r instead of |cffffcc001|r.
+
+==== specs 3853 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Watershaper:|r
+|cffffcc00•|r Increases the maximum mana of |cffabd473Sea Elementals|r by |cffffcc005|r, increased by |cffffcc001|r per point of Mastery.
+|cffffcc00•|r |cffe74d3eSea Elemental|r now spawns |cffffcc002|r |cffabd473Sea Elementals|r.
+
+==== specs 3898 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Survival:|r
+|cffffcc00•|r Each tick of |cff9482c9Serpent Sting|r has |cffffcc005%|r chance to reduce all remaining cooldowns by |cffffcc001|r second, increased by |cffffcc000,2%|r per point of Mastery.
+|cffffcc00•|r |cffe74d3eMulti-Shot|r fires an additional time after a |cffffcc000,5|r second delay, for |cffffcc0050%|r of the damage.
+
+==== specs 3944 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Blood:|r
+|cffffcc00•|r Increases the healing taken from |c0000cc33Healing|r Type effects by |cffffcc008%|r, increased by |cffffcc000,7%|r per point of Mastery.
+|cffffcc00•|r Spellcasts restore |cffffcc0020|r health |c00cd7004(+3% of maximum Health)|r and Health Regeneration is increased by |cffffcc0015%|r. This is a |c0000cc33Healing|r Type effect.
+
+==== specs 5202 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Elemental:|r
+|cffffcc00•|r Increases the damage of |cffe74d3eLightning Shield|r by |cffffcc005%|r and the damage of |cffe74d3eLightning Shield|r and |cffe74d3eLava Burst|r by additional |cffffcc000,6%|r per point of Mastery.
+|cffffcc00•|r Replaces |cffe74d3eFeral Spirit|r with |cffe74d3eLava Burst|r.
+
+==== specs 5209 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Nanotech:|r
+|cffffcc00•|r Increases the damage of |cffe74d3eIon Grenade|r by |cffffcc005%|r, increased by |cffffcc000,6%|r per point of Mastery.
+|cffffcc00•|r Replaces |cffe74d3eMaster Engineer|r with |cffe74d3eExosuit|r.
+
+==== specs 5583 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Frost:|r
+|cffffcc00•|r Increases the damage reduction provided by |cfff6b687Frost|r |cffe74d3eSpell Mastery|r by |cffffcc005%|r plus additional |cffffcc000,2%|r per point of Mastery.
+|cffffcc00•|r |cff9482c9Chilling|r enemies reduces the remaining cooldown of |cffe74d3eArcane Pulse|r by |cffffcc000,2|r seconds, increased to |cffffcc000,5|r seconds when |cff9482c9Freezing|r them, but reduced to |cffffcc000,1|r against already |cff9482c9Chilled|r targets.
+
+==== specs 6270 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Guardian:|r
+|cffffcc00•|r Increases the healing you take from |c0000cc33Healing|r Type effects by |cffffcc005%|r, increased by |cffffcc000,8%|r per point of Mastery.
+|cffffcc00•|r Replaces |cffe74d3eFerocity|r with |cffe74d3eBear Form|r.
+
+==== specs 6281 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Savage:|r
+|cffffcc00•|r Increases the damage of attacks by |cffffcc005%|r, increased by |cffffcc000,5%|r per point of Mastery.
+|cffffcc00•|r Replaces |cffe74d3eFerocity|r with |cffe74d3eCat Form|r.
+
+==== specs 6456 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Enhancement:|r
+|cffffcc00•|r Increases the damage of |cffe74d3eChain Lightning|r by |cffffcc008%|r, increased by |cffffcc000,5%|r per point of Mastery.
+|cffffcc00•|r Increases the proc chance of |cffe74d3eLesser Chain Lightning|r by additional |cffffcc0010%|r.
+
+==== specs 6486 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Subtlety:|r
+|c00eccf11•|rIncreases the accumulated damage of |cffe74d3eVendetta|r by additional |cffffcc001%|r per point of Mastery.
+|c00eccf11•|rCasting |cffe74d3eStealth|r resets the cooldown of |cffe74d3eShadowstep|r.
+
+==== specs 7114 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Combat:|r
+|c00eccf11•|rIncreases the accumulated damage of |cffe74d3eVendetta|r by additional |cffffcc001%|r per point of Mastery.
+|c00eccf11•|rReplaces |cffe74d3eSinister Strike|r with |cffe74d3eDispatch|r.
+
+==== specs 7854 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Balance:|r
+|cffffcc00•|r Increases the damage of |cffe74d3eStarfire|r and |cffe74d3eStarfall|r by |cffffcc005%|r, increased by |cffffcc000,7%|r per point of Mastery.
+|c00eccf11•|rReplaces |cffe74d3eTree of Life|r with |cffe74d3eStarfall|r.
+
+==== specs 7865 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Destruction:|r
+|cffffcc00•|r Increases Critical Strike by |cffffcc005%|r, increased by |cffffcc000,5%|r per point of Mastery.
+|cffffcc00•|r Replaces |cffe74d3eAgony|r with |cffe74d3eChaos Bolt|r.
+
+==== specs 7867 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Affliction:|r
+|cffffcc00•|r Increases the tick rate of |cffe74d3eSiphon Life|r, |cff9482c9Haunt|r and |cff9482c9Immolate|r by |cffffcc005%|r increased by additional |cffffcc000,5%|r per point of Mastery.
+|cffffcc00•|r Replaces |cffe74d3eBackdraft|r with |cffe74d3eSiphon Life|r.
+
+==== specs 8022 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Bone:|r
+|cffffcc00•|r |cffabd473Skeletal Minions|r have |cffffcc005%|r chance, increased by |cffffcc001%|r per point of Mastery to spawn with the |cffe74d3eHallowed Touch|r ability which causes them to ignore |cffffcc008|r of the target's Armor.
+|cffffcc00•|r |cffe74d3eRaise Dead|r now requires |cffffcc004|r ticks to summon a |cffabd473Skeletal Warrior|r.
+
+==== specs 8068 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Blood:|r
+|cffffcc00•|r Increases the damage dealt by |cffe74d3eCorpse Explosion|r by |cffffcc0010%|r, increased by |cffffcc000,5%|r per point of Mastery.
+|cffffcc00•|r Doubles the proc chance of |cffe74d3eCorpse Explosion|r's passive effect and the active effect triggers an additional time.
+
+==== specs 8101 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Essence:|r
+|cffffcc00•|r Increases the passive damage of |cffe74d3eGrim Scythe|r by |cffffcc0010%|r, increased by |cffffcc001%|r per point of Mastery.
+|cffffcc00•|r Replaces |cffe74d3eRaise Dead|r with |cffe74d3eTeeth|r.
+
+==== specs 8169 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Fury:|r
+|cffffcc00•|r Lifestealing restores |cffffcc008|r additional health, increased by |cffffcc001|r per point of Mastery.
+|cffffcc00•|r Reduces attack range to |cffffcc00Melee|r and grants |cffffcc0015|r Movement Speed and |cffffcc0020%|r Lifesteal. In addition |cffe74d3eRegeneration|r gains |cffffcc0020%|r Attack Damage scaling, but all damage dealt will be reduced by |cffffcc0015%|r, multiplicatively.
+
+==== specs 8675 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Windwalker:|r
+|cffffcc00•|r Increases the damage of |cffe74d3ePower Strike|r by |cffffcc005%|r, increased by |cffffcc000,8%|r per point of Mastery.
+|cffffcc00•|r |cffe74d3ePower Strike|r has |cff33937f40%|r chance to damage the target again after |cffffcc000,5|r seconds delay for |cffffcc0050%|r damage.
+
+==== specs 8824 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Storm:|r
+|cffffcc00•|r Increases the damage of |c00e74d3eLightning Rush|r and |c00e74d3eWindstorm|r by |cffffcc005%|r, increased by |cffffcc000,6%|r per point of Mastery.
+|cffffcc00•|r The damage of |c00e74d3eSkyslash|r becomes |c00ff8000Physical|r instead of being treated as an attack and it deals |cffffcc0025%|r more damage. |c00e74d3eTornado|r and |c00e74d3eWindstorm|r gain |cffffcc0020%|r Attack Damage scaling.
+
+==== specs 8831 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Combat:|r
+|cffffcc00•|rIncreases Critical Strike by |cffffcc005%|r, increased by additional |cffffcc000,5%|r per point of Mastery.
+|cffffcc00•|rReplaces |c00e74d3eWindstorm|r with |c00e74d3eWind Walk|r.
+
+==== specs 9587 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Restoration:|r
+|cffffcc00•|r Increases the healing of |cffe74d3eChain Heal|r by |cffffcc005%|r, increased by |cffffcc000,75%|r per point of Mastery.
+|cffffcc00•|r The damage reduction of |cffe74d3eEarth Shield|r is increased by additional |cffffcc008%|r and it can now be applied on multiple units.|r
+
+==== specs 9793 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Engineering:|r
+|cffffcc00•|r Your |cffabd473Clockwerk Goblins|r and |cffabd473Minigun Sentries|r deal |cffffcc002|r more damage with attacks, increased by additional |cffffcc000,3|r per point of Mastery.
+|cffffcc00•|r Every |cffffcc0050|r points of current Mana grant |cffffcc001%|r Pet Damage.
+
+==== specs 10370 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Arcane:|r
+|cfff6b687•|r Increases the proc chance of |cfff6b687Arcane|r Spell Mastery by |cffffcc005%|r plus additional |cffffcc000,2%|r per point of Mastery.
+|cfff6b687•|r Replaces |cffe74d3eBlizzard|r with |cffe74d3eEvocation|r.
+
+==== specs 10784 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Frost:|r
+|cffffcc00•|r Increases the damage of |cffe74d3eFrost Strike|r by |cffffcc005%|r, increased by |cffffcc000,5%|r per point of Mastery.
+|cffffcc00•|r |cffe74d3eFrost Strike|r gains an additional |cffffcc0010%|r maximum Mana scaling.
+
+==== specs 10927 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Arms:|r
+|cffffcc00•|r Increases the damage of |cffe74d3eBloodthirst|r and |cffe74d3eWhirlwind|r by |cffffcc0010%|r, increased by additional |cffffcc000,6%|r per point of Mastery.
+|cffffcc00•|r |cffe74d3eDemoralizing Shout|r deals |cffffcc0020|r |cffff8000Physical|r damage |c00cd7004(+25% of Attack Damage) (+5% of maximum Health)|r.
+
+==== specs 11027 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Mistweaver:|r
+|cffffcc00•|r Gives |cffe74d3eRenewing Mist|r |cffffcc005%|r chance to heal an additional time, increased by additional |cffffcc000,8%|r per point of Mastery.
+|cffffcc00•|r If |cffe74d3eRenewing Mist|r overheals its target, it will jump to the most wounded allied hero within |cffffcc00600|r range.
+
+==== specs 11198 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Discipline:|r
+|cffffcc00•|r Increases the healing of |cffe74d3eRadiance|r by |cffffcc0010%|r, increased by |cffffcc000,8%|r per point of Mastery.
+|cffffcc00•|r |cff9482c9Renew|r causes the target to take |cffffcc0010%|r less damage from all sources.
+
+==== specs 11199 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Holy:|r
+|cffffcc00•|r Increases the tick rate of |cffe74d3eRenew|r by |cffffcc0010%|r, increased by |cffffcc000,7%|r per point of Mastery.
+|cffffcc00•|r Replaces |cffe74d3eShadow Word: Pain|r with |cffe74d3eLightwell|r.
+
+==== specs 11200 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Shadow:|r
+|cffffcc00•|r Increases the damage of |cffe74d3eShadow Word: Pain|r by |cffffcc0010%|r, increased by |cffffcc000,6%|r per point of Mastery.
+|cffffcc00•|r Replaces |cffe74d3eRadiance|r with |cffe74d3eVoid Rift|r.
+
+==== specs 11362 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Restoration:|r
+|cffffcc00•|r Increases the healing of |cffe74d3eNourish|r and |cffe74d3eWild Growth|r by |cffffcc005%|r, increased by |cffffcc000,7%|r per point of Mastery.
+|cffffcc00•|r |cffe74d3eWild Growth|r spawns a Seed of Life at the center of the area that lasts for |cffffcc006|r seconds and restores |cffffcc002%|r of maximum health each second to nearby allies. This is a |c0000cc33Healing|r Type effect.
+
+==== specs 11425 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Retribution:|r
+|cffffcc00•|r Increases the damage of |cffe74d3eCrusader Strike|r by |cffffcc0010%|r, increased by additional |cffffcc001%|r per point of Mastery.
+|cffffcc00•|r The Paladin's base attack cooldown is reduced by |cffffcc003%|r for each currently active |cffe74d3eBlessed Hammer|r.
+
+==== specs 11476 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Havoc:|r
+|cffffcc00•|r |cffe74d3eImmolation Aura|r has |cffffcc005%|r chance to deal damage twice, increased by |cffffcc000,5%|r per point of Mastery.
+|cffffcc00•|r Grants you |cffffcc002|r Potency and the effectiveness of Potency is increased by |cffffcc0035%|r.
+
+==== specs 11499 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Obsidian:|r
+|cffffcc00•|r Reduces damage taken from |cfff6a002Taunted|r enemies by |cffffcc005%|r, increased by |cffffcc000,3%|r per point of Mastery.
+|cffffcc00•|r Dealing damage from any source applies |cff9482c9Branded|r on unaffected enemies for |cffffcc003|r seconds that reduces Armor by |cffffcc001|r |c00cd7004(+8% of Armor)|r, up to a maximum of |cffffcc006|r.
+
+==== specs 11771 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Primal:|r
+|cffffcc00•|r Your maximum |cffeee0aaFerocity|r is increased by |cffffcc001|r and its passive generation rate by |cffffcc001%|r per point of Mastery.
+|cffffcc00•|r Allows you to benefit from the |cffeee0aaFerocity|r Custom Resource.
+
+==== specs 12110 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Holy:|r
+|cffffcc00•|r Increases the healing of |cffe74d3eHoly Light|r by |cffffcc008%|r, increased by |cffffcc000,8%|r per point of Mastery.
+|cffffcc00•|r |cffe74d3eHoly Light|r also restores |cffffcc0015%|r of the target's missing mana.
+
+==== specs 12112 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Seagrace:|r
+|cffffcc00•|r Increases the healing of |cff00cc33Healing|r Type effects by |cffffcc003|r, increased by |cffffcc000,1|r per point of Mastery.
+|cffffcc00•|r |cffe74d3eLiquid Arrows|r no longer deal damage and instead restore health to the most wounded allied Hero within |cffffcc00600|r range of the target equal to |cffffcc0060%|r of their damage. This is a |cff00cc33Healing|r Type effect.
+
+==== specs 12115 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Ruby:|r
+|cffffcc00•|r Increases the damage of |cffe74d3eBurnout|r by |cffffcc005%|r, increased by additional |cffffcc000,5%|r per point of Mastery.
+|cffffcc00•|r Each spellcast increases the proc chance of |cffe74d3eBurnout|r’s passive effect by additional |cffffcc000,5%|r until it procs, at which point the chance returns at its original value.
+
+==== specs 12127 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Emerald:|r
+|cffffcc00•|r Increases the active healing of |cffe74d3eCleansing Fire|r by |cffffcc002|r per point of Mastery.
+|cffffcc00•|r Replaces |cffe74d3eBurnout|r with |cffe74d3eCleansing Fire|r.
+
+==== specs 12135 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Beast Mastery:|r
+|cffffcc00•|r Increases the Attack Speed of your |cffabd473Beasts|r by |cffffcc0010%|r, increased by |cffffcc000,8%|r per point of Mastery.
+|cffffcc00•|r |cffe74d3eBestial Wrath|r no longer has reduced effectiveness on the Hunter's |cffabd473Pet|r.
+
+==== specs 12215 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Marksmanship:|r
+|cffffcc00•|r Your Critical Strikes cause |cffffcc0040|r damage, increased by |cffffcc003|r per point of Mastery.
+|cffffcc00•|r |cffe74d3eAspect of the Eagle|r also reduces the Hunter's base attack cooldown by amount equal to the damage increase it provides.
+
+==== specs 12325 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Headhunter:|r
+|cffffcc00•|r Grants additional |cffffcc0010%|r Critical Strike bonus damage, increased by additional |cffffcc000,8%|r per point of Mastery.
+|cffffcc00•|r Attacks deal |cffffcc0012%|r more damage while affected by |cffe74d3eBlood Fury|r.
+
+==== specs 12326 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Poison:|r
+|cffffcc00•|r |cffe74d3eVenomous Axes|r have |cffffcc005%|r chance to deal damage twice, increased by |cffffcc000,5%|r per point of Mastery.
+|cffffcc00•|r Increases the |cffe74d3eVenomous Axes|r' |cff9482c9Surge of Toxins|r proc chance by additional |c00eccf111%|r and it can be applied by dealing damage from any source.
+
+==== specs 12418 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Fury:|r
+|cffffcc00•|r Increases the damage of the attack caused by |cffe74d3eBloodthirst|r by |cffffcc0015|r, increased by additional |cffffcc002|r per point of Mastery.
+|cffffcc00•|r |cff9482c9Enraged Regeneration|r now also grants |cffffcc0010%|r Critical Strike and |cffffcc0015%|r Attack Speed.
+
+==== specs 12488 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Brewmaster:|r
+|cffffcc00•|r Increases the evade chance of |cffe74d3eFortifying Brew|r by additional |cffffcc004%|r, increased by additional |cffffcc000,2%|r per point of Mastery.
+|cffffcc00•|r |cffe74d3eStagger|r's maximum Health scaling is increased by additional |cffffcc000,2%|r and you now also |cffeee0aaStagger|r the damage taken by other allied Heroes.
+
+==== specs 12494 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Vengeance:|r
+|cffffcc00•|r Evading an attack heals you for |cffffcc0020|r, increased by |cffffcc001|r per point of Mastery. This is a |cff00cc33Healing|r Type effect.
+|cffffcc00•|r Replaces |cffe74d3eEye Beam|r with |cffe74d3eDemon Spikes|r.
+
+==== specs 12523 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Havoc:|r
+|cffffcc00•|r Increases the damage of |cffe74d3eThe Hunt|r by |cffffcc008%|r, increased by |cffffcc000,5%|r per point of Mastery.
+|cffffcc00•|r Replaces |cffe74d3eEye Beam|r with |cffe74d3eCollapsing Star|r.
+
+==== specs 12572 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Protection:|r
+|cffffcc00•|r Increases the ignored damage of |cffe74d3eIgnore Pain|r's active effect by additional |cffffcc0040|r, increased by |cffffcc008|r per point of Mastery.
+|cffffcc00•|r Reduces the cooldowns of |cffe74d3eBattle Shout|r and |cffe74d3eDemoralizing Shout|r by |cffffcc002|r seconds.
+
+==== specs 12573 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Voodoo:|r
+|cffffcc00•|r Increases the healing of |cffe74d3eHealing Mantra|r by |cffffcc004|r, increased by additional |cffffcc001|r per point of Mastery.
+|cffffcc00•|r Replaces |cffe74d3ePoison Ward|r with |cffe74d3eVoodoo Ward|r.
+
+==== specs 12574 ====
+|cfff6b687Specializations|r affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different |cfff6b687Specializations|r.
+
+|cfff6b687Poison:|r
+|cffffcc00•|r |cffe74d3eAncient Ward|r has |cffffcc005%|r chance to spawn a |cffabd473Vile Spider|r instead of a |cffabd473Cobra|r when it procs, increased by |cffffcc000,4%|r per point of Mastery.
+|cffffcc00•|r Replaces |cffe74d3eVoodoo Ward|r with |cffe74d3ePoison Ward|r.
+
+==== Crusader Strike ====
+760: |cffe74d3eCrusader Strike|r now causes |cffe74d3eDivine Storm|r which unleashes a whirl of holy hammers, dealing |cffffcc0020|r |c000099ffMagical|r damage |c00cd7004(+100% of Stren
+1561: |c00ff0000Crusader Strike [|c00cccc00E|c00ff0000]
+1562: |c00ff0000Crusader Strike [|c00cccc00E|c00ff0000]
+2274: Crusader Strike
+2281: |c00ff0000Crusader Strike [|c00cccc00E|c00ff0000]
+5479: |c00e74d3eCrusader Strike|r
+8113: Crusader Strike
+10491: |c00e74d3eCrusader Strike|r
+
+==== Divine Storm ====
+3079: Divine Storm
+3080: Divine Storm (Caster)
+3878: Divine Storm
+
+==== Blessed Hammer ====
+2344: |cffe74d3eBlessed Hammer|r now lasts for |cffffcc003|r additional seconds and has |cffffcc0050%|r increased range for its damage.
+3505: Blessed Hammer
+6728: |c00e74d3eBlessed Hammer|r
+6857: |c00e74d3eBlessed Hammer|r
+7545: |c00e74d3eBlessed Hammer|r
+8245: |c00e74d3eBlessed Hammer|r
+9798: |c00e74d3eBlessed Hammer|r
+10134: |c00e74d3eBlessed Hammer|r
+
+==== Holy Light ====
+1018: |c00ff0000Holy Light [|c00cccc00E|c00ff0000]
+2334: |c00ff0000Holy Light [|c00cccc00E|c00ff0000]
+3396: |c00ff0000Holy Light [|c00cccc00E|c00ff0000]
+3648: |c00ff0000Holy Light [|c00cccc00E|c00ff0000]
+3694: |cffe74d3eHoly Light|r removes all non-aura debuffs from its target and its cooldown is reduced by |cffffcc001,2|r seconds.
+3926: |c00ff0000Holy Light [|c00cccc00E|c00ff0000]
+4622: |c00ff0000Holy Light [|c00cccc00E|c00ff0000]
+4694: |c00ff0000Holy Light [|c00cccc00E|c00ff0000]
+
+==== Divine Protection ====
+307: Divine Protection
+1875: Divine Protection
+4834: Divine Protection
+11450: |c00e74d3eDivine Protection|r
+
+==== Judgement ====
+4000: Judgement
+4015: Judgement
+11514: |c007c2abbJudgement Helm|r
+
+==== Beacon of Light ====
+261: Beacon of Light
+719: Beacon of Light
+8215: Beacon of Light
+
+==== Divine Toll ====
+1188: Divine Toll
+1483: Divine Toll
+
+==== Justicar ====
+9568: |c001e53c9Justicar's Shield|r
+
+==== Righteous ====
+2704: |cffe74d3eRighteous Fury|r additionally restores |cffffcc0025|r health |c00cd7004(+7% of maximum Health) (+7% of maximum Mana)|r to all allied units within |cffffcc00500|r range wh
+8182: Righteous Fury
+8206: Righteous Fury
+8409: Righteous Fury
+9907: Righteousness
+9909: Righteousness
+11388: |c00e74d3eRighteous Fury|r (|cffffcc00Passive|r)
+
+==== class items ====
+I0QX, I0QY, I0QZ, I0R0 count 4
+
+==== udg_Hero_Paladin ====
+count 110
+
+==== Paladin_Spell ====
+count 0
+
+==== HeroPaladin ====
+count 0

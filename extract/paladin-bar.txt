@@ -1,0 +1,93 @@
+LOCAL TALENTS I07G I0O1 I0MD I0I7 I07I I0FO I0FC I0FJ I0GR I08I I08K I0O2 I0MC I0OT I09Y I09R I069 I064 I04C I09L I01J I0NG I0MD I0I1 I09Z I0OR I0OQ I0G8 I0OU I0OS I0NC I0ND I0MC
+CHUNK:
+_Talents_Str[7]='I08M'
+set udg_Talents_Str[8]='I07G'
+set udg_Talents_Str[9]='I0O1'
+set udg_Talents_Str[10]='I0MD'
+set udg_Talents_Str[11]='I0I7'
+set udg_Talents_Str[12]='I07I'
+set udg_Talents_Str[13]='I0FO'
+set udg_Talents_Str[14]='I0FC'
+set udg_Talents_Str[15]='I0FJ'
+set udg_Talents_Str[16]='I0GR'
+set udg_Talents_Str[17]='I08I'
+set udg_Talents_Str[18]='I08K'
+set udg_Talents_Str[19]='I0O2'
+set udg_Talents_Str[20]='I0MC'
+set udg_Ability_Q[2]='A0E9'
+set udg_Ability_Q_Type[2]="N/A"
+set udg_Ability_Str[1]='A0KN'
+set udg_Ability_Str[2]=udg_Empty_Ability
+set udg_Ability_Str[3]='A0E9'
+set udg_Ability_Str[4]='A0LL'
+set udg_Ability_Str[5]='A0CS'
+set udg_Ability_Str[6]='A0LU'
+set udg_Ability_Str[7]=udg_Empty_Ability
+set udg_Ability_Str[8]=udg_Empty_Ability
+set udg_Ability_Str[9]=udg_Empty_Ability
+set udg_Mastery_Unit=udg_Hero_Warrior
+call UnitAddAbilityBJ('A0KO',udg_Glyphs_Unit[2])
+set bj_forLoopAIndex=1
+set bj_forLoopAIndexEnd=3
+loop
+exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
+set udg_SpecTooltipBase_Str[GetForLoopIndexA()]=BlzGetAbilityExtendedTooltip('A0KO',(GetForLoopIndexA()-1))
+set bj_forLoopAIndex=bj_forLoopAIndex+1
+endloop
+call ConditionalTriggerExecute(gg_trg_Mastery_Tooltip)
+else
+if(Trig_Select_Str_Hero_Func038Func001C())then
+set udg_Shaman_Rogue_Tauren[GetConvertedPlayerId(GetOwningPlayer(GetSoldUnit()))]=6
+set udg_Hero_Paladin=GetSoldUnit()
+call EnableTrigger(gg_trg_Blessed_Hammer_Damage)
+call EnableTrigger(gg_trg_Ardent_Defender_CD)
+call EnableTrigger(gg_trg_Out_of_Combat_Paladin)
+set udg_Generic_Point=GetUnitLoc(udg_Hero_Paladin)
+call CreateNUnitsAtLoc(1,'n045',GetOwningPlayer(udg_Hero_Paladin),udg_Generic_Point,bj_UNIT_FACING)
+set udg_Dummies_HammerOfJustice=GetLastCreatedUnit()
+call RemoveLocation(udg_Generic_Point)
+set udg_Talents_Str[1]='I0OT'
+set udg_Talents_Str[2]='I09Y'
+set udg_Talents_Str[3]='I09R'
+set udg_Talents_Str[4]='I069'
+set udg_Talents_Str[5]='I064'
+set udg_Talents_Str[6]='I04C'
+set udg_Talents_Str[7]='I09L'
+set udg_Talents_Str[8]='I01J'
+set udg_Talents_Str[9]='I0NG'
+set udg_Talents_Str[10]='I0MD'
+set udg_Talents_Str[11]='I0I1'
+set udg_Talents_Str[12]='I09Z'
+set udg_Talents_Str[13]='I0OR'
+set udg_Talents_Str[14]='I0OQ'
+set udg_Talents_Str[15]='I0G8'
+set udg_Talents_Str[16]='I0OU'
+set udg_Talents_Str[17]='I0OS'
+set udg_Talents_Str[18]='I0NC'
+set udg_Talents_Str[19]='I0ND'
+set udg_Talents_Str[20]='I0MC'
+set udg_Ability_Q[2]='A0GE'
+set udg_Ability_Q_Type[2]="Magical"
+set udg_Ability_Str[1]='A075'
+set udg_Ability_Str[2]=udg_Empty_Ability
+set udg_Ability_Str[3]='A0GE'
+set udg_Ability_Str[4]='A07L'
+set udg_Ability_Str[5]='A01G'
+set udg_Ability_Str[6]=udg_Empty_Ability
+set udg_Ability_Str[7]=udg_Empty_Ability
+set udg_Ability_Str[8]='A03U'
+set udg_Ability_Str[9]=udg_Empty_Ability
+set udg_Mastery_Unit=udg_Hero_Paladin
+call UnitAddAbilityBJ('A0JM',udg_Glyphs_Unit[2])
+set bj_forLoopAIndex=1
+set bj_forLoopAIndexEnd=3
+loop
+exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
+set udg_SpecTooltipBase_Str[GetForLoopIndexA()]=BlzGetAbilityExtendedTooltip('A0JM',(GetForLoopIndexA()-1))
+set bj_forLoopAIndex=bj_forLoopAIndex+1
+endloop
+call ConditionalTriggerExecute(gg_trg_Mastery_Tooltip)
+else
+if(Trig_Select_Str_Hero_Func038Func001Func001C())then
+set udg_Shaman_Rogue_Tauren[GetConvertedPlayerId(GetOwningPlayer(GetSoldUnit()))]=9
+set udg_Hero_Dea

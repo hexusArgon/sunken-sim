@@ -1,0 +1,23 @@
+ge_Sources) | set udg_BloodthirstAttack_Damage=((20.00+(20.00*I2R(GetUnitAbilityLevelSwapped('A0CS',udg_Hero_Warrior))))+(0.75*udg_DCS_Damage)) | if(Trig_PreDamage_Heroes_Func002Func004Func012Func016Func0
+
+etBJ(udg_DamageEventSource,udg_DamageEventTarget,((15.00*I2R(GetUnitAbilityLevelSwapped('A050',udg_Hero_Necromancer)))+(0.75*udg_DCS_Damage)),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL) | call AddSpecialEffe
+
+ udg_NextDamageIsAttack=true | call UnitDamageTargetBJ(udg_Hero_WitchDoctor,udg_DamageEventTarget,((1.00*udg_DCS_Damage)+(0.75*I2R(GetHeroStatBJ(bj_HEROSTAT_AGI,udg_Hero_WitchDoctor,true)))),ATTACK_TYPE
+
+reDamage_Dummies_Func002Func008Func009Func001C())then | call UnitDamageTargetBJ(udg_Agi_Str_Int[1],udg_DamageEventTarget,(0.75*I2R((GetHeroStatBJ(bj_HEROSTAT_AGI,udg_Agi_Str_Int[1],true)+(GetHeroStatBJ(
+
+e_Dummies_Func002Func008Func009Func001Func001C())then | call UnitDamageTargetBJ(udg_Agi_Str_Int[2],udg_DamageEventTarget,(0.75*I2R((GetHeroStatBJ(bj_HEROSTAT_AGI,udg_Agi_Str_Int[2],true)+(GetHeroStatBJ(
+
+es_Func002Func008Func009Func001Func001Func002C())then | call UnitDamageTargetBJ(udg_Agi_Str_Int[3],udg_DamageEventTarget,(0.75*I2R((GetHeroStatBJ(bj_HEROSTAT_AGI,udg_Agi_Str_Int[3],true)+(GetHeroStatBJ(
+
+N2',udg_Hero_Tinker,(GetUnitAbilityLevelSwapped('A0N2',udg_Hero_Tinker)-1)) | call StartTimerBJ(udg_Reinforce_Timer,false,0.75) | else | endif | if(Trig_PreDamage_Enemies_Func002Func004Func012Func008C())then | 
+
+())then | call StartTimerBJ(udg_LightningShield_Timer[GetConvertedPlayerId(GetOwningPlayer(udg_DamageEventTarget))],false,0.75) | set udg_LightningShield_Unit=udg_DamageEventTarget | set udg_LightningShield
+
+ter_Dummy) | endif | else | endif | if(Trig_PreDamage_Enemies_Func002Func008Func008Func008C())then | set udg_Heal_Amount=(45.00+((0.75*I2R(GetHeroStatBJ(bj_HEROSTAT_STR,udg_Hero_Priest,true)))+(0.75*I2R(GetHero
+
+c008Func008Func008C())then | set udg_Heal_Amount=(45.00+((0.75*I2R(GetHeroStatBJ(bj_HEROSTAT_STR,udg_Hero_Priest,true)))+(0.75*I2R(GetHeroStatBJ(bj_HEROSTAT_INT,udg_Hero_Priest,true))))) | set udg_Heal_Ta
+
+0) | else | endif | if(Trig_PreDamage_Increase_Func001Func035Func006C())then | set udg_DamageEventAmount=(udg_DamageEventAmount*0.75) | else | endif | if(Trig_PreDamage_Increase_Func001Func035Func008C())then | set ud
+
+))then | if(Trig_ArmorDamage_Reduce_Func001Func011Func004Func002C())then | set udg_DamageEventAmount=(udg_DamageEventAmount*0.75) | else | endif | else | endif | if(Trig_ArmorDamage_Reduce_Func001Func011Func006C())

@@ -1,0 +1,144 @@
+
+===== Trig_Blessed_Hammer_Damage_Actions 2426 =====
+function Trig_Blessed_Hammer_Damage_Actions takes nothing returns nothing
+local unit l__udg_BH_DamagedUnit
+local unit l__udg_BH_DamageHammer
+local integer l__udg_BH_CustomValue
+local integer l__udg_BH_CustomValue2
+set l__udg_BH_DamagedUnit=udg_DamageEventTarget
+set l__udg_BH_DamageHammer=udg_DamageEventSource
+set l__udg_BH_CustomValue=GetUnitUserData(l__udg_BH_DamageHammer)
+set l__udg_BH_CustomValue2=GetUnitUserData(l__udg_BH_DamagedUnit)
+set udg_BH_Damage=((5.00+(10.00*I2R(GetUnitAbilityLevelSwapped('A07L',udg_Hero_Paladin))))+(0.45*I2R(GetHeroStatBJ(bj_HEROSTAT_STR,udg_Hero_Paladin,true))))
+set udg_NextDamageType=udg_DamageTypeMagical
+call UnitDamageTargetBJ(udg_Hero_Paladin,udg_DamageEventTarget,udg_BH_Damage,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
+call AddSpecialEffectTargetUnitBJ("head",udg_DamageEventTarget,"Abilities\\Weapons\\SorceressMissile\\SorceressMissile.mdl")
+call DestroyEffectBJ(GetLastCreatedEffectBJ())
+set udg_BH_ReduceDmg[GetUnitUserData(udg_DamageEventTarget)]=true
+if(Trig_Blessed_Hammer_Damage_Func018C())then
+set udg_Heal_Amount=((2.00+(3.00*I2R(GetUnitAbilityLevelSwapped('A07L',udg_Hero_Paladin))))+(0.08*I2R(GetHeroStatBJ(bj_HEROSTAT_INT,udg_Hero_Paladin,true))))
+set udg_Heal_Target=udg_Hero_Paladin
+set udg_Heal_Healer=udg_Hero_Paladin
+call ConditionalTriggerExecute(gg_trg_Healing)
+if(Trig_Blessed_Hammer_Damage_Func018Func005C())then
+set udg_CC_Duration=1.00
+set udg_CC_Target=udg_DamageEventTarget
+set udg_CC_Hero=udg_Hero_Paladin
+call TriggerExecute(gg_trg_Stun)
+else
+endif
+else
+endif
+if(Trig_Blessed_Hammer_Damage_Func019C())then
+set udg_HammerMastery_Stacks=(udg_HammerMastery_Stacks+2)
+else
+endif
+if(Trig_Blessed_Hammer_Damage_Func020C())then
+set udg_CD_Dynamic_Hero=udg_Hero_Paladin
+set udg_CD_Dynamic_Ability='A03U'
+set udg_CD_Dynamic=BlzGetUnitAbilityCooldownRemaining(udg_CD_Dynamic_Hero,udg_CD_Dynamic_Ability)
+set udg_CD_Dynamic_Reduction=0.10
+call ConditionalTriggerExecute(gg_trg_Dynamic_CDR)
+else
+endif
+call SaveUnitHandleBJ(l__udg_BH_DamagedUnit,l__udg_BH_CustomValue2,l__udg_BH_CustomValue,udg_Hashtable_STR)
+call PolledWait(0.85)
+set udg_DeathCheck_Unit=l__udg_BH_DamageHammer
+if GetUnitTypeId(udg_DeathCheck_Unit)==0 or IsUnitType(udg_DeathCheck_Unit,UNIT_TYPE_DEAD)then
+else
+call SaveUnitHandleBJ(l__udg_BH_DamageHammer,l__udg_BH_CustomValue2,l__udg_BH_CustomValue,udg_Hashtable_STR)
+endif
+set l__udg_BH_DamagedUnit=null
+set l__udg_BH_DamageHammer=null
+endfunction
+===== Trig_Blessed_Hammer_Cast_Actions 238 =====
+function Trig_Blessed_Hammer_Cast_Actions takes nothing returns nothing
+call TriggerExecute(gg_trg_Blessed_Hammer_Spawn)
+if(Trig_Blessed_Hammer_Cast_Func002C())then
+call StartTimerBJ(udg_DivineToll_Timer,false,0.51)
+else
+endif
+endfunction
+===== Trig_Holy_Light_Actions 1584 =====
+function Trig_Holy_Light_Actions takes nothing returns nothing
+set udg_HolyLight_Target=GetSpellTargetUnit()
+if(Trig_Holy_Light_Func002C())then
+set udg_Heal_Amount=(((40.00+(60.00*I2R(GetUnitAbilityLevelSwapped('A01G',udg_Hero_Paladin))))+(2.60*I2R(GetHeroStatBJ(bj_HEROSTAT_INT,udg_Hero_Paladin,true))))+(0.08*GetUnitStateSwap(UNIT_STATE_MAX_LIFE,udg_HolyLight_Target)))
+else
+set udg_Heal_Amount=(((40.00+(60.00*I2R(GetUnitAbilityLevelSwapped('A01G',udg_Hero_Paladin))))+(2.60*I2R(GetHeroStatBJ(bj_HEROSTAT_INT,udg_Hero_Paladin,true))))+(0.04*GetUnitStateSwap(UNIT_STATE_MAX_LIFE,udg_HolyLight_Target)))
+endif
+if(Trig_Holy_Light_Func003C())then
+set udg_Heal_Amount=(udg_Heal_Amount*(1.08+((0.08/ 10.00)*I2R(udg_Mastery_Stat[GetConvertedPlayerId(GetOwningPlayer(udg_Hero_Paladin))]))))
+call SetUnitManaBJ(udg_HolyLight_Target,(GetUnitStateSwap(UNIT_STATE_MANA,udg_HolyLight_Target)+(0.15*(GetUnitStateSwap(UNIT_STATE_MAX_MANA,udg_HolyLight_Target)-GetUnitStateSwap(UNIT_STATE_MANA,udg_HolyLight_Target)))))
+else
+endif
+if(Trig_Holy_Light_Func004C())then
+call UnitRemoveBuffsExBJ(bj_BUFF_POLARITY_NEGATIVE,bj_BUFF_RESIST_EITHER,udg_HolyLight_Target,false,false)
+else
+endif
+set udg_Heal_Target=udg_HolyLight_Target
+set udg_Heal_Healer=udg_Hero_Paladin
+call ConditionalTriggerExecute(gg_trg_Healing)
+if(Trig_Holy_Light_Func008C())then
+set udg_Generic_Point=GetUnitLoc(udg_HolyLight_Target)
+set bj_wantDestroyGroup=true
+call ForGroupBJ(GetUnitsInRangeOfLocAll(500.00,udg_Generic_Point),function Trig_Holy_Light_Func008Func003A)
+call RemoveLocation(udg_Generic_Point)
+else
+endif
+endfunction
+===== Trig_Divine_Toll_Actions 190 =====
+function Trig_Divine_Toll_Actions takes nothing returns nothing
+call PlaySoundOnUnitBJ(gg_snd_Divine_Toll,75.00,udg_Hero_Paladin)
+call TriggerExecute(gg_trg_Blessed_Hammer_Spawn)
+endfunction
+===== Trig_Beacon_of_Light_Actions 891 =====
+function Trig_Beacon_of_Light_Actions takes nothing returns nothing
+set udg_BeaconLight_Target=GetSpellTargetUnit()
+set udg_Heal_Amount=(((20.00+(80.00*I2R(GetUnitAbilityLevelSwapped('A01G',udg_Hero_Paladin))))+(3.50*I2R(GetHeroStatBJ(bj_HEROSTAT_INT,udg_Hero_Paladin,true))))+(0.10*GetUnitStateSwap(UNIT_STATE_MAX_LIFE,udg_HolyLight_Target)))
+if(Trig_Beacon_of_Light_Func003C())then
+set udg_Heal_Amount=(udg_Heal_Amount*(1.05+((0.03/ 5.00)*I2R(udg_Mastery_Stat[GetConvertedPlayerId(GetOwningPlayer(udg_Hero_Paladin))]))))
+else
+endif
+set udg_Heal_Amount=(udg_Heal_Amount/ 2.00)
+set udg_Heal_Target=udg_BeaconLight_Target
+set udg_Heal_Healer=udg_Hero_Paladin
+call ConditionalTriggerExecute(gg_trg_Healing)
+call AddSpecialEffectTargetUnitBJ("origin",udg_BeaconLight_Target,"Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdl")
+call DestroyEffectBJ(GetLastCreatedEffectBJ())
+endfunction
+===== Trig_Hammer_of_Justice_Actions 490 =====
+function Trig_Hammer_of_Justice_Actions takes nothing returns nothing
+set udg_Generic_Point=GetUnitLoc(GetTriggerUnit())
+set udg_HammerOfJustice_Point=PolarProjectionBJ(udg_Generic_Point,20.00,GetUnitFacing(udg_Hero_Paladin))
+call SetUnitPositionLoc(udg_Dummies_HammerOfJustice,udg_HammerOfJustice_Point)
+call IssueTargetOrderBJ(udg_Dummies_HammerOfJustice,"thunderbolt",GetSpellTargetUnit())
+call RemoveLocation(udg_Generic_Point)
+call RemoveLocation(udg_HammerOfJustice_Point)
+endfunction
+===== Trig_Divine_Protection_Actions 534 =====
+function Trig_Divine_Protection_Actions takes nothing returns nothing
+set udg_DivineProtection_Target=GetSpellTargetUnit()
+call UnitAddAbilityBJ('A0AV',udg_Caster_Dummy)
+call IssueTargetOrderBJ(udg_Caster_Dummy,"bloodlust",udg_DivineProtection_Target)
+call UnitRemoveAbilityBJ('A0AV',udg_Caster_Dummy)
+if(Trig_Divine_Protection_Func005C())then
+call UnitAddAbilityBJ('A0AV',udg_Caster_Dummy)
+call IssueTargetOrderBJ(udg_Caster_Dummy,"bloodlust",udg_Hero_Paladin)
+call UnitRemoveAbilityBJ('A0AV',udg_Caster_Dummy)
+else
+endif
+endfunction
+===== Trig_Ardent_Defender_Activate_Actions 235 =====
+function Trig_Ardent_Defender_Activate_Actions takes nothing returns nothing
+call BlzUnitDisableAbility(udg_Hero_Paladin,'A0JL',false,false)
+call FlushChildHashtable(TasAbilityChargeBox_Hash,GetHandleId((udg_Hero_Paladin)))
+endfunction
+LINE real udg_CrusaderStrike_Damage=0
+LINE set udg_CrusaderStrike_Damage=0
+LINE set udg_CrusaderStrike_Damage=(((90.00*I2R(GetUnitAbilityLevelSwapped('A0GE',udg_Hero_Paladin)))+30.00)+(2.75*I2R(GetHeroStatBJ(bj_HEROSTAT_STR,udg_Hero_Paladin,true))))
+LINE set udg_CrusaderStrike_Damage=(udg_CrusaderStrike_Damage*(1.10+(0.01*I2R(udg_Mastery_Stat[GetConvertedPlayerId(GetOwningPlayer(udg_Hero_Paladin))]))))
+LINE set udg_CrusaderStrike_Damage=(udg_CrusaderStrike_Damage*(1.10+(0.01*I2R(udg_Mastery_Stat[GetConvertedPlayerId(GetOwningPlayer(udg_Hero_Paladin))]))))
+LINE set udg_CrusaderStrike_Damage=(udg_CrusaderStrike_Damage*(1+(0.05*I2R(CountUnitsInGroup(udg_BH_HammerGroup)))))
+LINE set udg_CrusaderStrike_Damage=(udg_CrusaderStrike_Damage*(1+(0.05*I2R(CountUnitsInGroup(udg_BH_HammerGroup)))))
+LINE call UnitDamageTargetBJ(udg_DamageEventSource,udg_DamageEventTarget,udg_CrusaderStrike_Damage,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)

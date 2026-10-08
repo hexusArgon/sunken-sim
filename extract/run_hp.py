@@ -91,6 +91,18 @@ def payload(label: str, build: Build, shop_ids: set[str], targets: int) -> dict:
     }
 
 
+def _write_merged(out, results: dict) -> None:
+    """Keep the higher DPS already stored for a pool. A parallel part must not erase it."""
+    current = {}
+    if out.exists():
+        current = json.loads(out.read_text(encoding="utf-8"))
+    for key, row in results.items():
+        old = current.get(key)
+        if old is None or row["dps"] > old["dps"]:
+            current[key] = row
+    out.write_text(json.dumps(current, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 def _top_codes() -> set[str]:
     rows = json.loads(TOP100.read_text(encoding="utf-8"))
     return {row["rawcode"] for row in rows}
@@ -134,15 +146,12 @@ def main() -> None:
     for targets in (5,):
         for label, pool in pools:
             key = f"{targets}-{label}"
-            if key in results:
-                print(f"уже есть {key}", flush=True)
-                continue
             print(f"старт {key} {len(pool)}", flush=True)
             build, dps = search_pool(pool, seed, targets, talents=SHADOW_TALENTS)
             legend = [item.name for item in build.items if item.rawcode in LEGENDARIES]
             print(f"{key} {dps:.1f} legendary {legend} " + ", ".join(item.name for item in build.items), flush=True)
             results[key] = payload(label, build, shop_ids, targets)
-            out.write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
+            _write_merged(out, results)
             write_all()
     print("готово", flush=True)
 

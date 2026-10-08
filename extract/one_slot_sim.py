@@ -8,25 +8,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.stdout.reconfigure(encoding="utf-8")
 
 from sunken_sim.library import load_items
-from sunken_sim.search import LEGENDARIES, TALENTS, pools_for
+from sunken_sim.search import LEGENDARIES, TALENTS, ignored_item_names, pools_for
 from sunken_sim.shadow import ORB_MODE, Build, simulate
-
-ROOT = Path(__file__).resolve().parents[1]
 
 
 def banned_names() -> set[str]:
-    guide = (ROOT / "docs" / "guide.md").read_text(encoding="utf-8")
-    priest = (ROOT / "docs" / "priest.md").read_text(encoding="utf-8")
-    found = set()
-    for text in (guide, priest):
-        marker = "Эти вещи в пул не входят:"
-        start = text.find(marker)
-        if start < 0:
-            continue
-        chunk = text[start + len(marker) : text.find("\n\n", start)]
-        for name in chunk.split(","):
-            found.add(name.strip().strip("."))
-    return found
+    return ignored_item_names("Priest")
 
 
 def main() -> None:

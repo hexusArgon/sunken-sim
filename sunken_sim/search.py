@@ -42,38 +42,20 @@ TALENTS = {
     "I0PT": "Dark Evangelism",
     "I0SC": "Touch of the Naaru",
 }
+# Healing, incoming mitigation, survival, summons and effects that do not
+# raise the hero's own damage stay out. See docs/guide.md.
 GLYPHS = {
     "I0HC": "Animosity",
     "I0EN": "Arc Striking",
-    "I0HA": "Astral Shift",
     "I0GZ": "Battle Frenzy",
-    "I0OH": "Beastfury",
     "I0H6": "Blood Violence",
-    "I0H1": "Bloodthirst",
-    "I0HB": "Class Mastery",
     "I0EJ": "Fortune",
-    "I0NB": "Commandership",
-    "I0E8": "Crippling",
-    "I0EI": "Dampening",
-    "I0EM": "Deep Healing",
-    "I0NA": "Devotion",
-    "I0HD": "Diamond Skin",
     "I07B": "Fortitude",
     "I0JA": "Glass Cannon",
     "I0H3": "Hellfire",
-    "I0CB": "Lightforce",
-    "I0H2": "Magic Find",
-    "I0GY": "Mana Shield",
     "I0OF": "Mindhaste",
-    "I0EH": "Protecting",
-    "I01H": "Provoking",
-    "I0EL": "Recovery",
-    "I0H4": "Renewal",
-    "I0H0": "Replenishment",
-    "I0OG": "Siphoning",
     "I0EK": "Supremacy",
     "I0H5": "Thunder",
-    "I0OI": "Trepidation",
     "I0AV": "Unsealed Power",
 }
 
@@ -341,22 +323,51 @@ def _share() -> tuple[frozenset[int], int]:
     return chosen, parts
 
 
-def _record_path(spec: str, targets: int) -> Path:
-    folder = Path(__file__).resolve().parents[1] / "extract" / "exhaustive"
-    folder.mkdir(exist_ok=True)
+def _part_label() -> str:
     chosen, parts = _share()
     if parts == 1 and chosen == frozenset({0}):
-        name = f"{spec}-{targets}.json"
-    else:
-        label = "-".join(str(part) for part in sorted(chosen))
-        name = f"{spec}-{targets}-part{label}.json"
-    return folder / name
+        return ""
+    return "-".join(str(part) for part in sorted(chosen))
 
 
-def _write_record(spec: str, targets: int, payload: dict) -> None:
+def _record_dir() -> Path:
+    folder = Path(__file__).resolve().parents[1] / "extract" / "exhaustive"
+    folder.mkdir(exist_ok=True)
+    return folder
+
+
+def _legacy_record_path(spec: str, targets: int) -> Path:
+    label = _part_label()
+    name = f"{spec}-{targets}.json" if not label else f"{spec}-{targets}-part{label}.json"
+    return _record_dir() / name
+
+
+def _record_path(spec: str, targets: int, items: list[Item] | None = None) -> Path:
+    legacy = _legacy_record_path(spec, targets)
+    if items is None:
+        return legacy
+    label = _part_label()
+    key = hashlib.sha1(",".join(item.rawcode for item in items).encode()).hexdigest()[:12]
+    stem = f"{spec}-{targets}-{key}" if not label else f"{spec}-{targets}-part{label}-{key}"
+    return _record_dir() / f"{stem}.json"
+
+
+def _saved_for_pool(path: Path, items: list[Item]) -> dict | None:
+    if not path.exists():
+        return None
+    saved = json.loads(path.read_text(encoding="utf-8"))
+    codes = {item.rawcode for item in items}
+    names = {item.name for item in items}
+    if any(token not in codes and token not in names for token in saved.get("items", [])):
+        return None
+    return saved
+
+
+def _write_record(spec: str, targets: int, payload: dict, path: Path | None = None) -> None:
     import time
 
-    path = _record_path(spec, targets)
+    if path is None:
+        path = _record_path(spec, targets)
     lock = path.with_suffix(".lock")
     while True:
         try:
@@ -367,7 +378,13 @@ def _write_record(spec: str, targets: int, payload: dict) -> None:
     try:
         if path.exists():
             old = json.loads(path.read_text(encoding="utf-8"))
-            if old.get("item_dps", -1) >= payload["item_dps"]:
+            old_item = old.get("item_dps")
+            new_item = payload.get("item_dps")
+            if (
+                isinstance(old_item, (int, float))
+                and isinstance(new_item, (int, float))
+                and old_item >= new_item
+            ):
                 return
         tmp = path.with_suffix(".tmp")
         tmp.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
@@ -419,7 +436,7 @@ def _mark_done(path: Path, index: int) -> None:
 
 
 def _exhaustive_slice(task: tuple) -> tuple[int, float, int]:
-    first, items, targets, spec, floor, talent_codes, glyph_codes, done_path = task
+    first, items, targets, spec, floor, talent_codes, glyph_codes, done_path, record_path = task
     kind = _item_kind(items[first])
     if kind == "stack":
         starts = range(1, 7)
@@ -462,6 +479,7 @@ def _exhaustive_slice(task: tuple) -> tuple[int, float, int]:
                 "glyphs": list(glyphs),
                 "items": [item.rawcode for item in chosen],
             },
+            Path(record_path),
         )
 
     def walk(start: int, left: int, has_leg: bool, has_orb: bool, chosen: list[Item]) -> None:
@@ -509,8 +527,9 @@ def _exhaustive_item_sets(
     chosen, parts = _share()
     done_path = _done_path(items, _SPEC, targets)
     done = _load_done(done_path)
+    record_path = _record_path(_SPEC, targets, items)
     tasks = [
-        (index, items, targets, _SPEC, floor, talent_codes, glyph_codes, str(done_path))
+        (index, items, targets, _SPEC, floor, talent_codes, glyph_codes, str(done_path), str(record_path))
         for index in range(len(items))
         if index % parts in chosen and index not in done
     ]
@@ -531,17 +550,25 @@ def _exhaustive_item_sets(
                 print(f"сдан срез {first}, всего шестёрок {total}, новых {records}", flush=True)
     else:
         print("все срезы этого пула уже сданы", flush=True)
-    path = _record_path(_SPEC, targets)
-    if not path.exists():
+    saved = _saved_for_pool(record_path, items)
+    if saved is None:
+        saved = _saved_for_pool(_legacy_record_path(_SPEC, targets), items)
+    if saved is None:
         return [Build(frozenset(), frozenset(), greedy, 0, 0, 0, 0)]
-    saved = json.loads(path.read_text(encoding="utf-8"))
     by_code = {item.rawcode: item for item in items}
     by_name: dict[str, Item] = {}
     for item in items:
         by_name.setdefault(item.name, item)
-    chosen = tuple(by_code[token] if token in by_code else by_name[token] for token in saved["items"])
-    print(f"лучшая шестёрка без талантов {saved['item_dps']:.1f}", flush=True)
-    return [Build(frozenset(), frozenset(), chosen, 0, 0, 0, 0)]
+    picked = []
+    for token in saved["items"]:
+        item = by_code.get(token) or by_name.get(token)
+        if item is None:
+            return [Build(frozenset(), frozenset(), greedy, 0, 0, 0, 0)]
+        picked.append(item)
+    item_dps = saved.get("item_dps")
+    if isinstance(item_dps, (int, float)):
+        print(f"лучшая шестёрка без талантов {item_dps:.1f}", flush=True)
+    return [Build(frozenset(), frozenset(), tuple(picked), 0, 0, 0, 0)]
 
 
 def _fill_item_sets(base: Build, catalog: list[Item], targets: int = 1, talent_codes: tuple[str, ...] | None = None) -> list[Build]:

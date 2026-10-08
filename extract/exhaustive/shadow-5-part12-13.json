@@ -1,0 +1,25 @@
+{
+  "dps": 2158.0,
+  "item_dps": null,
+  "talent_dps": null,
+  "talents": [
+    "I0HL",
+    "I0KF",
+    "I0PU"
+  ],
+  "glyphs": [
+    "I0AV",
+    "I0H5",
+    "I0JA"
+  ],
+  "items": [
+    "I048",
+    "I0FW",
+    "I0NT",
+    "I0FW",
+    "I00D",
+    "I0FW"
+  ],
+  "note": "item_dps/talent_dps unknown after pool overwrite; final scored dps kept",
+  "source_pool": "5-shop"
+}

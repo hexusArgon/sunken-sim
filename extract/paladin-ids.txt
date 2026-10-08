@@ -1,0 +1,32 @@
+A0GE 7
+'I0NC' | set udg_Talents_Str[19]='I0ND' | set udg_Talents_Str[20]='I0MC' | set udg_Ability_Q[2]='A0GE' | set udg_Ability_Q_Type[2]="Magical" | set udg_Ability_Str[1]='A07
+udg_Ability_Str[1]='A075' | set udg_Ability_Str[2]=udg_Empty_Ability | set udg_Ability_Str[3]='A0GE' | set udg_Ability_Str[4]='A07L' | set udg_Ability_Str[5]='A01G' | set
+ue | endif | if((GetSpellAbilityId()=='A03U'))then | return true | endif | if((GetSpellAbilityId()=='A0GE'))then | return true | endif | if((GetSpellAbilityId()=='A07L'))then | r
+ue | endif | if((GetSpellAbilityId()=='A0CS'))then | return true | endif | if((GetSpellAbilityId()=='A0GE'))then | return true | endif | if((GetSpellAbilityId()=='A01G'))then | r
+sFury_Attacks=0 | set udg_RighteousFury_Damage=((5.00+(25.00*I2R(GetUnitAbilityLevelSwapped('A0GE',udg_Hero_Paladin))))+(2.00*I2R(GetHeroStatBJ(bj_HEROSTAT_STR,ud
+_DamageEventSource) | set udg_CrusaderStrike_Damage=(((90.00*I2R(GetUnitAbilityLevelSwapped('A0GE',udg_Hero_Paladin)))+30.00)+(2.75*I2R(GetHeroStatBJ(bj_HEROSTAT_
+---
+A07L 9
+iggerHT,('A075'),0,(gg_trg_Divine_Protection)) | call SaveTriggerHandle(AbilityToTriggerHT,('A07L'),0,(gg_trg_Blessed_Hammer_Cast)) | call SaveTriggerHandle(Ability
+udg_Ability_Str[2]=udg_Empty_Ability | set udg_Ability_Str[3]='A0GE' | set udg_Ability_Str[4]='A07L' | set udg_Ability_Str[5]='A01G' | set udg_Ability_Str[6]=udg_Empty_
+ue | endif | if((GetSpellAbilityId()=='A0GE'))then | return true | endif | if((GetSpellAbilityId()=='A07L'))then | return true | endif | if((GetSpellAbilityId()=='A03W'))then | r
+002Func001Func001Func001C takes nothing returns boolean | if(not(GetUnitAbilityLevelSwapped('A07L',udg_Hero_Paladin)==4))then | return false | endif | return true | endfu
+004Func002Func001Func001C takes nothing returns boolean | if(not(GetUnitAbilityLevelSwapped('A07L',udg_Hero_Paladin)==3))then | return false | endif | return true | endfu
+002Func004Func002Func001C takes nothing returns boolean | if(not(GetUnitAbilityLevelSwapped('A07L',udg_Hero_Paladin)==2))then | return false | endif | return true | endfu
+---
+A01G 7
+gerHT,('A07L'),0,(gg_trg_Blessed_Hammer_Cast)) | call SaveTriggerHandle(AbilityToTriggerHT,('A01G'),0,(gg_trg_Holy_Light)) | call SaveTriggerHandle(AbilityToTrigger
+bility | set udg_Ability_Str[3]='A0GE' | set udg_Ability_Str[4]='A07L' | set udg_Ability_Str[5]='A01G' | set udg_Ability_Str[6]=udg_Empty_Ability | set udg_Ability_Str[7]
+ue | endif | if((GetSpellAbilityId()=='A0GE'))then | return true | endif | if((GetSpellAbilityId()=='A01G'))then | return true | endif | if((GetSpellAbilityId()=='A0G1'))then | r
+_Light_Func002C())then | set udg_Heal_Amount=(((40.00+(60.00*I2R(GetUnitAbilityLevelSwapped('A01G',udg_Hero_Paladin))))+(2.60*I2R(GetHeroStatBJ(bj_HEROSTAT_INT,ud
+lyLight_Target))) | else | set udg_Heal_Amount=(((40.00+(60.00*I2R(GetUnitAbilityLevelSwapped('A01G',udg_Hero_Paladin))))+(2.60*I2R(GetHeroStatBJ(bj_HEROSTAT_INT,ud
+t=GetSpellTargetUnit() | set udg_Heal_Amount=(((20.00+(80.00*I2R(GetUnitAbilityLevelSwapped('A01G',udg_Hero_Paladin))))+(3.50*I2R(GetHeroStatBJ(bj_HEROSTAT_INT,ud
+---
+A0JM 19
+lity_Str[9]=udg_Empty_Ability | set udg_Mastery_Unit=udg_Hero_Paladin | call UnitAddAbilityBJ('A0JM',udg_Glyphs_Unit[2]) | set bj_forLoopAIndex=1 | set bj_forLoopAIndex
+oopAIndexEnd | set udg_SpecTooltipBase_Str[GetForLoopIndexA()]=BlzGetAbilityExtendedTooltip('A0JM',(GetForLoopIndexA()-1)) | set bj_forLoopAIndex=bj_forLoopAIndex+1
+ckSpeed_Unit==udg_Hero_Paladin))then | return false | endif | if(not(GetUnitAbilityLevelSwapped('A0JM',udg_Glyphs_Unit[2])==1))then | return false | endif | return true | end
+ower_Tooltip_Func005Func004C takes nothing returns boolean | if((GetUnitAbilityLevelSwapped('A0JM',udg_Glyphs_Unit[2])==2))then | return true | endif | if((GetUnitAbili
+pped('A0JM',udg_Glyphs_Unit[2])==2))then | return true | endif | if((GetUnitAbilityLevelSwapped('A0JM',udg_Glyphs_Unit[2])==3))then | return true | endif | return false | end
+004Func012Func006Func004C takes nothing returns boolean | if(not(GetUnitAbilityLevelSwapped('A0JM',udg_Glyphs_Unit[2])==1))then | return false | endif | return true | end
+---

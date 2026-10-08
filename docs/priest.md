@@ -4,7 +4,7 @@
 
 Все тройки талантов и глифов симятся на надетых вещах, каждое значение крита строит свою очередь кастов. Как набираются предметы — в общем гайде. Таблицы ниже — прошлый прогон, до стака кулдауна ядер, посоха, Touch of the Naaru, казни на весь урон, Potency в Psychic Link и регена маны.
 
-Герой на полном здоровье. Удвоение Insanity ниже 40% здоровья не включается. Touch of the Naaru снимает с Mind Spike 0,4 с на каждом ударе Naaru, в Discipline 0,2 с, и сокращает базу Divine Image на 1 с. Answered Prayers сокращает её ещё на 1 с. Без этих талантов база 16 с.
+Входящий урон и хил — по общему гайду. Пока здоровье героя 40% или ниже, бонус урона Insanity удваивается. Touch of the Naaru снимает с Mind Spike 0,4 с на каждом ударе Naaru, в Discipline 0,2 с, и сокращает базу Divine Image на 1 с. Answered Prayers сокращает её ещё на 1 с. Без этих талантов база 16 с.
 
 Жрец кастер: топ урона всегда от способностей. Эти вещи в пул не входят: Serathil, Ardite Impaler, Stormforged Axe, Cinderblade, Killmaim, Zandalari Kris, Butterfly, Tuskarr Shank, Windcutter, Band of Flame, General's Warhelm, Warlord's Battlemask, Edge of the Red Court, Blackrock Hammer.
 

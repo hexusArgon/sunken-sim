@@ -17,7 +17,7 @@ from farm.protocol import (
     resolve_hero_spec,
     status_text,
 )
-from farm.runner import Board, add_one, note_finished
+from farm.runner import Board, Boards, add_one, build_group, note_finished
 from farm.space import Piece, Space
 
 
@@ -197,6 +197,11 @@ class ProtocolTest(unittest.TestCase):
     def test_command_fits_discord_limits(self) -> None:
         body = command_body("kivor")
         self.assertEqual(body["name"], "kivor")
+        from farm.identity import _WORD
+
+        self.assertTrue(_WORD.fullmatch("eseid-main"))
+        self.assertTrue(_WORD.fullmatch("kivor"))
+        self.assertIsNone(_WORD.fullmatch("Eseid"))
         self.assertLessEqual(len(body["options"]), 25)
 
         def walk(node: dict) -> None:
@@ -226,6 +231,33 @@ class BoardTest(unittest.TestCase):
         done = note_finished(done, ahead, 0)
         self.assertEqual((done, ahead), (2, set()))
         self.assertEqual(note_finished(done, ahead, 1), 2)
+
+    def test_three_source_tops(self) -> None:
+        self.assertEqual(build_group(["shop", "drop"]), "shop_random")
+        self.assertEqual(build_group(["shop", "legendary"]), "shop")
+        self.assertEqual(build_group(["drop", "drop"]), "drop")
+        self.assertIsNone(build_group(["legendary"]))
+        boards = Boards()
+        for index, group in enumerate(("shop_random", "shop", "drop", "shop")):
+            boards.add({"dps": float(index + 1), "chunk": index, "group": group, "items": []})
+        self.assertEqual([row["chunk"] for row in boards.by_group["shop"].rows()], [3, 1])
+        self.assertEqual(boards.by_group["shop_random"].rows()[0]["chunk"], 0)
+        self.assertEqual(boards.by_group["drop"].rows()[0]["chunk"], 2)
+        self.assertEqual(boards.ranked(boards.overall)[0]["place"], 1)
+        self.assertEqual(boards.ranked(boards.overall)[0]["chunk"], 3)
+
+    def test_naked_item_top_keeps_ten(self) -> None:
+        from sunken_sim.search import _insert_item_top
+
+        rows: list[dict] = []
+        for index in range(12):
+            rows = _insert_item_top(rows, float(index), [f"I{index:03d}"])
+        self.assertEqual(len(rows), 10)
+        self.assertEqual(rows[0]["items"], ["I011"])
+        self.assertEqual(rows[-1]["item_dps"], 2.0)
+        again = _insert_item_top(rows, 5.0, ["I005"])
+        self.assertEqual(len(again), 10)
+        self.assertEqual(sum(1 for row in again if row["items"] == ["I005"]), 1)
 
     def test_process_pool_starts(self) -> None:
         context = get_context("spawn")

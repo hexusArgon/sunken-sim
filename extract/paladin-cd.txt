@@ -1,0 +1,70 @@
+#1173
+Specializations affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different Specializations.
+
+Protection:
+• Increases the damage reduction of Divine Protection by 5%, increased by 0,3% per point of Mastery.
+•Reduces the cooldown of Ardent Defender by 30 seconds.
+
+#1846
+Strikes the target dealing moderate amount of damage. If the target is below 30% of it's maximum health, Crusader Strike will deal 100 extra damage.
+
+Level 1 - 75 damage.
+Level 2 - 145 damage.
+Level 3 - 280 damage.
+Level 4 - 360 damage.
+
+Taunting ability
+Cooldown: 5 seconds.
+
+#2852
+Strikes the target dealing moderate amount of damage. If the target is below 30% of it's maximum health, Crusader Strike will deal 100 extra damage.
+
+Deals 145 damage, 
+
+Taunting ability
+Cooldown: 5 seconds.
+
+#2885
+Strikes the target dealing moderate amount of damage. If the target is below 30% of it's maximum health, Crusader Strike will deal 10 extra damage.
+
+Deals 280 damage, 
+
+Taunting ability
+Cooldown: 5 seconds.
+
+#2927
+Strikes the target dealing moderate amount of damage. If the target is below 30% of it's maximum health, Crusader Strike will deal 100 extra damage.
+
+Deals 360 damage, 
+
+Taunting ability
+Cooldown: 5 seconds.
+
+#3694
+Holy Light removes all non-aura debuffs from its target and its cooldown is reduced by 1,2 seconds.
+
+#4593
+Replaces Righteous Fury with Hammer of Justice which deals 60 Magical damage (+175% of Strength) and Stuns the target for 5 seconds. The damage dealt will be increased by 1% per point of Intelligence. Whenever Blessed Hammer deals damage, the remaining cooldown of this ability gets reduced by 0,1 seconds. Has 18 seconds cooldown.
+
+#5657
+Type: Magical
+Hurls a hammer at a targeted enemy that deals 60 damage (+175% of Strength) and Stuns the target for 5 seconds. The damage dealt will be increased by 1% per point of Intelligence. Whenever Blessed Hammer deals damage, the remaining cooldown of this ability will get reduced by 0,1 seconds.
+
+Cooldown: 
+
+#11425
+Specializations affect the abilities of your hero and determine what Mastery does for your hero. Clicking this ability switches between the different Specializations.
+
+Retribution:
+• Increases the damage of Crusader Strike by 10%, increased by additional 1% per point of Mastery.
+• The Paladin's base attack cooldown is reduced by 3% for each currently active Blessed Hammer.
+
+#11520
+Boosts Strength and Intelligence. Also reduces the cooldown of Holy Light.
+Classes: Paladin
+
+#11522
++12 Strength
++12 Intelligence
+Classes: Paladin
+Equip: Reduces the cooldown of Holy Light by 1,8 seconds.

@@ -161,6 +161,60 @@ def write_all() -> None:
     chunks.append(f"const MODES: Record<string, RunId[]> = {js(modes_of)};")
     chunks.append(f"const SPEC_NOTE: Record<SpecId, string> = {js({name: NOTES[name] for name in spec_ids})};")
     chunks.append("")
+    chunks.append(
+        "const TALENT_SHADOW_DPS: Record<string, number> = "
+        + js({
+            "Dark Torment": 156.7,
+            "Insanity": 149.9,
+            "Catharsis": 149.8,
+            "Psychic Link": 144.9,
+            "Answered Prayers": 139.7,
+            "Touch of the Naaru": 135.4,
+            "Cosmic Horrors": 135.1,
+            "Clairvoyance": 133.0,
+            "Smite": 132.0,
+            "Empyreal Blaze": 132.0,
+            "Blinding Light": 132.0,
+            "Dark Evangelism": 132.0,
+        })
+        + ";"
+    )
+    chunks.append(
+        "const GLYPH_SHADOW_DPS: Record<string, number> = "
+        + js({
+            "Fortitude": 159.9,
+            "Hellfire": 158.2,
+            "Thunder": 157.8,
+            "Unsealed Power": 155.7,
+            "Glass Cannon": 151.8,
+            "Mindhaste": 136.9,
+            "Blood Violence": 135.7,
+            "Supremacy": 134.7,
+            "Animosity": 133.7,
+            "Battle Frenzy": 133.6,
+            "Arc Striking": 132.0,
+            "Fortune": 132.0,
+        })
+        + ";"
+    )
+    chunks.append(
+        "const ITEM_SHADOW_DPS: Record<string, number> = "
+        + js({
+            "Atiesh, Greatstaff of the Guardian": 225.8,
+            "Unbound Power Core": 222.5,
+            "Elemental Orb (Fire)": 218.0,
+            "The Darkglaive": 201.4,
+            "Staff of Galactic Fury": 197.1,
+            "Harness of Beyond": 191.5,
+            "Elemental Orb (Shadow)": 176.8,
+            "Diamond Ring": 173.9,
+            "The Zircon Star": 164.4,
+            "Staff of the Magister": 163.8,
+            "Pipe of Deew": 152.0,
+        })
+        + ";"
+    )
+    chunks.append("")
     spec_pills = "\n".join(
         f'        <Pill active={{spec === "{name}"}} onClick={{() => setSpec("{name}")}}>{name}</Pill>'
         for name in spec_ids
@@ -189,6 +243,12 @@ function notedName(name: string, stats: Array<[string, string]>): string {{
   return row ? `${{name}} — ${{row[1]}}` : name;
 }}
 
+function shadowItemDps(name: string, stats: Array<[string, string]>): number {{
+  const mode = stats.find(([label]) => label === name);
+  const keyed = mode ? `${{name}} (${{mode[1]}})` : name;
+  return ITEM_SHADOW_DPS[keyed] ?? ITEM_SHADOW_DPS[name] ?? -1;
+}}
+
 export default function PriestSims() {{
   const [spec, setSpec] = useCanvasState<SpecId>("priest-spec", "{spec_ids[0]}");
   const [catalog, setCatalog] = useCanvasState<"all" | "picked">("priest-catalog", "picked");
@@ -198,8 +258,15 @@ export default function PriestSims() {{
   const modeList = MODES[`${{spec}}|${{target}}`];
   const source = modeList.includes(mode) ? mode : modeList[0];
   const run = RUNS[`${{spec}}|${{target}}|${{source}}`];
-  const talents = catalog === "picked" ? TALENTS.filter((row) => run.talents.includes(row[0])) : TALENTS;
-  const glyphs = catalog === "picked" ? GLYPHS.filter((row) => run.glyphs.includes(row[0])) : GLYPHS;
+  const talents = (catalog === "picked" ? TALENTS.filter((row) => run.talents.includes(row[0])) : TALENTS)
+    .slice()
+    .sort((a, b) => (TALENT_SHADOW_DPS[b[0]] ?? -1) - (TALENT_SHADOW_DPS[a[0]] ?? -1));
+  const glyphs = (catalog === "picked" ? GLYPHS.filter((row) => run.glyphs.includes(row[0])) : GLYPHS)
+    .slice()
+    .sort((a, b) => (GLYPH_SHADOW_DPS[b[0]] ?? -1) - (GLYPH_SHADOW_DPS[a[0]] ?? -1));
+  const rankedItems = [...run.items].sort(
+    (a, b) => shadowItemDps(b[0], run.stats) - shadowItemDps(a[0], run.stats),
+  );
 
   return (
     <Stack gap={{20}}>
@@ -282,13 +349,13 @@ export default function PriestSims() {{
       </Text>
       <Table
         headers={{["Предмет", "Источник", "Описание из игры"]}}
-        rows={{run.items.map(([name, sourceName, tip]) => [
+        rows={{rankedItems.map(([name, sourceName, tip]) => [
           notedName(name, run.stats),
           sourceName,
           <GameText text={{tip}} />,
         ])}}
         striped
-        rowTone={{run.items.map(() => "success" as const)}}
+        rowTone={{rankedItems.map(() => "success" as const)}}
       />
 
       <Row gap={{8}} align="center">
@@ -301,7 +368,7 @@ export default function PriestSims() {{
         </Pill>
       </Row>
       <Text size="small" tone="tertiary">
-        Прогнаны все тройки из 18 талантов и все тройки из 32 глифов. На каждом бою проверены все 56 раскладок 5 очков.
+        Прогнаны все тройки из 8 талантов Shadow и все тройки из 12 глифов, которые поднимают урон. На победителе проверены все 56 раскладок 5 очков.
       </Text>
 
       <H3>Таланты</H3>

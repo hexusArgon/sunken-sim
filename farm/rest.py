@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import threading
 import time
 import urllib.error
 import urllib.parse
@@ -22,7 +21,6 @@ class RestError(Exception):
 class Rest:
     def __init__(self, token: str) -> None:
         self.token = token
-        self._lock = threading.Lock()
 
     def _request(self, method: str, path: str, payload: dict | None = None, *, raw: bytes | None = None, content_type: str | None = None, auth: bool = True):
         headers = {"User-Agent": "DiscordBot (sunken-sim, 1.0)"}
@@ -38,9 +36,8 @@ class Rest:
         for attempt in range(6):
             request = urllib.request.Request(url, data=body, headers=headers, method=method)
             try:
-                with self._lock:
-                    with urllib.request.urlopen(request, timeout=60) as response:
-                        data = response.read()
+                with urllib.request.urlopen(request, timeout=30) as response:
+                    data = response.read()
                 if not data:
                     return None
                 return json.loads(data.decode())
@@ -59,6 +56,9 @@ class Rest:
                 raise RestError(0, str(exc.reason)) from None
         raise RestError(429, "rate limit")
 
+    def guild_channels(self, guild_id: str) -> list:
+        return self._request("GET", f"/guilds/{guild_id}/channels") or []
+
     def application_id(self) -> str:
         return str(self._request("GET", "/oauth2/applications/@me")["id"])
 
@@ -70,6 +70,13 @@ class Rest:
             self._request("PATCH", f"{route}/{current['id']}", body)
         else:
             self._request("POST", route, body)
+
+    def delete_command(self, app_id: str, guild_id: str, name: str) -> None:
+        route = f"/applications/{app_id}/guilds/{guild_id}/commands"
+        existing = self._request("GET", route)
+        current = next((row for row in existing if row["name"] == name), None)
+        if current:
+            self._request("DELETE", f"{route}/{current['id']}")
 
     def send(self, channel: str, content: str) -> dict:
         return self._request("POST", f"/channels/{channel}/messages", {"content": content})

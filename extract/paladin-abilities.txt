@@ -1,0 +1,63 @@
+functions 39
+Trig_Divine_Protection_Func005C
+Trig_Divine_Protection_Actions
+Trig_Blessed_Hammer_Cast_Func002Func003C
+Trig_Blessed_Hammer_Cast_Func002C
+Trig_Blessed_Hammer_Cast_Actions
+Trig_Blessed_Hammer_Spawn_Func006C
+Trig_Blessed_Hammer_Spawn_Func013C
+Trig_Blessed_Hammer_Spawn_Func016C
+Trig_Blessed_Hammer_Spawn_Func018Func001C
+Trig_Blessed_Hammer_Spawn_Func018A
+Trig_Blessed_Hammer_Spawn_Actions
+Trig_Blessed_Hammer_Rotation_Func001Func001Func005Func015Func003C
+Trig_Blessed_Hammer_Rotation_Func001Func001Func005Func015Func006Func001C
+Trig_Blessed_Hammer_Rotation_Func001Func001Func005Func015Func006A
+Trig_Blessed_Hammer_Rotation_Func001Func001Func005Func015C
+Trig_Blessed_Hammer_Rotation_Func001Func001Func005C
+Trig_Blessed_Hammer_Rotation_Func001Func001A
+Trig_Blessed_Hammer_Rotation_Func001C
+Trig_Blessed_Hammer_Rotation_Actions
+Trig_Blessed_Hammer_Damage_Conditions
+Trig_Blessed_Hammer_Damage_Func018Func005C
+Trig_Blessed_Hammer_Damage_Func018C
+Trig_Blessed_Hammer_Damage_Func019C
+Trig_Blessed_Hammer_Damage_Func020C
+Trig_Blessed_Hammer_Damage_Actions
+Trig_Holy_Light_Func002C
+Trig_Holy_Light_Func003C
+Trig_Holy_Light_Func004C
+Trig_Holy_Light_Func008Func003Func008C
+Trig_Holy_Light_Func008Func003A
+Trig_Holy_Light_Func008C
+Trig_Holy_Light_Actions
+Trig_Ardent_Defender_CD_Conditions
+Trig_Ardent_Defender_CD_Actions
+Trig_Ardent_Defender_Activate_Actions
+Trig_Divine_Toll_Actions
+Trig_Beacon_of_Light_Func003C
+Trig_Beacon_of_Light_Actions
+Trig_Hammer_of_Justice_Actions
+
+==== tooltips ====
+
+--- 760 Crusader Strike now causes Divine Storm which unleashes a whirl of holy hammers, ---
+Crusader Strike now causes Divine Storm which unleashes a whirl of holy hammers, dealing 20 Magical damage (+100% of Strength) (+100% of Intelligence) (+100% of Mastery) to all nearby enemies.
+
+While in Protection or Holy Specialziations, the damage dealt will be reduced by 50%, but Righteous Fury will be applied on enemies hit.
+
+The Paladin needs to have the Righteous Fury ability for its debuff to be applied.
+
+--- 2344 Blessed Hammer now lasts for 3 additional seconds and has 50% increased range fo ---
+Blessed Hammer now lasts for 3 additional seconds and has 50% increased range for its damage.
+
+--- 2704 Righteous Fury additionally restores 25 health (+7% of maximum Health) (+7% of m ---
+Righteous Fury additionally restores 25 health (+7% of maximum Health) (+7% of maximum Mana) to all allied units within 500 range whenever it deals damage and the duration of its debuff is increased by 2 seconds. This is a Healing Type effect.
+
+--- 3694 Holy Light removes all non-aura debuffs from its target and its cooldown is redu ---
+Holy Light removes all non-aura debuffs from its target and its cooldown is reduced by 1,2 seconds.
+
+--- 11982 Blessed Hammer heals you for 5/8/11/14 health (+8% of Intelligence) every time i ---
+Blessed Hammer heals you for 5/8/11/14 health (+8% of Intelligence) every time it deals damage and has 5% chance to Stun enemies hit for 1 second. This is a Healing Type effect.
+
+Values scale with Blessed Hammer level.

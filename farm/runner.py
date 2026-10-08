@@ -16,6 +16,7 @@ from farm.space import Space
 
 _SPACE: Space | None = None
 _ITEMS: dict = {}
+_SOURCES: dict[str, str] = {}
 _HERO = ""
 _SPEC = ""
 _TARGETS = 1
@@ -59,6 +60,45 @@ class Board:
         return float(found[0]["dps"])
 
 
+GROUPS = ("shop_random", "shop", "drop")
+GROUP_KEY = {"shop_random": "top_shop_random", "shop": "top_shop", "drop": "top_random"}
+
+
+def build_group(sources: list[str]) -> str | None:
+    """Shop+Random, Shop only, or Random only. Legendaries fit in every list."""
+    kinds = {source for source in sources if source != "legendary"}
+    if kinds == {"shop", "drop"}:
+        return "shop_random"
+    if kinds == {"shop"}:
+        return "shop"
+    if kinds == {"drop"}:
+        return "drop"
+    return None
+
+
+class Boards:
+    def __init__(self) -> None:
+        self.overall = Board()
+        self.by_group = {group: Board() for group in GROUPS}
+
+    def add(self, row: dict) -> None:
+        self.overall.add(row)
+        group = row.get("group")
+        if group in self.by_group:
+            self.by_group[group].add(row)
+
+    def best(self) -> float | None:
+        return self.overall.best()
+
+    def ranked(self, board: Board) -> list[dict]:
+        top = []
+        for place, row in enumerate(board.rows(), start=1):
+            stored = dict(row)
+            stored["place"] = place
+            top.append(stored)
+        return top
+
+
 def worker_count() -> int:
     raw = os.environ.get("FARM_WORKERS", "").strip()
     if raw:
@@ -79,13 +119,29 @@ def _result_path(job: dict):
     return data_dir() / "results" / name
 
 
-def init_worker(space: Space, items: dict, hero: str, spec: str, targets: int) -> None:
-    global _SPACE, _ITEMS, _HERO, _SPEC, _TARGETS
+def source_map(items: dict) -> dict[str, str]:
+    from sunken_sim.search import LEGENDARIES, shop_codes
+
+    sold = shop_codes()
+    found = {}
+    for code, item in items.items():
+        if code in LEGENDARIES:
+            found[code] = "legendary"
+        elif str(getattr(item, "tip", "")).startswith("Shop Item") or code in sold:
+            found[code] = "shop"
+        else:
+            found[code] = "drop"
+    return found
+
+
+def init_worker(space: Space, items: dict, sources: dict, hero: str, spec: str, targets: int) -> None:
+    global _SPACE, _ITEMS, _SOURCES, _HERO, _SPEC, _TARGETS
     from sunken_sim.history import release
 
     release()
     _SPACE = space
     _ITEMS = items
+    _SOURCES = sources
     _HERO = hero
     _SPEC = spec
     _TARGETS = targets
@@ -105,18 +161,23 @@ def eval_index(index: int) -> dict:
     build = Build(frozenset(talent_codes), frozenset(glyph_codes), equipped, 0, 0, 0, 0)
     dps, points, fights = score_build(_HERO, _SPEC, _TARGETS, build)
     crit, potency, luck, mastery = points
+    sources = [_SOURCES.get(item.rawcode, "drop") for item in equipped]
     return {
         "dps": dps,
         "fights": fights,
         "chunk": index,
-        "items": [{"name": item.name, "code": item.rawcode} for item in equipped],
+        "group": build_group(sources),
+        "items": [
+            {"name": item.name, "code": item.rawcode, "source": source}
+            for item, source in zip(equipped, sources)
+        ],
         "talents": sorted(_SPACE.talent_names.get(code, code) for code in talent_codes),
         "glyphs": sorted(_SPACE.glyph_names.get(code, code) for code in glyph_codes),
         "points": {"crit": crit, "potency": potency, "luck": luck, "mastery": mastery},
     }
 
 
-def _load_checkpoint(job: dict, board: Board) -> tuple[int, set[int], int]:
+def _load_checkpoint(job: dict, boards: Boards) -> tuple[int, set[int], int]:
     path = _checkpoint_path(job["id"])
     if not path.exists():
         return int(job["start"]), set(), 0
@@ -128,12 +189,15 @@ def _load_checkpoint(job: dict, board: Board) -> tuple[int, set[int], int]:
     if not same:
         return int(job["start"]), set(), 0
     for row in saved.get("top") or []:
-        board.add(row)
+        boards.overall.add(row)
+    for group, key in GROUP_KEY.items():
+        for row in saved.get(key) or []:
+            boards.by_group[group].add(row)
     ahead = {int(index) for index in saved.get("ahead") or []}
     return int(saved.get("done_up_to", job["start"])), ahead, int(saved.get("errors") or 0)
 
 
-def _save_checkpoint(job: dict, done_up_to: int, ahead: set[int], board: Board, errors: int) -> None:
+def _save_checkpoint(job: dict, done_up_to: int, ahead: set[int], boards: Boards, errors: int) -> None:
     payload = {
         "start": job["start"],
         "end": job["end"],
@@ -145,17 +209,14 @@ def _save_checkpoint(job: dict, done_up_to: int, ahead: set[int], board: Board, 
         "done_up_to": done_up_to,
         "ahead": sorted(ahead),
         "errors": errors,
-        "top": board.rows(),
+        "top": boards.overall.rows(),
     }
+    for group, key in GROUP_KEY.items():
+        payload[key] = boards.by_group[group].rows()
     atomic_write(_checkpoint_path(job["id"]), json.dumps(payload, ensure_ascii=False))
 
 
-def _write_result(job: dict, board: Board, done: int, stopped: bool, errors: int) -> str:
-    top = []
-    for place, row in enumerate(board.rows(), start=1):
-        stored = dict(row)
-        stored["place"] = place
-        top.append(stored)
+def _write_result(job: dict, boards: Boards, done: int, stopped: bool, errors: int) -> str:
     payload = {
         "worker": job["worker"],
         "hero": job["hero"],
@@ -167,8 +228,16 @@ def _write_result(job: dict, board: Board, done: int, stopped: bool, errors: int
         "done": done,
         "stopped": stopped,
         "errors": errors,
-        "about": "Чанк — одна шестёрка предметов, таланты и глифы. DPS после лучших пяти очков. В файле топ-10.",
-        "top": top,
+        "about": (
+            "Чанк — одна шестёрка предметов, таланты и глифы. DPS после лучших пяти очков. "
+            "top — общий топ-10. top_shop_random — и магазин, и случайный дроп. "
+            "top_shop — только магазин. top_random — только случайный дроп. "
+            "Легендарки входят в любой из трёх списков."
+        ),
+        "top": boards.ranked(boards.overall),
+        "top_shop_random": boards.ranked(boards.by_group["shop_random"]),
+        "top_shop": boards.ranked(boards.by_group["shop"]),
+        "top_random": boards.ranked(boards.by_group["drop"]),
     }
     path = _result_path(job)
     atomic_write(path, json.dumps(payload, ensure_ascii=False, indent=2))
@@ -190,8 +259,8 @@ def run_job(job: dict, box: dict, tick) -> dict:
     start = int(job["start"])
     end_ex = int(job["end"]) + 1
     total = end_ex - start
-    board = Board()
-    done_up_to, ahead, errors = _load_checkpoint(job, board)
+    boards = Boards()
+    done_up_to, ahead, errors = _load_checkpoint(job, boards)
     done_up_to = _sweep(max(done_up_to, start), ahead)
     last_tick = 0.0
     started = time.monotonic()
@@ -230,7 +299,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
             end=int(job["end"]),
             done=done,
             left=total - done,
-            best=board.best(),
+            best=boards.best(),
             errors=errors,
             final=final,
             stopped=bool(box.get("stop")) and done < total,
@@ -246,10 +315,10 @@ def run_job(job: dict, box: dict, tick) -> dict:
         except Exception as exc:
             print(f"статус не обновился: {exc}", flush=True)
         if not final:
-            _save_checkpoint(job, done_up_to, ahead, board, errors)
+            _save_checkpoint(job, done_up_to, ahead, boards, errors)
         print(
             f"{job['worker']} посчитано {grouped(done)} осталось {grouped(total - done)} "
-            f"лучший {board.best() if board.best() is not None else '-'}",
+            f"лучший {boards.best() if boards.best() is not None else '-'}",
             flush=True,
         )
         last_tick = time.monotonic()
@@ -259,15 +328,16 @@ def run_job(job: dict, box: dict, tick) -> dict:
     emit()
     if box.get("stop"):
         done = finished()
-        path = _write_result(job, board, done, True, errors)
+        path = _write_result(job, boards, done, True, errors)
         emit(final=True)
         return {"path": path, "done": done, "left": total - done, "stopped": True, "errors": errors}
     if done_up_to >= end_ex:
-        path = _write_result(job, board, finished(), False, errors)
+        path = _write_result(job, boards, finished(), False, errors)
         emit(final=True)
         return {"path": path, "done": finished(), "left": 0, "stopped": False, "errors": errors}
 
     space, items = load(job["hero"], job["spec"], job["pool"], job.get("preset") or None)
+    sources = source_map(items)
     release()
     ctx = multiprocessing.get_context("spawn")
     span = end_ex - done_up_to
@@ -290,7 +360,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
         max_workers=pool_size,
         mp_context=ctx,
         initializer=init_worker,
-        initargs=(space, items, job["hero"], job["spec"], int(job["targets"])),
+        initargs=(space, items, sources, job["hero"], job["spec"], int(job["targets"])),
     ) as pool:
         while True:
             if not box.get("stop"):
@@ -320,7 +390,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
                         traceback.print_exc()
                     row = None
                 if row is not None:
-                    board.add(row)
+                    boards.add(row)
                     fights += int(row.get("fights") or 0)
                 done_up_to = note_finished(done_up_to, ahead, index)
             done_up_to = _sweep(done_up_to, ahead)
@@ -332,7 +402,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
 
     done = finished()
     stopped = bool(box.get("stop")) and done < total
-    path = _write_result(job, board, done, stopped, errors)
+    path = _write_result(job, boards, done, stopped, errors)
     emit(final=True)
-    _save_checkpoint(job, done_up_to, ahead, board, errors)
+    _save_checkpoint(job, done_up_to, ahead, boards, errors)
     return {"path": path, "done": done, "left": total - done, "stopped": stopped, "errors": errors}

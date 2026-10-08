@@ -4,7 +4,7 @@
 
 Предыдущий поиск остановлен: формулы Ring of Frost, Greater Pyroblast и Iceflow Mantle были неверные, сид талантов был один на все спеки, и бой не держал длительность Evocation и Cold Splinters. Старые JSON и канвас Mage sims удалены.
 
-Герой на полном здоровье. Лечение Arcane Pulse, руны и лечение Evocation в DPS не входят. Снижение входящего урона не входит. Runemastery игнорируется: в перебор талантов не входит.
+Входящий урон и хил — по общему гайду. Лечение Arcane Pulse, руны и лечение Evocation в DPS не входят. Снижение входящего урона не входит. Runemastery игнорируется: в перебор талантов не входит.
 
 Маг кастер: топ урона всегда от способностей. Эти вещи в пул не входят: Serathil, Ardite Impaler, Stormforged Axe, Cinderblade, Killmaim, Zandalari Kris, Butterfly, Tuskarr Shank, Windcutter, Band of Flame, General's Warhelm, Warlord's Battlemask, Edge of the Red Court, Blackrock Hammer.
 

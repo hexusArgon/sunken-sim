@@ -1,0 +1,2 @@
+Priest!I1:M14 talents unchanged. I15:M49 empty before glyph table.
+see prior get_sheet_data I1:M20 in this session

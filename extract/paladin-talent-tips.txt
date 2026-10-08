@@ -1,0 +1,64 @@
+
+==== I0OT Righteousness ====
+Righteous Fury additionally restores 25 health (+7% of maximum Health) (+7% of maximum Mana) to all allied units within 500 range whenever it deals damage and the duration of its debuff is increased by 2 seconds. This is a Healing Type effect.
+
+==== I09Y Divine Toll ====
+Casting Blessed Hammer has 25% chance to spawn an additional hammer after a 0,5 second delay.
+
+==== I09R Divine Knowledge ====
+Regenerates mana equal to 3% of Intelligence each second grants an additional bonus based on current Specialization:
+
+Retribution: Increases the damage of Magical Type effects by 0,3% per point of Intelligence.
+
+Protection & Holy: Every 3 points of Intelligence grant you 1% Healing Power.
+
+==== I069 Holy Avenger ====
+Whenever an allied unit is targeted by an enemy spell or by Holy Light, Divine Protection will be applied on it.
+
+==== I064 Divine Hammer ====
+Blessed Hammer now lasts for 3 additional seconds and has 50% increased range for its damage.
+
+==== I04C Divine Storm ====
+Crusader Strike now causes Divine Storm which unleashes a whirl of holy hammers, dealing 20 Magical damage (+100% of Strength) (+100% of Intelligence) (+100% of Mastery) to all nearby enemies.
+
+While in Protection or Holy Specialziations, the damage dealt will be reduced by 50%, but Righteous Fury will be applied on enemies hit.
+
+The Paladin needs to have the Righteous Fury ability for its debuff to be applied.
+
+==== I09L Beacon of Light ====
+Doubles the maximum health scaling of Holy Light and whenever the Paladin casts Holy Light on a target, a Beacon of Light heal will be cast on all other allied heroes within 500 range. Beacon of Light's healing is 50% less effective than Holy Light's.
+
+==== I01J Zeal ====
+Each spellcast increases the Attack Speed of your next 2 attacks within 4 seconds by 80%.
+
+==== I0NG Hammer of Justice ====
+Replaces Righteous Fury with Hammer of Justice which deals 60 Magical damage (+175% of Strength) and Stuns the target for 5 seconds. The damage dealt will be increased by 1% per point of Intelligence. Whenever Blessed Hammer deals damage, the remaining cooldown of this ability gets reduced by 0,1 seconds. Has 18 seconds cooldown.
+
+==== I0I1 Guarded by the Light ====
+Reduces all damage taken by 6%. Every 125 points of maximum mana reduce damage taken by additional 1%.
+
+==== I09Z Barrier of Faith ====
+Increases the duration of your Taunting effects by 20%. Getting attacked by Taunted enemies reduces the remaining cooldown of Ardent Defender by 1 second, increased to 1,2 if the attacker is affected by Righteous Fury.
+
+==== I0OR Holy Aura ====
+Grants the Paladin Holy Aura which affects allied units within 600 range and increases the healing taken from Healing Type effects by 15%.
+
+==== I0OQ Sacred Touch ====
+Holy Light removes all non-aura debuffs from its target and its cooldown is reduced by 1,2 seconds.
+
+==== I0G8 Hammer Mastery ====
+Damage dealt by Blessed Hammer grants you 2 Mastery, up to a maximum of 30. This bonus resets upon leaving combat.
+
+==== I0OU Redemption ====
+Spellcasts restore 20 health (+25% Strength) (+50% Intelligence) to Heroes affected by Divine Protection. This is a Healing Type effect.
+
+==== I0OS Judgement ====
+Blessed Hammer heals you for 5/8/11/14 health (+8% of Intelligence) every time it deals damage and has 5% chance to Stun enemies hit for 1 second. This is a Healing Type effect.
+
+Values scale with Blessed Hammer level.
+
+==== I0NC Crusade ====
+Each attack grants you 2% Haste, up to a maximum of 20%. This bonus resets upon leaving combat.
+
+==== I0ND Infusion of Light ====
+Healing an allied Hero with a Healing Type effect has 3% chance to reduce the remaining cooldowns of all of your abilities by 20% of their base cooldown.
