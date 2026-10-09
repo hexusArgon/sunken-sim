@@ -18,7 +18,7 @@ from farm.protocol import (
     resolve_hero_spec,
     status_text,
 )
-from farm.runner import Board, Boards, add_one, build_group, note_finished, note_span
+from farm.runner import Board, Boards, ItemBar, add_one, build_group, note_finished, note_span
 from farm.space import Piece, Space
 
 
@@ -251,6 +251,17 @@ class BoardTest(unittest.TestCase):
         self.assertEqual(boards.by_group["drop"].rows()[0]["chunk"], 2)
         self.assertEqual(boards.ranked(boards.overall)[0]["place"], 1)
         self.assertEqual(boards.ranked(boards.overall)[0]["chunk"], 3)
+
+    def test_item_bar_keeps_ten_bare_scores(self) -> None:
+        bar = ItemBar()
+        for value in range(1, 11):
+            self.assertTrue(bar.claim(float(value)))
+        self.assertEqual(bar.scores[0], 10.0)
+        self.assertEqual(bar.scores[-1], 1.0)
+        self.assertFalse(bar.claim(1.0))
+        self.assertTrue(bar.claim(1.5))
+        self.assertEqual(bar.scores[-1], 1.5)
+        self.assertNotIn(1.0, bar.scores)
 
     def test_process_pool_starts(self) -> None:
         context = get_context("spawn")

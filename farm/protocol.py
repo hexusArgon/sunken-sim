@@ -231,7 +231,7 @@ def size_text(*, worker: str, hero: str, spec: str, pool: str, targets: int, tot
         (
             f"{worker}: {HERO_LABEL[hero]} · {spec} · {POOL_LABEL[pool]} · {targets} целей",
             f"всего чанков {grouped(total)} (номера 0–{grouped(last)})",
-            "один чанк — шестёрка предметов. Таланты, глифы и очки навыков считаются, только если она обошла жадный порог",
+            "один чанк — шестёрка предметов. Таланты, глифы и очки навыков считаются, только если её DPS без талантов выше 10-го места по DPS без талантов",
             f"запуск: /{worker} start:0 end:{last}",
         )
     )

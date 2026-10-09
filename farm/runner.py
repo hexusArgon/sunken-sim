@@ -1,4 +1,9 @@
-"""Run a contiguous inclusive range and keep the top 10 DPS builds."""
+"""Run a contiguous inclusive range and keep the top 10 DPS builds.
+
+A chunk is always scored as items only. Talents, glyphs and skill points run
+only when that item DPS beats the 10th best item DPS remembered for the run.
+Until ten such builds exist, every chunk is fully scored.
+"""
 
 from __future__ import annotations
 
@@ -20,9 +25,47 @@ _SOURCES: dict[str, str] = {}
 _HERO = ""
 _SPEC = ""
 _TARGETS = 1
-_FLOOR = 0.0
+_BAR = None
 _STOP = None
 BATCH = 16384
+TOP_BARE = 10
+
+
+class ItemBar:
+    """The ten best item-only DPS values seen so far, highest first."""
+
+    def __init__(self, scores: list[float] | None = None) -> None:
+        self.scores = sorted((float(value) for value in scores or []), reverse=True)[:TOP_BARE]
+
+    def claim(self, bare: float) -> bool:
+        bare = float(bare)
+        if len(self.scores) >= TOP_BARE and bare <= self.scores[-1]:
+            return False
+        self.scores.append(bare)
+        self.scores.sort(reverse=True)
+        del self.scores[TOP_BARE:]
+        return True
+
+
+def claim_item_bar(bare: float) -> bool:
+    scores, count, lock = _BAR
+    with lock:
+        bar = ItemBar([scores[i] for i in range(count.value)])
+        before = bar.scores[-1] if len(bar.scores) >= TOP_BARE else None
+        if not bar.claim(bare):
+            return False
+        for index, value in enumerate(bar.scores):
+            scores[index] = value
+        count.value = len(bar.scores)
+        after = bar.scores[-1] if len(bar.scores) >= TOP_BARE else None
+        if after is not None and after != before:
+            print(f"планка топ-10 без талантов {after:.1f}", flush=True)
+        return True
+
+
+def item_bar_snapshot(scores, count, lock) -> list[float]:
+    with lock:
+        return [float(scores[i]) for i in range(count.value)]
 
 
 def add_one(value: int) -> int:
@@ -162,8 +205,8 @@ def source_map(items: dict) -> dict[str, str]:
     return found
 
 
-def init_worker(space: Space, items: dict, sources: dict, hero: str, spec: str, targets: int, floor: float, stop) -> None:
-    global _SPACE, _ITEMS, _SOURCES, _HERO, _SPEC, _TARGETS, _FLOOR, _STOP
+def init_worker(space: Space, items: dict, sources: dict, hero: str, spec: str, targets: int, bar, stop) -> None:
+    global _SPACE, _ITEMS, _SOURCES, _HERO, _SPEC, _TARGETS, _BAR, _STOP
     from sunken_sim.history import release
 
     release()
@@ -173,7 +216,7 @@ def init_worker(space: Space, items: dict, sources: dict, hero: str, spec: str, 
     _HERO = hero
     _SPEC = spec
     _TARGETS = targets
-    _FLOOR = floor
+    _BAR = bar
     _STOP = stop
 
 
@@ -198,7 +241,6 @@ def eval_span(start: int, stop: int) -> dict:
     """Score [start, stop) inside this process. Skip rows stay here."""
     from farm.score import finish_sextuple, item_dps
 
-    global _FLOOR
     assert _SPACE is not None
     hits: list[dict] = []
     fights = 0
@@ -213,10 +255,9 @@ def eval_span(start: int, stop: int) -> dict:
             equipped = tuple(_ITEMS[code] for code in item_codes)
             bare = item_dps(_HERO, _SPEC, _TARGETS, equipped)
             fights += 1
-            if bare <= _FLOOR:
+            if not claim_item_bar(bare):
                 done = index + 1
                 continue
-            _FLOOR = bare
             dps, talent_codes, glyph_codes, points, extra = finish_sextuple(
                 _HERO,
                 _SPEC,
@@ -258,7 +299,6 @@ def eval_span(start: int, stop: int) -> dict:
 def eval_index(index: int) -> dict | None:
     from farm.score import finish_sextuple, item_dps
 
-    global _FLOOR
     assert _SPACE is not None
     item_codes, _talent_codes, _glyph_codes = _SPACE.decode(index)
     try:
@@ -266,9 +306,8 @@ def eval_index(index: int) -> dict | None:
     except KeyError as exc:
         raise RuntimeError(f"нет предмета {exc}") from exc
     bare = item_dps(_HERO, _SPEC, _TARGETS, equipped)
-    if bare <= _FLOOR:
+    if not claim_item_bar(bare):
         return {"chunk": index, "fights": 1, "skip": True}
-    _FLOOR = bare
     dps, talent_codes, glyph_codes, points, fights = finish_sextuple(
         _HERO,
         _SPEC,
@@ -308,30 +347,42 @@ def _load_spans(raw) -> list[tuple[int, int]]:
     return spans
 
 
-def _load_checkpoint(job: dict, boards: Boards) -> tuple[int, list[tuple[int, int]], int]:
+def _load_checkpoint(job: dict, boards: Boards) -> tuple[int, list[tuple[int, int]], int, list[float]]:
     path = _checkpoint_path(job["id"])
     if not path.exists():
-        return int(job["start"]), [], 0
+        return int(job["start"]), [], 0, []
     try:
         saved = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
-        return int(job["start"]), [], 0
+        return int(job["start"]), [], 0, []
     same = all(saved.get(key) == job.get(key) for key in ("start", "end", "hero", "spec", "pool", "targets", "preset"))
     if not same:
-        return int(job["start"]), [], 0
-    for row in saved.get("top") or []:
+        return int(job["start"]), [], 0, []
+    rows = list(saved.get("top") or [])
+    for row in rows:
         boards.overall.add(row)
     for group, key in GROUP_KEY.items():
         for row in saved.get(key) or []:
             boards.by_group[group].add(row)
+            rows.append(row)
     done_up_to = int(saved.get("done_up_to", job["start"]))
     spans: list[tuple[int, int]] = []
     for start, stop in _load_spans(saved.get("ahead")):
         done_up_to = note_span(done_up_to, spans, start, stop)
-    return done_up_to, spans, int(saved.get("errors") or 0)
+    remembered = [float(value) for value in saved.get("item_bar") or []]
+    if not remembered:
+        remembered = [float(row["item_dps"]) for row in rows if "item_dps" in row]
+    return done_up_to, spans, int(saved.get("errors") or 0), remembered
 
 
-def _save_checkpoint(job: dict, done_up_to: int, ahead: list[tuple[int, int]], boards: Boards, errors: int) -> None:
+def _save_checkpoint(
+    job: dict,
+    done_up_to: int,
+    ahead: list[tuple[int, int]],
+    boards: Boards,
+    errors: int,
+    item_bar: list[float],
+) -> None:
     payload = {
         "start": job["start"],
         "end": job["end"],
@@ -343,6 +394,7 @@ def _save_checkpoint(job: dict, done_up_to: int, ahead: list[tuple[int, int]], b
         "done_up_to": done_up_to,
         "ahead": [[left, right] for left, right in ahead],
         "errors": errors,
+        "item_bar": item_bar,
         "top": boards.overall.rows(),
     }
     for group, key in GROUP_KEY.items():
@@ -363,7 +415,7 @@ def _write_result(job: dict, boards: Boards, done: int, stopped: bool, errors: i
         "stopped": stopped,
         "errors": errors,
         "about": (
-            "Чанк — одна шестёрка предметов. Таланты, глифы и очки навыков считаются, только если она обошла жадный порог. "
+            "Чанк — одна шестёрка предметов. Таланты, глифы и очки навыков считаются, только если её DPS без талантов выше 10-го места по DPS без талантов. "
             "top — общий топ-10. top_shop_random — и магазин, и случайный дроп. "
             "top_shop — только магазин. top_random — только случайный дроп. "
             "Легендарки входят в любой из трёх списков."
@@ -396,8 +448,20 @@ def run_job(job: dict, box: dict, tick) -> dict:
     end_ex = int(job["end"]) + 1
     total = end_ex - start
     boards = Boards()
-    done_up_to, ahead, errors = _load_checkpoint(job, boards)
+    done_up_to, ahead, errors, remembered = _load_checkpoint(job, boards)
     done_up_to = _sweep(max(done_up_to, start), ahead)
+    ctx = multiprocessing.get_context("spawn")
+    scores = ctx.Array("d", TOP_BARE)
+    count = ctx.Value("i", 0)
+    lock = ctx.Lock()
+    for bare in remembered:
+        bar = ItemBar([scores[i] for i in range(count.value)])
+        if bar.claim(bare):
+            for index, value in enumerate(bar.scores):
+                scores[index] = value
+            count.value = len(bar.scores)
+    if count.value >= TOP_BARE:
+        print(f"планка топ-10 без талантов {scores[TOP_BARE - 1]:.1f}", flush=True)
     last_tick = 0.0
     started = time.monotonic()
     fights = 0
@@ -451,7 +515,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
         except Exception as exc:
             print(f"статус не обновился: {exc}", flush=True)
         if not final:
-            _save_checkpoint(job, done_up_to, ahead, boards, errors)
+            _save_checkpoint(job, done_up_to, ahead, boards, errors, item_bar_snapshot(scores, count, lock))
         print(
             f"{job['worker']} посчитано {grouped(done)} осталось {grouped(total - done)} "
             f"лучший {boards.best() if boards.best() is not None else '-'}",
@@ -474,12 +538,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
 
     space, items = load(job["hero"], job["spec"], job["pool"], job.get("preset") or None)
     sources = source_map(items)
-    from farm.score import greedy_floor
-
-    floor = greedy_floor(job["hero"], job["spec"], int(job["targets"]), space.pieces, items)
-    print(f"порог жадного набора {floor:.1f}", flush=True)
     release()
-    ctx = multiprocessing.get_context("spawn")
     span = end_ex - done_up_to
     pool_size = max(1, min(worker_count(), span))
     next_index = done_up_to
@@ -505,7 +564,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
         max_workers=pool_size,
         mp_context=ctx,
         initializer=init_worker,
-        initargs=(space, items, sources, job["hero"], job["spec"], int(job["targets"]), floor, stop_event),
+        initargs=(space, items, sources, job["hero"], job["spec"], int(job["targets"]), (scores, count, lock), stop_event),
     ) as pool:
         while True:
             if box.get("stop"):
@@ -555,5 +614,5 @@ def run_job(job: dict, box: dict, tick) -> dict:
     stopped = bool(box.get("stop")) and done < total
     path = _write_result(job, boards, done, stopped, errors)
     emit(final=True)
-    _save_checkpoint(job, done_up_to, ahead, boards, errors)
+    _save_checkpoint(job, done_up_to, ahead, boards, errors, item_bar_snapshot(scores, count, lock))
     return {"path": path, "done": done, "left": total - done, "stopped": stopped, "errors": errors}

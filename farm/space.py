@@ -2,7 +2,7 @@
 
 A chunk is one legal six-item loadout. Talents, glyphs and skill points are
 not separate numbers: a worker scores them only when the item DPS beats the
-greedy floor, the same way extract/run_hp.py does.
+10th best item DPS remembered for this run.
 
 Item sets are combinations in rawcode order: one legendary, one orb, a
 stacking item may fill several slots, everything else is a single copy.
