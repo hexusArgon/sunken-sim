@@ -15,7 +15,7 @@ import traceback
 from concurrent.futures import FIRST_COMPLETED, ProcessPoolExecutor, wait
 
 from farm.cpu import cpu_percent
-from farm.paths import atomic_write, data_dir
+from farm.paths import atomic_write, data_dir, file_lock
 from farm.protocol import grouped, status_text
 from farm.space import Space
 
@@ -355,8 +355,7 @@ def _load_checkpoint(job: dict, boards: Boards) -> tuple[int, list[tuple[int, in
         saved = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
         return int(job["start"]), [], 0, []
-    same = all(saved.get(key) == job.get(key) for key in ("start", "end", "hero", "spec", "pool", "targets", "preset"))
-    if not same:
+    if not _same_job(saved, job):
         return int(job["start"]), [], 0, []
     rows = list(saved.get("top") or [])
     for row in rows:
@@ -373,6 +372,37 @@ def _load_checkpoint(job: dict, boards: Boards) -> tuple[int, list[tuple[int, in
     if not remembered:
         remembered = [float(row["item_dps"]) for row in rows if "item_dps" in row]
     return done_up_to, spans, int(saved.get("errors") or 0), remembered
+
+
+def _same_job(saved: dict, job: dict) -> bool:
+    for key in ("start", "end", "hero", "spec", "pool", "targets"):
+        if str(saved.get(key)) != str(job.get(key)):
+            return False
+    return str(saved.get("preset") or "") == str(job.get("preset") or "")
+
+
+def _merge_checkpoint(payload: dict, saved: dict | None) -> dict:
+    """Keep the further watermark. A slower process must not roll the file backwards."""
+    if not saved:
+        return payload
+    if not _same_job(saved, payload):
+        return payload
+    merged = dict(payload)
+    if int(saved.get("done_up_to") or 0) > int(payload.get("done_up_to") or 0):
+        merged["done_up_to"] = int(saved["done_up_to"])
+        merged["ahead"] = list(saved.get("ahead") or [])
+    merged["errors"] = max(int(saved.get("errors") or 0), int(payload.get("errors") or 0))
+    merged["item_bar"] = ItemBar(list(saved.get("item_bar") or []) + list(payload.get("item_bar") or [])).scores
+    boards = Boards()
+    for row in list(saved.get("top") or []) + list(payload.get("top") or []):
+        boards.overall.add(row)
+    for group, key in GROUP_KEY.items():
+        bucket = boards.by_group[group]
+        for row in list(saved.get(key) or []) + list(payload.get(key) or []):
+            bucket.add(row)
+        merged[key] = bucket.rows()
+    merged["top"] = boards.overall.rows()
+    return merged
 
 
 def _save_checkpoint(
@@ -399,7 +429,18 @@ def _save_checkpoint(
     }
     for group, key in GROUP_KEY.items():
         payload[key] = boards.by_group[group].rows()
-    atomic_write(_checkpoint_path(job["id"]), json.dumps(payload, ensure_ascii=False))
+    path = _checkpoint_path(job["id"])
+    try:
+        with file_lock(path.with_name(path.name + ".lock")):
+            saved = None
+            if path.exists():
+                try:
+                    saved = json.loads(path.read_text(encoding="utf-8"))
+                except json.JSONDecodeError:
+                    saved = None
+            atomic_write(path, json.dumps(_merge_checkpoint(payload, saved), ensure_ascii=False))
+    except OSError as exc:
+        print(f"чекпоинт не записался: {exc}", flush=True)
 
 
 def _write_result(job: dict, boards: Boards, done: int, stopped: bool, errors: int) -> str:

@@ -16,7 +16,7 @@ import discord
 
 from farm.catalog import load
 from farm.identity import env_required, load_env, worker_name
-from farm.paths import atomic_write, data_dir
+from farm.paths import atomic_write, data_dir, try_file_lock
 from farm.protocol import (
     command_body,
     format_control,
@@ -701,6 +701,9 @@ def main() -> None:
         sys.stderr.reconfigure(encoding="utf-8")
     multiprocessing.freeze_support()
     load_env()
+    if try_file_lock(data_dir() / "bot.lock") is None:
+        print("Ферма на этом компьютере уже запущена.", flush=True)
+        return
     name = worker_name()
     token = env_required("DISCORD_TOKEN")
     guild = env_required("DISCORD_GUILD_ID")

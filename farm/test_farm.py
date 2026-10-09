@@ -18,7 +18,8 @@ from farm.protocol import (
     resolve_hero_spec,
     status_text,
 )
-from farm.runner import Board, Boards, ItemBar, add_one, build_group, note_finished, note_span
+from farm.paths import atomic_write
+from farm.runner import Board, Boards, ItemBar, _merge_checkpoint, add_one, build_group, note_finished, note_span
 from farm.space import Piece, Space
 
 
@@ -215,6 +216,39 @@ class ProtocolTest(unittest.TestCase):
                 self.assertLessEqual(len(choice["name"]), 100)
 
         walk(body)
+
+
+class CheckpointTest(unittest.TestCase):
+    def test_later_watermark_is_kept(self) -> None:
+        early = {
+            "start": 0, "end": 10, "hero": "paladin", "spec": "retribution",
+            "pool": "mixed", "targets": 5, "preset": "",
+            "done_up_to": 19, "ahead": [], "errors": 0, "item_bar": [10.0],
+            "top": [{"dps": 10.0, "chunk": 1}],
+            "top_shop_random": [], "top_shop": [], "top_random": [],
+        }
+        late = dict(early)
+        late["done_up_to"] = 55
+        late["item_bar"] = [30.0]
+        late["top"] = [{"dps": 40.0, "chunk": 2}]
+        merged = _merge_checkpoint(early, late)
+        self.assertEqual(merged["done_up_to"], 55)
+        self.assertEqual(merged["top"][0]["chunk"], 2)
+        self.assertEqual(merged["item_bar"][0], 30.0)
+        blank = dict(early)
+        blank["preset"] = None
+        self.assertEqual(_merge_checkpoint(blank, late)["done_up_to"], 55)
+
+    def test_atomic_write_replaces_the_file(self) -> None:
+        import tempfile
+        from pathlib import Path
+
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "checkpoint.json"
+            atomic_write(path, "one")
+            atomic_write(path, "two")
+            self.assertEqual(path.read_text(encoding="utf-8"), "two")
+            self.assertEqual(list(Path(folder).glob("*.tmp")), [])
 
 
 class BoardTest(unittest.TestCase):
