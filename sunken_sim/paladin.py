@@ -119,7 +119,7 @@ def stats_of(build: Build) -> dict[str, float]:
         haste += _copy_value(item.rawcode, "haste", item.haste, first) / 100
         attack_speed += _copy_value(item.rawcode, "attack_speed", item.attack_speed, first) / 100
         if first:
-            damage_pct += item.damage_pct
+            damage_pct += item.damage_pct / 100.0
             armor_pen += item.armor_pen
             spell_crit = spell_crit or item.spell_crit
     attack_speed += 0.004 * agility
@@ -177,6 +177,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "retribution") -> Repor
     next_hoj = 0.0
     busy = 0.0
     hammers: list[dict] = []
+    actions: list[tuple[float, str]] = []
     hammer_duration = 12.0 if _has(build, TALENT_DIVINE_HAMMER) else 9.0
 
     def mastery() -> float:
@@ -264,12 +265,14 @@ def simulate(build: Build, targets: int = 5, spec: str = "retribution") -> Repor
                 break
             continue
         if moment == next_cs:
+            actions.append((moment, "Crusader Strike"))
             cs_until = moment + CS_BUFF
             busy = cast(moment)
             next_cs = moment + _cooldown(CS_COOLDOWN, haste)
             next_attack = max(next_attack, busy)
             continue
         if moment == next_hammer:
+            actions.append((moment, "Blessed Hammer"))
             spawn(moment + CAST_POINT, 1.0)
             if _has(build, TALENT_DIVINE_TOLL):
                 spawn(moment + CAST_POINT + 0.5, 0.25)
@@ -278,6 +281,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "retribution") -> Repor
             next_attack = max(next_attack, busy)
             continue
         if _has(build, TALENT_HAMMER_OF_JUSTICE) and moment == next_hoj:
+            actions.append((moment, "Hammer of Justice"))
             raw = (60.0 + 1.75 * stats["str"]) * (1.0 + 0.01 * stats["int"])
             deal("Hammer of Justice", raw, True, 1)
             busy = cast(moment)
@@ -287,7 +291,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "retribution") -> Repor
         break
 
     total = sum(sources.values())
-    return Report(build, total / FIGHT, total, sources, [], stats, targets)
+    return Report(build, total / FIGHT, total, sources, actions, stats, targets)
 
 
 def best_points(build: Build, targets: int, spec: str) -> tuple[float, tuple[int, int, int, int]]:
