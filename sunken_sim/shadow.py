@@ -438,6 +438,7 @@ def character(
         "stab_ratio": stab_ratio,
         "luck": luck,
         "swp_period": 1 / (1 + haste),
+        "attack_base": attack_base,
         "swing": attack_base / (1 + attack_speed),
         "mana_regen": _mana_regen(build, intel, mana, build.items),
         **{key: value for key, value in _passive_mana(build.items).items() if key != "mana_per_second"},

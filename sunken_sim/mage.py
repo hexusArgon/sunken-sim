@@ -8,7 +8,9 @@ tooltip and a trigger disagree, the trigger wins.
 from __future__ import annotations
 
 import heapq
+import re
 
+from sunken_sim.pressure import hero_hp_ratio, max_hp
 from sunken_sim.shadow import (
     CAST_BACKSWING,
     CAST_POINT,
@@ -36,10 +38,17 @@ from sunken_sim.shadow import (
 )
 
 # O00G: 10/8/32 and +1.0/+0.8/+3.2 per level. White hit is 10 base + 1 die.
+# Base health is the unit's uhpm. Maximum health adds 15 per strength.
 BASE_STR = int(10 + (LEVEL - 1) * 1.0)
 BASE_AGI = int(8 + (LEVEL - 1) * 0.8)
 BASE_INT = int(32 + (LEVEL - 1) * 3.2)
 WHITE_BASE = 11.0
+BASE_HP = 230.0
+_FURNACE = "I079"
+_BLOODHOWL = "I05N"
+_CRIMSON = "I024"
+_GLADIATOR_MASK = "arsc"
+_FLAT_HEALTH = re.compile(r"^\+\s*(\d+)\s+Health\s*$", re.I | re.M)
 
 TALENTS = {
     "I0KQ": "Pyromaniac",
@@ -63,6 +72,45 @@ TALENTS = {
 }
 
 SPECS = ("frost", "arcane", "fire")
+
+
+def _flat_health(build: Build) -> float:
+    seen: set[str] = set()
+    total = 0.0
+    for item in build.items:
+        if item.rawcode in seen:
+            continue
+        seen.add(item.rawcode)
+        total += sum(float(match) for match in _FLAT_HEALTH.findall(item.tip))
+    return total
+
+
+def _hero_ratio(build: Build, stats: dict, when: float) -> float:
+    cap = 0.38 if _wears(build, _CRIMSON) else 1.0
+    health = max_hp(BASE_HP, stats["str"]) + _flat_health(build)
+    return hero_hp_ratio(when, health, 0.0, cap)
+
+
+def _swing_base(build: Build, stats: dict, when: float) -> float:
+    base = stats["attack_base"]
+    if _wears(build, _BLOODHOWL):
+        missing = 1.0 - _hero_ratio(build, stats, when)
+        base *= 1.0 - 0.30 * missing
+    return base
+
+
+def _damage_factor(build: Build, stats: dict, when: float, kind: str) -> float:
+    """Map PreDamage increase: Furnace on the hero, low-health bonus on his damage."""
+    ratio = _hero_ratio(build, stats, when)
+    factor = 1.0
+    if _wears(build, _FURNACE) and kind not in ("hydra", "cleave"):
+        factor += 0.20 * (1.0 - ratio)
+    if ratio <= 0.40:
+        if _wears(build, _GLADIATOR_MASK):
+            factor += 0.15
+        if _wears(build, _CRIMSON):
+            factor += 0.15
+    return factor
 
 
 def sheet(build: Build) -> dict[str, float]:
@@ -159,9 +207,8 @@ def simulate(
 
     stats = sheet(build)
     if spec == "fire":
-        stats["swing"] = 2.0
-    else:
-        stats["swing"] = 2.0 / (1.0 + stats["attack_speed"])
+        # Hydra takes the mage's attack speed. His own swing keeps the base cooldown.
+        stats["swing"] = stats["attack_base"]
     raw = _raws(stats, build)
     events: list[tuple] = []
     actions: list[tuple[float, str]] = []
@@ -222,6 +269,7 @@ def simulate(
     }
     ready = {name: 0.0 for name in spell_cd}
     mana = stats["mana_max"]
+    mana_time = 0.0
     splinter = 0.0
     frenzy_until = 0.0
     frenzy_charge = 0.0
@@ -324,9 +372,10 @@ def simulate(
         return max(-0.8, min(4.0, stats["attack_speed"] + extra_as(now)))
 
     def current_swing(now: float) -> float:
+        base = _swing_base(build, stats, now)
         if spec == "fire":
-            return 2.0
-        return 2.0 / (1.0 + current_as(now))
+            return base
+        return base / (1.0 + current_as(now))
 
     def hydra_gap(now: float) -> float:
         if spec != "fire":
@@ -446,8 +495,15 @@ def simulate(
             push(now + 2.0, "mana")
             push(now + 3.0, "mana")
 
+    def recover_mana(now: float) -> None:
+        nonlocal mana, mana_time
+        if now > mana_time and mana < stats["mana_max"]:
+            mana = min(stats["mana_max"], mana + stats["mana_regen"] * (now - mana_time))
+        mana_time = now
+
     def begin_cast(name: str, now: float) -> None:
         nonlocal mana, busy_until, hero_ready, cinder
+        recover_mana(now)
         spent = blast_cost if name == "Arcane Blast" else costs[name]
         mana -= spent
         mana = min(stats["mana_max"], mana + cast_mana_back(spent, stats))
@@ -507,6 +563,7 @@ def simulate(
     while pending:
         event_time = pending[0][0]
         while hero_ready <= event_time and hero_ready < FIGHT:
+            recover_mana(hero_ready)
             cast_name = choose(hero_ready)
             if cast_name is None:
                 break
@@ -514,6 +571,7 @@ def simulate(
         when, _order, kind = heapq.heappop(pending)
         if when >= FIGHT:
             break
+        recover_mana(when)
         if kind == "swing":
             if when < busy_until:
                 push(busy_until, "swing")
@@ -574,6 +632,7 @@ def simulate(
         elif kind == "mana":
             mana += 0.10 * (stats["mana_max"] - mana)
 
+    recover_mana(FIGHT)
     mana_left = 0.0 if stats["mana_max"] <= 0 else 100.0 * mana / stats["mana_max"]
     compiled = _compile(events, build, stats, spec, evocation)
     if counter is not None:
@@ -583,8 +642,6 @@ def simulate(
         counter["spec"] = spec
         counter["targets"] = targets
         counter["mana_left"] = mana_left
-        if bound_spell is None:
-            return Report(build, 0.0, 0.0, {}, actions, stats, targets, mana_left=mana_left)
     total, sources = _score(compiled, stats, build, spec)
     mode = next((name for code, name in ORB_MODE.items() if _wears(build, code)), None)
     shown = dict(stats)
@@ -661,6 +718,9 @@ def _compile(events: list[tuple], build: Build, stats: dict, spec: str, evocatio
         return base_factor + slope * spl, slope
 
     for when, kind, hits, raw_w, pot_w, extra in events:
+        dealt = _damage_factor(build, stats, when, kind)
+        raw_w *= dealt
+        pot_w *= dealt
         if kind == "auto":
             weighed = _execute_factor(stats, when) * _physical_multiplier(codes, when) * raw_w
             auto_weight += weighed
@@ -705,7 +765,7 @@ def _compile(events: list[tuple], build: Build, stats: dict, spec: str, evocatio
             pot_base[kind] += b * pot_w
             pot_slope[kind] += s * pot_w
         if blood_on:
-            blood += 1.0
+            blood += dealt
     return {
         "spec": spec,
         "glass": glass,

@@ -96,7 +96,34 @@ def stack_fields(rawcode: str) -> dict[str, float]:
 def allows_copies(rawcode: str) -> bool:
     if rawcode in LEGENDARIES or rawcode in ORBS:
         return False
-    return item_verdict(rawcode) == "Стакается"
+    if item_verdict(rawcode) != "Стакается":
+        return False
+    # The second copy only receives the pickup trigger. A tooltip stat the
+    # trigger does not add makes the item partial, so the search wears one.
+    return not _tooltip_only(rawcode)
+
+
+def _tooltip_only(rawcode: str) -> bool:
+    from sunken_sim.library import load_items
+
+    item = next((candidate for candidate in load_items() if candidate.rawcode == rawcode), None)
+    if item is None:
+        return False
+    fields = stack_fields(rawcode)
+    if item.mana:
+        return True
+    if (item.intel or item.strength or item.agility or item.all_stats) and "primary" not in fields:
+        return True
+    leftover = (
+        ("potency", item.potency),
+        ("mastery", item.mastery),
+        ("damage", item.damage),
+        ("crit", item.crit),
+        ("crit_rating", item.crit_rating),
+        ("haste", item.haste),
+        ("attack_speed", item.attack_speed),
+    )
+    return any(value and key not in fields for key, value in leftover)
 
 
 def _has_item_codes(script: str) -> set[str]:
