@@ -312,18 +312,27 @@ def _sum_ints(pattern: str, text: str) -> int:
     return sum(int(float(match)) for match in re.findall(pattern, text, flags=re.I | re.M))
 
 
-def _outgoing_damage_pct(tip: str) -> int:
-    """Always-on outgoing damage percent. Not taken-damage lines or timed procs."""
-    total = 0
+def _outgoing_parts(tip: str) -> tuple[int, int]:
+    """Always-on outgoing percents: (all sources, magical and physical).
+
+    Skips damage taken, timed procs, a primary-stat branch, a multiplicative
+    line, and a bonus that only applies to stunned or frozen enemies.
+    """
+    sources = 0
+    both = 0
     for line in tip.split("\n"):
         low = line.lower()
         if "damage taken" in low or "damage you take" in low:
             continue
         if re.search(r"for \d+(?:[.,]\d+)? seconds", low):
             continue
-        total += _sum_ints(r"all sources by (\d+)%", line)
-        total += _sum_ints(r"Magical and Physical Type effects by (\d+)%", line)
-    return total
+        if re.search(r"\b(?:strength|agility|intelligence)\s*:", low):
+            continue
+        if "multiplicatively" in low or "stunned" in low or "frozen" in low:
+            continue
+        sources += _sum_ints(r"all sources by (\d+)%", line)
+        both += _sum_ints(r"Magical and Physical Type effects by (\d+)%", line)
+    return sources, both
 
 
 def _sum_floats(pattern: str, text: str) -> float:
@@ -375,6 +384,7 @@ class Item:
     haste: float = 0.0
     attack_speed: float = 0.0
     damage_pct: float = 0.0
+    source_pct: float = 0.0
     cooldown_add: float = 0.0
     cdr_pct: float = 0.0
     stun_chance: float = 0.0
@@ -412,6 +422,7 @@ class Item:
 def _parse_tip(tip: str) -> dict:
     lines = tip.split("\n")
     stat_text = "\n".join(line for line in lines if line.startswith("+") or "Equip:" in line or "Increases" in line)
+    sources, both = _outgoing_parts(tip)
     return {
         "intel": _sum_ints(r"^\+(\d+) Intelligence\b", "\n".join(lines)),
         "strength": _sum_ints(r"^\+(\d+) Strength\b", "\n".join(lines)),
@@ -427,7 +438,8 @@ def _parse_tip(tip: str) -> dict:
         "haste": _sum_ints(r"^\+(\d+)% Haste\b", "\n".join(lines))
         + _sum_ints(r"Haste by (\d+)%", stat_text),
         "attack_speed": _signed_pct(r"^([+-])(\d+)% Attack Speed\b", "\n".join(lines)),
-        "damage_pct": _outgoing_damage_pct(tip),
+        "damage_pct": sources + both,
+        "source_pct": sources,
         "cooldown_add": _sum_floats(r"cooldowns of all abilities by (\d+(?:[.,]\d+)?) second", tip),
         "cdr_pct": _sum_ints(r"abilities have their base cooldown reduced by (\d+)%", tip) / 100,
         "stun_chance": _sum_ints(r"(\d+)% chance to Stun you", "\n".join(line for line in lines if "spellcasts have" not in line.lower())) / 100,

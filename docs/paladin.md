@@ -2,7 +2,7 @@
 
 Общие правила боя, предметов и кулдаунов — в `docs/guide.md`. Здесь паладин карты Sunken City v2.5.2a. Формулы ниже сняты с триггеров, не с однослотового листа.
 
-Сим `sunken_sim/paladin.py` считает ожидаемый урон за 30 секунд на ранге 1. Лечение, таунт, стан и снижение входящего урона в DPS не входят. В перебор талантов не входят Barrier of Faith, Beacon of Light, Guarded by the Light, Holy Aura, Holy Avenger, Infusion of Light, Judgement, Redemption, Righteousness и Sacred Touch. Молот в симе бьёт всех целей каждые 0,85 с всё время жизни. В карте это спираль. Пока геометрия не перенесена, DPS из `extract/paladin-one-slot.json` и листов «Паладин таланты» / «Паладин предметы» карту не повторяет.
+Сим `sunken_sim/paladin.py` считает ожидаемый урон за 30 секунд на ранге 1. Лечение, таунт, стан и снижение входящего урона в DPS не входят. В перебор талантов не входят Barrier of Faith, Beacon of Light, Guarded by the Light, Holy Aura, Holy Avenger, Infusion of Light, Judgement, Redemption, Righteousness и Sacred Touch. Пять целей сима стоят в одной точке на дистанции взмаха 80 перед паладином: молот накрывает их вместе, только пока спираль проходит через эту точку, и та же пара ждёт 0,85 с. Максимум маны `120 + 7 × интеллект`. В конце боя сим пишет, сколько процентов маны осталось.
 
 ## Лист
 
@@ -106,4 +106,4 @@ Ardent Defender срабатывает от смертельного урона,
 
 ## Что сим не делает
 
-Орбиту молота. Урон каждого 3-го взмаха Righteous Fury. Пять процентов Judgement Helm. Luck на Divine Toll, Judgement и Infusion of Light. Срез кулдаунов от Infusion of Light и от ударов молота по Hammer of Justice. Урон и стан Hammer of Justice как отдельную кнопку с реальным кулдауном: в симе кнопка жмётся, но молот для неё считается аурой. Bell Ringer как источник прока без таланта. Лечение Crusader Strike, из-за которого Infusion of Light вообще может сработать с автоатаки.
+Luck на Judgement и Infusion of Light. Срез кулдаунов от Infusion of Light. Лечение Crusader Strike, из-за которого Infusion of Light вообще может сработать с автоатаки.
