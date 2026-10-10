@@ -17,7 +17,10 @@ SHADOW_TALENTS = ("I0HL", "I0HP", "I0KF", "I0PS", "I0PU", "I0SA", "I0SB", "I0SC"
 RUNEMASTERY = "I0Q8"
 
 _MEMORY: dict[tuple[str, str, str, str], tuple[Space, dict]] = {}
-PRESETS = {"retribution-top89": "paladin-retribution-top89.json"}
+PRESETS = {
+    "retribution-top89": "paladin-retribution-top89.json",
+    "protection-top89": "paladin-protection-top89.json",
+}
 
 
 def load(hero: str, spec: str, pool: str, preset: str | None = None) -> tuple[Space, dict]:
