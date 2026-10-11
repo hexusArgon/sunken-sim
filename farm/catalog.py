@@ -18,6 +18,7 @@ RUNEMASTERY = "I0Q8"
 
 _MEMORY: dict[tuple[str, str, str, str], tuple[Space, dict]] = {}
 PRESETS = {
+    "retribution-top79": "paladin-retribution-top79.json",
     "retribution-top89": "paladin-retribution-top89.json",
     "protection-top89": "paladin-protection-top89.json",
 }
