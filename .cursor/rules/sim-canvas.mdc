@@ -10,3 +10,5 @@ alwaysApply: true
 Бой выбирается переключателями сверху. Ниже остаются статы, урон по источникам, порядок кнопок и предметы выбранного боя.
 
 Не возвращать эту секцию ни в `priest-sims.canvas.tsx`, ни в `extract/build_spec_canvas.py`, ни в `mage-sims.canvas.tsx`, ни в `extract/build_mage_canvas.py`. В статах выбранного боя есть поле «Мана в конце».
+
+«Shop + drop» для любого класса — общий топ прогона (`top`): чистый Shop, чистый Random drop и связки из обоих. «Только Shop Item» — `top_shop`. «Только Random drop» — `top_random`. Список `top_shop_random` на канвас не выводить.

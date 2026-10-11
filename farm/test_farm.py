@@ -19,7 +19,17 @@ from farm.protocol import (
     status_text,
 )
 from farm.paths import atomic_write
-from farm.runner import Board, Boards, ItemBar, _merge_checkpoint, add_one, build_group, note_finished, note_span
+from farm.runner import (
+    Board,
+    Boards,
+    CategoryBars,
+    ItemBar,
+    _merge_checkpoint,
+    add_one,
+    build_group,
+    note_finished,
+    note_span,
+)
 from farm.space import Piece, Space
 
 
@@ -234,7 +244,8 @@ class CheckpointTest(unittest.TestCase):
         merged = _merge_checkpoint(early, late)
         self.assertEqual(merged["done_up_to"], 55)
         self.assertEqual(merged["top"][0]["chunk"], 2)
-        self.assertEqual(merged["item_bar"][0], 30.0)
+        self.assertEqual(merged["item_bar"]["overall"][0], 30.0)
+        self.assertEqual(merged["item_bar"]["shop"], [])
         blank = dict(early)
         blank["preset"] = None
         self.assertEqual(_merge_checkpoint(blank, late)["done_up_to"], 55)
@@ -296,6 +307,15 @@ class BoardTest(unittest.TestCase):
         self.assertTrue(bar.claim(1.5))
         self.assertEqual(bar.scores[-1], 1.5)
         self.assertNotIn(1.0, bar.scores)
+
+    def test_shop_bar_ignores_the_overall_floor(self) -> None:
+        bars = CategoryBars({"overall": [100.0] * 10, "shop": [1.0] * 9, "drop": []})
+        self.assertTrue(bars.claim(2.0, "shop"))
+        self.assertEqual(bars.bars["overall"].scores[-1], 100.0)
+        self.assertEqual(bars.bars["shop"].scores[-1], 1.0)
+        self.assertFalse(bars.claim(2.0, "shop_random"))
+        self.assertTrue(bars.claim(2.0, "drop"))
+        self.assertEqual(bars.bars["drop"].scores, [2.0])
 
     def test_process_pool_starts(self) -> None:
         context = get_context("spawn")

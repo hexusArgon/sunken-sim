@@ -1,8 +1,10 @@
 """Run a contiguous inclusive range and keep the top 10 DPS builds.
 
 A chunk is always scored as items only. Talents, glyphs and skill points run
-only when that item DPS beats the 10th best item DPS remembered for the run.
-Until ten such builds exist, every chunk is fully scored.
+when that item DPS enters the top 10 of the same category: Shop + drop against
+the overall ten, Shop only against the shop ten, Random drop against the drop
+ten. Each category remembers its own ten item-only scores. Until a category
+has ten, every chunk of that category is fully scored.
 """
 
 from __future__ import annotations
@@ -29,6 +31,12 @@ _BAR = None
 _STOP = None
 BATCH = 16384
 TOP_BARE = 10
+BAR_KEYS = ("overall", "shop", "drop")
+BAR_LABEL = {
+    "overall": "Shop + drop",
+    "shop": "Только Shop Item",
+    "drop": "Только Random drop",
+}
 
 
 class ItemBar:
@@ -47,25 +55,93 @@ class ItemBar:
         return True
 
 
-def claim_item_bar(bare: float) -> bool:
-    scores, count, lock = _BAR
+def bars_for(group: str | None) -> tuple[str, ...]:
+    """Shop only and Random drop keep their own item-only top 10. Shop + drop is the overall ten."""
+    if group == "shop":
+        return ("overall", "shop")
+    if group == "drop":
+        return ("overall", "drop")
+    return ("overall",)
+
+
+def _as_bars(raw) -> dict[str, list[float]]:
+    found = {key: [] for key in BAR_KEYS}
+    if isinstance(raw, dict):
+        for key in BAR_KEYS:
+            found[key] = [float(value) for value in raw.get(key) or []]
+        return found
+    if isinstance(raw, list):
+        found["overall"] = [float(value) for value in raw]
+    return found
+
+
+def _bars_from_rows(rows: list[dict]) -> dict[str, list[float]]:
+    seen: set[int] = set()
+    found = {key: [] for key in BAR_KEYS}
+    for row in rows:
+        if "item_dps" not in row:
+            continue
+        chunk = row.get("chunk")
+        if chunk is not None:
+            if int(chunk) in seen:
+                continue
+            seen.add(int(chunk))
+        score = float(row["item_dps"])
+        found["overall"].append(score)
+        group = row.get("group")
+        if group in ("shop", "drop"):
+            found[group].append(score)
+    return found
+
+
+class CategoryBars:
+    """Item-only top 10 remembered separately for Shop + drop, Shop only and Random drop."""
+
+    def __init__(self, raw=None) -> None:
+        stored = _as_bars(raw)
+        self.bars = {key: ItemBar(stored[key]) for key in BAR_KEYS}
+
+    def claim(self, bare: float, group: str | None) -> bool:
+        admitted = False
+        for key in bars_for(group):
+            if self.bars[key].claim(bare):
+                admitted = True
+        return admitted
+
+    def snapshot(self) -> dict[str, list[float]]:
+        return {key: list(self.bars[key].scores) for key in BAR_KEYS}
+
+
+def claim_item_bars(bare: float, group: str | None) -> bool:
+    slots, lock = _BAR
     with lock:
-        bar = ItemBar([scores[i] for i in range(count.value)])
-        before = bar.scores[-1] if len(bar.scores) >= TOP_BARE else None
-        if not bar.claim(bare):
+        before = CategoryBars(
+            {key: [slots[key][0][i] for i in range(slots[key][1].value)] for key in BAR_KEYS}
+        )
+        floors = {
+            key: before.bars[key].scores[-1] if len(before.bars[key].scores) >= TOP_BARE else None
+            for key in bars_for(group)
+        }
+        if not before.claim(bare, group):
             return False
-        for index, value in enumerate(bar.scores):
-            scores[index] = value
-        count.value = len(bar.scores)
-        after = bar.scores[-1] if len(bar.scores) >= TOP_BARE else None
-        if after is not None and after != before:
-            print(f"планка топ-10 без талантов {after:.1f}", flush=True)
+        for key in bars_for(group):
+            scores, count = slots[key]
+            held = before.bars[key].scores
+            for index, value in enumerate(held):
+                scores[index] = value
+            count.value = len(held)
+            after = held[-1] if len(held) >= TOP_BARE else None
+            if after is not None and after != floors[key]:
+                print(f"планка топ-10 без талантов, {BAR_LABEL[key]} {after:.1f}", flush=True)
         return True
 
 
-def item_bar_snapshot(scores, count, lock) -> list[float]:
+def item_bar_snapshot(slots, lock) -> dict[str, list[float]]:
     with lock:
-        return [float(scores[i]) for i in range(count.value)]
+        return {
+            key: [float(slots[key][0][i]) for i in range(slots[key][1].value)]
+            for key in BAR_KEYS
+        }
 
 
 def add_one(value: int) -> int:
@@ -253,9 +329,11 @@ def eval_span(start: int, stop: int) -> dict:
         try:
             item_codes, _talent_codes, _glyph_codes = _SPACE.decode(index)
             equipped = tuple(_ITEMS[code] for code in item_codes)
+            sources = [_SOURCES.get(item.rawcode, "drop") for item in equipped]
+            group = build_group(sources)
             bare = item_dps(_HERO, _SPEC, _TARGETS, equipped)
             fights += 1
-            if not claim_item_bar(bare):
+            if not claim_item_bars(bare, group):
                 done = index + 1
                 continue
             dps, talent_codes, glyph_codes, points, extra = finish_sextuple(
@@ -271,14 +349,13 @@ def eval_span(start: int, stop: int) -> dict:
             )
             fights += extra
             crit, potency, luck, mastery = points
-            sources = [_SOURCES.get(item.rawcode, "drop") for item in equipped]
             hits.append(
                 {
                     "dps": dps,
                     "item_dps": bare,
                     "fights": extra + 1,
                     "chunk": index,
-                    "group": build_group(sources),
+                    "group": group,
                     "items": [
                         {"name": item.name, "code": item.rawcode, "source": source}
                         for item, source in zip(equipped, sources)
@@ -305,8 +382,10 @@ def eval_index(index: int) -> dict | None:
         equipped = tuple(_ITEMS[code] for code in item_codes)
     except KeyError as exc:
         raise RuntimeError(f"нет предмета {exc}") from exc
+    sources = [_SOURCES.get(item.rawcode, "drop") for item in equipped]
+    group = build_group(sources)
     bare = item_dps(_HERO, _SPEC, _TARGETS, equipped)
-    if not claim_item_bar(bare):
+    if not claim_item_bars(bare, group):
         return {"chunk": index, "fights": 1, "skip": True}
     dps, talent_codes, glyph_codes, points, fights = finish_sextuple(
         _HERO,
@@ -320,13 +399,12 @@ def eval_index(index: int) -> dict | None:
         _SPACE.glyph_picks,
     )
     crit, potency, luck, mastery = points
-    sources = [_SOURCES.get(item.rawcode, "drop") for item in equipped]
     return {
         "dps": dps,
         "item_dps": bare,
         "fights": fights + 1,
         "chunk": index,
-        "group": build_group(sources),
+        "group": group,
         "items": [
             {"name": item.name, "code": item.rawcode, "source": source}
             for item, source in zip(equipped, sources)
@@ -347,16 +425,39 @@ def _load_spans(raw) -> list[tuple[int, int]]:
     return spans
 
 
-def _load_checkpoint(job: dict, boards: Boards) -> tuple[int, list[tuple[int, int]], int, list[float]]:
+def _empty_bars() -> dict[str, list[float]]:
+    return {key: [] for key in BAR_KEYS}
+
+
+def _remembered_bars(saved: dict, rows: list[dict]) -> dict[str, list[float]]:
+    raw = saved.get("item_bar")
+    if isinstance(raw, dict) and raw:
+        return _as_bars(raw)
+    if isinstance(raw, list) and raw:
+        return _as_bars(raw)
+    return _bars_from_rows(rows)
+
+
+def _merge_bars(left, right) -> dict[str, list[float]]:
+    merged = CategoryBars()
+    for raw in (left, right):
+        parsed = _as_bars(raw)
+        for key in BAR_KEYS:
+            for value in parsed[key]:
+                merged.bars[key].claim(value)
+    return merged.snapshot()
+
+
+def _load_checkpoint(job: dict, boards: Boards) -> tuple[int, list[tuple[int, int]], int, dict[str, list[float]]]:
     path = _checkpoint_path(job["id"])
     if not path.exists():
-        return int(job["start"]), [], 0, []
+        return int(job["start"]), [], 0, _empty_bars()
     try:
         saved = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
-        return int(job["start"]), [], 0, []
+        return int(job["start"]), [], 0, _empty_bars()
     if not _same_job(saved, job):
-        return int(job["start"]), [], 0, []
+        return int(job["start"]), [], 0, _empty_bars()
     rows = list(saved.get("top") or [])
     for row in rows:
         boards.overall.add(row)
@@ -368,10 +469,7 @@ def _load_checkpoint(job: dict, boards: Boards) -> tuple[int, list[tuple[int, in
     spans: list[tuple[int, int]] = []
     for start, stop in _load_spans(saved.get("ahead")):
         done_up_to = note_span(done_up_to, spans, start, stop)
-    remembered = [float(value) for value in saved.get("item_bar") or []]
-    if not remembered:
-        remembered = [float(row["item_dps"]) for row in rows if "item_dps" in row]
-    return done_up_to, spans, int(saved.get("errors") or 0), remembered
+    return done_up_to, spans, int(saved.get("errors") or 0), _remembered_bars(saved, rows)
 
 
 def _same_job(saved: dict, job: dict) -> bool:
@@ -392,7 +490,7 @@ def _merge_checkpoint(payload: dict, saved: dict | None) -> dict:
         merged["done_up_to"] = int(saved["done_up_to"])
         merged["ahead"] = list(saved.get("ahead") or [])
     merged["errors"] = max(int(saved.get("errors") or 0), int(payload.get("errors") or 0))
-    merged["item_bar"] = ItemBar(list(saved.get("item_bar") or []) + list(payload.get("item_bar") or [])).scores
+    merged["item_bar"] = _merge_bars(saved.get("item_bar"), payload.get("item_bar"))
     boards = Boards()
     for row in list(saved.get("top") or []) + list(payload.get("top") or []):
         boards.overall.add(row)
@@ -411,7 +509,7 @@ def _save_checkpoint(
     ahead: list[tuple[int, int]],
     boards: Boards,
     errors: int,
-    item_bar: list[float],
+    item_bar: dict[str, list[float]],
 ) -> None:
     payload = {
         "start": job["start"],
@@ -456,10 +554,12 @@ def _write_result(job: dict, boards: Boards, done: int, stopped: bool, errors: i
         "stopped": stopped,
         "errors": errors,
         "about": (
-            "Чанк — одна шестёрка предметов. Таланты, глифы и очки навыков считаются, только если её DPS без талантов выше 10-го места по DPS без талантов. "
-            "top — общий топ-10. top_shop_random — и магазин, и случайный дроп. "
-            "top_shop — только магазин. top_random — только случайный дроп. "
-            "Легендарки входят в любой из трёх списков."
+            "Чанк — одна шестёрка предметов. Таланты, глифы и очки навыков считаются, если её DPS без них входит в топ-10 той же категории. "
+            "Shop + drop сравнивается с общим топ-10. Только Shop — с топ-10 лавки. Только Random drop — с топ-10 дропа. "
+            "Эти десять чисел запоминаются отдельно. "
+            "top — общий топ-10: чистый Shop, чистый дроп и оба источника. "
+            "top_shop — только лавка. top_random — только дроп. "
+            "top_shop_random — сразу и лавка, и дроп. Легендарки входят в любой список."
         ),
         "top": boards.ranked(boards.overall),
         "top_shop_random": boards.ranked(boards.by_group["shop_random"]),
@@ -492,17 +592,20 @@ def run_job(job: dict, box: dict, tick) -> dict:
     done_up_to, ahead, errors, remembered = _load_checkpoint(job, boards)
     done_up_to = _sweep(max(done_up_to, start), ahead)
     ctx = multiprocessing.get_context("spawn")
-    scores = ctx.Array("d", TOP_BARE)
-    count = ctx.Value("i", 0)
     lock = ctx.Lock()
-    for bare in remembered:
-        bar = ItemBar([scores[i] for i in range(count.value)])
-        if bar.claim(bare):
-            for index, value in enumerate(bar.scores):
-                scores[index] = value
-            count.value = len(bar.scores)
-    if count.value >= TOP_BARE:
-        print(f"планка топ-10 без талантов {scores[TOP_BARE - 1]:.1f}", flush=True)
+    slots = {}
+    for key in BAR_KEYS:
+        scores = ctx.Array("d", TOP_BARE)
+        count = ctx.Value("i", 0)
+        for bare in remembered.get(key) or []:
+            bar = ItemBar([scores[i] for i in range(count.value)])
+            if bar.claim(bare):
+                for index, value in enumerate(bar.scores):
+                    scores[index] = value
+                count.value = len(bar.scores)
+        if count.value >= TOP_BARE:
+            print(f"планка топ-10 без талантов, {BAR_LABEL[key]} {scores[TOP_BARE - 1]:.1f}", flush=True)
+        slots[key] = (scores, count)
     last_tick = 0.0
     started = time.monotonic()
     fights = 0
@@ -556,7 +659,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
         except Exception as exc:
             print(f"статус не обновился: {exc}", flush=True)
         if not final:
-            _save_checkpoint(job, done_up_to, ahead, boards, errors, item_bar_snapshot(scores, count, lock))
+            _save_checkpoint(job, done_up_to, ahead, boards, errors, item_bar_snapshot(slots, lock))
         print(
             f"{job['worker']} посчитано {grouped(done)} осталось {grouped(total - done)} "
             f"лучший {boards.best() if boards.best() is not None else '-'}",
@@ -605,7 +708,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
         max_workers=pool_size,
         mp_context=ctx,
         initializer=init_worker,
-        initargs=(space, items, sources, job["hero"], job["spec"], int(job["targets"]), (scores, count, lock), stop_event),
+        initargs=(space, items, sources, job["hero"], job["spec"], int(job["targets"]), (slots, lock), stop_event),
     ) as pool:
         while True:
             if box.get("stop"):
@@ -655,5 +758,5 @@ def run_job(job: dict, box: dict, tick) -> dict:
     stopped = bool(box.get("stop")) and done < total
     path = _write_result(job, boards, done, stopped, errors)
     emit(final=True)
-    _save_checkpoint(job, done_up_to, ahead, boards, errors, item_bar_snapshot(scores, count, lock))
+    _save_checkpoint(job, done_up_to, ahead, boards, errors, item_bar_snapshot(slots, lock))
     return {"path": path, "done": done, "left": total - done, "stopped": stopped, "errors": errors}
