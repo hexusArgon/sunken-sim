@@ -106,4 +106,4 @@ Ardent Defender срабатывает от смертельного урона,
 
 ## Что сим не делает
 
-Luck на Judgement и Infusion of Light. Срез кулдаунов от Infusion of Light. Лечение Crusader Strike, из-за которого Infusion of Light вообще может сработать с автоатаки.
+Luck на Judgement и Infusion of Light. Срез кулдаунов от Infusion of Light. Лечение Crusader Strike, из-за которого Infusion of Light вообще может сработать с автоатаки. Стан с автоатаки, если текст вещи оглушает при ударе, а не при касте.

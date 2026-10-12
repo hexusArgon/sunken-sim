@@ -260,6 +260,7 @@ def command_body(name: str) -> dict:
                 "description": "Готовый набор вещей и талантов",
                 "required": False,
                 "choices": [
+                    {"name": "Paladin Retribution top 80", "value": "retribution-top80"},
                     {"name": "Paladin Retribution top 79", "value": "retribution-top79"},
                     {"name": "Paladin Retribution top 89", "value": "retribution-top89"},
                     {"name": "Paladin Protection top 89", "value": "protection-top89"},

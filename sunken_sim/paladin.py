@@ -254,6 +254,14 @@ def stats_of(build: Build) -> dict[str, float]:
     regen = _mana_regen(build, intel, mana_max, build.items)
     if _has(build, TALENT_DIVINE_KNOWLEDGE):
         regen += 0.03 * intel * 0.80
+    cast_stun_lock = 0.0
+    seen_stun: set[str] = set()
+    for item in build.items:
+        if item.rawcode in seen_stun:
+            continue
+        seen_stun.add(item.rawcode)
+        if item.cast_stun_chance and item.cast_stun_duration > 0:
+            cast_stun_lock += item.cast_stun_chance * item.cast_stun_duration
     return {
         "str": strength,
         "agi": agility,
@@ -286,6 +294,7 @@ def stats_of(build: Build) -> dict[str, float]:
         "luck": luck,
         "mana_max": mana_max,
         "mana_regen": regen,
+        "cast_stun_lock": cast_stun_lock,
         **passive,
     }
 
@@ -404,7 +413,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "retribution") -> Repor
         if _has(build, TALENT_ZEAL):
             zeal_charges = 2
             zeal_until = now + 4.0
-        return now + CAST_POINT + CAST_BACKSWING
+        return now + CAST_POINT + CAST_BACKSWING + stats["cast_stun_lock"]
 
     guard = 0
     while next_attack < FIGHT or next_cs < FIGHT or next_hammer < FIGHT or hammers:
