@@ -22,6 +22,7 @@ PRESETS = {
     "retribution-top79": "paladin-retribution-top79.json",
     "retribution-top89": "paladin-retribution-top89.json",
     "protection-top89": "paladin-protection-top89.json",
+    "arcane-top80": "mage-arcane-top80.json",
 }
 
 
@@ -129,8 +130,9 @@ def _parts(hero: str, spec: str, pool: str, preset: str | None = None):
 def _preset_parts(hero: str, spec: str, preset: str, by_code: dict):
     from pathlib import Path
 
+    from sunken_sim.mage import TALENTS as MAGE_TALENTS
     from sunken_sim.paladin import TALENTS as PALADIN_TALENTS
-    from sunken_sim.search import GLYPHS, _item_kind
+    from sunken_sim.search import GLYPHS, TALENTS, _item_kind
     from sunken_sim.shadow import MIND_AMPLIFIER
 
     filename = PRESETS.get(preset)
@@ -143,7 +145,8 @@ def _preset_parts(hero: str, spec: str, preset: str, by_code: dict):
     missing = [code for code in data["items"] if code not in by_code]
     if missing:
         raise RuntimeError("нет предметов: " + ", ".join(missing))
-    unknown = [code for code in data["talents"] if code not in PALADIN_TALENTS]
+    talent_names = {"mage": MAGE_TALENTS, "paladin": PALADIN_TALENTS, "priest": TALENTS}[hero]
+    unknown = [code for code in data["talents"] if code not in talent_names]
     if unknown:
         raise RuntimeError("нет талантов: " + ", ".join(unknown))
     pieces = []
@@ -155,8 +158,8 @@ def _preset_parts(hero: str, spec: str, preset: str, by_code: dict):
     if len(pieces) < 6:
         raise RuntimeError(f"в наборе {preset} меньше шести предметов")
     talents = sorted(data["talents"])
-    picks_with = 4 if any(piece.amp for piece in pieces) else 3
-    return pieces, talents, sorted(GLYPHS), PALADIN_TALENTS, dict(GLYPHS), items, picks_with
+    picks_with = 3 if hero == "mage" else (4 if any(piece.amp for piece in pieces) else 3)
+    return pieces, talents, sorted(GLYPHS), talent_names, dict(GLYPHS), items, picks_with
 
 
 def _shadow_top(shop, drop, legendaries):
