@@ -23,6 +23,7 @@ PRESETS = {
     "retribution-top89": "paladin-retribution-top89.json",
     "protection-top89": "paladin-protection-top89.json",
     "arcane-top80": "mage-arcane-top80.json",
+    "fire-top80": "mage-fire-top80.json",
 }
 
 
