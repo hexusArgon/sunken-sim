@@ -264,6 +264,7 @@ def command_body(name: str) -> dict:
                     {"name": "Paladin Retribution top 79", "value": "retribution-top79"},
                     {"name": "Paladin Retribution top 89", "value": "retribution-top89"},
                     {"name": "Paladin Protection top 89", "value": "protection-top89"},
+                    {"name": "Mage Frost top 80", "value": "frost-top80"},
                     {"name": "Mage Arcane top 80", "value": "arcane-top80"},
                     {"name": "Mage Fire top 80", "value": "fire-top80"},
                 ],

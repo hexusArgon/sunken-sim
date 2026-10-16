@@ -24,6 +24,7 @@ PRESETS = {
     "protection-top89": "paladin-protection-top89.json",
     "arcane-top80": "mage-arcane-top80.json",
     "fire-top80": "mage-fire-top80.json",
+    "frost-top80": "mage-frost-top80.json",
 }
 
 
