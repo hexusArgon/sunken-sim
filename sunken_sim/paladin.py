@@ -34,6 +34,9 @@ from sunken_sim.shadow import (
     armor_taken,
     attack_mana_gain,
     cast_mana_back,
+    sulfuras_echo_chance,
+    Sulfuras,
+    _wears,
     target_hp,
 )
 from sunken_sim.stacking import stack_fields
@@ -346,6 +349,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "retribution") -> Repor
     orbit = _ORBIT[(hammer_duration, pulse)]
     mana = stats["mana_max"]
     mana_time = 0.0
+    sulfuras = Sulfuras() if _wears(build, "I0BR") else None
     toll = 0.25 * (1.0 + stats["luck"]) if _has(build, TALENT_DIVINE_TOLL) or stats["bell"] else 0.0
 
     def mastery() -> float:
@@ -410,6 +414,8 @@ def simulate(build: Build, targets: int = 5, spec: str = "retribution") -> Repor
 
     def cast(now: float) -> float:
         nonlocal zeal_charges, zeal_until
+        if sulfuras is not None:
+            sulfuras.cast()
         if _has(build, TALENT_ZEAL):
             zeal_charges = 2
             zeal_until = now + 4.0
@@ -509,6 +515,19 @@ def simulate(build: Build, targets: int = 5, spec: str = "retribution") -> Repor
                 splash = (20.0 + 0.35 * stats["str"]) * targets * taken * _execute_factor(stats, moment)
                 sources["Всплеск огня"] += splash
                 note_damage_mana(targets)
+            if sulfuras is not None:
+                execute = _execute_factor(stats, moment)
+                if sulfuras.attack():
+                    splash = stats["str"] * typed(True, moment) * spell_crit * taken * execute * targets
+                    sources["Sulfuras"] = sources.get("Sulfuras", 0.0) + splash
+                    note_damage_mana(targets)
+                echo = (
+                    (WHITE_BASE + 0.75 * stats["str"] + stats["damage"])
+                    * taken
+                    * execute
+                    * sulfuras_echo_chance(stats["luck"])
+                )
+                sources["Sulfuras (удар)"] = sources.get("Sulfuras (удар)", 0.0) + echo
             if _has(build, TALENT_CRUSADE) and crusade < 20:
                 crusade = min(20, crusade + 2)
                 haste = stats["haste"] + crusade / 100.0

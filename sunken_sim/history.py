@@ -25,7 +25,7 @@ def sim_key(engine: str, spec: str, build: Build, targets: int, bound_spell: str
     glyphs = ",".join(sorted(build.glyphs))
     points = f"{build.crit_points},{build.potency_points},{build.luck_points},{build.mastery_points}"
     # Bump when a fight mechanic changes, so old rows are not reused.
-    return "|".join(("v2", engine, spec, str(targets), talents, glyphs, items, points, bound_spell or ""))
+    return "|".join(("v3", engine, spec, str(targets), talents, glyphs, items, points, bound_spell or ""))
 
 
 def _connect() -> sqlite3.Connection:

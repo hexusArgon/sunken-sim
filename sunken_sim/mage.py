@@ -32,7 +32,9 @@ from sunken_sim.shadow import (
     _magic_factors,
     _physical_multiplier,
     _wears,
+    Sulfuras,
     armor_taken,
+    sulfuras_echo_chance,
     character,
     target_hp,
 )
@@ -152,7 +154,8 @@ def _raws(stats: dict, build: Build) -> dict[str, float]:
     shards = 1.20 if _has(build, "I0KO") else 1.0
     starter = 1.25 if _has(build, "I0KS") else 1.0
     gloves = 1.15 if _wears(build, "I0UT") else 1.0
-    per = (10 + 0.10 * intel * arch) if _has(build, "I0UQ") else (10 + 0.08 * intel * arch)
+    # The map's if is inverted: Greater Pyroblast takes the 8% branch, the 10% branch is the one without the talent.
+    per = (10 + 0.08 * intel * arch) if _has(build, "I0UQ") else (10 + 0.10 * intel * arch)
     return {
         "bomb": 10 + 0.12 * intel * arch,
         "burst": 10 + 0.12 * intel,
@@ -287,6 +290,7 @@ def simulate(
     blizzard_until = 0.0
     hero_ready = 0.0
     busy_until = 0.0
+    sulfuras = Sulfuras() if _wears(build, "I0BR") else None
     pending: list[tuple[float, int, str]] = []
     seq = 0
 
@@ -440,7 +444,7 @@ def simulate(
                 targets,
                 targets * taken * spent,
                 (targets * taken) if magical else 0.0,
-                disease=not magical,
+                disease=True,
                 magical=magical,
             )
         if nova:
@@ -509,6 +513,8 @@ def simulate(
         mana = min(stats["mana_max"], mana + cast_mana_back(spent, stats))
         duration = spell_cd[name]
         actions.append((now, name))
+        if sulfuras is not None:
+            sulfuras.cast()
         busy_until = now + CAST_POINT + CAST_BACKSWING + stats["cast_stun_lock"]
         hero_ready = busy_until
         target = "Arcane Blast" if redirect and "Arcane Blast" in ready else name
@@ -579,6 +585,11 @@ def simulate(
                 on_hero_auto(when)
                 taken = bite_all(when)
                 add(when, "auto", 1.0, taken, taken)
+                if sulfuras is not None:
+                    if sulfuras.attack():
+                        add(when, "sulfuras", float(targets), float(targets), 0.0)
+                    echo = sulfuras_echo_chance(stats["luck"])
+                    add(when, "sulfuras_echo", echo, echo, 0.0)
                 if _wears(build, "I07O"):
                     add(when, "splash", targets, targets, targets)
                 hero_ready = max(hero_ready, when + stats["stun_per_swing"])
@@ -700,6 +711,9 @@ def _compile(events: list[tuple], build: Build, stats: dict, spec: str, evocatio
     cleave_slope = 0.0
     cleave_pot_base = 0.0
     cleave_pot_slope = 0.0
+    sulf_base = 0.0
+    sulf_slope = 0.0
+    sulf_echo = 0.0
     glass = 1.15 if _has(build, "I0JA") else 1.0
     blood_on = _has(build, "I0H6")
     fixed_magic = None
@@ -758,13 +772,19 @@ def _compile(events: list[tuple], build: Build, stats: dict, spec: str, evocatio
             cleave_slope += s * raw_w
             cleave_pot_base += b * pot_w
             cleave_pot_slope += s * pot_w
+        elif kind == "sulfuras":
+            b, s = factors(extra, True)
+            sulf_base += b * raw_w
+            sulf_slope += s * raw_w
+        elif kind == "sulfuras_echo":
+            sulf_echo += raw_w
         elif kind in base:
             b, s = factors(extra, True)
             base[kind] += b * raw_w
             slope[kind] += s * raw_w
             pot_base[kind] += b * pot_w
             pot_slope[kind] += s * pot_w
-        if blood_on:
+        if blood_on and kind != "sulfuras_echo":
             blood += dealt
     return {
         "spec": spec,
@@ -795,6 +815,9 @@ def _compile(events: list[tuple], build: Build, stats: dict, spec: str, evocatio
         "cleave_slope": cleave_slope,
         "cleave_pot_base": cleave_pot_base,
         "cleave_pot_slope": cleave_pot_slope,
+        "sulf_base": sulf_base,
+        "sulf_slope": sulf_slope,
+        "sulf_echo": sulf_echo,
         "raw": _raws(stats, build),
         "fire_pyro": spec == "fire",
     }
@@ -859,6 +882,9 @@ def _score(compiled: dict, stats: dict, build: Build, spec: str, potency=None, c
         "Клив Hydra",
         attack_crit * (raw["hydra"] * cleave_mag + potency * stats["attack_potency"] * cleave_pot),
     )
+    sulf_mag = compiled["sulf_base"] + compiled["sulf_slope"] * mastery
+    put("Sulfuras", spell_crit * stats["int"] * sulf_mag)
+    put("Sulfuras (удар)", stats["ad"] * compiled["sulf_echo"])
     if compiled["hell_weight"]:
         put("Hellfire", (compiled["hell_raw"] + potency) * compiled["glass"] * compiled["hell_weight"])
     if compiled["blood"]:

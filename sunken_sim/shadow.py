@@ -27,6 +27,7 @@ CHAOS_UNARMORED = 1.25
 # excluding locusts, invulnerable units, and hero inventories.
 MEDIAN_MONSTER_HP = 5300.0
 ORB_MODE = {"I07O": "Fire", "I0NS": "Frost", "I0NT": "Shadow"}
+SULFURAS = "I0BR"
 
 # Added to the type bonus before Insanity multiplies the magical bonus.
 # Values are the map's MagicalType_Bonus / PhysicalType_Bonus adds.
@@ -553,6 +554,7 @@ def _timeline_key(build: Build, stats: dict, spec: str, targets: int, bound_spel
         round(stats["damage_mana_pct"], 5),
         round(stats["swp_period"], 5),
         _wears(build, "I07O"),
+        _wears(build, SULFURAS),
         cooldowns,
     )
 
@@ -566,6 +568,7 @@ def _fight_events(
 ) -> tuple[list, list, list, float]:
     events: list[tuple[float, str, float]] = []
     actions: list[tuple[float, str]] = []
+    sulfuras = Sulfuras() if _wears(build, SULFURAS) else None
     duration = 12.0 if _has(build, "I0HL") else 10.0
     cast_names = _cast_spells(build, spec)
     base_cd = {
@@ -682,6 +685,8 @@ def _fight_events(
         mana = min(stats["mana_max"], mana + cast_mana_back(spent, stats))
         ready[name] = now + spell_cd[name]
         actions.append((now, name))
+        if sulfuras is not None:
+            sulfuras.cast()
         busy_until = now + CAST_POINT + CAST_BACKSWING + stats["cast_stun_lock"]
         hero_ready = busy_until
         push(now + CAST_POINT, "finish:" + name)
@@ -717,6 +722,10 @@ def _fight_events(
             else:
                 record(when, "auto")
                 mana = min(stats["mana_max"], mana + attack_mana_gain(stats))
+                if sulfuras is not None:
+                    if sulfuras.attack():
+                        record(when, "sulfuras", targets)
+                    record(when, "sulfuras_echo")
                 if _wears(build, "I07O"):
                     record(when, "splash", targets)
                 hero_ready = max(hero_ready, when + stats["stun_per_swing"])
@@ -790,6 +799,32 @@ def armor_taken(armor: float) -> float:
     if armor < 0:
         return 2 - (1 - ARMOR_FACTOR) ** (-armor)
     return 1.0
+
+
+class Sulfuras:
+    """Ignite on cast, splash on the next hero attack, and a 10% extra swing.
+
+    The buff does not refresh while it is already up. The splash is 100% of
+    primary attribute, magical, to every target. The extra swing copies the
+    white hit and is Enhanced, so it takes no type bonus, potency or crit.
+    """
+
+    def __init__(self) -> None:
+        self.armed = False
+
+    def cast(self) -> None:
+        if not self.armed:
+            self.armed = True
+
+    def attack(self) -> bool:
+        if not self.armed:
+            return False
+        self.armed = False
+        return True
+
+
+def sulfuras_echo_chance(luck: float) -> float:
+    return 0.10 * (1.0 + luck)
 
 
 def _crit_factor(chance: float, multiplier: float) -> float:
@@ -877,6 +912,11 @@ def score_events(
         elif kind == "splash":
             add("Всплеск огня", (20 + 0.35 * stats["int"]) * hits * amp * execute)
             continue
+        elif kind == "sulfuras":
+            add("Sulfuras", stats["int"] * magical * spell_crit * hits * execute)
+        elif kind == "sulfuras_echo":
+            add("Sulfuras (удар)", stats["ad"] * sulfuras_echo_chance(luck) * hits * execute)
+            continue
         elif kind == "hellfire":
             raw = (3 + 3 * LEVEL) * (2 if hits == 1 else 0.5 if hits >= 4 else 1)
             add("Hellfire", (raw + potency) * hits * (1.15 if glass else 1.0) * amp * execute)
@@ -923,6 +963,9 @@ def compile_events(
     rad_slope = 0.0
     rad_pot_base = 0.0
     rad_pot_slope = 0.0
+    sulf_base = 0.0
+    sulf_slope = 0.0
+    sulf_echo = 0.0
     for when, kind, hits in events:
         execute = _execute_factor(stats, when)
         amp = _event_amp(build, stats, windows, when)
@@ -935,6 +978,11 @@ def compile_events(
             soul_weight += weighed * target_hp(when)
         elif kind == "splash":
             splash_hits += hits * amp * execute
+        elif kind == "sulfuras":
+            sulf_base += base * hits * execute
+            sulf_slope += slope * hits * execute
+        elif kind == "sulfuras_echo":
+            sulf_echo += hits * execute
         elif kind == "radiance":
             rad_base += base * execute
             rad_slope += slope * execute
@@ -952,7 +1000,7 @@ def compile_events(
         elif kind == "hellfire":
             hellfire_raw = (3 + 3 * LEVEL) * (2 if hits == 1 else 0.5 if hits >= 4 else 1)
             hellfire_exec += hits * amp * execute
-        if blood:
+        if blood and kind != "sulfuras_echo":
             blood_exec += amp * execute
     return {
         "spec": spec,
@@ -973,6 +1021,9 @@ def compile_events(
         "rad_slope": rad_slope,
         "rad_pot_base": rad_pot_base,
         "rad_pot_slope": rad_pot_slope,
+        "sulf_base": sulf_base,
+        "sulf_slope": sulf_slope,
+        "sulf_echo": sulf_echo,
     }
 
 
@@ -1004,6 +1055,9 @@ def score_compiled(
         * compiled["soul_weight"]
     )
     total += (20 + 0.35 * stats["int"]) * compiled["splash_hits"]
+    sulf_mag = compiled["sulf_base"] + compiled["sulf_slope"] * mastery_stat
+    total += stats["int"] * spell_crit * sulf_mag
+    total += stats["ad"] * sulfuras_echo_chance(luck) * compiled["sulf_echo"]
 
     def magical_weight(kind: str) -> float:
         return compiled["magic_base"][kind] + compiled["magic_slope"][kind] * mastery_stat
