@@ -50,6 +50,11 @@ def invite_url(app_id: str) -> str:
     )
 
 
+def edits_capped(exc: RestError) -> bool:
+    """Discord refuses further edits once a message is older than an hour."""
+    return exc.status == 429 and "30046" in exc.body
+
+
 def message_age(message: dict) -> float:
     stamp = message.get("edited_timestamp") or message.get("timestamp")
     when = datetime.fromisoformat(str(stamp).replace("Z", "+00:00"))
@@ -155,7 +160,7 @@ class Farm:
             created = await asyncio.to_thread(self.rest.send, self.channel, format_control("", []))
             controls = [created]
         controls.sort(key=lambda message: int(message["id"]))
-        keep = controls[0]
+        keep = controls[-1]
         self.control_channel = str(keep.get("channel_id") or self.channel)
         keep_id = str(keep["id"])
         for extra in controls[1:]:
@@ -210,12 +215,13 @@ class Farm:
             rows: list[tuple[str, int, int]] = []
             if not foreign:
                 watch, rows = await self._collect_watch(state["watch"])
-                await asyncio.to_thread(
-                    self.rest.edit,
+                live = await asyncio.to_thread(
+                    self._replace,
                     self.control_channel,
                     self.control_id,
                     format_control(self.name, watch),
                 )
+                self.control_id = live
                 confirm = await asyncio.to_thread(self.rest.get_message, self.control_channel, self.control_id)
                 confirmed = parse_control(confirm.get("content") or "") or {"leader": ""}
                 foreign = confirmed["leader"] != self.name
@@ -558,14 +564,70 @@ class Farm:
         self.box["job_id"] = job["id"]
         self._track(self.execute(job))
 
+    def _replace(self, channel: str, message: str, content: str) -> str:
+        """Edit a message. If Discord has capped that old message, post a new one."""
+        try:
+            self.rest.edit(channel, message, content)
+            return message
+        except RestError as exc:
+            if not edits_capped(exc):
+                raise
+        posted = self.rest.send(channel, content)
+        new_id = str(posted["id"])
+        try:
+            self.rest.delete(channel, message)
+        except RestError:
+            pass
+        self.log(f"новое сообщение {new_id} вместо {message}")
+        return new_id
+
+    def _retarget_watch(self, old: str, new: str, worker: str, channel: str) -> None:
+        if not self.control_id:
+            return
+        try:
+            message = self.rest.get_message(self.control_channel, self.control_id)
+        except RestError as exc:
+            self.log(f"список статусов не прочитан: {exc}")
+            return
+        state = parse_control(message.get("content") or "") or {"leader": self.name, "watch": []}
+        watch = []
+        seen = False
+        for item in state["watch"]:
+            same = str(item.get("message")) == old or item.get("worker") == worker
+            if same:
+                if not seen:
+                    watch.append({"channel": channel, "message": new, "worker": worker})
+                    seen = True
+                continue
+            watch.append(item)
+        if not seen:
+            watch.append({"channel": channel, "message": new, "worker": worker})
+        try:
+            live = self._replace(
+                self.control_channel,
+                self.control_id,
+                format_control(state.get("leader") or self.name, watch),
+            )
+            self.control_id = live
+        except RestError as exc:
+            self.log(f"список статусов не обновлён: {exc}")
+
     def sync_tick(self, text: str) -> None:
         job = self.current_job
         if not job:
             return
+        channel = str(job["channel"])
+        old = str(job["status"])
         try:
-            self.rest.edit(str(job["channel"]), str(job["status"]), text)
+            new_id = self._replace(channel, old, text)
         except RestError as exc:
             print(f"статус не обновился: {exc}", flush=True)
+            return
+        if new_id == old:
+            return
+        job["status"] = new_id
+        self.write_active({"done": False, "uploaded": False, "job": job})
+        self._retarget_watch(old, new_id, str(job["worker"]), channel)
 
     async def execute(self, job: dict) -> None:
         try:
