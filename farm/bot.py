@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import asyncio
 import json
+import os
+import sys
 import traceback
 from datetime import datetime, timezone
 
@@ -754,13 +756,25 @@ def time_now() -> float:
     return datetime.now(timezone.utc).timestamp()
 
 
+_LOG = None
+
+
+def _detach_stdio() -> None:
+    """Write the log to farm-data/boot.log. A closed console must not freeze the run."""
+    global _LOG
+    path = data_dir() / "boot.log"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    _LOG = open(path, "a", encoding="utf-8", errors="replace", buffering=1)
+    os.dup2(_LOG.fileno(), 1)
+    os.dup2(_LOG.fileno(), 2)
+    sys.stdout = open(1, "w", encoding="utf-8", errors="replace", buffering=1, closefd=False)
+    sys.stderr = open(2, "w", encoding="utf-8", errors="replace", buffering=1, closefd=False)
+
+
 def main() -> None:
     import multiprocessing
-    import sys
 
-    if hasattr(sys.stdout, "reconfigure"):
-        sys.stdout.reconfigure(encoding="utf-8")
-        sys.stderr.reconfigure(encoding="utf-8")
+    _detach_stdio()
     multiprocessing.freeze_support()
     load_env()
     if try_file_lock(data_dir() / "bot.lock") is None:

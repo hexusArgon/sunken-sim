@@ -13,6 +13,28 @@ from farm.protocol import allowed_mentions
 _API = "https://discord.com/api/v10"
 
 
+def _same_command(current: dict, body: dict) -> bool:
+    def options(rows: list | None) -> list:
+        cleaned = []
+        for opt in rows or []:
+            item = {
+                "type": opt.get("type"),
+                "name": opt.get("name"),
+                "description": opt.get("description"),
+                "required": bool(opt.get("required")),
+            }
+            if opt.get("choices"):
+                item["choices"] = [{"name": choice.get("name"), "value": choice.get("value")} for choice in opt["choices"]]
+            if "min_value" in opt:
+                item["min_value"] = opt.get("min_value")
+            if "max_value" in opt:
+                item["max_value"] = opt.get("max_value")
+            cleaned.append(item)
+        return cleaned
+
+    return current.get("description") == body.get("description") and options(current.get("options")) == options(body.get("options"))
+
+
 class RestError(Exception):
     def __init__(self, status: int, body: str) -> None:
         self.status = status
@@ -68,6 +90,8 @@ class Rest:
         route = f"/applications/{app_id}/guilds/{guild_id}/commands"
         existing = self._request("GET", route)
         current = next((row for row in existing if row["name"] == body["name"]), None)
+        if current and _same_command(current, body):
+            return
         if current:
             self._request("PATCH", f"{route}/{current['id']}", body)
         else:

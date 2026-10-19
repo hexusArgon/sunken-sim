@@ -25,6 +25,9 @@ PRESETS = {
     "arcane-top80": "mage-arcane-top80.json",
     "fire-top80": "mage-fire-top80.json",
     "frost-top80": "mage-frost-top80.json",
+    "restoration-top80": "shaman-restoration-top80.json",
+    "enhancement-top80": "shaman-enhancement-top80.json",
+    "elemental-top80": "shaman-elemental-top80.json",
 }
 
 
@@ -80,7 +83,7 @@ def _parts(hero: str, spec: str, pool: str, preset: str | None = None):
     by_code = {item.rawcode: item for item in catalog}
     if preset:
         return _preset_parts(hero, spec, preset, by_code)
-    class_name = {"priest": "Priest", "mage": "Mage", "paladin": "Paladin"}[hero]
+    class_name = {"priest": "Priest", "mage": "Mage", "paladin": "Paladin", "shaman": "Shaman"}[hero]
     shop, drop, legendaries = pools_for(catalog, class_name)
     if hero == "priest" and spec == "shadow":
         shop, drop, legendaries = _shadow_top(shop, drop, legendaries)
@@ -118,6 +121,12 @@ def _parts(hero: str, spec: str, pool: str, preset: str | None = None):
         talent_names = PALADIN_TALENTS
         talents = sorted(PALADIN_TALENTS)
         picks_with = 3
+    elif hero == "shaman":
+        from sunken_sim.shaman import TALENTS as SHAMAN_TALENTS
+
+        talent_names = SHAMAN_TALENTS
+        talents = sorted(SHAMAN_TALENTS)
+        picks_with = 3
     else:
         talent_names = TALENTS
         talents = sorted(SHADOW_TALENTS if spec == "shadow" else TALENTS)
@@ -135,6 +144,7 @@ def _preset_parts(hero: str, spec: str, preset: str, by_code: dict):
     from sunken_sim.mage import TALENTS as MAGE_TALENTS
     from sunken_sim.paladin import TALENTS as PALADIN_TALENTS
     from sunken_sim.search import GLYPHS, TALENTS, _item_kind
+    from sunken_sim.shaman import TALENTS as SHAMAN_TALENTS
     from sunken_sim.shadow import MIND_AMPLIFIER
 
     filename = PRESETS.get(preset)
@@ -147,7 +157,12 @@ def _preset_parts(hero: str, spec: str, preset: str, by_code: dict):
     missing = [code for code in data["items"] if code not in by_code]
     if missing:
         raise RuntimeError("нет предметов: " + ", ".join(missing))
-    talent_names = {"mage": MAGE_TALENTS, "paladin": PALADIN_TALENTS, "priest": TALENTS}[hero]
+    talent_names = {
+        "mage": MAGE_TALENTS,
+        "paladin": PALADIN_TALENTS,
+        "priest": TALENTS,
+        "shaman": SHAMAN_TALENTS,
+    }[hero]
     unknown = [code for code in data["talents"] if code not in talent_names]
     if unknown:
         raise RuntimeError("нет талантов: " + ", ".join(unknown))

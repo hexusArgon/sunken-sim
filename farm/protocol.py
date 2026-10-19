@@ -8,6 +8,7 @@ import re
 PRIEST_SPECS = ("shadow", "discipline", "holy")
 MAGE_SPECS = ("frost", "arcane", "fire")
 PALADIN_SPECS = ("retribution", "protection", "holy")
+SHAMAN_SPECS = ("restoration", "enhancement", "elemental")
 POOLS = ("mixed", "shop", "drop")
 
 POOL_LABEL = {
@@ -15,7 +16,7 @@ POOL_LABEL = {
     "shop": "только Shop",
     "drop": "только Random drop",
 }
-HERO_LABEL = {"priest": "жрец", "mage": "маг", "paladin": "паладин"}
+HERO_LABEL = {"priest": "жрец", "mage": "маг", "paladin": "паладин", "shaman": "шаман"}
 
 NOTIFY_USER_ID = "229350465668775936"  # hexus_argon
 
@@ -69,6 +70,8 @@ def resolve_hero_spec(hero: str | None, spec: str | None) -> tuple[str, str]:
     if hero is None:
         if spec in ("retribution", "protection"):
             hero = "paladin"
+        elif spec in SHAMAN_SPECS:
+            hero = "shaman"
         elif spec in MAGE_SPECS:
             hero = "mage"
         elif spec in PRIEST_SPECS:
@@ -81,6 +84,8 @@ def resolve_hero_spec(hero: str | None, spec: str | None) -> tuple[str, str]:
         raise ValueError(f"у мага нет специализации {spec}")
     if hero == "paladin" and spec not in PALADIN_SPECS:
         raise ValueError(f"у паладина нет специализации {spec}")
+    if hero == "shaman" and spec not in SHAMAN_SPECS:
+        raise ValueError(f"у шамана нет специализации {spec}")
     if hero not in HERO_LABEL:
         raise ValueError(f"нет класса {hero}")
     return hero, spec
@@ -245,7 +250,19 @@ def presence_text(rows: list[tuple[str, int, int]]) -> str:
 
 
 def command_body(name: str) -> dict:
-    specs = ["shadow", "discipline", "holy", "frost", "arcane", "fire", "retribution", "protection"]
+    specs = [
+        "shadow",
+        "discipline",
+        "holy",
+        "frost",
+        "arcane",
+        "fire",
+        "retribution",
+        "protection",
+        "restoration",
+        "enhancement",
+        "elemental",
+    ]
     return {
         "name": name,
         "type": 1,
@@ -267,6 +284,9 @@ def command_body(name: str) -> dict:
                     {"name": "Mage Frost top 80", "value": "frost-top80"},
                     {"name": "Mage Arcane top 80", "value": "arcane-top80"},
                     {"name": "Mage Fire top 80", "value": "fire-top80"},
+                    {"name": "Shaman Restoration top 80", "value": "restoration-top80"},
+                    {"name": "Shaman Enhancement top 80", "value": "enhancement-top80"},
+                    {"name": "Shaman Elemental top 80", "value": "elemental-top80"},
                 ],
             },
             {
@@ -286,6 +306,7 @@ def command_body(name: str) -> dict:
                     {"name": "Жрец", "value": "priest"},
                     {"name": "Маг", "value": "mage"},
                     {"name": "Паладин", "value": "paladin"},
+                    {"name": "Шаман", "value": "shaman"},
                 ],
             },
             {

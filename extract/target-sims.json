@@ -200,11 +200,11 @@
   "5-shop": {
     "label": "shop",
     "targets": 5,
-    "dps": 2386.6,
-    "total": 71598,
+    "dps": 2452.7,
+    "total": 73580,
     "talents": [
-      "Psychic Link",
       "Dark Torment",
+      "Catharsis",
       "Insanity"
     ],
     "glyphs": [
@@ -219,50 +219,58 @@
       "mastery": 0
     },
     "stats": {
-      "int": 247.0,
-      "ad": 195.25,
+      "int": 243.0,
+      "ad": 192.25,
       "potency": 2.5,
-      "mastery": 20.0,
+      "mastery": 10.0,
       "crit": 0.0,
       "rating": 0.0,
-      "haste": 0.1,
-      "attack_speed": 0.222,
-      "mana_max": 2154.0,
-      "swing": 1.9639934533551555,
-      "swp_period": 0.9090909090909091
+      "haste": 0.25,
+      "attack_speed": 0.502,
+      "mana_max": 1876.0,
+      "swing": 1.3315579227696406,
+      "swp_period": 0.8
     },
     "sources": [
       {
         "name": "Void Rift",
-        "amount": 27352.8
+        "amount": 20424.6
+      },
+      {
+        "name": "Sulfuras",
+        "amount": 16392.5
       },
       {
         "name": "Shadow Word: Pain",
-        "amount": 16286.5
-      },
-      {
-        "name": "Mind Spike",
-        "amount": 8708.2
+        "amount": 10997.4
       },
       {
         "name": "Thunder",
-        "amount": 8596.2
+        "amount": 7805.5
       },
       {
-        "name": "Naaru",
-        "amount": 4126.7
-      },
-      {
-        "name": "Shadow Word: Pain (удар при обновлении)",
-        "amount": 3568.0
+        "name": "Mind Spike",
+        "amount": 7148.5
       },
       {
         "name": "Автоатака",
-        "amount": 2959.7
+        "amount": 4275.0
+      },
+      {
+        "name": "Naaru",
+        "amount": 3411.6
+      },
+      {
+        "name": "Shadow Word: Pain (удар при обновлении)",
+        "amount": 2813.8
+      },
+      {
+        "name": "Sulfuras (удар)",
+        "amount": 311.0
       }
     ],
     "orb_mode": "Shadow",
-    "mana_left": 99.5,
+    "mana_left": 100.0,
     "bound_spell": null,
     "actions": [
       {
@@ -282,79 +290,96 @@
         "spell": "Void Rift"
       },
       {
-        "time": 7.69,
+        "time": 7.13,
         "spell": "Shadow Word: Pain"
       },
       {
-        "time": 9.66,
+        "time": 9.79,
         "spell": "Mind Spike"
       },
       {
-        "time": 13.58,
+        "time": 12.45,
         "spell": "Void Rift"
       },
       {
-        "time": 15.55,
+        "time": 13.78,
         "spell": "Shadow Word: Pain"
       },
       {
-        "time": 19.48,
+        "time": 19.11,
         "spell": "Divine Image"
       },
       {
-        "time": 19.93,
+        "time": 19.56,
         "spell": "Mind Spike"
       },
       {
-        "time": 23.4,
+        "time": 20.44,
         "spell": "Shadow Word: Pain"
       },
       {
-        "time": 25.37,
+        "time": 24.44,
         "spell": "Void Rift"
       },
       {
-        "time": 29.3,
+        "time": 27.1,
+        "spell": "Shadow Word: Pain"
+      },
+      {
+        "time": 28.43,
         "spell": "Mind Spike"
       }
     ],
     "items": [
+      {
+        "name": "Orb of Unstable Magic",
+        "source": "Shop Item",
+        "tip": "Magical Caster Relic\n+12 Primary Attribute\n+15% Haste\nEquip: Increases the damage dealt by Magical Type effects by 10%.\nEquip: Every 3rd Magical Type spellcast fires a massive bolt of Arcane Energy at the closest non-Lesser Creature enemy, dealing damage equal to 20% of Primary Attribute for each second of the total base cooldown of the 3 spells that were cast. Spells  benefit from this effect at 10% effectiveness while having Glyph of Arc Striking. This is a Magical Type effect."
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
+      {
+        "name": "Unbound Power Core",
+        "source": "Shop Item",
+        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
+      },
       {
         "name": "Elemental Orb",
         "source": "Shop Item",
         "tip": "Shop Item\n+15% Attack Speed\n+10% Haste\n+6 All Stats\nUse: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)\nFire: Attacks splash for 20 damage and additional 35% of Primary Attribute.\nFrost: Attacks Chill the target, reducing its movement speed by 50% and its attack speed by 25% for 4 seconds.\nShadow: Attacks ignore 6 of the target's Armor."
       },
       {
-        "name": "Staff of Galactic Fury",
-        "source": "Shop Item",
-        "tip": "Magical Caster Relic\n+16 to Primary Attribute\n+10 Mastery\nEquip: Increases the damage dealt by Magical Type effects by 30%.\nEquip: Increases your base attack cooldown by 20%."
-      },
-      {
-        "name": "Unbound Power Core",
-        "source": "Shop Item",
-        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
-      },
-      {
-        "name": "Unbound Power Core",
-        "source": "Shop Item",
-        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
-      },
-      {
-        "name": "Unbound Power Core",
-        "source": "Shop Item",
-        "tip": "Shop Item\n+55 to Primary Attribute\nEquip: Increases the cooldown of all abilities by 12%. This effect stacks additively."
-      },
-      {
-        "name": "Atiesh, Greatstaff of the Guardian",
+        "name": "Sulfuras, Hand of Ragnaros",
         "source": "Mysterious Wanderer",
-        "tip": "Binds to Player\n+20 to Primary Attribute\n+10 Mastery\n+250 Mana\nEquip: Increases the damage dealt by Magical Type effects by 20%.\nEquip: Your abilities have their base cooldown reduced by 13%."
+        "tip": "Binds to Player\n+20 to Primary Attribute\n+28% Attack Speed\n+10 Mastery\nEquip: Your attacks have 10% chance to strike an additional time.\nEquip: Whenever you cast a spell, you ignite your weapon, causing your next attack to splash for amount equal to 100% of your Primary Attribute. This is a Magical Type effect."
       }
     ],
     "ignored": [
       {
+        "item": "Orb of Unstable Magic",
+        "lines": [
+          "Equip: Every 3rd Magical Type spellcast fires a massive bolt of Arcane Energy at the closest non-Lesser Creature enemy, dealing damage equal to 20% of Primary Attribute for each second of the total base cooldown of the 3 spells that were cast. Spells  benefit from this effect at 10% effectiveness while having Glyph of Arc Striking. This is a Magical Type effect."
+        ]
+      },
+      {
         "item": "Elemental Orb",
         "lines": [
           "Use: Switches between 1 of 3 Orb Powers. (Cooldown: 5 seconds)"
+        ]
+      },
+      {
+        "item": "Sulfuras, Hand of Ragnaros",
+        "lines": [
+          "Equip: Your attacks have 10% chance to strike an additional time.",
+          "Equip: Whenever you cast a spell, you ignite your weapon, causing your next attack to splash for amount equal to 100% of your Primary Attribute. This is a Magical Type effect."
         ]
       }
     ]

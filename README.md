@@ -14,6 +14,8 @@ python extract/run_hp.py
 
 Паладин: `python extract/one_slot_paladin.py`. Специализации Retribution, Protection и Holy. В Discord это `hero: paladin`.
 
+Шаман: `python extract/one_slot_shaman.py`. Специализации Restoration, Enhancement и Elemental. Результат пишется в `extract/shaman-one-slot.json`.
+
 ## Несколько компьютеров
 
 Каждая машина клонирует репозиторий и запускает своего воркера. Ключ Discord бота в `.env`, образец в `.env.example`.

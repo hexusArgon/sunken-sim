@@ -36,6 +36,7 @@ class Space:
         glyph_picks: int = 3,
         talent_names: dict[str, str] | None = None,
         glyph_names: dict[str, str] | None = None,
+        require_leg: bool = False,
     ) -> None:
         for piece in pieces:
             if piece.kind not in ("leg", "orb", "stack", "one"):
@@ -49,6 +50,7 @@ class Space:
         self.glyph_picks = glyph_picks
         self.talent_names = dict(talent_names or {})
         self.glyph_names = dict(glyph_names or {})
+        self.require_leg = require_leg
         self._span = slots + 1
         self.dp_without = self._counts(False)
         self.dp_with = self._counts(True)
@@ -56,6 +58,11 @@ class Space:
         self.count_with = self._cell(self.dp_with, 0, slots, 0, 0, 0)
         self.glyph_n = math.comb(len(glyphs), glyph_picks) if glyphs else 0
         self.total = self.count_without + self.count_with
+
+    def _filled(self, must_amp: bool, amp: int, leg: int) -> bool:
+        amp_ok = amp == 1 if must_amp else amp == 0
+        leg_ok = leg == 1 if self.require_leg else True
+        return amp_ok and leg_ok
 
     def _idx(self, item: int, slots: int, leg: int, orb: int, amp: int) -> int:
         return ((((item * self._span + slots) * 2 + leg) * 2 + orb) * 2 + amp)
@@ -70,7 +77,7 @@ class Space:
         for leg in (0, 1):
             for orb in (0, 1):
                 for amp in (0, 1):
-                    ok = amp == 1 if must_amp else amp == 0
+                    ok = self._filled(must_amp, amp, leg)
                     table[self._idx(n, 0, leg, orb, amp)] = 1 if ok else 0
         for item in range(n - 1, -1, -1):
             piece = pieces[item]
@@ -79,7 +86,7 @@ class Space:
                     for orb in (0, 1):
                         for amp in (0, 1):
                             if slots == 0:
-                                ok = amp == 1 if must_amp else amp == 0
+                                ok = self._filled(must_amp, amp, leg)
                                 table[self._idx(item, 0, leg, orb, amp)] = 1 if ok else 0
                                 continue
                             total = self._cell(table, item + 1, slots, leg, orb, amp)

@@ -88,6 +88,10 @@ def _fight(hero: str, spec: str, targets: int, build: Build) -> float:
         from sunken_sim.paladin import simulate
 
         return simulate(build, targets, spec).dps
+    if hero == "shaman":
+        from sunken_sim.shaman import simulate
+
+        return simulate(build, targets, spec).dps
     from sunken_sim.shadow import simulate
 
     return simulate(build, targets, spec=spec, use_history=False).dps
@@ -98,7 +102,17 @@ def score_build(hero: str, spec: str, targets: int, build: Build) -> tuple[float
         return _mage(spec, targets, build)
     if hero == "paladin":
         return _paladin(spec, targets, build)
+    if hero == "shaman":
+        return _shaman(spec, targets, build)
     return _priest(spec, targets, build)
+
+
+def _shaman(spec: str, targets: int, build: Build) -> tuple[float, tuple[int, int, int, int], int]:
+    from sunken_sim.search import POINT_SPLITS
+    from sunken_sim.shaman import best_points
+
+    dps, points = best_points(build, targets, spec)
+    return dps, points, len(POINT_SPLITS)
 
 
 def _paladin(spec: str, targets: int, build: Build) -> tuple[float, tuple[int, int, int, int], int]:
