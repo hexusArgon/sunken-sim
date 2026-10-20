@@ -12,7 +12,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from sunken_sim.library import load_items
-from sunken_sim.search import GLYPHS
 from sunken_sim.shaman import TALENTS
 
 SPREADSHEET = "1Cnn9KJfwdI9pKEZMR_6T-xKCO674TsqYP5Bb4bsCj6w"
@@ -46,44 +45,60 @@ def request(method: str, url: str, payload: dict | None = None):
 
 
 def plain(text: str) -> str:
-    return (text or "").replace("\r\n", "\n").replace("\r", "\n").strip()
+    import re
+
+    cleaned = re.sub(r"\|c[0-9a-fA-F]{8}|\|r", "", text or "")
+    return cleaned.replace("|n", "\n").replace("\r\n", "\n").replace("\r", "\n").strip()
 
 
-def tables() -> tuple[list[list], list[list], list[list]]:
+def tables() -> list[list]:
+    """One sheet, same columns as Priest, Paladin and Mage. Glyphs sit to the right."""
     saved = json.loads((ROOT / "extract" / "shaman-one-slot.json").read_text(encoding="utf-8"))
     by_code = {item.rawcode: item for item in load_items()}
-    talents = [["Талант", "Описание", "Restoration DPS", "Enhancement DPS", "Elemental DPS"]]
+    items = []
+    for row in saved["items"][1:]:
+        name, code, source = row[0], row[1], row[2]
+        binds = [value for value in row[6:9] if value]
+        if binds and len(set(binds)) == 1:
+            name = f"{name} ({binds[0]})"
+        elif binds:
+            name = f"{name} ({' / '.join(binds)})"
+        tip = plain(by_code[code].tip) if code and code in by_code else ""
+        items.append([name, tip, code, source, row[3], row[4], row[5]])
+    items.sort(key=lambda row: (-float(row[4]), row[0]))
+    talents = []
     for row in saved["talents"][1:]:
         name = row[0]
         tip = ""
         if name != "Без таланта":
             code = next(code for code, title in TALENTS.items() if title == name)
             tip = plain(by_code[code].tip)
-        talents.append([name, tip, *row[1:]])
-    items = [[
-        "Предмет",
-        "Описание",
-        "Код",
-        "Источник",
-        "Restoration DPS",
-        "Enhancement DPS",
-        "Elemental DPS",
-        "Привязка Restoration",
-        "Привязка Enhancement",
-        "Привязка Elemental",
-    ]]
-    for row in saved["items"][1:]:
-        name, code, source = row[0], row[1], row[2]
-        tip = plain(by_code[code].tip) if code and code in by_code else ""
-        items.append([name, tip, code, source, *row[3:]])
-    glyphs = [["Глиф", "Описание", "Код", "Restoration DPS", "Enhancement DPS", "Elemental DPS"]]
+        talents.append([name, tip, row[1], row[2], row[3]])
+    talents.sort(key=lambda row: (-float(row[2]), row[0]))
+    glyphs = []
     for row in saved["glyphs"][1:]:
         name, code = row[0], row[1]
-        tip = ""
-        if code:
-            tip = plain(by_code[code].tip) if code in by_code else GLYPHS.get(code, "")
-        glyphs.append([name, tip, code, *row[2:]])
-    return talents, items, glyphs
+        tip = plain(by_code[code].tip) if code and code in by_code else ""
+        glyphs.append([name, tip, code, row[2], row[3], row[4]])
+    glyphs.sort(key=lambda row: (-float(row[3]), row[0]))
+    width = 7 + 1 + 5 + 1 + 6
+    height = max(len(items), len(talents), len(glyphs))
+    sheet = [[""] * width for _ in range(height + 1)]
+    headers = (
+        ["Предмет", "Описание", "Код", "Источник", "Restoration DPS", "Enhancement DPS", "Elemental DPS"]
+        + [""]
+        + ["Талант", "Описание", "Restoration DPS", "Enhancement DPS", "Elemental DPS"]
+        + [""]
+        + ["Глиф", "Описание", "Код", "Restoration DPS", "Enhancement DPS", "Elemental DPS"]
+    )
+    sheet[0] = headers
+    for index, row in enumerate(items, start=1):
+        sheet[index][0:7] = row
+    for index, row in enumerate(talents, start=1):
+        sheet[index][8:13] = row
+    for index, row in enumerate(glyphs, start=1):
+        sheet[index][14:20] = row
+    return sheet
 
 
 def ensure(titles: list[str]) -> None:
@@ -159,19 +174,54 @@ def style(sheet_id: int, rows_n: int, columns: int, dps_start: int, dps_end: int
 
 
 def main() -> None:
-    talents, items, glyphs = tables()
-    titles = ["Шаман таланты", "Шаман предметы", "Шаман глифы"]
-    ensure(titles)
-    write(titles[0], talents)
-    write(titles[1], items)
-    write(titles[2], glyphs)
+    values = tables()
+    title = "Shaman"
+    ensure([title])
+    write(title, values)
     book = request("GET", f"https://sheets.googleapis.com/v4/spreadsheets/{SPREADSHEET}?fields=sheets.properties")
     ids = {sheet["properties"]["title"]: sheet["properties"]["sheetId"] for sheet in book["sheets"]}
     endpoint = f"https://sheets.googleapis.com/v4/spreadsheets/{SPREADSHEET}:batchUpdate"
-    request("POST", endpoint, style(ids[titles[0]], len(talents), 5, 2, 5, [180, 520, 150, 160, 140]))
-    request("POST", endpoint, style(ids[titles[1]], len(items), 10, 4, 7, [220, 520, 70, 110, 150, 160, 140, 180, 190, 170]))
-    request("POST", endpoint, style(ids[titles[2]], len(glyphs), 6, 3, 6, [160, 520, 70, 150, 160, 140]))
-    print("talents", len(talents), "items", len(items), "glyphs", len(glyphs))
+    widths = [220, 520, 70, 110, 150, 160, 140, 24, 180, 520, 150, 160, 140, 24, 160, 520, 70, 150, 160, 140]
+    request("POST", endpoint, style(ids[title], len(values), 20, 4, 7, widths))
+    extra = [
+        {
+            "repeatCell": {
+                "range": {"sheetId": ids[title], "startRowIndex": 1, "endRowIndex": len(values), "startColumnIndex": 10, "endColumnIndex": 13},
+                "cell": {"userEnteredFormat": NUMBER},
+                "fields": "userEnteredFormat.numberFormat",
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {"sheetId": ids[title], "startRowIndex": 1, "endRowIndex": len(values), "startColumnIndex": 17, "endColumnIndex": 20},
+                "cell": {"userEnteredFormat": NUMBER},
+                "fields": "userEnteredFormat.numberFormat",
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {"sheetId": ids[title], "startRowIndex": 1, "endRowIndex": len(values), "startColumnIndex": 9, "endColumnIndex": 10},
+                "cell": {"userEnteredFormat": WRAP},
+                "fields": "userEnteredFormat(verticalAlignment,wrapStrategy)",
+            }
+        },
+        {
+            "repeatCell": {
+                "range": {"sheetId": ids[title], "startRowIndex": 1, "endRowIndex": len(values), "startColumnIndex": 15, "endColumnIndex": 16},
+                "cell": {"userEnteredFormat": WRAP},
+                "fields": "userEnteredFormat(verticalAlignment,wrapStrategy)",
+            }
+        },
+    ]
+    request("POST", endpoint, {"requests": extra})
+    remove = [
+        {"deleteSheet": {"sheetId": ids[old]}}
+        for old in ("Шаман таланты", "Шаман предметы", "Шаман глифы")
+        if old in ids
+    ]
+    if remove:
+        request("POST", endpoint, {"requests": remove})
+    print("rows", len(values))
 
 
 if __name__ == "__main__":
