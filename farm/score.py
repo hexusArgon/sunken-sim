@@ -79,32 +79,39 @@ def _can_take(chosen: list, piece) -> bool:
     return piece.kind == "stack"
 
 
+def _module(hero: str):
+    import importlib
+
+    return importlib.import_module(f"sunken_sim.{hero}")
+
+
 def _fight(hero: str, spec: str, targets: int, build: Build) -> float:
     if hero == "mage":
         from sunken_sim.mage import simulate
 
         return simulate(build, targets, spec=spec, use_history=False).dps
-    if hero == "paladin":
-        from sunken_sim.paladin import simulate
+    if hero == "priest":
+        from sunken_sim.shadow import simulate
 
-        return simulate(build, targets, spec).dps
-    if hero == "shaman":
-        from sunken_sim.shaman import simulate
-
-        return simulate(build, targets, spec).dps
-    from sunken_sim.shadow import simulate
-
-    return simulate(build, targets, spec=spec, use_history=False).dps
+        return simulate(build, targets, spec=spec, use_history=False).dps
+    return _module(hero).simulate(build, targets, spec).dps
 
 
 def score_build(hero: str, spec: str, targets: int, build: Build) -> tuple[float, tuple[int, int, int, int], int]:
     if hero == "mage":
         return _mage(spec, targets, build)
-    if hero == "paladin":
-        return _paladin(spec, targets, build)
-    if hero == "shaman":
-        return _shaman(spec, targets, build)
-    return _priest(spec, targets, build)
+    if hero == "priest":
+        return _priest(spec, targets, build)
+    return _generic(hero, spec, targets, build)
+
+
+def _generic(hero: str, spec: str, targets: int, build: Build) -> tuple[float, tuple[int, int, int, int], int]:
+    from sunken_sim.search import POINT_SPLITS
+
+    dps, points = _module(hero).best_points(build, targets, spec)
+    # (0, 0, 0, 0) is not a real split: such modules fight once and skip skill points.
+    fights = 1 if tuple(points) == (0, 0, 0, 0) else len(POINT_SPLITS)
+    return dps, points, fights
 
 
 def _shaman(spec: str, targets: int, build: Build) -> tuple[float, tuple[int, int, int, int], int]:

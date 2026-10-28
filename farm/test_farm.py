@@ -16,6 +16,8 @@ from farm.protocol import (
     mention,
     parse_stop,
     resolve_hero_spec,
+    resolve_top,
+    spec_suggestions,
     status_text,
 )
 from farm.paths import atomic_write
@@ -127,9 +129,36 @@ class ProtocolTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             parse_int("23 миллиона")
         self.assertEqual(resolve_hero_spec(None, None), ("priest", "shadow"))
-        self.assertEqual(resolve_hero_spec(None, "frost"), ("mage", "frost"))
+        self.assertEqual(resolve_hero_spec("mage", "frost"), ("mage", "frost"))
+        self.assertEqual(resolve_hero_spec("death_knight", "frost"), ("death_knight", "frost"))
+        self.assertEqual(resolve_hero_spec(None, "death_knight/frost"), ("death_knight", "frost"))
+        self.assertEqual(resolve_hero_spec(None, "headhunter"), ("berserker", "headhunter"))
+        self.assertEqual(resolve_hero_spec("hunter", "Beast Mastery"), ("hunter", "beast_mastery"))
+        with self.assertRaises(ValueError):
+            resolve_hero_spec(None, "frost")
+        with self.assertRaises(ValueError):
+            resolve_hero_spec(None, "holy")
         with self.assertRaises(ValueError):
             resolve_hero_spec("priest", "frost")
+        self.assertEqual(resolve_top(None), None)
+        self.assertEqual(resolve_top(80), 80)
+        with self.assertRaises(ValueError):
+            resolve_top(85)
+        rows = spec_suggestions("warrior", "")
+        self.assertEqual([value for _name, value in rows], ["protection", "arms", "fury"])
+        self.assertTrue(all("/" in value for _name, value in spec_suggestions(None, "guard")))
+        self.assertLessEqual(len(spec_suggestions(None, "")), 25)
+
+    def test_specs_match_modules(self) -> None:
+        import importlib
+
+        from farm.protocol import SPECS
+
+        for hero, specs in SPECS.items():
+            if hero == "priest":
+                continue
+            module = importlib.import_module(f"sunken_sim.{hero}")
+            self.assertEqual(tuple(module.SPECS), specs, hero)
 
     def test_status_line_is_readable_and_parseable(self) -> None:
         text = status_text(
@@ -215,6 +244,15 @@ class ProtocolTest(unittest.TestCase):
         self.assertTrue(_WORD.fullmatch("kivor"))
         self.assertIsNone(_WORD.fullmatch("Eseid"))
         self.assertLessEqual(len(body["options"]), 25)
+        names = [option["name"] for option in body["options"]]
+        self.assertNotIn("preset", names)
+        top = next(option for option in body["options"] if option["name"] == "top")
+        self.assertEqual([choice["value"] for choice in top["choices"]], list(range(10, 251, 10)))
+        for option in body["options"]:
+            self.assertLessEqual(len(option.get("choices") or []), 25)
+        job = {"id": "a", "worker": "w", "start": 0, "end": 1, "hero": "monk", "spec": "windwalker",
+               "pool": "mixed", "targets": 5, "channel": "1", "status": "2", "top": 80}
+        self.assertEqual(parse_job(format_job(job))["top"], 80)
 
         def walk(node: dict) -> None:
             if "description" in node:

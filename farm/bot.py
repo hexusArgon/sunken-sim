@@ -20,6 +20,8 @@ from farm.catalog import load
 from farm.identity import env_required, load_env, worker_name
 from farm.paths import atomic_write, data_dir, try_file_lock
 from farm.protocol import (
+    HERO_LABEL,
+    LEGACY_POOL_HEROES,
     command_body,
     format_control,
     format_job,
@@ -35,6 +37,8 @@ from farm.protocol import (
     resolve_hero_spec,
     resolve_pool,
     resolve_targets,
+    resolve_top,
+    spec_suggestions,
     size_text,
     status_text,
 )
@@ -331,12 +335,30 @@ class Farm:
             pass
 
     async def on_interaction(self, interaction: discord.Interaction) -> None:
+        if interaction.type is discord.InteractionType.autocomplete:
+            await self.autocomplete(interaction)
+            return
         if interaction.type is not discord.InteractionType.application_command:
             return
         if interaction.response.is_done():
             return
         await interaction.response.defer()
         self._track(self.dispatch(interaction))
+
+    async def autocomplete(self, interaction: discord.Interaction) -> None:
+        from discord import app_commands
+
+        data = interaction.data or {}
+        options = {opt["name"]: opt for opt in data.get("options") or []}
+        focused = next((opt for opt in options.values() if opt.get("focused")), None)
+        rows: list[tuple[str, str]] = []
+        if focused is not None and focused.get("name") == "spec":
+            hero = (options.get("hero") or {}).get("value")
+            rows = spec_suggestions(hero, focused.get("value"))
+        try:
+            await interaction.response.autocomplete([app_commands.Choice(name=name, value=value) for name, value in rows])
+        except Exception as exc:
+            self.log(f"подсказки: {exc}")
 
     async def show(self, interaction: discord.Interaction, text: str) -> None:
         text = text[:1900]
@@ -359,10 +381,13 @@ class Farm:
             if options.get("stop"):
                 await self.stop_worker(interaction, name)
                 return
+            preset = None
+            top = resolve_top(options.get("top"))
             hero, spec = resolve_hero_spec(options.get("hero"), options.get("spec"))
+            if top is None and hero not in LEGACY_POOL_HEROES:
+                raise ValueError(f"для {HERO_LABEL[hero]} выбери top (10…250)")
             pool = resolve_pool(options.get("pool"))
             targets = resolve_targets(options.get("targets"))
-            preset = options.get("preset") or None
             share = options.get("share")
             if share is not None:
                 share = int(share)
@@ -370,13 +395,13 @@ class Farm:
                     raise ValueError("доля от 1 до 100")
 
             def space_of():
-                return load(hero, spec, pool, preset)
+                return load(hero, spec, pool, preset, top)
 
             if "start" not in options and "end" not in options and share is None:
                 space, _items = await asyncio.to_thread(space_of)
                 await self.show(
                     interaction,
-                    size_text(worker=name, hero=hero, spec=spec, pool=pool, targets=targets, total=space.total),
+                    size_text(worker=name, hero=hero, spec=spec, pool=pool, targets=targets, total=space.total, top=top),
                 )
                 return
             await self.show(interaction, "Считаю размер пространства…")
@@ -410,9 +435,10 @@ class Farm:
                     left=left,
                     best=None,
                     elapsed=0,
+                    top=top,
                 ),
             )
-            await self.enqueue(interaction, name, hero, spec, pool, targets, start, end, preset)
+            await self.enqueue(interaction, name, hero, spec, pool, targets, start, end, preset, top)
         except (ValueError, RuntimeError) as exc:
             await self.show(interaction, str(exc))
         except Exception as exc:
@@ -431,6 +457,7 @@ class Farm:
         start: int,
         end: int,
         preset: str | None = None,
+        top: int | None = None,
     ) -> None:
         channel = str(interaction.channel_id or self.channel)
         for message in await self.channel_messages(channel):
@@ -453,6 +480,7 @@ class Farm:
             left=left,
             best=None,
             elapsed=0,
+            top=top,
         )
         status = await asyncio.to_thread(self.rest.send, channel, text)
         job = {
@@ -467,6 +495,7 @@ class Farm:
             "channel": channel,
             "status": str(status["id"]),
             "preset": preset or "",
+            "top": top or 0,
         }
         posted = await asyncio.to_thread(self.rest.send, channel, format_job(job))
         job["job_message"] = str(posted["id"])
@@ -719,6 +748,7 @@ class Farm:
             best=None,
             final=True,
             stopped=True,
+            top=job.get("top") or None,
         )
         try:
             await asyncio.to_thread(self.rest.edit, str(job["channel"]), str(job["status"]), text)

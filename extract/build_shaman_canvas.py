@@ -1,4 +1,4 @@
-"""Rebuild the Enhancement Shaman canvas from the two farm result files."""
+"""Rebuild the Shaman canvas from the Enhancement and Elemental farm files."""
 
 from __future__ import annotations
 
@@ -17,10 +17,30 @@ ROOT = Path(__file__).resolve().parents[1]
 CANVAS = ROOT / "canvases" / "shaman-sims.canvas.tsx"
 IDE_CANVAS = Path(r"C:\Users\eseid\.cursor\projects\c-Users-eseid-sunken-sim\canvases\shaman-sims.canvas.tsx")
 ONE_SLOT = ROOT / "extract" / "shaman-one-slot.json"
-FILES = (
-    Path(r"C:\Users\eseid\Downloads\eseid-main-shaman-enhancement-mixed-5-0-248334471.json"),
-    Path(r"C:\Users\eseid\Downloads\eseid-notebook-shaman-enhancement-mixed-5-248334472-310418089.json"),
-)
+SPECS = {
+    "enhancement": {
+        "title": "Enhancement",
+        "preset": "shaman-enhancement-top80.json",
+        "talent_dps": 2,
+        "glyph_dps": 3,
+        "files": (
+            Path(r"C:\Users\eseid\Downloads\eseid-main-shaman-enhancement-mixed-5-0-248334471.json"),
+            Path(r"C:\Users\eseid\Downloads\eseid-notebook-shaman-enhancement-mixed-5-248334472-310418089.json"),
+        ),
+        "note": "Молния бьёт всех, Lesser и Stormfury не больше трёх.",
+    },
+    "elemental": {
+        "title": "Elemental",
+        "preset": "shaman-elemental-top80.json",
+        "talent_dps": 3,
+        "glyph_dps": 4,
+        "files": (
+            Path(r"C:\Users\eseid\Downloads\eseid-main-shaman-elemental-mixed-5-0-263855375.json"),
+            Path(r"C:\Users\eseid\Downloads\eseid-notebook-shaman-elemental-mixed-5-263855376-310418089.json"),
+        ),
+        "note": "Молния бьёт всех. Lava Burst и Liquid Magma бьют одну цель.",
+    },
+}
 POOLS = (("mixed", "top", "Shop + drop"), ("shop", "top_shop", "Только Shop Item"), ("drop", "top_random", "Только Random drop"))
 SOURCE_LABEL = {"shop": "Shop Item", "drop": "Random drop", "legendary": "Mysterious Wanderer"}
 
@@ -65,7 +85,22 @@ def item_name(item) -> str:
     return item.name
 
 
-def resim(row: dict, by_code: dict) -> dict:
+def grouped(value: int) -> str:
+    return f"{value:,}".replace(",", " ")
+
+
+def caption(payloads: list[dict]) -> str:
+    parts = [
+        f"{payload['worker']} {grouped(payload['start'])}–{grouped(payload['end'])}, ошибок {payload['errors']}"
+        for payload in payloads
+    ]
+    return (
+        "Sunken City v2.5.2a · уровень 6 · 30 секунд · набор топ-80 и Mind Amplifier · "
+        + " · ".join(parts)
+    )
+
+
+def resim(row: dict, by_code: dict, spec: str) -> dict:
     talent_codes = frozenset(code for code, name in TALENTS.items() if name in row["talents"])
     glyph_codes = frozenset(code for code, name in GLYPHS.items() if name in row["glyphs"])
     if len(talent_codes) != len(row["talents"]) or len(glyph_codes) != len(row["glyphs"]):
@@ -73,7 +108,7 @@ def resim(row: dict, by_code: dict) -> dict:
     items = tuple(by_code[item["code"]] for item in row["items"])
     points = row["points"]
     build = Build(talent_codes, glyph_codes, items, points["potency"], points["mastery"], points["crit"], points["luck"])
-    report = simulate(build, 5, "enhancement")
+    report = simulate(build, 5, spec)
     stats = report.stats
     sources = [
         [name, round(amount / 30, 1)]
@@ -125,37 +160,53 @@ def resim(row: dict, by_code: dict) -> dict:
     }
 
 
-def catalog(saved: dict) -> tuple[list[dict], list[dict]]:
+def catalog(saved: dict, spec: str) -> tuple[list[dict], list[dict]]:
     by_code = {item.rawcode: item for item in load_items()}
-    preset = json.loads((ROOT / "extract" / "shaman-enhancement-top80.json").read_text(encoding="utf-8"))
+    info = SPECS[spec]
+    preset = json.loads((ROOT / "extract" / info["preset"]).read_text(encoding="utf-8"))
     allowed = {TALENTS[code] for code in preset["talents"]}
     talents = []
     for row in saved["talents"][1:]:
         if row[0] not in allowed:
             continue
         code = next(code for code, name in TALENTS.items() if name == row[0])
-        talents.append({"name": row[0], "tip": plain(by_code[code].tip), "dps": row[2]})
+        talents.append({"name": row[0], "tip": plain(by_code[code].tip), "dps": row[info["talent_dps"]]})
     glyphs = []
     for row in saved["glyphs"][1:]:
         if not row[1]:
             continue
-        glyphs.append({"name": row[0], "tip": plain(by_code[row[1]].tip) if row[1] in by_code else "", "dps": row[3]})
+        glyphs.append(
+            {
+                "name": row[0],
+                "tip": plain(by_code[row[1]].tip) if row[1] in by_code else "",
+                "dps": row[info["glyph_dps"]],
+            }
+        )
     return talents, glyphs
 
 
 def main() -> None:
-    payloads = [json.loads(path.read_text(encoding="utf-8")) for path in FILES]
     by_code = {item.rawcode: item for item in load_items()}
-    runs = {}
-    for pool, key, label in POOLS:
-        for place, row in enumerate(merged(payloads, key), start=1):
-            print(f"{pool} #{place} farm {row['dps']:.1f}", flush=True)
-            built = resim(row, by_code)
-            built["label"] = label
-            runs[f"enhancement|{pool}|{place}"] = built
-            print(f"  sim {built['dps']}", flush=True)
     saved = json.loads(ONE_SLOT.read_text(encoding="utf-8"))
-    talents, glyphs = catalog(saved)
+    runs = {}
+    specs = {}
+    for spec, info in SPECS.items():
+        payloads = [json.loads(path.read_text(encoding="utf-8")) for path in info["files"]]
+        for pool, key, label in POOLS:
+            for place, row in enumerate(merged(payloads, key), start=1):
+                print(f"{spec} {pool} #{place} farm {row['dps']:.1f}", flush=True)
+                built = resim(row, by_code, spec)
+                built["label"] = label
+                runs[f"{spec}|{pool}|{place}"] = built
+                print(f"  sim {built['dps']}", flush=True)
+        talents, glyphs = catalog(saved, spec)
+        specs[spec] = {
+            "title": info["title"],
+            "caption": caption(payloads),
+            "note": info["note"],
+            "talents": talents,
+            "glyphs": glyphs,
+        }
     body = f"""import {{
   BarChart,
   Divider,
@@ -172,6 +223,7 @@ def main() -> None:
   useCanvasState,
 }} from "cursor/canvas";
 
+type SpecId = "enhancement" | "elemental";
 type PoolId = "mixed" | "shop" | "drop";
 
 type Run = {{
@@ -190,8 +242,16 @@ type Run = {{
 }};
 
 type Entry = {{ name: string; tip: string; dps: number }};
+type SpecInfo = {{
+  title: string;
+  caption: string;
+  note: string;
+  talents: Entry[];
+  glyphs: Entry[];
+}};
 
 const RUNS: Record<string, Run> = {json.dumps(runs, ensure_ascii=False)};
+const SPECS: Record<SpecId, SpecInfo> = {json.dumps(specs, ensure_ascii=False)};
 
 const POOLS: Array<[PoolId, string]> = [
   ["mixed", "Shop + drop"],
@@ -199,12 +259,9 @@ const POOLS: Array<[PoolId, string]> = [
   ["drop", "Только Random drop"],
 ];
 
-const TALENTS: Entry[] = {json.dumps(talents, ensure_ascii=False)};
-const GLYPHS: Entry[] = {json.dumps(glyphs, ensure_ascii=False)};
-
-function ranksFor(pool: PoolId): string[] {{
+function ranksFor(spec: SpecId, pool: PoolId): string[] {{
   return Object.keys(RUNS)
-    .filter((id) => id.startsWith(`enhancement|${{pool}}|`))
+    .filter((id) => id.startsWith(`${{spec}}|${{pool}}|`))
     .sort((a, b) => Number(RUNS[b].dps) - Number(RUNS[a].dps) || Number(a.split("|")[2]) - Number(b.split("|")[2]));
 }}
 
@@ -217,34 +274,36 @@ function GameText({{ text }}: {{ text: string }}) {{
 }}
 
 export default function ShamanSims() {{
-  const [pool, setPool] = useCanvasState<PoolId>("shaman-enh-pool", "mixed");
-  const [rank, setRank] = useCanvasState<string>("shaman-enh-rank", "1");
-  const [catalogMode, setCatalogMode] = useCanvasState<"picked" | "all">("shaman-enh-catalog", "picked");
-  const available = POOLS.filter(([id]) => ranksFor(id).length > 0);
+  const [spec, setSpec] = useCanvasState<SpecId>("shaman-spec", "elemental");
+  const [pool, setPool] = useCanvasState<PoolId>("shaman-pool", "mixed");
+  const [rank, setRank] = useCanvasState<string>("shaman-rank", "1");
+  const [catalogMode, setCatalogMode] = useCanvasState<"picked" | "all">("shaman-catalog", "picked");
+  const chosenSpec: SpecId = spec === "enhancement" ? "enhancement" : "elemental";
+  const info = SPECS[chosenSpec];
+  const available = POOLS.filter(([id]) => ranksFor(chosenSpec, id).length > 0);
   const chosenPool: PoolId = available.some(([id]) => id === pool) ? pool : "mixed";
-  const ranks = ranksFor(chosenPool);
+  const ranks = ranksFor(chosenSpec, chosenPool);
   const chosenRank = ranks.some((id) => id.endsWith(`|${{rank}}`)) ? rank : "1";
-  const run = RUNS[`enhancement|${{chosenPool}}|${{chosenRank}}`];
+  const run = RUNS[`${{chosenSpec}}|${{chosenPool}}|${{chosenRank}}`];
   const pickedTalents = (run.stats.find((row) => row[0] === "Таланты")?.[1] ?? "").split(", ").filter(Boolean);
   const pickedGlyphs = (run.stats.find((row) => row[0] === "Глифы")?.[1] ?? "").split(", ").filter(Boolean);
-  const talentRows = (catalogMode === "picked" ? TALENTS.filter((entry) => pickedTalents.includes(entry.name)) : TALENTS)
+  const talentRows = (catalogMode === "picked" ? info.talents.filter((entry) => pickedTalents.includes(entry.name)) : info.talents)
     .slice()
     .sort((a, b) => b.dps - a.dps);
-  const glyphRows = (catalogMode === "picked" ? GLYPHS.filter((entry) => pickedGlyphs.includes(entry.name)) : GLYPHS)
+  const glyphRows = (catalogMode === "picked" ? info.glyphs.filter((entry) => pickedGlyphs.includes(entry.name)) : info.glyphs)
     .slice()
     .sort((a, b) => b.dps - a.dps);
 
   return (
     <Stack gap={{20}}>
       <Stack gap={{6}}>
-        <H1>Enhancement Shaman, 5 целей</H1>
-        <Text tone="secondary">
-          Sunken City v2.5.2a · уровень 6 · 30 секунд · набор топ-80 и Mind Amplifier · eseid-main 0–248 334 471, ошибок 0 · eseid-notebook 248 334 472–310 418 089, ошибок 0
-        </Text>
+        <H1>{{info.title}} Shaman, 5 целей</H1>
+        <Text tone="secondary">{{info.caption}}</Text>
       </Stack>
 
       <Row gap={{8}} wrap>
-        <Pill active={{true}}>Enhancement</Pill>
+        <Pill active={{chosenSpec === "enhancement"}} onClick={{() => setSpec("enhancement")}}>Enhancement</Pill>
+        <Pill active={{chosenSpec === "elemental"}} onClick={{() => setSpec("elemental")}}>Elemental</Pill>
       </Row>
       <Row gap={{8}} wrap>
         <Pill active={{true}}>5 целей</Pill>
@@ -300,7 +359,7 @@ export default function ShamanSims() {{
         showValues
       />
       <Text size="small" tone="tertiary">
-        Ось категорий: источник урона. Ось значений: урон в секунду за 30 с. Броня манекена 15. Ранги умений 1. Пять целей стоят в одной точке. Молния бьёт всех, Lesser и Stormfury не больше трёх.
+        Ось категорий: источник урона. Ось значений: урон в секунду за 30 с. Броня манекена 15. Ранги умений 1. Пять целей стоят в одной точке. {{info.note}}
       </Text>
 
       <Grid columns={{2}} gap={{20}}>
@@ -325,7 +384,7 @@ export default function ShamanSims() {{
       <Divider />
 
       <H2>Предметы в связке</H2>
-      <Text tone="secondary">{{run.label}}. Enhancement. 5 целей.</Text>
+      <Text tone="secondary">{{run.label}}. {{info.title}}. 5 целей.</Text>
       <Table
         headers={{["Предмет", "Источник", "Описание из игры"]}}
         rows={{run.items.map(([name, sourceName, tip]) => [name, sourceName, <GameText text={{tip}} />])}}
@@ -338,11 +397,11 @@ export default function ShamanSims() {{
         <Pill active={{catalogMode === "all"}} onClick={{() => setCatalogMode("all")}}>Все прогнанные</Pill>
       </Row>
       <Text size="small" tone="tertiary">
-        Порядок — DPS Enhancement: один талант или один глиф, пустой инвентарь, 5 целей. В прогоне 11 талантов набора и 12 глифов.
+        Порядок — соло-DPS {{info.title}}: один талант или один глиф, пустой инвентарь, 5 целей. В прогоне {{info.talents.length}} талантов набора и {{info.glyphs.length}} глифов.
       </Text>
       <H3>Таланты</H3>
       <Table
-        headers={{["Талант", "Enhancement", "Описание из игры"]}}
+        headers={{["Талант", info.title, "Описание из игры"]}}
         columnAlign={{["left", "right", "left"]}}
         rows={{talentRows.map((entry) => [entry.name, entry.dps.toFixed(1), <GameText text={{entry.tip}} />])}}
         striped
@@ -350,7 +409,7 @@ export default function ShamanSims() {{
       />
       <H3>Глифы</H3>
       <Table
-        headers={{["Глиф", "Enhancement", "Описание из игры"]}}
+        headers={{["Глиф", info.title, "Описание из игры"]}}
         columnAlign={{["left", "right", "left"]}}
         rows={{glyphRows.map((entry) => [entry.name, entry.dps.toFixed(1), <GameText text={{entry.tip}} />])}}
         striped

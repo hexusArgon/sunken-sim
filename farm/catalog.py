@@ -11,40 +11,49 @@ from farm.paths import data_dir
 from farm.protocol import grouped
 from farm.space import Piece, Space
 
-CACHE_VERSION = 2
+CACHE_VERSION = 3
 # Same eight talents as the current Shadow search.
 SHADOW_TALENTS = ("I0HL", "I0HP", "I0KF", "I0PS", "I0PU", "I0SA", "I0SB", "I0SC")
 RUNEMASTERY = "I0Q8"
 
-_MEMORY: dict[tuple[str, str, str, str], tuple[Space, dict]] = {}
+_MEMORY: dict[tuple, tuple[Space, dict]] = {}
 PRESETS = {
-    "retribution-top80": "paladin-retribution-top80.json",
-    "retribution-top79": "paladin-retribution-top79.json",
-    "retribution-top89": "paladin-retribution-top89.json",
-    "protection-top89": "paladin-protection-top89.json",
+    "shadow-top80": "priest-shadow-top80.json",
+    "discipline-top80": "priest-discipline-top80.json",
+    "priest-holy-top80": "priest-holy-top80.json",
+    "frost-top80": "mage-frost-top80.json",
     "arcane-top80": "mage-arcane-top80.json",
     "fire-top80": "mage-fire-top80.json",
-    "frost-top80": "mage-frost-top80.json",
+    "retribution-top80": "paladin-retribution-top80.json",
+    "protection-top80": "paladin-protection-top80.json",
+    "paladin-holy-top80": "paladin-holy-top80.json",
     "restoration-top80": "shaman-restoration-top80.json",
     "enhancement-top80": "shaman-enhancement-top80.json",
     "elemental-top80": "shaman-elemental-top80.json",
+    # legacy aliases kept for old jobs / local runs
+    "retribution-top79": "paladin-retribution-top79.json",
+    "retribution-top89": "paladin-retribution-top89.json",
+    "protection-top89": "paladin-protection-top89.json",
 }
 
 
-def load(hero: str, spec: str, pool: str, preset: str | None = None) -> tuple[Space, dict]:
-    key = (hero, spec, pool, preset or "")
+def load(hero: str, spec: str, pool: str, preset: str | None = None, top: int | None = None) -> tuple[Space, dict]:
+    top = int(top) if top else None
+    key = (hero, spec, pool, preset or "", top or 0)
     cached = _MEMORY.get(key)
     if cached is not None:
         return cached
-    space, items = _from_disk(hero, spec, pool, preset)
+    space, items = _from_disk(hero, spec, pool, preset, top)
     _MEMORY[key] = (space, items)
     return space, items
 
 
-def _from_disk(hero: str, spec: str, pool: str, preset: str | None = None) -> tuple[Space, dict]:
-    pieces, talents, glyphs, talent_names, glyph_names, items, picks_with = _parts(hero, spec, pool, preset)
+def _from_disk(hero: str, spec: str, pool: str, preset: str | None = None, top: int | None = None) -> tuple[Space, dict]:
+    pieces, talents, glyphs, talent_names, glyph_names, items, picks_with = _parts(hero, spec, pool, preset, top)
+    picks_without = min(3, len(talents))
+    picks_with = min(picks_with, len(talents))
     digest = _digest(pieces, talents, glyphs, picks_with, items)
-    label = preset or pool
+    label = preset or (f"{pool}-top{top}" if top else pool)
     path = data_dir() / "cache" / f"{hero}-{spec}-{label}-{digest}.pkl"
     if path.exists():
         try:
@@ -59,7 +68,7 @@ def _from_disk(hero: str, spec: str, pool: str, preset: str | None = None) -> tu
         pieces,
         talents,
         glyphs,
-        picks_without=3,
+        picks_without=picks_without,
         picks_with=picks_with,
         talent_names=talent_names,
         glyph_names=glyph_names,
@@ -73,7 +82,7 @@ def _from_disk(hero: str, spec: str, pool: str, preset: str | None = None) -> tu
     return space, items
 
 
-def _parts(hero: str, spec: str, pool: str, preset: str | None = None):
+def _parts(hero: str, spec: str, pool: str, preset: str | None = None, top: int | None = None):
     from sunken_sim.library import load_items
     from sunken_sim.mage import TALENTS as MAGE_TALENTS
     from sunken_sim.search import GLYPHS, TALENTS, _item_kind, pools_for
@@ -81,8 +90,12 @@ def _parts(hero: str, spec: str, pool: str, preset: str | None = None):
 
     catalog = load_items()
     by_code = {item.rawcode: item for item in catalog}
+    if top:
+        return _top_parts(hero, spec, pool, int(top), by_code)
     if preset:
         return _preset_parts(hero, spec, preset, by_code)
+    if hero not in ("priest", "mage", "paladin", "shaman"):
+        raise RuntimeError(f"для {hero} укажи top (10…250)")
     class_name = {"priest": "Priest", "mage": "Mage", "paladin": "Paladin", "shaman": "Shaman"}[hero]
     shop, drop, legendaries = pools_for(catalog, class_name)
     if hero == "priest" and spec == "shadow":
@@ -136,6 +149,31 @@ def _parts(hero: str, spec: str, pool: str, preset: str | None = None):
         picks_with = 4
     glyphs = sorted(GLYPHS)
     return pieces, talents, glyphs, talent_names, dict(GLYPHS), items, picks_with
+
+
+def _top_parts(hero: str, spec: str, pool: str, top: int, by_code: dict):
+    from farm.top import MIND_AMPLIFIER, top_items, top_talents
+    from sunken_sim.search import GLYPHS, _item_kind
+
+    if MIND_AMPLIFIER not in by_code:
+        raise RuntimeError("в карте нет Mind Amplifier X-8000")
+    codes = top_items(hero, spec, top, pool, known=set(by_code))
+    talents = top_talents(hero, spec)
+    if not talents:
+        raise RuntimeError(f"у {hero} {spec} нет талантов выше голого героя")
+    from farm.top import _talent_names
+
+    talent_names = _talent_names(hero)
+    pieces = []
+    items = {}
+    for code in sorted(set(codes)):
+        item = by_code[code]
+        pieces.append(Piece(code, _item_kind(item), amp=code == MIND_AMPLIFIER, name=item.name))
+        items[code] = item
+    if len(pieces) < 6:
+        raise RuntimeError(f"в топ-{top} меньше шести предметов")
+    picks_with = 4 if any(piece.amp for piece in pieces) else 3
+    return pieces, talents, sorted(GLYPHS), talent_names, dict(GLYPHS), items, picks_with
 
 
 def _preset_parts(hero: str, spec: str, preset: str, by_code: dict):

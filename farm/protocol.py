@@ -10,13 +10,105 @@ MAGE_SPECS = ("frost", "arcane", "fire")
 PALADIN_SPECS = ("retribution", "protection", "holy")
 SHAMAN_SPECS = ("restoration", "enhancement", "elemental")
 POOLS = ("mixed", "shop", "drop")
+TOPS = tuple(range(10, 251, 10))
 
 POOL_LABEL = {
     "mixed": "Shop + drop",
     "shop": "только Shop",
     "drop": "только Random drop",
 }
-HERO_LABEL = {"priest": "жрец", "mage": "маг", "paladin": "паладин", "shaman": "шаман"}
+# hero key == module name in sunken_sim; order of specs == SPECS of that module.
+SPECS = {
+    "priest": PRIEST_SPECS,
+    "mage": MAGE_SPECS,
+    "paladin": PALADIN_SPECS,
+    "shaman": SHAMAN_SPECS,
+    "berserker": ("headhunter", "poison", "fury"),
+    "death_knight": ("frost", "blood", "unholy"),
+    "demon_hunter": ("havoc", "vengeance", "devourer"),
+    "dragon_sentinel": ("ruby", "obsidian", "emerald"),
+    "druid": ("restoration", "balance"),
+    "feral_druid": ("primal", "guardian", "savage"),
+    "hunter": ("marksmanship", "beast_mastery", "survival"),
+    "monk": ("windwalker", "brewmaster", "mistweaver"),
+    "necromancer": ("bone", "blood", "essence"),
+    "rogue": ("subtlety", "combat"),
+    "siren": ("sharpshooter", "watershaper", "seagrace"),
+    "tidewarrior": ("myrmidon", "guardian"),
+    "tinker": ("engineering", "demolitions", "nanotech"),
+    "warlock": ("demonology", "destruction", "affliction"),
+    "warrior": ("protection", "arms", "fury"),
+    "windmaster": ("upheaval", "storm", "combat"),
+    "witch_doctor": ("voodoo", "poison"),
+}
+HERO_LABEL = {
+    "priest": "жрец",
+    "mage": "маг",
+    "paladin": "паладин",
+    "shaman": "шаман",
+    "berserker": "берсерк",
+    "death_knight": "рыцарь смерти",
+    "demon_hunter": "охотник на демонов",
+    "dragon_sentinel": "драконий страж",
+    "druid": "друид",
+    "feral_druid": "друид-зверь",
+    "hunter": "охотник",
+    "monk": "монах",
+    "necromancer": "некромант",
+    "rogue": "разбойник",
+    "siren": "сирена",
+    "tidewarrior": "воин прилива",
+    "tinker": "механик",
+    "warlock": "чернокнижник",
+    "warrior": "воин",
+    "windmaster": "мастер ветра",
+    "witch_doctor": "знахарь",
+}
+HERO_NAME = {
+    "priest": "Priest",
+    "mage": "Mage",
+    "paladin": "Paladin",
+    "shaman": "Shaman",
+    "berserker": "Berserker",
+    "death_knight": "Death Knight",
+    "demon_hunter": "Demon Hunter",
+    "dragon_sentinel": "Dragon Sentinel",
+    "druid": "Druid",
+    "feral_druid": "Feral Druid",
+    "hunter": "Hunter",
+    "monk": "Monk",
+    "necromancer": "Necromancer",
+    "rogue": "Rogue",
+    "siren": "Siren",
+    "tidewarrior": "Tidewarrior",
+    "tinker": "Tinker",
+    "warlock": "Warlock",
+    "warrior": "Warrior",
+    "windmaster": "Windmaster",
+    "witch_doctor": "Witch Doctor",
+}
+# Heroes whose old whole-pool flow (no top) still works.
+LEGACY_POOL_HEROES = ("priest", "mage", "paladin", "shaman")
+
+# Legacy preset files (old jobs / local runs). Not offered in Discord.
+PRESET_HERO_SPEC = {
+    "shadow-top80": ("priest", "shadow"),
+    "discipline-top80": ("priest", "discipline"),
+    "priest-holy-top80": ("priest", "holy"),
+    "frost-top80": ("mage", "frost"),
+    "arcane-top80": ("mage", "arcane"),
+    "fire-top80": ("mage", "fire"),
+    "retribution-top80": ("paladin", "retribution"),
+    "protection-top80": ("paladin", "protection"),
+    "paladin-holy-top80": ("paladin", "holy"),
+    "restoration-top80": ("shaman", "restoration"),
+    "enhancement-top80": ("shaman", "enhancement"),
+    "elemental-top80": ("shaman", "elemental"),
+    "retribution-top79": ("paladin", "retribution"),
+    "retribution-top89": ("paladin", "retribution"),
+    "protection-top89": ("paladin", "protection"),
+}
+
 
 NOTIFY_USER_ID = "229350465668775936"  # hexus_argon
 
@@ -64,31 +156,77 @@ def parse_int(text: str) -> int:
     return int(cleaned)
 
 
-def resolve_hero_spec(hero: str | None, spec: str | None) -> tuple[str, str]:
-    spec = (spec or "shadow").strip().lower()
-    hero = hero.strip().lower() if hero else None
-    if hero is None:
-        if spec in ("retribution", "protection"):
-            hero = "paladin"
-        elif spec in SHAMAN_SPECS:
-            hero = "shaman"
-        elif spec in MAGE_SPECS:
-            hero = "mage"
-        elif spec in PRIEST_SPECS:
-            hero = "priest"
-        else:
-            raise ValueError(f"нет специализации {spec}")
-    if hero == "priest" and spec not in PRIEST_SPECS:
-        raise ValueError(f"у жреца нет специализации {spec}")
-    if hero == "mage" and spec not in MAGE_SPECS:
-        raise ValueError(f"у мага нет специализации {spec}")
-    if hero == "paladin" and spec not in PALADIN_SPECS:
-        raise ValueError(f"у паладина нет специализации {spec}")
-    if hero == "shaman" and spec not in SHAMAN_SPECS:
-        raise ValueError(f"у шамана нет специализации {spec}")
-    if hero not in HERO_LABEL:
+def _norm(text: str | None) -> str | None:
+    if text is None:
+        return None
+    cleaned = str(text).strip().lower().replace(" ", "_").replace("-", "_")
+    return cleaned or None
+
+
+def heroes_with(spec: str) -> list[str]:
+    return [hero for hero, specs in SPECS.items() if spec in specs]
+
+
+def resolve_hero_spec(hero: str | None, spec: str | None, preset: str | None = None) -> tuple[str, str]:
+    preset = (preset or "").strip() or None
+    if preset in PRESET_HERO_SPEC:
+        preset_hero, preset_spec = PRESET_HERO_SPEC[preset]
+        if hero and _norm(hero) != preset_hero:
+            raise ValueError(f"набор {preset} для {preset_hero}, не {hero}")
+        if spec and _norm(spec) != preset_spec:
+            raise ValueError(f"набор {preset} для {preset_spec}, не {spec}")
+        return preset_hero, preset_spec
+    hero = _norm(hero)
+    spec = _norm(spec)
+    if spec and "/" in spec:
+        spec_hero, spec = spec.split("/", 1)
+        spec_hero = spec_hero.strip("_")
+        spec = spec.strip("_")
+        if hero and hero != spec_hero:
+            raise ValueError(f"специализация {spec} выбрана для {spec_hero}, а класс {hero}")
+        hero = spec_hero
+    if hero is not None and hero not in SPECS:
         raise ValueError(f"нет класса {hero}")
+    if spec is None:
+        if hero is None:
+            return "priest", "shadow"
+        raise ValueError(f"укажи spec для {hero}: {', '.join(SPECS[hero])}")
+    if hero is None:
+        found = heroes_with(spec)
+        if not found:
+            raise ValueError(f"нет специализации {spec}")
+        if len(found) > 1:
+            raise ValueError(f"{spec} есть у нескольких классов, укажи hero: {', '.join(found)}")
+        hero = found[0]
+    if spec not in SPECS[hero]:
+        raise ValueError(f"у класса {hero} ({HERO_LABEL[hero]}) нет специализации {spec}; есть {', '.join(SPECS[hero])}")
     return hero, spec
+
+
+def resolve_top(value) -> int | None:
+    if value is None or value == "":
+        return None
+    number = int(value)
+    if number not in TOPS:
+        raise ValueError("top: 10, 20, … 250")
+    return number
+
+
+def spec_suggestions(hero: str | None, typed: str | None) -> list[tuple[str, str]]:
+    """Autocomplete rows (name, value) for the spec option, at most 25."""
+    hero = _norm(hero)
+    needle = (_norm(typed) or "").replace("/", "_")
+    rows = []
+    heroes = [hero] if hero in SPECS else list(SPECS)
+    for key in heroes:
+        for spec in SPECS[key]:
+            label = f"{HERO_NAME[key]} · {spec.replace('_', ' ')}"
+            hay = f"{key}_{spec}_{_norm(label)}"
+            if needle and needle not in hay:
+                continue
+            value = spec if hero in SPECS else f"{key}/{spec}"
+            rows.append((label, value))
+    return rows[:25]
 
 
 def resolve_pool(pool: str | None) -> str:
@@ -146,6 +284,8 @@ def format_job(job: dict) -> str:
     }
     if job.get("preset"):
         payload["preset"] = job["preset"]
+    if job.get("top"):
+        payload["top"] = int(job["top"])
     body = _dump(JOB, payload)
     return f"{job['worker']}: чанки {payload['start']}–{payload['end']}\n{body}"
 
@@ -157,6 +297,7 @@ def parse_job(content: str) -> dict | None:
     payload["start"] = int(payload["start"])
     payload["end"] = int(payload["end"])
     payload["targets"] = int(payload["targets"])
+    payload["top"] = int(payload["top"]) if payload.get("top") else None
     return payload
 
 
@@ -201,6 +342,7 @@ def status_text(
     rate_max: float | None = None,
     rate_min: float | None = None,
     cpu: float | None = None,
+    top: int | None = None,
 ) -> str:
     lines = []
     if final and stopped:
@@ -208,7 +350,7 @@ def status_text(
     elif final:
         lines.append(f"{worker} готово")
     lines.append(
-        f"{worker} · {HERO_LABEL[hero]} · {spec} · {POOL_LABEL[pool]} · {targets} целей"
+        f"{worker} · {HERO_LABEL[hero]} · {spec}{top_label(top)} · {POOL_LABEL[pool]} · {targets} целей"
     )
     lines.append(f"чанки {grouped(start)}–{grouped(end)}")
     if final:
@@ -230,11 +372,15 @@ def status_text(
     return "\n".join(lines)
 
 
-def size_text(*, worker: str, hero: str, spec: str, pool: str, targets: int, total: int) -> str:
+def top_label(top: int | None) -> str:
+    return f" · топ {int(top)} + Mind Amplifier" if top else ""
+
+
+def size_text(*, worker: str, hero: str, spec: str, pool: str, targets: int, total: int, top: int | None = None) -> str:
     last = max(0, total - 1)
     return "\n".join(
         (
-            f"{worker}: {HERO_LABEL[hero]} · {spec} · {POOL_LABEL[pool]} · {targets} целей",
+            f"{worker}: {HERO_LABEL[hero]} · {spec}{top_label(top)} · {POOL_LABEL[pool]} · {targets} целей",
             f"всего чанков {grouped(total)} (номера 0–{grouped(last)})",
             "один чанк — шестёрка предметов. Таланты, глифы и очки навыков считаются, только если её DPS без талантов выше 10-го места по DPS без талантов",
             f"запуск: /{worker} start:0 end:{last}",
@@ -250,19 +396,6 @@ def presence_text(rows: list[tuple[str, int, int]]) -> str:
 
 
 def command_body(name: str) -> dict:
-    specs = [
-        "shadow",
-        "discipline",
-        "holy",
-        "frost",
-        "arcane",
-        "fire",
-        "retribution",
-        "protection",
-        "restoration",
-        "enhancement",
-        "elemental",
-    ]
     return {
         "name": name,
         "type": 1,
@@ -273,21 +406,26 @@ def command_body(name: str) -> dict:
             {"type": 3, "name": "end", "description": "Последний чанк, включительно", "required": False},
             {
                 "type": 3,
-                "name": "preset",
-                "description": "Готовый набор вещей и талантов",
+                "name": "hero",
+                "description": "Класс",
                 "required": False,
                 "choices": [
-                    {"name": "Paladin Retribution top 80", "value": "retribution-top80"},
-                    {"name": "Paladin Retribution top 79", "value": "retribution-top79"},
-                    {"name": "Paladin Retribution top 89", "value": "retribution-top89"},
-                    {"name": "Paladin Protection top 89", "value": "protection-top89"},
-                    {"name": "Mage Frost top 80", "value": "frost-top80"},
-                    {"name": "Mage Arcane top 80", "value": "arcane-top80"},
-                    {"name": "Mage Fire top 80", "value": "fire-top80"},
-                    {"name": "Shaman Restoration top 80", "value": "restoration-top80"},
-                    {"name": "Shaman Enhancement top 80", "value": "enhancement-top80"},
-                    {"name": "Shaman Elemental top 80", "value": "elemental-top80"},
+                    {"name": f"{HERO_NAME[hero]} · {HERO_LABEL[hero]}", "value": hero} for hero in SPECS
                 ],
+            },
+            {
+                "type": 3,
+                "name": "spec",
+                "description": "Специализация (подсказки по выбранному классу)",
+                "required": False,
+                "autocomplete": True,
+            },
+            {
+                "type": 4,
+                "name": "top",
+                "description": "Топ-N предметов по DPS спека из one-slot (+ Mind Amplifier всегда)",
+                "required": False,
+                "choices": [{"name": f"топ {number}", "value": number} for number in TOPS],
             },
             {
                 "type": 4,
@@ -296,25 +434,6 @@ def command_body(name: str) -> dict:
                 "required": False,
                 "min_value": 1,
                 "max_value": 100,
-            },
-            {
-                "type": 3,
-                "name": "hero",
-                "description": "Класс",
-                "required": False,
-                "choices": [
-                    {"name": "Жрец", "value": "priest"},
-                    {"name": "Маг", "value": "mage"},
-                    {"name": "Паладин", "value": "paladin"},
-                    {"name": "Шаман", "value": "shaman"},
-                ],
-            },
-            {
-                "type": 3,
-                "name": "spec",
-                "description": "Специализация",
-                "required": False,
-                "choices": [{"name": spec, "value": spec} for spec in specs],
             },
             {
                 "type": 3,

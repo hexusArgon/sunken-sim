@@ -242,8 +242,10 @@ def simulate(
     lava_chance = 0.02 * (1.0 + stats["luck"])
     max_charges = 8 if surge else 3
     hydra_duration = 14.0 if burning else 10.0
-    waves = int(5.0 * (1.0 + stats["haste"]) + 0.50)
-    wave_gap = (0.80 if mantle else 1.0) / (1.0 + stats["haste"])
+    # Iceflow Mantle raises the wave count. The gap stays 1 / (1 + haste).
+    wave_haste = (1.20 + stats["haste"]) if mantle else (1.0 + stats["haste"])
+    waves = int(5.0 * wave_haste + 0.50)
+    wave_gap = 1.0 / (1.0 + stats["haste"])
     bomb_period = stats["bomb_period"]
     burst_chance = 0.15 + (0.15 if _has(build, "I0KR") else 0.0)
 
@@ -387,6 +389,10 @@ def simulate(
         return 1.4 / (1.0 + 0.75 * current_as(now))
 
     def reset_chance() -> float:
+        # The proc exists in Arcane, with Overpowered, or with Shoulderpads.
+        # The mastery bonus requires the Arcane specialization itself.
+        if spec != "arcane" and not overpowered and not pads:
+            return 0.0
         chance = 0.15
         if spec == "arcane":
             chance += 0.05 + 0.002 * (stats["mastery"] + splinter)
@@ -761,17 +767,13 @@ def _compile(events: list[tuple], build: Build, stats: dict, spec: str, evocatio
                 pyro_raw_base += raw_w * coef
                 pyro_raw_mastery += raw_w * fire_m
         elif kind == "hydra":
-            b, s = factors(extra, True)
-            hydra_base += b * raw_w
-            hydra_slope += s * raw_w
-            hydra_pot_base += b * pot_w
-            hydra_pot_slope += s * pot_w
+            # The hydra does not wear the mage's items, and the hit is not magical type.
+            # Glass Cannon is the all-sources multiplier and is applied at scoring.
+            hydra_base += raw_w
+            hydra_pot_base += pot_w
         elif kind == "cleave":
-            b, s = factors(extra, True)
-            cleave_base += b * raw_w
-            cleave_slope += s * raw_w
-            cleave_pot_base += b * pot_w
-            cleave_pot_slope += s * pot_w
+            cleave_base += raw_w
+            cleave_pot_base += pot_w
         elif kind == "sulfuras":
             b, s = factors(extra, True)
             sulf_base += b * raw_w
@@ -870,17 +872,14 @@ def _score(compiled: dict, stats: dict, build: Build, spec: str, potency=None, c
     pyro_pot = compiled["pyro_pot_base"] + compiled["pyro_pot_slope"] * mastery
     put("Pyroblast", spell_crit * (raw["pyro"] * pyro_mag + potency * pyro_pot))
     put("Pyroblast", raw["pyro"] * (compiled["pyro_raw_base"] + compiled["pyro_raw_mastery"] * mastery))
-    hydra_mag = compiled["hydra_base"] + compiled["hydra_slope"] * mastery
-    hydra_pot = compiled["hydra_pot_base"] + compiled["hydra_pot_slope"] * mastery
+    glass = compiled["glass"]
     put(
         "Hydra",
-        attack_crit * (raw["hydra"] * hydra_mag + potency * stats["attack_potency"] * hydra_pot),
+        glass * (raw["hydra"] * compiled["hydra_base"] + potency * stats["attack_potency"] * compiled["hydra_pot_base"]),
     )
-    cleave_mag = compiled["cleave_base"] + compiled["cleave_slope"] * mastery
-    cleave_pot = compiled["cleave_pot_base"] + compiled["cleave_pot_slope"] * mastery
     put(
         "Клив Hydra",
-        attack_crit * (raw["hydra"] * cleave_mag + potency * stats["attack_potency"] * cleave_pot),
+        glass * (raw["hydra"] * compiled["cleave_base"] + potency * stats["attack_potency"] * compiled["cleave_pot_base"]),
     )
     sulf_mag = compiled["sulf_base"] + compiled["sulf_slope"] * mastery
     put("Sulfuras", spell_crit * stats["int"] * sulf_mag)
@@ -901,10 +900,14 @@ def _score(compiled: dict, stats: dict, build: Build, spec: str, potency=None, c
             * compiled["auto_weight"]
         )
         sources["Удар тьмы"] = sources.get("Удар тьмы", 0.0) + stab * armor_taken(DUMMY_ARMOR)
-    taken = armor_taken(DUMMY_ARMOR - stats["armor_pen"])
+    # Shadow orb penetration applies only when the hit comes from the wearer and the
+    # damage type is Normal. Disease and Enhanced hits, and the hydra's own swings, stay on full armor.
+    full = armor_taken(DUMMY_ARMOR)
+    penetrated = armor_taken(DUMMY_ARMOR - stats["armor_pen"])
+    no_pen = {"Удар тьмы", "Pyroblast", "Hydra", "Клив Hydra", "Sulfuras (удар)"}
     scaled = {}
     for name, amount in sources.items():
-        scaled[name] = amount if name == "Удар тьмы" else amount * taken
+        scaled[name] = amount * (full if name in no_pen else penetrated)
     return sum(scaled.values()), scaled
 
 

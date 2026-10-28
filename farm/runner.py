@@ -261,7 +261,8 @@ def _checkpoint_path(job_id: str):
 def _result_path(job: dict):
     name = (
         f"{job['worker']}-{job['hero']}-{job['spec']}-{job['pool']}-"
-        f"{job['targets']}-{job['start']}-{job['end']}.json"
+        + (f"top{int(job['top'])}-" if job.get("top") else "")
+        + f"{job['targets']}-{job['start']}-{job['end']}.json"
     )
     return data_dir() / "results" / name
 
@@ -476,7 +477,12 @@ def _same_job(saved: dict, job: dict) -> bool:
     for key in ("start", "end", "hero", "spec", "pool", "targets"):
         if str(saved.get(key)) != str(job.get(key)):
             return False
-    return str(saved.get("preset") or "") == str(job.get("preset") or "")
+    if str(saved.get("preset") or "") != str(job.get("preset") or ""):
+        return False
+    # checkpoints keep the item limit as top_n ("top" there is the leaderboard)
+    saved_n = saved.get("top_n") if "top_n" in saved else 0
+    job_n = job.get("top_n") if "top_n" in job else job.get("top") if not isinstance(job.get("top"), list) else 0
+    return int(saved_n or 0) == int(job_n or 0)
 
 
 def _merge_checkpoint(payload: dict, saved: dict | None) -> dict:
@@ -519,6 +525,7 @@ def _save_checkpoint(
         "pool": job["pool"],
         "targets": job["targets"],
         "preset": job.get("preset") or "",
+        "top_n": int(job.get("top") or 0),
         "done_up_to": done_up_to,
         "ahead": [[left, right] for left, right in ahead],
         "errors": errors,
@@ -653,6 +660,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
             rate_max=rate_max,
             rate_min=rate_min,
             cpu=cpu_percent(),
+            top=job.get("top") or None,
         )
         try:
             tick(text)
@@ -680,7 +688,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
         emit(final=True)
         return {"path": path, "done": finished(), "left": 0, "stopped": False, "errors": errors}
 
-    space, items = load(job["hero"], job["spec"], job["pool"], job.get("preset") or None)
+    space, items = load(job["hero"], job["spec"], job["pool"], job.get("preset") or None, job.get("top") or None)
     sources = source_map(items)
     release()
     span = end_ex - done_up_to

@@ -30,6 +30,7 @@ OTHER_HEROES = (
     "Monk",
     "Siren",
     "Tinker",
+    "Dragon Sentinel",
 )
 
 
@@ -430,7 +431,7 @@ def _parse_tip(tip: str) -> dict:
         "all_stats": _sum_ints(r"^\+(\d+) All Stats\b", "\n".join(lines)),
         "potency": _sum_ints(r"^\+(\d+) Potency\b", "\n".join(lines)),
         "mastery": _sum_ints(r"^\+(\d+) Mastery\b", "\n".join(lines)),
-        "damage": _sum_ints(r"^\+(\d+) Damage\b", "\n".join(lines)),
+        "damage": _sum_ints(r"^\+(\d+) (?:Attack )?Damage\b", "\n".join(lines)),
         "mana": _sum_ints(r"^\+(\d+) Mana\b", "\n".join(lines)),
         "crit": _sum_ints(r"^\+(\d+)% Critical Strike\b", "\n".join(lines))
         + _sum_ints(r"Critical Strike by (\d+)%", stat_text),
