@@ -354,7 +354,11 @@ class Farm:
         rows: list[tuple[str, str]] = []
         if focused is not None and focused.get("name") == "spec":
             hero = (options.get("hero") or {}).get("value")
-            rows = spec_suggestions(hero, focused.get("value"))
+            try:
+                rows = spec_suggestions(hero, focused.get("value"))
+            except Exception as exc:
+                # Always answer: an unanswered autocomplete shows "Loading options failed".
+                self.log(f"spec autocomplete: {exc}")
         try:
             await interaction.response.autocomplete([app_commands.Choice(name=name, value=value) for name, value in rows])
         except Exception as exc:
