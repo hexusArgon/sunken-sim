@@ -26999,9 +26999,6 @@ function Trig_Synergy_Disable_Actions takes nothing returns nothing
 if(Trig_Synergy_Disable_Func007C())then
 call SaveBooleanBJ(true,StringHashBJ("PLAYERHASHERO"),GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit())),udg_PlayerHash)
 else
-set udg_PlayerTeam_Lives=1
-call MultiboardSetItemValueBJ(udg_Main_Board,3,1,("Lives: "+I2S(udg_PlayerTeam_Lives)))
-call EnableTrigger(gg_trg_Execute)
 endif
 endfunction
 function InitTrig_Synergy_Disable takes nothing returns nothing
@@ -27017,9 +27014,6 @@ endif
 return true
 endfunction
 function Trig_Greed_Is_Not_Good_Actions takes nothing returns nothing
-set udg_PlayerTeam_Lives=1
-call MultiboardSetItemValueBJ(udg_Main_Board,3,1,("Lives: "+I2S(udg_PlayerTeam_Lives)))
-call EnableTrigger(gg_trg_Execute)
 endfunction
 function InitTrig_Greed_Is_Not_Good takes nothing returns nothing
 set gg_trg_Greed_Is_Not_Good=CreateTrigger()
@@ -27034,9 +27028,6 @@ endif
 return true
 endfunction
 function Trig_Greed_Is_Not_Good_2_Actions takes nothing returns nothing
-set udg_PlayerTeam_Lives=1
-call MultiboardSetItemValueBJ(udg_Main_Board,3,1,("Lives: "+I2S(udg_PlayerTeam_Lives)))
-call EnableTrigger(gg_trg_Execute)
 endfunction
 function InitTrig_Greed_Is_Not_Good_2 takes nothing returns nothing
 set gg_trg_Greed_Is_Not_Good_2=CreateTrigger()
@@ -27054,9 +27045,6 @@ endif
 return true
 endfunction
 function Trig_I_am_your_daddy_Actions takes nothing returns nothing
-set udg_PlayerTeam_Lives=1
-call MultiboardSetItemValueBJ(udg_Main_Board,3,1,("Lives: "+I2S(udg_PlayerTeam_Lives)))
-call EnableTrigger(gg_trg_Execute)
 endfunction
 function InitTrig_I_am_your_daddy takes nothing returns nothing
 set gg_trg_I_am_your_daddy=CreateTrigger()
@@ -27074,9 +27062,6 @@ endif
 return true
 endfunction
 function Trig_I_see_dead_players_Actions takes nothing returns nothing
-set udg_PlayerTeam_Lives=1
-call MultiboardSetItemValueBJ(udg_Main_Board,3,1,("Lives: "+I2S(udg_PlayerTeam_Lives)))
-call EnableTrigger(gg_trg_Execute)
 call DisableTrigger(GetTriggeringTrigger())
 endfunction
 function InitTrig_I_see_dead_players takes nothing returns nothing
@@ -27087,13 +27072,7 @@ call TriggerAddCondition(gg_trg_I_see_dead_players,Condition(function Trig_I_see
 call TriggerAddAction(gg_trg_I_see_dead_players,function Trig_I_see_dead_players_Actions)
 endfunction
 function Trig_Execute_Actions takes nothing returns nothing
-call DisplayTextToForce(bj_FORCE_PLAYER[0],"TRIGSTR_997")
-call SetCameraTargetControllerNoZForPlayer(Player(0),gg_unit_nbsw_0240,0,0,false)
-call SetCameraTargetControllerNoZForPlayer(Player(1),gg_unit_nbsw_0240,0,0,false)
-call SetCameraTargetControllerNoZForPlayer(Player(2),gg_unit_nbsw_0240,0,0,false)
-call KillUnit(udg_Agi_Str_Int[1])
-call KillUnit(udg_Agi_Str_Int[2])
-call KillUnit(udg_Agi_Str_Int[3])
+call DisableTrigger(GetTriggeringTrigger())
 endfunction
 function InitTrig_Execute takes nothing returns nothing
 set gg_trg_Execute=CreateTrigger()

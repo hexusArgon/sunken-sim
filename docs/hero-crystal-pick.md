@@ -10,9 +10,12 @@
 
 ```
 python tools/patch_hero_crystals.py <оригинальный war3map.j> maps/patched/war3map.j
+python tools/patch_anticheat.py maps/patched/war3map.j maps/patched/war3map.j
 python tools/inject_map_script.py "maps/Sunken City v2.5.2a.w3x" maps/patched/war3map.j "maps/patched/_tmp.w3x"
-python tools/set_map_lobby_name.py "maps/patched/_tmp.w3x" "Sunken City v2.5.2A All Pick"
+python tools/set_map_lobby_name.py "maps/patched/_tmp.w3x" "Sunken City v2.5.2A All Pick" "maps/patched/Sunken City v2.5.2A All Pick.w3x"
 ```
+
+Версия с одинаковыми героями (All Pick v2) описана в `docs/hero-all-pick-v2.md`.
 
 Оригинальный скрипт достаётся через `sunken_sim.library.map_script()` (в MPQ он без имени).
 `inject_map_script.py` пишет новый зашифрованный блок в конец архива, перенаправляет на него
@@ -44,6 +47,28 @@ python tools/set_map_lobby_name.py "maps/patched/_tmp.w3x" "Sunken City v2.5.2A 
 7. **Скины** (`Skins_Dialog`/`Skins_Select`) работают с реальным слотом героя.
 8. **`-random agi/str/int`** доступен, пока есть свободный слот, и выбирает только ещё не взятый класс.
 
+9. **Читы в одиночной игре больше не «роняют» карту** (`tools/patch_anticheat.py`), см. ниже.
+
+## Читы (iseedeadpeople, whosyourdaddy, greedisgood …)
+
+Карта не падала. Это был встроенный античит, который заканчивал игру поражением. Пять триггеров-детекторов
+срабатывают только если игрок 1 не называется `SpasMaster#2487`:
+
+| Триггер | Что ловит |
+|---|---|
+| `I_see_dead_players` | раз в секунду проверяет, видна ли игроку скрытая ловушка `hmtm_0592` (iseedeadpeople) |
+| `I_am_your_daddy` | смерть юнита-ловушки `h00L_0474` от одного удара (whosyourdaddy) |
+| `Greed_Is_Not_Good`, `Greed_Is_Not_Good_2` | у Player(3) золото > 150 / дерево > 1 (greedisgood и т.п.) |
+| `Synergy_Disable` | у игрока появился второй герой |
+
+Каждый детектор ставил `udg_PlayerTeam_Lives=1` и включал `Execute`. `Execute` раз в секунду писал
+"Cheating Detected…", наводил камеры на `nbsw_0240` и убивал `udg_Agi_Str_Int[1..3]`, что давало поражение.
+
+Патч убирает из пяти детекторов по 3 строки наказания (15 строк: lives=1, обновление мультиборда,
+`EnableTrigger(gg_trg_Execute)`), а тело `Trig_Execute_Actions` заменяет на
+`DisableTrigger(GetTriggeringTrigger())`. Сами детекторы остаются и просто выключаются после
+первого срабатывания. Патч применяется и к All Pick, и к All Pick v2.
+
 ## Как проверить в игре
 
 1. Запустить `maps/patched/Sunken City v2.5.2A All Pick.w3x` (лучше LAN или 3 слота).
@@ -58,8 +83,9 @@ python tools/set_map_lobby_name.py "maps/patched/_tmp.w3x" "Sunken City v2.5.2A 
 
 ## Известные ограничения
 
-- **Один и тот же класс дважды взять нельзя**, потому что `udg_Hero_<Class>` хранит одного героя.
-  Разрешить это значит переписать всю логику способностей.
+- **В этой версии один и тот же класс дважды взять нельзя.** Это сделано в All Pick v2
+  (`docs/hero-all-pick-v2.md`).
+- Кулдаун кристалла (stock replenish `usrg`=70 с у 21 героя) в этой версии не менялся. В v2 он 1 с.
 - Логика конкретных классов, вшитая в ветку слота внутри `CDR_Setup` (например, Ferocity/Savage Bite
   у Feral Druid в ветке слота 1), а также отдельные места, где класс добавляет или снимает
   небазовые способности на `udg_Glyphs_Unit[1/2/3]` (например, `'A0JN'` в Talent_Disables), всё ещё
