@@ -16533,16 +16533,16 @@ local integer theHuntAbility='A076'
 local integer immolationAbility='A06F'
 local integer demonSurgeAbility='A0CK'
 local integer specAbility='A0CY'
-if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[1])==1)then
+if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[HP_SlotOf(udg_Hero_DemonHunter)])==1)then
 call BlzSetAbilityIcon(metamorphosisAbility,"ReplaceableTextures\\CommandButtons\\BTNMetaHavoc.blp")
 call BlzSetAbilityIcon(demonSurgeAbility,"ReplaceableTextures\\CommandButtons\\PASDemonsurge.blp")
 call BlzSetAbilityIcon(theHuntAbility,"ReplaceableTextures\\CommandButtons\\BTNTheHunt.blp")
 call BlzSetAbilityIcon(immolationAbility,"ReplaceableTextures\\CommandButtons\\BTNImmolationAura.blp")
 endif
-if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[1])==2)then
+if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[HP_SlotOf(udg_Hero_DemonHunter)])==2)then
 call BlzSetAbilityIcon(metamorphosisAbility,"ReplaceableTextures\\CommandButtons\\BTNMetaVengenace.blp")
 endif
-if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[1])==3)then
+if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[HP_SlotOf(udg_Hero_DemonHunter)])==3)then
 call BlzSetAbilityIcon(metamorphosisAbility,"ReplaceableTextures\\CommandButtons\\BTNMetaDevourer.blp")
 call BlzSetAbilityIcon(demonSurgeAbility,"ReplaceableTextures\\CommandButtons\\PASDemonsurgeVoid.blp")
 call BlzSetAbilityIcon(theHuntAbility,"ReplaceableTextures\\CommandButtons\\BTNTheHuntVoid.blp")
@@ -16654,13 +16654,13 @@ function DivineImageIcon takes nothing returns nothing
 local integer divineImageAbility='A0JK'
 local integer specAbility='A0MH'
 if(GetUnitAbilityLevelSwapped(divineImageAbility,udg_Hero_Priest)>=1)then
-if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[3])==1)then
+if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[HP_SlotOf(udg_Hero_Priest)])==1)then
 call BlzSetAbilityIcon(divineImageAbility,"ReplaceableTextures\\CommandButtons\\BTNNaaruDisc.blp")
 endif
-if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[3])==2)then
+if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[HP_SlotOf(udg_Hero_Priest)])==2)then
 call BlzSetAbilityIcon(divineImageAbility,"ReplaceableTextures\\CommandButtons\\BTNNaaruHoly.blp")
 endif
-if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[3])==3)then
+if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[HP_SlotOf(udg_Hero_Priest)])==3)then
 call BlzSetAbilityIcon(divineImageAbility,"ReplaceableTextures\\CommandButtons\\BTNNaaruShadow.blp")
 endif
 endif
@@ -69024,7 +69024,7 @@ function Trig_ArmorDamage_Reduce_Func001Func022Func004Func024C takes nothing ret
 if(not(IsUnitInGroup(udg_DamageEventSource,udg_Taunt_Group)==true))then
 return false
 endif
-if(not(GetUnitAbilityLevelSwapped('A0O6',udg_Glyphs_Unit[3])==2))then
+if(not(GetUnitAbilityLevelSwapped('A0O6',udg_Glyphs_Unit[HP_SlotOf(udg_DamageEventTarget)])==2))then
 return false
 endif
 if(not(udg_DamageEventTarget==udg_Hero_DragonSentinel))then

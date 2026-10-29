@@ -11,6 +11,7 @@
 ```
 python tools/patch_hero_crystals.py <оригинальный war3map.j> maps/patched/war3map.j
 python tools/patch_anticheat.py maps/patched/war3map.j maps/patched/war3map.j
+python tools/patch_spec_slots.py maps/patched/war3map.j maps/patched/war3map.j
 python tools/inject_map_script.py "maps/Sunken City v2.5.2a.w3x" maps/patched/war3map.j "maps/patched/_tmp.w3x"
 python tools/set_map_lobby_name.py "maps/patched/_tmp.w3x" "Sunken City v2.5.2A All Pick" "maps/patched/Sunken City v2.5.2A All Pick.w3x"
 ```
@@ -48,6 +49,16 @@ python tools/set_map_lobby_name.py "maps/patched/_tmp.w3x" "Sunken City v2.5.2A 
 8. **`-random agi/str/int`** доступен, пока есть свободный слот, и выбирает только ещё не взятый класс.
 
 9. **Читы в одиночной игре больше не «роняют» карту** (`tools/patch_anticheat.py`), см. ниже.
+
+## Спеки в «чужом» слоте (`tools/patch_spec_slots.py`)
+
+Спек героя = уровень спек-способности на юните глифов его слота `udg_Glyphs_Unit[HP_SlotOf(hero)]`.
+В оригинале три места брали глифы по жёсткому номеру слота, и в All Pick (герой в любом слоте) читали
+чужой юнит:
+- `MetamorphosisIcons` (иконки Охотника на демонов): `udg_Glyphs_Unit[1]` → слот DH;
+- `DivineImageIcon` (иконка Divine Image жреца): `udg_Glyphs_Unit[3]` → слот Priest;
+- `ArmorDamage_Reduce` (проверка спека Dragon Sentinel `'A0O6'`): `udg_Glyphs_Unit[3]` → слот цели урона.
+Патч идемпотентный, меняет ровно 7 строк. Цифры баланса не трогает.
 
 ## Читы (iseedeadpeople, whosyourdaddy, greedisgood …)
 

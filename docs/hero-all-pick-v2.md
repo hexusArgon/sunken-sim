@@ -10,7 +10,9 @@
 ```
 python tools/patch_hero_crystals.py <оригинальный war3map.j> maps/patched/war3map.j
 python tools/patch_anticheat.py maps/patched/war3map.j maps/patched/war3map.j
-python tools/patch_all_pick_v2.py maps/patched/war3map.j maps/patched/war3map_all_pick_v2.j
+python tools/patch_spec_slots.py maps/patched/war3map.j maps/patched/war3map.j
+python tools/patch_all_pick_v2.py maps/patched/war3map.j maps/patched/_v2_base.j
+python tools/patch_spec_per_copy.py maps/patched/_v2_base.j maps/patched/war3map_all_pick_v2.j
 python tools/inject_map_script.py "maps/Sunken City v2.5.2a.w3x" maps/patched/war3map_all_pick_v2.j maps/patched/_tmp_v2a.w3x
 python tools/patch_w3u_stock.py <war3map.w3u из оригинала> maps/patched/war3map_all_pick_v2.w3u 1
 python tools/mpq_replace_file.py maps/patched/_tmp_v2a.w3x war3map.w3u maps/patched/war3map_all_pick_v2.w3u maps/patched/_tmp_v2b.w3x
@@ -69,6 +71,25 @@ python tools/set_map_lobby_name.py maps/patched/_tmp_v2b.w3x "Sunken City v2.5.2
   заменено на `HP_New_<Class>(GetSoldUnit())`. **Скины** заменяют юнит внутри списка копий
   (`HP_Replace_<Class>`, 3 места).
 
+## Спек у каждой копии свой (`tools/patch_spec_per_copy.py`)
+
+Сам спек и раньше был на слот: уровень спек-способности на `udg_Glyphs_Unit[slot]`, все проверки идут через
+`udg_Glyphs_Unit[HP_SlotOf(udg_Hero_X)]`. Общим было отображение, поэтому две копии выглядели как одна:
+- `Specialization_Change` (66 вызовов) и `MetamorphosisIcons` / `DivineImageIcon` / `HomingMissilesTooltip` / Tidewarrior `A0HI` /
+  Windmaster `A01T` / DS `A0OB`,`A0O1` / Monk `A0FE` / Warlock `A0QX` вызывали `BlzSetAbilityIcon`. Он меняет
+  иконку **типа** способности у всех игроков: кнопка спека и зависящие от спека иконки на всех копиях становились одинаковыми;
+- мультиборд `Specs_Board_Update` рисовал каждую строку через `BlzGetAbilityIcon('спек')`, поэтому
+  у всех копий класса была иконка того, кто переключил последним;
+- клик по глифам/талантам привязывался к «первой копии этого игрока», а не к копии своего слота.
+
+Что сделано:
+1. `HP_SpecIcon` / `HP_AbIcon` вместо `BlzSetAbilityIcon`. Пока у класса меньше 2 копий, вызов прежний (глобальный).
+   Если копий 2+, иконка ставится только на клиенте владельца (`GetLocalPlayer`, это только визуал, не рассинхрон).
+2. `udg_HP_SpecIcon[slot]` хранит иконку спека слота, мультиборд читает её (`HP_SpecIconOf`). При создании глифов слота она сбрасывается.
+3. Когда берут новую копию уже взятого класса, иконки класса у её владельца сбрасываются на исходные (`HP_IconReset_<Class>`),
+   если у этого игрока ещё нет копии класса.
+4. `HP_EvE_<Class>`: юнит глифов/талантов слота s сначала привязывает героя слота s (`HP_AuxHero`).
+
 ## Остаточные риски (в игре не тестировалось)
 
 - **Массивы по игроку общие.** Если один игрок возьмёт два одинаковых героя, у них общие
@@ -85,6 +106,11 @@ python tools/set_map_lobby_name.py maps/patched/_tmp_v2b.w3x "Sunken City v2.5.2
 - Скрипт проверен pjass (common.j + Blizzard.j: 0 ошибок в war3map_all_pick_v2.j; 147 ошибок
   самого Blizzard.j такие же, как у оригинала), извлечение скрипта и w3u из карты сверено.
   В самой игре не тестировалось.
+
+- Спеки: тултипы (`BlzSetAbility*Tooltip`: Trophies, Blood Presence, Final Service, форма DS, Homing Missiles, тултипы CDR)
+  по-прежнему общие на тип способности. Если **один** игрок держит две копии класса, иконки у этих копий общие.
+  Проверка «DS в форме дракона» в `Specialization_Change` блокирует смену спека DS всем копиям (так было и в оригинале).
+  Таланты с жёстким номером глифов (например `UnitAddAbilityBJ('A060',udg_Glyphs_Unit[3])`) не трогались, это ограничение All Pick.
 
 ## Как проверить в игре
 

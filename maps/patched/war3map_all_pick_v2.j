@@ -5500,10 +5500,158 @@ real array udg_HPS_SoulPossession_Duration
 unit array udg_HPS_SoulPossession_Target
 unit array udg_HPS_SpiritLink_Hero
 unit array udg_HPS_VoodooWard_Target
+string array udg_HP_SpecIcon
+hashtable udg_HP_IconHT=InitHashtable()
 endglobals
 native UnitAlive takes unit u returns boolean
 native GetUnitGoldCost takes integer rawCode returns integer
 native GetUnitWoodCost takes integer rawCode returns integer
+function HP_AuxSlot takes unit u returns integer
+local integer s=1
+if u==null then
+return 0
+endif
+loop
+exitwhen s>3
+if u==udg_Glyphs_Unit[s] or u==udg_Talents_Unit[s] or u==udg_Agi_Str_Int[s] then
+return s
+endif
+set s=s+1
+endloop
+return 0
+endfunction
+function HP_AuxHero takes unit u returns unit
+local integer s=HP_AuxSlot(u)
+if s==0 then
+return null
+endif
+return udg_Agi_Str_Int[s]
+endfunction
+function HP_IconKeep takes integer abil returns nothing
+if not HaveSavedString(udg_HP_IconHT,0,abil) then
+call SaveStr(udg_HP_IconHT,0,abil,BlzGetAbilityIcon(abil))
+endif
+endfunction
+function HP_IconFor takes integer abil,string path,player p,integer c returns nothing
+call HP_IconKeep(abil)
+if udg_HP_Cnt[c]<2 or p==null then
+call BlzSetAbilityIcon(abil,path)
+elseif GetLocalPlayer()==p then
+call BlzSetAbilityIcon(abil,path)
+endif
+endfunction
+function HP_AbIcon takes integer abil,string path,unit u,integer c returns nothing
+call HP_IconFor(abil,path,GetOwningPlayer(u),c)
+endfunction
+function HP_SpecIcon takes integer abil,string path,integer c returns nothing
+local integer s=HP_AuxSlot(GetTriggerUnit())
+if s>0 and abil==GetSpellAbilityId() then
+set udg_HP_SpecIcon[s]=path
+endif
+call HP_IconFor(abil,path,GetTriggerPlayer(),c)
+endfunction
+function HP_SpecIconOf takes integer s,integer abil returns string
+if udg_HP_SpecIcon[s]!="" and udg_HP_SpecIcon[s]!=null then
+return udg_HP_SpecIcon[s]
+endif
+if HaveSavedString(udg_HP_IconHT,0,abil) then
+return LoadStr(udg_HP_IconHT,0,abil)
+endif
+return BlzGetAbilityIcon(abil)
+endfunction
+function HP_IconDef takes player p,integer abil returns nothing
+if HaveSavedString(udg_HP_IconHT,0,abil) and GetLocalPlayer()==p then
+call BlzSetAbilityIcon(abil,LoadStr(udg_HP_IconHT,0,abil))
+endif
+endfunction
+function HP_OwnsCopy takes integer c,player p returns boolean
+local integer k=1
+loop
+exitwhen k>udg_HP_Cnt[c]
+if GetOwningPlayer(udg_HP_I[c*4+k])==p then
+return true
+endif
+set k=k+1
+endloop
+return false
+endfunction
+function HP_IconReset_Berserker takes player p returns nothing
+call HP_IconDef(p,'A0KW')
+endfunction
+function HP_IconReset_DeathKnight takes player p returns nothing
+call HP_IconDef(p,'A0I0')
+call HP_IconDef(p,'A0I9')
+endfunction
+function HP_IconReset_DemonHunter takes player p returns nothing
+call HP_IconDef(p,'A06F')
+call HP_IconDef(p,'A076')
+call HP_IconDef(p,'A0CK')
+call HP_IconDef(p,'A0CY')
+call HP_IconDef(p,'A0RD')
+endfunction
+function HP_IconReset_DragonSentinel takes player p returns nothing
+call HP_IconDef(p,'A0O1')
+call HP_IconDef(p,'A0O6')
+call HP_IconDef(p,'A0OB')
+endfunction
+function HP_IconReset_Druid takes player p returns nothing
+call HP_IconDef(p,'A0E0')
+endfunction
+function HP_IconReset_FeralDruid takes player p returns nothing
+call HP_IconDef(p,'A0MP')
+endfunction
+function HP_IconReset_Hunter takes player p returns nothing
+call HP_IconDef(p,'A098')
+endfunction
+function HP_IconReset_Mage takes player p returns nothing
+call HP_IconDef(p,'A00D')
+call HP_IconDef(p,'A04Z')
+endfunction
+function HP_IconReset_Monk takes player p returns nothing
+call HP_IconDef(p,'A040')
+call HP_IconDef(p,'A0FE')
+endfunction
+function HP_IconReset_Necromancer takes player p returns nothing
+call HP_IconDef(p,'A0G4')
+endfunction
+function HP_IconReset_Paladin takes player p returns nothing
+call HP_IconDef(p,'A0JM')
+endfunction
+function HP_IconReset_Priest takes player p returns nothing
+call HP_IconDef(p,'A0JK')
+call HP_IconDef(p,'A0MH')
+endfunction
+function HP_IconReset_Rogue takes player p returns nothing
+call HP_IconDef(p,'A0KU')
+endfunction
+function HP_IconReset_Shaman takes player p returns nothing
+call HP_IconDef(p,'A06Z')
+endfunction
+function HP_IconReset_Siren takes player p returns nothing
+call HP_IconDef(p,'A0JW')
+endfunction
+function HP_IconReset_Tidewarrior takes player p returns nothing
+call HP_IconDef(p,'A0HI')
+call HP_IconDef(p,'A0JA')
+endfunction
+function HP_IconReset_Tinker takes player p returns nothing
+call HP_IconDef(p,'A02T')
+call HP_IconDef(p,'A0NB')
+endfunction
+function HP_IconReset_Warlock takes player p returns nothing
+call HP_IconDef(p,'A0LF')
+call HP_IconDef(p,'A0QX')
+endfunction
+function HP_IconReset_Warrior takes player p returns nothing
+call HP_IconDef(p,'A0KO')
+endfunction
+function HP_IconReset_Windmaster takes player p returns nothing
+call HP_IconDef(p,'A01T')
+call HP_IconDef(p,'A0CC')
+endfunction
+function HP_IconReset_WitchDoctor takes player p returns nothing
+call HP_IconDef(p,'A0J8')
+endfunction
 function HP_Save_Berserker takes integer k returns nothing
 set udg_HPS_BloodFury_Agi[k]=udg_BloodFury_Agi
 set udg_HPS_SkullSplit_Count[k]=udg_SkullSplit_Count
@@ -5602,6 +5750,9 @@ endif
 if HP_Is_Berserker(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_Berserker(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_Berserker(GetTriggerPlayer()) then
 return
 endif
@@ -5635,6 +5786,9 @@ call HP_Save_Berserker(0)
 else
 call HP_Save_Berserker(udg_HP_Cur[1])
 call HP_Load_Berserker(0)
+if not HP_OwnsCopy(1,GetOwningPlayer(u)) then
+call HP_IconReset_Berserker(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[1]=udg_HP_Cnt[1]+1
@@ -5773,6 +5927,9 @@ endif
 if HP_Is_DeathKnight(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_DeathKnight(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_DeathKnight(GetTriggerPlayer()) then
 return
 endif
@@ -5826,6 +5983,9 @@ call HP_Save_DeathKnight(udg_HP_Cur[2])
 call HP_Load_DeathKnight(0)
 set udg_Outbreak_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Outbreak_Expires,udg_Outbreak_Timer)
+if not HP_OwnsCopy(2,GetOwningPlayer(u)) then
+call HP_IconReset_DeathKnight(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[2]=udg_HP_Cnt[2]+1
@@ -6016,6 +6176,9 @@ endif
 if HP_Is_DemonHunter(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_DemonHunter(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_DemonHunter(GetTriggerPlayer()) then
 return
 endif
@@ -6072,6 +6235,9 @@ set udg_ImmolationAura_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Immolation_Aura_Periodic,udg_ImmolationAura_Timer)
 set udg_Metamorphosis_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Metamorphosis_Adjust,udg_Metamorphosis_Timer)
+if not HP_OwnsCopy(3,GetOwningPlayer(u)) then
+call HP_IconReset_DemonHunter(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[3]=udg_HP_Cnt[3]+1
@@ -6226,6 +6392,9 @@ endif
 if HP_Is_DragonSentinel(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_DragonSentinel(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_DragonSentinel(GetTriggerPlayer()) then
 return
 endif
@@ -6283,6 +6452,9 @@ set udg_Dragonfury_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Dragonfury,udg_Dragonfury_Timer)
 set udg_Lifebinder_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Lifebinder_Loop,udg_Lifebinder_Timer)
+if not HP_OwnsCopy(4,GetOwningPlayer(u)) then
+call HP_IconReset_DragonSentinel(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[4]=udg_HP_Cnt[4]+1
@@ -6405,6 +6577,9 @@ endif
 if HP_Is_Druid(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_Druid(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_Druid(GetTriggerPlayer()) then
 return
 endif
@@ -6460,6 +6635,9 @@ set udg_StellarPower_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Stellar_Power,udg_StellarPower_Timer)
 set udg_WildGrowth_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Wild_Growth_Periodic,udg_WildGrowth_Timer)
+if not HP_OwnsCopy(5,GetOwningPlayer(u)) then
+call HP_IconReset_Druid(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[5]=udg_HP_Cnt[5]+1
@@ -6594,6 +6772,9 @@ endif
 if HP_Is_FeralDruid(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_FeralDruid(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_FeralDruid(GetTriggerPlayer()) then
 return
 endif
@@ -6649,6 +6830,9 @@ set udg_Rake_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Rake,udg_Rake_Timer)
 set udg_RendAndTear_SavageBiteTimer=CreateTimer()
 set udg_RendAndTear_SwipeTimer=CreateTimer()
+if not HP_OwnsCopy(6,GetOwningPlayer(u)) then
+call HP_IconReset_FeralDruid(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[6]=udg_HP_Cnt[6]+1
@@ -6775,6 +6959,9 @@ endif
 if HP_Is_Hunter(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_Hunter(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_Hunter(GetTriggerPlayer()) then
 return
 endif
@@ -6830,6 +7017,9 @@ set udg_MultiShot_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_MultiShot_Secondary,udg_MultiShot_Timer)
 set udg_SerpentSting_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Serpent_Sting_Periodic,udg_SerpentSting_Timer)
+if not HP_OwnsCopy(7,GetOwningPlayer(u)) then
+call HP_IconReset_Hunter(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[7]=udg_HP_Cnt[7]+1
@@ -6966,6 +7156,9 @@ endif
 if HP_Is_Mage(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_Mage(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_Mage(GetTriggerPlayer()) then
 return
 endif
@@ -7019,6 +7212,9 @@ call HP_Save_Mage(udg_HP_Cur[8])
 call HP_Load_Mage(0)
 set udg_LivingBomb_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Living_Bomb_Periodic,udg_LivingBomb_Timer)
+if not HP_OwnsCopy(8,GetOwningPlayer(u)) then
+call HP_IconReset_Mage(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[8]=udg_HP_Cnt[8]+1
@@ -7143,6 +7339,9 @@ endif
 if HP_Is_Monk(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_Monk(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_Monk(GetTriggerPlayer()) then
 return
 endif
@@ -7196,6 +7395,9 @@ call HP_Save_Monk(udg_HP_Cur[9])
 call HP_Load_Monk(0)
 set udg_WindwalkerSpec_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Windwalker_Spec_Effect,udg_WindwalkerSpec_Timer)
+if not HP_OwnsCopy(9,GetOwningPlayer(u)) then
+call HP_IconReset_Monk(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[9]=udg_HP_Cnt[9]+1
@@ -7338,6 +7540,9 @@ endif
 if HP_Is_Necromancer(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_Necromancer(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_Necromancer(GetTriggerPlayer()) then
 return
 endif
@@ -7393,6 +7598,9 @@ set udg_CorpseExplosion_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Corpse_Explosion_Active,udg_CorpseExplosion_Timer)
 set udg_Tombstone_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Tombstone_Periodic,udg_Tombstone_Timer)
+if not HP_OwnsCopy(10,GetOwningPlayer(u)) then
+call HP_IconReset_Necromancer(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[10]=udg_HP_Cnt[10]+1
@@ -7515,6 +7723,9 @@ endif
 if HP_Is_Paladin(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_Paladin(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_Paladin(GetTriggerPlayer()) then
 return
 endif
@@ -7568,6 +7779,9 @@ call HP_Save_Paladin(udg_HP_Cur[11])
 call HP_Load_Paladin(0)
 set udg_DivineToll_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Divine_Toll,udg_DivineToll_Timer)
+if not HP_OwnsCopy(11,GetOwningPlayer(u)) then
+call HP_IconReset_Paladin(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[11]=udg_HP_Cnt[11]+1
@@ -7702,6 +7916,9 @@ endif
 if HP_Is_Priest(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_Priest(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_Priest(GetTriggerPlayer()) then
 return
 endif
@@ -7757,6 +7974,9 @@ set udg_Renew_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Renew_Periodic,udg_Renew_Timer)
 set udg_ShadowWord_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Shadow_Word_Pain_Loop,udg_ShadowWord_Timer)
+if not HP_OwnsCopy(12,GetOwningPlayer(u)) then
+call HP_IconReset_Priest(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[12]=udg_HP_Cnt[12]+1
@@ -7873,6 +8093,9 @@ endif
 if HP_Is_Rogue(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_Rogue(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_Rogue(GetTriggerPlayer()) then
 return
 endif
@@ -7926,6 +8149,9 @@ call HP_Save_Rogue(udg_HP_Cur[13])
 call HP_Load_Rogue(0)
 set udg_Vendetta_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Vendetta_Expires,udg_Vendetta_Timer)
+if not HP_OwnsCopy(13,GetOwningPlayer(u)) then
+call HP_IconReset_Rogue(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[13]=udg_HP_Cnt[13]+1
@@ -8056,6 +8282,9 @@ endif
 if HP_Is_Shaman(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_Shaman(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_Shaman(GetTriggerPlayer()) then
 return
 endif
@@ -8089,6 +8318,9 @@ call HP_Save_Shaman(0)
 else
 call HP_Save_Shaman(udg_HP_Cur[14])
 call HP_Load_Shaman(0)
+if not HP_OwnsCopy(14,GetOwningPlayer(u)) then
+call HP_IconReset_Shaman(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[14]=udg_HP_Cnt[14]+1
@@ -8209,6 +8441,9 @@ endif
 if HP_Is_Siren(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_Siren(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_Siren(GetTriggerPlayer()) then
 return
 endif
@@ -8242,6 +8477,9 @@ call HP_Save_Siren(0)
 else
 call HP_Save_Siren(udg_HP_Cur[15])
 call HP_Load_Siren(0)
+if not HP_OwnsCopy(15,GetOwningPlayer(u)) then
+call HP_IconReset_Siren(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[15]=udg_HP_Cnt[15]+1
@@ -8350,6 +8588,9 @@ endif
 if HP_Is_Tidewarrior(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_Tidewarrior(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_Tidewarrior(GetTriggerPlayer()) then
 return
 endif
@@ -8383,6 +8624,9 @@ call HP_Save_Tidewarrior(0)
 else
 call HP_Save_Tidewarrior(udg_HP_Cur[16])
 call HP_Load_Tidewarrior(0)
+if not HP_OwnsCopy(16,GetOwningPlayer(u)) then
+call HP_IconReset_Tidewarrior(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[16]=udg_HP_Cnt[16]+1
@@ -8521,6 +8765,9 @@ endif
 if HP_Is_Tinker(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_Tinker(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_Tinker(GetTriggerPlayer()) then
 return
 endif
@@ -8574,6 +8821,9 @@ call HP_Save_Tinker(udg_HP_Cur[17])
 call HP_Load_Tinker(0)
 set udg_ElectricDischarge_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Electric_Discharge,udg_ElectricDischarge_Timer)
+if not HP_OwnsCopy(17,GetOwningPlayer(u)) then
+call HP_IconReset_Tinker(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[17]=udg_HP_Cnt[17]+1
@@ -8702,6 +8952,9 @@ endif
 if HP_Is_Warlock(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_Warlock(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_Warlock(GetTriggerPlayer()) then
 return
 endif
@@ -8735,6 +8988,9 @@ call HP_Save_Warlock(0)
 else
 call HP_Save_Warlock(udg_HP_Cur[18])
 call HP_Load_Warlock(0)
+if not HP_OwnsCopy(18,GetOwningPlayer(u)) then
+call HP_IconReset_Warlock(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[18]=udg_HP_Cnt[18]+1
@@ -8849,6 +9105,9 @@ endif
 if HP_Is_Warrior(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_Warrior(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_Warrior(GetTriggerPlayer()) then
 return
 endif
@@ -8882,6 +9141,9 @@ call HP_Save_Warrior(0)
 else
 call HP_Save_Warrior(udg_HP_Cur[19])
 call HP_Load_Warrior(0)
+if not HP_OwnsCopy(19,GetOwningPlayer(u)) then
+call HP_IconReset_Warrior(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[19]=udg_HP_Cnt[19]+1
@@ -9006,6 +9268,9 @@ endif
 if HP_Is_Windmaster(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_Windmaster(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_Windmaster(GetTriggerPlayer()) then
 return
 endif
@@ -9065,6 +9330,9 @@ set udg_WS_TestTimer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Windstorm_Expire,udg_WS_TestTimer)
 set udg_Windstorm_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Windstorm_Damage,udg_Windstorm_Timer)
+if not HP_OwnsCopy(20,GetOwningPlayer(u)) then
+call HP_IconReset_Windmaster(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[20]=udg_HP_Cnt[20]+1
@@ -9195,6 +9463,9 @@ endif
 if HP_Is_WitchDoctor(GetOrderTargetUnit()) then
 return
 endif
+if HP_Is_WitchDoctor(HP_AuxHero(GetTriggerUnit())) then
+return
+endif
 if HP_BindP_WitchDoctor(GetTriggerPlayer()) then
 return
 endif
@@ -9248,6 +9519,9 @@ call HP_Save_WitchDoctor(udg_HP_Cur[21])
 call HP_Load_WitchDoctor(0)
 set udg_HealingMantra_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Healing_Mantra_Loop,udg_HealingMantra_Timer)
+if not HP_OwnsCopy(21,GetOwningPlayer(u)) then
+call HP_IconReset_WitchDoctor(GetOwningPlayer(u))
+endif
 set udg_HP_Dup=true
 endif
 set udg_HP_Cnt[21]=udg_HP_Cnt[21]+1
@@ -20566,20 +20840,20 @@ local integer theHuntAbility='A076'
 local integer immolationAbility='A06F'
 local integer demonSurgeAbility='A0CK'
 local integer specAbility='A0CY'
-if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[1])==1)then
-call BlzSetAbilityIcon(metamorphosisAbility,"ReplaceableTextures\\CommandButtons\\BTNMetaHavoc.blp")
-call BlzSetAbilityIcon(demonSurgeAbility,"ReplaceableTextures\\CommandButtons\\PASDemonsurge.blp")
-call BlzSetAbilityIcon(theHuntAbility,"ReplaceableTextures\\CommandButtons\\BTNTheHunt.blp")
-call BlzSetAbilityIcon(immolationAbility,"ReplaceableTextures\\CommandButtons\\BTNImmolationAura.blp")
+if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[HP_SlotOf(udg_Hero_DemonHunter)])==1)then
+call HP_AbIcon(metamorphosisAbility,"ReplaceableTextures\\CommandButtons\\BTNMetaHavoc.blp",udg_Hero_DemonHunter,3)
+call HP_AbIcon(demonSurgeAbility,"ReplaceableTextures\\CommandButtons\\PASDemonsurge.blp",udg_Hero_DemonHunter,3)
+call HP_AbIcon(theHuntAbility,"ReplaceableTextures\\CommandButtons\\BTNTheHunt.blp",udg_Hero_DemonHunter,3)
+call HP_AbIcon(immolationAbility,"ReplaceableTextures\\CommandButtons\\BTNImmolationAura.blp",udg_Hero_DemonHunter,3)
 endif
-if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[1])==2)then
-call BlzSetAbilityIcon(metamorphosisAbility,"ReplaceableTextures\\CommandButtons\\BTNMetaVengenace.blp")
+if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[HP_SlotOf(udg_Hero_DemonHunter)])==2)then
+call HP_AbIcon(metamorphosisAbility,"ReplaceableTextures\\CommandButtons\\BTNMetaVengenace.blp",udg_Hero_DemonHunter,3)
 endif
-if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[1])==3)then
-call BlzSetAbilityIcon(metamorphosisAbility,"ReplaceableTextures\\CommandButtons\\BTNMetaDevourer.blp")
-call BlzSetAbilityIcon(demonSurgeAbility,"ReplaceableTextures\\CommandButtons\\PASDemonsurgeVoid.blp")
-call BlzSetAbilityIcon(theHuntAbility,"ReplaceableTextures\\CommandButtons\\BTNTheHuntVoid.blp")
-call BlzSetAbilityIcon(immolationAbility,"ReplaceableTextures\\CommandButtons\\BTNImmolationAuraVoid.blp")
+if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[HP_SlotOf(udg_Hero_DemonHunter)])==3)then
+call HP_AbIcon(metamorphosisAbility,"ReplaceableTextures\\CommandButtons\\BTNMetaDevourer.blp",udg_Hero_DemonHunter,3)
+call HP_AbIcon(demonSurgeAbility,"ReplaceableTextures\\CommandButtons\\PASDemonsurgeVoid.blp",udg_Hero_DemonHunter,3)
+call HP_AbIcon(theHuntAbility,"ReplaceableTextures\\CommandButtons\\BTNTheHuntVoid.blp",udg_Hero_DemonHunter,3)
+call HP_AbIcon(immolationAbility,"ReplaceableTextures\\CommandButtons\\BTNImmolationAuraVoid.blp",udg_Hero_DemonHunter,3)
 endif
 endfunction
 function MoltenArmor takes unit u returns nothing
@@ -20690,14 +20964,14 @@ function DivineImageIcon takes nothing returns nothing
 local integer divineImageAbility='A0JK'
 local integer specAbility='A0MH'
 if(GetUnitAbilityLevelSwapped(divineImageAbility,udg_Hero_Priest)>=1)then
-if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[3])==1)then
-call BlzSetAbilityIcon(divineImageAbility,"ReplaceableTextures\\CommandButtons\\BTNNaaruDisc.blp")
+if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[HP_SlotOf(udg_Hero_Priest)])==1)then
+call HP_AbIcon(divineImageAbility,"ReplaceableTextures\\CommandButtons\\BTNNaaruDisc.blp",udg_Hero_Priest,12)
 endif
-if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[3])==2)then
-call BlzSetAbilityIcon(divineImageAbility,"ReplaceableTextures\\CommandButtons\\BTNNaaruHoly.blp")
+if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[HP_SlotOf(udg_Hero_Priest)])==2)then
+call HP_AbIcon(divineImageAbility,"ReplaceableTextures\\CommandButtons\\BTNNaaruHoly.blp",udg_Hero_Priest,12)
 endif
-if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[3])==3)then
-call BlzSetAbilityIcon(divineImageAbility,"ReplaceableTextures\\CommandButtons\\BTNNaaruShadow.blp")
+if(GetUnitAbilityLevelSwapped(specAbility,udg_Glyphs_Unit[HP_SlotOf(udg_Hero_Priest)])==3)then
+call HP_AbIcon(divineImageAbility,"ReplaceableTextures\\CommandButtons\\BTNNaaruShadow.blp",udg_Hero_Priest,12)
 endif
 endif
 endfunction
@@ -20723,7 +20997,7 @@ set abilityIcon="ReplaceableTextures\\CommandButtons\\BTNHomingMissiles.blp"
 endif
 set finalTooltipLearn=abilityType+tooltipLearnExtended
 if GetUnitAbilityLevelSwapped('A02T',udg_Hero_Tinker)>=1 then
-call BlzSetAbilityIcon('A02T',abilityIcon)
+call HP_AbIcon('A02T',abilityIcon,udg_Hero_Tinker,17)
 set tooltipLoop=0
 loop
 exitwhen tooltipLoop>3
@@ -33148,6 +33422,7 @@ call HP_LoadSlot(hp_s)
 call CreateNUnitsAtLoc(1,'h007',GetOwningPlayer(GetSoldUnit()),GetUnitLoc(GetSoldUnit()),bj_UNIT_FACING)
 call UnitAddItemByIdSwapped('I0CI',GetLastCreatedUnit())
 set udg_Glyphs_Unit[hp_s]=GetLastCreatedUnit()
+set udg_HP_SpecIcon[hp_s]=""
 set udg_GlyphsPlayer[GetConvertedPlayerId(GetOwningPlayer(GetSoldUnit()))]=GetLastCreatedUnit()
 call UnitAddAbilityBJ(udg_Consumables_Ability[GetConvertedPlayerId(GetOwningPlayer(GetSoldUnit()))],udg_Glyphs_Unit[hp_s])
 set udg_ESC_Points[GetConvertedPlayerId(GetOwningPlayer(GetSoldUnit()))]=1
@@ -33791,6 +34066,7 @@ call HP_LoadSlot(hp_s)
 call CreateNUnitsAtLoc(1,'h007',GetOwningPlayer(GetSoldUnit()),GetUnitLoc(GetSoldUnit()),bj_UNIT_FACING)
 call UnitAddItemByIdSwapped('I0CI',GetLastCreatedUnit())
 set udg_Glyphs_Unit[hp_s]=GetLastCreatedUnit()
+set udg_HP_SpecIcon[hp_s]=""
 set udg_GlyphsPlayer[GetConvertedPlayerId(GetOwningPlayer(GetSoldUnit()))]=GetLastCreatedUnit()
 call UnitAddAbilityBJ(udg_Consumables_Ability[GetConvertedPlayerId(GetOwningPlayer(GetSoldUnit()))],udg_Glyphs_Unit[hp_s])
 set udg_ESC_Points[GetConvertedPlayerId(GetOwningPlayer(GetSoldUnit()))]=1
@@ -34442,6 +34718,7 @@ call HP_LoadSlot(hp_s)
 call CreateNUnitsAtLoc(1,'h007',GetOwningPlayer(GetSoldUnit()),GetUnitLoc(GetSoldUnit()),bj_UNIT_FACING)
 call UnitAddItemByIdSwapped('I0CI',GetLastCreatedUnit())
 set udg_Glyphs_Unit[hp_s]=GetLastCreatedUnit()
+set udg_HP_SpecIcon[hp_s]=""
 set udg_GlyphsPlayer[GetConvertedPlayerId(GetOwningPlayer(GetSoldUnit()))]=GetLastCreatedUnit()
 call UnitAddAbilityBJ(udg_Consumables_Ability[GetConvertedPlayerId(GetOwningPlayer(GetSoldUnit()))],udg_Glyphs_Unit[hp_s])
 set udg_ESC_Points[GetConvertedPlayerId(GetOwningPlayer(GetSoldUnit()))]=1
@@ -58429,10 +58706,10 @@ else
 endif
 if(Trig_PreDamage_Heroes_Func002Func004Func012Func014C())then
 set udg_AmplifyDamage_Stacks=(udg_AmplifyDamage_Stacks+1)
-call BlzSetAbilityIcon('A0HI',udg_AmplifyDamage_Icon[udg_AmplifyDamage_Stacks])
+call HP_AbIcon('A0HI',udg_AmplifyDamage_Icon[udg_AmplifyDamage_Stacks],udg_Hero_Tidewarrior,16)
 if(Trig_PreDamage_Heroes_Func002Func004Func012Func014Func003C())then
 set udg_AmplifyDamage_Stacks=(udg_AmplifyDamage_Stacks+1)
-call BlzSetAbilityIcon('A0HI',udg_AmplifyDamage_Icon[udg_AmplifyDamage_Stacks])
+call HP_AbIcon('A0HI',udg_AmplifyDamage_Icon[udg_AmplifyDamage_Stacks],udg_Hero_Tidewarrior,16)
 else
 endif
 else
@@ -58775,7 +59052,7 @@ else
 endif
 if(Trig_PreDamage_Heroes_Func002Func004Func020Func005C())then
 set udg_AmplifyDamage_Stacks=(udg_AmplifyDamage_Stacks-2)
-call BlzSetAbilityIcon('A0HI',udg_AmplifyDamage_Icon[udg_AmplifyDamage_Stacks])
+call HP_AbIcon('A0HI',udg_AmplifyDamage_Icon[udg_AmplifyDamage_Stacks],udg_Hero_Tidewarrior,16)
 set udg_DCS_Unit=udg_Hero_Tidewarrior
 set udg_DCS_IncludeAttributeBonus=true
 set udg_DCS_IncludeItemBonus=true
@@ -69446,10 +69723,10 @@ call UnitRemoveBuffBJ('B009',udg_Hero_Tidewarrior)
 if(Trig_PreDamage_Increase_Func001Func013Func007Func021Func012C())then
 if(Trig_PreDamage_Increase_Func001Func013Func007Func021Func012Func001C())then
 set udg_AmplifyDamage_Stacks=(udg_AmplifyDamage_Stacks+2)
-call BlzSetAbilityIcon('A0HI',udg_AmplifyDamage_Icon[udg_AmplifyDamage_Stacks])
+call HP_AbIcon('A0HI',udg_AmplifyDamage_Icon[udg_AmplifyDamage_Stacks],udg_Hero_Tidewarrior,16)
 else
 set udg_AmplifyDamage_Stacks=(udg_AmplifyDamage_Stacks+1)
-call BlzSetAbilityIcon('A0HI',udg_AmplifyDamage_Icon[udg_AmplifyDamage_Stacks])
+call HP_AbIcon('A0HI',udg_AmplifyDamage_Icon[udg_AmplifyDamage_Stacks],udg_Hero_Tidewarrior,16)
 endif
 else
 endif
@@ -73208,7 +73485,7 @@ function Trig_ArmorDamage_Reduce_Func001Func022Func004Func024C takes nothing ret
 if(not(IsUnitInGroup(udg_DamageEventSource,udg_Taunt_Group)==true))then
 return false
 endif
-if(not(GetUnitAbilityLevelSwapped('A0O6',udg_Glyphs_Unit[3])==2))then
+if(not(GetUnitAbilityLevelSwapped('A0O6',udg_Glyphs_Unit[HP_SlotOf(udg_DamageEventTarget)])==2))then
 return false
 endif
 if(not(HP_Is_DragonSentinel(udg_DamageEventTarget)))then
@@ -107698,87 +107975,87 @@ loop
 exitwhen udg_HP_BoardSlot>3
 if udg_Agi_Str_Int[udg_HP_BoardSlot]!=null then
 if(Trig_Specs_Board_Update_Func001C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A0KU'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A0KU'))
 else
 endif
 if(Trig_Specs_Board_Update_Func002C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A098'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A098'))
 else
 endif
 if(Trig_Specs_Board_Update_Func003C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A0MP'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A0MP'))
 else
 endif
 if(Trig_Specs_Board_Update_Func004C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A0KW'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A0KW'))
 else
 endif
 if(Trig_Specs_Board_Update_Func005C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A0CC'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A0CC'))
 else
 endif
 if(Trig_Specs_Board_Update_Func006C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A0JW'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A0JW'))
 else
 endif
 if(Trig_Specs_Board_Update_Func007C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A0CY'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A0CY'))
 else
 endif
 if(Trig_Specs_Board_Update_Func008C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A0KO'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A0KO'))
 else
 endif
 if(Trig_Specs_Board_Update_Func009C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A0JM'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A0JM'))
 else
 endif
 if(Trig_Specs_Board_Update_Func010C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A0I0'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A0I0'))
 else
 endif
 if(Trig_Specs_Board_Update_Func011C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A040'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A040'))
 else
 endif
 if(Trig_Specs_Board_Update_Func012C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A0O6'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A0O6'))
 else
 endif
 if(Trig_Specs_Board_Update_Func013C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A0JA'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A0JA'))
 else
 endif
 if(Trig_Specs_Board_Update_Func014C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A0NB'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A0NB'))
 else
 endif
 if(Trig_Specs_Board_Update_Func015C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A06Z'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A06Z'))
 else
 endif
 if(Trig_Specs_Board_Update_Func016C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A0E0'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A0E0'))
 else
 endif
 if(Trig_Specs_Board_Update_Func017C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A0MH'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A0MH'))
 else
 endif
 if(Trig_Specs_Board_Update_Func018C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A00D'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A00D'))
 else
 endif
 if(Trig_Specs_Board_Update_Func019C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A0G4'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A0G4'))
 else
 endif
 if(Trig_Specs_Board_Update_Func020C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A0LF'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A0LF'))
 else
 endif
 if(Trig_Specs_Board_Update_Func021C())then
-call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),BlzGetAbilityIcon('A0J8'))
+call MultiboardSetItemIconBJ(udg_Main_Board,2,(GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_HP_BoardSlot]))+2),HP_SpecIconOf(udg_HP_BoardSlot,'A0J8'))
 else
 endif
 endif
@@ -115654,17 +115931,17 @@ if(Trig_Specialization_Change_Func001Func008Func002C())then
 set udg_Mastery_Unit=udg_Hero_Shaman
 if(Trig_Specialization_Change_Func001Func008Func002Func002C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A06Z',"ReplaceableTextures\\CommandButtons\\BTNMaelstrom'sFury.blp")
+call HP_SpecIcon('A06Z',"ReplaceableTextures\\CommandButtons\\BTNMaelstrom'sFury.blp",14)
 else
 if(Trig_Specialization_Change_Func001Func008Func002Func002Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),3)
-call BlzSetAbilityIcon('A06Z',"ReplaceableTextures\\CommandButtons\\BTNElementalSpec.blp")
+call HP_SpecIcon('A06Z',"ReplaceableTextures\\CommandButtons\\BTNElementalSpec.blp",14)
 call UnitRemoveAbilityBJ('A0N8',udg_Hero_Shaman)
 call UnitAddAbilityBJ('A0QF',udg_Hero_Shaman)
 else
 if(Trig_Specialization_Change_Func001Func008Func002Func002Func001Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A06Z',"ReplaceableTextures\\CommandButtons\\BTNResistMagic.blp")
+call HP_SpecIcon('A06Z',"ReplaceableTextures\\CommandButtons\\BTNResistMagic.blp",14)
 call UnitRemoveAbilityBJ('A0QF',udg_Hero_Shaman)
 call UnitAddAbilityBJ('A0N8',udg_Hero_Shaman)
 else
@@ -115677,7 +115954,7 @@ if(Trig_Specialization_Change_Func001Func008Func004C())then
 set udg_Mastery_Unit=udg_Hero_Druid
 if(Trig_Specialization_Change_Func001Func008Func004Func002C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A0E0',"ReplaceableTextures\\CommandButtons\\BTNStarfall.blp")
+call HP_SpecIcon('A0E0',"ReplaceableTextures\\CommandButtons\\BTNStarfall.blp",5)
 if(Trig_Specialization_Change_Func001Func008Func004Func002Func005C())then
 call UnitRemoveAbilityBJ('A095',udg_Hero_Druid)
 else
@@ -115687,7 +115964,7 @@ call UnitAddAbilityBJ('A08Y',udg_Hero_Druid)
 else
 if(Trig_Specialization_Change_Func001Func008Func004Func002Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A0E0',"ReplaceableTextures\\CommandButtons\\BTNDeepHealing.blp")
+call HP_SpecIcon('A0E0',"ReplaceableTextures\\CommandButtons\\BTNDeepHealing.blp",5)
 call SetPlayerAbilityAvailableBJ(true,'A095',GetOwningPlayer(udg_Hero_Druid))
 call UnitRemoveAbilityBJ('A08Y',udg_Hero_Druid)
 else
@@ -115699,7 +115976,7 @@ if(Trig_Specialization_Change_Func001Func008Func006C())then
 set udg_Mastery_Unit=udg_Hero_Priest
 if(Trig_Specialization_Change_Func001Func008Func006Func002C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A0MH',"ReplaceableTextures\\CommandButtons\\BTNHolySpec.blp")
+call HP_SpecIcon('A0MH',"ReplaceableTextures\\CommandButtons\\BTNHolySpec.blp",12)
 call UnitRemoveAbilityBJ('A0GK',udg_Hero_Priest)
 call UnitAddAbilityBJ('A0MC',udg_Hero_Priest)
 call UnitRemoveAbilityBJ('A0CP',udg_Hero_Priest)
@@ -115708,7 +115985,7 @@ call DivineImageIcon()
 else
 if(Trig_Specialization_Change_Func001Func008Func006Func002Func003C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),3)
-call BlzSetAbilityIcon('A0MH',"ReplaceableTextures\\CommandButtons\\BTNShadowSpec.blp")
+call HP_SpecIcon('A0MH',"ReplaceableTextures\\CommandButtons\\BTNShadowSpec.blp",12)
 call UnitRemoveAbilityBJ('A0GC',udg_Hero_Priest)
 call UnitAddAbilityBJ('A0MI',udg_Hero_Priest)
 call UnitRemoveAbilityBJ('A0KI',udg_Hero_Priest)
@@ -115721,7 +115998,7 @@ call DivineImageIcon()
 else
 if(Trig_Specialization_Change_Func001Func008Func006Func002Func003Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A0MH',"ReplaceableTextures\\CommandButtons\\BTNPowerWordShield.blp")
+call HP_SpecIcon('A0MH',"ReplaceableTextures\\CommandButtons\\BTNPowerWordShield.blp",12)
 call UnitRemoveAbilityBJ('A0MI',udg_Hero_Priest)
 call UnitAddAbilityBJ('A0GC',udg_Hero_Priest)
 call UnitRemoveAbilityBJ('A0GS',udg_Hero_Priest)
@@ -115740,30 +116017,30 @@ if(Trig_Specialization_Change_Func001Func008Func008C())then
 set udg_Mastery_Unit=udg_Hero_Mage
 if(Trig_Specialization_Change_Func001Func008Func008Func002C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A00D',"ReplaceableTextures\\CommandButtons\\BTNMagicalSentry.blp")
+call HP_SpecIcon('A00D',"ReplaceableTextures\\CommandButtons\\BTNMagicalSentry.blp",8)
 set udg_CustomResource_CurrentValue[HP_PidOf(udg_Hero_Mage)]=0
 call UnitRemoveAbilityBJ('A0RC',udg_Hero_Mage)
 call UnitAddAbilityBJ('A0Q7',udg_Hero_Mage)
-call BlzSetAbilityIcon('A04Z',"ReplaceableTextures\\CommandButtons\\PASArcaneMastery.blp")
+call HP_SpecIcon('A04Z',"ReplaceableTextures\\CommandButtons\\PASArcaneMastery.blp",8)
 else
 if(Trig_Specialization_Change_Func001Func008Func008Func002Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),3)
-call BlzSetAbilityIcon('A00D',"ReplaceableTextures\\CommandButtons\\BTNFireSpec.blp")
+call HP_SpecIcon('A00D',"ReplaceableTextures\\CommandButtons\\BTNFireSpec.blp",8)
 set udg_CustomResource_CurrentValue[HP_PidOf(udg_Hero_Mage)]=0
 set udg_ArcaneBlast_Charges=0
 call FlushChildHashtable(TasAbilityChargeBox_Hash,GetHandleId((udg_Hero_Mage)))
 call BlzSetAbilityIntegerLevelFieldBJ(BlzGetUnitAbility(udg_Hero_Mage,'A0NZ'),ABILITY_ILF_MANA_COST,(udg_ArcaneBlast_Level-1),R2I((I2R(udg_ArcaneBlast_Mana)*1.00)))
 call UnitRemoveAbilityBJ('A0Q7',udg_Hero_Mage)
 call UnitAddAbilityBJ('A0B5',udg_Hero_Mage)
-call BlzSetAbilityIcon('A04Z',"ReplaceableTextures\\CommandButtons\\PASFireMastery.blp")
+call HP_SpecIcon('A04Z',"ReplaceableTextures\\CommandButtons\\PASFireMastery.blp",8)
 else
 if(Trig_Specialization_Change_Func001Func008Func008Func002Func001Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A00D',"ReplaceableTextures\\CommandButtons\\BTNFrostSpec.blp")
+call HP_SpecIcon('A00D',"ReplaceableTextures\\CommandButtons\\BTNFrostSpec.blp",8)
 set udg_CustomResource_CurrentValue[HP_PidOf(udg_Hero_Mage)]=0
 call UnitRemoveAbilityBJ('A0B5',udg_Hero_Mage)
 call UnitAddAbilityBJ('A0RC',udg_Hero_Mage)
-call BlzSetAbilityIcon('A04Z',"ReplaceableTextures\\CommandButtons\\PASFrostMastery.blp")
+call HP_SpecIcon('A04Z',"ReplaceableTextures\\CommandButtons\\PASFrostMastery.blp",8)
 else
 endif
 endif
@@ -115774,18 +116051,18 @@ if(Trig_Specialization_Change_Func001Func008Func010C())then
 set udg_Mastery_Unit=udg_Hero_Necromancer
 if(Trig_Specialization_Change_Func001Func008Func010Func002C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A0G4',"ReplaceableTextures\\CommandButtons\\BTNLifeFromDeath.blp")
+call HP_SpecIcon('A0G4',"ReplaceableTextures\\CommandButtons\\BTNLifeFromDeath.blp",10)
 else
 if(Trig_Specialization_Change_Func001Func008Func010Func002Func003C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),3)
-call BlzSetAbilityIcon('A0G4',"ReplaceableTextures\\CommandButtons\\BTNGrimScythe.blp")
+call HP_SpecIcon('A0G4',"ReplaceableTextures\\CommandButtons\\BTNGrimScythe.blp",10)
 call PauseTimerBJ(true,udg_RaiseDead_Timer)
 call UnitRemoveAbilityBJ('A0FR',udg_Hero_Necromancer)
 call UnitAddAbilityBJ('A0GG',udg_Hero_Necromancer)
 else
 if(Trig_Specialization_Change_Func001Func008Func010Func002Func003Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A0G4',"ReplaceableTextures\\CommandButtons\\BTNRaiseDeadNecro.blp")
+call HP_SpecIcon('A0G4',"ReplaceableTextures\\CommandButtons\\BTNRaiseDeadNecro.blp",10)
 call UnitRemoveAbilityBJ('A0GG',udg_Hero_Necromancer)
 call UnitAddAbilityBJ('A0FR',udg_Hero_Necromancer)
 set udg_RaiseDead_Ticks=0
@@ -115799,14 +116076,14 @@ if(Trig_Specialization_Change_Func001Func008Func012C())then
 set udg_Mastery_Unit=udg_Hero_Warlock
 if(Trig_Specialization_Change_Func001Func008Func012Func002C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A0LF',"ReplaceableTextures\\CommandButtons\\BTNDestructionSpec.blp")
+call HP_SpecIcon('A0LF',"ReplaceableTextures\\CommandButtons\\BTNDestructionSpec.blp",18)
 call PauseTimerBJ(true,udg_Agony_Timer)
 call UnitRemoveAbilityBJ('A0LI',udg_Hero_Warlock)
 call UnitAddAbilityBJ('A0QZ',udg_Hero_Warlock)
 else
 if(Trig_Specialization_Change_Func001Func008Func012Func002Func007C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),3)
-call BlzSetAbilityIcon('A0LF',"ReplaceableTextures\\CommandButtons\\BTNDeathCoil.blp")
+call HP_SpecIcon('A0LF',"ReplaceableTextures\\CommandButtons\\BTNDeathCoil.blp",18)
 call StartTimerBJ(udg_Agony_Timer,false,(1.00/ udg_Agony_TickRate))
 call UnitRemoveAbilityBJ('A0QZ',udg_Hero_Warlock)
 call UnitAddAbilityBJ('A0LI',udg_Hero_Warlock)
@@ -115819,10 +116096,10 @@ endif
 else
 if(Trig_Specialization_Change_Func001Func008Func012Func002Func007Func010C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A0LF',"ReplaceableTextures\\CommandButtons\\BTNMetamorphosis.blp")
+call HP_SpecIcon('A0LF',"ReplaceableTextures\\CommandButtons\\BTNMetamorphosis.blp",18)
 call UnitRemoveAbilityBJ('A0EG',udg_Hero_Warlock)
 call UnitAddAbilityBJ('A0QX',udg_Hero_Warlock)
-call BlzSetAbilityIcon('A0QX',"ReplaceableTextures\\CommandButtons\\PASBackdraft.blp")
+call HP_SpecIcon('A0QX',"ReplaceableTextures\\CommandButtons\\PASBackdraft.blp",18)
 else
 endif
 endif
@@ -115833,13 +116110,13 @@ if(Trig_Specialization_Change_Func001Func008Func014C())then
 set udg_Mastery_Unit=udg_Hero_WitchDoctor
 if(Trig_Specialization_Change_Func001Func008Func014Func002C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A0J8',"ReplaceableTextures\\CommandButtons\\BTNNoxiousVenom.blp")
+call HP_SpecIcon('A0J8',"ReplaceableTextures\\CommandButtons\\BTNNoxiousVenom.blp",21)
 call SetPlayerAbilityAvailableBJ(false,'A0GO',GetOwningPlayer(udg_Hero_WitchDoctor))
 call SetPlayerAbilityAvailableBJ(true,'A0LS',GetOwningPlayer(udg_Hero_WitchDoctor))
 else
 if(Trig_Specialization_Change_Func001Func008Func014Func002Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A0J8',"ReplaceableTextures\\CommandButtons\\BTNBigBadVoodooSpell.blp")
+call HP_SpecIcon('A0J8',"ReplaceableTextures\\CommandButtons\\BTNBigBadVoodooSpell.blp",21)
 call SetPlayerAbilityAvailableBJ(false,'A0LS',GetOwningPlayer(udg_Hero_WitchDoctor))
 call SetPlayerAbilityAvailableBJ(true,'A0GO',GetOwningPlayer(udg_Hero_WitchDoctor))
 else
@@ -115854,15 +116131,15 @@ if(Trig_Specialization_Change_Func001Func012Func002C())then
 set udg_Mastery_Unit=udg_Hero_Warrior
 if(Trig_Specialization_Change_Func001Func012Func002Func002C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A0KO',"ReplaceableTextures\\CommandButtons\\BTNArmsSpec.blp")
+call HP_SpecIcon('A0KO',"ReplaceableTextures\\CommandButtons\\BTNArmsSpec.blp",19)
 else
 if(Trig_Specialization_Change_Func001Func012Func002Func002Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),3)
-call BlzSetAbilityIcon('A0KO',"ReplaceableTextures\\CommandButtons\\BTNFurySpec.blp")
+call HP_SpecIcon('A0KO',"ReplaceableTextures\\CommandButtons\\BTNFurySpec.blp",19)
 else
 if(Trig_Specialization_Change_Func001Func012Func002Func002Func001Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A0KO',"ReplaceableTextures\\CommandButtons\\BTNProtectionSpec.blp")
+call HP_SpecIcon('A0KO',"ReplaceableTextures\\CommandButtons\\BTNProtectionSpec.blp",19)
 else
 endif
 endif
@@ -115873,20 +116150,20 @@ if(Trig_Specialization_Change_Func001Func012Func004C())then
 set udg_Mastery_Unit=udg_Hero_DeathKnight
 if(Trig_Specialization_Change_Func001Func012Func004Func002C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A0I0',"ReplaceableTextures\\CommandButtons\\BTNBloodPresence.blp")
-call BlzSetAbilityIcon('A0I9',"ReplaceableTextures\\CommandButtons\\PASBloodPresence.blp")
+call HP_SpecIcon('A0I0',"ReplaceableTextures\\CommandButtons\\BTNBloodPresence.blp",2)
+call HP_SpecIcon('A0I9',"ReplaceableTextures\\CommandButtons\\PASBloodPresence.blp",2)
 else
 if(Trig_Specialization_Change_Func001Func012Func004Func002Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),3)
-call BlzSetAbilityIcon('A0I0',"ReplaceableTextures\\CommandButtons\\BTNUnholyPresence.blp")
-call BlzSetAbilityIcon('A0I9',"ReplaceableTextures\\CommandButtons\\PASUnholyPresence.blp")
+call HP_SpecIcon('A0I0',"ReplaceableTextures\\CommandButtons\\BTNUnholyPresence.blp",2)
+call HP_SpecIcon('A0I9',"ReplaceableTextures\\CommandButtons\\PASUnholyPresence.blp",2)
 call UnitRemoveAbilityBJ('A085',udg_Hero_DeathKnight)
 call UnitAddAbilityBJ('A038',udg_Hero_DeathKnight)
 else
 if(Trig_Specialization_Change_Func001Func012Func004Func002Func001Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A0I0',"ReplaceableTextures\\CommandButtons\\BTNFrostPresence.blp")
-call BlzSetAbilityIcon('A0I9',"ReplaceableTextures\\CommandButtons\\PASFrostPresence.blp")
+call HP_SpecIcon('A0I0',"ReplaceableTextures\\CommandButtons\\BTNFrostPresence.blp",2)
+call HP_SpecIcon('A0I9',"ReplaceableTextures\\CommandButtons\\PASFrostPresence.blp",2)
 call UnitRemoveAbilityBJ('A038',udg_Hero_DeathKnight)
 call UnitAddAbilityBJ('A085',udg_Hero_DeathKnight)
 else
@@ -115899,15 +116176,15 @@ if(Trig_Specialization_Change_Func001Func012Func006C())then
 set udg_Mastery_Unit=udg_Hero_Paladin
 if(Trig_Specialization_Change_Func001Func012Func006Func002C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A0JM',"ReplaceableTextures\\CommandButtons\\BTNPalaProtection.blp")
+call HP_SpecIcon('A0JM',"ReplaceableTextures\\CommandButtons\\BTNPalaProtection.blp",11)
 else
 if(Trig_Specialization_Change_Func001Func012Func006Func002Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),3)
-call BlzSetAbilityIcon('A0JM',"ReplaceableTextures\\CommandButtons\\BTNHolyBolt.blp")
+call HP_SpecIcon('A0JM',"ReplaceableTextures\\CommandButtons\\BTNHolyBolt.blp",11)
 else
 if(Trig_Specialization_Change_Func001Func012Func006Func002Func001Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A0JM',"ReplaceableTextures\\CommandButtons\\BTNRetribution.blp")
+call HP_SpecIcon('A0JM',"ReplaceableTextures\\CommandButtons\\BTNRetribution.blp",11)
 else
 endif
 endif
@@ -115918,19 +116195,19 @@ if(Trig_Specialization_Change_Func001Func012Func008C())then
 set udg_Mastery_Unit=udg_Hero_Monk
 if(Trig_Specialization_Change_Func001Func012Func008Func002C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A040',"ReplaceableTextures\\CommandButtons\\BTNBrewmasterSpec.blp")
+call HP_SpecIcon('A040',"ReplaceableTextures\\CommandButtons\\BTNBrewmasterSpec.blp",9)
 call UnitRemoveAbilityBJ('A0OM',udg_Hero_Monk)
 call UnitAddAbilityBJ('A0R7',udg_Hero_Monk)
 else
 if(Trig_Specialization_Change_Func001Func012Func008Func002Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),3)
-call BlzSetAbilityIcon('A040',"ReplaceableTextures\\CommandButtons\\BTNMistweaverSpec.blp")
+call HP_SpecIcon('A040',"ReplaceableTextures\\CommandButtons\\BTNMistweaverSpec.blp",9)
 call UnitRemoveAbilityBJ('A0R7',udg_Hero_Monk)
 call UnitAddAbilityBJ('A0R6',udg_Hero_Monk)
 else
 if(Trig_Specialization_Change_Func001Func012Func008Func002Func001Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A040',"ReplaceableTextures\\CommandButtons\\BTNWindwalkerSpec.blp")
+call HP_SpecIcon('A040',"ReplaceableTextures\\CommandButtons\\BTNWindwalkerSpec.blp",9)
 call UnitRemoveAbilityBJ('A0R6',udg_Hero_Monk)
 call UnitAddAbilityBJ('A0OM',udg_Hero_Monk)
 else
@@ -115943,19 +116220,19 @@ if(Trig_Specialization_Change_Func001Func012Func010C())then
 set udg_Mastery_Unit=udg_Hero_DragonSentinel
 if(Trig_Specialization_Change_Func001Func012Func010Func002C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon(GetSpellAbilityId(),"ReplaceableTextures\\CommandButtons\\BTNObsidianSpec.blp")
+call HP_SpecIcon(GetSpellAbilityId(),"ReplaceableTextures\\CommandButtons\\BTNObsidianSpec.blp",4)
 call SetUnitAbilityLevelSwapped('A0HW',udg_Hero_DragonSentinel,2)
 else
 if(Trig_Specialization_Change_Func001Func012Func010Func002Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),3)
-call BlzSetAbilityIcon(GetSpellAbilityId(),"ReplaceableTextures\\CommandButtons\\BTNEmeraldSpec.blp")
+call HP_SpecIcon(GetSpellAbilityId(),"ReplaceableTextures\\CommandButtons\\BTNEmeraldSpec.blp",4)
 call SetUnitAbilityLevelSwapped('A0HW',udg_Hero_DragonSentinel,3)
 call UnitRemoveAbilityBJ('A00B',udg_Hero_DragonSentinel)
 call UnitAddAbilityBJ('A0OO',udg_Hero_DragonSentinel)
 else
 if(Trig_Specialization_Change_Func001Func012Func010Func002Func001Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon(GetSpellAbilityId(),"ReplaceableTextures\\CommandButtons\\BTNRubySpec.blp")
+call HP_SpecIcon(GetSpellAbilityId(),"ReplaceableTextures\\CommandButtons\\BTNRubySpec.blp",4)
 call SetUnitAbilityLevelSwapped('A0HW',udg_Hero_DragonSentinel,1)
 call UnitRemoveAbilityBJ('A0OO',udg_Hero_DragonSentinel)
 call UnitAddAbilityBJ('A00B',udg_Hero_DragonSentinel)
@@ -115969,11 +116246,11 @@ if(Trig_Specialization_Change_Func001Func012Func012C())then
 set udg_Mastery_Unit=udg_Hero_Tidewarrior
 if(Trig_Specialization_Change_Func001Func012Func012Func002C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A0JA',"ReplaceableTextures\\CommandButtons\\BTNSeaHunter.blp")
+call HP_SpecIcon('A0JA',"ReplaceableTextures\\CommandButtons\\BTNSeaHunter.blp",16)
 else
 if(Trig_Specialization_Change_Func001Func012Func012Func002Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A0JA',"ReplaceableTextures\\CommandButtons\\BTNGuardianSpec.blp")
+call HP_SpecIcon('A0JA',"ReplaceableTextures\\CommandButtons\\BTNGuardianSpec.blp",16)
 else
 endif
 endif
@@ -115983,13 +116260,13 @@ if(Trig_Specialization_Change_Func001Func012Func014C())then
 set udg_Mastery_Unit=udg_Hero_Tinker
 if(Trig_Specialization_Change_Func001Func012Func014Func002C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A0NB',"ReplaceableTextures\\CommandButtons\\BTNDemolitions.blp")
+call HP_SpecIcon('A0NB',"ReplaceableTextures\\CommandButtons\\BTNDemolitions.blp",17)
 call UnitRemoveAbilityBJ('A0QQ',udg_Hero_Tinker)
 call UnitAddAbilityBJ('A0C2',udg_Hero_Tinker)
 else
 if(Trig_Specialization_Change_Func001Func012Func014Func002Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),3)
-call BlzSetAbilityIcon('A0NB',"ReplaceableTextures\\CommandButtons\\BTNNanotech.blp")
+call HP_SpecIcon('A0NB',"ReplaceableTextures\\CommandButtons\\BTNNanotech.blp",17)
 call UnitRemoveAbilityBJ('A0C2',udg_Hero_Tinker)
 call UnitAddAbilityBJ('A0QQ',udg_Hero_Tinker)
 call UnitRemoveAbilityBJ('A0C1',udg_Hero_Tinker)
@@ -116001,7 +116278,7 @@ endif
 else
 if(Trig_Specialization_Change_Func001Func012Func014Func002Func001Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A0NB',"ReplaceableTextures\\CommandButtons\\BTNEngineeringUpgrade.blp")
+call HP_SpecIcon('A0NB',"ReplaceableTextures\\CommandButtons\\BTNEngineeringUpgrade.blp",17)
 if(Trig_Specialization_Change_Func001Func012Func014Func002Func001Func001Func004C())then
 call StartTimerBJ(udg_Exosuit_Timer,false,(0.01/ 10.00))
 else
@@ -116023,13 +116300,13 @@ if(Trig_Specialization_Change_Func001Func016Func002C())then
 set udg_Mastery_Unit=udg_Hero_Rogue
 if(Trig_Specialization_Change_Func001Func016Func002Func002C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A0KU',"ReplaceableTextures\\CommandButtons\\BTNCombatSpec.blp")
+call HP_SpecIcon('A0KU',"ReplaceableTextures\\CommandButtons\\BTNCombatSpec.blp",13)
 call UnitRemoveAbilityBJ('A0FH',udg_Hero_Rogue)
 call UnitAddAbilityBJ('A0EQ',udg_Hero_Rogue)
 else
 if(Trig_Specialization_Change_Func001Func016Func002Func002Func006C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A0KU',"ReplaceableTextures\\CommandButtons\\BTNRogueStealth.blp")
+call HP_SpecIcon('A0KU',"ReplaceableTextures\\CommandButtons\\BTNRogueStealth.blp",13)
 call UnitRemoveAbilityBJ('A0EQ',udg_Hero_Rogue)
 call UnitAddAbilityBJ('A0FH',udg_Hero_Rogue)
 else
@@ -116043,19 +116320,19 @@ call KillUnit(udg_Hunter_Current_Pet)
 call ForGroupBJ(udg_UnleashBeasts_Group,function Trig_Specialization_Change_Func001Func016Func004Func003A)
 if(Trig_Specialization_Change_Func001Func016Func004Func004C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A098',"ReplaceableTextures\\CommandButtons\\BTNBeastMasterSpec.blp")
+call HP_SpecIcon('A098',"ReplaceableTextures\\CommandButtons\\BTNBeastMasterSpec.blp",7)
 call SetPlayerAbilityAvailableBJ(false,'A0ME',GetOwningPlayer(udg_Hero_Hunter))
 call SetPlayerAbilityAvailableBJ(true,'A00N',GetOwningPlayer(udg_Hero_Hunter))
 else
 if(Trig_Specialization_Change_Func001Func016Func004Func004Func006C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),3)
-call BlzSetAbilityIcon('A098',"ReplaceableTextures\\CommandButtons\\BTNSurvivalSpec.blp")
+call HP_SpecIcon('A098',"ReplaceableTextures\\CommandButtons\\BTNSurvivalSpec.blp",7)
 call SetPlayerAbilityAvailableBJ(false,'A00N',GetOwningPlayer(udg_Hero_Hunter))
 call SetPlayerAbilityAvailableBJ(true,'A0MF',GetOwningPlayer(udg_Hero_Hunter))
 else
 if(Trig_Specialization_Change_Func001Func016Func004Func004Func006Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A098',"ReplaceableTextures\\CommandButtons\\BTNMarksmanshipSpec.blp")
+call HP_SpecIcon('A098',"ReplaceableTextures\\CommandButtons\\BTNMarksmanshipSpec.blp",7)
 call SetPlayerAbilityAvailableBJ(false,'A0MF',GetOwningPlayer(udg_Hero_Hunter))
 call SetPlayerAbilityAvailableBJ(true,'A0ME',GetOwningPlayer(udg_Hero_Hunter))
 else
@@ -116068,7 +116345,7 @@ if(Trig_Specialization_Change_Func001Func016Func006C())then
 set udg_Mastery_Unit=udg_Hero_FeralDruid
 if(Trig_Specialization_Change_Func001Func016Func006Func002C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A0MP',"ReplaceableTextures\\CommandButtons\\BTNBearForm.blp")
+call HP_SpecIcon('A0MP',"ReplaceableTextures\\CommandButtons\\BTNBearForm.blp",6)
 call UnitRemoveAbilityBJ('A0E8',udg_Hero_FeralDruid)
 set udg_CustomResource_CurrentValue[HP_PidOf(udg_Hero_FeralDruid)]=0
 if(Trig_Specialization_Change_Func001Func016Func006Func002Func007C())then
@@ -116079,7 +116356,7 @@ call SetPlayerAbilityAvailableBJ(true,'A0MQ',GetOwningPlayer(udg_Hero_FeralDruid
 else
 if(Trig_Specialization_Change_Func001Func016Func006Func002Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),3)
-call BlzSetAbilityIcon('A0MP',"ReplaceableTextures\\CommandButtons\\BTNCatForm.blp")
+call HP_SpecIcon('A0MP',"ReplaceableTextures\\CommandButtons\\BTNCatForm.blp",6)
 if(Trig_Specialization_Change_Func001Func016Func006Func002Func001Func005C())then
 set udg_BearForm_Percentage=GetUnitLifePercent(udg_Hero_FeralDruid)
 call StartTimerBJ(udg_BearForm_Timer,false,0.01)
@@ -116095,7 +116372,7 @@ call SetPlayerAbilityAvailableBJ(true,'A0MS',GetOwningPlayer(udg_Hero_FeralDruid
 else
 if(Trig_Specialization_Change_Func001Func016Func006Func002Func001Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A0MP',"ReplaceableTextures\\CommandButtons\\BTNFerocity.blp")
+call HP_SpecIcon('A0MP',"ReplaceableTextures\\CommandButtons\\BTNFerocity.blp",6)
 call UnitRemoveAbilityBJ('A0MS',udg_Hero_FeralDruid)
 call SetPlayerAbilityAvailableBJ(false,'A0MS',GetOwningPlayer(udg_Hero_FeralDruid))
 call UnitAddAbilityBJ('A0E8',udg_Hero_FeralDruid)
@@ -116110,17 +116387,17 @@ if(Trig_Specialization_Change_Func001Func016Func008C())then
 set udg_Mastery_Unit=udg_Hero_Berserker
 if(Trig_Specialization_Change_Func001Func016Func008Func002C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A0KW',"ReplaceableTextures\\CommandButtons\\BTNPoisonSpecBers.blp")
+call HP_SpecIcon('A0KW',"ReplaceableTextures\\CommandButtons\\BTNPoisonSpecBers.blp",1)
 else
 if(Trig_Specialization_Change_Func001Func016Func008Func002Func003C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),3)
-call BlzSetAbilityIcon('A0KW',"ReplaceableTextures\\CommandButtons\\BTNFurySpecBers.blp")
+call HP_SpecIcon('A0KW',"ReplaceableTextures\\CommandButtons\\BTNFurySpecBers.blp",1)
 call IssueImmediateOrderBJ(udg_Hero_Berserker,"manashieldoff")
 call IssueImmediateOrderBJ(udg_Hero_Berserker,"bearform")
 else
 if(Trig_Specialization_Change_Func001Func016Func008Func002Func003Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A0KW',"ReplaceableTextures\\CommandButtons\\BTNTrophies.blp")
+call HP_SpecIcon('A0KW',"ReplaceableTextures\\CommandButtons\\BTNTrophies.blp",1)
 call IssueImmediateOrderBJ(udg_Hero_Berserker,"manashieldoff")
 call IssueImmediateOrderBJ(udg_Hero_Berserker,"unbearform")
 else
@@ -116133,12 +116410,12 @@ if(Trig_Specialization_Change_Func001Func016Func010C())then
 set udg_Mastery_Unit=udg_Hero_Windmaster
 if(Trig_Specialization_Change_Func001Func016Func010Func002C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A0CC',"ReplaceableTextures\\CommandButtons\\BTNThunderGlyph.blp")
+call HP_SpecIcon('A0CC',"ReplaceableTextures\\CommandButtons\\BTNThunderGlyph.blp",20)
 call IssueImmediateOrderBJ(udg_Hero_Windmaster,"unbearform")
 else
 if(Trig_Specialization_Change_Func001Func016Func010Func002Func005C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),3)
-call BlzSetAbilityIcon('A0CC',"ReplaceableTextures\\CommandButtons\\BTNBalancedBlade.blp")
+call HP_SpecIcon('A0CC',"ReplaceableTextures\\CommandButtons\\BTNBalancedBlade.blp",20)
 call IssueImmediateOrderBJ(udg_Hero_Windmaster,"unbearform")
 set hp_w1=udg_Hero_Berserker
 set hp_w2=udg_Hero_DeathKnight
@@ -116188,7 +116465,7 @@ call UnitAddAbilityBJ('A08D',udg_Hero_Windmaster)
 else
 if(Trig_Specialization_Change_Func001Func016Func010Func002Func005Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A0CC',"ReplaceableTextures\\CommandButtons\\BTNWindWalkOn.blp")
+call HP_SpecIcon('A0CC',"ReplaceableTextures\\CommandButtons\\BTNWindWalkOn.blp",20)
 call UnitRemoveAbilityBJ('A08D',udg_Hero_Windmaster)
 call UnitAddAbilityBJ('A0QE',udg_Hero_Windmaster)
 else
@@ -116201,15 +116478,15 @@ if(Trig_Specialization_Change_Func001Func016Func012C())then
 set udg_Mastery_Unit=udg_Hero_Siren
 if(Trig_Specialization_Change_Func001Func016Func012Func002C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A0JW',"ReplaceableTextures\\CommandButtons\\BTNSummonWaterElemental.blp")
+call HP_SpecIcon('A0JW',"ReplaceableTextures\\CommandButtons\\BTNSummonWaterElemental.blp",15)
 else
 if(Trig_Specialization_Change_Func001Func016Func012Func002Func003C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),3)
-call BlzSetAbilityIcon('A0JW',"ReplaceableTextures\\CommandButtons\\BTNManaRecharge.blp")
+call HP_SpecIcon('A0JW',"ReplaceableTextures\\CommandButtons\\BTNManaRecharge.blp",15)
 else
 if(Trig_Specialization_Change_Func001Func016Func012Func002Func003Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A0JW',"ReplaceableTextures\\CommandButtons\\BTNLiquidArrows.blp")
+call HP_SpecIcon('A0JW',"ReplaceableTextures\\CommandButtons\\BTNLiquidArrows.blp",15)
 else
 endif
 endif
@@ -116220,19 +116497,19 @@ if(Trig_Specialization_Change_Func001Func016Func014C())then
 set udg_Mastery_Unit=udg_Hero_DemonHunter
 if(Trig_Specialization_Change_Func001Func016Func014Func002C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A0CY',"ReplaceableTextures\\CommandButtons\\BTNVengeanceSpec.blp")
+call HP_SpecIcon('A0CY',"ReplaceableTextures\\CommandButtons\\BTNVengeanceSpec.blp",3)
 call UnitRemoveAbilityBJ('A0RF',udg_Hero_DemonHunter)
 call UnitAddAbilityBJ('A0RH',udg_Hero_DemonHunter)
 else
 if(Trig_Specialization_Change_Func001Func016Func014Func002Func006C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),3)
-call BlzSetAbilityIcon('A0CY',"ReplaceableTextures\\CommandButtons\\BTNDevourerSpec.blp")
+call HP_SpecIcon('A0CY',"ReplaceableTextures\\CommandButtons\\BTNDevourerSpec.blp",3)
 call UnitRemoveAbilityBJ('A0RH',udg_Hero_DemonHunter)
 call UnitAddAbilityBJ('A0RK',udg_Hero_DemonHunter)
 else
 if(Trig_Specialization_Change_Func001Func016Func014Func002Func006Func001C())then
 call SetUnitAbilityLevelSwapped(GetSpellAbilityId(),GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A0CY',"ReplaceableTextures\\CommandButtons\\BTNHavocSpec.blp")
+call HP_SpecIcon('A0CY',"ReplaceableTextures\\CommandButtons\\BTNHavocSpec.blp",3)
 call UnitRemoveAbilityBJ('A0RK',udg_Hero_DemonHunter)
 call UnitAddAbilityBJ('A0RF',udg_Hero_DemonHunter)
 else
@@ -119135,7 +119412,7 @@ call UnitAddAbilityBJ('A0EI',udg_Hero_Monk)
 else
 endif
 if(Trig_Talents_Func004Func002Func025C())then
-call BlzSetAbilityIcon('A01T',"ReplaceableTextures\\CommandButtons\\BTNChillingWinds.blp")
+call HP_AbIcon('A01T',"ReplaceableTextures\\CommandButtons\\BTNChillingWinds.blp",udg_Hero_Windmaster,20)
 else
 endif
 if(Trig_Talents_Func004Func002Func027C())then
@@ -119731,7 +120008,7 @@ if(Trig_Talent_Disables_Func025C())then
 call SetUnitAbilityLevelSwapped('A03Z',udg_Hero_Windmaster,1)
 else
 if(Trig_Talent_Disables_Func025Func001C())then
-call BlzSetAbilityIcon('A01T',"ReplaceableTextures\\CommandButtons\\BTNOrbOfLightning.blp")
+call HP_AbIcon('A01T',"ReplaceableTextures\\CommandButtons\\BTNOrbOfLightning.blp",udg_Hero_Windmaster,20)
 else
 endif
 endif
@@ -130182,7 +130459,7 @@ call BlzStartUnitAbilityCooldown(udg_Hero_DragonSentinel,'A0OO',udg_DragonForm_N
 else
 endif
 if(Trig_Dragon_Form_Spells_Adjust_Func001Func005C())then
-call BlzSetAbilityIcon('A0OB',"ReplaceableTextures\\CommandButtons\\BTNDragonStrike.blp")
+call HP_AbIcon('A0OB',"ReplaceableTextures\\CommandButtons\\BTNDragonStrike.blp",udg_Hero_DragonSentinel,4)
 set udg_DragonForm_LoopCount=0
 loop
 exitwhen udg_DragonForm_LoopCount>3
@@ -130192,7 +130469,7 @@ endloop
 else
 endif
 if(Trig_Dragon_Form_Spells_Adjust_Func001Func006C())then
-call BlzSetAbilityIcon('A0O1',"ReplaceableTextures\\CommandButtons\\BTNBlazingShield.blp")
+call HP_AbIcon('A0O1',"ReplaceableTextures\\CommandButtons\\BTNBlazingShield.blp",udg_Hero_DragonSentinel,4)
 set udg_DragonForm_LoopCount=0
 loop
 exitwhen udg_DragonForm_LoopCount>3
@@ -130210,7 +130487,7 @@ call BlzStartUnitAbilityCooldown(udg_Hero_DragonSentinel,'A0OO',udg_DragonForm_N
 else
 endif
 if(Trig_Dragon_Form_Spells_Adjust_Func001Func002C())then
-call BlzSetAbilityIcon('A0OB',"ReplaceableTextures\\CommandButtons\\BTNDragonClaw.blp")
+call HP_AbIcon('A0OB',"ReplaceableTextures\\CommandButtons\\BTNDragonClaw.blp",udg_Hero_DragonSentinel,4)
 set udg_DragonForm_LoopCount=0
 loop
 exitwhen udg_DragonForm_LoopCount>3
@@ -130220,7 +130497,7 @@ endloop
 else
 endif
 if(Trig_Dragon_Form_Spells_Adjust_Func001Func003C())then
-call BlzSetAbilityIcon('A0O1',"ReplaceableTextures\\CommandButtons\\BTNBlazingWings.blp")
+call HP_AbIcon('A0O1',"ReplaceableTextures\\CommandButtons\\BTNBlazingWings.blp",udg_Hero_DragonSentinel,4)
 set udg_DragonForm_LoopCount=0
 loop
 exitwhen udg_DragonForm_LoopCount>3
@@ -135159,28 +135436,28 @@ call TriggerExecute(gg_trg_Get_Celestial_Stance_Attacks)
 if(Trig_Power_Strike_Cast_Func006C())then
 if(Trig_Power_Strike_Cast_Func006Func005C())then
 set udg_CelestialStance_Current=udg_Celestial_ChiJi
-call BlzSetAbilityIcon('A0FE',"ReplaceableTextures\\CommandButtons\\PASStanceRedCrane.blp")
+call HP_AbIcon('A0FE',"ReplaceableTextures\\CommandButtons\\PASStanceRedCrane.blp",udg_Hero_Monk,9)
 call AddSpecialEffectTargetUnitBJ("overhead",udg_Hero_Monk,"war3mapImported\\SCRedCraneSymbol.mdx")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
 else
 endif
 if(Trig_Power_Strike_Cast_Func006Func006C())then
 set udg_CelestialStance_Current=udg_Celestial_Niuzao
-call BlzSetAbilityIcon('A0FE',"ReplaceableTextures\\CommandButtons\\PASStanceDrunkenOx.blp")
+call HP_AbIcon('A0FE',"ReplaceableTextures\\CommandButtons\\PASStanceDrunkenOx.blp",udg_Hero_Monk,9)
 call AddSpecialEffectTargetUnitBJ("overhead",udg_Hero_Monk,"war3mapImported\\SCBullSymbol.mdx")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
 else
 endif
 if(Trig_Power_Strike_Cast_Func006Func007C())then
 set udg_CelestialStance_Current=udg_Celestial_Yulon
-call BlzSetAbilityIcon('A0FE',"ReplaceableTextures\\CommandButtons\\PASStanceWiseSerpent.blp")
+call HP_AbIcon('A0FE',"ReplaceableTextures\\CommandButtons\\PASStanceWiseSerpent.blp",udg_Hero_Monk,9)
 call AddSpecialEffectTargetUnitBJ("overhead",udg_Hero_Monk,"war3mapImported\\SCDragonSymbol.mdx")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
 else
 endif
 else
 set udg_CelestialStance_Current=udg_Celestial_Xuen
-call BlzSetAbilityIcon('A0FE',"ReplaceableTextures\\CommandButtons\\PASStanceWhiteTiger.blp")
+call HP_AbIcon('A0FE',"ReplaceableTextures\\CommandButtons\\PASStanceWhiteTiger.blp",udg_Hero_Monk,9)
 call AddSpecialEffectTargetUnitBJ("overhead",udg_Hero_Monk,"war3mapImported\\SCTigerSymbol.mdx")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
 endif
@@ -135531,7 +135808,7 @@ endif
 else
 endif
 set udg_CelestialStance_Current=udg_Celestial_Niuzao
-call BlzSetAbilityIcon('A0FE',"ReplaceableTextures\\CommandButtons\\PASStanceDrunkenOx.blp")
+call HP_AbIcon('A0FE',"ReplaceableTextures\\CommandButtons\\PASStanceDrunkenOx.blp",udg_Hero_Monk,9)
 call AddSpecialEffectTargetUnitBJ("overhead",udg_Hero_Monk,"war3mapImported\\SCBullSymbol.mdx")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
 call TriggerExecute(gg_trg_Get_Celestial_Stance_Attacks)
@@ -135670,7 +135947,7 @@ endif
 else
 endif
 set udg_CelestialStance_Current=udg_Celestial_Yulon
-call BlzSetAbilityIcon('A0FE',"ReplaceableTextures\\CommandButtons\\PASStanceWiseSerpent.blp")
+call HP_AbIcon('A0FE',"ReplaceableTextures\\CommandButtons\\PASStanceWiseSerpent.blp",udg_Hero_Monk,9)
 call AddSpecialEffectTargetUnitBJ("overhead",udg_Hero_Monk,"war3mapImported\\SCDragonSymbol.mdx")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
 call TriggerExecute(gg_trg_Get_Celestial_Stance_Attacks)
@@ -135800,7 +136077,7 @@ call TriggerExecute(gg_trg_Celestial_Wrath_Avatar)
 else
 endif
 set udg_CelestialStance_Current=udg_Celestial_ChiJi
-call BlzSetAbilityIcon('A0FE',"ReplaceableTextures\\CommandButtons\\PASStanceRedCrane.blp")
+call HP_AbIcon('A0FE',"ReplaceableTextures\\CommandButtons\\PASStanceRedCrane.blp",udg_Hero_Monk,9)
 call AddSpecialEffectTargetUnitBJ("overhead",udg_Hero_Monk,"war3mapImported\\SCRedCraneSymbol.mdx")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
 call TriggerExecute(gg_trg_Get_Celestial_Stance_Attacks)
@@ -135829,7 +136106,7 @@ call TriggerExecute(gg_trg_Celestial_Wrath_Avatar)
 else
 endif
 set udg_CelestialStance_Current=udg_Celestial_ChiJi
-call BlzSetAbilityIcon('A0FE',"ReplaceableTextures\\CommandButtons\\PASStanceRedCrane.blp")
+call HP_AbIcon('A0FE',"ReplaceableTextures\\CommandButtons\\PASStanceRedCrane.blp",udg_Hero_Monk,9)
 call AddSpecialEffectTargetUnitBJ("overhead",udg_Hero_Monk,"war3mapImported\\SCRedCraneSymbol.mdx")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
 call TriggerExecute(gg_trg_Get_Celestial_Stance_Attacks)
@@ -135857,7 +136134,7 @@ call TriggerExecute(gg_trg_Celestial_Wrath_Avatar)
 else
 endif
 set udg_CelestialStance_Current=udg_Celestial_ChiJi
-call BlzSetAbilityIcon('A0FE',"ReplaceableTextures\\CommandButtons\\PASStanceRedCrane.blp")
+call HP_AbIcon('A0FE',"ReplaceableTextures\\CommandButtons\\PASStanceRedCrane.blp",udg_Hero_Monk,9)
 call AddSpecialEffectTargetUnitBJ("overhead",udg_Hero_Monk,"war3mapImported\\SCRedCraneSymbol.mdx")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
 call TriggerExecute(gg_trg_Get_Celestial_Stance_Attacks)
@@ -141422,10 +141699,10 @@ else
 if(Trig_Tail_Slam_Func013Func001C())then
 if(Trig_Tail_Slam_Func013Func001Func001C())then
 set udg_AmplifyDamage_Stacks=8
-call BlzSetAbilityIcon('A0HI',udg_AmplifyDamage_Icon[udg_AmplifyDamage_Stacks])
+call HP_AbIcon('A0HI',udg_AmplifyDamage_Icon[udg_AmplifyDamage_Stacks],udg_Hero_Tidewarrior,16)
 else
 set udg_AmplifyDamage_Stacks=(udg_AmplifyDamage_Stacks+4)
-call BlzSetAbilityIcon('A0HI',udg_AmplifyDamage_Icon[udg_AmplifyDamage_Stacks])
+call HP_AbIcon('A0HI',udg_AmplifyDamage_Icon[udg_AmplifyDamage_Stacks],udg_Hero_Tidewarrior,16)
 endif
 else
 endif
@@ -143402,10 +143679,10 @@ endfunction
 function Trig_Backdraft_Actions takes nothing returns nothing
 if(Trig_Backdraft_Func001C())then
 call SetUnitAbilityLevelSwapped('A0QX',GetTriggerUnit(),2)
-call BlzSetAbilityIcon('A0QX',"ReplaceableTextures\\CommandButtons\\PASBackdraftChaos.blp")
+call HP_AbIcon('A0QX',"ReplaceableTextures\\CommandButtons\\PASBackdraftChaos.blp",udg_Hero_Warlock,18)
 else
 call SetUnitAbilityLevelSwapped('A0QX',GetTriggerUnit(),1)
-call BlzSetAbilityIcon('A0QX',"ReplaceableTextures\\CommandButtons\\PASBackdraft.blp")
+call HP_AbIcon('A0QX',"ReplaceableTextures\\CommandButtons\\PASBackdraft.blp",udg_Hero_Warlock,18)
 endif
 endfunction
 function InitTrig_Backdraft takes nothing returns nothing
