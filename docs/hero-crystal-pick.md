@@ -1,13 +1,17 @@
 # Общие кристаллы выбора героя (Sunken City v2.5.2a)
 
-Патч скрипта карты (`war3map.j`). Готовая карта: `maps/patched/Sunken City v2.5.2a-sharedcrystals.w3x`,
+Патч скрипта карты (`war3map.j`). Готовая карта: `maps/patched/Sunken City v2.5.2A All Pick.w3x`,
 патченный скрипт: `maps/patched/war3map.j`.
+
+
+Имя в лобби WC3 берётся из `war3map.wts` STRING 1 и имени файла. Сейчас: **Sunken City v2.5.2A All Pick**.
 
 Пересобрать:
 
 ```
 python tools/patch_hero_crystals.py <оригинальный war3map.j> maps/patched/war3map.j
-python tools/inject_map_script.py "maps/Sunken City v2.5.2a.w3x" maps/patched/war3map.j "maps/patched/Sunken City v2.5.2a-sharedcrystals.w3x"
+python tools/inject_map_script.py "maps/Sunken City v2.5.2a.w3x" maps/patched/war3map.j "maps/patched/_tmp.w3x"
+python tools/set_map_lobby_name.py "maps/patched/_tmp.w3x" "Sunken City v2.5.2A All Pick"
 ```
 
 Оригинальный скрипт достаётся через `sunken_sim.library.map_script()` (в MPQ он без имени).
@@ -42,7 +46,7 @@ python tools/inject_map_script.py "maps/Sunken City v2.5.2a.w3x" maps/patched/wa
 
 ## Как проверить в игре
 
-1. Запустить `maps/patched/Sunken City v2.5.2a-sharedcrystals.w3x` (лучше LAN или 3 слота).
+1. Запустить `maps/patched/Sunken City v2.5.2A All Pick.w3x` (лучше LAN или 3 слота).
 2. Игрок 1 берёт героя из Agility-кристалла: кристалл должен остаться.
 3. Игрок 2 берёт другого Agility-героя из того же кристалла: должен появиться второй
    набор (рюкзак, глифы, таланты), и у первого игрока ничего не должно сломаться.
