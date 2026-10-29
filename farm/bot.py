@@ -39,6 +39,7 @@ from farm.protocol import (
     resolve_targets,
     resolve_top,
     spec_suggestions,
+    chunk_range,
     size_text,
     status_text,
 )
@@ -401,29 +402,11 @@ class Farm:
             def space_of():
                 return load(hero, spec, pool, preset, top)
 
-            if "start" not in options and "end" not in options and share is None:
-                space, _items = await asyncio.to_thread(space_of)
-                await self.show(
-                    interaction,
-                    size_text(worker=name, hero=hero, spec=spec, pool=pool, targets=targets, total=space.total, top=top),
-                )
-                return
             await self.show(interaction, "Считаю размер пространства…")
             space, _items = await asyncio.to_thread(space_of)
             if space.total <= 0:
                 raise ValueError("в этом пространстве нет чанков")
-            if share is not None and "start" not in options and "end" not in options:
-                count = max(1, space.total * share // 100)
-                start, end = 0, min(space.total, count) - 1
-            else:
-                if "start" not in options or "end" not in options:
-                    raise ValueError("нужны оба края диапазона: start и end")
-                start = parse_int(str(options["start"]))
-                end = parse_int(str(options["end"]))
-                if end < start:
-                    raise ValueError("end меньше start")
-                if start >= space.total or end >= space.total:
-                    raise ValueError(f"последний чанк {grouped(space.total - 1)}")
+            start, end = chunk_range(space.total, options.get("start"), options.get("end"), share)
             left = end - start + 1
             await self.show(
                 interaction,

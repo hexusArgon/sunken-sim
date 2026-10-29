@@ -383,10 +383,29 @@ def size_text(*, worker: str, hero: str, spec: str, pool: str, targets: int, tot
             f"{worker}: {HERO_LABEL[hero]} · {spec}{top_label(top)} · {POOL_LABEL[pool]} · {targets} целей",
             f"всего чанков {grouped(total)} (номера 0–{grouped(last)})",
             "один чанк — шестёрка предметов. Таланты, глифы и очки навыков считаются, только если её DPS без талантов выше 10-го места по DPS без талантов",
-            f"запуск: /{worker} start:0 end:{last}",
+            f"запуск всех чанков: /{worker} без start и end (или start:0 end:{last})",
         )
     )
 
+
+def chunk_range(total: int, start=None, end=None, share: int | None = None) -> tuple[int, int]:
+    """Inclusive chunk range. No start/end: share% from 0, or all chunks."""
+    if total <= 0:
+        raise ValueError("в этом пространстве нет чанков")
+    if start is None and end is None:
+        if share is not None:
+            count = max(1, total * share // 100)
+            return 0, min(total, count) - 1
+        return 0, total - 1
+    if start is None or end is None:
+        raise ValueError("нужны оба края диапазона: start и end (или ни одного — тогда все чанки)")
+    start = parse_int(str(start))
+    end = parse_int(str(end))
+    if end < start:
+        raise ValueError("end меньше start")
+    if start >= total or end >= total:
+        raise ValueError(f"последний чанк {grouped(total - 1)}")
+    return start, end
 
 def presence_text(rows: list[tuple[str, int, int]]) -> str:
     if not rows:

@@ -5,6 +5,7 @@ from concurrent.futures import ProcessPoolExecutor
 from multiprocessing import get_context
 
 from farm.protocol import (
+    chunk_range,
     command_body,
     format_control,
     format_job,
@@ -148,6 +149,19 @@ class ProtocolTest(unittest.TestCase):
         self.assertEqual([value for _name, value in rows], ["protection", "arms", "fury"])
         self.assertTrue(all("/" in value for _name, value in spec_suggestions(None, "guard")))
         self.assertLessEqual(len(spec_suggestions(None, "")), 25)
+
+    def test_chunk_range_defaults_to_all(self) -> None:
+        self.assertEqual(chunk_range(1000), (0, 999))
+        self.assertEqual(chunk_range(1000, None, None, 10), (0, 99))
+        self.assertEqual(chunk_range(1000, "5", "9"), (5, 9))
+        with self.assertRaises(ValueError):
+            chunk_range(1000, "5", None)
+        with self.assertRaises(ValueError):
+            chunk_range(1000, None, "9")
+        with self.assertRaises(ValueError):
+            chunk_range(1000, "0", "1000")
+        with self.assertRaises(ValueError):
+            chunk_range(0)
 
     def test_specs_match_modules(self) -> None:
         import importlib
