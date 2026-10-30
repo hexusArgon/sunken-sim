@@ -5502,6 +5502,14 @@ unit array udg_HPS_SpiritLink_Hero
 unit array udg_HPS_VoodooWard_Target
 string array udg_HP_SpecIcon
 hashtable udg_HP_IconHT=InitHashtable()
+// PATCH: radius-command
+lightning array RC_L
+real array RC_R
+real array RC_PX
+real array RC_PY
+location RC_Loc=null
+timer RC_T=null
+trigger gg_trg_Radius_Cmd=null
 endglobals
 native UnitAlive takes unit u returns boolean
 native GetUnitGoldCost takes integer rawCode returns integer
@@ -36204,6 +36212,166 @@ call TriggerRegisterPlayerChatEvent(gg_trg_Clear,Player(0),"-clear",true)
 call TriggerRegisterPlayerChatEvent(gg_trg_Clear,Player(1),"-clear",true)
 call TriggerRegisterPlayerChatEvent(gg_trg_Clear,Player(2),"-clear",true)
 call TriggerAddAction(gg_trg_Clear,function Trig_Clear_Actions)
+endfunction
+// PATCH: radius-command
+function RC_Clear takes integer pid returns nothing
+local integer i=0
+loop
+exitwhen i>=36
+if RC_L[pid*36+i]!=null then
+call DestroyLightning(RC_L[pid*36+i])
+set RC_L[pid*36+i]=null
+endif
+set i=i+1
+endloop
+set RC_R[pid]=0.
+endfunction
+function RC_Update takes integer pid returns nothing
+local unit u=udg_PlayerHero[pid]
+local real r=RC_R[pid]
+local real x
+local real y
+local real a=0.
+local real z1
+local real z2
+local integer i=0
+local lightning l
+if r<=0. then
+set u=null
+return
+endif
+if GetLocalPlayer()==Player(pid-1) then
+set a=1.
+endif
+if u==null or GetUnitTypeId(u)==0 then
+loop
+exitwhen i>=36
+call SetLightningColor(RC_L[pid*36+i],0.,1.,0.,0.)
+set i=i+1
+endloop
+set u=null
+return
+endif
+set x=GetUnitX(u)
+set y=GetUnitY(u)
+loop
+exitwhen i>36
+set RC_PX[i]=x+r*Cos(i*2.*bj_PI/36)
+set RC_PY[i]=y+r*Sin(i*2.*bj_PI/36)
+set i=i+1
+endloop
+set i=0
+call MoveLocation(RC_Loc,RC_PX[0],RC_PY[0])
+set z1=GetLocationZ(RC_Loc)+10.
+loop
+exitwhen i>=36
+call MoveLocation(RC_Loc,RC_PX[i+1],RC_PY[i+1])
+set z2=GetLocationZ(RC_Loc)+10.
+set l=RC_L[pid*36+i]
+call MoveLightningEx(l,false,RC_PX[i],RC_PY[i],z1,RC_PX[i+1],RC_PY[i+1],z2)
+call SetLightningColor(l,0.,1.,0.,a)
+set z1=z2
+set i=i+1
+endloop
+set l=null
+set u=null
+endfunction
+function RC_Tick takes nothing returns nothing
+local integer pid=1
+loop
+exitwhen pid>3
+if RC_R[pid]>0. then
+call RC_Update(pid)
+endif
+set pid=pid+1
+endloop
+endfunction
+function RC_IsNum takes string s returns boolean
+local integer i=0
+local integer n=StringLength(s)
+local integer dots=0
+local string c
+if n==0 or n>8 then
+return false
+endif
+loop
+exitwhen i>=n
+set c=SubString(s,i,i+1)
+if c=="." then
+set dots=dots+1
+elseif c!="0" and c!="1" and c!="2" and c!="3" and c!="4" and c!="5" and c!="6" and c!="7" and c!="8" and c!="9" then
+return false
+endif
+set i=i+1
+endloop
+return dots<=1 and n>dots
+endfunction
+function Trig_Radius_Cmd_Actions takes nothing returns nothing
+local player p=GetTriggerPlayer()
+local integer pid=GetPlayerId(p)+1
+local string s=GetEventPlayerChatString()
+local integer n=StringLength(s)
+local integer b
+local integer e
+local string arg
+local real r
+local integer i=0
+if pid<1 or pid>3 or SubString(s,0,7)!="-radius" then
+set p=null
+return
+endif
+if n>7 and SubString(s,7,8)!=" " then
+set p=null
+return
+endif
+set b=7
+loop
+exitwhen b>=n or SubString(s,b,b+1)!=" "
+set b=b+1
+endloop
+set e=n
+loop
+exitwhen e<=b or SubString(s,e-1,e)!=" "
+set e=e-1
+endloop
+set arg=StringCase(SubString(s,b,e),false)
+if arg=="off" then
+call RC_Clear(pid)
+call DisplayTextToPlayer(p,0,0,"Radius: off")
+set p=null
+return
+endif
+if not RC_IsNum(arg) then
+set p=null
+return
+endif
+set r=S2R(arg)
+call RC_Clear(pid)
+if r<=0. then
+call DisplayTextToPlayer(p,0,0,"Radius: off")
+set p=null
+return
+endif
+loop
+exitwhen i>=36
+set RC_L[pid*36+i]=AddLightningEx("CLSB",false,0.,0.,0.,0.,0.,0.)
+call SetLightningColor(RC_L[pid*36+i],0.,1.,0.,0.)
+set i=i+1
+endloop
+set RC_R[pid]=r
+call RC_Update(pid)
+call DisplayTextToPlayer(p,0,0,"Radius: "+R2SW(r,1,0))
+set p=null
+endfunction
+function InitTrig_Radius_Cmd takes nothing returns nothing
+set gg_trg_Radius_Cmd=CreateTrigger()
+call TriggerRegisterPlayerChatEvent(gg_trg_Radius_Cmd,Player(0),"-radius",false)
+call TriggerRegisterPlayerChatEvent(gg_trg_Radius_Cmd,Player(1),"-radius",false)
+call TriggerRegisterPlayerChatEvent(gg_trg_Radius_Cmd,Player(2),"-radius",false)
+call TriggerAddAction(gg_trg_Radius_Cmd,function Trig_Radius_Cmd_Actions)
+set RC_Loc=Location(0.,0.)
+set RC_T=CreateTimer()
+call TimerStart(RC_T,0.04,true,function RC_Tick)
 endfunction
 function Trig_Camera_Lock_On_Func001Func001Func001C takes nothing returns boolean
 if(not(GetOwningPlayer(udg_Agi_Str_Int[3])==GetTriggerPlayer()))then
@@ -148969,6 +149137,7 @@ call InitTrig_Summons()
 call InitTrig_Items()
 call InitTrig_MS_Check()
 call InitTrig_Clear()
+call InitTrig_Radius_Cmd()
 call InitTrig_Camera_Lock_On()
 call InitTrig_Camera_Lock_Off()
 call InitTrig_Enemy_Damage_On_for_all()
