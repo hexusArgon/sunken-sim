@@ -11,6 +11,7 @@ sys.stdout.reconfigure(encoding="utf-8")
 
 from sunken_sim.library import MAP_PATH, _extract, _load_strings, _parse_objects, load_items, map_script
 from sunken_sim.search import LEGENDARIES
+from sunken_sim.stacking import UNIQUE_ONCE
 
 script = map_script()
 script = script.replace("\r\n", "\n").replace("\r", "\n")
@@ -175,6 +176,8 @@ for item in load_items():
         blocked.append("вторая легендарка удаляется")
     if code in ORBS:
         blocked.append("второй Elemental Orb удаляется")
+    if code in UNIQUE_ONCE:
+        blocked.append("Unique: в симе один экземпляр")
     if code == "I00D":
         blocked.append("одна привязка заклинания, −30% кулдауна один раз")
     if not stacks and not blocked:

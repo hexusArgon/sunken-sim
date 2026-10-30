@@ -16,7 +16,7 @@ from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
 from sunken_sim.library import MAP_PATH, Item, _extract, _parse_objects, load_items, map_script, map_strings
-from sunken_sim.stacking import ORBS, allows_copies
+from sunken_sim.stacking import ORBS, UNIQUE_ONCE, allows_copies
 from sunken_sim.shadow import (
     FIGHT,
     SKILL_POINTS,
@@ -733,6 +733,10 @@ def _equip_ok(chosen: list[Item], candidate: Item, ignore: Item | None = None) -
         item.rawcode in LEGENDARIES and item is not ignore for item in chosen
     ):
         return False
+    if candidate.rawcode in UNIQUE_ONCE and any(
+        item.rawcode == candidate.rawcode and item is not ignore for item in chosen
+    ):
+        return False
     for group in EXCLUSIVE:
         if candidate.rawcode in group and any(item.rawcode in group and item is not ignore for item in chosen):
             return False
@@ -907,7 +911,8 @@ def pools_for(catalog: list[Item], hero_class: str = "Priest") -> tuple[list[Ite
 
 def split_catalog(catalog: list[Item]) -> tuple[list[Item], list[Item], list[Item]]:
     sold = shop_codes()
-    banned = single_copy_codes()
+    # Unique items stay in the pool; the search wears one copy.
+    banned = single_copy_codes() - UNIQUE_ONCE
 
     def is_shop(item: Item) -> bool:
         return item.tip.startswith("Shop Item") or item.rawcode in sold

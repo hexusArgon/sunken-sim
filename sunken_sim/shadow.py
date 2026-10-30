@@ -182,6 +182,8 @@ _MAX_MANA_SEC = re.compile(
 _ATTACK_MANA = re.compile(
     r"attacks restore (\d+(?:[.,]\d+)?) [Mm]ana(?:, plus additional amount equal to | plus additional )(\d+(?:[.,]\d+)?)% of maximum [Mm]ana",
 )
+# Flat-only form: "Equip: Your attacks restore 2 mana." (Spectral Dagger).
+_ATTACK_MANA_FLAT = re.compile(r"attacks restore (\d+(?:[.,]\d+)?) [Mm]ana\.")
 _DAMAGE_MANA = re.compile(
     r"Dealing damage from any source causes your hero to restore (\d+(?:[.,]\d+)?)% of maximum mana",
     re.I,
@@ -228,6 +230,8 @@ def _passive_mana(items: tuple) -> dict[str, float]:
         for raw_flat, raw_pct in _ATTACK_MANA.findall(tip):
             attack += _tip_number(raw_flat)
             attack_pct += _tip_number(raw_pct) / 100.0
+        for raw_flat in _ATTACK_MANA_FLAT.findall(tip):
+            attack += _tip_number(raw_flat)
         if "doubled for Critical Strikes" in tip and _ATTACK_MANA.search(tip):
             attack_crit = 1.0
         for raw in _DAMAGE_MANA.findall(tip):

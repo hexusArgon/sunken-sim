@@ -428,7 +428,7 @@ def _parse_tip(tip: str) -> dict:
         "intel": _sum_ints(r"^\+(\d+) Intelligence\b", "\n".join(lines)),
         "strength": _sum_ints(r"^\+(\d+) Strength\b", "\n".join(lines)),
         "agility": _sum_ints(r"^\+(\d+) Agility\b", "\n".join(lines)),
-        "all_stats": _sum_ints(r"^\+(\d+) All Stats\b", "\n".join(lines)),
+        "all_stats": _sum_ints(r"^\+(\d+) (?:to )?All Stats\b", "\n".join(lines)),
         "potency": _sum_ints(r"^\+(\d+) Potency\b", "\n".join(lines)),
         "mastery": _sum_ints(r"^\+(\d+) Mastery\b", "\n".join(lines)),
         "damage": _sum_ints(r"^\+(\d+) (?:Attack )?Damage\b", "\n".join(lines)),

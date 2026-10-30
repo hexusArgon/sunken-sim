@@ -12,6 +12,10 @@ from functools import lru_cache
 
 ORBS = frozenset({"I07O", "I0NS", "I0NT"})
 LEGENDARIES = frozenset({"I052", "I048", "I053", "I04A", "I0HU", "I09E", "I044", "I0BR"})
+# Unique items: the sim wears exactly one copy, like a legendary.
+# Spectral Dagger, Imperial Ruby, Rod of King Feric, Pirate Hat,
+# Drough's Scimitar, Deflector Shield.
+UNIQUE_ONCE = frozenset({"I0JH", "I0HE", "I0JJ", "I0F9", "I0F8", "I0E9"})
 
 _FIELD_BY_VARIABLE = {
     "Haste_Items": "haste",
@@ -94,7 +98,7 @@ def stack_fields(rawcode: str) -> dict[str, float]:
 
 
 def allows_copies(rawcode: str) -> bool:
-    if rawcode in LEGENDARIES or rawcode in ORBS:
+    if rawcode in LEGENDARIES or rawcode in ORBS or rawcode in UNIQUE_ONCE:
         return False
     if item_verdict(rawcode) != "Стакается":
         return False
