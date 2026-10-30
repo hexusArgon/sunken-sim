@@ -47,14 +47,35 @@ function notedName(name: string, stats: Array<[string, string]>): string {
   return row ? `${name} — ${row[1]}` : name;
 }
 
+function asSpec(v: unknown): SpecId {
+  const s = String(v ?? "").toLowerCase();
+  return s === "frost" || s === "arcane" || s === "fire" ? s : "fire";
+}
+function asMode(v: unknown): RunId {
+  const s = String(v ?? "").toLowerCase();
+  return s === "mixed" || s === "shop" || s === "drop" ? s : "mixed";
+}
+function asPlace(v: unknown, max: number): number {
+  const n = Math.floor(Number(v));
+  if (!Number.isFinite(n) || n < 1) return 1;
+  return Math.min(n, Math.max(1, max));
+}
+function asCatalog(v: unknown): "all" | "picked" {
+  return v === "all" ? "all" : "picked";
+}
+
 export default function Mage() {
-  const [spec, setSpec] = useCanvasState<SpecId>("mage-spec", "fire");
-  const [mode, setMode] = useCanvasState<RunId>("mage-source", "mixed");
-  const [place, setPlace] = useCanvasState("mage-place", 1);
-  const [catalog, setCatalog] = useCanvasState<"all" | "picked">("mage-catalog", "picked");
+  const [specRaw, setSpec] = useCanvasState<SpecId>("mage-spec", "fire");
+  const [modeRaw, setMode] = useCanvasState<RunId>("mage-source", "mixed");
+  const [placeRaw, setPlace] = useCanvasState("mage-place", 1);
+  const [catalogRaw, setCatalog] = useCanvasState<"all" | "picked">("mage-catalog", "picked");
+  const spec = asSpec(specRaw);
+  const mode = asMode(modeRaw);
+  const catalog = asCatalog(catalogRaw);
   const data = DATA[spec];
   const list = data.runs[mode];
-  const index = Math.min(Math.max(place, 1), list.length) - 1;
+  const place = asPlace(placeRaw, list.length);
+  const index = place - 1;
   const run = list[index];
   const talents = (catalog === "picked" ? TALENTS.filter((row) => run.talents.includes(row[0])) : TALENTS)
     .slice()
