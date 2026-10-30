@@ -1,7 +1,7 @@
 import * as esbuild from "esbuild";
 import fs from "fs";
 const OUT = "/workspace/ss/docs/sim-html";
-const pages = [["paladin","Paladin"],["priest","Priest"],["shaman","Shaman"],["mage","Mage"]];
+const pages = [["paladin","Paladin"],["priest","Priest"],["shaman","Shaman"],["mage","Mage"],["druid","Druid"]];
 const css = fs.readFileSync("style.css","utf8");
 const nav = (cur) => `<nav class="topnav"><a href="index.html">← Sunken City sims</a>${pages.map(([f,t])=>`<a href="${f}.html"${f===cur?' class="cur"':''}>${t}</a>`).join("")}</nav>`;
 for (const [f, title] of pages) {
