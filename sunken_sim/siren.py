@@ -50,9 +50,9 @@ from sunken_sim.shadow import (
 )
 from sunken_sim.stacking import stack_fields
 
-BASE_STR = 13  # N03T 9 + 0.9 x 5 = 13.5 -> 13
-BASE_AGI = 39  # 26 + 2.6 x 5
-BASE_INT = 22  # 15 + 1.5 x 5 = 22.5 -> 22
+BASE_STR = int(9 + (LEVEL - 1) * 0.9)  # N03T ustr/ustp
+BASE_AGI = int(26 + (LEVEL - 1) * 2.6)  # uagi/uagp
+BASE_INT = int(15 + (LEVEL - 1) * 1.5)  # uint/uinp
 WHITE_BASE = 28.0  # N03T ua1b 27 + 1d1
 SWING = 1.7  # N03T ua1c
 BASE_MANA = 120.0  # N03T umpm / umpi
@@ -179,6 +179,18 @@ def stats_of(build: Build) -> dict[str, float]:
     health_flat = 0.0
     pet_damage = 0.0
     luck = 0.01 * build.luck_points
+    # ESC menu (beyond crit/potency/luck/mastery)
+    _esc_haste = 0.01 * getattr(build, "haste_points", 0)
+    _esc_as = 0.02 * getattr(build, "attack_speed_points", 0)
+    _esc_dmg = 2.0 * getattr(build, "damage_points", 0)
+    _esc_mana = 20.0 * getattr(build, "mana_points", 0)
+    _esc_pet = 0.015 * getattr(build, "pet_damage_points", 0)
+
+    haste += _esc_haste
+    attack_speed += _esc_as
+    damage += _esc_dmg
+    mana_flat += _esc_mana
+    pet_damage += _esc_pet
     seen: set[str] = set()
     for item in build.items:
         first = item.rawcode not in seen
@@ -759,5 +771,15 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
     return Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
 
 
-def best_points(build: Build, targets: int, spec: str) -> tuple[float, tuple[int, int, int, int]]:
-    return simulate(build, targets, spec).dps, (0, 0, 0, 0)
+def best_points(build: Build, targets: int, spec: str) -> tuple[float, dict[str, int]]:
+    from sunken_sim.esc import apply_points, greedy_points, points_payload
+
+    def score(pts: dict) -> float:
+        trial = apply_points(build, pts)
+        report = simulate(trial, targets, spec)
+        return report.dps
+
+    dps, pts = greedy_points(score)
+    return dps, points_payload(pts)
+
+

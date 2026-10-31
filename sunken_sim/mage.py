@@ -911,34 +911,19 @@ def _score(compiled: dict, stats: dict, build: Build, spec: str, potency=None, c
     return sum(scaled.values()), scaled
 
 
-def best_points(counter: dict, build: Build) -> tuple[float, tuple[int, int, int, int]]:
-    from sunken_sim.search import POINT_SPLITS
+def best_points(counter: dict, build: Build) -> tuple[float, dict[str, int]]:
+    from sunken_sim.esc import apply_points, greedy_points, points_payload, points_payload
 
     spec = counter.get("spec", "frost")
     targets = counter.get("targets", 1)
-    if counter.get("full_points"):
-        splits = POINT_SPLITS
-    else:
-        splits = (
-            (0, SKILL_POINTS, 0, 0),
-            (0, 0, 0, SKILL_POINTS),
-            (SKILL_POINTS, 0, 0, 0),
-            (0, 0, SKILL_POINTS, 0),
-        )
-    best_dps = -1.0
-    best = (0, SKILL_POINTS, 0, 0)
-    for crit_points, potency_points, luck_points, mastery_points in splits:
-        trial = Build(
-            build.talents,
-            build.glyphs,
-            build.items,
-            potency_points,
-            mastery_points,
-            crit_points,
-            luck_points,
-        )
+
+    def score(pts: dict) -> float:
+        trial = apply_points(build, pts)
         report = simulate(trial, targets, spec=spec)
-        if report.dps > best_dps:
-            best_dps = report.dps
-            best = (crit_points, potency_points, luck_points, mastery_points)
-    return best_dps, best
+        return report.dps
+
+    dps, pts = greedy_points(score)
+    counter["esc_points"] = points_payload(pts)
+    return dps, points_payload(pts)
+
+

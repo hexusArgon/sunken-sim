@@ -161,7 +161,11 @@ def _finish(space: Space, items: dict, boards: dict[str, list]) -> dict:
                 dps, talent_codes, glyph_codes, points, _fights = finish_sextuple(
                     "priest", "shadow", 5, equipped, talents, glyphs, 3, 4, 3
                 )
-                crit, potency, luck, mastery = points
+                if isinstance(points, dict):
+                    esc_full = dict(points)
+                else:
+                    crit, potency, luck, mastery = points
+                    esc_full = {"crit": crit, "potency": potency, "luck": luck, "mastery": mastery}
                 scored[index] = {
                     "dps": dps,
                     "item_dps": bare,
@@ -172,7 +176,7 @@ def _finish(space: Space, items: dict, boards: dict[str, list]) -> dict:
                     "glyphs": list(glyph_codes),
                     "talent_names": [TALENTS[code] for code in talent_codes],
                     "glyph_names": [GLYPHS[code] for code in glyph_codes],
-                    "points": {"crit": crit, "potency": potency, "luck": luck, "mastery": mastery},
+                    "points": esc_full,
                 }
                 print(f"добивка {dps:.1f} чанк {index}", flush=True)
             row = dict(scored[index])

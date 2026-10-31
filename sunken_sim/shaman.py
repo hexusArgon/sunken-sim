@@ -667,15 +667,15 @@ def simulate(build: Build, targets: int = 5, spec: str = "restoration", bound_sp
     )
 
 
-def best_points(build: Build, targets: int, spec: str) -> tuple[float, tuple[int, int, int, int]]:
-    from sunken_sim.search import POINT_SPLITS
+def best_points(build: Build, targets: int, spec: str) -> tuple[float, dict[str, int]]:
+    from sunken_sim.esc import apply_points, greedy_points, points_payload
 
-    best_dps = -1.0
-    best = (0, 5, 0, 0)
-    for crit, potency, luck, mastery in POINT_SPLITS:
-        trial = Build(build.talents, build.glyphs, build.items, potency, mastery, crit, luck)
+    def score(pts: dict) -> float:
+        trial = apply_points(build, pts)
         report = simulate(trial, targets, spec)
-        if report.dps > best_dps:
-            best_dps = report.dps
-            best = (crit, potency, luck, mastery)
-    return best_dps, best
+        return report.dps
+
+    dps, pts = greedy_points(score)
+    return dps, points_payload(pts)
+
+

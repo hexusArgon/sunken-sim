@@ -1,7 +1,7 @@
 """Full single-target search.
 
-Every priest talent triple, every glyph triple and every way to spend 5 skill
-points is simulated. Every item is simulated when the six slots are filled and
+Every priest talent triple, every glyph triple and greedy ESC (30 points, cap 20)
+are simulated. Every item is simulated when the six slots are filled and
 again whenever a slot can be replaced. Nothing is ranked by reading tooltip text.
 """
 
@@ -59,13 +59,12 @@ GLYPHS = {
     "I0AV": "Unsealed Power",
 }
 
-POINT_SPLITS = tuple(
-    (crit, potency, luck, mastery)
-    for crit in range(SKILL_POINTS + 1)
-    for potency in range(SKILL_POINTS - crit + 1)
-    for luck in range(SKILL_POINTS - crit - potency + 1)
-    for mastery in [SKILL_POINTS - crit - potency - luck]
-)
+# Legacy name: greedy ESC does SKILL_POINTS steps × up to 11 attrs (see esc.py).
+# Kept so farm fight-count estimates still import something stable.
+from sunken_sim.esc import ESC_ATTRS, ESC_CAP, greedy_points, apply_points, points_payload
+
+POINT_SPLITS_FIGHTS = SKILL_POINTS * len(ESC_ATTRS)  # upper bound on greedy resims
+POINT_SPLITS = ()  # enumeration removed; greedy only
 
 _ITEMS: tuple[Item, ...] = ()
 _TARGETS = 1
@@ -77,44 +76,35 @@ def _score_stats(compiled: dict, stats: dict, potency: float, crit: float, maste
     return score_compiled(compiled, stats, potency, crit, mastery_stat, luck) / FIGHT
 
 
-def _best_points(counter: dict, build: Build) -> tuple[float, tuple[int, int, int, int]]:
+def _best_points(counter: dict, build: Build) -> tuple[float, dict[str, int]]:
     if counter.get("engine") == "mage":
         from sunken_sim.mage import best_points
 
         return best_points(counter, build)
     targets = counter.get("targets", 1)
     spec = counter.get("spec", _SPEC)
-    bare = Build(build.talents, build.glyphs, build.items, 0, 0, 0, 0)
-    stats = character(bare)
-    best_dps = -1.0
-    best = (0, SKILL_POINTS, 0, 0)
-    compiled_by_crit: dict[int, dict] = {}
-    for crit_points, potency_points, luck_points, mastery_points in POINT_SPLITS:
-        compiled = compiled_by_crit.get(crit_points)
-        if compiled is None:
-            pointed = Build(build.talents, build.glyphs, build.items, 0, 0, crit_points, 0)
-            fresh: dict = {"targets": targets}
-            simulate(pointed, targets, fresh, spec=spec)
-            compiled = compile_events(
-                fresh["events"],
-                bare,
-                stats,
-                spec,
-                fresh.get("windows"),
-            )
-            compiled_by_crit[crit_points] = compiled
-        dps = _score_stats(
+
+    def score(pts: dict) -> float:
+        trial = apply_points(build, pts)
+        # Crit / luck / haste / AS change the fight timeline — full resim each trial.
+        fresh: dict = {"targets": targets}
+        simulate(trial, targets, fresh, spec=spec)
+        if "events" not in fresh:
+            return -1.0
+        st = character(trial)
+        compiled = compile_events(fresh["events"], trial, st, spec, fresh.get("windows"))
+        return score_compiled(
             compiled,
-            stats,
-            stats["potency"] + 0.5 * potency_points,
-            min(100.0, stats["crit"] + crit_points),
-            stats["mastery"] + mastery_points,
-            stats["luck"] + 0.01 * luck_points,
-        )
-        if dps > best_dps:
-            best_dps = dps
-            best = (crit_points, potency_points, luck_points, mastery_points)
-    return best_dps, best
+            st,
+            st["potency"],
+            min(100.0, st["crit"]),
+            st["mastery"],
+            st["luck"],
+        ) / FIGHT
+
+    dps, pts = greedy_points(score)
+    counter["esc_points"] = points_payload(pts)
+    return dps, points_payload(pts)
 
 
 def _call_sim(build: Build, targets: int, counter: dict, bound: str | None = None):
@@ -133,7 +123,7 @@ def _init_worker(items: tuple[Item, ...], targets: int, spec: str, engine: str =
     _SIM_ENGINE = engine
 
 
-def _evaluate(build: Build, targets: int) -> tuple[float, tuple[int, int, int, int]]:
+def _evaluate(build: Build, targets: int) -> tuple[float, dict[str, int]]:
     """One fight with zero skill points. Points are chosen once, on the winning build."""
     bare = Build(build.talents, build.glyphs, build.items, 0, 0, 0, 0)
     if _SIM_ENGINE == "mage":

@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import itertools
 
-from sunken_sim.shadow import MIND_AMPLIFIER, Build
+from sunken_sim.esc import ESC_ATTRS
+from sunken_sim.shadow import MIND_AMPLIFIER, SKILL_POINTS, Build
 
 
 def item_dps(hero: str, spec: str, targets: int, items: tuple) -> float:
@@ -44,8 +45,8 @@ def finish_sextuple(
     picks_without: int,
     picks_with: int,
     glyph_picks: int,
-) -> tuple[float, tuple[str, ...], tuple[str, ...], tuple[int, int, int, int], int]:
-    """Best talents, then glyphs, then five skill points. One fight each."""
+) -> tuple[float, tuple[str, ...], tuple[str, ...], dict[str, int], int]:
+    """Best talents, then glyphs, then greedy ESC points. One fight each for talent/glyph."""
     picks = picks_with if any(item.rawcode == MIND_AMPLIFIER for item in equipped) else picks_without
     fights = 0
     best_talents: tuple[str, ...] = ()
@@ -97,7 +98,7 @@ def _fight(hero: str, spec: str, targets: int, build: Build) -> float:
     return _module(hero).simulate(build, targets, spec).dps
 
 
-def score_build(hero: str, spec: str, targets: int, build: Build) -> tuple[float, tuple[int, int, int, int], int]:
+def score_build(hero: str, spec: str, targets: int, build: Build) -> tuple[float, dict[str, int], int]:
     if hero == "mage":
         return _mage(spec, targets, build)
     if hero == "priest":
@@ -105,90 +106,49 @@ def score_build(hero: str, spec: str, targets: int, build: Build) -> tuple[float
     return _generic(hero, spec, targets, build)
 
 
-def _generic(hero: str, spec: str, targets: int, build: Build) -> tuple[float, tuple[int, int, int, int], int]:
-    from sunken_sim.search import POINT_SPLITS
-
+def _generic(hero: str, spec: str, targets: int, build: Build) -> tuple[float, dict[str, int], int]:
     dps, points = _module(hero).best_points(build, targets, spec)
-    # (0, 0, 0, 0) is not a real split: such modules fight once and skip skill points.
-    fights = 1 if tuple(points) == (0, 0, 0, 0) else len(POINT_SPLITS)
+    spent = sum(int(v) for v in points.values()) if isinstance(points, dict) else sum(points)
+    fights = 1 if spent == 0 else SKILL_POINTS * len(ESC_ATTRS)
     return dps, points, fights
 
 
-def _shaman(spec: str, targets: int, build: Build) -> tuple[float, tuple[int, int, int, int], int]:
-    from sunken_sim.search import POINT_SPLITS
-    from sunken_sim.shaman import best_points
+def _priest(spec: str, targets: int, build: Build) -> tuple[float, dict[str, int], int]:
+    from sunken_sim.esc import apply_points, greedy_points, points_payload
+    from sunken_sim.shadow import FIGHT, character, compile_events, score_compiled, simulate
 
-    dps, points = best_points(build, targets, spec)
-    return dps, points, len(POINT_SPLITS)
-
-
-def _paladin(spec: str, targets: int, build: Build) -> tuple[float, tuple[int, int, int, int], int]:
-    from sunken_sim.paladin import best_points
-    from sunken_sim.search import POINT_SPLITS
-
-    dps, points = best_points(build, targets, spec)
-    return dps, points, len(POINT_SPLITS)
-
-
-def _priest(spec: str, targets: int, build: Build) -> tuple[float, tuple[int, int, int, int], int]:
-    from sunken_sim.search import POINT_SPLITS
-    from sunken_sim.shadow import FIGHT, SKILL_POINTS, character, compile_events, score_compiled, simulate
-
-    bare = Build(build.talents, build.glyphs, build.items, 0, 0, 0, 0)
-    stats = character(bare)
-    best_dps = -1.0
-    best = (0, SKILL_POINTS, 0, 0)
-    compiled_by_crit: dict[int, dict] = {}
-    fights = 0
-    for crit_points, potency_points, luck_points, mastery_points in POINT_SPLITS:
-        compiled = compiled_by_crit.get(crit_points)
-        if compiled is None:
-            pointed = Build(build.talents, build.glyphs, build.items, 0, 0, crit_points, 0)
-            fresh: dict = {"targets": targets}
-            simulate(pointed, targets, fresh, spec=spec, use_history=False)
-            fights += 1
-            if "events" not in fresh:
-                raise RuntimeError("сим не вернул события")
-            compiled = compile_events(fresh["events"], bare, stats, spec, fresh.get("windows"))
-            compiled_by_crit[crit_points] = compiled
-        dps = (
+    def score(pts: dict) -> float:
+        trial = apply_points(build, pts)
+        fresh: dict = {"targets": targets}
+        simulate(trial, targets, fresh, spec=spec, use_history=False)
+        if "events" not in fresh:
+            return -1.0
+        st = character(trial)
+        compiled = compile_events(fresh["events"], trial, st, spec, fresh.get("windows"))
+        return (
             score_compiled(
                 compiled,
-                stats,
-                stats["potency"] + 0.5 * potency_points,
-                min(100.0, stats["crit"] + crit_points),
-                stats["mastery"] + mastery_points,
-                stats["luck"] + 0.01 * luck_points,
+                st,
+                st["potency"],
+                min(100.0, st["crit"]),
+                st["mastery"],
+                st["luck"],
             )
             / FIGHT
         )
-        if dps > best_dps:
-            best_dps = dps
-            best = (crit_points, potency_points, luck_points, mastery_points)
-    return best_dps, best, fights
+
+    dps, pts = greedy_points(score)
+    return dps, points_payload(pts), SKILL_POINTS * len(ESC_ATTRS)
 
 
-def _mage(spec: str, targets: int, build: Build) -> tuple[float, tuple[int, int, int, int], int]:
+def _mage(spec: str, targets: int, build: Build) -> tuple[float, dict[str, int], int]:
+    from sunken_sim.esc import apply_points, greedy_points, points_payload
     from sunken_sim.mage import simulate
-    from sunken_sim.search import POINT_SPLITS
-    from sunken_sim.shadow import SKILL_POINTS
 
-    best_dps = -1.0
-    best = (0, SKILL_POINTS, 0, 0)
-    fights = 0
-    for crit_points, potency_points, luck_points, mastery_points in POINT_SPLITS:
-        trial = Build(
-            build.talents,
-            build.glyphs,
-            build.items,
-            potency_points,
-            mastery_points,
-            crit_points,
-            luck_points,
-        )
+    def score(pts: dict) -> float:
+        trial = apply_points(build, pts)
         report = simulate(trial, targets, spec=spec, use_history=False)
-        fights += 1
-        if report.dps > best_dps:
-            best_dps = report.dps
-            best = (crit_points, potency_points, luck_points, mastery_points)
-    return best_dps, best, fights
+        return report.dps
+
+    dps, pts = greedy_points(score)
+    return dps, points_payload(pts), SKILL_POINTS * len(ESC_ATTRS)

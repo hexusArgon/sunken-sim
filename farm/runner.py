@@ -349,7 +349,11 @@ def eval_span(start: int, stop: int) -> dict:
                 _SPACE.glyph_picks,
             )
             fights += extra
-            crit, potency, luck, mastery = points
+            if isinstance(points, dict):
+                esc_full = dict(points)
+            else:
+                crit, potency, luck, mastery = points
+                esc_full = {"crit": crit, "potency": potency, "luck": luck, "mastery": mastery}
             hits.append(
                 {
                     "dps": dps,
@@ -363,7 +367,7 @@ def eval_span(start: int, stop: int) -> dict:
                     ],
                     "talents": sorted(_SPACE.talent_names.get(code, code) for code in talent_codes),
                     "glyphs": sorted(_SPACE.glyph_names.get(code, code) for code in glyph_codes),
-                    "points": {"crit": crit, "potency": potency, "luck": luck, "mastery": mastery},
+                    "points": esc_full,
                 }
             )
         except Exception as exc:
@@ -399,7 +403,11 @@ def eval_index(index: int) -> dict | None:
         _SPACE.picks_with,
         _SPACE.glyph_picks,
     )
-    crit, potency, luck, mastery = points
+    if isinstance(points, dict):
+        esc_full = dict(points)
+    else:
+        crit, potency, luck, mastery = points
+        esc_full = {"crit": crit, "potency": potency, "luck": luck, "mastery": mastery}
     return {
         "dps": dps,
         "item_dps": bare,
@@ -412,7 +420,7 @@ def eval_index(index: int) -> dict | None:
         ],
         "talents": sorted(_SPACE.talent_names.get(code, code) for code in talent_codes),
         "glyphs": sorted(_SPACE.glyph_names.get(code, code) for code in glyph_codes),
-        "points": {"crit": crit, "potency": potency, "luck": luck, "mastery": mastery},
+        "points": esc_full,
     }
 
 

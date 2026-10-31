@@ -1,4 +1,4 @@
-"""Shadow Priest single-target simulator for Sunken City, level 6.
+"""Shadow Priest single-target simulator for Sunken City, level 15.
 
 The fight is 30 seconds against one target that stays at full health and has no
 armor. Damage is the expected value of crits and procs, so the search is stable.
@@ -19,7 +19,7 @@ from sunken_sim.stacking import allows_copies, stack_fields
 FIGHT = 30.0
 CAST_POINT = 0.15
 CAST_BACKSWING = 0.30
-LEVEL = 6
+LEVEL = 15
 DUMMY_ARMOR = 15.0
 ARMOR_FACTOR = 0.04
 CHAOS_UNARMORED = 1.25
@@ -66,7 +66,7 @@ PHYSICAL_ADDS = {
 BASE_STR = int(3 + (LEVEL - 1) * 1.5)
 BASE_AGI = int(8 + (LEVEL - 1) * 0.8)
 BASE_INT = int(27 + (LEVEL - 1) * 2.7)
-SKILL_POINTS = LEVEL - 1  # one point per level-up, none at level 1
+SKILL_POINTS = 30  # ESC total from user; map cap 20 per attr (udg_ESC_Points_Cap)
 MIND_AMPLIFIER = "I0IC"
 
 TALENTS = {
@@ -100,6 +100,13 @@ class Build:
     mastery_points: int
     crit_points: int = 0
     luck_points: int = 0
+    haste_points: int = 0
+    attack_speed_points: int = 0
+    damage_points: int = 0
+    health_points: int = 0
+    mana_points: int = 0
+    healing_power_points: int = 0
+    pet_damage_points: int = 0
 
 
 @dataclass
@@ -301,12 +308,12 @@ def character(
     agility = BASE_AGI if base_agi is None else base_agi
     potency = 0.5 * build.potency_points
     mastery = build.mastery_points
-    damage = 0.0
-    mana = 0.0
+    damage = 2.0 * build.damage_points  # ESC Attack Damage +2 via tech R002
+    mana = 20.0 * build.mana_points  # ESC Mana +20 via tech R000
     crit = build.crit_points
     rating = 0.0
-    haste = 0.0
-    attack_speed = 0.0
+    haste = 0.01 * build.haste_points  # ESC Haste +1%
+    attack_speed = 0.02 * build.attack_speed_points  # ESC Attack Speed +2%
     seen: set[str] = set()
     for item in build.items:
         first = item.rawcode not in seen
@@ -413,6 +420,8 @@ def character(
             uptime = 1.0 - math.exp(-rate * crit_as_duration)
             attack_speed = max(-0.8, min(4.0, base_speed + crit_as * uptime))
     luck = 0.01 * build.luck_points
+    pet_damage = 0.015 * getattr(build, "pet_damage_points", 0)
+    healing_power = float(getattr(build, "healing_power_points", 0) or 0)
     return {
         "int": intel,
         "str": strength,
@@ -425,6 +434,9 @@ def character(
         "rating": rating,
         "haste": haste,
         "attack_speed": attack_speed,
+        "pet_damage": pet_damage,
+        "healing_power": healing_power,
+        "health_points": int(getattr(build, "health_points", 0) or 0),
         "frenzy": 1.0 if _has(build, "I0GZ") else 0.0,
         "crit_as": crit_as,
         "crit_as_duration": crit_as_duration,
@@ -596,6 +608,7 @@ def _fight_events(
     mana = stats["mana_max"]
     mana_time = 0.0
     swp_exp = [0.0] * targets
+    swp_w = [0.0] * targets  # expected SWP uptime weight per target (Cosmic EV)
     naaru_until = 0.0
     blaze_until = 0.0
     renew_until = 0.0
@@ -630,6 +643,7 @@ def _fight_events(
         if not any(expiry > now for expiry in swp_exp):
             push(now + stats["swp_period"], "swp")
         swp_exp[index] = now + duration
+        swp_w[index] = 1.0
 
     def naaru_hit(now: float) -> None:
         record(now, "naaru")
@@ -737,16 +751,27 @@ def _fight_events(
         elif kind.startswith("finish:"):
             resolve(kind.split(":", 1)[1], when)
         elif kind == "swp":
-            active = sum(1 for expiry in swp_exp if expiry > when)
-            if active:
+            for index in range(targets):
+                if swp_exp[index] <= when:
+                    swp_w[index] = 0.0
+            active = sum(swp_w[index] for index in range(targets) if swp_exp[index] > when)
+            if active > 1e-9:
                 record(when, "swp", active)
                 push(when + stats["swp_period"], "swp")
         elif kind == "void":
             record(when, "void", targets)
             if _has(build, "I0HP"):
-                dotted = sum(1 for expiry in swp_exp if expiry > when)
-                if dotted:
-                    record(when, "swp_i", 0.25 * dotted)
+                # Map: 25% * Luck_Multiplier to Shadow_Word_Pain_Apply per hit enemy.
+                # Apply path: instant if buff up; DoT apply/refresh with expected weight.
+                p = 0.25 * (1.0 + stats["luck"])
+                for index in range(targets):
+                    if swp_exp[index] > when:
+                        record(when, "swp_i", p * swp_w[index])
+                    if not any(expiry > when for expiry in swp_exp) and p > 0:
+                        push(when + stats["swp_period"], "swp")
+                    swp_w[index] = swp_w[index] + p * (1.0 - swp_w[index])
+                    if swp_w[index] > 0:
+                        swp_exp[index] = when + duration
         elif kind == "naaru":
             if when <= naaru_until:
                 naaru_hit(when)
@@ -1216,6 +1241,8 @@ def _polish_items(build: Build, pool: list[Item]) -> Build:
 
 
 def search() -> Report:
+    from sunken_sim.esc import apply_points, greedy_points
+
     items = load_items()
     pool = sorted(items, key=_item_score, reverse=True)[:36]
     seed = tuple(pool[:6])
@@ -1223,31 +1250,18 @@ def search() -> Report:
     best: Report | None = None
     for talents in itertools.combinations(TALENTS, talent_picks):
         for glyphs in itertools.combinations(GLYPHS, 3):
-            for potency_points in range(SKILL_POINTS + 1):
-                build = Build(
-                    frozenset(talents),
-                    frozenset(glyphs),
-                    seed,
-                    potency_points,
-                    SKILL_POINTS - potency_points,
-                )
-                report = simulate(build)
-                if best is None or report.dps > best.dps:
-                    best = report
+            build = Build(frozenset(talents), frozenset(glyphs), seed, 0, 0)
+            report = simulate(build)
+            if best is None or report.dps > best.dps:
+                best = report
     assert best is not None
     polished = _polish_items(best.build, pool)
-    final = simulate(polished)
-    for potency_points in range(SKILL_POINTS + 1):
-        trial = Build(
-            polished.talents,
-            polished.glyphs,
-            polished.items,
-            potency_points,
-            SKILL_POINTS - potency_points,
-        )
-        report = simulate(trial)
-        if report.dps > final.dps:
-            final = report
+
+    def score(pts: dict) -> float:
+        return simulate(apply_points(polished, pts)).dps
+
+    _dps, pts = greedy_points(score)
+    final = simulate(apply_points(polished, pts))
     return simulate(_polish_items(final.build, pool))
 
 
