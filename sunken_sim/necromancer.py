@@ -47,6 +47,10 @@ from sunken_sim.stacking import stack_fields
 BASE_STR = int(14 + (LEVEL - 1) * 1.4)  # O00H ustr/ustp
 BASE_AGI = int(10 + (LEVEL - 1) * 1.0)  # uagi; uagp missing in w3u → 1.0 from lvl6 fit
 BASE_INT = int(26 + (LEVEL - 1) * 2.6)  # uint/uinp
+# Final Service A0BS long-term stacks: +1 permanent max HP per stack, farmed
+# out of fight (enemy deaths in 1100). Assumed 25 stacks per hero level
+# (lvl 15 → +375 HP, lvl 5 → +125 HP). Added to health_flat before max HP.
+FINAL_SERVICE_STACKS = 25 * LEVEL
 WHITE_BASE = 14.0  # O00H ua1b 13 + 1d1
 SWING = 1.85  # O00H ua1c
 BASE_MANA = 175.0
@@ -269,6 +273,7 @@ def stats_of(build: Build) -> dict[str, float]:
         seen_stun.add(item.rawcode)
         if item.cast_stun_chance and item.cast_stun_duration > 0:
             cast_stun_lock += item.cast_stun_chance * item.cast_stun_duration
+    health_flat += FINAL_SERVICE_STACKS  # Final Service long-term stacks
     hp = max_hp(BASE_HP, strength) + health_flat
     # Summon crit block (PreDamage_Increase): base 0 %, x2.0.
     summon_crit = 0.0

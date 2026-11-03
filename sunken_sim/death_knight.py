@@ -44,6 +44,10 @@ from sunken_sim.stacking import stack_fields
 BASE_STR = int(28 + (LEVEL - 1) * 2.8)
 BASE_AGI = int(9 + (LEVEL - 1) * 0.9)
 BASE_INT = int(13 + (LEVEL - 1) * 1.3)
+# Blood Strike A0G1 long-term stacks: +1 permanent max HP per cast, farmed
+# before the fight. Assumed 25 stacks per hero level (lvl 15 → +375 HP,
+# lvl 5 → +125 HP). Added to health_flat before max HP.
+BLOOD_STRIKE_STACKS = 25 * LEVEL
 WHITE_BASE = 12.0  # DCS base 11 + 1d1
 SWING = 2.0
 BASE_MANA = 120.0
@@ -248,6 +252,7 @@ def stats_of(build: Build) -> dict[str, float]:
         phys_add += 0.18
     if _has(build, GLYPH_FORTUNE):
         luck += 0.15
+    health_flat += BLOOD_STRIKE_STACKS  # Blood Strike long-term stacks
     hp = max_hp(BASE_HP, strength) + health_flat
     attack_speed = min(4.0, max(-0.8, attack_speed + min(1.0, 0.004 * agility)))
     flat_cdr = 0.20 if _has(build, GLYPH_MINDHASTE) else 0.0

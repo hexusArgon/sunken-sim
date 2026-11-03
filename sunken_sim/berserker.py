@@ -12,6 +12,7 @@ scored). Healing is not scored.
 
 from __future__ import annotations
 
+import math
 import re
 
 from sunken_sim.pressure import hero_hp_ratio, max_hp
@@ -44,6 +45,10 @@ from sunken_sim.stacking import stack_fields
 BASE_STR = int(14 + (LEVEL - 1) * 1.4)
 BASE_AGI = int(28 + (LEVEL - 1) * 2.8)
 BASE_INT = int(8 + (LEVEL - 1) * 0.8)
+# Trophy Skull / Trophies (udg_Trophies_Total, A0L0) long-term stacks farmed
+# by Skull Split kills before the fight: 13.333… per hero level, rounded to
+# nearest (lvl 15 → 200). Map: DCS_Damage += Trophies_Total (war3map.j ~75661).
+TROPHIES = int(math.floor(13.33333333333333333 * LEVEL + 0.5))
 WHITE_BASE = 30.0
 SWING = 1.6
 BASE_MANA = 120.0
@@ -432,6 +437,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
 
     def dcs(now: float) -> float:
         value = WHITE_BASE + 0.75 * agi + stats["damage"]
+        value += TROPHIES  # +1 DCS per Trophy stack, like the map
         if has(TALENT_BLOOD_CRAZE):
             value += BLOOD_CRAZE_DCS
         return value

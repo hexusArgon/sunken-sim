@@ -432,7 +432,8 @@ def _parse_tip(tip: str) -> dict:
         "potency": _sum_ints(r"^\+(\d+) Potency\b", "\n".join(lines)),
         "mastery": _sum_ints(r"^\+(\d+) Mastery\b", "\n".join(lines)),
         "damage": _sum_ints(r"^\+(\d+) (?:Attack )?Damage\b", "\n".join(lines)),
-        "mana": _sum_ints(r"^\+(\d+) Mana\b", "\n".join(lines)),
+        # Flat "+N Mana" only; "+N Mana per 5 seconds" is regen, not max mana.
+        "mana": _sum_ints(r"^\+(\d+) Mana\b(?! per\b)", "\n".join(lines)),
         "crit": _sum_ints(r"^\+(\d+)% Critical Strike\b", "\n".join(lines))
         + _sum_ints(r"Critical Strike by (\d+)%", stat_text),
         "crit_rating": _sum_ints(r"Critical Strike bonus damage is increased by additional (\d+)%", tip) / 100,
@@ -461,6 +462,13 @@ def _parse_tip(tip: str) -> dict:
     }
 
 
+# Soul Lantern (I06D): tip "+150 Mana" plus Soul Shards "+4 Mana, up to a
+# maximum of 200". Sims take the shard cap as reached (user rule): 150 + 200.
+SOUL_LANTERN = "I06D"
+SOUL_LANTERN_MANA = 150 + 200
+MANA_OVERRIDES = {SOUL_LANTERN: SOUL_LANTERN_MANA}
+
+
 def _blocked_for_priest(name: str, tip: str) -> bool:
     blob = f"{name}\n{tip}"
     if "Priest" in blob:
@@ -487,6 +495,8 @@ def load_items() -> list[Item]:
             **{key: value for key, value in stats.items() if key != "spell_crit"},
             spell_crit=stats["spell_crit"],
         )
+        if rawcode in MANA_OVERRIDES:
+            item.mana = MANA_OVERRIDES[rawcode]
         items.append(item)
     items.sort(key=lambda item: item.name)
     return items

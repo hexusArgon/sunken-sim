@@ -1,0 +1,118 @@
+#!/usr/bin/env python3
+"""Build docs/sim-html/index.html: Raid Summary (pool switcher + damage-by-source chart) from page data (sources/*.tsx).
+Usage: python build_index.py <sim-html dir>"""
+import re, json, sys, html, os
+D = sys.argv[1] if len(sys.argv) > 1 else "."
+SRC = os.path.join(D, "sources")
+
+def const(f, name):
+    s = open(os.path.join(SRC, f), encoding="utf8").read()
+    m = re.search(r"^const " + name + r"\b[^=]*=\s*(.*?);\s*$", s, re.M)
+    return json.loads(m.group(1))
+
+def pct(v):
+    if v is None: return None
+    if isinstance(v, str): return float(v.rstrip("%"))
+    return float(v)
+
+POOLS = [("mixed", "Shop + drop"), ("shop", "Shop"), ("drop", "Drop")]
+COL = {"Paladin": "#F48CBA", "Priest": "#FFFFFF", "Shaman": "#0070DD", "Mage": "#3FC7EB", "Druid": "#FF7C0A"}
+specs = []  # dict(cls, spec, page, level, pools{pool:{dps,total,mana,sources}})
+
+def add(cls, spec, page, level, runs_by_pool):
+    pools = {}
+    for p, _ in POOLS:
+        r = runs_by_pool.get(p)
+        if not r: continue
+        pools[p] = dict(dps=float(r["dps"]), total=float(r["total"]), mana=pct(r.get("manaLeft")),
+                        sources=[(n, float(v)) for n, v in r.get("sources", [])])
+    specs.append(dict(cls=cls, spec=spec, page=page, level=level, pools=pools))
+
+# Mage (level 6 per page caption)
+md = const("mage.tsx", "DATA")
+for sp, t in [("fire", "Fire"), ("arcane", "Arcane"), ("frost", "Frost")]:
+    add("Mage", t, "mage.html", 6, {p: max(md[sp]["runs"][p], key=lambda r: float(r["dps"])) for p, _ in POOLS})
+# Paladin / Shaman (level 6), keys spec|pool|place
+for f, cls, page, names in [("paladin.tsx", "Paladin", "paladin.html", {"retribution": "Retribution", "protection": "Protection"}),
+                            ("shaman.tsx", "Shaman", "shaman.html", {"enhancement": "Enhancement", "elemental": "Elemental"})]:
+    R = const(f, "RUNS")
+    for sp, t in names.items():
+        byp = {}
+        for k, r in R.items():
+            s_, p, _ = k.split("|")
+            if s_ == sp and (p not in byp or float(r["dps"]) > float(byp[p]["dps"])): byp[p] = r
+        add(cls, t, page, 6, byp)
+# Druid / Priest (level from DATA)
+for f, cls, spec, page in [("druid.tsx", "Druid", "Balance", "druid.html"), ("priest.tsx", "Priest", "Shadow", "priest.html")]:
+    d = const(f, "DATA")
+    add(cls, spec, page, d["level"], {p: max(d["runs"][p], key=lambda r: float(r["dps"])) for p, _ in POOLS if p in d["runs"]})
+
+SRC_COLORS = ["#58a6ff", "#3fb950", "#d29922", "#f85149", "#a371f7", "#39c5cf", "#db61a2", "#e3b341", "#8b949e", "#56d364", "#ff9a5c", "#79c0ff"]
+e = html.escape
+fmt = lambda x: f"{x:,.1f}".replace(",", " ")
+fmti = lambda x: f"{x:,.0f}".replace(",", " ")
+
+def source_chart(pool):
+    rows = sorted([s for s in specs if pool in s["pools"] and s["pools"][pool]["sources"]], key=lambda s: -s["pools"][pool]["dps"])
+    mx = max(sum(v for _, v in s["pools"][pool]["sources"]) for s in rows)
+    out = []
+    for s in rows:
+        src = s["pools"][pool]["sources"]; tot = sum(v for _, v in src)
+        segs = "".join(f'<div class="seg" style="width:{v/mx*100:.3f}%;background:{SRC_COLORS[j % len(SRC_COLORS)]}" title="{e(n)}: {fmt(v)} DPS ({v/tot*100:.1f}%)"></div>' for j, (n, v) in enumerate(src))
+        top = " · ".join(f'<span class="sw" style="background:{SRC_COLORS[j % len(SRC_COLORS)]}"></span>{e(n)} {fmt(v)}' for j, (n, v) in enumerate(src[:4]))
+        out.append(f'<div class="srow"><div class="rl"><span style="color:{COL[s["cls"]]}">{e(s["spec"])} {e(s["cls"])}</span><span class="lv">ур. {s["level"]}</span></div>'
+                   f'<div><div class="stack">{segs}</div><div class="slg">{top}{" · …" if len(src) > 4 else ""}</div></div><div class="rv mono">{fmt(tot)}</div></div>')
+    return "\n".join(out)
+
+css = open(os.path.join(D, "build", "style.css"), encoding="utf8").read() if os.path.exists(os.path.join(D, "build", "style.css")) else ""
+css += """
+.card{display:block;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;color:var(--fg);text-decoration:none}
+.card:hover{border-color:var(--accent)}.ct{font-size:20px;font-weight:650}.cs{color:var(--fg2);font-size:13px;margin-top:6px}.cn{color:var(--success);margin-top:10px;font-size:13px}
+.sec{margin-top:26px;display:flex;flex-direction:column;gap:10px}
+.pills{display:flex;gap:8px;flex-wrap:wrap}
+.sumgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.sumgrid .stat-value{font-size:17px}
+.chart{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:7px}
+.rrow,.srow{display:grid;grid-template-columns:270px 1fr 80px;gap:12px;align-items:center;font-size:13px;color:var(--fg);text-decoration:none}
+.rrow:hover .rl{text-decoration:underline}
+.rl{display:flex;gap:8px;align-items:baseline;justify-content:flex-end;white-space:nowrap;font-weight:600}
+.rk{color:var(--fg3);font-weight:400;min-width:18px;text-align:right}
+.lv{color:var(--fg3);font-weight:400;font-size:11.5px}
+.rt{background:#21262d;border-radius:3px;height:20px;overflow:hidden}
+.rf{height:100%;border-radius:3px;opacity:.85}
+.rv{text-align:right;font-size:12.5px}
+.stack{display:flex;height:20px;background:#21262d;border-radius:3px;overflow:hidden}
+.seg{height:100%;border-right:1px solid rgba(13,17,23,.6)}.seg:hover{filter:brightness(1.25)}
+.slg{color:var(--fg2);font-size:11.5px;margin-top:3px}
+.sw{display:inline-block;width:9px;height:9px;border-radius:2px;margin:0 4px -1px 0}
+.pv{display:none}.pv.on{display:flex}
+.note{color:var(--fg2);font-size:12.5px}
+@media(max-width:800px){.rrow,.srow{grid-template-columns:150px 1fr 64px}.lv{display:none}}
+"""
+
+pages = [("paladin", "Paladin"), ("priest", "Priest"), ("shaman", "Shaman"), ("mage", "Mage"), ("druid", "Druid")]
+nav = '<nav class="topnav"><a href="index.html" class="cur">← Sunken City sims</a>' + "".join(f'<a href="{f}.html">{t}</a>' for f, t in pages) + "</nav>"
+
+lv = sorted({s["level"] for s in specs})
+shown = ", ".join(f'{s["spec"]} {s["cls"]} (ур. {s["level"]})' for s in sorted(specs, key=lambda s: -s["pools"]["mixed"]["dps"]))
+pills = "".join(f'<button class="pill {"active" if p=="mixed" else ""}" data-pool="{p}">{t}</button>' for p, t in POOLS)
+body = f"""{nav}<main class="page">
+<h1 class="h1">Sunken City v2.5.2a — симы классов</h1>
+<div class="note" style="margin-top:4px">30 секунд · 5 целей · лучший билд (место 1) каждой специализации из фарма. Цифры — из данных страниц классов (sources/*.tsx), ничего не досчитано.</div>
+<div class="sec"><h2 class="h2">Raid Summary</h2><div class="pills">{pills}</div>
+<h3 class="h3">Урон по источникам (место 1)</h3><div class="note">Сегмент = источник урона из отчёта сима; наведи на сегмент — имя, DPS и доля. Подписи — 4 главных источника.</div>
+{"".join(f'<div class="pv {"on" if p=="mixed" else ""} chart" data-pool="{p}" style="flex-direction:column">{source_chart(p)}</div>' for p, _ in POOLS)}
+<div class="callout warning"><div class="callout-title">Разные уровни</div>Priest Shadow и Druid Balance — прогон ур. 15 с ESC-очками; Paladin, Shaman и Mage — старые прогоны ур. 6. Сравнивать честно только внутри одного уровня. Fire Mage ур. 15 ещё считается — на графике Fire из прогона ур. 6.</div>
+</div>
+<div class="note" style="margin-top:18px">На графиках: {e(shown)}.</div>
+</main>
+<script>
+document.querySelectorAll('.pill[data-pool]').forEach(function(b){{b.addEventListener('click',function(){{
+var p=b.getAttribute('data-pool');
+document.querySelectorAll('.pill[data-pool]').forEach(function(x){{x.classList.toggle('active',x===b)}});
+document.querySelectorAll('.pv').forEach(function(v){{var on=v.getAttribute('data-pool')===p;v.classList.toggle('on',on);v.style.display=on?(v.classList.contains('sumgrid')?'grid':'flex'):'none'}});
+}})}});
+</script>"""
+doc = f'<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sunken City sims</title><style>{css}</style></head><body>{body}</body></html>'
+open(os.path.join(D, "index.html"), "w", encoding="utf8").write(doc)
+print("index.html", len(doc), "specs:", shown)
