@@ -328,16 +328,12 @@ export default function PriestSims() {
 
       <Divider />
       <H2>Предметы в связке</H2>
-      <Text tone="secondary">
-        {LABELS[mode]}. Место {place}. Shadow. {DATA.targets} целей. Очки ESC: {pointsText(run.points)}.
-      </Text>
       <Table
         headers={["Предмет", "Источник"]}
         rows={run.items.map((it) => [<Wc3Name name={itemName(run, it.code, it.name)} title={it.name} tip={ITEM_TIPS[it.code]} />, SOURCE_LABEL[it.source] ?? it.source])}
         striped
         rowTone={run.items.map(() => "success" as const)}
       />
-      <Text size="small">Кнопки Shadow Word: Pain, Mind Spike, Void Rift, Divine Image. Мастерство Shadow умножает тик и мгновенный удар Shadow Word: Pain на 1,10 + 0,006×Mastery.</Text>
     </Stack>
   );
 }

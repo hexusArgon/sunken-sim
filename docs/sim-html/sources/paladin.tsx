@@ -87,7 +87,7 @@ function actionSec(t: string): number {
 function ActionColumns({ actions, label }: { actions: Array<[string, string]>; label: string }) {
   const col = (title: string, rows: Array<[string, string]>) => (
     <Stack gap={6}>
-      <Text tone="secondary" style={{ fontWeight: 600 }}>{title}</Text>
+      {title ? <Text tone="secondary" style={{ fontWeight: 600 }}>{title}</Text> : null}
       {rows.length ? (
         <Table headers={["Секунда", label]} columnAlign={["right", "left"]} rows={rows.map(([t, n]) => [t, tipName(n)])} striped />
       ) : (
@@ -97,8 +97,8 @@ function ActionColumns({ actions, label }: { actions: Array<[string, string]>; l
   );
   return (
     <Grid columns={2} gap={20}>
-      {col("0–15 с", actions.filter(([t]) => actionSec(t) < 15))}
-      {col("15–30 с", actions.filter(([t]) => actionSec(t) >= 15))}
+      {col("", actions.filter(([t]) => actionSec(t) < 15))}
+      {col("", actions.filter(([t]) => actionSec(t) >= 15))}
     </Grid>
   );
 }
@@ -264,7 +264,6 @@ export default function PaladinSims() {
       <Divider />
 
       <H2>Предметы в связке</H2>
-      <Text tone="secondary">{run.label}. {specTitle}. 5 целей. Порядок предметов — DPS этой специализации из листа.</Text>
       <Table
         headers={["Предмет", "Источник"]}
         rows={sortedItems.map(([name, sourceName, tip]) => [<Wc3Name name={name} tip={tip} />, sourceName])}

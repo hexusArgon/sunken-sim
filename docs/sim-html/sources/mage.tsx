@@ -236,9 +236,6 @@ export default function Mage() {
       <Table headers={["Параметр", "Значение"]} rows={run.stats} />
       <Divider />
       <H2>Предметы в связке</H2>
-      <Text tone="secondary">
-        {LABELS[mode]}. Место {index + 1}. {SPEC_LABEL[spec]}. 5 целей. Очки навыков: {run.points}.
-      </Text>
       <Table
         headers={["Предмет", "Источник"]}
         rows={rankedItems.map(({ row }) => [<Wc3Name name={notedName(row[0], run.stats)} title={row[0]} tip={row[2]} />, row[1]])}
