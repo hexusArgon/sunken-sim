@@ -100,9 +100,8 @@ body = f"""{nav}<main class="page">
 <h1 class="h1">Sunken City v2.5.2a — симы классов</h1>
 <div class="note" style="margin-top:4px">30 секунд · 5 целей · лучший билд (место 1) каждой специализации из фарма. Цифры — из данных страниц классов (sources/*.tsx), ничего не досчитано.</div>
 <div class="sec"><h2 class="h2">Raid Summary</h2><div class="pills">{pills}</div>
-<h3 class="h3">Урон по источникам (место 1)</h3><div class="note">Сегмент = источник урона из отчёта сима; наведи на сегмент — имя, DPS и доля. Подписи — 4 главных источника.</div>
+
 {"".join(f'<div class="pv {"on" if p=="mixed" else ""} chart" data-pool="{p}" style="flex-direction:column">{source_chart(p)}</div>' for p, _ in POOLS)}
-<div class="callout warning"><div class="callout-title">Разные уровни</div>Priest Shadow и Druid Balance — прогон ур. 15 с ESC-очками; Paladin, Shaman и Mage — старые прогоны ур. 6. Сравнивать честно только внутри одного уровня. Fire Mage ур. 15 ещё считается — на графике Fire из прогона ур. 6.</div>
 </div>
 </main>
 <script>
