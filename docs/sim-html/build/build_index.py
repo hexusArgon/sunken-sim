@@ -104,7 +104,6 @@ body = f"""{nav}<main class="page">
 {"".join(f'<div class="pv {"on" if p=="mixed" else ""} chart" data-pool="{p}" style="flex-direction:column">{source_chart(p)}</div>' for p, _ in POOLS)}
 <div class="callout warning"><div class="callout-title">Разные уровни</div>Priest Shadow и Druid Balance — прогон ур. 15 с ESC-очками; Paladin, Shaman и Mage — старые прогоны ур. 6. Сравнивать честно только внутри одного уровня. Fire Mage ур. 15 ещё считается — на графике Fire из прогона ур. 6.</div>
 </div>
-<div class="note" style="margin-top:18px">На графиках: {e(shown)}.</div>
 </main>
 <script>
 document.querySelectorAll('.pill[data-pool]').forEach(function(b){{b.addEventListener('click',function(){{
