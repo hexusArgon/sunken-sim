@@ -28,9 +28,11 @@ def add(cls, spec, page, level, runs_by_pool):
                         sources=[(n, float(v)) for n, v in r.get("sources", [])])
     specs.append(dict(cls=cls, spec=spec, page=page, level=level, pools=pools))
 
-# Mage (level 6 per page caption)
-md = const("mage.tsx", "DATA")
-for sp, t in [("fire", "Fire"), ("arcane", "Arcane"), ("frost", "Frost")]:
+# Mage: Fire from mage.tsx (level from DATA), Frost / Arcane level 6 from mage-legacy.tsx
+mf = const("mage.tsx", "DATA")
+add("Mage", "Fire", "mage.html", mf["level"], {p: max(mf["runs"][p], key=lambda r: float(r["dps"])) for p, _ in POOLS if p in mf["runs"]})
+md = const("mage-legacy.tsx", "DATA")
+for sp, t in [("arcane", "Arcane"), ("frost", "Frost")]:
     add("Mage", t, "mage.html", 6, {p: max(md[sp]["runs"][p], key=lambda r: float(r["dps"])) for p, _ in POOLS})
 # Paladin / Shaman (level 6), keys spec|pool|place
 for f, cls, page, names in [("paladin.tsx", "Paladin", "paladin.html", {"retribution": "Retribution", "protection": "Protection"}),
@@ -60,8 +62,8 @@ def source_chart(pool):
         src = s["pools"][pool]["sources"]; tot = sum(v for _, v in src)
         segs = "".join(f'<div class="seg" style="width:{v/mx*100:.3f}%;background:{SRC_COLORS[j % len(SRC_COLORS)]}" title="{e(n)}: {fmt(v)} DPS ({v/tot*100:.1f}%)"></div>' for j, (n, v) in enumerate(src))
         top = " · ".join(f'<span class="sw" style="background:{SRC_COLORS[j % len(SRC_COLORS)]}"></span>{e(n)} {fmt(v)}' for j, (n, v) in enumerate(src[:4]))
-        out.append(f'<div class="srow"><div class="rl"><span style="color:{COL[s["cls"]]}">{e(s["spec"])} {e(s["cls"])}</span><span class="lv">ур. {s["level"]}</span></div>'
-                   f'<div><div class="stack">{segs}</div><div class="slg">{top}{" · …" if len(src) > 4 else ""}</div></div><div class="rv mono">{fmt(tot)}</div></div>')
+        out.append(f'<a class="srow" href="{e(s["page"])}"><div class="rl"><span style="color:{COL[s["cls"]]}">{e(s["spec"])} {e(s["cls"])}</span><span class="lv">ур. {s["level"]}</span></div>'
+                   f'<div><div class="stack">{segs}</div><div class="slg">{top}{" · …" if len(src) > 4 else ""}</div></div><div class="rv mono">{fmt(tot)}</div></a>')
     return "\n".join(out)
 
 css = open(os.path.join(D, "build", "style.css"), encoding="utf8").read() if os.path.exists(os.path.join(D, "build", "style.css")) else ""
@@ -74,7 +76,8 @@ css += """
 .sumgrid .stat-value{font-size:17px}
 .chart{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:7px}
 .rrow,.srow{display:grid;grid-template-columns:270px 1fr 80px;gap:12px;align-items:center;font-size:13px;color:var(--fg);text-decoration:none}
-.rrow:hover .rl{text-decoration:underline}
+.rrow:hover .rl,.srow:hover .rl{text-decoration:underline}
+.srow{cursor:pointer}
 .rl{display:flex;gap:8px;align-items:baseline;justify-content:flex-end;white-space:nowrap;font-weight:600}
 .rk{color:var(--fg3);font-weight:400;min-width:18px;text-align:right}
 .lv{color:var(--fg3);font-weight:400;font-size:11.5px}
