@@ -1,0 +1,9222 @@
+{
+ "level": 15,
+ "targets": 5,
+ "farm_file": "farm-data-druid-balance/results/local-esc-druid-balance-mixed-top80-5-0-311122844.json",
+ "done": 311122845,
+ "errors": 0,
+ "stopped": false,
+ "balance_talents": [
+  "Wisp Spread (I08O)",
+  "Starlight (I0JY)",
+  "Entangle (I0JZ)",
+  "Starsurge (I0K0)",
+  "Starfall Missile (I0K1)",
+  "Starfire Echo (I0K4)",
+  "Druidism (I0MS)",
+  "Wisp (I0P5)",
+  "Force of Nature (I0P7)",
+  "Nature's Wrath (I0P8)"
+ ],
+ "glyphs": [
+  "Fortitude",
+  "Unsealed Power",
+  "Fortune",
+  "Supremacy",
+  "Arc Striking",
+  "Battle Frenzy",
+  "Hellfire",
+  "Thunder",
+  "Blood Violence",
+  "Animosity",
+  "Glass Cannon",
+  "Mindhaste"
+ ],
+ "runs": {
+  "mixed": [
+   {
+    "farm_dps": 5056.9,
+    "dps": 5056.9,
+    "total": 151707,
+    "manaLeft": 73.2,
+    "bound_spell": "Starfire",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Scythe of Elune",
+      "code": "I0R1",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Starlight (I0JY)",
+     "Starsurge (I0K0)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Mindhaste"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 10,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 265447405,
+    "sources": [
+     [
+      "Wisp Guardian",
+      2515.7
+     ],
+     [
+      "Starfire",
+      1496.1
+     ],
+     [
+      "Starfall",
+      661.0
+     ],
+     [
+      "Mass Entanglement",
+      338.1
+     ],
+     [
+      "Автоатака",
+      45.9
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Starfire"
+     ],
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.75",
+      "Starfall"
+     ],
+     [
+      "1.50",
+      "Starfire"
+     ],
+     [
+      "2.25",
+      "Mass Entanglement"
+     ],
+     [
+      "3.00",
+      "Starfire"
+     ],
+     [
+      "3.78",
+      "Starfire"
+     ],
+     [
+      "4.56",
+      "Starfire"
+     ],
+     [
+      "5.35",
+      "Starfire"
+     ],
+     [
+      "6.13",
+      "Starfire"
+     ],
+     [
+      "6.88",
+      "Wisp Guardian"
+     ],
+     [
+      "7.63",
+      "Starfire"
+     ],
+     [
+      "8.38",
+      "Mass Entanglement"
+     ],
+     [
+      "9.13",
+      "Starfall"
+     ],
+     [
+      "9.88",
+      "Starfire"
+     ],
+     [
+      "10.66",
+      "Starfire"
+     ],
+     [
+      "11.44",
+      "Starfire"
+     ],
+     [
+      "12.23",
+      "Starfire"
+     ],
+     [
+      "13.01",
+      "Starfire"
+     ],
+     [
+      "13.76",
+      "Wisp Guardian"
+     ],
+     [
+      "14.51",
+      "Starfire"
+     ],
+     [
+      "15.26",
+      "Mass Entanglement"
+     ],
+     [
+      "16.01",
+      "Starfire"
+     ],
+     [
+      "16.79",
+      "Starfire"
+     ],
+     [
+      "17.54",
+      "Starfall"
+     ],
+     [
+      "18.29",
+      "Starfire"
+     ],
+     [
+      "19.07",
+      "Starfire"
+     ],
+     [
+      "19.86",
+      "Starfire"
+     ],
+     [
+      "20.61",
+      "Mass Entanglement"
+     ],
+     [
+      "21.36",
+      "Starfire"
+     ],
+     [
+      "22.11",
+      "Wisp Guardian"
+     ],
+     [
+      "22.86",
+      "Starfire"
+     ],
+     [
+      "23.64",
+      "Starfire"
+     ],
+     [
+      "24.42",
+      "Starfire"
+     ],
+     [
+      "25.20",
+      "Starfire"
+     ],
+     [
+      "25.95",
+      "Starfall"
+     ],
+     [
+      "26.70",
+      "Starfire"
+     ],
+     [
+      "27.45",
+      "Mass Entanglement"
+     ],
+     [
+      "28.20",
+      "Starfire"
+     ],
+     [
+      "28.95",
+      "Wisp Guardian"
+     ],
+     [
+      "29.70",
+      "Starfire"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "154"
+     ],
+     [
+      "Сила",
+      "46"
+     ],
+     [
+      "Ловкость",
+      "38"
+     ],
+     [
+      "Сила атаки",
+      "126.5"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "28"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "33.0%"
+     ],
+     [
+      "Скорость атаки",
+      "30.2%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2303"
+     ],
+     [
+      "Реген маны",
+      "13.28/с"
+     ],
+     [
+      "Мана в конце",
+      "73%"
+     ],
+     [
+      "Интервал атаки",
+      "1.54 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "1.70 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Starfire"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 5056.9,
+     "Starlight (I0JY)": 5056.9,
+     "Entangle (I0JZ)": 4176.5,
+     "Starsurge (I0K0)": 5056.9,
+     "Starfall Missile (I0K1)": 4168.7,
+     "Starfire Echo (I0K4)": 4231.8,
+     "Druidism (I0MS)": 4100.9,
+     "Wisp (I0P5)": 4545.1,
+     "Force of Nature (I0P7)": 3923.0,
+     "Nature's Wrath (I0P8)": 4386.4
+    },
+    "glyphDps": {
+     "Fortitude": 5056.9,
+     "Unsealed Power": 4932.4,
+     "Fortune": 4404.0,
+     "Supremacy": 4608.1,
+     "Arc Striking": 4404.0,
+     "Battle Frenzy": 4404.0,
+     "Hellfire": 4404.0,
+     "Thunder": 4404.0,
+     "Blood Violence": 4404.0,
+     "Animosity": 4409.0,
+     "Glass Cannon": 5056.9,
+     "Mindhaste": 5056.9
+    }
+   },
+   {
+    "farm_dps": 4838.6,
+    "dps": 4838.6,
+    "total": 145157,
+    "manaLeft": 78.4,
+    "bound_spell": "Starfire",
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Scythe of Elune",
+      "code": "I0R1",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Starlight (I0JY)",
+     "Starsurge (I0K0)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Mindhaste"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 265479737,
+    "sources": [
+     [
+      "Wisp Guardian",
+      2354.3
+     ],
+     [
+      "Starfire",
+      1719.5
+     ],
+     [
+      "Starfall",
+      764.8
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Diamond Ring → привязка Starfire"
+     ],
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.75",
+      "Starfall"
+     ],
+     [
+      "1.50",
+      "Starfire"
+     ],
+     [
+      "2.25",
+      "Starfire"
+     ],
+     [
+      "3.00",
+      "Starfire"
+     ],
+     [
+      "3.75",
+      "Starfire"
+     ],
+     [
+      "4.50",
+      "Starfire"
+     ],
+     [
+      "5.25",
+      "Starfire"
+     ],
+     [
+      "6.00",
+      "Starfire"
+     ],
+     [
+      "6.75",
+      "Starfire"
+     ],
+     [
+      "7.50",
+      "Starfire"
+     ],
+     [
+      "8.25",
+      "Wisp Guardian"
+     ],
+     [
+      "9.00",
+      "Starfall"
+     ],
+     [
+      "9.75",
+      "Starfire"
+     ],
+     [
+      "10.50",
+      "Starfire"
+     ],
+     [
+      "11.25",
+      "Starfire"
+     ],
+     [
+      "12.00",
+      "Starfire"
+     ],
+     [
+      "12.75",
+      "Starfire"
+     ],
+     [
+      "13.50",
+      "Starfire"
+     ],
+     [
+      "14.25",
+      "Starfire"
+     ],
+     [
+      "15.00",
+      "Starfire"
+     ],
+     [
+      "15.75",
+      "Starfire"
+     ],
+     [
+      "16.50",
+      "Wisp Guardian"
+     ],
+     [
+      "17.25",
+      "Starfall"
+     ],
+     [
+      "18.00",
+      "Starfire"
+     ],
+     [
+      "18.75",
+      "Starfire"
+     ],
+     [
+      "19.50",
+      "Starfire"
+     ],
+     [
+      "20.25",
+      "Starfire"
+     ],
+     [
+      "21.00",
+      "Starfire"
+     ],
+     [
+      "21.75",
+      "Starfire"
+     ],
+     [
+      "22.50",
+      "Starfire"
+     ],
+     [
+      "23.25",
+      "Starfire"
+     ],
+     [
+      "24.00",
+      "Starfire"
+     ],
+     [
+      "24.75",
+      "Wisp Guardian"
+     ],
+     [
+      "25.50",
+      "Starfall"
+     ],
+     [
+      "26.25",
+      "Starfire"
+     ],
+     [
+      "27.00",
+      "Starfire"
+     ],
+     [
+      "27.75",
+      "Starfire"
+     ],
+     [
+      "28.50",
+      "Starfire"
+     ],
+     [
+      "29.25",
+      "Starfire"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "160"
+     ],
+     [
+      "Сила",
+      "40"
+     ],
+     [
+      "Ловкость",
+      "32"
+     ],
+     [
+      "Сила атаки",
+      "131.0"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "18"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "39.0%"
+     ],
+     [
+      "Скорость атаки",
+      "12.8%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2345"
+     ],
+     [
+      "Реген маны",
+      "13.76/с"
+     ],
+     [
+      "Мана в конце",
+      "78%"
+     ],
+     [
+      "Интервал атаки",
+      "1.77 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "1.70 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Starfire"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 4838.6,
+     "Starlight (I0JY)": 4838.6,
+     "Entangle (I0JZ)": 3913.2,
+     "Starsurge (I0K0)": 4838.6,
+     "Starfall Missile (I0K1)": 3958.1,
+     "Starfire Echo (I0K4)": 4068.5,
+     "Druidism (I0MS)": 3816.2,
+     "Wisp (I0P5)": 4355.0,
+     "Force of Nature (I0P7)": 3612.2,
+     "Nature's Wrath (I0P8)": 3942.7
+    },
+    "glyphDps": {
+     "Fortitude": 4838.6,
+     "Unsealed Power": 4680.8,
+     "Fortune": 4207.5,
+     "Supremacy": 4464.6,
+     "Arc Striking": 4207.5,
+     "Battle Frenzy": 4207.5,
+     "Hellfire": 4207.5,
+     "Thunder": 4207.5,
+     "Blood Violence": 4207.5,
+     "Animosity": 4207.5,
+     "Glass Cannon": 4838.6,
+     "Mindhaste": 4838.6
+    }
+   },
+   {
+    "farm_dps": 4650.4,
+    "dps": 4650.4,
+    "total": 139511,
+    "manaLeft": 75.9,
+    "bound_spell": "Starfire",
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Scythe of Elune",
+      "code": "I0R1",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Starlight (I0JY)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Mindhaste"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 9,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 265447993,
+    "sources": [
+     [
+      "Wisp Guardian",
+      2473.7
+     ],
+     [
+      "Starfire",
+      1298.6
+     ],
+     [
+      "Starfall",
+      618.6
+     ],
+     [
+      "Mass Entanglement",
+      210.4
+     ],
+     [
+      "Автоатака",
+      49.0
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Diamond Ring → привязка Starfire"
+     ],
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.75",
+      "Starfall"
+     ],
+     [
+      "1.50",
+      "Starfire"
+     ],
+     [
+      "2.25",
+      "Mass Entanglement"
+     ],
+     [
+      "3.00",
+      "Starfire"
+     ],
+     [
+      "3.84",
+      "Starfire"
+     ],
+     [
+      "4.68",
+      "Starfire"
+     ],
+     [
+      "5.52",
+      "Starfire"
+     ],
+     [
+      "6.36",
+      "Starfire"
+     ],
+     [
+      "7.11",
+      "Wisp Guardian"
+     ],
+     [
+      "7.86",
+      "Starfire"
+     ],
+     [
+      "8.61",
+      "Mass Entanglement"
+     ],
+     [
+      "9.36",
+      "Starfall"
+     ],
+     [
+      "10.11",
+      "Starfire"
+     ],
+     [
+      "10.95",
+      "Starfire"
+     ],
+     [
+      "11.78",
+      "Starfire"
+     ],
+     [
+      "12.62",
+      "Starfire"
+     ],
+     [
+      "13.46",
+      "Starfire"
+     ],
+     [
+      "14.21",
+      "Wisp Guardian"
+     ],
+     [
+      "14.96",
+      "Starfire"
+     ],
+     [
+      "15.71",
+      "Mass Entanglement"
+     ],
+     [
+      "16.46",
+      "Starfire"
+     ],
+     [
+      "17.30",
+      "Starfire"
+     ],
+     [
+      "18.05",
+      "Starfall"
+     ],
+     [
+      "18.80",
+      "Starfire"
+     ],
+     [
+      "19.64",
+      "Starfire"
+     ],
+     [
+      "20.48",
+      "Starfire"
+     ],
+     [
+      "21.26",
+      "Wisp Guardian"
+     ],
+     [
+      "22.01",
+      "Starfire"
+     ],
+     [
+      "22.76",
+      "Mass Entanglement"
+     ],
+     [
+      "23.51",
+      "Starfire"
+     ],
+     [
+      "24.35",
+      "Starfire"
+     ],
+     [
+      "25.19",
+      "Starfire"
+     ],
+     [
+      "26.03",
+      "Starfire"
+     ],
+     [
+      "26.78",
+      "Starfall"
+     ],
+     [
+      "27.53",
+      "Starfire"
+     ],
+     [
+      "28.31",
+      "Wisp Guardian"
+     ],
+     [
+      "29.06",
+      "Starfire"
+     ],
+     [
+      "29.81",
+      "Mass Entanglement"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "164"
+     ],
+     [
+      "Сила",
+      "40"
+     ],
+     [
+      "Ловкость",
+      "32"
+     ],
+     [
+      "Сила атаки",
+      "134.0"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "37"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "24.0%"
+     ],
+     [
+      "Скорость атаки",
+      "12.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2373"
+     ],
+     [
+      "Реген маны",
+      "14.08/с"
+     ],
+     [
+      "Мана в конце",
+      "76%"
+     ],
+     [
+      "Интервал атаки",
+      "2.13 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "1.70 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Starfire"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 5215.3,
+     "Starlight (I0JY)": 5215.3,
+     "Entangle (I0JZ)": 4276.9,
+     "Starsurge (I0K0)": 5215.3,
+     "Starfall Missile (I0K1)": 4294.0,
+     "Starfire Echo (I0K4)": 4341.8,
+     "Druidism (I0MS)": 4189.2,
+     "Wisp (I0P5)": 4650.4,
+     "Force of Nature (I0P7)": 4005.6,
+     "Nature's Wrath (I0P8)": 4363.7
+    },
+    "glyphDps": {
+     "Fortitude": 4650.4,
+     "Unsealed Power": 4542.1,
+     "Fortune": 4129.2,
+     "Supremacy": 4304.8,
+     "Arc Striking": 4129.2,
+     "Battle Frenzy": 4129.2,
+     "Hellfire": 4129.2,
+     "Thunder": 4129.2,
+     "Blood Violence": 4129.2,
+     "Animosity": 4134.7,
+     "Glass Cannon": 4650.4,
+     "Mindhaste": 4650.4
+    }
+   },
+   {
+    "farm_dps": 4456.3,
+    "dps": 4456.3,
+    "total": 133688,
+    "manaLeft": 72.9,
+    "bound_spell": "Starfire",
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Scythe of Elune",
+      "code": "I0R1",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Starlight (I0JY)",
+     "Starsurge (I0K0)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Mindhaste"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 10,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 265472088,
+    "sources": [
+     [
+      "Wisp Guardian",
+      2140.9
+     ],
+     [
+      "Starfire",
+      1325.3
+     ],
+     [
+      "Starfall",
+      635.3
+     ],
+     [
+      "Mass Entanglement",
+      319.3
+     ],
+     [
+      "Автоатака",
+      35.4
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Diamond Ring → привязка Starfire"
+     ],
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.75",
+      "Starfall"
+     ],
+     [
+      "1.50",
+      "Starfire"
+     ],
+     [
+      "2.25",
+      "Mass Entanglement"
+     ],
+     [
+      "3.00",
+      "Starfire"
+     ],
+     [
+      "3.78",
+      "Starfire"
+     ],
+     [
+      "4.56",
+      "Starfire"
+     ],
+     [
+      "5.35",
+      "Starfire"
+     ],
+     [
+      "6.13",
+      "Starfire"
+     ],
+     [
+      "6.88",
+      "Wisp Guardian"
+     ],
+     [
+      "7.63",
+      "Starfire"
+     ],
+     [
+      "8.38",
+      "Mass Entanglement"
+     ],
+     [
+      "9.13",
+      "Starfall"
+     ],
+     [
+      "9.88",
+      "Starfire"
+     ],
+     [
+      "10.66",
+      "Starfire"
+     ],
+     [
+      "11.44",
+      "Starfire"
+     ],
+     [
+      "12.23",
+      "Starfire"
+     ],
+     [
+      "13.01",
+      "Starfire"
+     ],
+     [
+      "13.76",
+      "Wisp Guardian"
+     ],
+     [
+      "14.51",
+      "Starfire"
+     ],
+     [
+      "15.26",
+      "Mass Entanglement"
+     ],
+     [
+      "16.01",
+      "Starfire"
+     ],
+     [
+      "16.79",
+      "Starfire"
+     ],
+     [
+      "17.54",
+      "Starfall"
+     ],
+     [
+      "18.29",
+      "Starfire"
+     ],
+     [
+      "19.07",
+      "Starfire"
+     ],
+     [
+      "19.86",
+      "Starfire"
+     ],
+     [
+      "20.61",
+      "Mass Entanglement"
+     ],
+     [
+      "21.36",
+      "Starfire"
+     ],
+     [
+      "22.11",
+      "Wisp Guardian"
+     ],
+     [
+      "22.86",
+      "Starfire"
+     ],
+     [
+      "23.64",
+      "Starfire"
+     ],
+     [
+      "24.42",
+      "Starfire"
+     ],
+     [
+      "25.20",
+      "Starfire"
+     ],
+     [
+      "25.95",
+      "Starfall"
+     ],
+     [
+      "26.70",
+      "Starfire"
+     ],
+     [
+      "27.45",
+      "Mass Entanglement"
+     ],
+     [
+      "28.20",
+      "Starfire"
+     ],
+     [
+      "28.95",
+      "Wisp Guardian"
+     ],
+     [
+      "29.70",
+      "Starfire"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "152"
+     ],
+     [
+      "Сила",
+      "40"
+     ],
+     [
+      "Ловкость",
+      "26"
+     ],
+     [
+      "Сила атаки",
+      "125.0"
+     ],
+     [
+      "Potency",
+      "8.0"
+     ],
+     [
+      "Mastery",
+      "38"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "33.0%"
+     ],
+     [
+      "Скорость атаки",
+      "42.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2289"
+     ],
+     [
+      "Реген маны",
+      "13.12/с"
+     ],
+     [
+      "Мана в конце",
+      "73%"
+     ],
+     [
+      "Интервал атаки",
+      "1.69 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "1.70 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Starfire"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 4456.3,
+     "Starlight (I0JY)": 4456.3,
+     "Entangle (I0JZ)": 3713.3,
+     "Starsurge (I0K0)": 4456.3,
+     "Starfall Missile (I0K1)": 3735.5,
+     "Starfire Echo (I0K4)": 3770.5,
+     "Druidism (I0MS)": 3634.3,
+     "Wisp (I0P5)": 4009.1,
+     "Force of Nature (I0P7)": 3500.2,
+     "Nature's Wrath (I0P8)": 3903.5
+    },
+    "glyphDps": {
+     "Fortitude": 4456.3,
+     "Unsealed Power": 4359.0,
+     "Fortune": 3892.0,
+     "Supremacy": 4058.5,
+     "Arc Striking": 3892.0,
+     "Battle Frenzy": 3892.0,
+     "Hellfire": 3892.0,
+     "Thunder": 3892.0,
+     "Blood Violence": 3892.0,
+     "Animosity": 3895.9,
+     "Glass Cannon": 4456.3,
+     "Mindhaste": 4456.3
+    }
+   },
+   {
+    "farm_dps": 4287.6,
+    "dps": 4287.6,
+    "total": 128628,
+    "manaLeft": 86.2,
+    "bound_spell": "Starfire",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Starsurge (I0K0)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 3,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 7,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 265448059,
+    "sources": [
+     [
+      "Wisp Guardian",
+      2480.5
+     ],
+     [
+      "Starfire",
+      662.9
+     ],
+     [
+      "Mass Entanglement",
+      580.3
+     ],
+     [
+      "Starfall",
+      457.2
+     ],
+     [
+      "Автоатака",
+      106.7
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Starfire"
+     ],
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.75",
+      "Starfall"
+     ],
+     [
+      "1.50",
+      "Starfire"
+     ],
+     [
+      "2.25",
+      "Mass Entanglement"
+     ],
+     [
+      "4.11",
+      "Starfire"
+     ],
+     [
+      "6.73",
+      "Starfire"
+     ],
+     [
+      "7.48",
+      "Wisp Guardian"
+     ],
+     [
+      "8.23",
+      "Mass Entanglement"
+     ],
+     [
+      "9.03",
+      "Starfall"
+     ],
+     [
+      "9.78",
+      "Starfire"
+     ],
+     [
+      "12.39",
+      "Starfire"
+     ],
+     [
+      "13.81",
+      "Mass Entanglement"
+     ],
+     [
+      "14.56",
+      "Wisp Guardian"
+     ],
+     [
+      "15.31",
+      "Starfire"
+     ],
+     [
+      "17.31",
+      "Starfall"
+     ],
+     [
+      "18.06",
+      "Starfire"
+     ],
+     [
+      "19.39",
+      "Mass Entanglement"
+     ],
+     [
+      "20.67",
+      "Starfire"
+     ],
+     [
+      "21.49",
+      "Wisp Guardian"
+     ],
+     [
+      "23.29",
+      "Starfire"
+     ],
+     [
+      "24.97",
+      "Mass Entanglement"
+     ],
+     [
+      "25.72",
+      "Starfall"
+     ],
+     [
+      "26.47",
+      "Starfire"
+     ],
+     [
+      "28.42",
+      "Wisp Guardian"
+     ],
+     [
+      "29.17",
+      "Starfire"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "162"
+     ],
+     [
+      "Сила",
+      "46"
+     ],
+     [
+      "Ловкость",
+      "38"
+     ],
+     [
+      "Сила атаки",
+      "132.5"
+     ],
+     [
+      "Potency",
+      "3.5"
+     ],
+     [
+      "Mastery",
+      "28"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "29.0%"
+     ],
+     [
+      "Скорость атаки",
+      "30.2%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2159"
+     ],
+     [
+      "Реген маны",
+      "13.92/с"
+     ],
+     [
+      "Мана в конце",
+      "86%"
+     ],
+     [
+      "Интервал атаки",
+      "1.84 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "1.50 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Starfire"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 4287.6,
+     "Starlight (I0JY)": 3761.7,
+     "Entangle (I0JZ)": 3836.2,
+     "Starsurge (I0K0)": 4287.6,
+     "Starfall Missile (I0K1)": 3470.5,
+     "Starfire Echo (I0K4)": 3397.9,
+     "Druidism (I0MS)": 3494.0,
+     "Wisp (I0P5)": 4287.6,
+     "Force of Nature (I0P7)": 3385.3,
+     "Nature's Wrath (I0P8)": 3604.3
+    },
+    "glyphDps": {
+     "Fortitude": 4287.6,
+     "Unsealed Power": 4287.6,
+     "Fortune": 3897.8,
+     "Supremacy": 4009.9,
+     "Arc Striking": 3897.8,
+     "Battle Frenzy": 3897.8,
+     "Hellfire": 3897.8,
+     "Thunder": 3897.8,
+     "Blood Violence": 3897.8,
+     "Animosity": 3911.2,
+     "Glass Cannon": 4287.6,
+     "Mindhaste": 4247.7
+    }
+   },
+   {
+    "farm_dps": 3109.0,
+    "dps": 3109.0,
+    "total": 93271,
+    "manaLeft": 93.2,
+    "bound_spell": "Starfire",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Scythe of Elune",
+      "code": "I0R1",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Starsurge (I0K0)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 10,
+     "pet_damage": 0
+    },
+    "chunk": 246062612,
+    "sources": [
+     [
+      "Wisp Guardian",
+      1339.1
+     ],
+     [
+      "Sulfuras",
+      597.0
+     ],
+     [
+      "Starfire",
+      429.8
+     ],
+     [
+      "Starfall",
+      325.4
+     ],
+     [
+      "Mass Entanglement",
+      276.4
+     ],
+     [
+      "Автоатака",
+      134.5
+     ],
+     [
+      "Sulfuras (удар)",
+      6.7
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Starfire"
+     ],
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.45",
+      "Starfall"
+     ],
+     [
+      "0.90",
+      "Starfire"
+     ],
+     [
+      "1.35",
+      "Mass Entanglement"
+     ],
+     [
+      "4.23",
+      "Starfire"
+     ],
+     [
+      "7.57",
+      "Starfire"
+     ],
+     [
+      "9.29",
+      "Mass Entanglement"
+     ],
+     [
+      "9.74",
+      "Wisp Guardian"
+     ],
+     [
+      "10.90",
+      "Starfire"
+     ],
+     [
+      "11.56",
+      "Starfall"
+     ],
+     [
+      "14.23",
+      "Starfire"
+     ],
+     [
+      "17.22",
+      "Mass Entanglement"
+     ],
+     [
+      "17.67",
+      "Starfire"
+     ],
+     [
+      "19.26",
+      "Wisp Guardian"
+     ],
+     [
+      "21.01",
+      "Starfire"
+     ],
+     [
+      "22.67",
+      "Starfall"
+     ],
+     [
+      "24.34",
+      "Starfire"
+     ],
+     [
+      "25.16",
+      "Mass Entanglement"
+     ],
+     [
+      "27.67",
+      "Starfire"
+     ],
+     [
+      "28.78",
+      "Wisp Guardian"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "170"
+     ],
+     [
+      "Сила",
+      "46"
+     ],
+     [
+      "Ловкость",
+      "38"
+     ],
+     [
+      "Сила атаки",
+      "138.5"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "28"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "26.0%"
+     ],
+     [
+      "Скорость атаки",
+      "58.2%"
+     ],
+     [
+      "Удача",
+      "10%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1965"
+     ],
+     [
+      "Реген маны",
+      "14.56/с"
+     ],
+     [
+      "Мана в конце",
+      "93%"
+     ],
+     [
+      "Интервал атаки",
+      "1.52 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Starfire"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 3109.0,
+     "Starlight (I0JY)": 2989.1,
+     "Entangle (I0JZ)": 2993.1,
+     "Starsurge (I0K0)": 3109.0,
+     "Starfall Missile (I0K1)": 2714.3,
+     "Starfire Echo (I0K4)": 2673.1,
+     "Druidism (I0MS)": 2744.9,
+     "Wisp (I0P5)": 3109.0,
+     "Force of Nature (I0P7)": 2750.3,
+     "Nature's Wrath (I0P8)": 2762.1
+    },
+    "glyphDps": {
+     "Fortitude": 3109.0,
+     "Unsealed Power": 3109.0,
+     "Fortune": 2795.3,
+     "Supremacy": 2871.6,
+     "Arc Striking": 2795.3,
+     "Battle Frenzy": 2795.3,
+     "Hellfire": 2795.3,
+     "Thunder": 2795.3,
+     "Blood Violence": 2795.3,
+     "Animosity": 2812.0,
+     "Glass Cannon": 3109.0,
+     "Mindhaste": 3058.8
+    }
+   },
+   {
+    "farm_dps": 2983.0,
+    "dps": 2983.0,
+    "total": 89490,
+    "manaLeft": 96.2,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Stellar Robes",
+      "code": "I0R3",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Starsurge (I0K0)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Mindhaste"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 15454254,
+    "sources": [
+     [
+      "Wisp Guardian",
+      1433.0
+     ],
+     [
+      "Sulfuras",
+      577.5
+     ],
+     [
+      "Mass Entanglement",
+      286.3
+     ],
+     [
+      "Starfire",
+      273.9
+     ],
+     [
+      "Starfall",
+      265.3
+     ],
+     [
+      "Автоатака",
+      139.3
+     ],
+     [
+      "Sulfuras (удар)",
+      7.6
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.45",
+      "Starfall"
+     ],
+     [
+      "0.90",
+      "Starfire"
+     ],
+     [
+      "1.35",
+      "Mass Entanglement"
+     ],
+     [
+      "6.16",
+      "Starfire"
+     ],
+     [
+      "7.97",
+      "Mass Entanglement"
+     ],
+     [
+      "8.42",
+      "Wisp Guardian"
+     ],
+     [
+      "9.77",
+      "Starfall"
+     ],
+     [
+      "11.43",
+      "Starfire"
+     ],
+     [
+      "14.59",
+      "Mass Entanglement"
+     ],
+     [
+      "16.39",
+      "Wisp Guardian"
+     ],
+     [
+      "16.84",
+      "Starfire"
+     ],
+     [
+      "19.10",
+      "Starfall"
+     ],
+     [
+      "21.20",
+      "Mass Entanglement"
+     ],
+     [
+      "22.10",
+      "Starfire"
+     ],
+     [
+      "24.36",
+      "Wisp Guardian"
+     ],
+     [
+      "27.37",
+      "Starfire"
+     ],
+     [
+      "27.82",
+      "Mass Entanglement"
+     ],
+     [
+      "28.42",
+      "Starfall"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "197"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "31"
+     ],
+     [
+      "Сила атаки",
+      "158.8"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "36.0%"
+     ],
+     [
+      "Скорость атаки",
+      "55.4%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1954"
+     ],
+     [
+      "Реген маны",
+      "16.72/с"
+     ],
+     [
+      "Мана в конце",
+      "96%"
+     ],
+     [
+      "Интервал атаки",
+      "1.54 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.20 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 2983.0,
+     "Starlight (I0JY)": 2587.2,
+     "Entangle (I0JZ)": 2789.8,
+     "Starsurge (I0K0)": 2983.0,
+     "Starfall Missile (I0K1)": 2551.4,
+     "Starfire Echo (I0K4)": 2487.6,
+     "Druidism (I0MS)": 2556.0,
+     "Wisp (I0P5)": 2983.0,
+     "Force of Nature (I0P7)": 2495.3,
+     "Nature's Wrath (I0P8)": 2646.6
+    },
+    "glyphDps": {
+     "Fortitude": 2983.0,
+     "Unsealed Power": 2899.9,
+     "Fortune": 2607.4,
+     "Supremacy": 2667.9,
+     "Arc Striking": 2607.4,
+     "Battle Frenzy": 2607.4,
+     "Hellfire": 2607.4,
+     "Thunder": 2607.4,
+     "Blood Violence": 2607.4,
+     "Animosity": 2626.6,
+     "Glass Cannon": 2983.0,
+     "Mindhaste": 2983.0
+    }
+   },
+   {
+    "farm_dps": 2923.7,
+    "dps": 2923.7,
+    "total": 87712,
+    "manaLeft": 94.5,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Starsurge (I0K0)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 9,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 39806967,
+    "sources": [
+     [
+      "Wisp Guardian",
+      1164.0
+     ],
+     [
+      "Sulfuras",
+      603.3
+     ],
+     [
+      "Mass Entanglement",
+      345.3
+     ],
+     [
+      "Starfall",
+      323.4
+     ],
+     [
+      "Starfire",
+      295.7
+     ],
+     [
+      "Автоатака",
+      184.3
+     ],
+     [
+      "Sulfuras (удар)",
+      7.7
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.45",
+      "Starfall"
+     ],
+     [
+      "0.90",
+      "Starfire"
+     ],
+     [
+      "1.35",
+      "Mass Entanglement"
+     ],
+     [
+      "6.27",
+      "Starfire"
+     ],
+     [
+      "8.06",
+      "Wisp Guardian"
+     ],
+     [
+      "8.51",
+      "Mass Entanglement"
+     ],
+     [
+      "9.85",
+      "Starfall"
+     ],
+     [
+      "11.64",
+      "Starfire"
+     ],
+     [
+      "15.22",
+      "Mass Entanglement"
+     ],
+     [
+      "16.12",
+      "Wisp Guardian"
+     ],
+     [
+      "17.02",
+      "Starfire"
+     ],
+     [
+      "19.25",
+      "Starfall"
+     ],
+     [
+      "21.94",
+      "Mass Entanglement"
+     ],
+     [
+      "22.39",
+      "Starfire"
+     ],
+     [
+      "24.18",
+      "Wisp Guardian"
+     ],
+     [
+      "27.76",
+      "Starfire"
+     ],
+     [
+      "28.65",
+      "Starfall"
+     ],
+     [
+      "29.10",
+      "Mass Entanglement"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "185"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "31"
+     ],
+     [
+      "Сила атаки",
+      "149.8"
+     ],
+     [
+      "Potency",
+      "12.5"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "37.0%"
+     ],
+     [
+      "Скорость атаки",
+      "87.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1870"
+     ],
+     [
+      "Реген маны",
+      "15.76/с"
+     ],
+     [
+      "Мана в конце",
+      "95%"
+     ],
+     [
+      "Интервал атаки",
+      "1.28 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 2923.7,
+     "Starlight (I0JY)": 2636.6,
+     "Entangle (I0JZ)": 2874.5,
+     "Starsurge (I0K0)": 2923.7,
+     "Starfall Missile (I0K1)": 2696.3,
+     "Starfire Echo (I0K4)": 2599.0,
+     "Druidism (I0MS)": 2642.1,
+     "Wisp (I0P5)": 2923.7,
+     "Force of Nature (I0P7)": 2659.2,
+     "Nature's Wrath (I0P8)": 2644.7
+    },
+    "glyphDps": {
+     "Fortitude": 2923.7,
+     "Unsealed Power": 2923.7,
+     "Fortune": 2628.9,
+     "Supremacy": 2689.2,
+     "Arc Striking": 2628.9,
+     "Battle Frenzy": 2628.9,
+     "Hellfire": 2628.9,
+     "Thunder": 2628.9,
+     "Blood Violence": 2628.9,
+     "Animosity": 2651.7,
+     "Glass Cannon": 2923.7,
+     "Mindhaste": 2654.3
+    }
+   },
+   {
+    "farm_dps": 2902.3,
+    "dps": 2902.3,
+    "total": 87069,
+    "manaLeft": 98.1,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Scythe of Elune",
+      "code": "I0R1",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Starsurge (I0K0)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 2,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 7,
+     "pet_damage": 0
+    },
+    "chunk": 15454264,
+    "sources": [
+     [
+      "Wisp Guardian",
+      1197.3
+     ],
+     [
+      "Sulfuras",
+      581.0
+     ],
+     [
+      "Starfire",
+      350.2
+     ],
+     [
+      "Mass Entanglement",
+      308.9
+     ],
+     [
+      "Starfall",
+      297.3
+     ],
+     [
+      "Автоатака",
+      159.8
+     ],
+     [
+      "Sulfuras (удар)",
+      7.8
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.45",
+      "Starfall"
+     ],
+     [
+      "0.90",
+      "Starfire"
+     ],
+     [
+      "1.35",
+      "Mass Entanglement"
+     ],
+     [
+      "5.50",
+      "Starfire"
+     ],
+     [
+      "9.02",
+      "Mass Entanglement"
+     ],
+     [
+      "9.47",
+      "Wisp Guardian"
+     ],
+     [
+      "10.10",
+      "Starfire"
+     ],
+     [
+      "11.18",
+      "Starfall"
+     ],
+     [
+      "14.70",
+      "Starfire"
+     ],
+     [
+      "16.68",
+      "Mass Entanglement"
+     ],
+     [
+      "18.67",
+      "Wisp Guardian"
+     ],
+     [
+      "19.30",
+      "Starfire"
+     ],
+     [
+      "21.92",
+      "Starfall"
+     ],
+     [
+      "23.90",
+      "Starfire"
+     ],
+     [
+      "24.35",
+      "Mass Entanglement"
+     ],
+     [
+      "27.87",
+      "Wisp Guardian"
+     ],
+     [
+      "28.50",
+      "Starfire"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "193"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "31"
+     ],
+     [
+      "Сила атаки",
+      "155.8"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "20.0%"
+     ],
+     [
+      "Скорость атаки",
+      "57.4%"
+     ],
+     [
+      "Удача",
+      "7%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2126"
+     ],
+     [
+      "Реген маны",
+      "16.40/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.52 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 2902.3,
+     "Starlight (I0JY)": 2621.5,
+     "Entangle (I0JZ)": 2735.3,
+     "Starsurge (I0K0)": 2902.3,
+     "Starfall Missile (I0K1)": 2544.2,
+     "Starfire Echo (I0K4)": 2470.4,
+     "Druidism (I0MS)": 2537.1,
+     "Wisp (I0P5)": 2902.3,
+     "Force of Nature (I0P7)": 2512.8,
+     "Nature's Wrath (I0P8)": 2584.5
+    },
+    "glyphDps": {
+     "Fortitude": 2902.3,
+     "Unsealed Power": 2902.3,
+     "Fortune": 2609.6,
+     "Supremacy": 2678.1,
+     "Arc Striking": 2609.6,
+     "Battle Frenzy": 2609.6,
+     "Hellfire": 2609.6,
+     "Thunder": 2609.6,
+     "Blood Violence": 2609.6,
+     "Animosity": 2629.4,
+     "Glass Cannon": 2902.3,
+     "Mindhaste": 2638.2
+    }
+   },
+   {
+    "farm_dps": 2820.9,
+    "dps": 2820.9,
+    "total": 84627,
+    "manaLeft": 94.3,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Scythe of Elune",
+      "code": "I0R1",
+      "source": "drop"
+     },
+     {
+      "name": "Stellar Robes",
+      "code": "I0R3",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Hood of Dark Deeds",
+      "code": "tgrh",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Starsurge (I0K0)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 2671087,
+    "sources": [
+     [
+      "Wisp Guardian",
+      1429.8
+     ],
+     [
+      "Sulfuras",
+      451.7
+     ],
+     [
+      "Mass Entanglement",
+      287.1
+     ],
+     [
+      "Starfire",
+      281.6
+     ],
+     [
+      "Starfall",
+      224.2
+     ],
+     [
+      "Автоатака",
+      139.1
+     ],
+     [
+      "Sulfuras (удар)",
+      7.3
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.45",
+      "Starfall"
+     ],
+     [
+      "0.90",
+      "Starfire"
+     ],
+     [
+      "1.35",
+      "Mass Entanglement"
+     ],
+     [
+      "5.55",
+      "Starfire"
+     ],
+     [
+      "9.10",
+      "Mass Entanglement"
+     ],
+     [
+      "9.55",
+      "Wisp Guardian"
+     ],
+     [
+      "10.20",
+      "Starfire"
+     ],
+     [
+      "11.30",
+      "Starfall"
+     ],
+     [
+      "14.85",
+      "Starfire"
+     ],
+     [
+      "16.85",
+      "Mass Entanglement"
+     ],
+     [
+      "18.85",
+      "Wisp Guardian"
+     ],
+     [
+      "19.50",
+      "Starfire"
+     ],
+     [
+      "22.16",
+      "Starfall"
+     ],
+     [
+      "24.16",
+      "Starfire"
+     ],
+     [
+      "24.61",
+      "Mass Entanglement"
+     ],
+     [
+      "28.16",
+      "Wisp Guardian"
+     ],
+     [
+      "28.81",
+      "Starfire"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "159"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "31"
+     ],
+     [
+      "Сила атаки",
+      "130.2"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "29.0%"
+     ],
+     [
+      "Скорость атаки",
+      "55.4%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2088"
+     ],
+     [
+      "Реген маны",
+      "13.68/с"
+     ],
+     [
+      "Мана в конце",
+      "94%"
+     ],
+     [
+      "Интервал атаки",
+      "1.29 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 2820.9,
+     "Starlight (I0JY)": 2534.8,
+     "Entangle (I0JZ)": 2540.5,
+     "Starsurge (I0K0)": 2820.9,
+     "Starfall Missile (I0K1)": 2366.1,
+     "Starfire Echo (I0K4)": 2320.6,
+     "Druidism (I0MS)": 2405.4,
+     "Wisp (I0P5)": 2820.9,
+     "Force of Nature (I0P7)": 2334.1,
+     "Nature's Wrath (I0P8)": 2467.1
+    },
+    "glyphDps": {
+     "Fortitude": 2820.9,
+     "Unsealed Power": 2820.9,
+     "Fortune": 2519.4,
+     "Supremacy": 2575.9,
+     "Arc Striking": 2519.4,
+     "Battle Frenzy": 2519.4,
+     "Hellfire": 2519.4,
+     "Thunder": 2519.4,
+     "Blood Violence": 2519.4,
+     "Animosity": 2536.6,
+     "Glass Cannon": 2820.9,
+     "Mindhaste": 2544.5
+    }
+   }
+  ],
+  "shop": [
+   {
+    "farm_dps": 3381.2,
+    "dps": 3381.2,
+    "total": 101437,
+    "manaLeft": 88.8,
+    "bound_spell": "Starfire",
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Flask of Sands",
+      "code": "I096",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Starsurge (I0K0)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 255529541,
+    "sources": [
+     [
+      "Wisp Guardian",
+      1713.3
+     ],
+     [
+      "Mass Entanglement",
+      748.5
+     ],
+     [
+      "Starfire",
+      431.0
+     ],
+     [
+      "Starfall",
+      372.7
+     ],
+     [
+      "Автоатака",
+      115.7
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Diamond Ring → привязка Starfire"
+     ],
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.45",
+      "Starfall"
+     ],
+     [
+      "0.90",
+      "Starfire"
+     ],
+     [
+      "1.35",
+      "Mass Entanglement"
+     ],
+     [
+      "3.70",
+      "Starfire"
+     ],
+     [
+      "6.37",
+      "Wisp Guardian"
+     ],
+     [
+      "6.82",
+      "Starfire"
+     ],
+     [
+      "7.27",
+      "Mass Entanglement"
+     ],
+     [
+      "7.94",
+      "Starfall"
+     ],
+     [
+      "9.62",
+      "Starfire"
+     ],
+     [
+      "12.43",
+      "Starfire"
+     ],
+     [
+      "12.88",
+      "Wisp Guardian"
+     ],
+     [
+      "13.33",
+      "Mass Entanglement"
+     ],
+     [
+      "15.23",
+      "Starfire"
+     ],
+     [
+      "15.68",
+      "Starfall"
+     ],
+     [
+      "18.03",
+      "Starfire"
+     ],
+     [
+      "18.58",
+      "Mass Entanglement"
+     ],
+     [
+      "19.25",
+      "Wisp Guardian"
+     ],
+     [
+      "20.83",
+      "Starfire"
+     ],
+     [
+      "23.17",
+      "Starfall"
+     ],
+     [
+      "23.64",
+      "Starfire"
+     ],
+     [
+      "24.09",
+      "Mass Entanglement"
+     ],
+     [
+      "25.62",
+      "Wisp Guardian"
+     ],
+     [
+      "26.44",
+      "Starfire"
+     ],
+     [
+      "29.24",
+      "Starfire"
+     ],
+     [
+      "29.69",
+      "Mass Entanglement"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "144"
+     ],
+     [
+      "Сила",
+      "40"
+     ],
+     [
+      "Ловкость",
+      "26"
+     ],
+     [
+      "Сила атаки",
+      "119.0"
+     ],
+     [
+      "Potency",
+      "21.0"
+     ],
+     [
+      "Mastery",
+      "28"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "56.0%"
+     ],
+     [
+      "Скорость атаки",
+      "74.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1833"
+     ],
+     [
+      "Реген маны",
+      "14.40/с"
+     ],
+     [
+      "Мана в конце",
+      "89%"
+     ],
+     [
+      "Интервал атаки",
+      "1.38 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.50 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Starfire"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 3381.2,
+     "Starlight (I0JY)": 2749.1,
+     "Entangle (I0JZ)": 3242.4,
+     "Starsurge (I0K0)": 3381.2,
+     "Starfall Missile (I0K1)": 2911.4,
+     "Starfire Echo (I0K4)": 2807.6,
+     "Druidism (I0MS)": 2877.4,
+     "Wisp (I0P5)": 3381.2,
+     "Force of Nature (I0P7)": 2846.3,
+     "Nature's Wrath (I0P8)": 3007.1
+    },
+    "glyphDps": {
+     "Fortitude": 3381.2,
+     "Unsealed Power": 3381.2,
+     "Fortune": 3019.0,
+     "Supremacy": 3089.6,
+     "Arc Striking": 3019.0,
+     "Battle Frenzy": 3019.0,
+     "Hellfire": 3019.0,
+     "Thunder": 3019.0,
+     "Blood Violence": 3019.0,
+     "Animosity": 3033.2,
+     "Glass Cannon": 3381.2,
+     "Mindhaste": 2973.8
+    }
+   },
+   {
+    "farm_dps": 2677.2,
+    "dps": 2677.2,
+    "total": 80315,
+    "manaLeft": 95.9,
+    "bound_spell": "Mass Entanglement",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Entangle (I0JZ)",
+     "Starsurge (I0K0)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 252759986,
+    "sources": [
+     [
+      "Mass Entanglement",
+      1001.3
+     ],
+     [
+      "Sulfuras",
+      541.2
+     ],
+     [
+      "Wisp Guardian",
+      490.7
+     ],
+     [
+      "Starfall",
+      249.6
+     ],
+     [
+      "Starfire",
+      229.8
+     ],
+     [
+      "Автоатака",
+      157.9
+     ],
+     [
+      "Sulfuras (удар)",
+      6.7
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Mass Entanglement"
+     ],
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.45",
+      "Starfall"
+     ],
+     [
+      "0.90",
+      "Starfire"
+     ],
+     [
+      "1.35",
+      "Mass Entanglement"
+     ],
+     [
+      "7.14",
+      "Mass Entanglement"
+     ],
+     [
+      "7.59",
+      "Starfire"
+     ],
+     [
+      "9.92",
+      "Wisp Guardian"
+     ],
+     [
+      "12.03",
+      "Starfall"
+     ],
+     [
+      "12.93",
+      "Mass Entanglement"
+     ],
+     [
+      "14.21",
+      "Starfire"
+     ],
+     [
+      "18.72",
+      "Mass Entanglement"
+     ],
+     [
+      "19.85",
+      "Wisp Guardian"
+     ],
+     [
+      "20.82",
+      "Starfire"
+     ],
+     [
+      "23.61",
+      "Starfall"
+     ],
+     [
+      "24.51",
+      "Mass Entanglement"
+     ],
+     [
+      "27.44",
+      "Starfire"
+     ],
+     [
+      "29.77",
+      "Wisp Guardian"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "176"
+     ],
+     [
+      "Сила",
+      "46"
+     ],
+     [
+      "Ловкость",
+      "32"
+     ],
+     [
+      "Сила атаки",
+      "152.0"
+     ],
+     [
+      "Potency",
+      "5.0"
+     ],
+     [
+      "Mastery",
+      "28"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "33.0%"
+     ],
+     [
+      "Скорость атаки",
+      "55.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1807"
+     ],
+     [
+      "Реген маны",
+      "15.04/с"
+     ],
+     [
+      "Мана в конце",
+      "96%"
+     ],
+     [
+      "Интервал атаки",
+      "1.54 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Mass Entanglement"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 2677.2,
+     "Starlight (I0JY)": 2517.7,
+     "Entangle (I0JZ)": 2677.2,
+     "Starsurge (I0K0)": 2677.2,
+     "Starfall Missile (I0K1)": 2528.3,
+     "Starfire Echo (I0K4)": 2445.1,
+     "Druidism (I0MS)": 2546.7,
+     "Wisp (I0P5)": 2530.5,
+     "Force of Nature (I0P7)": 2582.2,
+     "Nature's Wrath (I0P8)": 2519.9
+    },
+    "glyphDps": {
+     "Fortitude": 2677.2,
+     "Unsealed Power": 2677.2,
+     "Fortune": 2414.9,
+     "Supremacy": 2461.9,
+     "Arc Striking": 2414.9,
+     "Battle Frenzy": 2414.9,
+     "Hellfire": 2414.9,
+     "Thunder": 2414.9,
+     "Blood Violence": 2414.9,
+     "Animosity": 2434.6,
+     "Glass Cannon": 2677.2,
+     "Mindhaste": 2569.8
+    }
+   },
+   {
+    "farm_dps": 2558.8,
+    "dps": 2558.8,
+    "total": 76764,
+    "manaLeft": 98.3,
+    "bound_spell": "Mass Entanglement",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Entangle (I0JZ)",
+     "Starsurge (I0K0)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 249944084,
+    "sources": [
+     [
+      "Mass Entanglement",
+      953.1
+     ],
+     [
+      "Sulfuras",
+      513.1
+     ],
+     [
+      "Wisp Guardian",
+      444.5
+     ],
+     [
+      "Starfall",
+      256.6
+     ],
+     [
+      "Starfire",
+      207.4
+     ],
+     [
+      "Автоатака",
+      175.3
+     ],
+     [
+      "Sulfuras (удар)",
+      8.9
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Mass Entanglement"
+     ],
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.45",
+      "Starfall"
+     ],
+     [
+      "0.90",
+      "Starfire"
+     ],
+     [
+      "1.35",
+      "Mass Entanglement"
+     ],
+     [
+      "7.11",
+      "Mass Entanglement"
+     ],
+     [
+      "7.56",
+      "Starfire"
+     ],
+     [
+      "9.88",
+      "Wisp Guardian"
+     ],
+     [
+      "11.98",
+      "Starfall"
+     ],
+     [
+      "12.88",
+      "Mass Entanglement"
+     ],
+     [
+      "14.15",
+      "Starfire"
+     ],
+     [
+      "18.64",
+      "Mass Entanglement"
+     ],
+     [
+      "19.76",
+      "Wisp Guardian"
+     ],
+     [
+      "20.74",
+      "Starfire"
+     ],
+     [
+      "23.51",
+      "Starfall"
+     ],
+     [
+      "24.41",
+      "Mass Entanglement"
+     ],
+     [
+      "27.33",
+      "Starfire"
+     ],
+     [
+      "29.65",
+      "Wisp Guardian"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "205"
+     ],
+     [
+      "Сила",
+      "46"
+     ],
+     [
+      "Ловкость",
+      "32"
+     ],
+     [
+      "Сила атаки",
+      "164.8"
+     ],
+     [
+      "Potency",
+      "13.0"
+     ],
+     [
+      "Mastery",
+      "28"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "36.0%"
+     ],
+     [
+      "Скорость атаки",
+      "87.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2010"
+     ],
+     [
+      "Реген маны",
+      "17.36/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.28 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Mass Entanglement"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 2558.8,
+     "Starlight (I0JY)": 2456.8,
+     "Entangle (I0JZ)": 2558.8,
+     "Starsurge (I0K0)": 2558.8,
+     "Starfall Missile (I0K1)": 2434.7,
+     "Starfire Echo (I0K4)": 2346.6,
+     "Druidism (I0MS)": 2436.3,
+     "Wisp (I0P5)": 2456.8,
+     "Force of Nature (I0P7)": 2489.6,
+     "Nature's Wrath (I0P8)": 2456.7
+    },
+    "glyphDps": {
+     "Fortitude": 2558.8,
+     "Unsealed Power": 2558.8,
+     "Fortune": 2253.7,
+     "Supremacy": 2294.7,
+     "Arc Striking": 2253.7,
+     "Battle Frenzy": 2253.7,
+     "Hellfire": 2253.7,
+     "Thunder": 2253.7,
+     "Blood Violence": 2253.7,
+     "Animosity": 2274.4,
+     "Glass Cannon": 2558.8,
+     "Mindhaste": 2400.5
+    }
+   },
+   {
+    "farm_dps": 2459.4,
+    "dps": 2459.4,
+    "total": 73782,
+    "manaLeft": 92.0,
+    "bound_spell": "Mass Entanglement",
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Entangle (I0JZ)",
+     "Starsurge (I0K0)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 250114604,
+    "sources": [
+     [
+      "Mass Entanglement",
+      923.3
+     ],
+     [
+      "Wisp Guardian",
+      411.2
+     ],
+     [
+      "Sulfuras",
+      406.0
+     ],
+     [
+      "Starfall",
+      208.0
+     ],
+     [
+      "Всплеск огня",
+      177.4
+     ],
+     [
+      "Starfire",
+      175.6
+     ],
+     [
+      "Автоатака",
+      151.3
+     ],
+     [
+      "Sulfuras (удар)",
+      6.6
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Mass Entanglement"
+     ],
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.45",
+      "Starfall"
+     ],
+     [
+      "0.90",
+      "Starfire"
+     ],
+     [
+      "1.35",
+      "Mass Entanglement"
+     ],
+     [
+      "7.01",
+      "Mass Entanglement"
+     ],
+     [
+      "7.46",
+      "Starfire"
+     ],
+     [
+      "9.71",
+      "Wisp Guardian"
+     ],
+     [
+      "11.77",
+      "Starfall"
+     ],
+     [
+      "12.67",
+      "Mass Entanglement"
+     ],
+     [
+      "13.93",
+      "Starfire"
+     ],
+     [
+      "18.34",
+      "Mass Entanglement"
+     ],
+     [
+      "19.41",
+      "Wisp Guardian"
+     ],
+     [
+      "20.40",
+      "Starfire"
+     ],
+     [
+      "23.10",
+      "Starfall"
+     ],
+     [
+      "24.00",
+      "Mass Entanglement"
+     ],
+     [
+      "26.87",
+      "Starfire"
+     ],
+     [
+      "29.12",
+      "Wisp Guardian"
+     ],
+     [
+      "29.66",
+      "Mass Entanglement"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "164"
+     ],
+     [
+      "Сила",
+      "46"
+     ],
+     [
+      "Ловкость",
+      "32"
+     ],
+     [
+      "Сила атаки",
+      "143.0"
+     ],
+     [
+      "Potency",
+      "13.0"
+     ],
+     [
+      "Mastery",
+      "28"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "36.0%"
+     ],
+     [
+      "Скорость атаки",
+      "87.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1723"
+     ],
+     [
+      "Реген маны",
+      "14.08/с"
+     ],
+     [
+      "Мана в конце",
+      "92%"
+     ],
+     [
+      "Интервал атаки",
+      "1.28 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Mass Entanglement"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 2459.4,
+     "Starlight (I0JY)": 2352.4,
+     "Entangle (I0JZ)": 2459.4,
+     "Starsurge (I0K0)": 2459.4,
+     "Starfall Missile (I0K1)": 2336.9,
+     "Starfire Echo (I0K4)": 2263.2,
+     "Druidism (I0MS)": 2347.3,
+     "Wisp (I0P5)": 2362.1,
+     "Force of Nature (I0P7)": 2391.2,
+     "Nature's Wrath (I0P8)": 2344.5
+    },
+    "glyphDps": {
+     "Fortitude": 2459.4,
+     "Unsealed Power": 2459.4,
+     "Fortune": 2222.5,
+     "Supremacy": 2257.7,
+     "Arc Striking": 2222.5,
+     "Battle Frenzy": 2222.5,
+     "Hellfire": 2222.5,
+     "Thunder": 2222.5,
+     "Blood Violence": 2222.5,
+     "Animosity": 2241.2,
+     "Glass Cannon": 2459.4,
+     "Mindhaste": 2276.3
+    }
+   },
+   {
+    "farm_dps": 2374.2,
+    "dps": 2374.2,
+    "total": 71225,
+    "manaLeft": 98.7,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Starsurge (I0K0)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 9,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 69841687,
+    "sources": [
+     [
+      "Wisp Guardian",
+      819.7
+     ],
+     [
+      "Sulfuras",
+      551.1
+     ],
+     [
+      "Starfall",
+      285.2
+     ],
+     [
+      "Mass Entanglement",
+      280.7
+     ],
+     [
+      "Starfire",
+      262.1
+     ],
+     [
+      "Автоатака",
+      167.0
+     ],
+     [
+      "Sulfuras (удар)",
+      8.4
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.45",
+      "Starfall"
+     ],
+     [
+      "0.90",
+      "Starfire"
+     ],
+     [
+      "1.35",
+      "Mass Entanglement"
+     ],
+     [
+      "7.39",
+      "Starfire"
+     ],
+     [
+      "9.47",
+      "Mass Entanglement"
+     ],
+     [
+      "9.92",
+      "Wisp Guardian"
+     ],
+     [
+      "11.81",
+      "Starfall"
+     ],
+     [
+      "13.89",
+      "Starfire"
+     ],
+     [
+      "17.58",
+      "Mass Entanglement"
+     ],
+     [
+      "19.66",
+      "Wisp Guardian"
+     ],
+     [
+      "20.38",
+      "Starfire"
+     ],
+     [
+      "23.17",
+      "Starfall"
+     ],
+     [
+      "25.70",
+      "Mass Entanglement"
+     ],
+     [
+      "26.87",
+      "Starfire"
+     ],
+     [
+      "29.39",
+      "Wisp Guardian"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "225"
+     ],
+     [
+      "Сила",
+      "54"
+     ],
+     [
+      "Ловкость",
+      "40"
+     ],
+     [
+      "Сила атаки",
+      "179.8"
+     ],
+     [
+      "Potency",
+      "4.5"
+     ],
+     [
+      "Mastery",
+      "35"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "38.0%"
+     ],
+     [
+      "Скорость атаки",
+      "59.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2150"
+     ],
+     [
+      "Реген маны",
+      "18.96/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.51 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 2374.2,
+     "Starlight (I0JY)": 2247.7,
+     "Entangle (I0JZ)": 2357.2,
+     "Starsurge (I0K0)": 2374.2,
+     "Starfall Missile (I0K1)": 2293.6,
+     "Starfire Echo (I0K4)": 2209.0,
+     "Druidism (I0MS)": 2250.4,
+     "Wisp (I0P5)": 2374.2,
+     "Force of Nature (I0P7)": 2252.5,
+     "Nature's Wrath (I0P8)": 2248.2
+    },
+    "glyphDps": {
+     "Fortitude": 2374.2,
+     "Unsealed Power": 2374.2,
+     "Fortune": 2104.6,
+     "Supremacy": 2155.8,
+     "Arc Striking": 2104.6,
+     "Battle Frenzy": 2104.6,
+     "Hellfire": 2104.6,
+     "Thunder": 2104.6,
+     "Blood Violence": 2104.6,
+     "Animosity": 2125.1,
+     "Glass Cannon": 2374.2,
+     "Mindhaste": 2097.0
+    }
+   },
+   {
+    "farm_dps": 2369.2,
+    "dps": 2369.2,
+    "total": 71077,
+    "manaLeft": 98.3,
+    "bound_spell": "Mass Entanglement",
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Entangle (I0JZ)",
+     "Starsurge (I0K0)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 250114765,
+    "sources": [
+     [
+      "Mass Entanglement",
+      805.0
+     ],
+     [
+      "Sulfuras",
+      436.1
+     ],
+     [
+      "Wisp Guardian",
+      372.4
+     ],
+     [
+      "Starfall",
+      216.8
+     ],
+     [
+      "Всплеск огня",
+      210.3
+     ],
+     [
+      "Starfire",
+      173.7
+     ],
+     [
+      "Автоатака",
+      147.3
+     ],
+     [
+      "Sulfuras (удар)",
+      7.6
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Mass Entanglement"
+     ],
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.45",
+      "Starfall"
+     ],
+     [
+      "0.90",
+      "Starfire"
+     ],
+     [
+      "1.35",
+      "Mass Entanglement"
+     ],
+     [
+      "7.11",
+      "Mass Entanglement"
+     ],
+     [
+      "7.56",
+      "Starfire"
+     ],
+     [
+      "9.88",
+      "Wisp Guardian"
+     ],
+     [
+      "11.98",
+      "Starfall"
+     ],
+     [
+      "12.88",
+      "Mass Entanglement"
+     ],
+     [
+      "14.15",
+      "Starfire"
+     ],
+     [
+      "18.64",
+      "Mass Entanglement"
+     ],
+     [
+      "19.76",
+      "Wisp Guardian"
+     ],
+     [
+      "20.74",
+      "Starfire"
+     ],
+     [
+      "23.51",
+      "Starfall"
+     ],
+     [
+      "24.41",
+      "Mass Entanglement"
+     ],
+     [
+      "27.33",
+      "Starfire"
+     ],
+     [
+      "29.65",
+      "Wisp Guardian"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "205"
+     ],
+     [
+      "Сила",
+      "46"
+     ],
+     [
+      "Ловкость",
+      "32"
+     ],
+     [
+      "Сила атаки",
+      "164.8"
+     ],
+     [
+      "Potency",
+      "13.0"
+     ],
+     [
+      "Mastery",
+      "28"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "36.0%"
+     ],
+     [
+      "Скорость атаки",
+      "87.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2010"
+     ],
+     [
+      "Реген маны",
+      "17.36/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.28 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Mass Entanglement"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 2369.2,
+     "Starlight (I0JY)": 2288.5,
+     "Entangle (I0JZ)": 2369.2,
+     "Starsurge (I0K0)": 2369.2,
+     "Starfall Missile (I0K1)": 2270.5,
+     "Starfire Echo (I0K4)": 2195.4,
+     "Druidism (I0MS)": 2271.7,
+     "Wisp (I0P5)": 2279.7,
+     "Force of Nature (I0P7)": 2315.5,
+     "Nature's Wrath (I0P8)": 2288.1
+    },
+    "glyphDps": {
+     "Fortitude": 2369.2,
+     "Unsealed Power": 2369.2,
+     "Fortune": 2107.6,
+     "Supremacy": 2143.1,
+     "Arc Striking": 2107.6,
+     "Battle Frenzy": 2107.6,
+     "Hellfire": 2107.6,
+     "Thunder": 2107.6,
+     "Blood Violence": 2107.6,
+     "Animosity": 2125.4,
+     "Glass Cannon": 2369.2,
+     "Mindhaste": 2234.0
+    }
+   },
+   {
+    "farm_dps": 2294.1,
+    "dps": 2294.1,
+    "total": 68824,
+    "manaLeft": 98.9,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Starsurge (I0K0)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 38280436,
+    "sources": [
+     [
+      "Wisp Guardian",
+      755.3
+     ],
+     [
+      "Sulfuras",
+      533.1
+     ],
+     [
+      "Mass Entanglement",
+      290.7
+     ],
+     [
+      "Starfall",
+      281.8
+     ],
+     [
+      "Starfire",
+      234.0
+     ],
+     [
+      "Автоатака",
+      189.7
+     ],
+     [
+      "Sulfuras (удар)",
+      9.6
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.45",
+      "Starfall"
+     ],
+     [
+      "0.90",
+      "Starfire"
+     ],
+     [
+      "1.35",
+      "Mass Entanglement"
+     ],
+     [
+      "7.30",
+      "Starfire"
+     ],
+     [
+      "9.35",
+      "Mass Entanglement"
+     ],
+     [
+      "9.80",
+      "Wisp Guardian"
+     ],
+     [
+      "11.65",
+      "Starfall"
+     ],
+     [
+      "13.70",
+      "Starfire"
+     ],
+     [
+      "17.35",
+      "Mass Entanglement"
+     ],
+     [
+      "19.40",
+      "Wisp Guardian"
+     ],
+     [
+      "20.10",
+      "Starfire"
+     ],
+     [
+      "22.85",
+      "Starfall"
+     ],
+     [
+      "25.35",
+      "Mass Entanglement"
+     ],
+     [
+      "26.50",
+      "Starfire"
+     ],
+     [
+      "29.00",
+      "Wisp Guardian"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "213"
+     ],
+     [
+      "Сила",
+      "54"
+     ],
+     [
+      "Ловкость",
+      "40"
+     ],
+     [
+      "Сила атаки",
+      "170.8"
+     ],
+     [
+      "Potency",
+      "13.0"
+     ],
+     [
+      "Mastery",
+      "35"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "40.0%"
+     ],
+     [
+      "Скорость атаки",
+      "91.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2066"
+     ],
+     [
+      "Реген маны",
+      "18.00/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.26 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 2294.1,
+     "Starlight (I0JY)": 2191.2,
+     "Entangle (I0JZ)": 2287.3,
+     "Starsurge (I0K0)": 2294.1,
+     "Starfall Missile (I0K1)": 2239.7,
+     "Starfire Echo (I0K4)": 2146.8,
+     "Druidism (I0MS)": 2187.3,
+     "Wisp (I0P5)": 2294.1,
+     "Force of Nature (I0P7)": 2203.4,
+     "Nature's Wrath (I0P8)": 2205.9
+    },
+    "glyphDps": {
+     "Fortitude": 2294.1,
+     "Unsealed Power": 2294.1,
+     "Fortune": 2016.3,
+     "Supremacy": 2061.8,
+     "Arc Striking": 2016.3,
+     "Battle Frenzy": 2016.3,
+     "Hellfire": 2016.3,
+     "Thunder": 2016.3,
+     "Blood Violence": 2016.3,
+     "Animosity": 2039.3,
+     "Glass Cannon": 2294.1,
+     "Mindhaste": 2032.2
+    }
+   },
+   {
+    "farm_dps": 2241.9,
+    "dps": 2241.9,
+    "total": 67258,
+    "manaLeft": 99.6,
+    "bound_spell": null,
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Entangle (I0JZ)",
+     "Starsurge (I0K0)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 0,
+     "potency": 8,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 73841181,
+    "sources": [
+     [
+      "Mass Entanglement",
+      599.4
+     ],
+     [
+      "Sulfuras",
+      477.0
+     ],
+     [
+      "Wisp Guardian",
+      349.7
+     ],
+     [
+      "Starfall",
+      235.7
+     ],
+     [
+      "Всплеск огня",
+      214.3
+     ],
+     [
+      "Starfire",
+      197.3
+     ],
+     [
+      "Автоатака",
+      160.8
+     ],
+     [
+      "Sulfuras (удар)",
+      7.7
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.45",
+      "Starfall"
+     ],
+     [
+      "0.90",
+      "Starfire"
+     ],
+     [
+      "1.35",
+      "Mass Entanglement"
+     ],
+     [
+      "7.12",
+      "Starfire"
+     ],
+     [
+      "9.13",
+      "Mass Entanglement"
+     ],
+     [
+      "9.58",
+      "Wisp Guardian"
+     ],
+     [
+      "11.34",
+      "Starfall"
+     ],
+     [
+      "13.34",
+      "Starfire"
+     ],
+     [
+      "16.91",
+      "Mass Entanglement"
+     ],
+     [
+      "18.91",
+      "Wisp Guardian"
+     ],
+     [
+      "19.57",
+      "Starfire"
+     ],
+     [
+      "22.23",
+      "Starfall"
+     ],
+     [
+      "24.68",
+      "Mass Entanglement"
+     ],
+     [
+      "25.79",
+      "Starfire"
+     ],
+     [
+      "28.24",
+      "Wisp Guardian"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "210"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "168.5"
+     ],
+     [
+      "Potency",
+      "12.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "44.0%"
+     ],
+     [
+      "Скорость атаки",
+      "87.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2045"
+     ],
+     [
+      "Реген маны",
+      "17.76/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки",
+      "1.28 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 2241.9,
+     "Starlight (I0JY)": 2078.8,
+     "Entangle (I0JZ)": 2241.9,
+     "Starsurge (I0K0)": 2241.9,
+     "Starfall Missile (I0K1)": 2181.6,
+     "Starfire Echo (I0K4)": 2102.2,
+     "Druidism (I0MS)": 2146.8,
+     "Wisp (I0P5)": 2240.1,
+     "Force of Nature (I0P7)": 2163.4,
+     "Nature's Wrath (I0P8)": 2149.3
+    },
+    "glyphDps": {
+     "Fortitude": 2241.9,
+     "Unsealed Power": 2241.9,
+     "Fortune": 2011.8,
+     "Supremacy": 2053.7,
+     "Arc Striking": 2011.8,
+     "Battle Frenzy": 2011.8,
+     "Hellfire": 2011.8,
+     "Thunder": 2011.8,
+     "Blood Violence": 2011.8,
+     "Animosity": 2031.5,
+     "Glass Cannon": 2241.9,
+     "Mindhaste": 1996.8
+    }
+   },
+   {
+    "farm_dps": 2195.4,
+    "dps": 2195.4,
+    "total": 65863,
+    "manaLeft": 98.7,
+    "bound_spell": null,
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Starsurge (I0K0)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 9,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 71583058,
+    "sources": [
+     [
+      "Wisp Guardian",
+      686.7
+     ],
+     [
+      "Sulfuras",
+      468.4
+     ],
+     [
+      "Starfall",
+      240.4
+     ],
+     [
+      "Mass Entanglement",
+      236.6
+     ],
+     [
+      "Starfire",
+      220.2
+     ],
+     [
+      "Всплеск огня",
+      195.4
+     ],
+     [
+      "Автоатака",
+      140.4
+     ],
+     [
+      "Sulfuras (удар)",
+      7.1
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.45",
+      "Starfall"
+     ],
+     [
+      "0.90",
+      "Starfire"
+     ],
+     [
+      "1.35",
+      "Mass Entanglement"
+     ],
+     [
+      "7.39",
+      "Starfire"
+     ],
+     [
+      "9.47",
+      "Mass Entanglement"
+     ],
+     [
+      "9.92",
+      "Wisp Guardian"
+     ],
+     [
+      "11.81",
+      "Starfall"
+     ],
+     [
+      "13.89",
+      "Starfire"
+     ],
+     [
+      "17.58",
+      "Mass Entanglement"
+     ],
+     [
+      "19.66",
+      "Wisp Guardian"
+     ],
+     [
+      "20.38",
+      "Starfire"
+     ],
+     [
+      "23.17",
+      "Starfall"
+     ],
+     [
+      "25.70",
+      "Mass Entanglement"
+     ],
+     [
+      "26.87",
+      "Starfire"
+     ],
+     [
+      "29.39",
+      "Wisp Guardian"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "225"
+     ],
+     [
+      "Сила",
+      "54"
+     ],
+     [
+      "Ловкость",
+      "40"
+     ],
+     [
+      "Сила атаки",
+      "179.8"
+     ],
+     [
+      "Potency",
+      "4.5"
+     ],
+     [
+      "Mastery",
+      "35"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "38.0%"
+     ],
+     [
+      "Скорость атаки",
+      "59.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2150"
+     ],
+     [
+      "Реген маны",
+      "18.96/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.51 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 2195.4,
+     "Starlight (I0JY)": 2085.4,
+     "Entangle (I0JZ)": 2184.5,
+     "Starsurge (I0K0)": 2195.4,
+     "Starfall Missile (I0K1)": 2135.3,
+     "Starfire Echo (I0K4)": 2063.1,
+     "Druidism (I0MS)": 2098.5,
+     "Wisp (I0P5)": 2195.4,
+     "Force of Nature (I0P7)": 2099.7,
+     "Nature's Wrath (I0P8)": 2095.9
+    },
+    "glyphDps": {
+     "Fortitude": 2195.4,
+     "Unsealed Power": 2195.4,
+     "Fortune": 1968.4,
+     "Supremacy": 2011.4,
+     "Arc Striking": 1968.4,
+     "Battle Frenzy": 1968.4,
+     "Hellfire": 1968.4,
+     "Thunder": 1968.4,
+     "Blood Violence": 1968.4,
+     "Animosity": 1985.6,
+     "Glass Cannon": 2195.4,
+     "Mindhaste": 1950.9
+    }
+   },
+   {
+    "farm_dps": 2156.6,
+    "dps": 2156.6,
+    "total": 64697,
+    "manaLeft": 98.9,
+    "bound_spell": null,
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Entangle (I0JZ)",
+     "Starsurge (I0K0)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 40021807,
+    "sources": [
+     [
+      "Mass Entanglement",
+      554.8
+     ],
+     [
+      "Sulfuras",
+      453.2
+     ],
+     [
+      "Wisp Guardian",
+      319.3
+     ],
+     [
+      "Starfall",
+      234.7
+     ],
+     [
+      "Всплеск огня",
+      226.5
+     ],
+     [
+      "Starfire",
+      199.6
+     ],
+     [
+      "Автоатака",
+      160.4
+     ],
+     [
+      "Sulfuras (удар)",
+      8.2
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.45",
+      "Starfall"
+     ],
+     [
+      "0.90",
+      "Starfire"
+     ],
+     [
+      "1.35",
+      "Mass Entanglement"
+     ],
+     [
+      "7.30",
+      "Starfire"
+     ],
+     [
+      "9.35",
+      "Mass Entanglement"
+     ],
+     [
+      "9.80",
+      "Wisp Guardian"
+     ],
+     [
+      "11.65",
+      "Starfall"
+     ],
+     [
+      "13.70",
+      "Starfire"
+     ],
+     [
+      "17.35",
+      "Mass Entanglement"
+     ],
+     [
+      "19.40",
+      "Wisp Guardian"
+     ],
+     [
+      "20.10",
+      "Starfire"
+     ],
+     [
+      "22.85",
+      "Starfall"
+     ],
+     [
+      "25.35",
+      "Mass Entanglement"
+     ],
+     [
+      "26.50",
+      "Starfire"
+     ],
+     [
+      "29.00",
+      "Wisp Guardian"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "213"
+     ],
+     [
+      "Сила",
+      "54"
+     ],
+     [
+      "Ловкость",
+      "40"
+     ],
+     [
+      "Сила атаки",
+      "170.8"
+     ],
+     [
+      "Potency",
+      "13.0"
+     ],
+     [
+      "Mastery",
+      "35"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "40.0%"
+     ],
+     [
+      "Скорость атаки",
+      "91.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2066"
+     ],
+     [
+      "Реген маны",
+      "18.00/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.26 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 2159.1,
+     "Starlight (I0JY)": 2079.1,
+     "Entangle (I0JZ)": 2156.6,
+     "Starsurge (I0K0)": 2159.1,
+     "Starfall Missile (I0K1)": 2120.8,
+     "Starfire Echo (I0K4)": 2041.7,
+     "Druidism (I0MS)": 2076.2,
+     "Wisp (I0P5)": 2159.1,
+     "Force of Nature (I0P7)": 2089.1,
+     "Nature's Wrath (I0P8)": 2091.1
+    },
+    "glyphDps": {
+     "Fortitude": 2156.6,
+     "Unsealed Power": 2156.6,
+     "Fortune": 1922.8,
+     "Supremacy": 1961.2,
+     "Arc Striking": 1922.8,
+     "Battle Frenzy": 1922.8,
+     "Hellfire": 1922.8,
+     "Thunder": 1922.8,
+     "Blood Violence": 1922.8,
+     "Animosity": 1942.3,
+     "Glass Cannon": 2156.6,
+     "Mindhaste": 1927.7
+    }
+   }
+  ],
+  "drop": [
+   {
+    "farm_dps": 3939.4,
+    "dps": 3939.4,
+    "total": 118182,
+    "manaLeft": 87.9,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Scythe of Elune",
+      "code": "I0R1",
+      "source": "drop"
+     },
+     {
+      "name": "Stellar Robes",
+      "code": "I0R3",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Starsurge (I0K0)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Mindhaste"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 3,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 7,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 236246551,
+    "sources": [
+     [
+      "Wisp Guardian",
+      2634.8
+     ],
+     [
+      "Starfire",
+      466.9
+     ],
+     [
+      "Mass Entanglement",
+      431.5
+     ],
+     [
+      "Starfall",
+      341.3
+     ],
+     [
+      "Автоатака",
+      64.9
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.75",
+      "Starfall"
+     ],
+     [
+      "1.50",
+      "Starfire"
+     ],
+     [
+      "2.25",
+      "Mass Entanglement"
+     ],
+     [
+      "3.92",
+      "Starfire"
+     ],
+     [
+      "6.18",
+      "Wisp Guardian"
+     ],
+     [
+      "6.93",
+      "Starfire"
+     ],
+     [
+      "7.68",
+      "Mass Entanglement"
+     ],
+     [
+      "8.43",
+      "Starfall"
+     ],
+     [
+      "9.35",
+      "Starfire"
+     ],
+     [
+      "11.77",
+      "Starfire"
+     ],
+     [
+      "12.52",
+      "Wisp Guardian"
+     ],
+     [
+      "13.27",
+      "Mass Entanglement"
+     ],
+     [
+      "14.20",
+      "Starfire"
+     ],
+     [
+      "15.85",
+      "Starfall"
+     ],
+     [
+      "16.62",
+      "Starfire"
+     ],
+     [
+      "18.20",
+      "Mass Entanglement"
+     ],
+     [
+      "18.95",
+      "Wisp Guardian"
+     ],
+     [
+      "19.70",
+      "Starfire"
+     ],
+     [
+      "22.12",
+      "Starfire"
+     ],
+     [
+      "23.12",
+      "Mass Entanglement"
+     ],
+     [
+      "23.87",
+      "Starfall"
+     ],
+     [
+      "24.62",
+      "Starfire"
+     ],
+     [
+      "25.37",
+      "Wisp Guardian"
+     ],
+     [
+      "27.05",
+      "Starfire"
+     ],
+     [
+      "28.05",
+      "Mass Entanglement"
+     ],
+     [
+      "29.47",
+      "Starfire"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "183"
+     ],
+     [
+      "Сила",
+      "33"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "148.2"
+     ],
+     [
+      "Potency",
+      "3.5"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "28.0%"
+     ],
+     [
+      "Скорость атаки",
+      "10.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2506"
+     ],
+     [
+      "Реген маны",
+      "15.60/с"
+     ],
+     [
+      "Мана в конце",
+      "88%"
+     ],
+     [
+      "Интервал атаки",
+      "1.82 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.800"
+     ],
+     [
+      "Плоское снижение КД",
+      "1.70 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 3945.0,
+     "Starlight (I0JY)": 3945.0,
+     "Entangle (I0JZ)": 3337.7,
+     "Starsurge (I0K0)": 3945.0,
+     "Starfall Missile (I0K1)": 3310.0,
+     "Starfire Echo (I0K4)": 3231.3,
+     "Druidism (I0MS)": 3241.4,
+     "Wisp (I0P5)": 3939.4,
+     "Force of Nature (I0P7)": 3098.6,
+     "Nature's Wrath (I0P8)": 3435.5
+    },
+    "glyphDps": {
+     "Fortitude": 3939.4,
+     "Unsealed Power": 3955.2,
+     "Fortune": 3531.5,
+     "Supremacy": 3613.8,
+     "Arc Striking": 3531.5,
+     "Battle Frenzy": 3531.5,
+     "Hellfire": 3531.5,
+     "Thunder": 3531.5,
+     "Blood Violence": 3531.5,
+     "Animosity": 3538.9,
+     "Glass Cannon": 3955.2,
+     "Mindhaste": 3955.2
+    }
+   },
+   {
+    "farm_dps": 3727.0,
+    "dps": 3727.0,
+    "total": 111811,
+    "manaLeft": 89.5,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Scythe of Elune",
+      "code": "I0R1",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Hood of Dark Deeds",
+      "code": "tgrh",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Starsurge (I0K0)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Mindhaste"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 3,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 7,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 236246504,
+    "sources": [
+     [
+      "Wisp Guardian",
+      2124.8
+     ],
+     [
+      "Mass Entanglement",
+      711.9
+     ],
+     [
+      "Starfire",
+      472.0
+     ],
+     [
+      "Starfall",
+      343.0
+     ],
+     [
+      "Автоатака",
+      75.4
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.75",
+      "Starfall"
+     ],
+     [
+      "1.50",
+      "Starfire"
+     ],
+     [
+      "2.25",
+      "Mass Entanglement"
+     ],
+     [
+      "4.13",
+      "Starfire"
+     ],
+     [
+      "6.70",
+      "Wisp Guardian"
+     ],
+     [
+      "7.45",
+      "Starfire"
+     ],
+     [
+      "8.20",
+      "Mass Entanglement"
+     ],
+     [
+      "8.95",
+      "Starfall"
+     ],
+     [
+      "10.08",
+      "Starfire"
+     ],
+     [
+      "12.71",
+      "Starfire"
+     ],
+     [
+      "13.46",
+      "Wisp Guardian"
+     ],
+     [
+      "14.21",
+      "Mass Entanglement"
+     ],
+     [
+      "15.34",
+      "Starfire"
+     ],
+     [
+      "17.00",
+      "Starfall"
+     ],
+     [
+      "17.97",
+      "Starfire"
+     ],
+     [
+      "19.55",
+      "Mass Entanglement"
+     ],
+     [
+      "20.30",
+      "Wisp Guardian"
+     ],
+     [
+      "21.05",
+      "Starfire"
+     ],
+     [
+      "23.68",
+      "Starfire"
+     ],
+     [
+      "24.89",
+      "Mass Entanglement"
+     ],
+     [
+      "25.64",
+      "Starfall"
+     ],
+     [
+      "26.39",
+      "Starfire"
+     ],
+     [
+      "27.14",
+      "Wisp Guardian"
+     ],
+     [
+      "29.02",
+      "Starfire"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "171"
+     ],
+     [
+      "Сила",
+      "33"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "139.2"
+     ],
+     [
+      "Potency",
+      "3.5"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "18.0%"
+     ],
+     [
+      "Скорость атаки",
+      "10.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2622"
+     ],
+     [
+      "Реген маны",
+      "14.64/с"
+     ],
+     [
+      "Мана в конце",
+      "89%"
+     ],
+     [
+      "Интервал атаки",
+      "1.82 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.800"
+     ],
+     [
+      "Плоское снижение КД",
+      "1.70 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 3727.0,
+     "Starlight (I0JY)": 3593.7,
+     "Entangle (I0JZ)": 3425.6,
+     "Starsurge (I0K0)": 3727.0,
+     "Starfall Missile (I0K1)": 3035.9,
+     "Starfire Echo (I0K4)": 2966.4,
+     "Druidism (I0MS)": 3093.2,
+     "Wisp (I0P5)": 3727.0,
+     "Force of Nature (I0P7)": 2998.5,
+     "Nature's Wrath (I0P8)": 3170.3
+    },
+    "glyphDps": {
+     "Fortitude": 3727.0,
+     "Unsealed Power": 3722.6,
+     "Fortune": 3366.2,
+     "Supremacy": 3451.2,
+     "Arc Striking": 3366.2,
+     "Battle Frenzy": 3366.2,
+     "Hellfire": 3366.2,
+     "Thunder": 3366.2,
+     "Blood Violence": 3366.2,
+     "Animosity": 3374.8,
+     "Glass Cannon": 3727.0,
+     "Mindhaste": 3727.0
+    }
+   },
+   {
+    "farm_dps": 3530.1,
+    "dps": 3530.1,
+    "total": 105902,
+    "manaLeft": 89.4,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Scythe of Elune",
+      "code": "I0R1",
+      "source": "drop"
+     },
+     {
+      "name": "Woodbark Gloves",
+      "code": "I0R4",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Starsurge (I0K0)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Mindhaste"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 3,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 7,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 236246542,
+    "sources": [
+     [
+      "Wisp Guardian",
+      1879.2
+     ],
+     [
+      "Mass Entanglement",
+      827.4
+     ],
+     [
+      "Starfire",
+      417.5
+     ],
+     [
+      "Starfall",
+      323.6
+     ],
+     [
+      "Автоатака",
+      68.9
+     ],
+     [
+      "Treants",
+      13.5
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.75",
+      "Starfall"
+     ],
+     [
+      "1.50",
+      "Starfire"
+     ],
+     [
+      "2.25",
+      "Mass Entanglement"
+     ],
+     [
+      "4.13",
+      "Starfire"
+     ],
+     [
+      "6.70",
+      "Wisp Guardian"
+     ],
+     [
+      "7.45",
+      "Starfire"
+     ],
+     [
+      "8.20",
+      "Mass Entanglement"
+     ],
+     [
+      "8.95",
+      "Starfall"
+     ],
+     [
+      "10.08",
+      "Starfire"
+     ],
+     [
+      "12.71",
+      "Starfire"
+     ],
+     [
+      "13.46",
+      "Wisp Guardian"
+     ],
+     [
+      "14.21",
+      "Mass Entanglement"
+     ],
+     [
+      "15.34",
+      "Starfire"
+     ],
+     [
+      "17.00",
+      "Starfall"
+     ],
+     [
+      "17.97",
+      "Starfire"
+     ],
+     [
+      "19.55",
+      "Mass Entanglement"
+     ],
+     [
+      "20.30",
+      "Wisp Guardian"
+     ],
+     [
+      "21.05",
+      "Starfire"
+     ],
+     [
+      "23.68",
+      "Starfire"
+     ],
+     [
+      "24.89",
+      "Mass Entanglement"
+     ],
+     [
+      "25.64",
+      "Starfall"
+     ],
+     [
+      "26.39",
+      "Starfire"
+     ],
+     [
+      "27.14",
+      "Wisp Guardian"
+     ],
+     [
+      "29.02",
+      "Starfire"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "171"
+     ],
+     [
+      "Сила",
+      "33"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "139.2"
+     ],
+     [
+      "Potency",
+      "8.5"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "18.0%"
+     ],
+     [
+      "Скорость атаки",
+      "10.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2602"
+     ],
+     [
+      "Реген маны",
+      "14.64/с"
+     ],
+     [
+      "Мана в конце",
+      "89%"
+     ],
+     [
+      "Интервал атаки",
+      "1.82 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.800"
+     ],
+     [
+      "Плоское снижение КД",
+      "1.70 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 3530.1,
+     "Starlight (I0JY)": 3406.0,
+     "Entangle (I0JZ)": 3300.8,
+     "Starsurge (I0K0)": 3530.1,
+     "Starfall Missile (I0K1)": 2916.2,
+     "Starfire Echo (I0K4)": 2856.3,
+     "Druidism (I0MS)": 2995.5,
+     "Wisp (I0P5)": 3530.1,
+     "Force of Nature (I0P7)": 2724.2,
+     "Nature's Wrath (I0P8)": 3104.5
+    },
+    "glyphDps": {
+     "Fortitude": 3530.1,
+     "Unsealed Power": 3583.0,
+     "Fortune": 3200.6,
+     "Supremacy": 3275.4,
+     "Arc Striking": 3200.6,
+     "Battle Frenzy": 3200.6,
+     "Hellfire": 3200.6,
+     "Thunder": 3200.6,
+     "Blood Violence": 3200.6,
+     "Animosity": 3208.4,
+     "Glass Cannon": 3583.0,
+     "Mindhaste": 3583.0
+    }
+   },
+   {
+    "farm_dps": 3466.4,
+    "dps": 3466.4,
+    "total": 103993,
+    "manaLeft": 90.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Stellar Robes",
+      "code": "I0R3",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Hood of Dark Deeds",
+      "code": "tgrh",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Starsurge (I0K0)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Mindhaste"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 10,
+     "pet_damage": 0
+    },
+    "chunk": 236246458,
+    "sources": [
+     [
+      "Wisp Guardian",
+      2329.2
+     ],
+     [
+      "Mass Entanglement",
+      454.3
+     ],
+     [
+      "Starfire",
+      317.5
+     ],
+     [
+      "Starfall",
+      284.1
+     ],
+     [
+      "Автоатака",
+      81.4
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.75",
+      "Starfall"
+     ],
+     [
+      "1.50",
+      "Starfire"
+     ],
+     [
+      "2.25",
+      "Mass Entanglement"
+     ],
+     [
+      "5.26",
+      "Starfire"
+     ],
+     [
+      "6.32",
+      "Wisp Guardian"
+     ],
+     [
+      "7.29",
+      "Mass Entanglement"
+     ],
+     [
+      "8.35",
+      "Starfall"
+     ],
+     [
+      "9.10",
+      "Starfire"
+     ],
+     [
+      "12.34",
+      "Mass Entanglement"
+     ],
+     [
+      "13.09",
+      "Wisp Guardian"
+     ],
+     [
+      "13.84",
+      "Starfire"
+     ],
+     [
+      "15.96",
+      "Starfall"
+     ],
+     [
+      "17.38",
+      "Mass Entanglement"
+     ],
+     [
+      "18.13",
+      "Starfire"
+     ],
+     [
+      "19.41",
+      "Wisp Guardian"
+     ],
+     [
+      "21.89",
+      "Starfire"
+     ],
+     [
+      "22.64",
+      "Mass Entanglement"
+     ],
+     [
+      "23.56",
+      "Starfall"
+     ],
+     [
+      "25.65",
+      "Starfire"
+     ],
+     [
+      "26.40",
+      "Wisp Guardian"
+     ],
+     [
+      "27.69",
+      "Mass Entanglement"
+     ],
+     [
+      "29.42",
+      "Starfire"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "175"
+     ],
+     [
+      "Сила",
+      "33"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "142.2"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "25.0%"
+     ],
+     [
+      "Скорость атаки",
+      "10.0%"
+     ],
+     [
+      "Удача",
+      "10%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2450"
+     ],
+     [
+      "Реген маны",
+      "14.96/с"
+     ],
+     [
+      "Мана в конце",
+      "90%"
+     ],
+     [
+      "Интервал атаки",
+      "1.82 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.800"
+     ],
+     [
+      "Плоское снижение КД",
+      "1.70 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 3466.4,
+     "Starlight (I0JY)": 2850.3,
+     "Entangle (I0JZ)": 3051.2,
+     "Starsurge (I0K0)": 3466.4,
+     "Starfall Missile (I0K1)": 2653.2,
+     "Starfire Echo (I0K4)": 2601.0,
+     "Druidism (I0MS)": 2740.6,
+     "Wisp (I0P5)": 3466.4,
+     "Force of Nature (I0P7)": 2648.6,
+     "Nature's Wrath (I0P8)": 2869.3
+    },
+    "glyphDps": {
+     "Fortitude": 3466.4,
+     "Unsealed Power": 3428.1,
+     "Fortune": 3099.9,
+     "Supremacy": 3161.9,
+     "Arc Striking": 3099.9,
+     "Battle Frenzy": 3099.9,
+     "Hellfire": 3099.9,
+     "Thunder": 3099.9,
+     "Blood Violence": 3099.9,
+     "Animosity": 3109.1,
+     "Glass Cannon": 3466.4,
+     "Mindhaste": 3466.4
+    }
+   },
+   {
+    "farm_dps": 3445.8,
+    "dps": 3445.8,
+    "total": 103373,
+    "manaLeft": 88.1,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "Scythe of Elune",
+      "code": "I0R1",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Starsurge (I0K0)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Mindhaste"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 236250973,
+    "sources": [
+     [
+      "Wisp Guardian",
+      2119.5
+     ],
+     [
+      "Starfire",
+      469.3
+     ],
+     [
+      "Mass Entanglement",
+      441.7
+     ],
+     [
+      "Starfall",
+      349.5
+     ],
+     [
+      "Автоатака",
+      65.8
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.75",
+      "Starfall"
+     ],
+     [
+      "1.50",
+      "Starfire"
+     ],
+     [
+      "2.25",
+      "Mass Entanglement"
+     ],
+     [
+      "3.92",
+      "Starfire"
+     ],
+     [
+      "6.18",
+      "Wisp Guardian"
+     ],
+     [
+      "6.93",
+      "Starfire"
+     ],
+     [
+      "7.68",
+      "Mass Entanglement"
+     ],
+     [
+      "8.43",
+      "Starfall"
+     ],
+     [
+      "9.35",
+      "Starfire"
+     ],
+     [
+      "11.77",
+      "Starfire"
+     ],
+     [
+      "12.52",
+      "Wisp Guardian"
+     ],
+     [
+      "13.27",
+      "Mass Entanglement"
+     ],
+     [
+      "14.20",
+      "Starfire"
+     ],
+     [
+      "15.85",
+      "Starfall"
+     ],
+     [
+      "16.62",
+      "Starfire"
+     ],
+     [
+      "18.20",
+      "Mass Entanglement"
+     ],
+     [
+      "18.95",
+      "Wisp Guardian"
+     ],
+     [
+      "19.70",
+      "Starfire"
+     ],
+     [
+      "22.12",
+      "Starfire"
+     ],
+     [
+      "23.12",
+      "Mass Entanglement"
+     ],
+     [
+      "23.87",
+      "Starfall"
+     ],
+     [
+      "24.62",
+      "Starfire"
+     ],
+     [
+      "25.37",
+      "Wisp Guardian"
+     ],
+     [
+      "27.05",
+      "Starfire"
+     ],
+     [
+      "28.05",
+      "Mass Entanglement"
+     ],
+     [
+      "29.47",
+      "Starfire"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "184"
+     ],
+     [
+      "Сила",
+      "33"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "149.0"
+     ],
+     [
+      "Potency",
+      "5.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "28.0%"
+     ],
+     [
+      "Скорость атаки",
+      "10.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2513"
+     ],
+     [
+      "Реген маны",
+      "15.68/с"
+     ],
+     [
+      "Мана в конце",
+      "88%"
+     ],
+     [
+      "Интервал атаки",
+      "1.82 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.800"
+     ],
+     [
+      "Плоское снижение КД",
+      "1.70 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 3540.2,
+     "Starlight (I0JY)": 3540.2,
+     "Entangle (I0JZ)": 3072.0,
+     "Starsurge (I0K0)": 3540.2,
+     "Starfall Missile (I0K1)": 3043.2,
+     "Starfire Echo (I0K4)": 2959.5,
+     "Druidism (I0MS)": 2952.8,
+     "Wisp (I0P5)": 3445.8,
+     "Force of Nature (I0P7)": 2827.8,
+     "Nature's Wrath (I0P8)": 3118.6
+    },
+    "glyphDps": {
+     "Fortitude": 3445.8,
+     "Unsealed Power": 3453.1,
+     "Fortune": 3083.1,
+     "Supremacy": 3165.8,
+     "Arc Striking": 3083.1,
+     "Battle Frenzy": 3083.1,
+     "Hellfire": 3083.1,
+     "Thunder": 3083.1,
+     "Blood Violence": 3083.1,
+     "Animosity": 3090.7,
+     "Glass Cannon": 3453.1,
+     "Mindhaste": 3453.1
+    }
+   },
+   {
+    "farm_dps": 3440.4,
+    "dps": 3440.4,
+    "total": 103212,
+    "manaLeft": 86.9,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Sorceress Power Staff",
+      "code": "I05B",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Scythe of Elune",
+      "code": "I0R1",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Starsurge (I0K0)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Mindhaste"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 9,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 236497750,
+    "sources": [
+     [
+      "Wisp Guardian",
+      2134.4
+     ],
+     [
+      "Starfire",
+      468.8
+     ],
+     [
+      "Mass Entanglement",
+      439.9
+     ],
+     [
+      "Starfall",
+      335.9
+     ],
+     [
+      "Автоатака",
+      61.4
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.75",
+      "Starfall"
+     ],
+     [
+      "1.50",
+      "Starfire"
+     ],
+     [
+      "2.25",
+      "Mass Entanglement"
+     ],
+     [
+      "3.89",
+      "Starfire"
+     ],
+     [
+      "6.08",
+      "Wisp Guardian"
+     ],
+     [
+      "6.83",
+      "Starfire"
+     ],
+     [
+      "7.58",
+      "Mass Entanglement"
+     ],
+     [
+      "8.33",
+      "Starfall"
+     ],
+     [
+      "9.22",
+      "Starfire"
+     ],
+     [
+      "11.60",
+      "Starfire"
+     ],
+     [
+      "12.35",
+      "Wisp Guardian"
+     ],
+     [
+      "13.10",
+      "Mass Entanglement"
+     ],
+     [
+      "13.99",
+      "Starfire"
+     ],
+     [
+      "15.64",
+      "Starfall"
+     ],
+     [
+      "16.39",
+      "Starfire"
+     ],
+     [
+      "17.95",
+      "Mass Entanglement"
+     ],
+     [
+      "18.70",
+      "Wisp Guardian"
+     ],
+     [
+      "19.45",
+      "Starfire"
+     ],
+     [
+      "21.84",
+      "Starfire"
+     ],
+     [
+      "22.80",
+      "Mass Entanglement"
+     ],
+     [
+      "23.55",
+      "Starfall"
+     ],
+     [
+      "24.30",
+      "Starfire"
+     ],
+     [
+      "25.05",
+      "Wisp Guardian"
+     ],
+     [
+      "26.69",
+      "Starfire"
+     ],
+     [
+      "27.65",
+      "Mass Entanglement"
+     ],
+     [
+      "29.07",
+      "Starfire"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "171"
+     ],
+     [
+      "Сила",
+      "33"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "139.2"
+     ],
+     [
+      "Potency",
+      "4.5"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "30.0%"
+     ],
+     [
+      "Скорость атаки",
+      "10.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2522"
+     ],
+     [
+      "Реген маны",
+      "14.64/с"
+     ],
+     [
+      "Мана в конце",
+      "87%"
+     ],
+     [
+      "Интервал атаки",
+      "1.82 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.800"
+     ],
+     [
+      "Плоское снижение КД",
+      "1.70 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 3553.8,
+     "Starlight (I0JY)": 3553.8,
+     "Entangle (I0JZ)": 3104.6,
+     "Starsurge (I0K0)": 3553.8,
+     "Starfall Missile (I0K1)": 3016.2,
+     "Starfire Echo (I0K4)": 2943.5,
+     "Druidism (I0MS)": 2959.2,
+     "Wisp (I0P5)": 3440.4,
+     "Force of Nature (I0P7)": 2820.0,
+     "Nature's Wrath (I0P8)": 3111.1
+    },
+    "glyphDps": {
+     "Fortitude": 3636.1,
+     "Unsealed Power": 3636.1,
+     "Fortune": 3255.4,
+     "Supremacy": 3336.2,
+     "Arc Striking": 3255.4,
+     "Battle Frenzy": 3255.4,
+     "Hellfire": 3255.4,
+     "Thunder": 3255.4,
+     "Blood Violence": 3255.4,
+     "Animosity": 3263.9,
+     "Glass Cannon": 3636.1,
+     "Mindhaste": 3440.4
+    }
+   },
+   {
+    "farm_dps": 3305.5,
+    "dps": 3305.5,
+    "total": 99166,
+    "manaLeft": 88.9,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Staff of the Magister",
+      "code": "I0HK",
+      "source": "drop"
+     },
+     {
+      "name": "Scythe of Elune",
+      "code": "I0R1",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Starsurge (I0K0)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Mindhaste"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 236248735,
+    "sources": [
+     [
+      "Wisp Guardian",
+      2026.6
+     ],
+     [
+      "Mass Entanglement",
+      452.1
+     ],
+     [
+      "Starfire",
+      426.3
+     ],
+     [
+      "Starfall",
+      335.7
+     ],
+     [
+      "Автоатака",
+      64.9
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.75",
+      "Starfall"
+     ],
+     [
+      "1.50",
+      "Starfire"
+     ],
+     [
+      "2.25",
+      "Mass Entanglement"
+     ],
+     [
+      "4.02",
+      "Starfire"
+     ],
+     [
+      "6.43",
+      "Wisp Guardian"
+     ],
+     [
+      "7.18",
+      "Starfire"
+     ],
+     [
+      "7.93",
+      "Mass Entanglement"
+     ],
+     [
+      "8.68",
+      "Starfall"
+     ],
+     [
+      "9.70",
+      "Starfire"
+     ],
+     [
+      "12.22",
+      "Starfire"
+     ],
+     [
+      "12.97",
+      "Wisp Guardian"
+     ],
+     [
+      "13.72",
+      "Mass Entanglement"
+     ],
+     [
+      "14.74",
+      "Starfire"
+     ],
+     [
+      "16.40",
+      "Starfall"
+     ],
+     [
+      "17.27",
+      "Starfire"
+     ],
+     [
+      "18.85",
+      "Mass Entanglement"
+     ],
+     [
+      "19.60",
+      "Wisp Guardian"
+     ],
+     [
+      "20.35",
+      "Starfire"
+     ],
+     [
+      "22.87",
+      "Starfire"
+     ],
+     [
+      "23.97",
+      "Mass Entanglement"
+     ],
+     [
+      "24.72",
+      "Starfall"
+     ],
+     [
+      "25.47",
+      "Starfire"
+     ],
+     [
+      "26.22",
+      "Wisp Guardian"
+     ],
+     [
+      "27.99",
+      "Starfire"
+     ],
+     [
+      "29.10",
+      "Mass Entanglement"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "181"
+     ],
+     [
+      "Сила",
+      "33"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "146.8"
+     ],
+     [
+      "Potency",
+      "5.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "23.0%"
+     ],
+     [
+      "Скорость атаки",
+      "10.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2592"
+     ],
+     [
+      "Реген маны",
+      "15.44/с"
+     ],
+     [
+      "Мана в конце",
+      "89%"
+     ],
+     [
+      "Интервал атаки",
+      "1.82 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.800"
+     ],
+     [
+      "Плоское снижение КД",
+      "1.70 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 3350.7,
+     "Starlight (I0JY)": 3350.7,
+     "Entangle (I0JZ)": 3007.3,
+     "Starsurge (I0K0)": 3350.7,
+     "Starfall Missile (I0K1)": 2845.5,
+     "Starfire Echo (I0K4)": 2762.0,
+     "Druidism (I0MS)": 2799.8,
+     "Wisp (I0P5)": 3305.5,
+     "Force of Nature (I0P7)": 2684.8,
+     "Nature's Wrath (I0P8)": 2939.1
+    },
+    "glyphDps": {
+     "Fortitude": 3305.5,
+     "Unsealed Power": 3346.7,
+     "Fortune": 2988.2,
+     "Supremacy": 3067.6,
+     "Arc Striking": 2988.2,
+     "Battle Frenzy": 2988.2,
+     "Hellfire": 2988.2,
+     "Thunder": 2988.2,
+     "Blood Violence": 2988.2,
+     "Animosity": 2995.6,
+     "Glass Cannon": 3346.7,
+     "Mindhaste": 3346.7
+    }
+   },
+   {
+    "farm_dps": 3301.6,
+    "dps": 3301.6,
+    "total": 99047,
+    "manaLeft": 88.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Qiraji Talisman",
+      "code": "I0C9",
+      "source": "drop"
+     },
+     {
+      "name": "Scythe of Elune",
+      "code": "I0R1",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Starsurge (I0K0)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Mindhaste"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 236252539,
+    "sources": [
+     [
+      "Wisp Guardian",
+      1987.8
+     ],
+     [
+      "Mass Entanglement",
+      460.6
+     ],
+     [
+      "Starfire",
+      433.9
+     ],
+     [
+      "Starfall",
+      349.6
+     ],
+     [
+      "Автоатака",
+      69.7
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.75",
+      "Starfall"
+     ],
+     [
+      "1.50",
+      "Starfire"
+     ],
+     [
+      "2.25",
+      "Mass Entanglement"
+     ],
+     [
+      "4.04",
+      "Starfire"
+     ],
+     [
+      "6.48",
+      "Wisp Guardian"
+     ],
+     [
+      "7.23",
+      "Starfire"
+     ],
+     [
+      "7.98",
+      "Mass Entanglement"
+     ],
+     [
+      "8.73",
+      "Starfall"
+     ],
+     [
+      "9.77",
+      "Starfire"
+     ],
+     [
+      "12.32",
+      "Starfire"
+     ],
+     [
+      "13.07",
+      "Wisp Guardian"
+     ],
+     [
+      "13.82",
+      "Mass Entanglement"
+     ],
+     [
+      "14.86",
+      "Starfire"
+     ],
+     [
+      "16.52",
+      "Starfall"
+     ],
+     [
+      "17.40",
+      "Starfire"
+     ],
+     [
+      "18.98",
+      "Mass Entanglement"
+     ],
+     [
+      "19.73",
+      "Wisp Guardian"
+     ],
+     [
+      "20.48",
+      "Starfire"
+     ],
+     [
+      "23.03",
+      "Starfire"
+     ],
+     [
+      "24.15",
+      "Mass Entanglement"
+     ],
+     [
+      "24.90",
+      "Starfall"
+     ],
+     [
+      "25.65",
+      "Starfire"
+     ],
+     [
+      "26.40",
+      "Wisp Guardian"
+     ],
+     [
+      "28.19",
+      "Starfire"
+     ],
+     [
+      "29.32",
+      "Mass Entanglement"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "176"
+     ],
+     [
+      "Сила",
+      "38"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Сила атаки",
+      "155.0"
+     ],
+     [
+      "Potency",
+      "8.0"
+     ],
+     [
+      "Mastery",
+      "16"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "22.0%"
+     ],
+     [
+      "Скорость атаки",
+      "12.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2522"
+     ],
+     [
+      "Реген маны",
+      "15.04/с"
+     ],
+     [
+      "Мана в конце",
+      "88%"
+     ],
+     [
+      "Интервал атаки",
+      "1.79 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.800"
+     ],
+     [
+      "Плоское снижение КД",
+      "1.70 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 3361.9,
+     "Starlight (I0JY)": 3361.9,
+     "Entangle (I0JZ)": 3013.5,
+     "Starsurge (I0K0)": 3361.9,
+     "Starfall Missile (I0K1)": 2884.3,
+     "Starfire Echo (I0K4)": 2792.4,
+     "Druidism (I0MS)": 2819.0,
+     "Wisp (I0P5)": 3301.6,
+     "Force of Nature (I0P7)": 2714.3,
+     "Nature's Wrath (I0P8)": 2967.5
+    },
+    "glyphDps": {
+     "Fortitude": 3301.6,
+     "Unsealed Power": 3305.6,
+     "Fortune": 2951.4,
+     "Supremacy": 3025.4,
+     "Arc Striking": 2951.4,
+     "Battle Frenzy": 2951.4,
+     "Hellfire": 2951.4,
+     "Thunder": 2951.4,
+     "Blood Violence": 2951.4,
+     "Animosity": 2959.5,
+     "Glass Cannon": 3305.6,
+     "Mindhaste": 3305.6
+    }
+   },
+   {
+    "farm_dps": 3282.9,
+    "dps": 3282.9,
+    "total": 98487,
+    "manaLeft": 90.1,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Stellar Robes",
+      "code": "I0R3",
+      "source": "drop"
+     },
+     {
+      "name": "Woodbark Gloves",
+      "code": "I0R4",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Starsurge (I0K0)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Mindhaste"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 10,
+     "pet_damage": 0
+    },
+    "chunk": 236246496,
+    "sources": [
+     [
+      "Wisp Guardian",
+      2060.4
+     ],
+     [
+      "Mass Entanglement",
+      584.2
+     ],
+     [
+      "Starfire",
+      280.9
+     ],
+     [
+      "Starfall",
+      268.6
+     ],
+     [
+      "Автоатака",
+      74.4
+     ],
+     [
+      "Treants",
+      14.5
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.75",
+      "Starfall"
+     ],
+     [
+      "1.50",
+      "Starfire"
+     ],
+     [
+      "2.25",
+      "Mass Entanglement"
+     ],
+     [
+      "5.26",
+      "Starfire"
+     ],
+     [
+      "6.32",
+      "Wisp Guardian"
+     ],
+     [
+      "7.29",
+      "Mass Entanglement"
+     ],
+     [
+      "8.35",
+      "Starfall"
+     ],
+     [
+      "9.10",
+      "Starfire"
+     ],
+     [
+      "12.34",
+      "Mass Entanglement"
+     ],
+     [
+      "13.09",
+      "Wisp Guardian"
+     ],
+     [
+      "13.84",
+      "Starfire"
+     ],
+     [
+      "15.96",
+      "Starfall"
+     ],
+     [
+      "17.38",
+      "Mass Entanglement"
+     ],
+     [
+      "18.13",
+      "Starfire"
+     ],
+     [
+      "19.41",
+      "Wisp Guardian"
+     ],
+     [
+      "21.89",
+      "Starfire"
+     ],
+     [
+      "22.64",
+      "Mass Entanglement"
+     ],
+     [
+      "23.56",
+      "Starfall"
+     ],
+     [
+      "25.65",
+      "Starfire"
+     ],
+     [
+      "26.40",
+      "Wisp Guardian"
+     ],
+     [
+      "27.69",
+      "Mass Entanglement"
+     ],
+     [
+      "29.42",
+      "Starfire"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "175"
+     ],
+     [
+      "Сила",
+      "33"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "142.2"
+     ],
+     [
+      "Potency",
+      "5.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "25.0%"
+     ],
+     [
+      "Скорость атаки",
+      "10.0%"
+     ],
+     [
+      "Удача",
+      "10%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2430"
+     ],
+     [
+      "Реген маны",
+      "14.96/с"
+     ],
+     [
+      "Мана в конце",
+      "90%"
+     ],
+     [
+      "Интервал атаки",
+      "1.82 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.800"
+     ],
+     [
+      "Плоское снижение КД",
+      "1.70 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 3282.9,
+     "Starlight (I0JY)": 2709.1,
+     "Entangle (I0JZ)": 2954.7,
+     "Starsurge (I0K0)": 3282.9,
+     "Starfall Missile (I0K1)": 2535.8,
+     "Starfire Echo (I0K4)": 2482.3,
+     "Druidism (I0MS)": 2634.5,
+     "Wisp (I0P5)": 3282.9,
+     "Force of Nature (I0P7)": 2406.0,
+     "Nature's Wrath (I0P8)": 2786.0
+    },
+    "glyphDps": {
+     "Fortitude": 3282.9,
+     "Unsealed Power": 3297.8,
+     "Fortune": 2946.0,
+     "Supremacy": 3000.6,
+     "Arc Striking": 2946.0,
+     "Battle Frenzy": 2946.0,
+     "Hellfire": 2946.0,
+     "Thunder": 2946.0,
+     "Blood Violence": 2946.0,
+     "Animosity": 2954.5,
+     "Glass Cannon": 3297.8,
+     "Mindhaste": 3297.8
+    }
+   },
+   {
+    "farm_dps": 3228.2,
+    "dps": 3228.2,
+    "total": 96847,
+    "manaLeft": 87.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Arcane Ring",
+      "code": "I029",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Scythe of Elune",
+      "code": "I0R1",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Starsurge (I0K0)",
+     "Wisp (I0P5)",
+     "Wisp Spread (I08O)"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Mindhaste"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 241671143,
+    "sources": [
+     [
+      "Wisp Guardian",
+      1931.2
+     ],
+     [
+      "Mass Entanglement",
+      471.7
+     ],
+     [
+      "Starfire",
+      409.2
+     ],
+     [
+      "Starfall",
+      351.5
+     ],
+     [
+      "Автоатака",
+      64.6
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Wisp Guardian"
+     ],
+     [
+      "0.75",
+      "Starfall"
+     ],
+     [
+      "1.50",
+      "Starfire"
+     ],
+     [
+      "2.25",
+      "Mass Entanglement"
+     ],
+     [
+      "4.02",
+      "Starfire"
+     ],
+     [
+      "6.43",
+      "Wisp Guardian"
+     ],
+     [
+      "7.18",
+      "Starfire"
+     ],
+     [
+      "7.93",
+      "Mass Entanglement"
+     ],
+     [
+      "8.68",
+      "Starfall"
+     ],
+     [
+      "9.70",
+      "Starfire"
+     ],
+     [
+      "12.22",
+      "Starfire"
+     ],
+     [
+      "12.97",
+      "Wisp Guardian"
+     ],
+     [
+      "13.72",
+      "Mass Entanglement"
+     ],
+     [
+      "14.74",
+      "Starfire"
+     ],
+     [
+      "16.40",
+      "Starfall"
+     ],
+     [
+      "17.27",
+      "Starfire"
+     ],
+     [
+      "18.85",
+      "Mass Entanglement"
+     ],
+     [
+      "19.60",
+      "Wisp Guardian"
+     ],
+     [
+      "20.35",
+      "Starfire"
+     ],
+     [
+      "22.87",
+      "Starfire"
+     ],
+     [
+      "23.97",
+      "Mass Entanglement"
+     ],
+     [
+      "24.72",
+      "Starfall"
+     ],
+     [
+      "25.47",
+      "Starfire"
+     ],
+     [
+      "26.22",
+      "Wisp Guardian"
+     ],
+     [
+      "27.99",
+      "Starfire"
+     ],
+     [
+      "29.10",
+      "Mass Entanglement"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "171"
+     ],
+     [
+      "Сила",
+      "33"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "139.2"
+     ],
+     [
+      "Potency",
+      "12.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "23.0%"
+     ],
+     [
+      "Скорость атаки",
+      "10.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2422"
+     ],
+     [
+      "Реген маны",
+      "14.64/с"
+     ],
+     [
+      "Мана в конце",
+      "87%"
+     ],
+     [
+      "Интервал атаки",
+      "1.82 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.800"
+     ],
+     [
+      "Плоское снижение КД",
+      "1.70 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Wisp Spread (I08O)": 3286.4,
+     "Starlight (I0JY)": 3286.4,
+     "Entangle (I0JZ)": 2956.7,
+     "Starsurge (I0K0)": 3286.4,
+     "Starfall Missile (I0K1)": 2725.7,
+     "Starfire Echo (I0K4)": 2682.9,
+     "Druidism (I0MS)": 2703.2,
+     "Wisp (I0P5)": 3228.2,
+     "Force of Nature (I0P7)": 2619.4,
+     "Nature's Wrath (I0P8)": 2853.3
+    },
+    "glyphDps": {
+     "Fortitude": 3228.2,
+     "Unsealed Power": 3227.4,
+     "Fortune": 2881.6,
+     "Supremacy": 2953.7,
+     "Arc Striking": 2881.6,
+     "Battle Frenzy": 2881.6,
+     "Hellfire": 2881.6,
+     "Thunder": 2881.6,
+     "Blood Violence": 2881.6,
+     "Animosity": 2889.1,
+     "Glass Cannon": 3228.2,
+     "Mindhaste": 3228.2
+    }
+   }
+  ]
+ }
+}

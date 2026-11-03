@@ -138,7 +138,7 @@ function actionSec(t: string): number {
 function ActionColumns({ actions, label }: { actions: Array<[string, string]>; label: string }) {
   const col = (title: string, rows: Array<[string, string]>) => (
     <Stack gap={6}>
-      <Text tone="secondary" style={{ fontWeight: 600 }}>{title}</Text>
+      {title ? <Text tone="secondary" style={{ fontWeight: 600 }}>{title}</Text> : null}
       {rows.length ? (
         <Table headers={["Секунда", label]} columnAlign={["right", "left"]} rows={rows.map(([t, n]) => [t, tipName(n)])} striped />
       ) : (
@@ -148,8 +148,8 @@ function ActionColumns({ actions, label }: { actions: Array<[string, string]>; l
   );
   return (
     <Grid columns={2} gap={20}>
-      {col("0–15 с", actions.filter(([t]) => actionSec(t) < 15))}
-      {col("15–30 с", actions.filter(([t]) => actionSec(t) >= 15))}
+      {col("", actions.filter(([t]) => actionSec(t) < 15))}
+      {col("", actions.filter(([t]) => actionSec(t) >= 15))}
     </Grid>
   );
 }
@@ -242,9 +242,6 @@ export default function DruidSims() {
         <Text tone="secondary">
           Sunken City v2.5.2a · уровень {DATA.level} · ESC {pointsTotal(run.points)} очков · пул предметов топ-80 + Mind Amplifier · {DATA.targets} целей · 30 секунд · ожидаемый урон
         </Text>
-        <Text size="small" tone="tertiary">
-          Ферма: {DATA.done.toLocaleString("ru-RU")} связок, ошибок {DATA.errors}{DATA.stopped ? ", остановлена" : ""}. Каждый показанный прогон пересчитан симом, DPS совпал с фермой.
-        </Text>
       </Stack>
       <Row gap={8} wrap>
         <Pill active={true}>Balance</Pill>
@@ -286,15 +283,9 @@ export default function DruidSims() {
         rows={run.sources.map(([name, dps]) => [tipName(name), fmt1(dps), `${((dps / sourceTotal) * 100).toFixed(1)}%`])}
         striped
       />
-      <Text size="small" tone="tertiary">
-        {LABELS[mode]}, место {place}. Ожидаемый урон источника за 30 с, делённый на 30.
-      </Text>
 
       <H2>Порядок кнопок</H2>
       <ActionColumns actions={run.actions} label="Кнопка" />
-      <Text size="small" tone="tertiary">
-        Сим не жмёт предметы в бою: Elemental Orb стоит в режиме до боя, Diamond Ring привязан до боя к заклинанию с лучшим DPS (перебраны все четыре).
-      </Text>
 
       <Grid columns={2} gap={20}>
         <Stack gap={8}>

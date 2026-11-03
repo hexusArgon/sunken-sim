@@ -1,0 +1,2541 @@
+{
+  "worker": "local-esc",
+  "hero": "priest",
+  "spec": "shadow",
+  "pool": "mixed",
+  "targets": 5,
+  "start": 0,
+  "end": 306241501,
+  "done": 306241502,
+  "stopped": false,
+  "errors": 0,
+  "about": "Чанк — одна шестёрка предметов. Таланты, глифы и очки навыков считаются, если её DPS без них входит в топ-10 той же категории. Shop + drop сравнивается с общим топ-10. Только Shop — с топ-10 лавки. Только Random drop — с топ-10 дропа. Эти десять чисел запоминаются отдельно. top — общий топ-10: чистый Shop, чистый дроп и оба источника. top_shop — только лавка. top_random — только дроп. top_shop_random — сразу и лавка, и дроп. Легендарки входят в любой список.",
+  "top": [
+    {
+      "dps": 3523.828806953591,
+      "item_dps": 1437.650818627451,
+      "fights": 607,
+      "chunk": 251685372,
+      "group": "shop_random",
+      "items": [
+        {
+          "name": "Diamond Ring",
+          "code": "I00D",
+          "source": "shop"
+        },
+        {
+          "name": "Atiesh, Greatstaff of the Guardian",
+          "code": "I048",
+          "source": "legendary"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Cosmic Horrors",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 10,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 1
+    },
+    {
+      "dps": 3466.066583099264,
+      "item_dps": 1452.5689705882355,
+      "fights": 607,
+      "chunk": 76776908,
+      "group": "shop_random",
+      "items": [
+        {
+          "name": "Orb of Unstable Magic",
+          "code": "I04J",
+          "source": "shop"
+        },
+        {
+          "name": "Harness of Beyond",
+          "code": "I07P",
+          "source": "drop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Thunder"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 1,
+        "damage": 0,
+        "crit": 0,
+        "potency": 9,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 2
+    },
+    {
+      "dps": 3412.2107471382346,
+      "item_dps": 1436.6365833333334,
+      "fights": 607,
+      "chunk": 243039775,
+      "group": "shop_random",
+      "items": [
+        {
+          "name": "Diamond Ring",
+          "code": "I00D",
+          "source": "shop"
+        },
+        {
+          "name": "Harness of Beyond",
+          "code": "I07P",
+          "source": "drop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Thunder"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 10,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 3
+    },
+    {
+      "dps": 3380.163342750674,
+      "item_dps": 1448.9644595588236,
+      "fights": 607,
+      "chunk": 76778861,
+      "group": "shop_random",
+      "items": [
+        {
+          "name": "Orb of Unstable Magic",
+          "code": "I04J",
+          "source": "shop"
+        },
+        {
+          "name": "Harness of Beyond",
+          "code": "I07P",
+          "source": "drop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 1,
+        "damage": 0,
+        "crit": 0,
+        "potency": 9,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 4
+    },
+    {
+      "dps": 3368.0188055184312,
+      "item_dps": 1463.175766862745,
+      "fights": 607,
+      "chunk": 11616495,
+      "group": "shop_random",
+      "items": [
+        {
+          "name": "Harness of Beyond",
+          "code": "I07P",
+          "source": "drop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Infinity Breaker",
+          "code": "I0NI",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Thunder"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 10,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 5
+    },
+    {
+      "dps": 3332.324551186275,
+      "item_dps": 1466.4726078431374,
+      "fights": 607,
+      "chunk": 2252227,
+      "group": "shop_random",
+      "items": [
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Thunder"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 4,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 6,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 6
+    },
+    {
+      "dps": 3328.9159812009802,
+      "item_dps": 1379.7094950980393,
+      "fights": 607,
+      "chunk": 11643214,
+      "group": "shop_random",
+      "items": [
+        {
+          "name": "Harness of Beyond",
+          "code": "I07P",
+          "source": "drop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "The Zircon Star",
+          "code": "I0DF",
+          "source": "drop"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Thunder"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 1,
+        "damage": 0,
+        "crit": 0,
+        "potency": 9,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 7
+    },
+    {
+      "dps": 3254.936621430156,
+      "item_dps": 1418.6362068927342,
+      "fights": 607,
+      "chunk": 2236844,
+      "group": "shop_random",
+      "items": [
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "Sulfuron Gloves",
+          "code": "I0QT",
+          "source": "shop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Thunder"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 3,
+        "attack_speed": 1,
+        "damage": 0,
+        "crit": 0,
+        "potency": 6,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 8
+    },
+    {
+      "dps": 3147.5573914025736,
+      "item_dps": 1255.831528382353,
+      "fights": 607,
+      "chunk": 2314462,
+      "group": "shop_random",
+      "items": [
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "The Zircon Star",
+          "code": "I0DF",
+          "source": "drop"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Infinity Breaker",
+          "code": "I0NI",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Thunder"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 2,
+        "damage": 0,
+        "crit": 0,
+        "potency": 8,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 9
+    },
+    {
+      "dps": 3147.061842110947,
+      "item_dps": 1353.6896898900638,
+      "fights": 607,
+      "chunk": 2251502,
+      "group": "shop_random",
+      "items": [
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "Sulfuron Gloves",
+          "code": "I0QT",
+          "source": "shop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Cosmic Horrors",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 1,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 9,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 10
+    }
+  ],
+  "top_shop_random": [
+    {
+      "dps": 3523.828806953591,
+      "item_dps": 1437.650818627451,
+      "fights": 607,
+      "chunk": 251685372,
+      "group": "shop_random",
+      "items": [
+        {
+          "name": "Diamond Ring",
+          "code": "I00D",
+          "source": "shop"
+        },
+        {
+          "name": "Atiesh, Greatstaff of the Guardian",
+          "code": "I048",
+          "source": "legendary"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Cosmic Horrors",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 10,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 1
+    },
+    {
+      "dps": 3466.066583099264,
+      "item_dps": 1452.5689705882355,
+      "fights": 607,
+      "chunk": 76776908,
+      "group": "shop_random",
+      "items": [
+        {
+          "name": "Orb of Unstable Magic",
+          "code": "I04J",
+          "source": "shop"
+        },
+        {
+          "name": "Harness of Beyond",
+          "code": "I07P",
+          "source": "drop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Thunder"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 1,
+        "damage": 0,
+        "crit": 0,
+        "potency": 9,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 2
+    },
+    {
+      "dps": 3412.2107471382346,
+      "item_dps": 1436.6365833333334,
+      "fights": 607,
+      "chunk": 243039775,
+      "group": "shop_random",
+      "items": [
+        {
+          "name": "Diamond Ring",
+          "code": "I00D",
+          "source": "shop"
+        },
+        {
+          "name": "Harness of Beyond",
+          "code": "I07P",
+          "source": "drop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Thunder"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 10,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 3
+    },
+    {
+      "dps": 3380.163342750674,
+      "item_dps": 1448.9644595588236,
+      "fights": 607,
+      "chunk": 76778861,
+      "group": "shop_random",
+      "items": [
+        {
+          "name": "Orb of Unstable Magic",
+          "code": "I04J",
+          "source": "shop"
+        },
+        {
+          "name": "Harness of Beyond",
+          "code": "I07P",
+          "source": "drop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 1,
+        "damage": 0,
+        "crit": 0,
+        "potency": 9,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 4
+    },
+    {
+      "dps": 3368.0188055184312,
+      "item_dps": 1463.175766862745,
+      "fights": 607,
+      "chunk": 11616495,
+      "group": "shop_random",
+      "items": [
+        {
+          "name": "Harness of Beyond",
+          "code": "I07P",
+          "source": "drop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Infinity Breaker",
+          "code": "I0NI",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Thunder"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 10,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 5
+    },
+    {
+      "dps": 3332.324551186275,
+      "item_dps": 1466.4726078431374,
+      "fights": 607,
+      "chunk": 2252227,
+      "group": "shop_random",
+      "items": [
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Thunder"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 4,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 6,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 6
+    },
+    {
+      "dps": 3328.9159812009802,
+      "item_dps": 1379.7094950980393,
+      "fights": 607,
+      "chunk": 11643214,
+      "group": "shop_random",
+      "items": [
+        {
+          "name": "Harness of Beyond",
+          "code": "I07P",
+          "source": "drop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "The Zircon Star",
+          "code": "I0DF",
+          "source": "drop"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Thunder"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 1,
+        "damage": 0,
+        "crit": 0,
+        "potency": 9,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 7
+    },
+    {
+      "dps": 3254.936621430156,
+      "item_dps": 1418.6362068927342,
+      "fights": 607,
+      "chunk": 2236844,
+      "group": "shop_random",
+      "items": [
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "Sulfuron Gloves",
+          "code": "I0QT",
+          "source": "shop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Thunder"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 3,
+        "attack_speed": 1,
+        "damage": 0,
+        "crit": 0,
+        "potency": 6,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 8
+    },
+    {
+      "dps": 3147.5573914025736,
+      "item_dps": 1255.831528382353,
+      "fights": 607,
+      "chunk": 2314462,
+      "group": "shop_random",
+      "items": [
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "The Zircon Star",
+          "code": "I0DF",
+          "source": "drop"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Infinity Breaker",
+          "code": "I0NI",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Thunder"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 2,
+        "damage": 0,
+        "crit": 0,
+        "potency": 8,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 9
+    },
+    {
+      "dps": 3147.061842110947,
+      "item_dps": 1353.6896898900638,
+      "fights": 607,
+      "chunk": 2251502,
+      "group": "shop_random",
+      "items": [
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "Sulfuron Gloves",
+          "code": "I0QT",
+          "source": "shop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Cosmic Horrors",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 1,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 9,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 10
+    }
+  ],
+  "top_shop": [
+    {
+      "dps": 3072.2729713199747,
+      "item_dps": 1346.4478088235294,
+      "fights": 607,
+      "chunk": 75563253,
+      "group": "shop",
+      "items": [
+        {
+          "name": "Orb of Unstable Magic",
+          "code": "I04J",
+          "source": "shop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 1,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 9,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 1
+    },
+    {
+      "dps": 3029.370662907475,
+      "item_dps": 1412.503793504902,
+      "fights": 607,
+      "chunk": 2254267,
+      "group": "shop",
+      "items": [
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 1,
+        "attack_speed": 2,
+        "damage": 0,
+        "crit": 0,
+        "potency": 7,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 2
+    },
+    {
+      "dps": 3026.883203479985,
+      "item_dps": 1364.6563520916766,
+      "fights": 607,
+      "chunk": 75563174,
+      "group": "shop",
+      "items": [
+        {
+          "name": "Orb of Unstable Magic",
+          "code": "I04J",
+          "source": "shop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "Sulfuron Gloves",
+          "code": "I0QT",
+          "source": "shop"
+        }
+      ],
+      "talents": [
+        "Catharsis",
+        "Dark Torment",
+        "Insanity"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 1,
+        "attack_speed": 0,
+        "damage": 9,
+        "crit": 0,
+        "potency": 0,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 3
+    },
+    {
+      "dps": 3012.8613245054266,
+      "item_dps": 1365.5015384349188,
+      "fights": 607,
+      "chunk": 2252235,
+      "group": "shop",
+      "items": [
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "Sulfuron Gloves",
+          "code": "I0QT",
+          "source": "shop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 1,
+        "damage": 0,
+        "crit": 0,
+        "potency": 9,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 4
+    },
+    {
+      "dps": 2915.2706710232837,
+      "item_dps": 1299.694460784314,
+      "fights": 607,
+      "chunk": 33508624,
+      "group": "shop",
+      "items": [
+        {
+          "name": "Razorwind",
+          "code": "I05X",
+          "source": "shop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 10,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 5
+    },
+    {
+      "dps": 2909.1470655950698,
+      "item_dps": 1228.868332227772,
+      "fights": 607,
+      "chunk": 2237060,
+      "group": "shop",
+      "items": [
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Infinity Breaker",
+          "code": "I0NI",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "Sulfuron Gloves",
+          "code": "I0QT",
+          "source": "shop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Thunder"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 1,
+        "attack_speed": 3,
+        "damage": 0,
+        "crit": 0,
+        "potency": 6,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 6
+    },
+    {
+      "dps": 2892.577671284493,
+      "item_dps": 1259.0947254716461,
+      "fights": 607,
+      "chunk": 2447063,
+      "group": "shop",
+      "items": [
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Celestial Crown",
+          "code": "I0C2",
+          "source": "shop"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        },
+        {
+          "name": "Sulfuron Gloves",
+          "code": "I0QT",
+          "source": "shop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 10,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 7
+    },
+    {
+      "dps": 2879.004411049632,
+      "item_dps": 1275.8430416666667,
+      "fights": 607,
+      "chunk": 2449095,
+      "group": "shop",
+      "items": [
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Celestial Crown",
+          "code": "I0C2",
+          "source": "shop"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 10,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 8
+    },
+    {
+      "dps": 2843.1677249126838,
+      "item_dps": 1280.3050503431375,
+      "fights": 607,
+      "chunk": 2252257,
+      "group": "shop",
+      "items": [
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Infinity Breaker",
+          "code": "I0NI",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        }
+      ],
+      "talents": [
+        "Cosmic Horrors",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 1,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 9,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 9
+    },
+    {
+      "dps": 2832.0270534607635,
+      "item_dps": 1199.9859810049022,
+      "fights": 607,
+      "chunk": 2303399,
+      "group": "shop",
+      "items": [
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Arcpower Stone",
+          "code": "I0E2",
+          "source": "shop"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Unbound Power Core",
+          "code": "I0FW",
+          "source": "shop"
+        },
+        {
+          "name": "Staff of Galactic Fury",
+          "code": "I0JO",
+          "source": "shop"
+        },
+        {
+          "name": "Elemental Orb",
+          "code": "I0NT",
+          "source": "shop"
+        }
+      ],
+      "talents": [
+        "Catharsis",
+        "Dark Torment",
+        "Insanity"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 1,
+        "attack_speed": 3,
+        "damage": 6,
+        "crit": 0,
+        "potency": 0,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 10
+    }
+  ],
+  "top_random": [
+    {
+      "dps": 2670.782518492187,
+      "item_dps": 1169.3885284374999,
+      "fights": 607,
+      "chunk": 11645440,
+      "group": "drop",
+      "items": [
+        {
+          "name": "Harness of Beyond",
+          "code": "I07P",
+          "source": "drop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "The Zircon Star",
+          "code": "I0DF",
+          "source": "drop"
+        },
+        {
+          "name": "Nightborne Scepter",
+          "code": "I0FU",
+          "source": "drop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        },
+        {
+          "name": "Hood of Dark Deeds",
+          "code": "tgrh",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 10,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 1
+    },
+    {
+      "dps": 2607.1466457891656,
+      "item_dps": 1071.9624166666667,
+      "fights": 607,
+      "chunk": 11646285,
+      "group": "drop",
+      "items": [
+        {
+          "name": "Harness of Beyond",
+          "code": "I07P",
+          "source": "drop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "The Zircon Star",
+          "code": "I0DF",
+          "source": "drop"
+        },
+        {
+          "name": "The Zircon Star",
+          "code": "I0DF",
+          "source": "drop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        },
+        {
+          "name": "Hood of Dark Deeds",
+          "code": "tgrh",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 2,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 8,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 2
+    },
+    {
+      "dps": 2602.9093310833327,
+      "item_dps": 1111.9115933333335,
+      "fights": 607,
+      "chunk": 174708573,
+      "group": "drop",
+      "items": [
+        {
+          "name": "Cursed Skull",
+          "code": "I02K",
+          "source": "drop"
+        },
+        {
+          "name": "Harness of Beyond",
+          "code": "I07P",
+          "source": "drop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "The Zircon Star",
+          "code": "I0DF",
+          "source": "drop"
+        },
+        {
+          "name": "Nightborne Scepter",
+          "code": "I0FU",
+          "source": "drop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 2,
+        "attack_speed": 1,
+        "damage": 0,
+        "crit": 0,
+        "potency": 7,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 3
+    },
+    {
+      "dps": 2561.3305300052075,
+      "item_dps": 1090.87978125,
+      "fights": 607,
+      "chunk": 174706562,
+      "group": "drop",
+      "items": [
+        {
+          "name": "Cursed Skull",
+          "code": "I02K",
+          "source": "drop"
+        },
+        {
+          "name": "Harness of Beyond",
+          "code": "I07P",
+          "source": "drop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Staff of the Magister",
+          "code": "I0HK",
+          "source": "drop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        },
+        {
+          "name": "Hood of Dark Deeds",
+          "code": "tgrh",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 2,
+        "attack_speed": 2,
+        "damage": 0,
+        "crit": 0,
+        "potency": 6,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 4
+    },
+    {
+      "dps": 2559.647111245833,
+      "item_dps": 1106.4180000000001,
+      "fights": 607,
+      "chunk": 174708167,
+      "group": "drop",
+      "items": [
+        {
+          "name": "Cursed Skull",
+          "code": "I02K",
+          "source": "drop"
+        },
+        {
+          "name": "Harness of Beyond",
+          "code": "I07P",
+          "source": "drop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "The Zircon Star",
+          "code": "I0DF",
+          "source": "drop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        },
+        {
+          "name": "Hood of Dark Deeds",
+          "code": "tgrh",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Answered Prayers",
+        "Dark Torment",
+        "Insanity"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 1,
+        "damage": 0,
+        "crit": 0,
+        "potency": 9,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 5
+    },
+    {
+      "dps": 2553.3319231385412,
+      "item_dps": 1065.0812369791665,
+      "fights": 607,
+      "chunk": 11641848,
+      "group": "drop",
+      "items": [
+        {
+          "name": "Harness of Beyond",
+          "code": "I07P",
+          "source": "drop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "The Zircon Star",
+          "code": "I0DF",
+          "source": "drop"
+        },
+        {
+          "name": "Beacon of the Naaru",
+          "code": "I0SG",
+          "source": "drop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        },
+        {
+          "name": "Hood of Dark Deeds",
+          "code": "tgrh",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 1,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 9,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 6
+    },
+    {
+      "dps": 2541.2486510416666,
+      "item_dps": 1096.5447070833332,
+      "fights": 607,
+      "chunk": 12257954,
+      "group": "drop",
+      "items": [
+        {
+          "name": "Harness of Beyond",
+          "code": "I07P",
+          "source": "drop"
+        },
+        {
+          "name": "Queen's Scepter",
+          "code": "I080",
+          "source": "drop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "The Zircon Star",
+          "code": "I0DF",
+          "source": "drop"
+        },
+        {
+          "name": "Nightborne Scepter",
+          "code": "I0FU",
+          "source": "drop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 10,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 7
+    },
+    {
+      "dps": 2539.8986254485408,
+      "item_dps": 1061.8536119791668,
+      "fights": 607,
+      "chunk": 11644680,
+      "group": "drop",
+      "items": [
+        {
+          "name": "Harness of Beyond",
+          "code": "I07P",
+          "source": "drop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "The Zircon Star",
+          "code": "I0DF",
+          "source": "drop"
+        },
+        {
+          "name": "Staff of the Magister",
+          "code": "I0HK",
+          "source": "drop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        },
+        {
+          "name": "Hood of Dark Deeds",
+          "code": "tgrh",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 10,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 8
+    },
+    {
+      "dps": 2528.2072497718746,
+      "item_dps": 1094.9754453125001,
+      "fights": 607,
+      "chunk": 174703730,
+      "group": "drop",
+      "items": [
+        {
+          "name": "Cursed Skull",
+          "code": "I02K",
+          "source": "drop"
+        },
+        {
+          "name": "Harness of Beyond",
+          "code": "I07P",
+          "source": "drop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Beacon of the Naaru",
+          "code": "I0SG",
+          "source": "drop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        },
+        {
+          "name": "Hood of Dark Deeds",
+          "code": "tgrh",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Answered Prayers",
+        "Dark Torment",
+        "Insanity"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 10,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 9
+    },
+    {
+      "dps": 2517.948056119999,
+      "item_dps": 1087.8514966666667,
+      "fights": 607,
+      "chunk": 174709571,
+      "group": "drop",
+      "items": [
+        {
+          "name": "Cursed Skull",
+          "code": "I02K",
+          "source": "drop"
+        },
+        {
+          "name": "Harness of Beyond",
+          "code": "I07P",
+          "source": "drop"
+        },
+        {
+          "name": "Sulfuras, Hand of Ragnaros",
+          "code": "I0BR",
+          "source": "legendary"
+        },
+        {
+          "name": "Qiraji Talisman",
+          "code": "I0C9",
+          "source": "drop"
+        },
+        {
+          "name": "Nightborne Scepter",
+          "code": "I0FU",
+          "source": "drop"
+        },
+        {
+          "name": "The Darkglaive",
+          "code": "fgrd",
+          "source": "drop"
+        }
+      ],
+      "talents": [
+        "Dark Torment",
+        "Insanity",
+        "Psychic Link"
+      ],
+      "glyphs": [
+        "Fortitude",
+        "Glass Cannon",
+        "Unsealed Power"
+      ],
+      "points": {
+        "health": 0,
+        "mana": 20,
+        "healing_power": 0,
+        "haste": 0,
+        "attack_speed": 0,
+        "damage": 0,
+        "crit": 0,
+        "potency": 10,
+        "mastery": 0,
+        "luck": 0,
+        "pet_damage": 0
+      },
+      "place": 10
+    }
+  ]
+}

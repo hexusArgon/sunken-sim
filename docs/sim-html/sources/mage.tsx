@@ -72,7 +72,7 @@ function actionSec(t: string): number {
 function ActionColumns({ actions, label }: { actions: Array<[string, string]>; label: string }) {
   const col = (title: string, rows: Array<[string, string]>) => (
     <Stack gap={6}>
-      <Text tone="secondary" style={{ fontWeight: 600 }}>{title}</Text>
+      {title ? <Text tone="secondary" style={{ fontWeight: 600 }}>{title}</Text> : null}
       {rows.length ? (
         <Table headers={["Секунда", label]} columnAlign={["right", "left"]} rows={rows.map(([t, n]) => [t, tipName(n)])} striped />
       ) : (
@@ -82,8 +82,8 @@ function ActionColumns({ actions, label }: { actions: Array<[string, string]>; l
   );
   return (
     <Grid columns={2} gap={20}>
-      {col("0–15 с", actions.filter(([t]) => actionSec(t) < 15))}
-      {col("15–30 с", actions.filter(([t]) => actionSec(t) >= 15))}
+      {col("", actions.filter(([t]) => actionSec(t) < 15))}
+      {col("", actions.filter(([t]) => actionSec(t) >= 15))}
     </Grid>
   );
 }
@@ -230,9 +230,6 @@ export default function Mage() {
         rows={run.sources.map(([name, dps]) => [tipName(name), dps.toFixed(1), `${((dps / (run.sources.reduce((x, r) => x + r[1], 0) || 1)) * 100).toFixed(1)}%`])}
         striped
       />
-      <Text size="small" tone="tertiary">
-        {SPEC_LABEL[spec]}, {LABELS[mode]}, место {index + 1}. Ожидаемый урон источника за 30 с, делённый на 30. Броня манекена 15.
-      </Text>
       <H2>Порядок кнопок</H2>
       <ActionColumns actions={run.actions} label="Заклинание" />
       <H2>Характеристики в бою</H2>
