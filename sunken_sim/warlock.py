@@ -1,4 +1,4 @@
-"""Warlock fight for Sunken City v2.5.2a, level 6.
+"""Warlock fight for Sunken City v2.5.2b, level 6.
 
 Unit O00A. Level 6 stats: STR 18, AGI 13, INT 43. White hit 17 + 1d1 = 18, plus 0.75 x INT
 (DCS formula). Attack cooldown 1.85, attack type MAGIC (scored as magical attacks).
@@ -668,6 +668,8 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
             chance *= 0.5
         if has(TALENT_CREMATION):
             chance *= 1.2
+        # v2.5.2b: the roll is BackdraftChance_Total x Luck_Multiplier.
+        chance *= luck_mult
         backdraft(now, _chance(chance), hero_source, by_name)
 
     def havoc(now: float, dealt: float) -> None:

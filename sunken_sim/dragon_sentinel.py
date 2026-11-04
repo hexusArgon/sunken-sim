@@ -1,4 +1,4 @@
-"""Dragon Sentinel fight for Sunken City v2.5.2a, level 6.
+"""Dragon Sentinel fight for Sunken City v2.5.2b, level 6.
 
 Unit O00P (base Obla: attack cooldown 2.00, melee 80, hero attack). Level 6 white stats:
 STR 27 + 2.7 x 5 = 40, AGI 9 + 0.9 x 5 = 13, INT 14 + 1.4 x 5 = 21; Attribute Bonus A0F6 L1 adds
@@ -28,7 +28,7 @@ Numbers come from war3map.j and the w3u/w3a object data (see docs/dragon_sentine
   Every DS heal on a hero: 8% x Luck to deal 4 x that to a random enemy.
 - Dragon Form A0HW (3 s, 0 mana, 12 s): needs full Dragonfury (100, 85 with Waking Dragon). +1 every
   1 / (1 + haste) s (/(1 + 0.01 M) Dragonborn, /1.2 Eye of Wyrmrest), +1 on 2% x Luck per damage
-  instance, Obsidian +3 per spellcast. Ruby bolts 25 every 0.5 s.
+  instance (v2.5.2b removed Obsidian +3 per spellcast). Ruby bolts 25 every 0.5 s.
 - Obsidian: Branded on unbranded targets for 3 s, armor -R2I(1 + 0.08 armor) (max 6).
 Defensive, healing-only, CC and enemy-attack talents are not scored.
 """
@@ -761,8 +761,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
                 sulfuras.cast()
             if ruby:
                 burnout_bonus += 0.50
-            if obsidian:
-                add_fury(3.0)
+            # v2.5.2b: Obsidian no longer gains +3 Dragonfury per spellcast.
             flat = 0.0
             if key == "form":
                 counters["form"] += 1

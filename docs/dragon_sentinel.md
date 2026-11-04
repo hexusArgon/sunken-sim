@@ -1,6 +1,6 @@
 # Dragon Sentinel (O00P): модель для sunken-sim
 
-Карта Sunken City v2.5.2a. Код: `sunken_sim/dragon_sentinel.py`. Лист: `extract/one_slot_dragon_sentinel.py` → `extract/dragon_sentinel-one-slot.json`.
+Карта Sunken City v2.5.2b. Код: `sunken_sim/dragon_sentinel.py`. Лист: `extract/one_slot_dragon_sentinel.py` → `extract/dragon_sentinel-one-slot.json`.
 Все числа взяты из war3map.j и данных объектов. Аномалии описаны в `docs/dragon_sentinel-anomalies.md`.
 
 ## Лист
@@ -31,7 +31,7 @@
   - 2% × Luck на +1 Dragonfury (Dragonwrath A0B4);
   - (1 + бонус)% × Luck (×1.15 с Legacy) на пассивный Burnout. Бьёт ×0.40, тип DISEASE, проков не даёт.
 - Ruby: +0.5% к шансу пассива за каждый каст.
-- Obsidian: +3 Dragonfury за каст. Branded: цель без клейма получает −min(6, int(1 + 0.08 × броня DS)) брони на 3 с.
+- Obsidian: бонус +3 Dragonfury за каст убран в v2.5.2b. Branded: цель без клейма получает −min(6, int(1 + 0.08 × броня DS)) брони на 3 с.
 
 ## Способности
 | Способность | КД / мана | Урон |

@@ -238,7 +238,8 @@ def simulate(
     pyro_on = spec == "fire" or overpowered
     stacks_on = spec == "arcane" or girdle
     split_on = spec == "fire" or girdle
-    cinder_chance = (0.25 + (0.05 if staff else 0.0)) * (1.0 + stats["luck"])
+    # v2.5.2b: SpellMastery_Fire_Chance 25 -> 20 (+5 Ember Staff I0UW, x Luck).
+    cinder_chance = (0.20 + (0.05 if staff else 0.0)) * (1.0 + stats["luck"])
     lava_chance = 0.02 * (1.0 + stats["luck"])
     max_charges = 8 if surge else 3
     hydra_duration = 14.0 if burning else 10.0
@@ -384,9 +385,10 @@ def simulate(
         return base / (1.0 + current_as(now))
 
     def hydra_gap(now: float) -> float:
+        # v2.5.2b: Hydra o00D ua1c 1.4 -> 1.55.
         if spec != "fire":
-            return 1.4
-        return 1.4 / (1.0 + 0.75 * current_as(now))
+            return 1.55
+        return 1.55 / (1.0 + 0.75 * current_as(now))
 
     def reset_chance() -> float:
         # The proc exists in Arcane, with Overpowered, or with Shoulderpads.
