@@ -8,3 +8,5 @@ __pycache__/
 .env
 farm-data/
 farm-data-*/
+
+.venv-dml/
