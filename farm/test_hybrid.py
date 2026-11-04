@@ -108,7 +108,8 @@ class FallbackTest(unittest.TestCase):
         """Non-locked hybrid still hands fights to the old CPU run_job."""
         with mock.patch.dict(os.environ, {"FARM_HYBRID_DEVICE": "cpu"}), \
              mock.patch.object(cpu_runner, "run_job", return_value={"done": 1}) as old, \
-             mock.patch("farm.catalog.load", return_value=(FakeSpace([("A", "B", "C")]), _items())):
+             mock.patch("farm.catalog.load", return_value=(FakeSpace([("A", "B", "C")]), _items())), \
+             mock.patch.object(hybrid_runner, "fight_check", side_effect=RuntimeError("no fights here")):
             ticks = []
             out = hybrid_runner.run_job(_job("mage", "fire"), {}, ticks.append)
         self.assertEqual(out, {"done": 1})
@@ -157,6 +158,89 @@ class KernelParityTest(unittest.TestCase):
         bad = [list(row) for row in ref]
         bad[0][0] += 1.0
         self.assertFalse(parity(ref, bad)[0])
+
+
+class FightTest(unittest.TestCase):
+    """GPU fight stage (farm.hybrid.fight): lock, wiring, CPU-sim parity."""
+
+    def test_arcane_never_gets_gpu_fights(self):
+        from farm.hybrid.fight import GpuFights, gpu_fights_for
+        from farm.hybrid.device import DeviceInfo
+
+        self.assertFalse(gpu_fights_for("mage", "arcane"))
+        self.assertTrue(gpu_fights_for("mage", "fire"))
+        self.assertTrue(gpu_fights_for("mage", "frost"))
+        self.assertFalse(gpu_fights_for("priest", "shadow"))
+        with self.assertRaises(GpuLocked):
+            GpuFights(DeviceInfo("cpu", "cpu"), "mage", "arcane", 5)
+
+    def test_hybrid_fire_passes_gpu_eval_span(self):
+        from farm.hybrid import fight
+
+        with mock.patch.dict(os.environ, {"FARM_HYBRID_DEVICE": "cpu"}), \
+             mock.patch.object(cpu_runner, "run_job", return_value={"done": 1}) as old, \
+             mock.patch.object(hybrid_runner, "prep_check", return_value={"parity": True}), \
+             mock.patch("farm.catalog.load", return_value=(FakeSpace([("A", "B", "C")]), _items())), \
+             mock.patch.object(hybrid_runner, "fight_check", return_value={"ok": True, "n": 1}):
+            ticks = []
+            hybrid_runner.run_job(_job("mage", "fire"), {}, ticks.append)
+        self.assertIs(old.call_args.kwargs.get("eval_fn"), fight.eval_span)
+        self.assertTrue(ticks[0]["hybrid"]["gpu_fights"])
+
+    def test_hybrid_fire_parity_fail_is_cpu(self):
+        with mock.patch.dict(os.environ, {"FARM_HYBRID_DEVICE": "cpu"}), \
+             mock.patch.object(cpu_runner, "run_job", return_value={"done": 1}) as old, \
+             mock.patch.object(hybrid_runner, "prep_check", return_value={"parity": True}), \
+             mock.patch("farm.catalog.load", return_value=(FakeSpace([("A", "B", "C")]), _items())), \
+             mock.patch.object(hybrid_runner, "fight_check", return_value={"ok": False, "n": 1}):
+            ticks = []
+            hybrid_runner.run_job(_job("mage", "fire"), {}, ticks.append)
+        self.assertNotIn("eval_fn", old.call_args.kwargs)
+        self.assertFalse(ticks[0]["hybrid"]["gpu_fights"])
+
+    def _parity(self, spec, info):
+        from farm.catalog import load
+        from farm.hybrid.fight import GpuFights, compare, cpu_dps
+        from sunken_sim.esc import apply_points, empty_points
+        from sunken_sim.shadow import Build
+        import random
+
+        try:
+            space, items = load("mage", spec, "mixed", None, 80)
+        except Exception as exc:  # catalog cache missing on this box
+            self.skipTest(f"catalog: {exc}")
+        rng = random.Random(7)
+        builds = []
+        for i in range(12):
+            equipped = tuple(items[c] for c in space.decode(rng.randrange(space.total))[0])
+            talents = frozenset(rng.sample(list(space.talents), space.picks_with)) if i % 2 else frozenset()
+            build = Build(talents, frozenset(), equipped, 0, 0, 0, 0)
+            if i % 3 == 0:
+                points = empty_points()
+                for name in list(points)[:4]:
+                    points[name] = 5
+                build = apply_points(build, points)
+            builds.append(build)
+        ref = [cpu_dps(b, 5, spec) for b in builds]
+        got = GpuFights(info, "mage", spec, 5).dps_many(builds)
+        res = compare(ref, got)
+        self.assertTrue(res["ok"], res)
+
+    @unittest.skipUnless(HAS_TORCH, "torch not installed")
+    def test_fire_frost_torch_cpu_parity(self):
+        from farm.hybrid.device import DeviceInfo
+
+        for spec in ("fire", "frost"):
+            with self.subTest(spec=spec):
+                self._parity(spec, DeviceInfo("cpu", "cpu"))
+
+    def test_fire_frost_dml_parity_if_present(self):
+        info = detect("mage", "fire")
+        if not info.gpu:
+            self.skipTest(f"no DirectML: {info.reason}")
+        for spec in ("fire", "frost"):
+            with self.subTest(spec=spec):
+                self._parity(spec, info)
 
 
 if __name__ == "__main__":

@@ -595,7 +595,8 @@ def _sweep(done_up_to: int, ahead: list[tuple[int, int]]) -> int:
     return done_up_to
 
 
-def run_job(job: dict, box: dict, tick) -> dict:
+def run_job(job: dict, box: dict, tick, eval_fn=None) -> dict:
+    """eval_fn: optional span scorer (same contract as eval_span); None = old CPU path."""
     from sunken_sim.history import release
 
     from farm.catalog import load
@@ -705,6 +706,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
     pending: dict = {}
     shown = 0
     stop_event = ctx.Event()
+    span_fn = eval_fn or eval_span
 
     def submit_more(pool: ProcessPoolExecutor) -> None:
         nonlocal next_index
@@ -717,7 +719,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
             for begin, stop in ahead:
                 if next_index < begin < stop_at:
                     stop_at = begin
-            pending[pool.submit(eval_span, next_index, stop_at)] = (next_index, stop_at, 0)
+            pending[pool.submit(span_fn, next_index, stop_at)] = (next_index, stop_at, 0)
             next_index = stop_at
 
     with ProcessPoolExecutor(
@@ -745,7 +747,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
                     payload = future.result()
                 except Exception as exc:
                     if attempts < 1 and not box.get("stop"):
-                        pending[pool.submit(eval_span, start_i, stop_i)] = (start_i, stop_i, attempts + 1)
+                        pending[pool.submit(span_fn, start_i, stop_i)] = (start_i, stop_i, attempts + 1)
                     else:
                         errors += 1
                         if errors <= 5:
@@ -763,7 +765,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
                 if reached > start_i:
                     done_up_to = note_span(done_up_to, ahead, start_i, reached)
                 if reached < stop_i and not box.get("stop"):
-                    pending[pool.submit(eval_span, reached, stop_i)] = (reached, stop_i, 0)
+                    pending[pool.submit(span_fn, reached, stop_i)] = (reached, stop_i, 0)
             if time.monotonic() - last_tick >= 5:
                 emit()
                 shown = finished()
