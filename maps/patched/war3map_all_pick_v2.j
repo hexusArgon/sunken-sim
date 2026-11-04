@@ -67,8 +67,8 @@ constant boolean LIBRARY_Table=true
 integer Table___less=0
 integer Table___more=8190
 hashtable Table___ht=InitHashtable()
-constant integer Table___sizeK=3
-constant integer Table___listK=5
+constant integer Table___sizeK=5
+constant integer Table___listK=7
 constant boolean LIBRARY_TasItemCost=true
 unit TasItemCost___shop
 real TasItemCost___shopRectSize=1000
@@ -3582,6 +3582,7 @@ trigger gg_trg_Dummy_Counter=null
 trigger gg_trg_Test_dmg=null
 trigger gg_trg_Test_dmg_2=null
 trigger gg_trg_Enemy_Orders=null
+trigger gg_trg_Hero_Orders=null
 trigger gg_trg_Drop_Items=null
 trigger gg_trg_Roll=null
 trigger gg_trg_Pass=null
@@ -3625,6 +3626,7 @@ trigger gg_trg_Release_Golem_1=null
 trigger gg_trg_Control_Golem_2=null
 trigger gg_trg_Release_Golem_2=null
 trigger gg_trg_Golem_Forbid=null
+trigger gg_trg_Golems_Die=null
 trigger gg_trg_Obsidian_Area_Limit=null
 trigger gg_trg_Obsidian_Cleanse=null
 trigger gg_trg_Obsidian_Reveal=null
@@ -3648,7 +3650,6 @@ trigger gg_trg_Blinding_Night=null
 trigger gg_trg_By_Fire_Be_Purged=null
 trigger gg_trg_Hot_Feet=null
 trigger gg_trg_Rising_Tide=null
-trigger gg_trg_Heavy_Metal=null
 trigger gg_trg_Survivor=null
 trigger gg_trg_Synergy_Disable=null
 trigger gg_trg_Greed_Is_Not_Good=null
@@ -4296,6 +4297,7 @@ trigger gg_trg_OnSpellcast_Heroes=null
 trigger gg_trg_Reset_Cooldown=null
 trigger gg_trg_Reset_Cooldown_Remove=null
 trigger gg_trg_Stun=null
+trigger gg_trg_OnStun=null
 trigger gg_trg_Freeze=null
 trigger gg_trg_OnFreeze=null
 trigger gg_trg_Chill=null
@@ -4366,6 +4368,7 @@ trigger gg_trg_Abyssal_Legwraps=null
 trigger gg_trg_Dragon_Form_Store_CD=null
 trigger gg_trg_Dragon_Form=null
 trigger gg_trg_Dragon_Form_Spells_Adjust=null
+trigger gg_trg_Dragon_Form_Disable_Fix=null
 trigger gg_trg_Burnout_A=null
 trigger gg_trg_Burnout_B=null
 trigger gg_trg_Cleansing_Fire=null
@@ -5110,7 +5113,7 @@ constant integer si__HashTable=54
 constant integer si__TasItemCost___S=55
 constant integer si__IsRightClick___S=56
 constant integer si__ItemHolder___S=57
-constant integer si__LineSegmentEnumerationGUI___LineSegmentGUI=58
+constant integer si__LineSegmentEnumerationGUI__LineSegmentGUI=58
 constant integer si__StatisticPlayer=59
 integer si__StatisticPlayer_F=0
 integer si__StatisticPlayer_I=0
@@ -6455,6 +6458,7 @@ else
 call HP_Save_DragonSentinel(udg_HP_Cur[4])
 call HP_Load_DragonSentinel(0)
 set udg_DragonForm_SpellsTimer=CreateTimer()
+call TriggerRegisterTimerExpireEvent(gg_trg_Dragon_Form_Disable_Fix,udg_DragonForm_SpellsTimer)
 call TriggerRegisterTimerExpireEvent(gg_trg_Dragon_Form_Spells_Adjust,udg_DragonForm_SpellsTimer)
 set udg_Dragonfury_Timer=CreateTimer()
 call TriggerRegisterTimerExpireEvent(gg_trg_Dragonfury,udg_Dragonfury_Timer)
@@ -12902,10 +12906,10 @@ set t=CreateTrigger()
 call TriggerAddAction(t,function ItemHolder___lose)
 call TriggerRegisterAnyUnitEventBJ(t,EVENT_PLAYER_UNIT_DROP_ITEM)
 endfunction
-function s__LineSegmentEnumerationGUI___LineSegmentGUI_GetUnits takes nothing returns nothing
+function s__LineSegmentEnumerationGUI__LineSegmentGUI_GetUnits takes nothing returns nothing
 call s__LineSegment_EnumUnits(udg_LSE_Group,GetLocationX(udg_LSE_Loc_1),GetLocationY(udg_LSE_Loc_1),GetLocationX(udg_LSE_Loc_2),GetLocationY(udg_LSE_Loc_2),udg_LSE_Offset)
 endfunction
-function s__LineSegmentEnumerationGUI___LineSegmentGUI_GetDestructables takes nothing returns nothing
+function s__LineSegmentEnumerationGUI__LineSegmentGUI_GetDestructables takes nothing returns nothing
 call s__LineSegment_EnumDestructables(GetLocationX(udg_LSE_Loc_1),GetLocationY(udg_LSE_Loc_1),GetLocationX(udg_LSE_Loc_2),GetLocationY(udg_LSE_Loc_2),udg_LSE_Offset)
 set udg_LSE_DestructableCounter=-1
 loop
@@ -12915,7 +12919,7 @@ set udg_LSE_Destructable[udg_LSE_DestructableCounter]=s__LineSegment_Destructabl
 set s__LineSegment_DestructableCounter=s__LineSegment_DestructableCounter-1
 endloop
 endfunction
-function s__LineSegmentEnumerationGUI___LineSegmentGUI_GetItems takes nothing returns nothing
+function s__LineSegmentEnumerationGUI__LineSegmentGUI_GetItems takes nothing returns nothing
 call s__LineSegment_EnumItems(GetLocationX(udg_LSE_Loc_1),GetLocationY(udg_LSE_Loc_1),GetLocationX(udg_LSE_Loc_2),GetLocationY(udg_LSE_Loc_2),udg_LSE_Offset)
 set udg_LSE_ItemCounter=-1
 loop
@@ -12925,13 +12929,13 @@ set udg_LSE_Item[udg_LSE_ItemCounter]=s__LineSegment_Item[s__LineSegment_ItemCou
 set s__LineSegment_ItemCounter=s__LineSegment_ItemCounter-1
 endloop
 endfunction
-function s__LineSegmentEnumerationGUI___LineSegmentGUI_onInit takes nothing returns nothing
+function s__LineSegmentEnumerationGUI__LineSegmentGUI_onInit takes nothing returns nothing
 set udg_LSE_GetUnits=CreateTrigger()
 set udg_LSE_GetDestructables=CreateTrigger()
 set udg_LSE_GetItems=CreateTrigger()
-call TriggerAddAction(udg_LSE_GetUnits,function s__LineSegmentEnumerationGUI___LineSegmentGUI_GetUnits)
-call TriggerAddAction(udg_LSE_GetDestructables,function s__LineSegmentEnumerationGUI___LineSegmentGUI_GetDestructables)
-call TriggerAddAction(udg_LSE_GetItems,function s__LineSegmentEnumerationGUI___LineSegmentGUI_GetItems)
+call TriggerAddAction(udg_LSE_GetUnits,function s__LineSegmentEnumerationGUI__LineSegmentGUI_GetUnits)
+call TriggerAddAction(udg_LSE_GetDestructables,function s__LineSegmentEnumerationGUI__LineSegmentGUI_GetDestructables)
+call TriggerAddAction(udg_LSE_GetItems,function s__LineSegmentEnumerationGUI__LineSegmentGUI_GetItems)
 endfunction
 function StatisticDashboard___dashboardTopLeftX takes nothing returns real
 return 0.05
@@ -22667,713 +22671,1034 @@ function CreateAllDestructables takes nothing returns nothing
 local destructable d
 local trigger t
 local real life
-set gg_dest_ATtr_0030=BlzCreateDeadDestructableWithSkin('ATtr',7872.0,6720.0,270.000,1.150,0,'ATtr')
-set d=BlzCreateDestructableZWithSkin('B004',-5984.0,-928.0,128.0,180.000,1.150,0,'B004')
+set gg_dest_ATtr_0030=BlzCreateDeadDestructableWithSkinPitchRollColor('ATtr',7872.0,6720.0,270.000,0.000,0.000,1.150,0,'ATtr',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ATtr_0030,255,255,255,255)
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-5984.0,-928.0,128.0,180.000,0.000,0.000,1.150,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',1504.0,-7968.0,-9.5,0.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',1504.0,-7968.0,-9.5,0.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad000245_DropItems)
-set d=BlzCreateDestructableWithSkin('B004',-3232.0,6112.0,270.000,1.100,0,'B004')
+set d=BlzCreateDestructableWithSkinPitchRollColor('B004',-3232.0,6112.0,270.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',3936.0,-2272.0,121.6,0.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',3936.0,-2272.0,121.6,0.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableWithSkin('B004',-6816.0,-3488.0,360.000,1.100,0,'B004')
+set d=BlzCreateDestructableWithSkinPitchRollColor('B004',-6816.0,-3488.0,360.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',6240.0,-3232.0,-6.4,0.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',6240.0,-3232.0,-6.4,0.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-2336.0,-5280.0,9.9,360.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-2336.0,-5280.0,9.9,360.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-5856.0,3040.0,3.5,180.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-5856.0,3040.0,3.5,180.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-1120.0,-3424.0,-6.4,270.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-1120.0,-3424.0,-6.4,270.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-3424.0,672.0,121.6,270.000,1.165,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-3424.0,672.0,121.6,270.000,0.000,0.000,1.165,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',352.0,-480.0,132.8,0.000,1.122,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',352.0,-480.0,132.8,0.000,0.000,0.000,1.122,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',352.0,-608.0,112.7,0.000,1.122,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',352.0,-608.0,112.7,0.000,0.000,0.000,1.122,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',352.0,-736.0,120.3,0.000,1.122,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',352.0,-736.0,120.3,0.000,0.000,0.000,1.122,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-2720.0,1184.0,121.6,270.000,1.185,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-2720.0,1184.0,121.6,270.000,0.000,0.000,1.185,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-2400.0,3424.0,-8.0,178.000,1.189,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-2400.0,3424.0,-8.0,178.000,0.000,0.000,1.189,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad008545_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-2656.0,-6368.0,-4.8,270.000,1.164,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-2656.0,-6368.0,-4.8,270.000,0.000,0.000,1.164,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-608.0,-7776.0,-19.2,270.000,1.240,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-608.0,-7776.0,-19.2,270.000,0.000,0.000,1.240,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',10080.0,-6880.0,118.0,360.000,1.121,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',10080.0,-6880.0,118.0,360.000,0.000,0.000,1.121,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',1568.0,3936.0,-9.3,180.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',1568.0,3936.0,-9.3,180.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',5152.0,-4128.0,-16.2,180.000,1.150,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',5152.0,-4128.0,-16.2,180.000,0.000,0.000,1.150,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',6816.0,-10144.0,-19.2,180.000,1.264,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',6816.0,-10144.0,-19.2,180.000,0.000,0.000,1.264,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',6816.0,-9952.0,-18.8,180.000,1.264,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',6816.0,-9952.0,-18.8,180.000,0.000,0.000,1.264,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',10016.0,-5280.0,-6.4,180.000,1.264,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',10016.0,-5280.0,-6.4,180.000,0.000,0.000,1.264,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad000987_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',10016.0,-5472.0,-6.0,180.000,1.264,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',10016.0,-5472.0,-6.0,180.000,0.000,0.000,1.264,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad000995_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',9568.0,-5472.0,-6.4,360.000,1.264,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',9568.0,-5472.0,-6.4,360.000,0.000,0.000,1.264,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad001007_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',8160.0,-5216.0,-6.4,360.000,1.264,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',8160.0,-5216.0,-6.4,360.000,0.000,0.000,1.264,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',6560.0,-5664.0,-6.4,180.000,1.264,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',6560.0,-5664.0,-6.4,180.000,0.000,0.000,1.264,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-6432.0,-8544.0,-6.4,0.000,1.137,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-6432.0,-8544.0,-6.4,0.000,0.000,0.000,1.137,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-2848.0,-4192.0,115.2,268.000,1.259,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-2848.0,-4192.0,115.2,268.000,0.000,0.000,1.259,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-3680.0,2784.0,-7.2,180.000,1.238,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-3680.0,2784.0,-7.2,180.000,0.000,0.000,1.238,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableWithSkin('B004',-3936.0,-12896.0,270.000,1.100,0,'B004')
+set d=BlzCreateDestructableWithSkinPitchRollColor('B004',-3936.0,-12896.0,270.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-608.0,-7456.0,-6.4,180.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-608.0,-7456.0,-6.4,180.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-2336.0,-8288.0,-1.6,270.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-2336.0,-8288.0,-1.6,270.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-1056.0,-7776.0,-6.4,270.000,1.240,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-1056.0,-7776.0,-6.4,270.000,0.000,0.000,1.240,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-5536.0,-1760.0,121.6,0.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-5536.0,-1760.0,121.6,0.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',8864.0,4960.0,-104.4,180.000,1.200,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',8864.0,4960.0,-104.4,180.000,0.000,0.000,1.200,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',1312.0,-7200.0,129.6,180.000,1.141,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',1312.0,-7200.0,129.6,180.000,0.000,0.000,1.141,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',10720.0,-2784.0,-77.9,360.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',10720.0,-2784.0,-77.9,360.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad007397_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-7072.0,-8992.0,121.6,0.000,1.157,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-7072.0,-8992.0,121.6,0.000,0.000,0.000,1.157,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-160.0,5856.0,-12.8,360.000,1.176,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-160.0,5856.0,-12.8,360.000,0.000,0.000,1.176,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-608.0,992.0,-6.4,180.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-608.0,992.0,-6.4,180.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-7072.0,-9440.0,121.6,0.000,1.156,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-7072.0,-9440.0,121.6,0.000,0.000,0.000,1.156,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-2592.0,-7904.0,-2.1,270.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-2592.0,-7904.0,-2.1,270.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-3296.0,-4192.0,115.2,268.000,1.259,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-3296.0,-4192.0,115.2,268.000,0.000,0.000,1.259,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',7520.0,6112.0,-85.2,1.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',7520.0,6112.0,-85.2,1.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',6176.0,-3808.0,-8.0,270.000,1.264,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',6176.0,-3808.0,-8.0,270.000,0.000,0.000,1.264,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',6624.0,6560.0,-121.7,0.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',6624.0,6560.0,-121.7,0.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad006160_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',2592.0,4192.0,-6.4,178.000,1.300,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',2592.0,4192.0,-6.4,178.000,0.000,0.000,1.300,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',1760.0,2144.0,-8.5,358.000,1.300,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',1760.0,2144.0,-8.5,358.000,0.000,0.000,1.300,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',2592.0,3168.0,-6.4,178.000,1.200,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',2592.0,3168.0,-6.4,178.000,0.000,0.000,1.200,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad005880_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',1568.0,5728.0,-19.2,178.000,1.300,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',1568.0,5728.0,-19.2,178.000,0.000,0.000,1.300,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-3744.0,32.0,-6.4,270.000,1.196,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-3744.0,32.0,-6.4,270.000,0.000,0.000,1.196,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-224.0,4896.0,121.6,270.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-224.0,4896.0,121.6,270.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',5344.0,-4000.0,129.2,360.000,1.264,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',5344.0,-4000.0,129.2,360.000,0.000,0.000,1.264,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',6240.0,-3040.0,-6.4,0.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',6240.0,-3040.0,-6.4,0.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-96.0,-5088.0,0.2,270.000,1.168,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-96.0,-5088.0,0.2,270.000,0.000,0.000,1.168,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',5152.0,-4448.0,-16.2,180.000,1.150,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',5152.0,-4448.0,-16.2,180.000,0.000,0.000,1.150,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-6816.0,-7200.0,-6.4,0.000,1.149,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-6816.0,-7200.0,-6.4,0.000,0.000,0.000,1.149,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-6816.0,-7456.0,-6.4,0.000,1.149,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-6816.0,-7456.0,-6.4,0.000,0.000,0.000,1.149,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-6432.0,-8352.0,-6.4,0.000,1.137,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-6432.0,-8352.0,-6.4,0.000,0.000,0.000,1.137,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',544.0,-6688.0,-8.5,180.000,1.240,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',544.0,-6688.0,-8.5,180.000,0.000,0.000,1.240,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',3872.0,-3168.0,-134.4,270.000,1.263,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',3872.0,-3168.0,-134.4,270.000,0.000,0.000,1.263,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad002289_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',5216.0,-7904.0,-6.4,270.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',5216.0,-7904.0,-6.4,270.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-5280.0,416.0,6.4,270.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-5280.0,416.0,6.4,270.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad004977_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-6560.0,-1056.0,128.0,0.000,1.150,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-6560.0,-1056.0,128.0,0.000,0.000,0.000,1.150,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',5472.0,-11488.0,-0.0,2.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',5472.0,-11488.0,-0.0,2.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableWithSkin('B004',11168.0,-2208.0,270.000,1.100,0,'B004')
+set d=BlzCreateDestructableWithSkinPitchRollColor('B004',11168.0,-2208.0,270.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad011347_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-5984.0,-4384.0,-0.0,180.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-5984.0,-4384.0,-0.0,180.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',8480.0,7456.0,-134.4,175.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',8480.0,7456.0,-134.4,175.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-3808.0,-5536.0,121.7,180.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-3808.0,-5536.0,121.7,180.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',9248.0,7840.0,-96.6,270.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',9248.0,7840.0,-96.6,270.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',3168.0,-7008.0,-0.0,270.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',3168.0,-7008.0,-0.0,270.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',7584.0,-11616.0,-6.4,270.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',7584.0,-11616.0,-6.4,270.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-2784.0,-7904.0,-11.6,270.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-2784.0,-7904.0,-11.6,270.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-6432.0,-8160.0,-6.4,0.000,1.137,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-6432.0,-8160.0,-6.4,0.000,0.000,0.000,1.137,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',1248.0,6176.0,-0.0,3.000,1.150,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',1248.0,6176.0,-0.0,3.000,0.000,0.000,1.150,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',2464.0,-3872.0,3.8,180.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',2464.0,-3872.0,3.8,180.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableWithSkin('B004',10848.0,-2208.0,270.000,1.100,0,'B004')
+set d=BlzCreateDestructableWithSkinPitchRollColor('B004',10848.0,-2208.0,270.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad011348_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',544.0,5280.0,6.4,178.000,1.300,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',544.0,5280.0,6.4,178.000,0.000,0.000,1.300,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',8928.0,6176.0,-96.4,272.000,1.346,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',8928.0,6176.0,-96.4,272.000,0.000,0.000,1.346,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-5984.0,-4576.0,-0.0,180.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-5984.0,-4576.0,-0.0,180.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',-6688.0,-5600.0,-3.1,360.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',-6688.0,-5600.0,-3.1,360.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableZWithSkin('B004',1568.0,3808.0,-18.2,180.000,1.100,0,'B004')
+set d=BlzCreateDestructableZWithSkinPitchRollColor('B004',1568.0,3808.0,-18.2,180.000,0.000,0.000,1.100,0,'B004',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set gg_dest_B006_0067=BlzCreateDestructableWithSkin('B006',128.0,-8640.0,270.000,1.000,0,'B006')
-set gg_dest_B007_7654=BlzCreateDestructableWithSkin('B007',960.0,-3712.0,45.000,0.600,0,'B007')
-set gg_dest_B007_5116=BlzCreateDestructableWithSkin('B007',320.0,128.0,315.000,0.600,0,'B007')
-set gg_dest_B008_5870=BlzCreateDestructableWithSkin('B008',256.0,4672.0,189.000,0.900,0,'B008')
-set gg_dest_B009_9197=BlzCreateDestructableWithSkin('B009',-3008.0,4032.0,260.000,2.800,0,'B009')
-set gg_dest_B00B_2459=BlzCreateDestructableWithSkin('B00B',-6048.0,-736.0,180.000,1.250,0,'B00B')
-set gg_dest_B00B_9243=BlzCreateDestructableWithSkin('B00B',11232.0,-2912.0,180.000,1.250,0,'B00B')
-set gg_dest_B00B_3793=BlzCreateDestructableWithSkin('B00B',-1248.0,3040.0,360.000,1.250,0,'B00B')
-set gg_dest_B00B_3951=BlzCreateDestructableWithSkin('B00B',9248.0,-1376.0,360.000,1.250,0,'B00B')
-set gg_dest_B00B_6415=BlzCreateDestructableWithSkin('B00B',-4768.0,3552.0,180.000,1.250,0,'B00B')
-set gg_dest_B00B_9218=BlzCreateDestructableWithSkin('B00B',-6176.0,-11296.0,270.000,1.250,0,'B00B')
-set gg_dest_B00B_11124=BlzCreateDestructableWithSkin('B00B',2528.0,288.0,180.000,1.250,0,'B00B')
-set gg_dest_B00B_3074=BlzCreateDestructableWithSkin('B00B',480.0,-6880.0,180.000,1.250,0,'B00B')
-set gg_dest_B00B_4737=BlzCreateDestructableWithSkin('B00B',4960.0,-5280.0,270.000,1.250,0,'B00B')
-set gg_dest_B00B_3792=BlzCreateDestructableWithSkin('B00B',-416.0,-1440.0,180.000,1.250,0,'B00B')
-set gg_dest_B00B_3803=BlzCreateDestructableWithSkin('B00B',5984.0,-544.0,270.000,1.250,0,'B00B')
-set gg_dest_B00B_5129=BlzCreateDestructableWithSkin('B00B',-3616.0,-4320.0,180.000,1.250,0,'B00B')
-set gg_dest_B00B_3494=BlzCreateDestructableWithSkin('B00B',-5088.0,-8224.0,270.000,1.250,0,'B00B')
-set gg_dest_B00B_5609=BlzCreateDestructableWithSkin('B00B',-1568.0,544.0,180.000,1.250,0,'B00B')
-set gg_dest_B00B_4738=BlzCreateDestructableWithSkin('B00B',6496.0,-7520.0,180.000,1.250,0,'B00B')
-set gg_dest_B00B_9095=BlzCreateDestructableWithSkin('B00B',7072.0,5984.0,270.000,1.250,0,'B00B')
-set gg_dest_B00B_7899=BlzCreateDestructableWithSkin('B00B',10656.0,-3168.0,270.000,1.250,0,'B00B')
-set gg_dest_B00B_9492=BlzCreateDestructableWithSkin('B00B',-7328.0,1312.0,270.000,1.250,0,'B00B')
-set gg_dest_B00B_6416=BlzCreateDestructableWithSkin('B00B',-2336.0,5664.0,180.000,1.250,0,'B00B')
-set gg_dest_B00B_9242=BlzCreateDestructableWithSkin('B00B',-1568.0,1888.0,180.000,1.250,0,'B00B')
-set gg_dest_B00B_9215=BlzCreateDestructableWithSkin('B00B',7456.0,-12704.0,360.000,1.250,0,'B00B')
-set gg_dest_B00B_6411=BlzCreateDestructableWithSkin('B00B',-2720.0,672.0,270.000,1.250,0,'B00B')
-set gg_dest_B00B_6051=BlzCreateDestructableWithSkin('B00B',3744.0,-3296.0,360.000,1.250,0,'B00B')
-set gg_dest_B00B_11207=BlzCreateDestructableWithSkin('B00B',11232.0,-3168.0,180.000,1.250,0,'B00B')
-set gg_dest_B00B_9214=BlzCreateDestructableWithSkin('B00B',-928.0,-3488.0,270.000,1.250,0,'B00B')
-set gg_dest_B00B_10124=BlzCreateDestructableWithSkin('B00B',864.0,6880.0,180.000,1.250,0,'B00B')
-set gg_dest_B00C_1058=BlzCreateDestructableWithSkin('B00C',6016.0,-6944.0,270.000,1.800,0,'B00C')
-set gg_dest_B00C_4387=BlzCreateDestructableWithSkin('B00C',8512.0,6240.0,270.000,1.800,0,'B00C')
-set gg_dest_B00C_1063=BlzCreateDestructableWithSkin('B00C',5824.0,-6944.0,270.000,1.800,0,'B00C')
-set gg_dest_B00C_1059=BlzCreateDestructableWithSkin('B00C',6208.0,-6944.0,270.000,1.800,0,'B00C')
-set gg_dest_B00H_0580=BlzCreateDeadDestructableWithSkin('B00H',3168.0,-4832.0,45.000,1.350,0,'B00H')
-set gg_dest_B00H_0573=BlzCreateDeadDestructableWithSkin('B00H',3040.0,-4832.0,45.000,1.350,0,'B00H')
-set gg_dest_B00H_0581=BlzCreateDeadDestructableWithSkin('B00H',3296.0,-4832.0,45.000,1.350,0,'B00H')
-set gg_dest_B00I_11602=BlzCreateDestructableZWithSkin('B00I',-832.0,-1280.0,204.8,182.000,1.100,0,'B00I')
-set gg_dest_B00J_11604=BlzCreateDestructableZWithSkin('B00J',-832.0,-1664.0,204.8,28.000,1.100,0,'B00J')
-set gg_dest_B00K_11603=BlzCreateDestructableZWithSkin('B00K',-832.0,-1536.0,204.8,164.000,1.100,0,'B00K')
-set gg_dest_B00L_11605=BlzCreateDestructableZWithSkin('B00L',-832.0,-1408.0,204.8,311.000,1.100,0,'B00L')
-set gg_dest_B00M_6110=BlzCreateDestructableZWithSkin('B00M',8096.0,-8224.0,-44.8,306.000,2.000,0,'B00M')
-set gg_dest_B00N_1976=BlzCreateDestructableZWithSkin('B00N',-4672.0,-384.0,168.0,113.000,1.100,0,'B00N')
-set gg_dest_B00N_1907=BlzCreateDestructableZWithSkin('B00N',-4672.0,-576.0,115.7,50.000,1.100,0,'B00N')
-set gg_dest_B00N_1905=BlzCreateDestructableZWithSkin('B00N',-5056.0,-576.0,161.1,315.000,1.100,0,'B00N')
-set gg_dest_B00N_1901=BlzCreateDestructableZWithSkin('B00N',-4864.0,-192.0,103.7,180.000,1.100,0,'B00N')
-set gg_dest_B00N_1979=BlzCreateDestructableZWithSkin('B00N',-5120.0,-320.0,100.8,230.000,1.100,0,'B00N')
-set gg_dest_B00Q_6181=BlzCreateDestructableWithSkin('B00Q',-6016.0,2496.0,189.000,1.000,0,'B00Q')
-set gg_dest_B00Q_6385=BlzCreateDestructableWithSkin('B00Q',6848.0,7168.0,84.000,1.000,0,'B00Q')
-set gg_dest_B00R_2286=BlzCreateDestructableWithSkin('B00R',-2816.0,-4416.0,135.000,0.600,0,'B00R')
-set gg_dest_B00R_2531=BlzCreateDestructableWithSkin('B00R',-2816.0,-4672.0,135.000,0.600,0,'B00R')
-set gg_dest_B00R_2294=BlzCreateDestructableWithSkin('B00R',-3328.0,-4416.0,135.000,0.600,0,'B00R')
-set gg_dest_B00R_2259=BlzCreateDestructableWithSkin('B00R',-3328.0,-4672.0,135.000,0.600,0,'B00R')
-set gg_dest_B00T_9373=BlzCreateDestructableZWithSkin('B00T',672.0,-8480.0,292.6,270.000,3.000,2,'B00T')
-set gg_dest_B00T_9436=BlzCreateDestructableZWithSkin('B00T',-352.0,-8480.0,293.6,270.000,3.000,2,'B00T')
-set gg_dest_B012_6495=BlzCreateDestructableWithSkin('B012',1088.0,-7936.0,336.000,1.000,0,'B012')
-set gg_dest_B013_1777=BlzCreateDeadDestructableWithSkin('B013',4160.0,5056.0,270.000,1.000,0,'B013')
-set gg_dest_B013_0414=BlzCreateDeadDestructableWithSkin('B013',192.0,-4736.0,270.000,1.000,0,'B013')
-set gg_dest_B013_3503=BlzCreateDeadDestructableWithSkin('B013',4672.0,5056.0,270.000,1.000,0,'B013')
-set gg_dest_B013_2524=BlzCreateDeadDestructableWithSkin('B013',4160.0,4928.0,270.000,1.000,0,'B013')
-set gg_dest_B013_8974=BlzCreateDeadDestructableWithSkin('B013',3648.0,5056.0,270.000,1.000,0,'B013')
-set gg_dest_B013_3497=BlzCreateDeadDestructableWithSkin('B013',4672.0,4928.0,270.000,1.000,0,'B013')
-set gg_dest_B013_4211=BlzCreateDeadDestructableWithSkin('B013',-832.0,-9152.0,270.000,1.000,0,'B013')
-set gg_dest_B013_3502=BlzCreateDeadDestructableWithSkin('B013',3648.0,4928.0,270.000,1.000,0,'B013')
-set gg_dest_B015_8821=BlzCreateDestructableWithSkin('B015',4992.0,-3136.0,275.000,1.100,0,'B015')
-set gg_dest_B015_0674=BlzCreateDestructableWithSkin('B015',4992.0,-3072.0,275.000,1.100,0,'B015')
-set gg_dest_B016_10171=BlzCreateDestructableZWithSkin('B016',8832.0,-9216.0,-51.2,0.000,1.100,0,'B016')
-set gg_dest_B016_10170=BlzCreateDestructableZWithSkin('B016',8832.0,-9024.0,-51.2,0.000,1.100,0,'B016')
-set gg_dest_B016_10168=BlzCreateDestructableZWithSkin('B016',8832.0,-8832.0,-51.2,0.000,1.100,0,'B016')
-set gg_dest_B016_10167=BlzCreateDestructableZWithSkin('B016',8832.0,-8640.0,-51.2,0.000,1.100,0,'B016')
-set gg_dest_DTep_8776=BlzCreateDestructableWithSkin('DTep',10816.0,-8832.0,180.000,1.000,0,'DTep')
-set gg_dest_DTep_8773=BlzCreateDestructableWithSkin('DTep',10432.0,-8832.0,180.000,1.000,0,'DTep')
-set gg_dest_DTep_7448=BlzCreateDestructableWithSkin('DTep',3968.0,-6976.0,270.000,1.000,0,'DTep')
-set gg_dest_DTep_4128=BlzCreateDestructableWithSkin('DTep',896.0,-3712.0,90.000,1.000,0,'DTep')
-set gg_dest_DTep_7453=BlzCreateDeadDestructableWithSkin('DTep',3776.0,-7168.0,180.000,1.000,0,'DTep')
-set gg_dest_DTep_7449=BlzCreateDestructableWithSkin('DTep',4160.0,-7168.0,0.000,1.000,0,'DTep')
-set gg_dest_DTep_1086=BlzCreateDestructableWithSkin('DTep',6016.0,-7232.0,270.000,1.000,0,'DTep')
-set gg_dest_DTep_5117=BlzCreateDestructableWithSkin('DTep',320.0,64.0,0.000,1.000,0,'DTep')
-set gg_dest_DTep_5851=BlzCreateDestructableWithSkin('DTep',10112.0,-8576.0,90.000,1.000,0,'DTep')
-set gg_dest_DTfx_0242=BlzCreateDestructableWithSkin('DTfx',-1216.0,-5184.0,270.000,1.000,0,'DTfx')
-set gg_dest_DTfx_1802=BlzCreateDestructableWithSkin('DTfx',-5696.0,-5440.0,270.000,1.000,0,'DTfx')
-set gg_dest_DTfx_1803=BlzCreateDestructableWithSkin('DTfx',-4544.0,-5440.0,270.000,1.000,0,'DTfx')
-set gg_dest_DTfx_0243=BlzCreateDestructableWithSkin('DTfx',-1216.0,-5952.0,270.000,1.000,0,'DTfx')
-set gg_dest_DTfx_5733=BlzCreateDestructableWithSkin('DTfx',448.0,-7040.0,270.000,1.000,0,'DTfx')
-set gg_dest_DTg1_4603=BlzCreateDestructableWithSkin('DTg1',9280.0,5376.0,270.000,0.900,0,'DTg1')
-set gg_dest_DTg1_6033=BlzCreateDestructableWithSkin('DTg1',5568.0,-832.0,270.000,0.900,0,'DTg1')
-set gg_dest_DTg3_4560=BlzCreateDestructableWithSkin('DTg3',5376.0,3136.0,0.000,0.900,0,'DTg3')
-set gg_dest_DTlv_6473=BlzCreateDestructableWithSkin('DTlv',992.0,96.0,45.000,0.966,0,'DTlv')
-set gg_dest_DTlv_11574=BlzCreateDestructableWithSkin('DTlv',7840.0,7264.0,315.000,0.939,0,'DTlv')
-set gg_dest_DTlv_7447=BlzCreateDeadDestructableWithSkin('DTlv',4256.0,-7264.0,224.000,1.069,0,'DTlv')
-set gg_dest_DTlv_7885=BlzCreateDestructableZWithSkin('DTlv',-3872.0,7520.0,-3.2,45.000,0.913,0,'DTlv')
-set gg_dest_DTlv_4321=BlzCreateDestructableWithSkin('DTlv',10336.0,-8672.0,225.000,1.069,0,'DTlv')
-set gg_dest_DTlv_6021=BlzCreateDestructableWithSkin('DTlv',5408.0,-416.0,135.000,1.000,0,'DTlv')
-set gg_dest_DTlv_7095=BlzCreateDeadDestructableWithSkin('DTlv',3680.0,-7392.0,224.000,1.069,0,'DTlv')
-set gg_dest_DTlv_5506=BlzCreateDestructableZWithSkin('DTlv',-3744.0,-8928.0,-1.2,315.000,0.997,0,'DTlv')
-set gg_dest_DTlv_2661=BlzCreateDestructableWithSkin('DTlv',4640.0,-6944.0,226.000,0.923,0,'DTlv')
-set gg_dest_DTlv_6014=BlzCreateDestructableWithSkin('DTlv',5728.0,-416.0,135.000,1.000,0,'DTlv')
-set gg_dest_DTrx_6649=BlzCreateDestructableWithSkin('DTrx',10624.0,-8832.0,270.000,1.000,0,'DTrx')
-set gg_dest_DTrx_0607=BlzCreateDestructableWithSkin('DTrx',-3968.0,2304.0,270.000,1.000,0,'DTrx')
-set gg_dest_DTrx_7446=BlzCreateDestructableWithSkin('DTrx',3968.0,-7168.0,270.000,1.000,0,'DTrx')
-set gg_dest_Dofv_5849=BlzCreateDestructableWithSkin('Dofv',10112.0,-8576.0,45.000,1.000,0,'Dofv')
-set gg_dest_Dofv_1109=BlzCreateDestructableWithSkin('Dofv',6016.0,-7232.0,45.000,1.000,0,'Dofv')
-set d=BlzCreateDestructableWithSkin('LTbr',5920.0,-1632.0,217.000,1.311,0,'LTbr')
+set gg_dest_B006_0067=BlzCreateDestructableWithSkinPitchRollColor('B006',128.0,-8640.0,270.000,0.000,0.000,1.000,0,'B006',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B006_0067,255,255,255,255)
+set gg_dest_B007_7654=BlzCreateDestructableWithSkinPitchRollColor('B007',960.0,-3712.0,45.000,0.000,0.000,0.600,0,'B007',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B007_7654,255,255,255,255)
+set gg_dest_B007_5116=BlzCreateDestructableWithSkinPitchRollColor('B007',320.0,128.0,315.000,0.000,0.000,0.600,0,'B007',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B007_5116,255,255,255,255)
+set gg_dest_B008_5870=BlzCreateDestructableWithSkinPitchRollColor('B008',256.0,4672.0,189.000,0.000,0.000,0.900,0,'B008',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B008_5870,255,255,255,255)
+set gg_dest_B009_9197=BlzCreateDestructableWithSkinPitchRollColor('B009',-3008.0,4032.0,260.000,0.000,0.000,2.800,0,'B009',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B009_9197,255,255,255,255)
+set gg_dest_B00B_2459=BlzCreateDestructableWithSkinPitchRollColor('B00B',-6048.0,-736.0,180.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_2459,255,255,255,255)
+set gg_dest_B00B_9243=BlzCreateDestructableWithSkinPitchRollColor('B00B',11232.0,-2912.0,180.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_9243,255,255,255,255)
+set gg_dest_B00B_3793=BlzCreateDestructableWithSkinPitchRollColor('B00B',-1248.0,3040.0,360.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_3793,255,255,255,255)
+set gg_dest_B00B_3951=BlzCreateDestructableWithSkinPitchRollColor('B00B',9248.0,-1376.0,360.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_3951,255,255,255,255)
+set gg_dest_B00B_6415=BlzCreateDestructableWithSkinPitchRollColor('B00B',-4768.0,3552.0,180.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_6415,255,255,255,255)
+set gg_dest_B00B_9218=BlzCreateDestructableWithSkinPitchRollColor('B00B',-6176.0,-11296.0,270.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_9218,255,255,255,255)
+set gg_dest_B00B_11124=BlzCreateDestructableWithSkinPitchRollColor('B00B',2528.0,288.0,180.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_11124,255,255,255,255)
+set gg_dest_B00B_3074=BlzCreateDestructableWithSkinPitchRollColor('B00B',480.0,-6880.0,180.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_3074,255,255,255,255)
+set gg_dest_B00B_4737=BlzCreateDestructableWithSkinPitchRollColor('B00B',4960.0,-5280.0,270.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_4737,255,255,255,255)
+set gg_dest_B00B_3792=BlzCreateDestructableWithSkinPitchRollColor('B00B',-416.0,-1440.0,180.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_3792,255,255,255,255)
+set gg_dest_B00B_3803=BlzCreateDestructableWithSkinPitchRollColor('B00B',5984.0,-544.0,270.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_3803,255,255,255,255)
+set gg_dest_B00B_5129=BlzCreateDestructableWithSkinPitchRollColor('B00B',-3616.0,-4320.0,180.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_5129,255,255,255,255)
+set gg_dest_B00B_3494=BlzCreateDestructableWithSkinPitchRollColor('B00B',-5088.0,-8224.0,270.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_3494,255,255,255,255)
+set gg_dest_B00B_5609=BlzCreateDestructableWithSkinPitchRollColor('B00B',-1568.0,544.0,180.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_5609,255,255,255,255)
+set gg_dest_B00B_4738=BlzCreateDestructableWithSkinPitchRollColor('B00B',6496.0,-7520.0,180.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_4738,255,255,255,255)
+set gg_dest_B00B_9095=BlzCreateDestructableWithSkinPitchRollColor('B00B',7072.0,5984.0,270.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_9095,255,255,255,255)
+set gg_dest_B00B_7899=BlzCreateDestructableWithSkinPitchRollColor('B00B',10656.0,-3168.0,270.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_7899,255,255,255,255)
+set gg_dest_B00B_9492=BlzCreateDestructableWithSkinPitchRollColor('B00B',-7328.0,1312.0,270.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_9492,255,255,255,255)
+set gg_dest_B00B_6416=BlzCreateDestructableWithSkinPitchRollColor('B00B',-2336.0,5664.0,180.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_6416,255,255,255,255)
+set gg_dest_B00B_9242=BlzCreateDestructableWithSkinPitchRollColor('B00B',-1568.0,1888.0,180.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_9242,255,255,255,255)
+set gg_dest_B00B_9215=BlzCreateDestructableWithSkinPitchRollColor('B00B',7456.0,-12704.0,360.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_9215,255,255,255,255)
+set gg_dest_B00B_6411=BlzCreateDestructableWithSkinPitchRollColor('B00B',-2720.0,672.0,270.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_6411,255,255,255,255)
+set gg_dest_B00B_6051=BlzCreateDestructableWithSkinPitchRollColor('B00B',3744.0,-3296.0,360.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_6051,255,255,255,255)
+set gg_dest_B00B_11207=BlzCreateDestructableWithSkinPitchRollColor('B00B',11232.0,-3168.0,180.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_11207,255,255,255,255)
+set gg_dest_B00B_9214=BlzCreateDestructableWithSkinPitchRollColor('B00B',-928.0,-3488.0,270.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_9214,255,255,255,255)
+set gg_dest_B00B_10124=BlzCreateDestructableWithSkinPitchRollColor('B00B',864.0,6880.0,180.000,0.000,0.000,1.250,0,'B00B',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00B_10124,255,255,255,255)
+set gg_dest_B00C_1058=BlzCreateDestructableWithSkinPitchRollColor('B00C',6016.0,-6944.0,270.000,0.000,0.000,1.800,0,'B00C',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00C_1058,255,255,255,255)
+set gg_dest_B00C_4387=BlzCreateDestructableWithSkinPitchRollColor('B00C',8512.0,6240.0,270.000,0.000,0.000,1.800,0,'B00C',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00C_4387,255,255,255,255)
+set gg_dest_B00C_1063=BlzCreateDestructableWithSkinPitchRollColor('B00C',5824.0,-6944.0,270.000,0.000,0.000,1.800,0,'B00C',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00C_1063,255,255,255,255)
+set gg_dest_B00C_1059=BlzCreateDestructableWithSkinPitchRollColor('B00C',6208.0,-6944.0,270.000,0.000,0.000,1.800,0,'B00C',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00C_1059,255,255,255,255)
+set gg_dest_B00H_0580=BlzCreateDeadDestructableWithSkinPitchRollColor('B00H',3168.0,-4832.0,45.000,0.000,0.000,1.350,0,'B00H',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00H_0580,255,255,255,255)
+set gg_dest_B00H_0573=BlzCreateDeadDestructableWithSkinPitchRollColor('B00H',3040.0,-4832.0,45.000,0.000,0.000,1.350,0,'B00H',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00H_0573,255,255,255,255)
+set gg_dest_B00H_0581=BlzCreateDeadDestructableWithSkinPitchRollColor('B00H',3296.0,-4832.0,45.000,0.000,0.000,1.350,0,'B00H',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00H_0581,255,255,255,255)
+set gg_dest_B00I_11602=BlzCreateDestructableZWithSkinPitchRollColor('B00I',-832.0,-1280.0,204.8,182.000,0.000,0.000,1.100,0,'B00I',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00I_11602,255,255,255,255)
+set gg_dest_B00J_11604=BlzCreateDestructableZWithSkinPitchRollColor('B00J',-832.0,-1664.0,204.8,28.000,0.000,0.000,1.100,0,'B00J',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00J_11604,255,255,255,255)
+set gg_dest_B00K_11603=BlzCreateDestructableZWithSkinPitchRollColor('B00K',-832.0,-1536.0,204.8,164.000,0.000,0.000,1.100,0,'B00K',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00K_11603,255,255,255,255)
+set gg_dest_B00L_11605=BlzCreateDestructableZWithSkinPitchRollColor('B00L',-832.0,-1408.0,204.8,311.000,0.000,0.000,1.100,0,'B00L',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00L_11605,255,255,255,255)
+set gg_dest_B00M_6110=BlzCreateDestructableZWithSkinPitchRollColor('B00M',8096.0,-8224.0,-44.8,306.000,0.000,0.000,2.000,0,'B00M',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00M_6110,255,255,255,255)
+set gg_dest_B00N_1976=BlzCreateDestructableZWithSkinPitchRollColor('B00N',-4672.0,-384.0,168.0,113.000,0.000,0.000,1.100,0,'B00N',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00N_1976,255,255,255,255)
+set gg_dest_B00N_1907=BlzCreateDestructableZWithSkinPitchRollColor('B00N',-4672.0,-576.0,115.7,50.000,0.000,0.000,1.100,0,'B00N',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00N_1907,255,255,255,255)
+set gg_dest_B00N_1905=BlzCreateDestructableZWithSkinPitchRollColor('B00N',-5056.0,-576.0,161.1,315.000,0.000,0.000,1.100,0,'B00N',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00N_1905,255,255,255,255)
+set gg_dest_B00N_1901=BlzCreateDestructableZWithSkinPitchRollColor('B00N',-4864.0,-192.0,103.7,180.000,0.000,0.000,1.100,0,'B00N',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00N_1901,255,255,255,255)
+set gg_dest_B00N_1979=BlzCreateDestructableZWithSkinPitchRollColor('B00N',-5120.0,-320.0,100.8,230.000,0.000,0.000,1.100,0,'B00N',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00N_1979,255,255,255,255)
+set gg_dest_B00Q_6181=BlzCreateDestructableWithSkinPitchRollColor('B00Q',-6016.0,2496.0,189.000,0.000,0.000,1.000,0,'B00Q',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00Q_6181,255,255,255,255)
+set gg_dest_B00Q_6385=BlzCreateDestructableWithSkinPitchRollColor('B00Q',6848.0,7168.0,84.000,0.000,0.000,1.000,0,'B00Q',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00Q_6385,255,255,255,255)
+set gg_dest_B00R_2286=BlzCreateDestructableWithSkinPitchRollColor('B00R',-2816.0,-4416.0,135.000,0.000,0.000,0.600,0,'B00R',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00R_2286,255,255,255,255)
+set gg_dest_B00R_2531=BlzCreateDestructableWithSkinPitchRollColor('B00R',-2816.0,-4672.0,135.000,0.000,0.000,0.600,0,'B00R',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00R_2531,255,255,255,255)
+set gg_dest_B00R_2294=BlzCreateDestructableWithSkinPitchRollColor('B00R',-3328.0,-4416.0,135.000,0.000,0.000,0.600,0,'B00R',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00R_2294,255,255,255,255)
+set gg_dest_B00R_2259=BlzCreateDestructableWithSkinPitchRollColor('B00R',-3328.0,-4672.0,135.000,0.000,0.000,0.600,0,'B00R',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00R_2259,255,255,255,255)
+set gg_dest_B00T_9373=BlzCreateDestructableZWithSkinPitchRollColor('B00T',672.0,-8480.0,292.6,270.000,0.000,0.000,3.000,2,'B00T',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00T_9373,255,255,255,255)
+set gg_dest_B00T_9436=BlzCreateDestructableZWithSkinPitchRollColor('B00T',-352.0,-8480.0,293.6,270.000,0.000,0.000,3.000,2,'B00T',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B00T_9436,255,255,255,255)
+set gg_dest_B012_6495=BlzCreateDestructableWithSkinPitchRollColor('B012',1088.0,-7936.0,336.000,0.000,0.000,1.000,0,'B012',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B012_6495,255,255,255,255)
+set gg_dest_B013_1777=BlzCreateDeadDestructableWithSkinPitchRollColor('B013',4160.0,5056.0,270.000,0.000,0.000,1.000,0,'B013',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B013_1777,255,255,255,255)
+set gg_dest_B013_0414=BlzCreateDeadDestructableWithSkinPitchRollColor('B013',192.0,-4736.0,270.000,0.000,0.000,1.000,0,'B013',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B013_0414,255,255,255,255)
+set gg_dest_B013_3503=BlzCreateDeadDestructableWithSkinPitchRollColor('B013',4672.0,5056.0,270.000,0.000,0.000,1.000,0,'B013',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B013_3503,255,255,255,255)
+set gg_dest_B013_2524=BlzCreateDeadDestructableWithSkinPitchRollColor('B013',4160.0,4928.0,270.000,0.000,0.000,1.000,0,'B013',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B013_2524,255,255,255,255)
+set gg_dest_B013_8974=BlzCreateDeadDestructableWithSkinPitchRollColor('B013',3648.0,5056.0,270.000,0.000,0.000,1.000,0,'B013',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B013_8974,255,255,255,255)
+set gg_dest_B013_3497=BlzCreateDeadDestructableWithSkinPitchRollColor('B013',4672.0,4928.0,270.000,0.000,0.000,1.000,0,'B013',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B013_3497,255,255,255,255)
+set gg_dest_B013_4211=BlzCreateDeadDestructableWithSkinPitchRollColor('B013',-832.0,-9152.0,270.000,0.000,0.000,1.000,0,'B013',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B013_4211,255,255,255,255)
+set gg_dest_B013_3502=BlzCreateDeadDestructableWithSkinPitchRollColor('B013',3648.0,4928.0,270.000,0.000,0.000,1.000,0,'B013',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B013_3502,255,255,255,255)
+set gg_dest_B015_8821=BlzCreateDestructableWithSkinPitchRollColor('B015',4992.0,-3136.0,275.000,0.000,0.000,1.100,0,'B015',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B015_8821,255,255,255,255)
+set gg_dest_B015_0674=BlzCreateDestructableWithSkinPitchRollColor('B015',4992.0,-3072.0,275.000,0.000,0.000,1.100,0,'B015',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B015_0674,255,255,255,255)
+set gg_dest_B016_10171=BlzCreateDestructableZWithSkinPitchRollColor('B016',8832.0,-9216.0,-51.2,0.000,0.000,0.000,1.100,0,'B016',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B016_10171,255,255,255,255)
+set gg_dest_B016_10170=BlzCreateDestructableZWithSkinPitchRollColor('B016',8832.0,-9024.0,-51.2,0.000,0.000,0.000,1.100,0,'B016',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B016_10170,255,255,255,255)
+set gg_dest_B016_10168=BlzCreateDestructableZWithSkinPitchRollColor('B016',8832.0,-8832.0,-51.2,0.000,0.000,0.000,1.100,0,'B016',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B016_10168,255,255,255,255)
+set gg_dest_B016_10167=BlzCreateDestructableZWithSkinPitchRollColor('B016',8832.0,-8640.0,-51.2,0.000,0.000,0.000,1.100,0,'B016',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_B016_10167,255,255,255,255)
+set gg_dest_DTep_8776=BlzCreateDestructableWithSkinPitchRollColor('DTep',10816.0,-8832.0,180.000,0.000,0.000,1.000,0,'DTep',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTep_8776,255,255,255,255)
+set gg_dest_DTep_8773=BlzCreateDestructableWithSkinPitchRollColor('DTep',10432.0,-8832.0,180.000,0.000,0.000,1.000,0,'DTep',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTep_8773,255,255,255,255)
+set gg_dest_DTep_7448=BlzCreateDestructableWithSkinPitchRollColor('DTep',3968.0,-6976.0,270.000,0.000,0.000,1.000,0,'DTep',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTep_7448,255,255,255,255)
+set gg_dest_DTep_4128=BlzCreateDestructableWithSkinPitchRollColor('DTep',896.0,-3712.0,90.000,0.000,0.000,1.000,0,'DTep',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTep_4128,255,255,255,255)
+set gg_dest_DTep_7453=BlzCreateDeadDestructableWithSkinPitchRollColor('DTep',3776.0,-7168.0,180.000,0.000,0.000,1.000,0,'DTep',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTep_7453,255,255,255,255)
+set gg_dest_DTep_7449=BlzCreateDestructableWithSkinPitchRollColor('DTep',4160.0,-7168.0,0.000,0.000,0.000,1.000,0,'DTep',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTep_7449,255,255,255,255)
+set gg_dest_DTep_1086=BlzCreateDestructableWithSkinPitchRollColor('DTep',6016.0,-7232.0,270.000,0.000,0.000,1.000,0,'DTep',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTep_1086,255,255,255,255)
+set gg_dest_DTep_5117=BlzCreateDestructableWithSkinPitchRollColor('DTep',320.0,64.0,0.000,0.000,0.000,1.000,0,'DTep',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTep_5117,255,255,255,255)
+set gg_dest_DTep_5851=BlzCreateDestructableWithSkinPitchRollColor('DTep',10112.0,-8576.0,90.000,0.000,0.000,1.000,0,'DTep',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTep_5851,255,255,255,255)
+set gg_dest_DTfx_0242=BlzCreateDestructableWithSkinPitchRollColor('DTfx',-1216.0,-5184.0,270.000,0.000,0.000,1.000,0,'DTfx',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTfx_0242,255,255,255,255)
+set gg_dest_DTfx_1802=BlzCreateDestructableWithSkinPitchRollColor('DTfx',-5696.0,-5440.0,270.000,0.000,0.000,1.000,0,'DTfx',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTfx_1802,255,255,255,255)
+set gg_dest_DTfx_1803=BlzCreateDestructableWithSkinPitchRollColor('DTfx',-4544.0,-5440.0,270.000,0.000,0.000,1.000,0,'DTfx',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTfx_1803,255,255,255,255)
+set gg_dest_DTfx_0243=BlzCreateDestructableWithSkinPitchRollColor('DTfx',-1216.0,-5952.0,270.000,0.000,0.000,1.000,0,'DTfx',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTfx_0243,255,255,255,255)
+set gg_dest_DTfx_5733=BlzCreateDestructableWithSkinPitchRollColor('DTfx',448.0,-7040.0,270.000,0.000,0.000,1.000,0,'DTfx',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTfx_5733,255,255,255,255)
+set gg_dest_DTg1_4603=BlzCreateDestructableWithSkinPitchRollColor('DTg1',9280.0,5376.0,270.000,0.000,0.000,0.900,0,'DTg1',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTg1_4603,255,255,255,255)
+set gg_dest_DTg1_6033=BlzCreateDestructableWithSkinPitchRollColor('DTg1',5568.0,-832.0,270.000,0.000,0.000,0.900,0,'DTg1',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTg1_6033,255,255,255,255)
+set gg_dest_DTg3_4560=BlzCreateDestructableWithSkinPitchRollColor('DTg3',5376.0,3136.0,0.000,0.000,0.000,0.900,0,'DTg3',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTg3_4560,255,255,255,255)
+set gg_dest_DTlv_6473=BlzCreateDestructableWithSkinPitchRollColor('DTlv',992.0,96.0,45.000,0.000,0.000,0.966,0,'DTlv',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTlv_6473,255,255,255,255)
+set gg_dest_DTlv_11574=BlzCreateDestructableWithSkinPitchRollColor('DTlv',7840.0,7264.0,315.000,0.000,0.000,0.939,0,'DTlv',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTlv_11574,255,255,255,255)
+set gg_dest_DTlv_7447=BlzCreateDeadDestructableWithSkinPitchRollColor('DTlv',4256.0,-7264.0,224.000,0.000,0.000,1.069,0,'DTlv',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTlv_7447,255,255,255,255)
+set gg_dest_DTlv_7885=BlzCreateDestructableZWithSkinPitchRollColor('DTlv',-3872.0,7520.0,-3.2,45.000,0.000,0.000,0.913,0,'DTlv',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTlv_7885,255,255,255,255)
+set gg_dest_DTlv_4321=BlzCreateDestructableWithSkinPitchRollColor('DTlv',10336.0,-8672.0,225.000,0.000,0.000,1.069,0,'DTlv',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTlv_4321,255,255,255,255)
+set gg_dest_DTlv_6021=BlzCreateDestructableWithSkinPitchRollColor('DTlv',5408.0,-416.0,135.000,0.000,0.000,1.000,0,'DTlv',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTlv_6021,255,255,255,255)
+set gg_dest_DTlv_7095=BlzCreateDeadDestructableWithSkinPitchRollColor('DTlv',3680.0,-7392.0,224.000,0.000,0.000,1.069,0,'DTlv',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTlv_7095,255,255,255,255)
+set gg_dest_DTlv_5506=BlzCreateDestructableZWithSkinPitchRollColor('DTlv',-3744.0,-8928.0,-1.2,315.000,0.000,0.000,0.997,0,'DTlv',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTlv_5506,255,255,255,255)
+set gg_dest_DTlv_2661=BlzCreateDestructableWithSkinPitchRollColor('DTlv',4640.0,-6944.0,226.000,0.000,0.000,0.923,0,'DTlv',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTlv_2661,255,255,255,255)
+set gg_dest_DTlv_6014=BlzCreateDestructableWithSkinPitchRollColor('DTlv',5728.0,-416.0,135.000,0.000,0.000,1.000,0,'DTlv',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTlv_6014,255,255,255,255)
+set gg_dest_DTrx_6649=BlzCreateDestructableWithSkinPitchRollColor('DTrx',10624.0,-8832.0,270.000,0.000,0.000,1.000,0,'DTrx',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTrx_6649,255,255,255,255)
+set gg_dest_DTrx_0607=BlzCreateDestructableWithSkinPitchRollColor('DTrx',-3968.0,2304.0,270.000,0.000,0.000,1.000,0,'DTrx',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTrx_0607,255,255,255,255)
+set gg_dest_DTrx_7446=BlzCreateDestructableWithSkinPitchRollColor('DTrx',3968.0,-7168.0,270.000,0.000,0.000,1.000,0,'DTrx',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_DTrx_7446,255,255,255,255)
+set gg_dest_Dofv_5849=BlzCreateDestructableWithSkinPitchRollColor('Dofv',10112.0,-8576.0,45.000,0.000,0.000,1.000,0,'Dofv',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_Dofv_5849,255,255,255,255)
+set gg_dest_Dofv_1109=BlzCreateDestructableWithSkinPitchRollColor('Dofv',6016.0,-7232.0,45.000,0.000,0.000,1.000,0,'Dofv',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_Dofv_1109,255,255,255,255)
+set d=BlzCreateDestructableWithSkinPitchRollColor('LTbr',5920.0,-1632.0,217.000,0.000,0.000,1.311,0,'LTbr',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad002983_DropItems)
-set gg_dest_LTbr_5765=BlzCreateDestructableWithSkin('LTbr',4896.0,-3872.0,66.000,1.265,0,'LTbr')
+set gg_dest_LTbr_5765=BlzCreateDestructableWithSkinPitchRollColor('LTbr',4896.0,-3872.0,66.000,0.000,0.000,1.265,0,'LTbr',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_LTbr_5765,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,gg_dest_LTbr_5765)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad001024_DropItems)
-set d=BlzCreateDestructableWithSkin('LTbr',-1440.0,3040.0,58.000,1.100,0,'LTbr')
+set d=BlzCreateDestructableWithSkinPitchRollColor('LTbr',-1440.0,3040.0,58.000,0.000,0.000,1.100,0,'LTbr',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad003047_DropItems)
-set d=BlzCreateDestructableWithSkin('LTbr',-4896.0,-11424.0,95.000,1.350,0,'LTbr')
+set d=BlzCreateDestructableWithSkinPitchRollColor('LTbr',-4896.0,-11424.0,95.000,0.000,0.000,1.350,0,'LTbr',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableWithSkin('LTbr',4192.0,-13088.0,104.000,1.334,0,'LTbr')
+set d=BlzCreateDestructableWithSkinPitchRollColor('LTbr',4192.0,-13088.0,104.000,0.000,0.000,1.334,0,'LTbr',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function ItemTable000000_DropItems)
-set d=BlzCreateDestructableWithSkin('LTbr',9504.0,-2336.0,328.000,1.491,0,'LTbr')
+set d=BlzCreateDestructableWithSkinPitchRollColor('LTbr',9504.0,-2336.0,328.000,0.000,0.000,1.491,0,'LTbr',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad008261_DropItems)
-set d=BlzCreateDestructableWithSkin('LTbr',-7328.0,5088.0,145.000,1.100,0,'LTbr')
+set d=BlzCreateDestructableWithSkinPitchRollColor('LTbr',-7328.0,5088.0,145.000,0.000,0.000,1.100,0,'LTbr',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad011066_DropItems)
-set d=BlzCreateDestructableWithSkin('LTbr',11168.0,-8032.0,172.000,1.458,0,'LTbr')
+set d=BlzCreateDestructableWithSkinPitchRollColor('LTbr',11168.0,-8032.0,172.000,0.000,0.000,1.458,0,'LTbr',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad000816_DropItems)
-set d=BlzCreateDestructableWithSkin('LTbx',9504.0,-2272.0,104.000,1.203,0,'LTbx')
+set d=BlzCreateDestructableWithSkinPitchRollColor('LTbx',9504.0,-2272.0,104.000,0.000,0.000,1.203,0,'LTbx',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad003051_DropItems)
-set d=BlzCreateDestructableWithSkin('LTcr',9600.0,8000.0,32.000,1.000,1,'LTcr')
+set d=BlzCreateDestructableWithSkinPitchRollColor('LTcr',9600.0,8000.0,32.000,0.000,0.000,1.000,1,'LTcr',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad006589_DropItems)
-set d=BlzCreateDestructableWithSkin('LTcr',9856.0,8064.0,179.000,1.000,1,'LTcr')
+set d=BlzCreateDestructableWithSkinPitchRollColor('LTcr',9856.0,8064.0,179.000,0.000,0.000,1.000,1,'LTcr',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad005060_DropItems)
-set d=BlzCreateDestructableWithSkin('LTcr',1856.0,576.0,302.000,0.870,1,'LTcr')
+set d=BlzCreateDestructableWithSkinPitchRollColor('LTcr',1856.0,576.0,302.000,0.000,0.000,0.870,1,'LTcr',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad005238_DropItems)
-set d=BlzCreateDestructableWithSkin('LTcr',-3840.0,3136.0,301.000,1.063,1,'LTcr')
+set d=BlzCreateDestructableWithSkinPitchRollColor('LTcr',-3840.0,3136.0,301.000,0.000,0.000,1.063,1,'LTcr',ConvertPlayerColor(24))
+call SetDestructableVertexColor(d,255,255,255,255)
 set t=CreateTrigger()
 call TriggerRegisterDeathEvent(t,d)
 call TriggerAddAction(t,function SaveDyingWidget)
 call TriggerAddAction(t,function Doodad001090_DropItems)
-set gg_dest_LTe1_8228=BlzCreateDestructableWithSkin('LTe1',-3392.0,-9664.0,270.000,0.900,0,'LTe1')
-set gg_dest_XTmp_7876=BlzCreateDestructableWithSkin('XTmp',-3904.0,7488.0,270.000,1.000,0,'XTmp')
-set gg_dest_XTmx_0376=BlzCreateDestructableWithSkin('XTmx',-2912.0,-2496.0,180.000,0.850,0,'XTmx')
-set gg_dest_XTmx_6609=BlzCreateDestructableWithSkin('XTmx',-2336.0,2432.0,0.000,0.850,0,'XTmx')
-set gg_dest_XTmx_5395=BlzCreateDestructableWithSkin('XTmx',-2336.0,2624.0,180.000,0.850,0,'XTmx')
-set gg_dest_XTmx_0190=BlzCreateDestructableWithSkin('XTmx',-2912.0,-2688.0,0.000,0.850,0,'XTmx')
-set gg_dest_ZTd7_0467=BlzCreateDestructableWithSkin('ZTd7',-1856.0,-3200.0,90.000,0.900,0,'ZTd7')
-set gg_dest_ZTd7_1392=BlzCreateDestructableWithSkin('ZTd7',6400.0,-6208.0,90.000,0.900,0,'ZTd7')
-set gg_dest_ZTd8_0512=BlzCreateDestructableZWithSkin('ZTd8',1664.0,192.0,121.6,180.000,0.900,0,'ZTd8')
-set gg_dest_ZTg1_2659=BlzCreateDestructableWithSkin('ZTg1',9024.0,-5696.0,270.000,0.900,0,'ZTg1')
-set gg_dest_ZTg1_5305=BlzCreateDestructableWithSkin('ZTg1',-5120.0,-5248.0,270.000,0.900,0,'ZTg1')
-set gg_dest_ZTg1_0284=BlzCreateDestructableWithSkin('ZTg1',4480.0,-1536.0,270.000,0.900,0,'ZTg1')
-set gg_dest_ZTg1_0061=BlzCreateDestructableWithSkin('ZTg1',-832.0,2048.0,270.000,0.900,0,'ZTg1')
-set gg_dest_ZTg1_1981=BlzCreateDestructableWithSkin('ZTg1',-3968.0,-2048.0,270.000,0.900,0,'ZTg1')
-set gg_dest_ZTg1_4385=BlzCreateDestructableWithSkin('ZTg1',8512.0,5888.0,270.000,0.900,0,'ZTg1')
-set gg_dest_ZTg1_0592=BlzCreateDestructableWithSkin('ZTg1',2048.0,-5376.0,270.000,0.900,0,'ZTg1')
-set gg_dest_ZTg1_0802=BlzCreateDestructableWithSkin('ZTg1',3136.0,-5824.0,270.000,0.900,0,'ZTg1')
-set gg_dest_ZTg1_0702=BlzCreateDestructableWithSkin('ZTg1',3200.0,-2944.0,270.000,0.900,0,'ZTg1')
-set gg_dest_ZTg1_11458=BlzCreateDestructableWithSkin('ZTg1',8256.0,7744.0,270.000,0.900,0,'ZTg1')
-set gg_dest_ZTg1_11460=BlzCreateDestructableWithSkin('ZTg1',7872.0,6400.0,270.000,0.900,0,'ZTg1')
-set gg_dest_ZTg1_3257=BlzCreateDestructableWithSkin('ZTg1',-2624.0,0.0,270.000,0.900,0,'ZTg1')
-set gg_dest_ZTg1_1268=BlzCreateDestructableWithSkin('ZTg1',9792.0,-5696.0,270.000,0.900,0,'ZTg1')
-set gg_dest_ZTg3_0676=BlzCreateDestructableZWithSkin('ZTg3',4800.0,-3328.0,121.6,0.000,0.900,0,'ZTg3')
-set gg_dest_ZTg3_7772=BlzCreateDestructableWithSkin('ZTg3',-4480.0,6144.0,0.000,0.900,0,'ZTg3')
-set gg_dest_ZTg3_0533=BlzCreateDestructableWithSkin('ZTg3',-704.0,-512.0,0.000,0.900,0,'ZTg3')
-set gg_dest_ZTg3_0023=BlzCreateDestructableWithSkin('ZTg3',-512.0,-7040.0,0.000,0.900,0,'ZTg3')
-set gg_dest_ZTg3_3729=BlzCreateDestructableWithSkin('ZTg3',-2560.0,-5952.0,0.000,0.900,0,'ZTg3')
-set gg_dest_ZTg3_2787=BlzCreateDestructableWithSkin('ZTg3',-5760.0,1664.0,0.000,0.900,0,'ZTg3')
-set gg_dest_ZTg3_0805=BlzCreateDestructableWithSkin('ZTg3',8960.0,-7488.0,0.000,0.900,0,'ZTg3')
-set gg_dest_ZTg3_3478=BlzCreateDestructableWithSkin('ZTg3',2688.0,4992.0,0.000,0.900,0,'ZTg3')
-set gg_dest_ZTg3_0114=BlzCreateDestructableWithSkin('ZTg3',1280.0,7936.0,0.000,0.900,0,'ZTg3')
-set gg_dest_ZTg3_0322=BlzCreateDestructableWithSkin('ZTg3',512.0,4672.0,0.000,0.900,0,'ZTg3')
-set gg_dest_ZTg3_0240=BlzCreateDestructableWithSkin('ZTg3',-896.0,-5568.0,0.000,0.900,0,'ZTg3')
-set gg_dest_ZTg3_3050=BlzCreateDestructableWithSkin('ZTg3',5312.0,448.0,0.000,0.900,0,'ZTg3')
-set gg_dest_ZTg3_0003=BlzCreateDestructableWithSkin('ZTg3',7296.0,6784.0,0.000,0.900,0,'ZTg3')
-set gg_dest_ZTg3_0422=BlzCreateDestructableWithSkin('ZTg3',5120.0,-2368.0,0.000,0.900,0,'ZTg3')
-set gg_dest_ZTg3_3384=BlzCreateDestructableWithSkin('ZTg3',-384.0,3072.0,0.000,0.900,0,'ZTg3')
-set gg_dest_ZTg3_1624=BlzCreateDestructableWithSkin('ZTg3',-5376.0,-7104.0,0.000,0.900,0,'ZTg3')
-set gg_dest_ZTsg_0105=BlzCreateDestructableWithSkin('ZTsg',8960.0,-8896.0,180.000,1.000,0,'ZTsg')
-set gg_dest_ZTsg_0687=BlzCreateDestructableWithSkin('ZTsg',1664.0,-2368.0,180.000,1.000,0,'ZTsg')
-set gg_dest_ZTsg_3644=BlzCreateDestructableZWithSkin('ZTsg',6464.0,2624.0,7.4,180.000,1.000,0,'ZTsg')
-set gg_dest_ZTsx_3527=BlzCreateDestructableWithSkin('ZTsx',3904.0,1472.0,270.000,1.000,0,'ZTsx')
-set gg_dest_ZTsx_6510=BlzCreateDestructableWithSkin('ZTsx',-2624.0,-1856.0,270.000,1.000,0,'ZTsx')
-set gg_dest_ZTsx_0019=BlzCreateDestructableWithSkin('ZTsx',768.0,-4800.0,270.000,1.000,0,'ZTsx')
-set gg_dest_ZTsx_0021=BlzCreateDestructableWithSkin('ZTsx',128.0,-6272.0,270.000,1.000,0,'ZTsx')
-set gg_dest_ZTsx_2641=BlzCreateDestructableWithSkin('ZTsx',-6272.0,-3200.0,270.000,1.000,0,'ZTsx')
-set gg_dest_ZTsx_1768=BlzCreateDestructableWithSkin('ZTsx',2176.0,5824.0,270.000,1.000,0,'ZTsx')
-set gg_dest_ZTsx_0776=BlzCreateDestructableWithSkin('ZTsx',-6336.0,-6656.0,270.000,1.000,0,'ZTsx')
+set gg_dest_LTe1_8228=BlzCreateDestructableWithSkinPitchRollColor('LTe1',-3392.0,-9664.0,270.000,0.000,0.000,0.900,0,'LTe1',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_LTe1_8228,255,255,255,255)
+set gg_dest_XTmp_7876=BlzCreateDestructableWithSkinPitchRollColor('XTmp',-3904.0,7488.0,270.000,0.000,0.000,1.000,0,'XTmp',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_XTmp_7876,255,255,255,255)
+set gg_dest_XTmx_0376=BlzCreateDestructableWithSkinPitchRollColor('XTmx',-2912.0,-2496.0,180.000,0.000,0.000,0.850,0,'XTmx',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_XTmx_0376,255,255,255,255)
+set gg_dest_XTmx_6609=BlzCreateDestructableWithSkinPitchRollColor('XTmx',-2336.0,2432.0,0.000,0.000,0.000,0.850,0,'XTmx',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_XTmx_6609,255,255,255,255)
+set gg_dest_XTmx_5395=BlzCreateDestructableWithSkinPitchRollColor('XTmx',-2336.0,2624.0,180.000,0.000,0.000,0.850,0,'XTmx',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_XTmx_5395,255,255,255,255)
+set gg_dest_XTmx_0190=BlzCreateDestructableWithSkinPitchRollColor('XTmx',-2912.0,-2688.0,0.000,0.000,0.000,0.850,0,'XTmx',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_XTmx_0190,255,255,255,255)
+set gg_dest_ZTd7_0467=BlzCreateDestructableWithSkinPitchRollColor('ZTd7',-1856.0,-3200.0,90.000,0.000,0.000,0.900,0,'ZTd7',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTd7_0467,255,255,255,255)
+set gg_dest_ZTd7_1392=BlzCreateDestructableWithSkinPitchRollColor('ZTd7',6400.0,-6208.0,90.000,0.000,0.000,0.900,0,'ZTd7',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTd7_1392,255,255,255,255)
+set gg_dest_ZTd8_0512=BlzCreateDestructableZWithSkinPitchRollColor('ZTd8',1664.0,192.0,121.6,180.000,0.000,0.000,0.900,0,'ZTd8',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTd8_0512,255,255,255,255)
+set gg_dest_ZTg1_2659=BlzCreateDestructableWithSkinPitchRollColor('ZTg1',9024.0,-5696.0,270.000,0.000,0.000,0.900,0,'ZTg1',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg1_2659,255,255,255,255)
+set gg_dest_ZTg1_5305=BlzCreateDestructableWithSkinPitchRollColor('ZTg1',-5120.0,-5248.0,270.000,0.000,0.000,0.900,0,'ZTg1',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg1_5305,255,255,255,255)
+set gg_dest_ZTg1_0284=BlzCreateDestructableWithSkinPitchRollColor('ZTg1',4480.0,-1536.0,270.000,0.000,0.000,0.900,0,'ZTg1',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg1_0284,255,255,255,255)
+set gg_dest_ZTg1_0061=BlzCreateDestructableWithSkinPitchRollColor('ZTg1',-832.0,2048.0,270.000,0.000,0.000,0.900,0,'ZTg1',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg1_0061,255,255,255,255)
+set gg_dest_ZTg1_1981=BlzCreateDestructableWithSkinPitchRollColor('ZTg1',-3968.0,-2048.0,270.000,0.000,0.000,0.900,0,'ZTg1',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg1_1981,255,255,255,255)
+set gg_dest_ZTg1_4385=BlzCreateDestructableWithSkinPitchRollColor('ZTg1',8512.0,5888.0,270.000,0.000,0.000,0.900,0,'ZTg1',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg1_4385,255,255,255,255)
+set gg_dest_ZTg1_0592=BlzCreateDestructableWithSkinPitchRollColor('ZTg1',2048.0,-5376.0,270.000,0.000,0.000,0.900,0,'ZTg1',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg1_0592,255,255,255,255)
+set gg_dest_ZTg1_0802=BlzCreateDestructableWithSkinPitchRollColor('ZTg1',3136.0,-5824.0,270.000,0.000,0.000,0.900,0,'ZTg1',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg1_0802,255,255,255,255)
+set gg_dest_ZTg1_0702=BlzCreateDestructableWithSkinPitchRollColor('ZTg1',3200.0,-2944.0,270.000,0.000,0.000,0.900,0,'ZTg1',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg1_0702,255,255,255,255)
+set gg_dest_ZTg1_11458=BlzCreateDestructableWithSkinPitchRollColor('ZTg1',8256.0,7744.0,270.000,0.000,0.000,0.900,0,'ZTg1',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg1_11458,255,255,255,255)
+set gg_dest_ZTg1_11460=BlzCreateDestructableWithSkinPitchRollColor('ZTg1',7872.0,6400.0,270.000,0.000,0.000,0.900,0,'ZTg1',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg1_11460,255,255,255,255)
+set gg_dest_ZTg1_3257=BlzCreateDestructableWithSkinPitchRollColor('ZTg1',-2624.0,0.0,270.000,0.000,0.000,0.900,0,'ZTg1',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg1_3257,255,255,255,255)
+set gg_dest_ZTg1_1268=BlzCreateDestructableWithSkinPitchRollColor('ZTg1',9792.0,-5696.0,270.000,0.000,0.000,0.900,0,'ZTg1',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg1_1268,255,255,255,255)
+set gg_dest_ZTg3_0676=BlzCreateDestructableZWithSkinPitchRollColor('ZTg3',4800.0,-3328.0,121.6,0.000,0.000,0.000,0.900,0,'ZTg3',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg3_0676,255,255,255,255)
+set gg_dest_ZTg3_7772=BlzCreateDestructableWithSkinPitchRollColor('ZTg3',-4480.0,6144.0,0.000,0.000,0.000,0.900,0,'ZTg3',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg3_7772,255,255,255,255)
+set gg_dest_ZTg3_0533=BlzCreateDestructableWithSkinPitchRollColor('ZTg3',-704.0,-512.0,0.000,0.000,0.000,0.900,0,'ZTg3',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg3_0533,255,255,255,255)
+set gg_dest_ZTg3_0023=BlzCreateDestructableWithSkinPitchRollColor('ZTg3',-512.0,-7040.0,0.000,0.000,0.000,0.900,0,'ZTg3',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg3_0023,255,255,255,255)
+set gg_dest_ZTg3_3729=BlzCreateDestructableWithSkinPitchRollColor('ZTg3',-2560.0,-5952.0,0.000,0.000,0.000,0.900,0,'ZTg3',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg3_3729,255,255,255,255)
+set gg_dest_ZTg3_2787=BlzCreateDestructableWithSkinPitchRollColor('ZTg3',-5760.0,1664.0,0.000,0.000,0.000,0.900,0,'ZTg3',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg3_2787,255,255,255,255)
+set gg_dest_ZTg3_0805=BlzCreateDestructableWithSkinPitchRollColor('ZTg3',8960.0,-7488.0,0.000,0.000,0.000,0.900,0,'ZTg3',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg3_0805,255,255,255,255)
+set gg_dest_ZTg3_3478=BlzCreateDestructableWithSkinPitchRollColor('ZTg3',2688.0,4992.0,0.000,0.000,0.000,0.900,0,'ZTg3',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg3_3478,255,255,255,255)
+set gg_dest_ZTg3_0114=BlzCreateDestructableWithSkinPitchRollColor('ZTg3',1280.0,7936.0,0.000,0.000,0.000,0.900,0,'ZTg3',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg3_0114,255,255,255,255)
+set gg_dest_ZTg3_0322=BlzCreateDestructableWithSkinPitchRollColor('ZTg3',512.0,4672.0,0.000,0.000,0.000,0.900,0,'ZTg3',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg3_0322,255,255,255,255)
+set gg_dest_ZTg3_0240=BlzCreateDestructableWithSkinPitchRollColor('ZTg3',-896.0,-5568.0,0.000,0.000,0.000,0.900,0,'ZTg3',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg3_0240,255,255,255,255)
+set gg_dest_ZTg3_3050=BlzCreateDestructableWithSkinPitchRollColor('ZTg3',5312.0,448.0,0.000,0.000,0.000,0.900,0,'ZTg3',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg3_3050,255,255,255,255)
+set gg_dest_ZTg3_0003=BlzCreateDestructableWithSkinPitchRollColor('ZTg3',7296.0,6784.0,0.000,0.000,0.000,0.900,0,'ZTg3',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg3_0003,255,255,255,255)
+set gg_dest_ZTg3_0422=BlzCreateDestructableWithSkinPitchRollColor('ZTg3',5120.0,-2368.0,0.000,0.000,0.000,0.900,0,'ZTg3',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg3_0422,255,255,255,255)
+set gg_dest_ZTg3_3384=BlzCreateDestructableWithSkinPitchRollColor('ZTg3',-384.0,3072.0,0.000,0.000,0.000,0.900,0,'ZTg3',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg3_3384,255,255,255,255)
+set gg_dest_ZTg3_1624=BlzCreateDestructableWithSkinPitchRollColor('ZTg3',-5376.0,-7104.0,0.000,0.000,0.000,0.900,0,'ZTg3',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTg3_1624,255,255,255,255)
+set gg_dest_ZTsg_0105=BlzCreateDestructableWithSkinPitchRollColor('ZTsg',8960.0,-8896.0,180.000,0.000,0.000,1.000,0,'ZTsg',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTsg_0105,255,255,255,255)
+set gg_dest_ZTsg_0687=BlzCreateDestructableWithSkinPitchRollColor('ZTsg',1664.0,-2368.0,180.000,0.000,0.000,1.000,0,'ZTsg',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTsg_0687,255,255,255,255)
+set gg_dest_ZTsg_3644=BlzCreateDestructableZWithSkinPitchRollColor('ZTsg',6464.0,2624.0,7.4,180.000,0.000,0.000,1.000,0,'ZTsg',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTsg_3644,255,255,255,255)
+set gg_dest_ZTsx_3527=BlzCreateDestructableWithSkinPitchRollColor('ZTsx',3904.0,1472.0,270.000,0.000,0.000,1.000,0,'ZTsx',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTsx_3527,255,255,255,255)
+set gg_dest_ZTsx_6510=BlzCreateDestructableWithSkinPitchRollColor('ZTsx',-2624.0,-1856.0,270.000,0.000,0.000,1.000,0,'ZTsx',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTsx_6510,255,255,255,255)
+set gg_dest_ZTsx_0019=BlzCreateDestructableWithSkinPitchRollColor('ZTsx',768.0,-4800.0,270.000,0.000,0.000,1.000,0,'ZTsx',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTsx_0019,255,255,255,255)
+set gg_dest_ZTsx_0021=BlzCreateDestructableWithSkinPitchRollColor('ZTsx',128.0,-6272.0,270.000,0.000,0.000,1.000,0,'ZTsx',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTsx_0021,255,255,255,255)
+set gg_dest_ZTsx_2641=BlzCreateDestructableWithSkinPitchRollColor('ZTsx',-6272.0,-3200.0,270.000,0.000,0.000,1.000,0,'ZTsx',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTsx_2641,255,255,255,255)
+set gg_dest_ZTsx_1768=BlzCreateDestructableWithSkinPitchRollColor('ZTsx',2176.0,5824.0,270.000,0.000,0.000,1.000,0,'ZTsx',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTsx_1768,255,255,255,255)
+set gg_dest_ZTsx_0776=BlzCreateDestructableWithSkinPitchRollColor('ZTsx',-6336.0,-6656.0,270.000,0.000,0.000,1.000,0,'ZTsx',ConvertPlayerColor(24))
+call SetDestructableVertexColor(gg_dest_ZTsx_0776,255,255,255,255)
 endfunction
 function CreateAllItems takes nothing returns nothing
 local integer itemID
-call BlzCreateItemWithSkin('I006',9012.0,-5425.4,'I006')
-call BlzCreateItemWithSkin('I033',9598.3,-13252.2,'I033')
-call BlzCreateItemWithSkin('I04Z',3059.5,-4065.6,'I04Z')
-call BlzCreateItemWithSkin('I050',-3455.1,-7972.2,'I050')
-call BlzCreateItemWithSkin('I075',-5777.1,2666.4,'I075')
-call BlzCreateItemWithSkin('I075',-3815.2,274.2,'I075')
-call BlzCreateItemWithSkin('I075',6359.0,115.1,'I075')
-call BlzCreateItemWithSkin('I075',1169.8,-8490.3,'I075')
-call BlzCreateItemWithSkin('I075',5442.7,-4453.3,'I075')
-call BlzCreateItemWithSkin('I075',7027.3,-3506.4,'I075')
-call BlzCreateItemWithSkin('I075',-2723.1,-7039.4,'I075')
-call BlzCreateItemWithSkin('I075',9936.8,-10569.1,'I075')
-call BlzCreateItemWithSkin('I075',1072.0,-3535.0,'I075')
-call BlzCreateItemWithSkin('I081',11002.2,-2322.0,'I081')
-call BlzCreateItemWithSkin('I09H',7247.5,-752.8,'I09H')
-call BlzCreateItemWithSkin('I09H',-1639.7,607.7,'I09H')
-call BlzCreateItemWithSkin('I09H',8384.3,-2.2,'I09H')
-call BlzCreateItemWithSkin('I09H',-1639.5,778.3,'I09H')
-call BlzCreateItemWithSkin('I09H',9627.3,-2693.0,'I09H')
-call BlzCreateItemWithSkin('I09H',8381.0,96.0,'I09H')
-call BlzCreateItemWithSkin('I09H',9698.5,-2689.5,'I09H')
-call BlzCreateItemWithSkin('I09H',-1641.2,690.4,'I09H')
+local item i
+set i=BlzCreateItemWithSkin('I006',9012.0,-5425.4,'I006')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I033',9598.3,-13252.2,'I033')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I04Z',3059.5,-4065.6,'I04Z')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I050',-3455.1,-7972.2,'I050')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I075',-5777.1,2666.4,'I075')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I075',-3815.2,274.2,'I075')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I075',6359.0,115.1,'I075')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I075',1169.8,-8490.3,'I075')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I075',5442.7,-4453.3,'I075')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I075',7027.3,-3506.4,'I075')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I075',-2723.1,-7039.4,'I075')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I075',9936.8,-10569.1,'I075')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I075',1072.0,-3535.0,'I075')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I081',11002.2,-2322.0,'I081')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I09H',7247.5,-752.8,'I09H')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I09H',-1639.7,607.7,'I09H')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I09H',8384.3,-2.2,'I09H')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I09H',-1639.5,778.3,'I09H')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I09H',9627.3,-2693.0,'I09H')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I09H',8381.0,96.0,'I09H')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I09H',9698.5,-2689.5,'I09H')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I09H',-1641.2,690.4,'I09H')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
 set gg_item_I09H_0112=BlzCreateItemWithSkin('I09H',-6411.6,437.6,'I09H')
-call BlzCreateItemWithSkin('I09H',7197.0,-758.2,'I09H')
-call BlzCreateItemWithSkin('I09W',-2757.3,-13337.4,'I09W')
-call BlzCreateItemWithSkin('I0BJ',-5980.6,-427.8,'I0BJ')
-call BlzCreateItemWithSkin('I0C7',7069.4,-11114.6,'I0C7')
-call BlzCreateItemWithSkin('I0EA',2833.0,-12506.4,'I0EA')
-call BlzCreateItemWithSkin('I0F0',-2663.1,2580.4,'I0F0')
-call BlzCreateItemWithSkin('I0FP',9334.9,-8123.3,'I0FP')
-call BlzCreateItemWithSkin('I0I0',9795.5,-11527.9,'I0I0')
-call BlzCreateItemWithSkin('I0JB',5648.9,-1705.2,'I0JB')
-call BlzCreateItemWithSkin('I0JH',7875.8,6122.4,'I0JH')
-call BlzCreateItemWithSkin('I0JI',-5182.1,-1549.5,'I0JI')
-call BlzCreateItemWithSkin('I0JN',1809.5,725.8,'I0JN')
-call BlzCreateItemWithSkin('I0JN',1518.0,4954.8,'I0JN')
-call BlzCreateItemWithSkin('I0NR',6383.2,6549.6,'I0NR')
-call BlzCreateItemWithSkin('I0NR',6408.7,151.0,'I0NR')
-call BlzCreateItemWithSkin('I0NR',-5829.4,2459.6,'I0NR')
-call BlzCreateItemWithSkin('I0NR',9521.4,-10795.8,'I0NR')
-call BlzCreateItemWithSkin('I0NR',-2851.6,-5282.9,'I0NR')
-call BlzCreateItemWithSkin('I0NR',6016.0,-7068.0,'I0NR')
-call BlzCreateItemWithSkin('I0NR',-7013.1,2102.0,'I0NR')
-call BlzCreateItemWithSkin('I0NR',-2504.6,-4585.8,'I0NR')
-call BlzCreateItemWithSkin('I0NR',5520.7,-4383.9,'I0NR')
-call BlzCreateItemWithSkin('I0NR',286.5,5304.5,'I0NR')
-call BlzCreateItemWithSkin('I0NR',-2743.2,-6538.9,'I0NR')
-call BlzCreateItemWithSkin('I0NR',7121.0,-3460.6,'I0NR')
-call BlzCreateItemWithSkin('I0NR',984.9,-3607.3,'I0NR')
-call BlzCreateItemWithSkin('I0NR',-3728.4,-6686.4,'I0NR')
-call BlzCreateItemWithSkin('I0NR',3252.0,-1223.5,'I0NR')
-call BlzCreateItemWithSkin('I0NR',3333.2,-11026.7,'I0NR')
-call BlzCreateItemWithSkin('I0NR',1296.8,-8517.5,'I0NR')
-call BlzCreateItemWithSkin('I0NR',4627.1,-5942.0,'I0NR')
-call BlzCreateItemWithSkin('I0NR',-7361.8,-7035.7,'I0NR')
-call BlzCreateItemWithSkin('I0NR',4384.5,-3348.0,'I0NR')
-call BlzCreateItemWithSkin('I0NR',6793.4,-8149.7,'I0NR')
+call BlzSetItemColor(gg_item_I09H_0112,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I09H',7197.0,-758.2,'I09H')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I09W',-2757.3,-13337.4,'I09W')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0BJ',-5980.6,-427.8,'I0BJ')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0C7',7069.4,-11114.6,'I0C7')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0EA',2833.0,-12506.4,'I0EA')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0F0',-2663.1,2580.4,'I0F0')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0FP',9334.9,-8123.3,'I0FP')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0I0',9795.5,-11527.9,'I0I0')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0JB',5648.9,-1705.2,'I0JB')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0JH',7875.8,6122.4,'I0JH')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0JI',-5182.1,-1549.5,'I0JI')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0JN',1809.5,725.8,'I0JN')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0JN',1518.0,4954.8,'I0JN')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',6383.2,6549.6,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',6408.7,151.0,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',-5829.4,2459.6,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',9521.4,-10795.8,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',-2851.6,-5282.9,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',6016.0,-7068.0,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',-7013.1,2102.0,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',-2504.6,-4585.8,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',5520.7,-4383.9,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',286.5,5304.5,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',-2743.2,-6538.9,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',7121.0,-3460.6,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',984.9,-3607.3,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',-3728.4,-6686.4,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',3252.0,-1223.5,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',3333.2,-11026.7,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',1296.8,-8517.5,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',4627.1,-5942.0,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',-7361.8,-7035.7,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',4384.5,-3348.0,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',6793.4,-8149.7,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
 set gg_item_I0NR_0747=BlzCreateItemWithSkin('I0NR',-6271.2,276.0,'I0NR')
-call BlzCreateItemWithSkin('I0NR',4943.8,-8074.9,'I0NR')
-call BlzCreateItemWithSkin('azhr',-3070.0,-2558.3,'azhr')
-call BlzCreateItemWithSkin('ches',10954.7,-8838.5,'ches')
-call BlzCreateItemWithSkin('dthb',-5946.5,-9192.9,'dthb')
-call BlzCreateItemWithSkin('dthb',-2146.4,273.9,'dthb')
-call BlzCreateItemWithSkin('dthb',11219.0,-3435.3,'dthb')
-call BlzCreateItemWithSkin('dthb',10787.6,-2665.7,'dthb')
-call BlzCreateItemWithSkin('dthb',10396.3,-2936.1,'dthb')
-call BlzCreateItemWithSkin('dthb',-2147.3,2263.3,'dthb')
-call BlzCreateItemWithSkin('gmfr',6913.9,6776.9,'gmfr')
-call BlzCreateItemWithSkin('gold',-3680.1,-7551.8,'gold')
-call BlzCreateItemWithSkin('gold',10023.7,-10574.5,'gold')
-call BlzCreateItemWithSkin('gold',-3678.0,-7458.8,'gold')
-call BlzCreateItemWithSkin('gold',-3679.6,-7633.5,'gold')
+call BlzSetItemColor(gg_item_I0NR_0747,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('I0NR',4943.8,-8074.9,'I0NR')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('azhr',-3070.0,-2558.3,'azhr')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('ches',10954.7,-8838.5,'ches')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('dthb',-5946.5,-9192.9,'dthb')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('dthb',-2146.4,273.9,'dthb')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('dthb',11219.0,-3435.3,'dthb')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('dthb',10787.6,-2665.7,'dthb')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('dthb',10396.3,-2936.1,'dthb')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('dthb',-2147.3,2263.3,'dthb')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('gmfr',6913.9,6776.9,'gmfr')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('gold',-3680.1,-7551.8,'gold')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('gold',10023.7,-10574.5,'gold')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('gold',-3678.0,-7458.8,'gold')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('gold',-3679.6,-7633.5,'gold')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
 call RandomDistReset()
 call RandomDistAddItem('I075',25)
 call RandomDistAddItem('I0DG',25)
@@ -23381,14 +23706,14 @@ call RandomDistAddItem('manh',25)
 call RandomDistAddItem('tpow',25)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,6380.4,6436.8,itemID)
+set i=BlzCreateItemWithSkin(itemID,6380.4,6436.8,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',5)
 call RandomDistAddItem('gold',95)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,5283.5,-8152.6,itemID)
+set i=BlzCreateItemWithSkin(itemID,5283.5,-8152.6,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23403,7 +23728,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-6984.3,-13409.2,itemID)
+set i=BlzCreateItemWithSkin(itemID,-6984.3,-13409.2,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23418,7 +23743,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-7214.3,-4721.0,itemID)
+set i=BlzCreateItemWithSkin(itemID,-7214.3,-4721.0,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23433,7 +23758,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,4909.9,8361.2,itemID)
+set i=BlzCreateItemWithSkin(itemID,4909.9,8361.2,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('tdex',25)
@@ -23442,7 +23767,7 @@ call RandomDistAddItem('tstr',25)
 call RandomDistAddItem('I0IV',25)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-7272.0,-7024.9,itemID)
+set i=BlzCreateItemWithSkin(itemID,-7272.0,-7024.9,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('I0IV',15)
@@ -23462,7 +23787,7 @@ call RandomDistAddItem('dthb',10)
 call RandomDistAddItem('gold',20)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,1351.1,-8641.5,itemID)
+set i=BlzCreateItemWithSkin(itemID,1351.1,-8641.5,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23477,7 +23802,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,6961.5,-366.4,itemID)
+set i=BlzCreateItemWithSkin(itemID,6961.5,-366.4,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('tpow',35)
@@ -23486,7 +23811,7 @@ call RandomDistAddItem('I075',15)
 call RandomDistAddItem('dthb',8)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-2503.9,-4675.0,itemID)
+set i=BlzCreateItemWithSkin(itemID,-2503.9,-4675.0,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('tdex',28)
@@ -23496,7 +23821,7 @@ call RandomDistAddItem('I075',8)
 call RandomDistAddItem('dthb',8)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,3454.1,-9381.6,itemID)
+set i=BlzCreateItemWithSkin(itemID,3454.1,-9381.6,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23511,7 +23836,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-7217.2,-4610.3,itemID)
+set i=BlzCreateItemWithSkin(itemID,-7217.2,-4610.3,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('tdex',25)
@@ -23522,7 +23847,7 @@ call RandomDistAddItem('I075',10)
 call RandomDistAddItem('I0DG',5)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-7206.6,-7018.2,itemID)
+set i=BlzCreateItemWithSkin(itemID,-7206.6,-7018.2,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('tpow',20)
@@ -23532,7 +23857,7 @@ call RandomDistAddItem('gold',35)
 call RandomDistAddItem('I0FD',1)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,7025.0,-3418.7,itemID)
+set i=BlzCreateItemWithSkin(itemID,7025.0,-3418.7,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('tpow',10)
@@ -23542,7 +23867,7 @@ call RandomDistAddItem('gold',25)
 call RandomDistAddItem('I0Q6',25)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,978.5,-3529.5,itemID)
+set i=BlzCreateItemWithSkin(itemID,978.5,-3529.5,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23557,7 +23882,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-2504.8,1066.8,itemID)
+set i=BlzCreateItemWithSkin(itemID,-2504.8,1066.8,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23572,7 +23897,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,1507.2,2660.9,itemID)
+set i=BlzCreateItemWithSkin(itemID,1507.2,2660.9,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23587,7 +23912,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,7859.4,-13239.1,itemID)
+set i=BlzCreateItemWithSkin(itemID,7859.4,-13239.1,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('tdex',20)
@@ -23599,7 +23924,7 @@ call RandomDistAddItem('manh',10)
 call RandomDistAddItem('gold',10)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,5958.9,-1216.7,itemID)
+set i=BlzCreateItemWithSkin(itemID,5958.9,-1216.7,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('I0AI',20)
@@ -23609,7 +23934,7 @@ call RandomDistAddItem('I03N',20)
 call RandomDistAddItem('ckng',20)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,4738.9,-13317.0,itemID)
+set i=BlzCreateItemWithSkin(itemID,4738.9,-13317.0,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('tdex',20)
@@ -23621,7 +23946,7 @@ call RandomDistAddItem('manh',10)
 call RandomDistAddItem('gold',10)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,6352.3,195.4,itemID)
+set i=BlzCreateItemWithSkin(itemID,6352.3,195.4,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('gold',35)
@@ -23631,7 +23956,7 @@ call RandomDistAddItem('dthb',15)
 call RandomDistAddItem('I075',5)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,4627.6,-5996.9,itemID)
+set i=BlzCreateItemWithSkin(itemID,4627.6,-5996.9,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('tdex',32)
@@ -23640,7 +23965,7 @@ call RandomDistAddItem('tstr',32)
 call RandomDistAddItem('I075',4)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-432.7,-1564.8,itemID)
+set i=BlzCreateItemWithSkin(itemID,-432.7,-1564.8,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23655,7 +23980,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-1012.2,6502.8,itemID)
+set i=BlzCreateItemWithSkin(itemID,-1012.2,6502.8,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('manh',50)
@@ -23671,7 +23996,7 @@ call RandomDistAddItem('I0IV',15)
 call RandomDistAddItem('I0FD',5)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,6273.7,6437.1,itemID)
+set i=BlzCreateItemWithSkin(itemID,6273.7,6437.1,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23686,7 +24011,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,8018.0,4981.5,itemID)
+set i=BlzCreateItemWithSkin(itemID,8018.0,4981.5,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23701,7 +24026,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,7793.2,-13239.1,itemID)
+set i=BlzCreateItemWithSkin(itemID,7793.2,-13239.1,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23716,7 +24041,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,1432.5,2655.7,itemID)
+set i=BlzCreateItemWithSkin(itemID,1432.5,2655.7,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23731,7 +24056,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-7178.0,-1301.1,itemID)
+set i=BlzCreateItemWithSkin(itemID,-7178.0,-1301.1,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23746,7 +24071,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-6983.1,-13300.1,itemID)
+set i=BlzCreateItemWithSkin(itemID,-6983.1,-13300.1,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23761,7 +24086,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,6044.7,-10483.2,itemID)
+set i=BlzCreateItemWithSkin(itemID,6044.7,-10483.2,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('gold',41)
@@ -23772,7 +24097,7 @@ call RandomDistAddItem('tdx2',10)
 call RandomDistAddItem('dthb',3)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,8719.7,8548.8,itemID)
+set i=BlzCreateItemWithSkin(itemID,8719.7,8548.8,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23787,7 +24112,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,5953.7,-3356.6,itemID)
+set i=BlzCreateItemWithSkin(itemID,5953.7,-3356.6,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23802,7 +24127,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-2728.4,-5209.6,itemID)
+set i=BlzCreateItemWithSkin(itemID,-2728.4,-5209.6,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23817,7 +24142,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-216.8,3712.6,itemID)
+set i=BlzCreateItemWithSkin(itemID,-216.8,3712.6,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('tdex',30)
@@ -23826,7 +24151,7 @@ call RandomDistAddItem('tint',30)
 call RandomDistAddItem('dthb',10)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-2722.6,-6925.9,itemID)
+set i=BlzCreateItemWithSkin(itemID,-2722.6,-6925.9,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23841,7 +24166,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-699.9,-2802.6,itemID)
+set i=BlzCreateItemWithSkin(itemID,-699.9,-2802.6,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('gold',60)
@@ -23849,7 +24174,7 @@ call RandomDistAddItem('I0IV',30)
 call RandomDistAddItem('dthb',10)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,2217.3,-5958.8,itemID)
+set i=BlzCreateItemWithSkin(itemID,2217.3,-5958.8,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23864,7 +24189,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,5442.5,-4379.6,itemID)
+set i=BlzCreateItemWithSkin(itemID,5442.5,-4379.6,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23879,7 +24204,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,5956.1,-3452.6,itemID)
+set i=BlzCreateItemWithSkin(itemID,5956.1,-3452.6,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('cnob',25)
@@ -23888,7 +24213,7 @@ call RandomDistAddItem('I0CJ',25)
 call RandomDistAddItem('hval',25)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,188.7,7075.7,itemID)
+set i=BlzCreateItemWithSkin(itemID,188.7,7075.7,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('tdx2',32)
@@ -23897,7 +24222,7 @@ call RandomDistAddItem('tst2',32)
 call RandomDistAddItem('I075',4)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-2703.0,-2934.0,itemID)
+set i=BlzCreateItemWithSkin(itemID,-2703.0,-2934.0,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('I0IV',25)
@@ -23906,7 +24231,7 @@ call RandomDistAddItem('tint',25)
 call RandomDistAddItem('tstr',25)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-5851.5,2669.4,itemID)
+set i=BlzCreateItemWithSkin(itemID,-5851.5,2669.4,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23920,7 +24245,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-318.1,990.1,itemID)
+set i=BlzCreateItemWithSkin(itemID,-318.1,990.1,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23935,7 +24260,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-2723.9,-5392.1,itemID)
+set i=BlzCreateItemWithSkin(itemID,-2723.9,-5392.1,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23950,7 +24275,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,7912.8,4945.3,itemID)
+set i=BlzCreateItemWithSkin(itemID,7912.8,4945.3,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23965,7 +24290,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-7236.0,-12725.6,itemID)
+set i=BlzCreateItemWithSkin(itemID,-7236.0,-12725.6,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23980,7 +24305,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,6959.0,-292.9,itemID)
+set i=BlzCreateItemWithSkin(itemID,6959.0,-292.9,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -23995,7 +24320,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-931.4,6509.3,itemID)
+set i=BlzCreateItemWithSkin(itemID,-931.4,6509.3,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -24010,7 +24335,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-3901.3,-6694.0,itemID)
+set i=BlzCreateItemWithSkin(itemID,-3901.3,-6694.0,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -24025,7 +24350,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-701.0,-2457.7,itemID)
+set i=BlzCreateItemWithSkin(itemID,-701.0,-2457.7,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('I0Q6',35)
@@ -24035,7 +24360,7 @@ call RandomDistAddItem('dthb',10)
 call RandomDistAddItem('gold',20)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,1259.6,-8636.1,itemID)
+set i=BlzCreateItemWithSkin(itemID,1259.6,-8636.1,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',10)
@@ -24044,7 +24369,7 @@ call RandomDistAddItem('tdx2',30)
 call RandomDistAddItem('tin2',30)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,8795.6,7624.9,itemID)
+set i=BlzCreateItemWithSkin(itemID,8795.6,7624.9,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('I075',25)
@@ -24053,7 +24378,7 @@ call RandomDistAddItem('dthb',25)
 call RandomDistAddItem('tpow',25)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,5279.9,-7979.5,itemID)
+set i=BlzCreateItemWithSkin(itemID,5279.9,-7979.5,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -24068,7 +24393,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,6042.9,-10367.6,itemID)
+set i=BlzCreateItemWithSkin(itemID,6042.9,-10367.6,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -24083,7 +24408,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,4905.2,8462.1,itemID)
+set i=BlzCreateItemWithSkin(itemID,4905.2,8462.1,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -24097,7 +24422,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-317.2,802.5,itemID)
+set i=BlzCreateItemWithSkin(itemID,-317.2,802.5,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -24112,7 +24437,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-3821.4,-6690.2,itemID)
+set i=BlzCreateItemWithSkin(itemID,-3821.4,-6690.2,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('tpow',25)
@@ -24123,7 +24448,7 @@ call RandomDistAddItem('I05D',5)
 call RandomDistAddItem('gold',20)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,3257.5,-11027.4,itemID)
+set i=BlzCreateItemWithSkin(itemID,3257.5,-11027.4,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -24138,7 +24463,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-7179.6,-1195.5,itemID)
+set i=BlzCreateItemWithSkin(itemID,-7179.6,-1195.5,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('tdex',25)
@@ -24148,7 +24473,7 @@ call RandomDistAddItem('I0IV',20)
 call RandomDistAddItem('tpow',5)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,3156.1,-1217.1,itemID)
+set i=BlzCreateItemWithSkin(itemID,3156.1,-1217.1,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -24163,14 +24488,14 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,197.0,5311.1,itemID)
+set i=BlzCreateItemWithSkin(itemID,197.0,5311.1,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',5)
 call RandomDistAddItem('gold',95)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,6682.2,-8144.2,itemID)
+set i=BlzCreateItemWithSkin(itemID,6682.2,-8144.2,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('I075',25)
@@ -24179,7 +24504,7 @@ call RandomDistAddItem('manh',25)
 call RandomDistAddItem('tpow',25)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,6732.7,-8138.4,itemID)
+set i=BlzCreateItemWithSkin(itemID,6732.7,-8138.4,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -24194,7 +24519,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-217.3,3818.7,itemID)
+set i=BlzCreateItemWithSkin(itemID,-217.3,3818.7,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('dthb',4)
@@ -24209,7 +24534,7 @@ call RandomDistAddItem('tint',15)
 call RandomDistAddItem('tstr',15)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,-7238.4,-12591.3,itemID)
+set i=BlzCreateItemWithSkin(itemID,-7238.4,-12591.3,itemID)
 endif
 call RandomDistReset()
 call RandomDistAddItem('tpow',10)
@@ -24219,32 +24544,56 @@ call RandomDistAddItem('gold',25)
 call RandomDistAddItem('I0Q6',25)
 set itemID=RandomDistChoose()
 if(itemID!=-1)then
-call BlzCreateItemWithSkin(itemID,1069.2,-3598.8,itemID)
+set i=BlzCreateItemWithSkin(itemID,1069.2,-3598.8,itemID)
 endif
-call BlzCreateItemWithSkin('kygh',-2906.6,-9497.3,'kygh')
+set i=BlzCreateItemWithSkin('kygh',-2906.6,-9497.3,'kygh')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
 set gg_item_mgtk_0029=BlzCreateItemWithSkin('mgtk',3935.6,-959.9,'mgtk')
+call BlzSetItemColor(gg_item_mgtk_0029,ConvertPlayerColor(24))
 set gg_item_mgtk_0270=BlzCreateItemWithSkin('mgtk',-6271.3,3201.2,'mgtk')
-call BlzCreateItemWithSkin('mort',2751.1,1344.0,'mort')
-call BlzCreateItemWithSkin('rdis',1921.3,-563.6,'rdis')
-call BlzCreateItemWithSkin('rhe2',-993.3,-6806.5,'rhe2')
+call BlzSetItemColor(gg_item_mgtk_0270,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('mort',2751.1,1344.0,'mort')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('rdis',1921.3,-563.6,'rdis')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('rhe2',-993.3,-6806.5,'rhe2')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
 set gg_item_rreb_0009=BlzCreateItemWithSkin('rreb',6785.0,-4535.0,'rreb')
-call BlzCreateItemWithSkin('rspd',-4271.5,1322.4,'rspd')
-call BlzCreateItemWithSkin('sclp',9780.9,-5421.8,'sclp')
-call BlzCreateItemWithSkin('tdex',9780.7,6592.2,'tdex')
-call BlzCreateItemWithSkin('tdex',-6943.5,2034.9,'tdex')
-call BlzCreateItemWithSkin('tdx2',1682.8,-5779.5,'tdx2')
-call BlzCreateItemWithSkin('texp',1162.4,-304.2,'texp')
-call BlzCreateItemWithSkin('tin2',1684.6,-5852.9,'tin2')
-call BlzCreateItemWithSkin('tint',-7015.9,2037.2,'tint')
-call BlzCreateItemWithSkin('tint',9857.0,6589.2,'tint')
-call BlzCreateItemWithSkin('tpow',5722.0,6982.4,'tpow')
-call BlzCreateItemWithSkin('tpow',1627.9,-13025.3,'tpow')
-call BlzCreateItemWithSkin('tpow',8791.4,-4692.0,'tpow')
-call BlzCreateItemWithSkin('tst2',8640.3,8543.8,'tst2')
-call BlzCreateItemWithSkin('tst2',1690.1,-5931.2,'tst2')
-call BlzCreateItemWithSkin('tstr',-7091.6,2032.9,'tstr')
-call BlzCreateItemWithSkin('tstr',9933.1,6592.2,'tstr')
-call BlzCreateItemWithSkin('wtlg',219.2,4122.5,'wtlg')
+call BlzSetItemColor(gg_item_rreb_0009,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('rspd',-4271.5,1322.4,'rspd')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('sclp',9780.9,-5421.8,'sclp')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('tdex',9780.7,6592.2,'tdex')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('tdex',-6943.5,2034.9,'tdex')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('tdx2',1682.8,-5779.5,'tdx2')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('texp',1162.4,-304.2,'texp')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('tin2',1684.6,-5852.9,'tin2')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('tint',-7015.9,2037.2,'tint')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('tint',9857.0,6589.2,'tint')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('tpow',5722.0,6982.4,'tpow')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('tpow',1627.9,-13025.3,'tpow')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('tpow',8791.4,-4692.0,'tpow')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('tst2',8640.3,8543.8,'tst2')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('tst2',1690.1,-5931.2,'tst2')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('tstr',-7091.6,2032.9,'tstr')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('tstr',9933.1,6592.2,'tstr')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
+set i=BlzCreateItemWithSkin('wtlg',219.2,4122.5,'wtlg')
+call BlzSetItemColor(i,ConvertPlayerColor(24))
 endfunction
 function CreateBuildingsForPlayer0 takes nothing returns nothing
 local player p=Player(0)
@@ -27699,7 +28048,11 @@ call CameraSetupSetField(gg_cam_Starting_Camera,CAMERA_FIELD_NEARZ,100.0,0.0)
 call CameraSetupSetField(gg_cam_Starting_Camera,CAMERA_FIELD_LOCAL_PITCH,0.0,0.0)
 call CameraSetupSetField(gg_cam_Starting_Camera,CAMERA_FIELD_LOCAL_YAW,0.0,0.0)
 call CameraSetupSetField(gg_cam_Starting_Camera,CAMERA_FIELD_LOCAL_ROLL,0.0,0.0)
+call CameraSetupSetField(gg_cam_Starting_Camera,CAMERA_FIELD_DEPTH_OF_FIELD_DISTANCE,0.0,0.0)
+call CameraSetupSetField(gg_cam_Starting_Camera,CAMERA_FIELD_DEPTH_OF_FIELD_SCALE,0.0,0.0)
+call CameraSetupSetField(gg_cam_Starting_Camera,CAMERA_FIELD_ZABSOLUTE,0.0,0.0)
 call CameraSetupSetDestPosition(gg_cam_Starting_Camera,-1908.9,-11036.7,0.0)
+call BlzCameraSetupSetCameraType(gg_cam_Starting_Camera,0)
 set gg_cam_Final_Boss_Camera_1=CreateCameraSetup()
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_1,CAMERA_FIELD_ZOFFSET,0.0,0.0)
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_1,CAMERA_FIELD_ROTATION,90.0,0.0)
@@ -27712,7 +28065,11 @@ call CameraSetupSetField(gg_cam_Final_Boss_Camera_1,CAMERA_FIELD_NEARZ,100.0,0.0
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_1,CAMERA_FIELD_LOCAL_PITCH,0.0,0.0)
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_1,CAMERA_FIELD_LOCAL_YAW,0.0,0.0)
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_1,CAMERA_FIELD_LOCAL_ROLL,0.0,0.0)
+call CameraSetupSetField(gg_cam_Final_Boss_Camera_1,CAMERA_FIELD_DEPTH_OF_FIELD_DISTANCE,0.0,0.0)
+call CameraSetupSetField(gg_cam_Final_Boss_Camera_1,CAMERA_FIELD_DEPTH_OF_FIELD_SCALE,0.0,0.0)
+call CameraSetupSetField(gg_cam_Final_Boss_Camera_1,CAMERA_FIELD_ZABSOLUTE,0.0,0.0)
 call CameraSetupSetDestPosition(gg_cam_Final_Boss_Camera_1,3925.4,1279.5,0.0)
+call BlzCameraSetupSetCameraType(gg_cam_Final_Boss_Camera_1,0)
 set gg_cam_Final_Boss_Camera_2=CreateCameraSetup()
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_2,CAMERA_FIELD_ZOFFSET,0.0,0.0)
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_2,CAMERA_FIELD_ROTATION,45.0,0.0)
@@ -27725,7 +28082,11 @@ call CameraSetupSetField(gg_cam_Final_Boss_Camera_2,CAMERA_FIELD_NEARZ,100.0,0.0
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_2,CAMERA_FIELD_LOCAL_PITCH,0.0,0.0)
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_2,CAMERA_FIELD_LOCAL_YAW,0.0,0.0)
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_2,CAMERA_FIELD_LOCAL_ROLL,0.0,0.0)
+call CameraSetupSetField(gg_cam_Final_Boss_Camera_2,CAMERA_FIELD_DEPTH_OF_FIELD_DISTANCE,0.0,0.0)
+call CameraSetupSetField(gg_cam_Final_Boss_Camera_2,CAMERA_FIELD_DEPTH_OF_FIELD_SCALE,0.0,0.0)
+call CameraSetupSetField(gg_cam_Final_Boss_Camera_2,CAMERA_FIELD_ZABSOLUTE,0.0,0.0)
 call CameraSetupSetDestPosition(gg_cam_Final_Boss_Camera_2,4299.3,2498.8,0.0)
+call BlzCameraSetupSetCameraType(gg_cam_Final_Boss_Camera_2,0)
 set gg_cam_Final_Boss_Camera_4=CreateCameraSetup()
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_4,CAMERA_FIELD_ZOFFSET,0.0,0.0)
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_4,CAMERA_FIELD_ROTATION,295.6,0.0)
@@ -27738,7 +28099,11 @@ call CameraSetupSetField(gg_cam_Final_Boss_Camera_4,CAMERA_FIELD_NEARZ,100.0,0.0
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_4,CAMERA_FIELD_LOCAL_PITCH,0.0,0.0)
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_4,CAMERA_FIELD_LOCAL_YAW,0.0,0.0)
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_4,CAMERA_FIELD_LOCAL_ROLL,0.0,0.0)
+call CameraSetupSetField(gg_cam_Final_Boss_Camera_4,CAMERA_FIELD_DEPTH_OF_FIELD_DISTANCE,0.0,0.0)
+call CameraSetupSetField(gg_cam_Final_Boss_Camera_4,CAMERA_FIELD_DEPTH_OF_FIELD_SCALE,0.0,0.0)
+call CameraSetupSetField(gg_cam_Final_Boss_Camera_4,CAMERA_FIELD_ZABSOLUTE,0.0,0.0)
 call CameraSetupSetDestPosition(gg_cam_Final_Boss_Camera_4,4311.1,2548.8,0.0)
+call BlzCameraSetupSetCameraType(gg_cam_Final_Boss_Camera_4,0)
 set gg_cam_Cinematic=CreateCameraSetup()
 call CameraSetupSetField(gg_cam_Cinematic,CAMERA_FIELD_ZOFFSET,160.0,0.0)
 call CameraSetupSetField(gg_cam_Cinematic,CAMERA_FIELD_ROTATION,90.0,0.0)
@@ -27751,7 +28116,11 @@ call CameraSetupSetField(gg_cam_Cinematic,CAMERA_FIELD_NEARZ,100.0,0.0)
 call CameraSetupSetField(gg_cam_Cinematic,CAMERA_FIELD_LOCAL_PITCH,0.0,0.0)
 call CameraSetupSetField(gg_cam_Cinematic,CAMERA_FIELD_LOCAL_YAW,0.0,0.0)
 call CameraSetupSetField(gg_cam_Cinematic,CAMERA_FIELD_LOCAL_ROLL,0.0,0.0)
+call CameraSetupSetField(gg_cam_Cinematic,CAMERA_FIELD_DEPTH_OF_FIELD_DISTANCE,0.0,0.0)
+call CameraSetupSetField(gg_cam_Cinematic,CAMERA_FIELD_DEPTH_OF_FIELD_SCALE,0.0,0.0)
+call CameraSetupSetField(gg_cam_Cinematic,CAMERA_FIELD_ZABSOLUTE,0.0,0.0)
 call CameraSetupSetDestPosition(gg_cam_Cinematic,144.5,-8661.6,0.0)
+call BlzCameraSetupSetCameraType(gg_cam_Cinematic,0)
 set gg_cam_Cinematic_2=CreateCameraSetup()
 call CameraSetupSetField(gg_cam_Cinematic_2,CAMERA_FIELD_ZOFFSET,160.0,0.0)
 call CameraSetupSetField(gg_cam_Cinematic_2,CAMERA_FIELD_ROTATION,90.0,0.0)
@@ -27764,7 +28133,11 @@ call CameraSetupSetField(gg_cam_Cinematic_2,CAMERA_FIELD_NEARZ,100.0,0.0)
 call CameraSetupSetField(gg_cam_Cinematic_2,CAMERA_FIELD_LOCAL_PITCH,0.0,0.0)
 call CameraSetupSetField(gg_cam_Cinematic_2,CAMERA_FIELD_LOCAL_YAW,0.0,0.0)
 call CameraSetupSetField(gg_cam_Cinematic_2,CAMERA_FIELD_LOCAL_ROLL,0.0,0.0)
+call CameraSetupSetField(gg_cam_Cinematic_2,CAMERA_FIELD_DEPTH_OF_FIELD_DISTANCE,0.0,0.0)
+call CameraSetupSetField(gg_cam_Cinematic_2,CAMERA_FIELD_DEPTH_OF_FIELD_SCALE,0.0,0.0)
+call CameraSetupSetField(gg_cam_Cinematic_2,CAMERA_FIELD_ZABSOLUTE,0.0,0.0)
 call CameraSetupSetDestPosition(gg_cam_Cinematic_2,137.3,-9586.7,0.0)
+call BlzCameraSetupSetCameraType(gg_cam_Cinematic_2,0)
 set gg_cam_End_Camera_2=CreateCameraSetup()
 call CameraSetupSetField(gg_cam_End_Camera_2,CAMERA_FIELD_ZOFFSET,100.0,0.0)
 call CameraSetupSetField(gg_cam_End_Camera_2,CAMERA_FIELD_ROTATION,180.0,0.0)
@@ -27777,7 +28150,11 @@ call CameraSetupSetField(gg_cam_End_Camera_2,CAMERA_FIELD_NEARZ,100.0,0.0)
 call CameraSetupSetField(gg_cam_End_Camera_2,CAMERA_FIELD_LOCAL_PITCH,0.0,0.0)
 call CameraSetupSetField(gg_cam_End_Camera_2,CAMERA_FIELD_LOCAL_YAW,0.0,0.0)
 call CameraSetupSetField(gg_cam_End_Camera_2,CAMERA_FIELD_LOCAL_ROLL,0.0,0.0)
+call CameraSetupSetField(gg_cam_End_Camera_2,CAMERA_FIELD_DEPTH_OF_FIELD_DISTANCE,0.0,0.0)
+call CameraSetupSetField(gg_cam_End_Camera_2,CAMERA_FIELD_DEPTH_OF_FIELD_SCALE,0.0,0.0)
+call CameraSetupSetField(gg_cam_End_Camera_2,CAMERA_FIELD_ZABSOLUTE,0.0,0.0)
 call CameraSetupSetDestPosition(gg_cam_End_Camera_2,7664.5,2505.9,0.0)
+call BlzCameraSetupSetCameraType(gg_cam_End_Camera_2,0)
 set gg_cam_End_Camera_3=CreateCameraSetup()
 call CameraSetupSetField(gg_cam_End_Camera_3,CAMERA_FIELD_ZOFFSET,0.0,0.0)
 call CameraSetupSetField(gg_cam_End_Camera_3,CAMERA_FIELD_ROTATION,180.0,0.0)
@@ -27790,7 +28167,11 @@ call CameraSetupSetField(gg_cam_End_Camera_3,CAMERA_FIELD_NEARZ,100.0,0.0)
 call CameraSetupSetField(gg_cam_End_Camera_3,CAMERA_FIELD_LOCAL_PITCH,0.0,0.0)
 call CameraSetupSetField(gg_cam_End_Camera_3,CAMERA_FIELD_LOCAL_YAW,0.0,0.0)
 call CameraSetupSetField(gg_cam_End_Camera_3,CAMERA_FIELD_LOCAL_ROLL,0.0,0.0)
+call CameraSetupSetField(gg_cam_End_Camera_3,CAMERA_FIELD_DEPTH_OF_FIELD_DISTANCE,0.0,0.0)
+call CameraSetupSetField(gg_cam_End_Camera_3,CAMERA_FIELD_DEPTH_OF_FIELD_SCALE,0.0,0.0)
+call CameraSetupSetField(gg_cam_End_Camera_3,CAMERA_FIELD_ZABSOLUTE,0.0,0.0)
 call CameraSetupSetDestPosition(gg_cam_End_Camera_3,7966.9,2521.8,0.0)
+call BlzCameraSetupSetCameraType(gg_cam_End_Camera_3,0)
 set gg_cam_End_Camera_1=CreateCameraSetup()
 call CameraSetupSetField(gg_cam_End_Camera_1,CAMERA_FIELD_ZOFFSET,70.0,0.0)
 call CameraSetupSetField(gg_cam_End_Camera_1,CAMERA_FIELD_ROTATION,0.0,0.0)
@@ -27803,7 +28184,11 @@ call CameraSetupSetField(gg_cam_End_Camera_1,CAMERA_FIELD_NEARZ,100.0,0.0)
 call CameraSetupSetField(gg_cam_End_Camera_1,CAMERA_FIELD_LOCAL_PITCH,0.0,0.0)
 call CameraSetupSetField(gg_cam_End_Camera_1,CAMERA_FIELD_LOCAL_YAW,0.0,0.0)
 call CameraSetupSetField(gg_cam_End_Camera_1,CAMERA_FIELD_LOCAL_ROLL,0.0,0.0)
+call CameraSetupSetField(gg_cam_End_Camera_1,CAMERA_FIELD_DEPTH_OF_FIELD_DISTANCE,0.0,0.0)
+call CameraSetupSetField(gg_cam_End_Camera_1,CAMERA_FIELD_DEPTH_OF_FIELD_SCALE,0.0,0.0)
+call CameraSetupSetField(gg_cam_End_Camera_1,CAMERA_FIELD_ZABSOLUTE,0.0,0.0)
 call CameraSetupSetDestPosition(gg_cam_End_Camera_1,8151.9,2511.4,0.0)
+call BlzCameraSetupSetCameraType(gg_cam_End_Camera_1,0)
 set gg_cam_Final_Boss_Camera_3=CreateCameraSetup()
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_3,CAMERA_FIELD_ZOFFSET,0.0,0.0)
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_3,CAMERA_FIELD_ROTATION,330.6,0.0)
@@ -27816,7 +28201,11 @@ call CameraSetupSetField(gg_cam_Final_Boss_Camera_3,CAMERA_FIELD_NEARZ,100.0,0.0
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_3,CAMERA_FIELD_LOCAL_PITCH,0.0,0.0)
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_3,CAMERA_FIELD_LOCAL_YAW,0.0,0.0)
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_3,CAMERA_FIELD_LOCAL_ROLL,0.0,0.0)
+call CameraSetupSetField(gg_cam_Final_Boss_Camera_3,CAMERA_FIELD_DEPTH_OF_FIELD_DISTANCE,0.0,0.0)
+call CameraSetupSetField(gg_cam_Final_Boss_Camera_3,CAMERA_FIELD_DEPTH_OF_FIELD_SCALE,0.0,0.0)
+call CameraSetupSetField(gg_cam_Final_Boss_Camera_3,CAMERA_FIELD_ZABSOLUTE,0.0,0.0)
 call CameraSetupSetDestPosition(gg_cam_Final_Boss_Camera_3,4278.4,2530.5,0.0)
+call BlzCameraSetupSetCameraType(gg_cam_Final_Boss_Camera_3,0)
 set gg_cam_Final_Boss_Camera_5=CreateCameraSetup()
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_5,CAMERA_FIELD_ZOFFSET,0.0,0.0)
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_5,CAMERA_FIELD_ROTATION,225.6,0.0)
@@ -27829,7 +28218,11 @@ call CameraSetupSetField(gg_cam_Final_Boss_Camera_5,CAMERA_FIELD_NEARZ,100.0,0.0
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_5,CAMERA_FIELD_LOCAL_PITCH,0.0,0.0)
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_5,CAMERA_FIELD_LOCAL_YAW,0.0,0.0)
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_5,CAMERA_FIELD_LOCAL_ROLL,0.0,0.0)
+call CameraSetupSetField(gg_cam_Final_Boss_Camera_5,CAMERA_FIELD_DEPTH_OF_FIELD_DISTANCE,0.0,0.0)
+call CameraSetupSetField(gg_cam_Final_Boss_Camera_5,CAMERA_FIELD_DEPTH_OF_FIELD_SCALE,0.0,0.0)
+call CameraSetupSetField(gg_cam_Final_Boss_Camera_5,CAMERA_FIELD_ZABSOLUTE,0.0,0.0)
 call CameraSetupSetDestPosition(gg_cam_Final_Boss_Camera_5,4328.3,2524.3,0.0)
+call BlzCameraSetupSetCameraType(gg_cam_Final_Boss_Camera_5,0)
 set gg_cam_Final_Boss_Camera_6=CreateCameraSetup()
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_6,CAMERA_FIELD_ZOFFSET,0.0,0.0)
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_6,CAMERA_FIELD_ROTATION,150.6,0.0)
@@ -27842,7 +28235,11 @@ call CameraSetupSetField(gg_cam_Final_Boss_Camera_6,CAMERA_FIELD_NEARZ,100.0,0.0
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_6,CAMERA_FIELD_LOCAL_PITCH,0.0,0.0)
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_6,CAMERA_FIELD_LOCAL_YAW,0.0,0.0)
 call CameraSetupSetField(gg_cam_Final_Boss_Camera_6,CAMERA_FIELD_LOCAL_ROLL,0.0,0.0)
+call CameraSetupSetField(gg_cam_Final_Boss_Camera_6,CAMERA_FIELD_DEPTH_OF_FIELD_DISTANCE,0.0,0.0)
+call CameraSetupSetField(gg_cam_Final_Boss_Camera_6,CAMERA_FIELD_DEPTH_OF_FIELD_SCALE,0.0,0.0)
+call CameraSetupSetField(gg_cam_Final_Boss_Camera_6,CAMERA_FIELD_ZABSOLUTE,0.0,0.0)
 call CameraSetupSetDestPosition(gg_cam_Final_Boss_Camera_6,4373.5,2467.9,0.0)
+call BlzCameraSetupSetCameraType(gg_cam_Final_Boss_Camera_6,0)
 endfunction
 function Trig_Init_Actions takes nothing returns nothing
 call TasAbilityChargeBox_Init()
@@ -29192,91 +29589,79 @@ return false
 endif
 return true
 endfunction
-function Trig_Boss_Deaths_Func010C takes nothing returns boolean
-if(not(GetTriggerUnit()==gg_unit_n01D_0291))then
-return false
-endif
-return true
-endfunction
-function Trig_Boss_Deaths_Func011C takes nothing returns boolean
-if(not(GetTriggerUnit()==gg_unit_n01D_0292))then
-return false
-endif
-return true
-endfunction
-function Trig_Boss_Deaths_Func012Func001Func004C takes nothing returns boolean
+function Trig_Boss_Deaths_Func010Func002C takes nothing returns boolean
 if(not(udg_BelShan_GolemCheck==2))then
 return false
 endif
 return true
 endfunction
-function Trig_Boss_Deaths_Func012Func001C takes nothing returns boolean
+function Trig_Boss_Deaths_Func010Func003C takes nothing returns boolean
 if(not(IsQuestFailed(udg_Challenge[20])==false))then
 return false
 endif
 return true
 endfunction
-function Trig_Boss_Deaths_Func012C takes nothing returns boolean
+function Trig_Boss_Deaths_Func010C takes nothing returns boolean
 if(not(GetTriggerUnit()==gg_unit_n00J_0301))then
 return false
 endif
 return true
 endfunction
-function Trig_Boss_Deaths_Func013Func002C takes nothing returns boolean
+function Trig_Boss_Deaths_Func011Func002C takes nothing returns boolean
 if(not(udg_DungeonBreaker_Level==0))then
 return false
 endif
 return true
 endfunction
-function Trig_Boss_Deaths_Func013C takes nothing returns boolean
+function Trig_Boss_Deaths_Func011C takes nothing returns boolean
 if(not(GetTriggerUnit()==gg_unit_n03C_0591))then
 return false
 endif
 return true
 endfunction
-function Trig_Boss_Deaths_Func015Func001C takes nothing returns boolean
+function Trig_Boss_Deaths_Func013Func001C takes nothing returns boolean
 if(not(IsQuestFailed(udg_Challenge[21])==false))then
 return false
 endif
 return true
 endfunction
-function Trig_Boss_Deaths_Func015Func003Func001C takes nothing returns boolean
+function Trig_Boss_Deaths_Func013Func003Func001C takes nothing returns boolean
 if(not(GetDestructableTypeId(GetEnumDestructable())=='DTep'))then
 return false
 endif
 return true
 endfunction
-function Trig_Boss_Deaths_Func015Func003A takes nothing returns nothing
-if(Trig_Boss_Deaths_Func015Func003Func001C())then
+function Trig_Boss_Deaths_Func013Func003A takes nothing returns nothing
+if(Trig_Boss_Deaths_Func013Func003Func001C())then
 call DestructableRestoreLife(GetEnumDestructable(),GetDestructableMaxLife(GetLastCreatedDestructable()),true)
 else
 endif
 endfunction
-function Trig_Boss_Deaths_Func015Func004Func001C takes nothing returns boolean
+function Trig_Boss_Deaths_Func013Func004Func001C takes nothing returns boolean
 if(not(GetDestructableTypeId(GetEnumDestructable())=='DTep'))then
 return false
 endif
 return true
 endfunction
-function Trig_Boss_Deaths_Func015Func004A takes nothing returns nothing
-if(Trig_Boss_Deaths_Func015Func004Func001C())then
+function Trig_Boss_Deaths_Func013Func004A takes nothing returns nothing
+if(Trig_Boss_Deaths_Func013Func004Func001C())then
 call KillDestructable(GetEnumDestructable())
 else
 endif
 endfunction
-function Trig_Boss_Deaths_Func015C takes nothing returns boolean
+function Trig_Boss_Deaths_Func013C takes nothing returns boolean
 if(not(GetUnitTypeId(GetTriggerUnit())=='h006'))then
 return false
 endif
 return true
 endfunction
-function Trig_Boss_Deaths_Func016C takes nothing returns boolean
+function Trig_Boss_Deaths_Func014C takes nothing returns boolean
 if(not(GetTriggerUnit()==gg_unit_h00E_0741))then
 return false
 endif
 return true
 endfunction
-function Trig_Boss_Deaths_Func017C takes nothing returns boolean
+function Trig_Boss_Deaths_Func015C takes nothing returns boolean
 if(not(GetTriggerUnit()==gg_unit_n000_0055))then
 return false
 endif
@@ -29403,38 +29788,23 @@ endif
 else
 endif
 if(Trig_Boss_Deaths_Func010C())then
-set udg_BelShan_GolemCheck=(udg_BelShan_GolemCheck+1)
-call DisableTrigger(gg_trg_Control_Golem_1)
-call DisableTrigger(gg_trg_Release_Golem_1)
-call TriggerExecute(gg_trg_Release_Golem_1)
-else
-endif
-if(Trig_Boss_Deaths_Func011C())then
-set udg_BelShan_GolemCheck=(udg_BelShan_GolemCheck+1)
-call DisableTrigger(gg_trg_Control_Golem_2)
-call DisableTrigger(gg_trg_Release_Golem_2)
-call TriggerExecute(gg_trg_Release_Golem_2)
-else
-endif
-if(Trig_Boss_Deaths_Func012C())then
-if(Trig_Boss_Deaths_Func012Func001C())then
-call QuestSetCompletedBJ(udg_Challenge[20],true)
-call QuestMessageBJ(udg_Player_Group,bj_QUESTMESSAGE_COMPLETED,"TRIGSTR_12601")
 set udg_Generic_Point=GetUnitLoc(GetTriggerUnit())
-if(Trig_Boss_Deaths_Func012Func001Func004C())then
+if(Trig_Boss_Deaths_Func010Func002C())then
 call CreateItemLoc('I0OP',udg_Generic_Point)
 else
 endif
+if(Trig_Boss_Deaths_Func010Func003C())then
+call QuestSetCompletedBJ(udg_Challenge[20],true)
+call QuestMessageBJ(udg_Player_Group,bj_QUESTMESSAGE_COMPLETED,"TRIGSTR_12601")
 call CreateItemLoc('I075',udg_Generic_Point)
+else
+endif
 call RemoveLocation(udg_Generic_Point)
-call DisableTrigger(gg_trg_Heavy_Metal)
 else
 endif
-else
-endif
-if(Trig_Boss_Deaths_Func013C())then
+if(Trig_Boss_Deaths_Func011C())then
 call QueuedTriggerAddBJ(gg_trg_Hint_Dungeon,true)
-if(Trig_Boss_Deaths_Func013Func002C())then
+if(Trig_Boss_Deaths_Func011Func002C())then
 set udg_DungeonBreaker_Level=(udg_DungeonBreaker_Level+1)
 call UnitAddAbilityBJ('S003',gg_unit_h01T_0749)
 call SetUnitAbilityLevelSwapped('A08B',udg_Agi_Str_Int[1],(udg_DungeonBreaker_Level+1))
@@ -29449,8 +29819,8 @@ call SetUnitAbilityLevelSwapped('A08B',udg_Agi_Str_Int[3],(udg_DungeonBreaker_Le
 endif
 else
 endif
-if(Trig_Boss_Deaths_Func015C())then
-if(Trig_Boss_Deaths_Func015Func001C())then
+if(Trig_Boss_Deaths_Func013C())then
+if(Trig_Boss_Deaths_Func013Func001C())then
 call QuestSetCompletedBJ(udg_Challenge[21],true)
 call QuestMessageBJ(udg_Player_Group,bj_QUESTMESSAGE_COMPLETED,"TRIGSTR_12604")
 set udg_Generic_Point=GetUnitLoc(GetTriggerUnit())
@@ -29459,18 +29829,18 @@ call RemoveLocation(udg_Generic_Point)
 else
 endif
 call ChangeElevatorHeight(gg_dest_DTrx_0607,2)
-call EnumDestructablesInRectAll(gg_rct_Lava_Elevator_Horizontal,function Trig_Boss_Deaths_Func015Func003A)
-call EnumDestructablesInRectAll(gg_rct_Lava_Elevator_Vertical,function Trig_Boss_Deaths_Func015Func004A)
+call EnumDestructablesInRectAll(gg_rct_Lava_Elevator_Horizontal,function Trig_Boss_Deaths_Func013Func003A)
+call EnumDestructablesInRectAll(gg_rct_Lava_Elevator_Vertical,function Trig_Boss_Deaths_Func013Func004A)
 else
 endif
-if(Trig_Boss_Deaths_Func016C())then
+if(Trig_Boss_Deaths_Func014C())then
 set udg_AtalaiDead=true
 set udg_Ping_Point=GetRectCenter(gg_rct_Teleport_Boss)
 call PingMinimapLocForForceEx(GetPlayersAll(),udg_Ping_Point,4.50,bj_MINIMAPPINGSTYLE_FLASHY,100,100,100)
 call RemoveLocation(udg_Ping_Point)
 else
 endif
-if(Trig_Boss_Deaths_Func017C())then
+if(Trig_Boss_Deaths_Func015C())then
 set udg_Ping_Point=GetRectCenter(gg_rct_Exit_Quest)
 call PingMinimapLocForForceEx(GetPlayersAll(),udg_Ping_Point,4.50,bj_MINIMAPPINGSTYLE_FLASHY,100,100,100)
 call RemoveLocation(udg_Ping_Point)
@@ -30405,6 +30775,80 @@ call TriggerRegisterEnterRectSimple(gg_trg_Golem_Forbid,gg_rct_Golem_Restrict_3)
 call TriggerAddCondition(gg_trg_Golem_Forbid,Condition(function Trig_Golem_Forbid_Conditions))
 call TriggerAddAction(gg_trg_Golem_Forbid,function Trig_Golem_Forbid_Actions)
 endfunction
+function Trig_Golems_Die_Func006C takes nothing returns boolean
+if((GetTriggerUnit()==gg_unit_n01D_0291))then
+return true
+endif
+if((GetTriggerUnit()==gg_unit_n01D_0292))then
+return true
+endif
+return false
+endfunction
+function Trig_Golems_Die_Conditions takes nothing returns boolean
+if(not Trig_Golems_Die_Func006C())then
+return false
+endif
+return true
+endfunction
+function Trig_Golems_Die_Func002C takes nothing returns boolean
+if(not(udg_BelShan_GolemCheck==2))then
+return false
+endif
+if(not(UnitIsDeadBJ(gg_unit_n00J_0301)==true))then
+return false
+endif
+return true
+endfunction
+function Trig_Golems_Die_Func003C takes nothing returns boolean
+if(not(GetTriggerUnit()==gg_unit_n01D_0291))then
+return false
+endif
+return true
+endfunction
+function Trig_Golems_Die_Func004C takes nothing returns boolean
+if(not(GetTriggerUnit()==gg_unit_n01D_0292))then
+return false
+endif
+return true
+endfunction
+function Trig_Golems_Die_Func005C takes nothing returns boolean
+if(not(IsQuestFailed(udg_Challenge[20])==false))then
+return false
+endif
+return true
+endfunction
+function Trig_Golems_Die_Actions takes nothing returns nothing
+set udg_BelShan_GolemCheck=(udg_BelShan_GolemCheck+1)
+if(Trig_Golems_Die_Func002C())then
+set udg_Generic_Point=GetUnitLoc(GetTriggerUnit())
+call CreateItemLoc('I0OP',udg_Generic_Point)
+call RemoveLocation(udg_Generic_Point)
+else
+endif
+if(Trig_Golems_Die_Func003C())then
+call DisableTrigger(gg_trg_Control_Golem_1)
+call DisableTrigger(gg_trg_Release_Golem_1)
+call TriggerExecute(gg_trg_Release_Golem_1)
+else
+endif
+if(Trig_Golems_Die_Func004C())then
+call DisableTrigger(gg_trg_Control_Golem_2)
+call DisableTrigger(gg_trg_Release_Golem_2)
+call TriggerExecute(gg_trg_Release_Golem_2)
+else
+endif
+if(Trig_Golems_Die_Func005C())then
+call QuestSetFailedBJ(udg_Challenge[20],true)
+call QuestMessageBJ(udg_Player_Group,bj_QUESTMESSAGE_FAILED,"TRIGSTR_3192")
+else
+endif
+endfunction
+function InitTrig_Golems_Die takes nothing returns nothing
+set gg_trg_Golems_Die=CreateTrigger()
+call TriggerRegisterAnyUnitEventBJ(gg_trg_Golems_Die,EVENT_PLAYER_UNIT_DEATH)
+call TriggerAddCondition(gg_trg_Golems_Die,Condition(function Trig_Golems_Die_Conditions))
+call TriggerAddAction(gg_trg_Golems_Die,function Trig_Golems_Die_Actions)
+endfunction
 function Trig_Obsidian_Area_Limit_Conditions takes nothing returns boolean
 if(not(GetUnitTypeId(GetTriggerUnit())=='h006'))then
 return false
@@ -31119,6 +31563,9 @@ endif
 if(not(IsUnitType(udg_DamageEventTarget,UNIT_TYPE_HERO)==true))then
 return false
 endif
+if(not(UnitIsAliveBJ(gg_unit_h00K_0132)==true))then
+return false
+endif
 return true
 endfunction
 function Trig_By_Fire_Be_Purged_Func001C takes nothing returns boolean
@@ -31214,32 +31661,6 @@ set gg_trg_Rising_Tide=CreateTrigger()
 call TriggerRegisterAnyUnitEventBJ(gg_trg_Rising_Tide,EVENT_PLAYER_UNIT_DEATH)
 call TriggerAddCondition(gg_trg_Rising_Tide,Condition(function Trig_Rising_Tide_Conditions))
 call TriggerAddAction(gg_trg_Rising_Tide,function Trig_Rising_Tide_Actions)
-endfunction
-function Trig_Heavy_Metal_Func002C takes nothing returns boolean
-if((GetTriggerUnit()==gg_unit_n01D_0291))then
-return true
-endif
-if((GetTriggerUnit()==gg_unit_n01D_0292))then
-return true
-endif
-return false
-endfunction
-function Trig_Heavy_Metal_Conditions takes nothing returns boolean
-if(not Trig_Heavy_Metal_Func002C())then
-return false
-endif
-return true
-endfunction
-function Trig_Heavy_Metal_Actions takes nothing returns nothing
-call DisableTrigger(GetTriggeringTrigger())
-call QuestSetFailedBJ(udg_Challenge[20],true)
-call QuestMessageBJ(udg_Player_Group,bj_QUESTMESSAGE_FAILED,"TRIGSTR_12600")
-endfunction
-function InitTrig_Heavy_Metal takes nothing returns nothing
-set gg_trg_Heavy_Metal=CreateTrigger()
-call TriggerRegisterAnyUnitEventBJ(gg_trg_Heavy_Metal,EVENT_PLAYER_UNIT_DEATH)
-call TriggerAddCondition(gg_trg_Heavy_Metal,Condition(function Trig_Heavy_Metal_Conditions))
-call TriggerAddAction(gg_trg_Heavy_Metal,function Trig_Heavy_Metal_Actions)
 endfunction
 function Trig_Survivor_Func006C takes nothing returns boolean
 if((GetOwningPlayer(GetTriggerUnit())==Player(0)))then
@@ -34446,7 +34867,6 @@ call TriggerExecute(gg_trg_Cleansing_Fire_Healing)
 call HP_LoadSlot(hp_s)
 call StartTimerBJ(udg_Dragonfury_Timer,false,1.00)
 call StartTimerBJ(udg_Lifebinder_Timer,false,1.00)
-call BlzUnitDisableAbility(udg_Hero_DragonSentinel,'A0HW',true,false)
 set udg_PlayerNumber_STR=GetConvertedPlayerId(GetOwningPlayer(GetSoldUnit()))
 set udg_CustomResource_Name[udg_PlayerNumber_STR]="Dragonfury"
 set udg_CustomResource_MaxValue[udg_PlayerNumber_STR]=100
@@ -59553,7 +59973,7 @@ endif
 if(Trig_PreDamage_Heroes_Func002Func008Func008Func006C())then
 set udg_CustomResource_CurrentValue[HP_PidOf(udg_Hero_DragonSentinel)]=(udg_CustomResource_CurrentValue[HP_PidOf(udg_Hero_DragonSentinel)]+1)
 if(Trig_PreDamage_Heroes_Func002Func008Func008Func006Func002C())then
-call BlzUnitDisableAbility(udg_Hero_DragonSentinel,'A0HW',false,false)
+call SetPlayerTechResearchedSwap('R007',1,GetOwningPlayer(udg_Hero_DragonSentinel))
 else
 endif
 else
@@ -59690,7 +60110,7 @@ else
 endif
 if(Trig_PreDamage_Heroes_Func002Func008Func012Func010C())then
 if(Trig_PreDamage_Heroes_Func002Func008Func012Func010Func004C())then
-set udg_SpellMastery_Fire_Chance=25.00
+set udg_SpellMastery_Fire_Chance=20.00
 if(Trig_PreDamage_Heroes_Func002Func008Func012Func010Func004Func002C())then
 set udg_SpellMastery_Fire_Chance=(udg_SpellMastery_Fire_Chance+5.00)
 else
@@ -74777,7 +75197,7 @@ endif
 if(Trig_ArmorDamage_Reduce_Func001Func022Func004C())then
 if(Trig_ArmorDamage_Reduce_Func001Func022Func004Func002C())then
 if(Trig_ArmorDamage_Reduce_Func001Func022Func004Func002Func001C())then
-set udg_SDR_Stat[udg_PlayerNumber]=(udg_SDR_Stat[udg_PlayerNumber]*0.75)
+set udg_DamageEventAmount=(udg_DamageEventAmount*0.75)
 else
 set udg_DamageEventAmount=(udg_DamageEventAmount*0.88)
 endif
@@ -75903,7 +76323,7 @@ endif
 return true
 endfunction
 function Trig_OnDamage_Heroes_Func002Func004Func008Func018Func012C takes nothing returns boolean
-if(not(GetRandomReal(0,100.00)<=udg_BackdraftChance_Total))then
+if(not(GetRandomReal(0,100.00)<=(udg_BackdraftChance_Total*udg_Luck_Multiplier[GetConvertedPlayerId(GetOwningPlayer(udg_Hero_Warlock))])))then
 return false
 endif
 return true
@@ -76881,7 +77301,7 @@ call RemoveLocation(udg_TempPoint_DamageEngine)
 else
 endif
 if(Trig_OnDamage_Heroes_Func002Func008Func012Func004C())then
-set udg_Insanity_Amount=(udg_Insanity_Amount+(0.10*udg_DamageEventAmount))
+set udg_Insanity_Amount=(udg_Insanity_Amount+(0.15*udg_DamageEventAmount))
 else
 endif
 if(Trig_OnDamage_Heroes_Func002Func008Func012Func006C())then
@@ -85604,6 +86024,7 @@ call TriggerAddCondition(gg_trg_Oris_Release,Condition(function Trig_Oris_Releas
 call TriggerAddAction(gg_trg_Oris_Release,function Trig_Oris_Release_Actions)
 endfunction
 function Trig_Map_Load_Actions takes nothing returns nothing
+call PolledWait(0.01)
 call CameraSetSmoothingFactorBJ(10.00)
 call MultiboardDisplayBJ(true,udg_Main_Board)
 call StopMusicBJ(false)
@@ -90665,7 +91086,7 @@ set udg_Hint_List[16]="Your Backpack (|cffffcc00F2|r) can be used for extra inve
 set udg_Hint_List[17]="Spend your ESC Stats wisely, because resetting them does not come for free."
 set udg_Hint_List[18]="Damage dealt by Snake Poison and Nightmares in Heroic Mode is classified as Spell Damage."
 set udg_Hint_List[19]="You can find out the total bonuses you've gained from consumables in the Backpack (|cffffcc00F2|r)."
-set udg_Hint_List[20]="Avoid pulling enemies too close to the Ressurection Stones. They also benefit from its healing powers."
+set udg_Hint_List[20]="Avoid pulling enemies too close to the Resurrection Stones. They also benefit from its healing powers."
 set udg_Hint_List[21]="Secret Areas are scattered around the map and contain small rewards. Find them all to unlock a greater reward."
 set udg_Hint_List[22]="Certain areas in the map can only be accessed by Naga heroes. None of them are required to progress."
 set udg_Hint_List[23]="Bounty from killed enemies is shared between Players. No need to last hit!"
@@ -91340,7 +91761,8 @@ set udg_Drops_Epic[168]='I0UM'
 set udg_Drops_Epic[169]='I06E'
 set udg_Drops_Epic[170]='I0VA'
 set udg_Drops_Epic[171]='I0VC'
-set udg_Drops_EpicCount=171
+set udg_Drops_Epic[172]='I0E4'
+set udg_Drops_EpicCount=172
 call ConditionalTriggerExecute(gg_trg_Register_Unique_Epics)
 set udg_SpecialItems[1]='ktrm'
 set udg_SpecialItems[2]='wolg'
@@ -93476,7 +93898,6 @@ if(Trig_Item_Effects_Func014C())then
 call ForGroupBJ(udg_MechanicalMace_Group[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))],function Trig_Item_Effects_Func014Func001A)
 set udg_MechanicalMace_UnitType[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=GetUnitTypeId(GetSpellTargetUnit())
 call UnitAddAbilityBJ('A02V',GetSpellTargetUnit())
-call BlzUnitDisableAbility(GetSpellTargetUnit(),'A02V',false,true)
 call GroupAddUnitSimple(GetSpellTargetUnit(),udg_MechanicalMace_Group[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])
 else
 endif
@@ -102649,7 +103070,7 @@ call TriggerAddCondition(gg_trg_Drops,Condition(function Trig_Drops_Conditions))
 call TriggerAddAction(gg_trg_Drops,function Trig_Drops_Actions)
 endfunction
 function Trig_Bonus_Drop_Actions takes nothing returns nothing
-call CreateTextTagUnitBJ(("|c00eccf11Bonus Drop:|r "+GetItemName(udg_Dropped_Item)),udg_Dropped_Item_Unit,0,9.10,100,100,100.00,0)
+call CreateTextTagUnitBJ(("|cffffcc00Magic Find:|r "+GetItemName(udg_Dropped_Item)),udg_Dropped_Item_Unit,0,9.10,100,100,100.00,0)
 call SetTextTagPermanentBJ(GetLastCreatedTextTag(),false)
 call SetTextTagLifespanBJ(GetLastCreatedTextTag(),4.00)
 set udg_Dropped_Item_Point=GetItemLoc(udg_Dropped_Item)
@@ -107325,7 +107746,7 @@ call QueuedTriggerAddBJ(gg_trg_Hint_General,true)
 endfunction
 function InitTrig_Hints takes nothing returns nothing
 set gg_trg_Hints=CreateTrigger()
-call TriggerRegisterTimerEventPeriodic(gg_trg_Hints,180.00)
+call TriggerRegisterTimerEventPeriodic(gg_trg_Hints,300.00)
 call TriggerAddAction(gg_trg_Hints,function Trig_Hints_Actions)
 endfunction
 function Trig_Trigger_Customization_Tutorial_Conditions takes nothing returns boolean
@@ -107662,8 +108083,10 @@ endif
 return true
 endfunction
 function Trig_Hint_Hearthstone_Actions takes nothing returns nothing
+call DisableTrigger(GetTriggeringTrigger())
 call QuestMessageBJ(udg_Player_Group,bj_QUESTMESSAGE_ALWAYSHINT,"TRIGSTR_2607")
 call PolledWait(10.00)
+call EnableTrigger(GetTriggeringTrigger())
 call QueuedTriggerRemoveBJ(GetTriggeringTrigger())
 endfunction
 function InitTrig_Hint_Hearthstone takes nothing returns nothing
@@ -119625,7 +120048,7 @@ else
 if(Trig_Talents_Func004Func002Func032Func001Func001Func001Func001C())then
 set udg_CustomResource_MaxValue[HP_PidOf(udg_Hero_DragonSentinel)]=(udg_CustomResource_MaxValue[HP_PidOf(udg_Hero_DragonSentinel)]-15)
 if(Trig_Talents_Func004Func002Func032Func001Func001Func001Func001Func003C())then
-call BlzUnitDisableAbility(udg_Hero_DragonSentinel,'A0HW',false,false)
+call SetPlayerTechResearchedSwap('R007',1,GetOwningPlayer(udg_Hero_DragonSentinel))
 set udg_CustomResource_CurrentValue[HP_PidOf(udg_Hero_DragonSentinel)]=udg_CustomResource_MaxValue[HP_PidOf(udg_Hero_DragonSentinel)]
 else
 endif
@@ -119944,12 +120367,6 @@ return false
 endif
 return true
 endfunction
-function Trig_Talent_Disables_Func033Func001Func002Func001Func001Func002C takes nothing returns boolean
-if(not(udg_CustomResource_CurrentValue[HP_PidOf(udg_Hero_DragonSentinel)]==udg_CustomResource_MaxValue[HP_PidOf(udg_Hero_DragonSentinel)]))then
-return false
-endif
-return true
-endfunction
 function Trig_Talent_Disables_Func033Func001Func002Func001Func001C takes nothing returns boolean
 if(not(GetItemTypeId(GetManipulatedItem())=='I0QK'))then
 return false
@@ -120229,10 +120646,7 @@ if(Trig_Talent_Disables_Func033Func001Func002Func001C())then
 call PauseTimerBJ(true,udg_EngulfingFlames_Timer)
 else
 if(Trig_Talent_Disables_Func033Func001Func002Func001Func001C())then
-if(Trig_Talent_Disables_Func033Func001Func002Func001Func001Func002C())then
-call BlzUnitDisableAbility(udg_Hero_DragonSentinel,'A0HW',true,false)
-else
-endif
+call SetPlayerTechResearchedSwap('R007',0,GetOwningPlayer(udg_Hero_DragonSentinel))
 set udg_CustomResource_MaxValue[HP_PidOf(udg_Hero_DragonSentinel)]=(udg_CustomResource_MaxValue[HP_PidOf(udg_Hero_DragonSentinel)]+15)
 else
 endif
@@ -126337,30 +126751,6 @@ return false
 endif
 return true
 endfunction
-function Trig_OnSpellcast_Heroes_Func010Func004Func004C takes nothing returns boolean
-if(not(udg_CustomResource_CurrentValue[HP_PidOf(udg_Hero_DragonSentinel)]<=97))then
-return false
-endif
-return true
-endfunction
-function Trig_OnSpellcast_Heroes_Func010Func004Func005C takes nothing returns boolean
-if(not(udg_CustomResource_CurrentValue[HP_PidOf(udg_Hero_DragonSentinel)]==100))then
-return false
-endif
-return true
-endfunction
-function Trig_OnSpellcast_Heroes_Func010Func004C takes nothing returns boolean
-if(not(GetUnitAbilityLevelSwapped('A0O6',udg_Glyphs_Unit[HP_SlotOf(udg_Hero_DragonSentinel)])==2))then
-return false
-endif
-if(not(udg_Combat_Boo[GetConvertedPlayerId(GetOwningPlayer(udg_Hero_DragonSentinel))]==true))then
-return false
-endif
-if(not(udg_CustomResource_CurrentValue[HP_PidOf(udg_Hero_DragonSentinel)]<100))then
-return false
-endif
-return true
-endfunction
 function Trig_OnSpellcast_Heroes_Func010C takes nothing returns boolean
 if(not(HP_Is_DragonSentinel(GetTriggerUnit())))then
 return false
@@ -127042,18 +127432,6 @@ if(Trig_OnSpellcast_Heroes_Func010Func002C())then
 set udg_Burnout_BonusChance=(udg_Burnout_BonusChance+0.50)
 else
 endif
-if(Trig_OnSpellcast_Heroes_Func010Func004C())then
-if(Trig_OnSpellcast_Heroes_Func010Func004Func004C())then
-set udg_CustomResource_CurrentValue[HP_PidOf(udg_Hero_DragonSentinel)]=(udg_CustomResource_CurrentValue[HP_PidOf(udg_Hero_DragonSentinel)]+3)
-else
-set udg_CustomResource_CurrentValue[HP_PidOf(udg_Hero_DragonSentinel)]=100
-endif
-if(Trig_OnSpellcast_Heroes_Func010Func004Func005C())then
-call BlzUnitDisableAbility(udg_Hero_DragonSentinel,'A0HW',false,false)
-else
-endif
-else
-endif
 else
 endif
 if(Trig_OnSpellcast_Heroes_Func012C())then
@@ -127300,16 +127678,43 @@ function InitTrig_Reset_Cooldown_Remove takes nothing returns nothing
 set gg_trg_Reset_Cooldown_Remove=CreateTrigger()
 call TriggerAddAction(gg_trg_Reset_Cooldown_Remove,function Trig_Reset_Cooldown_Remove_Actions)
 endfunction
+function Trig_Stun_Func001C takes nothing returns boolean
+if(not(UnitHasItemOfTypeBJ(udg_CC_Hero,'I0E4')==true))then
+return false
+endif
+return true
+endfunction
 function Trig_Stun_Actions takes nothing returns nothing
+if(Trig_Stun_Func001C())then
+set udg_CC_Duration=(udg_CC_Duration*1.25)
+else
+endif
 call UnitAddAbilityBJ('A0ED',udg_Caster_Dummy)
 call BlzSetAbilityRealLevelFieldBJ(BlzGetUnitAbility(udg_Caster_Dummy,'A0ED'),ABILITY_RLF_DURATION_NORMAL,0,udg_CC_Duration)
 call BlzSetAbilityRealLevelFieldBJ(BlzGetUnitAbility(udg_Caster_Dummy,'A0ED'),ABILITY_RLF_DURATION_HERO,0,(udg_CC_Duration*udg_Boss_CCModifier))
 call IssueTargetOrderBJ(udg_Caster_Dummy,"thunderbolt",udg_CC_Target)
 call UnitRemoveAbilityBJ('A0ED',udg_Caster_Dummy)
+call TriggerExecute(gg_trg_OnStun)
 endfunction
 function InitTrig_Stun takes nothing returns nothing
 set gg_trg_Stun=CreateTrigger()
 call TriggerAddAction(gg_trg_Stun,function Trig_Stun_Actions)
+endfunction
+function Trig_OnStun_Func002C takes nothing returns boolean
+if(not(UnitHasItemOfTypeBJ(udg_CC_Hero,'I0E4')==true))then
+return false
+endif
+return true
+endfunction
+function Trig_OnStun_Actions takes nothing returns nothing
+if(Trig_OnStun_Func002C())then
+call UnitDamageTargetBJ(udg_CC_Hero,udg_CC_Target,100.00,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
+else
+endif
+endfunction
+function InitTrig_OnStun takes nothing returns nothing
+set gg_trg_OnStun=CreateTrigger()
+call TriggerAddAction(gg_trg_OnStun,function Trig_OnStun_Actions)
 endfunction
 function Trig_Freeze_Actions takes nothing returns nothing
 call UnitAddAbilityBJ('A054',udg_Caster_Dummy)
@@ -130421,7 +130826,7 @@ call TriggerRegisterAnyUnitEventBJ(gg_trg_Dragon_Form_Store_CD,EVENT_PLAYER_UNIT
 call TriggerAddCondition(gg_trg_Dragon_Form_Store_CD,Condition(function Trig_Dragon_Form_Store_CD_Conditions))
 call TriggerAddAction(gg_trg_Dragon_Form_Store_CD,function Trig_Dragon_Form_Store_CD_Actions)
 endfunction
-function Trig_Dragon_Form_Func004Func004Func002Func001C takes nothing returns boolean
+function Trig_Dragon_Form_Func004Func003Func002Func001C takes nothing returns boolean
 if(not(IsUnitAlly(GetEnumUnit(),GetTriggerPlayer())==true))then
 return false
 endif
@@ -130445,8 +130850,8 @@ return false
 endif
 return true
 endfunction
-function Trig_Dragon_Form_Func004Func004Func002A takes nothing returns nothing
-if(Trig_Dragon_Form_Func004Func004Func002Func001C())then
+function Trig_Dragon_Form_Func004Func003Func002A takes nothing returns nothing
+if(Trig_Dragon_Form_Func004Func003Func002Func001C())then
 set udg_Heal_Amount=(0.25*GetUnitStateSwap(UNIT_STATE_MAX_LIFE,udg_Hero_DragonSentinel))
 set udg_Heal_Target=GetEnumUnit()
 set udg_Heal_Healer=GetTriggerUnit()
@@ -130454,43 +130859,43 @@ call ConditionalTriggerExecute(gg_trg_Healing)
 else
 endif
 endfunction
-function Trig_Dragon_Form_Func004Func004C takes nothing returns boolean
+function Trig_Dragon_Form_Func004Func003C takes nothing returns boolean
 if(not(GetUnitAbilityLevelSwapped('A0O6',udg_Glyphs_Unit[HP_SlotOf(udg_Hero_DragonSentinel)])==3))then
 return false
 endif
 return true
 endfunction
-function Trig_Dragon_Form_Func004Func006Func003C takes nothing returns boolean
+function Trig_Dragon_Form_Func004Func005Func003C takes nothing returns boolean
 if(not(GetUnitAbilityLevelSwapped(udg_Generic_ResetAbility,udg_Generic_ResetUnit)>=1))then
 return false
 endif
 return true
 endfunction
-function Trig_Dragon_Form_Func004Func006Func006C takes nothing returns boolean
+function Trig_Dragon_Form_Func004Func005Func006C takes nothing returns boolean
 if(not(GetUnitAbilityLevelSwapped(udg_Generic_ResetAbility,udg_Generic_ResetUnit)>=1))then
 return false
 endif
 return true
 endfunction
-function Trig_Dragon_Form_Func004Func006Func009C takes nothing returns boolean
+function Trig_Dragon_Form_Func004Func005Func009C takes nothing returns boolean
 if(not(GetUnitAbilityLevelSwapped(udg_Generic_ResetAbility,udg_Generic_ResetUnit)>=1))then
 return false
 endif
 return true
 endfunction
-function Trig_Dragon_Form_Func004Func006Func012C takes nothing returns boolean
+function Trig_Dragon_Form_Func004Func005Func012C takes nothing returns boolean
 if(not(GetUnitAbilityLevelSwapped(udg_Generic_ResetAbility,udg_Generic_ResetUnit)>=1))then
 return false
 endif
 return true
 endfunction
-function Trig_Dragon_Form_Func004Func006Func015C takes nothing returns boolean
+function Trig_Dragon_Form_Func004Func005Func015C takes nothing returns boolean
 if(not(GetUnitAbilityLevelSwapped(udg_Generic_ResetAbility,udg_Generic_ResetUnit)>=1))then
 return false
 endif
 return true
 endfunction
-function Trig_Dragon_Form_Func004Func006C takes nothing returns boolean
+function Trig_Dragon_Form_Func004Func005C takes nothing returns boolean
 if(not(UnitHasItemOfTypeBJ(udg_Talents_Unit[HP_SlotOf(udg_Hero_DragonSentinel)],'I0QK')==true))then
 return false
 endif
@@ -130508,38 +130913,37 @@ call StartTimerBJ(udg_DragonForm_SpellsTimer,false,(0.01+(0.01/ 10.00)))
 set udg_Generic_Point=GetUnitLoc(GetTriggerUnit())
 if(Trig_Dragon_Form_Func004C())then
 set udg_CustomResource_CurrentValue[HP_PidOf(udg_Hero_DragonSentinel)]=0
-call BlzUnitDisableAbility(udg_Hero_DragonSentinel,'A0HW',true,false)
-if(Trig_Dragon_Form_Func004Func004C())then
+if(Trig_Dragon_Form_Func004Func003C())then
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRangeOfLocAll(600.00,udg_Generic_Point),function Trig_Dragon_Form_Func004Func004Func002A)
+call ForGroupBJ(GetUnitsInRangeOfLocAll(600.00,udg_Generic_Point),function Trig_Dragon_Form_Func004Func003Func002A)
 else
 set udg_Heal_Amount=(0.25*GetUnitStateSwap(UNIT_STATE_MAX_LIFE,udg_Hero_DragonSentinel))
 set udg_Heal_Target=GetTriggerUnit()
 set udg_Heal_Healer=GetTriggerUnit()
 call ConditionalTriggerExecute(gg_trg_Healing)
 endif
-if(Trig_Dragon_Form_Func004Func006C())then
+if(Trig_Dragon_Form_Func004Func005C())then
 set udg_Generic_ResetAbility='A00B'
 set udg_Generic_ResetUnit=GetTriggerUnit()
-if(Trig_Dragon_Form_Func004Func006Func003C())then
+if(Trig_Dragon_Form_Func004Func005Func003C())then
 call BlzEndUnitAbilityCooldown(udg_Generic_ResetUnit,udg_Generic_ResetAbility)
 else
 endif
 set udg_Generic_ResetAbility='A0OO'
 set udg_Generic_ResetUnit=GetTriggerUnit()
-if(Trig_Dragon_Form_Func004Func006Func006C())then
+if(Trig_Dragon_Form_Func004Func005Func006C())then
 call BlzEndUnitAbilityCooldown(udg_Generic_ResetUnit,udg_Generic_ResetAbility)
 else
 endif
 set udg_Generic_ResetAbility='A0OB'
 set udg_Generic_ResetUnit=GetTriggerUnit()
-if(Trig_Dragon_Form_Func004Func006Func009C())then
+if(Trig_Dragon_Form_Func004Func005Func009C())then
 call BlzEndUnitAbilityCooldown(udg_Generic_ResetUnit,udg_Generic_ResetAbility)
 else
 endif
 set udg_Generic_ResetAbility='A0O1'
 set udg_Generic_ResetUnit=GetTriggerUnit()
-if(Trig_Dragon_Form_Func004Func006Func012C())then
+if(Trig_Dragon_Form_Func004Func005Func012C())then
 set udg_Generic_ResetLevel=GetUnitAbilityLevelSwapped(udg_Generic_ResetAbility,udg_Generic_ResetUnit)
 call UnitRemoveAbilityBJ(udg_Generic_ResetAbility,udg_Generic_ResetUnit)
 call UnitAddAbilityBJ(udg_Generic_ResetAbility,udg_Generic_ResetUnit)
@@ -130556,7 +130960,7 @@ else
 endif
 set udg_Generic_ResetAbility='A0N5'
 set udg_Generic_ResetUnit=GetTriggerUnit()
-if(Trig_Dragon_Form_Func004Func006Func015C())then
+if(Trig_Dragon_Form_Func004Func005Func015C())then
 call BlzEndUnitAbilityCooldown(udg_Generic_ResetUnit,udg_Generic_ResetAbility)
 else
 endif
@@ -130681,6 +131085,17 @@ set gg_trg_Dragon_Form_Spells_Adjust=CreateTrigger()
 call TriggerRegisterTimerExpireEventBJ(gg_trg_Dragon_Form_Spells_Adjust,udg_DragonForm_Timer)
 call TriggerRegisterTimerExpireEventBJ(gg_trg_Dragon_Form_Spells_Adjust,udg_DragonForm_SpellsTimer)
 call TriggerAddAction(gg_trg_Dragon_Form_Spells_Adjust,function Trig_Dragon_Form_Spells_Adjust_Actions)
+endfunction
+function Trig_Dragon_Form_Disable_Fix_Actions takes nothing returns nothing
+if udg_HP_Dup then
+call HP_EvT_DragonSentinel(GetExpiredTimer())
+endif
+call SetPlayerTechResearchedSwap('R007',0,GetOwningPlayer(udg_Hero_DragonSentinel))
+endfunction
+function InitTrig_Dragon_Form_Disable_Fix takes nothing returns nothing
+set gg_trg_Dragon_Form_Disable_Fix=CreateTrigger()
+call TriggerRegisterTimerExpireEventBJ(gg_trg_Dragon_Form_Disable_Fix,udg_DragonForm_SpellsTimer)
+call TriggerAddAction(gg_trg_Dragon_Form_Disable_Fix,function Trig_Dragon_Form_Disable_Fix_Actions)
 endfunction
 function Trig_Burnout_A_Func002C takes nothing returns boolean
 if(not(udg_I_Switch==0))then
@@ -131164,13 +131579,13 @@ return false
 endif
 return true
 endfunction
-function Trig_Blazing_Shield_Func015Func005Func001Func005C takes nothing returns boolean
+function Trig_Blazing_Shield_Func016Func005Func001Func005C takes nothing returns boolean
 if(not(GetUnitTypeId(udg_Hero_DragonSentinel)=='O00P'))then
 return false
 endif
 return true
 endfunction
-function Trig_Blazing_Shield_Func015Func005Func001C takes nothing returns boolean
+function Trig_Blazing_Shield_Func016Func005Func001C takes nothing returns boolean
 if(not(GetEnumUnit()!=udg_BlazingShield_Target))then
 return false
 endif
@@ -131191,11 +131606,11 @@ return false
 endif
 return true
 endfunction
-function Trig_Blazing_Shield_Func015Func005A takes nothing returns nothing
-if(Trig_Blazing_Shield_Func015Func005Func001C())then
+function Trig_Blazing_Shield_Func016Func005A takes nothing returns nothing
+if(Trig_Blazing_Shield_Func016Func005Func001C())then
 set udg_NextDamageType=udg_DamageTypeMagical
 call UnitDamageTargetBJ(GetTriggerUnit(),GetEnumUnit(),(udg_BlazingShield_Damage*0.15),ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
-if(Trig_Blazing_Shield_Func015Func005Func001Func005C())then
+if(Trig_Blazing_Shield_Func016Func005Func001Func005C())then
 set udg_CC_Duration=0.75
 else
 set udg_CC_Duration=1.25
@@ -131206,7 +131621,7 @@ call TriggerExecute(gg_trg_Stun)
 else
 endif
 endfunction
-function Trig_Blazing_Shield_Func015C takes nothing returns boolean
+function Trig_Blazing_Shield_Func016C takes nothing returns boolean
 if(not(UnitHasItemOfTypeBJ(udg_Talents_Unit[HP_SlotOf(udg_Hero_DragonSentinel)],'I0QL')==true))then
 return false
 endif
@@ -131235,11 +131650,12 @@ else
 set udg_CC_Duration=3.00
 endif
 set udg_CC_Target=udg_BlazingShield_Target
+set udg_CC_Hero=udg_Hero_DragonSentinel
 call TriggerExecute(gg_trg_Stun)
-if(Trig_Blazing_Shield_Func015C())then
+if(Trig_Blazing_Shield_Func016C())then
 set udg_Generic_Point=GetUnitLoc(GetTriggerUnit())
 set bj_wantDestroyGroup=true
-call ForGroupBJ(GetUnitsInRangeOfLocAll(250.00,udg_Generic_Point),function Trig_Blazing_Shield_Func015Func005A)
+call ForGroupBJ(GetUnitsInRangeOfLocAll(250.00,udg_Generic_Point),function Trig_Blazing_Shield_Func016Func005A)
 call RemoveLocation(udg_Generic_Point)
 call AddSpecialEffectTargetUnitBJ("origin",udg_BlazingShield_Target,"war3mapImported\\Mythic_Vanguard Explosion.mdx")
 call DestroyEffectBJ(GetLastCreatedEffectBJ())
@@ -131449,7 +131865,7 @@ endif
 if(Trig_Dragonfury_Func004C())then
 set udg_CustomResource_CurrentValue[HP_PidOf(udg_Hero_DragonSentinel)]=(udg_CustomResource_CurrentValue[HP_PidOf(udg_Hero_DragonSentinel)]+1)
 if(Trig_Dragonfury_Func004Func002C())then
-call BlzUnitDisableAbility(udg_Hero_DragonSentinel,'A0HW',false,false)
+call SetPlayerTechResearchedSwap('R007',1,GetOwningPlayer(udg_Hero_DragonSentinel))
 else
 endif
 else
@@ -138542,9 +138958,6 @@ endif
 if(not(UnitHasItemOfTypeBJ(udg_Talents_Unit[HP_SlotOf(udg_Hero_Priest)],'I0HP')==true))then
 return false
 endif
-if(not(GetUnitAbilityLevelSwapped('A0GB',udg_Hero_Priest)>=1))then
-return false
-endif
 return true
 endfunction
 function Trig_Void_Rift_Func012Func001C takes nothing returns boolean
@@ -141054,7 +141467,7 @@ call IssueTargetOrderBJ(udg_Caster_Dummy,"innerfire",udg_Hero_Siren)
 call UnitRemoveAbilityBJ('A0JI',udg_Caster_Dummy)
 if(Trig_Tidal_Shot_Damage_Func021C())then
 set udg_CrushingWave_Damage=(0.40*udg_DummyDD_Damage)
-set udg_Generic_Point=GetUnitLoc(udg_Hero_Siren)
+set udg_Generic_Point=GetUnitLoc(udg_DamageEventSource)
 set udg_Temp_Point=GetUnitLoc(udg_DamageEventTarget)
 call SetUnitPositionLoc(udg_Dummies_CrushingWave,udg_Generic_Point)
 call IssuePointOrderLocBJ(udg_Dummies_CrushingWave,"carrionswarm",udg_Temp_Point)
@@ -147304,19 +147717,19 @@ return true
 endif
 return false
 endfunction
-function Trig_Summon_Spawns_Func012Func004Func001Func001C takes nothing returns boolean
+function Trig_Summon_Spawns_Func012Func003Func001Func001C takes nothing returns boolean
 if(not(GetUnitTypeId(GetTriggerUnit())==udg_MechanicalMace_UnitType[3]))then
 return false
 endif
 return true
 endfunction
-function Trig_Summon_Spawns_Func012Func004Func001C takes nothing returns boolean
+function Trig_Summon_Spawns_Func012Func003Func001C takes nothing returns boolean
 if(not(GetUnitTypeId(GetTriggerUnit())==udg_MechanicalMace_UnitType[2]))then
 return false
 endif
 return true
 endfunction
-function Trig_Summon_Spawns_Func012Func004C takes nothing returns boolean
+function Trig_Summon_Spawns_Func012Func003C takes nothing returns boolean
 if(not(GetUnitTypeId(GetTriggerUnit())==udg_MechanicalMace_UnitType[1]))then
 return false
 endif
@@ -147386,14 +147799,13 @@ else
 endif
 if(Trig_Summon_Spawns_Func012C())then
 call UnitAddAbilityBJ('A02V',GetTriggerUnit())
-call BlzUnitDisableAbility(GetTriggerUnit(),'A02V',false,true)
-if(Trig_Summon_Spawns_Func012Func004C())then
+if(Trig_Summon_Spawns_Func012Func003C())then
 call GroupAddUnitSimple(GetTriggerUnit(),udg_MechanicalMace_Group[1])
 else
-if(Trig_Summon_Spawns_Func012Func004Func001C())then
+if(Trig_Summon_Spawns_Func012Func003Func001C())then
 call GroupAddUnitSimple(GetTriggerUnit(),udg_MechanicalMace_Group[2])
 else
-if(Trig_Summon_Spawns_Func012Func004Func001Func001C())then
+if(Trig_Summon_Spawns_Func012Func003Func001Func001C())then
 call GroupAddUnitSimple(GetTriggerUnit(),udg_MechanicalMace_Group[3])
 else
 endif
@@ -149033,6 +149445,7 @@ call InitTrig_Release_Golem_1()
 call InitTrig_Control_Golem_2()
 call InitTrig_Release_Golem_2()
 call InitTrig_Golem_Forbid()
+call InitTrig_Golems_Die()
 call InitTrig_Obsidian_Area_Limit()
 call InitTrig_Obsidian_Cleanse()
 call InitTrig_Obsidian_Reveal()
@@ -149056,7 +149469,6 @@ call InitTrig_Blinding_Night()
 call InitTrig_By_Fire_Be_Purged()
 call InitTrig_Hot_Feet()
 call InitTrig_Rising_Tide()
-call InitTrig_Heavy_Metal()
 call InitTrig_Survivor()
 call InitTrig_Synergy_Disable()
 call InitTrig_Greed_Is_Not_Good()
@@ -149685,6 +150097,7 @@ call InitTrig_OnSpellcast_Heroes()
 call InitTrig_Reset_Cooldown()
 call InitTrig_Reset_Cooldown_Remove()
 call InitTrig_Stun()
+call InitTrig_OnStun()
 call InitTrig_Freeze()
 call InitTrig_OnFreeze()
 call InitTrig_Chill()
@@ -149750,6 +150163,7 @@ call InitTrig_Abyssal_Legwraps()
 call InitTrig_Dragon_Form_Store_CD()
 call InitTrig_Dragon_Form()
 call InitTrig_Dragon_Form_Spells_Adjust()
+call InitTrig_Dragon_Form_Disable_Fix()
 call InitTrig_Burnout_A()
 call InitTrig_Burnout_B()
 call InitTrig_Cleansing_Fire()
@@ -150082,31 +150496,37 @@ function InitCustomPlayerSlots takes nothing returns nothing
 call SetPlayerStartLocation(Player(0),0)
 call SetPlayerColor(Player(0),ConvertPlayerColor(0))
 call SetPlayerRacePreference(Player(0),RACE_PREF_ORC)
+call SetPlayerRaceSkin(Player(0),RACE_PREF_USER_SELECTABLE)
 call SetPlayerRaceSelectable(Player(0),false)
 call SetPlayerController(Player(0),MAP_CONTROL_USER)
 call SetPlayerStartLocation(Player(1),1)
 call SetPlayerColor(Player(1),ConvertPlayerColor(1))
 call SetPlayerRacePreference(Player(1),RACE_PREF_ORC)
+call SetPlayerRaceSkin(Player(1),RACE_PREF_USER_SELECTABLE)
 call SetPlayerRaceSelectable(Player(1),false)
 call SetPlayerController(Player(1),MAP_CONTROL_USER)
 call SetPlayerStartLocation(Player(2),2)
 call SetPlayerColor(Player(2),ConvertPlayerColor(2))
 call SetPlayerRacePreference(Player(2),RACE_PREF_ORC)
+call SetPlayerRaceSkin(Player(2),RACE_PREF_USER_SELECTABLE)
 call SetPlayerRaceSelectable(Player(2),false)
 call SetPlayerController(Player(2),MAP_CONTROL_USER)
 call SetPlayerStartLocation(Player(3),3)
 call SetPlayerColor(Player(3),ConvertPlayerColor(3))
 call SetPlayerRacePreference(Player(3),RACE_PREF_ORC)
+call SetPlayerRaceSkin(Player(3),RACE_PREF_USER_SELECTABLE)
 call SetPlayerRaceSelectable(Player(3),false)
 call SetPlayerController(Player(3),MAP_CONTROL_NEUTRAL)
 call SetPlayerStartLocation(Player(9),4)
 call SetPlayerColor(Player(9),ConvertPlayerColor(9))
 call SetPlayerRacePreference(Player(9),RACE_PREF_HUMAN)
+call SetPlayerRaceSkin(Player(9),RACE_PREF_USER_SELECTABLE)
 call SetPlayerRaceSelectable(Player(9),false)
 call SetPlayerController(Player(9),MAP_CONTROL_NEUTRAL)
 call SetPlayerStartLocation(Player(11),5)
 call SetPlayerColor(Player(11),ConvertPlayerColor(11))
 call SetPlayerRacePreference(Player(11),RACE_PREF_NIGHTELF)
+call SetPlayerRaceSkin(Player(11),RACE_PREF_USER_SELECTABLE)
 call SetPlayerRaceSelectable(Player(11),false)
 call SetPlayerController(Player(11),MAP_CONTROL_NEUTRAL)
 endfunction
@@ -150150,6 +150570,7 @@ function main takes nothing returns nothing
 call SetCameraBounds(-7680.0+GetCameraMargin(CAMERA_MARGIN_LEFT),-13824.0+GetCameraMargin(CAMERA_MARGIN_BOTTOM),11776.0-GetCameraMargin(CAMERA_MARGIN_RIGHT),9216.0-GetCameraMargin(CAMERA_MARGIN_TOP),-7680.0+GetCameraMargin(CAMERA_MARGIN_LEFT),9216.0-GetCameraMargin(CAMERA_MARGIN_TOP),11776.0-GetCameraMargin(CAMERA_MARGIN_RIGHT),-13824.0+GetCameraMargin(CAMERA_MARGIN_BOTTOM))
 call SetDayNightModels("Environment\\DNC\\DNCLordaeron\\DNCLordaeronTerrain\\DNCLordaeronTerrain.mdl","Environment\\DNC\\DNCLordaeron\\DNCLordaeronUnit\\DNCLordaeronUnit.mdl")
 call SetWaterBaseColor(0,175,200,255)
+call SetHDWaterParamsEx(0,0,0,false,20,0,100,10,0,50,100,100)
 call NewSoundEnvironment("Dungeon")
 call SetAmbientDaySound("SunkenRuinsDay")
 call SetAmbientNightSound("SunkenRuinsNight")
@@ -150163,7 +150584,7 @@ call CreateAllDestructables()
 call CreateAllItems()
 call CreateAllUnits()
 call InitBlizzard()
-call ExecuteFunc("jasshelper__initstructs2024323296")
+call ExecuteFunc("jasshelper__initstructs95528734")
 call ExecuteFunc("CustomTooltip___Init")
 call ExecuteFunc("FrameLoader___init_function")
 call ExecuteFunc("RaceSounds___init_function")
@@ -150370,7 +150791,7 @@ function sa___prototype5_DamageEngine_RegisterFromHook takes nothing returns boo
 call DamageEngine_RegisterFromHook(f__arg_trigger1,f__arg_string1,f__arg_limitop1,f__arg_real1)
 return true
 endfunction
-function jasshelper__initstructs2024323296 takes nothing returns nothing
+function jasshelper__initstructs95528734 takes nothing returns nothing
 set st__StatisticRow_calculatePercRealTime=CreateTrigger()
 call TriggerAddCondition(st__StatisticRow_calculatePercRealTime,Condition(function sa__StatisticRow_calculatePercRealTime))
 set st__StatisticRow_updateUi=CreateTrigger()
@@ -150409,5 +150830,5 @@ call ExecuteFunc("s__TasItemFusion___S_TasItemFusion___Init___onInit")
 call ExecuteFunc("s__ToggleIconButton___S_ToggleIconButton___Init___onInit")
 call ExecuteFunc("s__ToggleIconButtonGroup___S_ToggleIconButtonGroup___Init___onInit")
 call ExecuteFunc("s__Damage_onInit")
-call ExecuteFunc("s__LineSegmentEnumerationGUI___LineSegmentGUI_onInit")
+call ExecuteFunc("s__LineSegmentEnumerationGUI__LineSegmentGUI_onInit")
 endfunction
