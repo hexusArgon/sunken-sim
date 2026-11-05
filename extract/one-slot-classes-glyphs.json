@@ -1,0 +1,266 @@
+{
+ "Priest": {
+  "specs": [
+   "Shadow",
+   "Discipline",
+   "Holy"
+  ],
+  "codes": {
+   "Animosity": "I0HC",
+   "Arc Striking": "I0EN",
+   "Battle Frenzy": "I0GZ",
+   "Blood Violence": "I0H6",
+   "Fortune": "I0EJ",
+   "Fortitude": "I07B",
+   "Glass Cannon": "I0JA",
+   "Hellfire": "I0H3",
+   "Mindhaste": "I0OF",
+   "Supremacy": "I0EK",
+   "Thunder": "I0H5",
+   "Unsealed Power": "I0AV"
+  },
+  "rows": {
+   "Без глифа": [
+    175.7,
+    103.7,
+    36.7
+   ],
+   "Animosity": [
+    178.4,
+    106.4,
+    39.4
+   ],
+   "Arc Striking": [
+    175.7,
+    103.7,
+    36.7
+   ],
+   "Battle Frenzy": [
+    176.9,
+    107.0,
+    44.9
+   ],
+   "Blood Violence": [
+    181.2,
+    109.3,
+    38.2
+   ],
+   "Fortune": [
+    175.7,
+    103.7,
+    36.7
+   ],
+   "Fortitude": [
+    242.8,
+    140.6,
+    53.9
+   ],
+   "Glass Cannon": [
+    202.0,
+    119.2,
+    42.2
+   ],
+   "Hellfire": [
+    235.7,
+    163.7,
+    102.5
+   ],
+   "Mindhaste": [
+    185.9,
+    115.1,
+    42.5
+   ],
+   "Supremacy": [
+    179.1,
+    106.4,
+    36.7
+   ],
+   "Thunder": [
+    212.4,
+    143.4,
+    45.9
+   ],
+   "Unsealed Power": [
+    207.3,
+    122.3,
+    43.3
+   ]
+  }
+ },
+ "Paladin": {
+  "specs": [
+   "Retribution",
+   "Protection",
+   "Holy"
+  ],
+  "codes": {
+   "Animosity": "I0HC",
+   "Arc Striking": "I0EN",
+   "Battle Frenzy": "I0GZ",
+   "Blood Violence": "I0H6",
+   "Fortune": "I0EJ",
+   "Fortitude": "I07B",
+   "Glass Cannon": "I0JA",
+   "Hellfire": "I0H3",
+   "Mindhaste": "I0OF",
+   "Supremacy": "I0EK",
+   "Thunder": "I0H5",
+   "Unsealed Power": "I0AV"
+  },
+  "rows": {
+   "Без глифа": [
+    210.0,
+    205.8,
+    205.8
+   ],
+   "Animosity": [
+    213.2,
+    208.8,
+    208.8
+   ],
+   "Arc Striking": [
+    210.0,
+    205.8,
+    205.8
+   ],
+   "Battle Frenzy": [
+    210.0,
+    205.8,
+    205.8
+   ],
+   "Blood Violence": [
+    210.0,
+    205.8,
+    205.8
+   ],
+   "Fortune": [
+    210.0,
+    205.8,
+    205.8
+   ],
+   "Fortitude": [
+    288.7,
+    283.0,
+    283.0
+   ],
+   "Glass Cannon": [
+    241.5,
+    236.7,
+    236.7
+   ],
+   "Hellfire": [
+    210.0,
+    205.8,
+    205.8
+   ],
+   "Mindhaste": [
+    229.6,
+    224.9,
+    224.9
+   ],
+   "Supremacy": [
+    215.9,
+    205.8,
+    205.8
+   ],
+   "Thunder": [
+    210.0,
+    205.8,
+    205.8
+   ],
+   "Unsealed Power": [
+    247.8,
+    242.9,
+    242.9
+   ]
+  }
+ },
+ "Mage": {
+  "specs": [
+   "Frost",
+   "Arcane",
+   "Fire"
+  ],
+  "codes": {
+   "Animosity": "I0HC",
+   "Arc Striking": "I0EN",
+   "Battle Frenzy": "I0GZ",
+   "Blood Violence": "I0H6",
+   "Fortune": "I0EJ",
+   "Fortitude": "I07B",
+   "Glass Cannon": "I0JA",
+   "Hellfire": "I0H3",
+   "Mindhaste": "I0OF",
+   "Supremacy": "I0EK",
+   "Thunder": "I0H5",
+   "Unsealed Power": "I0AV"
+  },
+  "rows": {
+   "Без глифа": [
+    162.2,
+    163.0,
+    238.5
+   ],
+   "Animosity": [
+    165.4,
+    166.1,
+    241.4
+   ],
+   "Arc Striking": [
+    162.2,
+    163.0,
+    238.5
+   ],
+   "Battle Frenzy": [
+    164.3,
+    179.4,
+    242.4
+   ],
+   "Blood Violence": [
+    175.9,
+    173.3,
+    251.1
+   ],
+   "Fortune": [
+    162.2,
+    163.0,
+    238.5
+   ],
+   "Fortitude": [
+    216.6,
+    217.1,
+    307.2
+   ],
+   "Glass Cannon": [
+    186.6,
+    187.4,
+    263.2
+   ],
+   "Hellfire": [
+    222.2,
+    223.1,
+    364.7
+   ],
+   "Mindhaste": [
+    203.1,
+    162.9,
+    262.7
+   ],
+   "Supremacy": [
+    162.2,
+    163.0,
+    249.6
+   ],
+   "Thunder": [
+    211.3,
+    212.1,
+    287.4
+   ],
+   "Unsealed Power": [
+    191.4,
+    188.7,
+    258.9
+   ]
+  }
+ }
+}
