@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """GPU next-event timeline for Shaman.
 
-Elemental: batched float64 state machine (pending + choose + attack/incoming/bolt).
-Restoration / Enhancement: CPU events_for until spirit slots pass parity.
+All specs: batched float64 state machine (pending + choose + attack/incoming/bolt
++ fixed-capacity Feral Spirit slots). Elemental has no spirit summons; resto/enh do.
 
 Clocks run float64 on CPU when DirectML lacks f64; kind-score stays on DirectML.
 CPU simulate() / events_for remains the parity oracle (rel/abs <= 1e-4).
@@ -18,6 +18,8 @@ from __future__ import annotations
 MAX_EVENTS = 768
 MAX_STEPS = 200000
 MAX_BL = 48  # bloodlust windows
+MAX_SPIRITS = 32  # Ghost Wolf pack + Spirit Call over 30s
+
 
 # Spell ids for pending / choose
 S_NONE = 0
@@ -63,14 +65,11 @@ def generate_shaman_timelines(torch, device, builds, spec: str, targets: int, bo
     if dev_type in ("privateuseone", "dml") or "privateuseone" in str(device):
         device = torch.device("cpu")
 
-    if spec != "elemental":
-        return _cpu_events_batch(builds, spec, targets, bound_keys)
-
     try:
-        return _elemental_batch(torch, device, dtype, builds, targets, bound_keys)
+        return _shaman_batch(torch, device, dtype, builds, spec, targets, bound_keys)
     except Exception:
         # Never ship a silent wrong timeline; fall back to CPU oracle.
-        return _cpu_events_batch(builds, "elemental", targets, bound_keys)
+        return _cpu_events_batch(builds, spec, targets, bound_keys)
 
 
 def _cpu_events_batch(builds, spec, targets, bound_keys):
@@ -124,6 +123,17 @@ def _buffers_to_events(bufs, names_deal):
                 evs.append(("splash", name or "Всплеск огня", float(raw[b, i]), float(when[b, i]), float(count[b, i])))
             elif k == K_ECHO:
                 evs.append(("echo", name or "Sulfuras (удар)", float(raw[b, i]), float(when[b, i])))
+            elif k == 3.0:  # spirit
+                evs.append(
+                    (
+                        "spirit",
+                        name or "Feral Spirit",
+                        float(raw[b, i]),
+                        float(when[b, i]),
+                        float(crit[b, i]),
+                        float(fusion[b, i]),
+                    )
+                )
             else:
                 evs.append(
                     (
@@ -223,7 +233,7 @@ def _push(torch, bufs, mask, when, raw, *, count=1.0, mastery=0.0, crit=0.0, fus
     bufs["length"] = bufs["length"] + active.to(bufs["length"].dtype)
 
 
-def _elemental_batch(torch, device, dtype, builds, targets, bound_keys):
+def _shaman_batch(torch, device, dtype, builds, spec, targets, bound_keys):
     from sunken_sim import shaman as mod
     from sunken_sim.shadow import (
         CAST_BACKSWING,
@@ -243,6 +253,11 @@ def _elemental_batch(torch, device, dtype, builds, targets, bound_keys):
     targets_f = float(targets)
     chain_count = float(min(targets, mod.CHAIN_HITS))
     lesser_count = float(min(targets, mod.LESSER_HITS))
+    is_elemental = spec == "elemental"
+    is_enhancement = spec == "enhancement"
+    is_restoration = spec == "restoration"
+    elemental_f = 1.0 if is_elemental else 0.0
+    enhancement_f = 1.0 if is_enhancement else 0.0
 
     stats_list = [mod.sheet(b) for b in builds]
     codes_list = [
@@ -297,6 +312,15 @@ def _elemental_batch(torch, device, dtype, builds, targets, bound_keys):
     fire_orb = _flag_vec(torch, device, dtype, builds, lambda b: mod._wears(b, mod.FIRE_ORB))
     has_sulf = _flag_vec(torch, device, dtype, builds, lambda b: mod._wears(b, mod.SULFURAS_CODE))
     stormstrike = _flag_vec(torch, device, dtype, builds, lambda b: mod._has(b, mod.TALENT_STORMSTRIKE))
+    spirit_call = _flag_vec(
+        torch, device, dtype, builds,
+        lambda b: (not is_elemental) and mod._has(b, mod.TALENT_SPIRIT_CALL),
+    )
+    infusion_talent = _flag_vec(torch, device, dtype, builds, lambda b: mod._has(b, mod.TALENT_STORM_INFUSION))
+    ghost_wolf = _flag_vec(torch, device, dtype, builds, lambda b: mod._wears(b, mod.GHOST_WOLF))
+    spirit_pack = torch.where(ghost_wolf > 0.5, torch.full((B,), 3.0, dtype=dtype, device=device), torch.full((B,), 2.0, dtype=dtype, device=device))
+    if is_elemental:
+        spirit_call = torch.zeros(B, dtype=dtype, device=device)
 
     cast_charges = torch.full((B,), float(mod.SHIELD_CAST), dtype=dtype, device=device) + 3.0 * storm_ward
     max_charges = torch.full((B,), float(mod.SHIELD_MAX), dtype=dtype, device=device) + 3.0 * storm_ward
@@ -307,6 +331,8 @@ def _elemental_batch(torch, device, dtype, builds, targets, bound_keys):
     bk_shield = torch.tensor([0.70 if k == "shield" else 1.0 for k in bound_keys], dtype=dtype, device=device)
     bk_lava = torch.tensor([0.70 if k == "lava" else 1.0 for k in bound_keys], dtype=dtype, device=device)
     bk_totem = torch.tensor([0.70 if k == "totem" else 1.0 for k in bound_keys], dtype=dtype, device=device)
+    bk_spirit = torch.tensor([0.70 if k == "spirit" else 1.0 for k in bound_keys], dtype=dtype, device=device)
+
 
     def cooldown(base, key_scale, flat=0.0):
         if not isinstance(base, torch.Tensor):
@@ -337,6 +363,14 @@ def _elemental_batch(torch, device, dtype, builds, targets, bound_keys):
     pending_active = torch.zeros(B, dtype=torch.bool, device=device)
     pending_at = torch.full((B,), fight, dtype=dtype, device=device)
     pending_spell = torch.zeros(B, dtype=torch.int64, device=device)
+    next_spirit = torch.zeros(B, dtype=dtype, device=device)  # ability CD (resto/enh)
+    attack_count = torch.zeros(B, dtype=dtype, device=device)
+
+    # Feral Spirit slots [B, MAX_SPIRITS]
+    sp_expire = torch.zeros((B, MAX_SPIRITS), dtype=dtype, device=device)
+    sp_next = torch.full((B, MAX_SPIRITS), fight, dtype=dtype, device=device)
+    sp_infusion = torch.full((B, MAX_SPIRITS), -1.0, dtype=dtype, device=device)
+    sp_alive = torch.zeros((B, MAX_SPIRITS), dtype=torch.bool, device=device)
 
     # bloodlust windows [B, MAX_BL]
     bl_start = torch.zeros((B, MAX_BL), dtype=dtype, device=device)
@@ -377,9 +411,14 @@ def _elemental_batch(torch, device, dtype, builds, targets, bound_keys):
         weight = (bl_chance * active.to(dtype)).sum(dim=1)
         return 1.0 - 0.18 * torch.clamp(weight, max=1.0)
 
+    def spirit_as(now):
+        now_c = now.unsqueeze(1)
+        alive = sp_alive & (now_c < sp_expire)
+        n = alive.to(dtype).sum(dim=1)
+        return torch.clamp(0.10 * n, max=0.40)
+
     def attack_interval(now):
-        # elemental: no spirit_as
-        speed = torch.clamp(attack_speed, min=-0.8, max=4.0)
+        speed = torch.clamp(attack_speed + spirit_as(now), min=-0.8, max=4.0)
         return attack_base * blood_factor(now) / (1.0 + speed)
 
     def recover(now):
@@ -428,12 +467,16 @@ def _elemental_batch(torch, device, dtype, builds, targets, bound_keys):
 
     def shield_raw(now):
         raw = 20.0 + 0.30 * intel
-        raw = raw * (1.05 + 0.006 * mastery_of(now))  # elemental always
+        if is_elemental:
+            raw = raw * (1.05 + 0.006 * mastery_of(now))
         raw = torch.where(storm_ward > 0.5, raw * 1.10, raw)
         return raw
 
     def chain_raw(now):
-        return 70.0 + 1.60 * intel  # enhancement mastery N/A for elemental
+        raw = 70.0 + 1.60 * intel
+        if is_enhancement:
+            raw = raw * (1.08 + 0.005 * mastery_of(now))
+        return raw
 
     def add_flash(now, hits, mask):
         nonlocal charges, shield_until, next_incoming
@@ -512,7 +555,7 @@ def _elemental_batch(torch, device, dtype, builds, targets, bound_keys):
         do = do & (chance > 0)
         if not bool(do.any()):
             return
-        duration = 8.0  # elemental (not restoration)
+        duration = 5.0 if is_restoration else 8.0
         idx = bl_len.clamp(max=MAX_BL - 1)
         rows = torch.arange(B, device=device)
         room = do & (bl_len < MAX_BL)
@@ -521,14 +564,38 @@ def _elemental_batch(torch, device, dtype, builds, targets, bound_keys):
         bl_chance[rows[room], idx[room]] = chance[room]
         bl_len = bl_len + room.to(bl_len.dtype)
 
+    def summon(mask, now, count):
+        nonlocal sp_expire, sp_next, sp_infusion, sp_alive
+        if not bool(mask.any()):
+            return
+        if not isinstance(count, torch.Tensor):
+            count = torch.full((B,), float(count), dtype=dtype, device=device)
+        step = float(mod.SPIRIT_SWING) * blood_factor(now)
+        # place `count` new spirits into free slots (vectorized per-row loop on CPU indices for slot pick)
+        rows = torch.arange(B, device=device)
+        for r in rows[mask].tolist():
+            r = int(r)
+            n_add = int(count[r].item())
+            if n_add <= 0:
+                continue
+            free = (~sp_alive[r]).nonzero(as_tuple=False).view(-1)
+            take = free[:n_add]
+            for j in take.tolist():
+                sp_alive[r, j] = True
+                sp_expire[r, j] = now[r] + float(mod.SPIRIT_LIFE)
+                sp_next[r, j] = now[r] + step[r]
+                sp_infusion[r, j] = -1.0
+
     def do_cast(mask, spell, now):
-        nonlocal hero_ready, next_attack, next_chain, next_shield, next_lava, next_totem
+
+        nonlocal hero_ready, next_attack, next_chain, next_shield, next_lava, next_totem, next_spirit
         nonlocal pending_active, pending_at, pending_spell, sulf_armed
         costs = {
             S_CHAIN: 20.0,
             S_SHIELD: 25.0,
             S_LAVA: 20.0,
             S_TOTEM: 40.0,
+            S_SPIRIT: 35.0,
         }
         # pay per spell type — cast one spell id per row
         for sid, cost in costs.items():
@@ -543,6 +610,8 @@ def _elemental_batch(torch, device, dtype, builds, targets, bound_keys):
                 next_shield = torch.where(fail, now + 0.25, next_shield)
             elif sid == S_LAVA:
                 next_lava = torch.where(fail, now + 0.25, next_lava)
+            elif sid == S_SPIRIT:
+                next_spirit = torch.where(fail, now + 0.25, next_spirit)
             else:
                 next_totem = torch.where(fail, now + 0.25, next_totem)
             okm = ok
@@ -556,6 +625,8 @@ def _elemental_batch(torch, device, dtype, builds, targets, bound_keys):
             elif sid == S_LAVA:
                 base = 8.0 - 1.2 * fury
                 next_lava = torch.where(okm, now + cooldown(base, bk_lava), next_lava)
+            elif sid == S_SPIRIT:
+                next_spirit = torch.where(okm, now + cooldown(15.0, bk_spirit), next_spirit)
             else:
                 base = 16.0 - 5.0 * totem_mastery
                 next_totem = torch.where(okm, now + cooldown(base, bk_totem), next_totem)
@@ -577,6 +648,13 @@ def _elemental_batch(torch, device, dtype, builds, targets, bound_keys):
             note_fusion(m, 1, now)  # chain bit 0
             note_bloodlust(m, now)
             chain_until = torch.where(m, now + 4.0, chain_until)
+            # Storm Infusion on living spirits
+            inf = m & (infusion_talent > 0.5)
+            if bool(inf.any()):
+                until = (now + 3.0).unsqueeze(1)
+                live = sp_alive & (now.unsqueeze(1) < sp_expire)
+                rows_m = inf.unsqueeze(1) & live
+                sp_infusion = torch.where(rows_m, until.expand_as(sp_infusion), sp_infusion)
         # shield
         m = mask & (spell == S_SHIELD)
         if bool(m.any()):
@@ -607,76 +685,102 @@ def _elemental_batch(torch, device, dtype, builds, targets, bound_keys):
             raw = torch.where(fury > 0.5, raw * 1.18, raw)
             raw = raw * (1.0 + 0.08 * spent)
             push_deal(m, now, raw, ones, name_id=N_LAVA)
+        # spirit summon
+        m = mask & (spell == S_SPIRIT)
+        if bool(m.any()):
+            note_fusion(m, 4, now)  # summon bit
+            note_bloodlust(m, now)
+            summon(m, now, spirit_pack)
+
         # totem
         m = mask & (spell == S_TOTEM)
         if bool(m.any()):
             note_fusion(m, 8, now)  # totem bit 3
             note_bloodlust(m, now)
             totem_until = torch.where(m, now + totem_life, totem_until)
-            next_bolt = torch.where(m, now + float(mod.MAGMA_GAP), next_bolt)
+            if is_elemental:
+                next_bolt = torch.where(m, now + float(mod.MAGMA_GAP), next_bolt)
 
     def choose(now):
-        lava_ready = next_lava <= now
+        lava_ready_t = (next_lava <= now) if is_elemental else torch.zeros(B, dtype=torch.bool, device=device)
         shield_ready = next_shield <= now
         need_shield = (now >= shield_until) | (charges < 1.0)
         chain_ready = (next_chain <= now) & (now >= chain_until)
+        spirit_ready_t = (next_spirit <= now) if not is_elemental else torch.zeros(B, dtype=torch.bool, device=device)
         totem_ready = (next_totem <= now) & (now >= totem_until)
-        # priority for elemental
         spell = torch.zeros(B, dtype=torch.int64, device=device)
-        # 1 lava if charges
-        take = lava_ready & (charges >= 1.0) & (now < shield_until)
-        spell = torch.where(take, torch.full_like(spell, S_LAVA), spell)
-        used = take
-        # 2 shield if need
-        take = ~used & need_shield & shield_ready
-        spell = torch.where(take, torch.full_like(spell, S_SHIELD), spell)
-        used = used | take
-        # 3 chain
-        take = ~used & chain_ready
-        spell = torch.where(take, torch.full_like(spell, S_CHAIN), spell)
-        used = used | take
-        # 4 totem
-        take = ~used & totem_ready
-        spell = torch.where(take, torch.full_like(spell, S_TOTEM), spell)
-        used = used | take
-        # 5 lava
-        take = ~used & lava_ready
-        spell = torch.where(take, torch.full_like(spell, S_LAVA), spell)
-        used = used | take
-        # 6 shield need
-        take = ~used & shield_ready & need_shield
-        spell = torch.where(take, torch.full_like(spell, S_SHIELD), spell)
-        used = used | take
-        return spell, used  # used=False means None
+        used = torch.zeros(B, dtype=torch.bool, device=device)
+        if is_elemental:
+            take = lava_ready_t & (charges >= 1.0) & (now < shield_until)
+            spell = torch.where(take, torch.full_like(spell, S_LAVA), spell)
+            used = used | take
+            take = ~used & need_shield & shield_ready
+            spell = torch.where(take, torch.full_like(spell, S_SHIELD), spell)
+            used = used | take
+            take = ~used & chain_ready
+            spell = torch.where(take, torch.full_like(spell, S_CHAIN), spell)
+            used = used | take
+            take = ~used & totem_ready
+            spell = torch.where(take, torch.full_like(spell, S_TOTEM), spell)
+            used = used | take
+            take = ~used & lava_ready_t
+            spell = torch.where(take, torch.full_like(spell, S_LAVA), spell)
+            used = used | take
+            take = ~used & shield_ready & need_shield
+            spell = torch.where(take, torch.full_like(spell, S_SHIELD), spell)
+            used = used | take
+        else:
+            # resto / enh: chain > need_shield > spirit > totem > shield need
+            take = ~used & chain_ready
+            spell = torch.where(take, torch.full_like(spell, S_CHAIN), spell)
+            used = used | take
+            take = ~used & need_shield & shield_ready
+            spell = torch.where(take, torch.full_like(spell, S_SHIELD), spell)
+            used = used | take
+            take = ~used & spirit_ready_t
+            spell = torch.where(take, torch.full_like(spell, S_SPIRIT), spell)
+            used = used | take
+            take = ~used & totem_ready
+            spell = torch.where(take, torch.full_like(spell, S_TOTEM), spell)
+            used = used | take
+            take = ~used & shield_ready & need_shield
+            spell = torch.where(take, torch.full_like(spell, S_SHIELD), spell)
+            used = used | take
+        return spell, used
 
     def next_ready(now):
         t_chain = torch.maximum(next_chain, chain_until)
         t_shield = next_shield
         t_totem = torch.maximum(next_totem, totem_until)
-        t_lava = next_lava
-        # future > now+1e-9
+        t_fourth = next_lava if is_elemental else next_spirit
         def fut(t):
             return torch.where(t > now + 1e-9, t, torch.full_like(t, fight + 1.0))
 
-        stacked = torch.stack([fut(t_chain), fut(t_shield), fut(t_totem), fut(t_lava)], dim=1)
+        stacked = torch.stack([fut(t_chain), fut(t_shield), fut(t_totem), fut(t_fourth)], dim=1)
         wake, _ = stacked.min(dim=1)
         valid = wake <= fight
         return wake, valid
 
     def on_attack(mask, now):
-        nonlocal next_attack, chain_until, charges, shield_until, mana, sulf_armed
+        nonlocal next_attack, chain_until, charges, shield_until, mana, sulf_armed, attack_count
         recover(now)
         # consume chain
         ch = mask & (chain_until >= now)
         chain_until = torch.where(ch, -ones, chain_until)
         chain_package(ch, now, 1.0, chain_count, N_CHAIN)
+        if is_enhancement:
+            chain_package(ch & (now < totem_until), now, 0.30, lesser_count, N_STORMFURY)
         # lesser proc
         chance = 8.0 + 0.15 * agi
+        if is_enhancement:
+            chance = chance + 10.0
         chance = torch.where(epaulets > 0.5, chance + 8.0, chance)
         chance = torch.where(stormstrike > 0.5, chance * 1.20, chance)
         lesser_p = proc(chance)
         lp = mask & (lesser_p > 0)
         chain_package(lp, now, 0.50, lesser_count, N_LESSER, lesser_p)
+        if is_enhancement:
+            chain_package(lp & (now < totem_until), now, 0.30, lesser_count, N_STORMFURY, lesser_p)
         # shield tick on attack
         sh = mask & (now < shield_until) & (charges > 0)
         spent = torch.minimum(ones, charges)
@@ -701,6 +805,11 @@ def _elemental_batch(torch, device, dtype, builds, targets, bound_keys):
         push_deal(sul, now, intel - potency, targets_f * ones, name_id=N_SULF)
         echo_raw = ad * (0.10 * (1.0 + luck))
         _push(torch, bufs, mask & (has_sulf > 0.5), now, echo_raw, kind=K_ECHO, name_id=N_SULF_ECHO)
+        attack_count = torch.where(mask, attack_count + 1.0, attack_count)
+        sc = mask & (spirit_call > 0.5) & (attack_count >= 4.0)
+        if bool(sc.any()):
+            attack_count = torch.where(sc, zeros, attack_count)
+            summon(sc, now, ones)
         next_attack = torch.where(mask, now + attack_interval(now), next_attack)
 
     def on_incoming(mask, now):
@@ -740,6 +849,45 @@ def _elemental_batch(torch, device, dtype, builds, targets, bound_keys):
         next_shield = torch.where(prefer_shield, torch.maximum(now, next_shield - cut), next_shield)
         next_bolt = torch.where(live, now + float(mod.MAGMA_GAP), next_bolt)
 
+    def on_spirits(mask, now):
+        nonlocal sp_next, sp_alive, sp_infusion
+        if is_elemental or not bool(mask.any()):
+            return
+        now_c = now.unsqueeze(1)
+        # expire
+        expired = sp_alive & (now_c >= sp_expire)
+        sp_alive = sp_alive & ~expired
+        sp_next = torch.where(expired, torch.full_like(sp_next, fight), sp_next)
+        due = mask.unsqueeze(1) & sp_alive & (sp_next == now_c) & (now_c < sp_expire)
+        if not bool(due.any()):
+            return
+        # process all due slots — emit spirit events (special kind)
+        hit = (8.0 + torch.floor(0.25 * ad)).unsqueeze(1).expand_as(sp_next)
+        crit = (10.0 + torch.where((wrath > 0.5) & (now < totem_until), 8.0 * ones, zeros)).unsqueeze(1).expand_as(sp_next)
+        fus = fusion_up(now).unsqueeze(1).expand_as(sp_next)
+        # Thunderstorm + lesser from each due spirit — iterate slots for correct per-event counts
+        for slot in range(MAX_SPIRITS):
+            d = due[:, slot]
+            if not bool(d.any()):
+                continue
+            # push spirit event via special: reuse kind field K_SPIRIT=3.0
+            _push(
+                torch, bufs, d, now, hit[:, slot],
+                count=ones, mastery=zeros, crit=crit[:, slot], fusion=fus[:, slot],
+                attack=0.0, magical=0.0, auto_scale=0.0, kind=3.0, name_id=N_SPIRIT,
+            )
+            # thunderstorm on spirit hit
+            th = d & (thunder > 0.5)
+            if bool(th.any()):
+                ch = proc(2.0)
+                push_deal(th & (ch > 0), now, 30.0 + 1.80 * intel, ch * targets_f, name_id=N_THUNDER, from_thunder=True)
+            infused = torch.where(now < sp_infusion[:, slot], 1.5 * ones, ones)
+            crit_p = torch.clamp(crit[:, slot], max=100.0) / 100.0
+            base_p = 0.15 * infused * luck_mult()
+            lesser_p = (1.0 - crit_p) * torch.clamp(base_p, max=1.0) + crit_p * torch.clamp(base_p * 1.5, max=1.0)
+            chain_package(d & (lesser_p > 0), now, 0.50, lesser_count, N_LESSER, lesser_p)
+            sp_next[:, slot] = torch.where(d, now + float(mod.SPIRIT_SWING) * blood_factor(now), sp_next[:, slot])
+
     # --- main loop ---
     steps = 0
     while bool(alive.any()) and steps < MAX_STEPS:
@@ -748,9 +896,21 @@ def _elemental_batch(torch, device, dtype, builds, targets, bound_keys):
         next_incoming = torch.where(
             next_incoming >= shield_until, torch.full_like(next_incoming, fight), next_incoming
         )
+        # prune spirits like CPU: next < expire and next < FIGHT
+        if not is_elemental:
+            bad = sp_alive & ~((sp_next < sp_expire) & (sp_next < fight))
+            sp_alive = sp_alive & ~bad
+            sp_next = torch.where(bad, torch.full_like(sp_next, fight), sp_next)
+            spirit_swing = torch.where(
+                sp_alive.any(dim=1),
+                torch.where(sp_alive, sp_next, torch.full_like(sp_next, fight)).min(dim=1).values,
+                torch.full((B,), fight, dtype=dtype, device=device),
+            )
+        else:
+            spirit_swing = torch.full((B,), fight, dtype=dtype, device=device)
         pending_t = torch.where(pending_active, pending_at, torch.full_like(pending_at, fight))
         moment = torch.minimum(
-            torch.minimum(next_attack, next_bolt),
+            torch.minimum(torch.minimum(next_attack, next_bolt), spirit_swing),
             torch.minimum(next_incoming, pending_t),
         )
 
@@ -783,6 +943,7 @@ def _elemental_batch(torch, device, dtype, builds, targets, bound_keys):
             on_attack(m_fire & (next_attack == moment), moment)
             on_incoming(m_fire & (next_incoming == moment), moment)
             on_bolt(m_fire & (next_bolt == moment), moment)
+            on_spirits(m_fire & (spirit_swing == moment), moment)
 
         alive = alive & (m_acted | (moment < fight))
 

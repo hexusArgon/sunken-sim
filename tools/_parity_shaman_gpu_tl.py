@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Parity: CPU simulate vs GPU-timeline + kind-score for shaman elemental."""
+"""Parity: CPU simulate vs GPU-timeline + kind-score for all shaman specs."""
 from __future__ import annotations
 
 import os
@@ -50,23 +50,21 @@ def sample_builds(space, items, n, seed):
     return builds
 
 
-def main():
-    device = detect("shaman", "elemental")
+def run_spec(spec, n=16, seed=42):
+    device = detect("shaman", spec)
     import torch
 
     target = device.handle if device.gpu else torch.device("cpu")
-    print("device", device.kind, device.name, "target", target)
-    spec = "elemental"
+    print("device", device.kind, device.name, "spec", spec)
     targets_n = 5
     abs_lim = 1e-3
     rel_lim = 1e-4
     space, items = load("shaman", spec, "mixed", None, 80)
-    builds = sample_builds(space, items, 24, seed=42)
+    builds = sample_builds(space, items, n, seed=seed + abs(hash(spec)) % 97)
     cpu = []
     for b in builds:
         mod._TIMELINE.clear()
         cpu.append(mod.simulate(b, targets_n, spec).dps)
-    # expand diamond like dps_many
     flat_builds, flat_keys = [], []
     for b in builds:
         if mod._wears(b, mod.DIAMOND):
@@ -82,15 +80,13 @@ def main():
     tls = []
     for b in builds:
         tls.extend(timelines(b, targets_n, spec, gpu_bundle=gpu_bundle))
-    # best-of for diamond: score all tls then pick best per build like dps_many
     scores = fights._scores(tls)
-    # rebuild best per build
     gpu_dps = []
     idx = 0
     for b in builds:
-        n = len(timelines(b, targets_n, spec, gpu_bundle=gpu_bundle))
-        part = scores[idx : idx + n]
-        idx += n
+        n_tl = len(timelines(b, targets_n, spec, gpu_bundle=gpu_bundle))
+        part = scores[idx : idx + n_tl]
+        idx += n_tl
         gpu_dps.append(max(part) if part else 0.0)
     fails = 0
     worst = []
@@ -101,12 +97,19 @@ def main():
         if status == "FAIL":
             fails += 1
             worst.append((spec, i, c, g, abs_e, rel))
-        if status != "OK" or i < 5:
+        if status != "OK" or i < 3:
             print(f"{spec}[{i}] cpu={c:.6f} gpu={g:.6f} abs={abs_e:.3e} rel={rel:.3e} {status}")
     print(f"--- {spec} fails={fails}/{len(builds)} ---")
+    return worst
+
+
+def main():
+    worst = []
+    for spec in ("elemental", "restoration", "enhancement"):
+        worst.extend(run_spec(spec))
     if worst:
         print("FAILURES", len(worst))
-        for w in worst[:30]:
+        for w in worst[:40]:
             print(w)
         raise SystemExit(1)
     print("ALL PASS")

@@ -1,8 +1,7 @@
 ﻿# -*- coding: utf-8 -*-
 """GPU timeline (elemental) + kind-score compile for Shaman. DirectML.
 
-Elemental timeline: farm.hybrid.shaman_gpu_timeline (batched pending+choose).
-Restoration / Enhancement stay CPU events_for until spirit slots pass parity.
+Timeline: farm.hybrid.shaman_gpu_timeline (pending+choose+spirit slots).
 Set FARM_HYBRID_GPU_TIMELINE=0 to force CPU timeline for elemental too.
 """
 
@@ -266,8 +265,7 @@ class ShamanFights(BatchFights):
         gpu_bundle = None
         want = os.environ.get("FARM_HYBRID_GPU_TIMELINE", "auto").strip().lower()
         use_gpu_tl = (
-            self.spec == "elemental"
-            and want not in ("0", "false", "cpu")
+            want not in ("0", "false", "cpu")
             and (want in ("1", "true", "force") or bool(getattr(self.device, "gpu", False)))
         )
         if use_gpu_tl and builds:
