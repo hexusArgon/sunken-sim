@@ -39,6 +39,7 @@ from sunken_sim.shadow import (
     target_hp,
 )
 from sunken_sim.stacking import stack_fields
+from sunken_sim.ledger import Ledger, attach, score_events  # noqa: F401
 
 # int(base + (level - 1) * per level), Warcraft truncation. ustr/ustp, uagi/uagp, uint/uinp.
 BASE_STR = int(28 + (LEVEL - 1) * 2.8)
@@ -357,7 +358,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
     bone_shield = BONE_SHIELD_ARMOR if _has(build, TALENT_MARROWREND) else 0.0
     drain = 1.5 + 2.0 * LEVEL  # mana per second while in combat
 
-    sources: dict[str, float] = {
+    sources: dict[str, float] = Ledger({
         "Автоатака": 0.0,
         "Death Grip": 0.0,
         "Blood Strike": 0.0,
@@ -370,7 +371,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
         "Army of the Dead": 0.0,
         "Bloodworms": 0.0,
         "Всплеск огня": 0.0,
-    }
+    })
     actions: list[tuple[float, str]] = []
     hp_bonus = 0.0
     mana = stats["mana_max"]
@@ -466,7 +467,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
             raw = 20.0 + 0.015 * max_life() * bt
             # DAMAGE_TYPE_DISEASE without NextDamageType: no magical branch, no Plaguebearer.
             amount = raw * increase(t, now) * taken(t, now) * _execute_factor(stats, now)
-            sources["Plaguebearer"] += amount
+            sources.add_exec("Plaguebearer", amount, now, _execute_factor(stats, now))
         outbreak[t] = now + OUTBREAK_TIME
 
     def after_hit(t: int, now: float) -> None:
@@ -482,14 +483,14 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
         amount *= typed(magical, now) * increase(t, now)
         amount *= spell_crit if magical else attack_crit
         amount *= taken(t, now) * _execute_factor(stats, now)
-        sources[name] += amount
+        sources.add_exec(name, amount, now, _execute_factor(stats, now))
         note_damage_mana(1)
         after_hit(t, now)
         return amount
 
     def summon_hit(name: str, raw: float, t: int, now: float) -> float:
         amount = (raw + plague_flat(t, now)) * increase(t, now) * taken(t, now) * _execute_factor(stats, now)
-        sources[name] += amount
+        sources.add_exec(name, amount, now, _execute_factor(stats, now))
         after_hit(t, now)
         return amount
 
@@ -677,16 +678,16 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
                 ready["fs"] = max(moment, ready["fs"] - 0.30)
             if stats["fire_orb"]:
                 splash = (20.0 + 0.35 * stats["str"]) * targets * taken(1 % targets, moment) * _execute_factor(stats, moment)
-                sources["Всплеск огня"] += splash
+                sources.add_exec("Всплеск огня", splash, moment, _execute_factor(stats, moment))
                 note_damage_mana(targets)
             if sulfuras is not None:
                 execute = _execute_factor(stats, moment)
                 if sulfuras.attack():
                     splash = stats["str"] * typed(True, moment) * spell_crit * taken(1 % targets, moment) * execute * targets
-                    sources["Sulfuras"] = sources.get("Sulfuras", 0.0) + splash
+                    sources.add_exec("Sulfuras", splash, moment, execute)
                     note_damage_mana(targets)
                 echo = dcs() * taken(0, moment) * execute * sulfuras_echo_chance(stats["luck"])
-                sources["Sulfuras (удар)"] = sources.get("Sulfuras (удар)", 0.0) + echo
+                sources.add_exec("Sulfuras (удар)", echo, moment, execute)
             next_attack = moment + interval
             continue
         break
@@ -694,7 +695,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
     total = sum(sources.values())
     recover(FIGHT)
     mana_left = 0.0 if stats["mana_max"] <= 0 else 100.0 * mana / stats["mana_max"]
-    return Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
+    return attach(Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left))
 
 
 def best_points(build: Build, targets: int, spec: str) -> tuple[float, dict[str, int]]:

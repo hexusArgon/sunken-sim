@@ -45,6 +45,7 @@ from sunken_sim.shadow import (
     target_hp,
 )
 from sunken_sim.stacking import stack_fields
+from sunken_sim.ledger import Ledger, attach, score_events  # noqa: F401
 
 BASE_STR = int(12 + (LEVEL - 1) * 1.2)
 BASE_AGI = int(24 + (LEVEL - 1) * 2.4)
@@ -372,7 +373,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "havoc") -> Report:
     void_glaive = has(TALENT_VOID_GLAIVE) or stats["dark_naaru"]
     f_name = {"havoc": "Eye Beam", "vengeance": "Demon Spikes", "devourer": "Collapsing Star"}[spec]
 
-    sources: dict[str, float] = {
+    sources: dict[str, float] = Ledger({
         "Автоатака": 0.0,
         "Immolation Aura": 0.0,
         "The Hunt": 0.0,
@@ -382,7 +383,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "havoc") -> Report:
         "Chaos Nova": 0.0,
         "Singularity": 0.0,
         "Всплеск огня": 0.0,
-    }
+    })
     actions: list[tuple[float, str]] = []
     mana = stats["mana_max"]
     mana_time = 0.0
@@ -509,7 +510,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "havoc") -> Report:
                 share = max(0.0, min(100.0, chance)) / 100.0
                 amount *= _crit_factor(chance, stats["spell_mult"] + stats["rating"])
         amount *= taken(t, now)
-        sources[name] = sources.get(name, 0.0) + amount
+        sources.add_exec(name, amount, now, _execute_factor(stats, now))
         note_damage_mana(1)
         if havoc and fury_dither.roll(0.08 * luck_mult):
             gen(1)
@@ -774,23 +775,23 @@ def simulate(build: Build, targets: int = 5, spec: str = "havoc") -> Report:
         gain_mana(attack_mana_gain(stats))
         if stats["fire_orb"]:
             splash = (20.0 + 0.35 * agi) * targets * taken(1 % targets, moment)
-            sources["Всплеск огня"] += splash
+            sources.add_exec("Всплеск огня", splash, moment, _execute_factor(stats, moment))
             note_damage_mana(targets)
         if sulfuras is not None:
             execute = _execute_factor(stats, moment)
             armor = armor_taken(DUMMY_ARMOR - stats["armor_pen"])
             if sulfuras.attack():
                 splash = agi * (1.0 + stats["magic_add"]) * (1.15 if stats["glass"] else 1.0) * armor * execute * targets
-                sources["Sulfuras"] = sources.get("Sulfuras", 0.0) + splash
+                sources.add_exec("Sulfuras", splash, moment, execute)
                 note_damage_mana(targets)
             echo = power * armor * execute * sulfuras_echo_chance(stats["luck"])
-            sources["Sulfuras (удар)"] = sources.get("Sulfuras (удар)", 0.0) + echo
+            sources.add_exec("Sulfuras (удар)", echo, moment, execute)
         next_attack = moment + attack_interval(moment)
 
     total = sum(sources.values())
     recover(FIGHT)
     mana_left = 0.0 if stats["mana_max"] <= 0 else 100.0 * mana / stats["mana_max"]
-    return Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
+    return attach(Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left))
 
 
 def best_points(build: Build, targets: int, spec: str) -> tuple[float, dict[str, int]]:
