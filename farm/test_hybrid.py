@@ -278,7 +278,11 @@ class RegistryTest(unittest.TestCase):
         self.assertEqual(registry.status("mage", "frost"), registry.TIMELINE)
         for spec in registry.PRIEST_SPECS:
             self.assertEqual(registry.status("priest", spec), registry.COMPILE)
-        self.assertEqual(registry.status("paladin", "retribution"), registry.CPU)
+        # every real spec is ported; cpu-only is what an unknown spec falls back to
+        self.assertEqual(registry.status("paladin", "no_such_spec"), registry.CPU)
+        for hero, (specs, _cls) in registry.KIND_HEROES.items():
+            for spec in specs:
+                self.assertEqual(registry.status(hero, spec), registry.COMPILE)
         self.assertFalse(registry.gpu_engine_for("mage", "arcane"))
         self.assertTrue(registry.gpu_engine_for("priest", "holy"))
 
@@ -299,7 +303,7 @@ class RegistryTest(unittest.TestCase):
         with self.assertRaises(GpuLocked):
             registry.make_engine(DeviceInfo("cpu", "cpu"), "mage", "arcane", 5)
         with self.assertRaises(ValueError):
-            registry.make_engine(DeviceInfo("cpu", "cpu"), "paladin", "retribution", 5)
+            registry.make_engine(DeviceInfo("cpu", "cpu"), "paladin", "no_such_spec", 5)
 
     def test_cpu_only_spec_runs_old_fights(self):
         with mock.patch.dict(os.environ, {"FARM_HYBRID_DEVICE": "cpu"}), \
@@ -308,7 +312,7 @@ class RegistryTest(unittest.TestCase):
              mock.patch("farm.catalog.load", return_value=(FakeSpace([("A", "B", "C")]), _items())), \
              mock.patch.object(hybrid_runner, "fight_check") as check:
             ticks = []
-            hybrid_runner.run_job(_job("paladin", "retribution"), {}, ticks.append)
+            hybrid_runner.run_job(_job("paladin", "no_such_spec"), {}, ticks.append)
         check.assert_not_called()
         self.assertNotIn("eval_fn", old.call_args.kwargs)
         self.assertEqual(ticks[0]["hybrid"]["status"], "cpu-only")

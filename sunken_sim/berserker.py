@@ -41,6 +41,7 @@ from sunken_sim.shadow import (
     target_hp,
 )
 from sunken_sim.stacking import stack_fields
+from sunken_sim.ledger import Ledger, attach, score_events  # noqa: F401
 
 BASE_STR = int(14 + (LEVEL - 1) * 1.4)
 BASE_AGI = int(28 + (LEVEL - 1) * 2.8)
@@ -331,7 +332,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
     agi = stats["agi"]
     mastery = stats["mastery"]
 
-    sources = {
+    sources = Ledger({
         "Автоатака": 0.0,
         "Toxic Sack": 0.0,
         "Skull Split": 0.0,
@@ -340,7 +341,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
         "Way of the Snake": 0.0,
         "Axe Mastery": 0.0,
         "Всплеск огня": 0.0,
-    }
+    })
     haste = stats["haste"]
     va_until = [-1.0] * targets
     dambala_acc = [0.0] * targets
@@ -392,7 +393,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
 
     def finish(name: str, amount: float, index: int, when: float, count: float = 1.0) -> float:
         amount *= taken_for(index, when) * _execute_factor(stats, when) * fury_mult
-        sources[name] += amount * count
+        sources.add_exec(name, amount * count, when, _execute_factor(stats, when))
         return amount * count
 
     def surge_proc(index: int, when: float, chance: float) -> None:
@@ -616,17 +617,17 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
                 sources["Axe Mastery"] += rolls * _chance(0.10 * luck_mult) * axe_value(moment)
             if stats["fire_orb"]:
                 splash = (20.0 + 0.35 * agi) * targets * taken_for(0, moment) * _execute_factor(stats, moment)
-                sources["Всплеск огня"] += splash * fury_mult
+                sources.add_exec("Всплеск огня", splash * fury_mult, moment, _execute_factor(stats, moment))
                 note_damage_mana(targets)
             if sulfuras is not None:
                 execute = _execute_factor(stats, moment)
                 taken = taken_for(0, moment)
                 if sulfuras.attack():
                     splash = agi * (1.0 + stats["magic_add"]) * generic(moment) * taken * execute * targets
-                    sources["Sulfuras"] = sources.get("Sulfuras", 0.0) + splash * fury_mult
+                    sources.add_exec("Sulfuras", splash * fury_mult, moment, execute)
                     note_damage_mana(targets)
                 echo = power * taken * execute * sulfuras_echo_chance(stats["luck"])
-                sources["Sulfuras (удар)"] = sources.get("Sulfuras (удар)", 0.0) + echo * fury_mult
+                sources.add_exec("Sulfuras (удар)", echo * fury_mult, moment, execute)
             next_attack = moment + attack_interval(moment)
             continue
         break
@@ -634,7 +635,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
     total = sum(sources.values())
     recover(FIGHT)
     mana_left = 0.0 if stats["mana_max"] <= 0 else 100.0 * mana / stats["mana_max"]
-    return Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
+    return attach(Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left))
 
 
 def best_points(build: Build, targets: int, spec: str) -> tuple[float, dict[str, int]]:

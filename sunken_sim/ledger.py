@@ -1,0 +1,62 @@
+# -*- coding: utf-8 -*-
+"""Typed damage ledger for the GPU kind/weight compile (farm/hybrid/kindscore.py).
+
+A class sim keeps writing to ``sources`` as before; ``sources`` is a Ledger, a
+dict that also keeps a timeline of typed events (when, name, weight, kind):
+
+  KIND_EXEC: weight * _execute_factor(stats, when). Recorded by add_exec() at the
+             hit sites, weight = dealt / execute (pre-execute damage).
+  KIND_FLAT: weight as-is. Every other write (sources[x] = ..., +=, the
+             auto_pct / probe-restore patterns) is recorded as its delta.
+
+The dict values are bit-identical to the old plain-dict sims (add_exec adds the
+same dealt number), so simulate() keeps its numbers; score_events() is the CPU
+reference for the GPU sums.
+"""
+
+from __future__ import annotations
+
+from sunken_sim.shadow import _execute_factor
+
+KIND_EXEC = 2.0
+KIND_FLAT = 3.0
+
+
+class Ledger(dict):
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self.events: list[tuple[float, str, float, float]] = []
+
+    def __setitem__(self, name, value) -> None:
+        delta = value - dict.get(self, name, 0.0)
+        if delta:
+            self.events.append((0.0, name, delta, KIND_FLAT))
+        dict.__setitem__(self, name, value)
+
+    def add_exec(self, name: str, dealt: float, when: float, execute: float) -> None:
+        """sources[name] += dealt, where dealt already carries execute(when)."""
+        dict.__setitem__(self, name, dict.get(self, name, 0.0) + dealt)
+        if dealt:
+            self.events.append((when, name, dealt / execute, KIND_EXEC))
+
+
+def attach(report):
+    """Plain-dict sources on the Report, events kept as report.events."""
+    ledger = report.sources
+    if isinstance(ledger, Ledger):
+        report.events = ledger.events
+        report.sources = dict(ledger)
+    return report
+
+
+def score_events(events: list, stats: dict) -> dict[str, float]:
+    sources: dict[str, float] = {}
+    for when, name, weight, kind in events:
+        if kind == KIND_EXEC:
+            amount = weight * _execute_factor(stats, when)
+        elif kind == KIND_FLAT:
+            amount = weight
+        else:
+            raise ValueError(f"unknown ledger kind {kind}")
+        sources[name] = sources.get(name, 0.0) + amount
+    return sources
