@@ -61,6 +61,7 @@ from sunken_sim.shadow import (
     target_hp,
 )
 from sunken_sim.stacking import stack_fields
+from sunken_sim.ledger import Ledger, attach, score_events  # noqa: F401
 
 WHITE_STR = int(24 + (LEVEL - 1) * 2.4)  # N03Y ustr/ustp
 WHITE_AGI = int(10 + (LEVEL - 1) * 1.0)  # uagi; uagp missing → +1/level (Ntin)
@@ -414,7 +415,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
     pen = stats["armor_pen"]
     cast_time = CAST_POINT + CAST_BACKSWING
 
-    sources: dict[str, float] = {"Автоатака": 0.0}
+    sources: dict[str, float] = Ledger({"Автоатака": 0.0})
     actions: list[tuple[float, str]] = []
     counters = {"goblins": 0, "engineer": 0, "zaps": 0, "missiles": 0, "sentry_missiles": 0,
                 "napalm_apply": 0, "rod": 0, "overclock": 0, "hm_reset": 0, "suicide": 0}
@@ -519,7 +520,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
             elif stats["spell_crit"]:
                 amount *= _crit_factor(chance, stats["spell_mult"] + stats["rating"])
             total += amount * taken(True) * execute
-        sources[name] = sources.get(name, 0.0) + total
+        sources.add_exec(name, total, now, execute)
         note_damage_mana(len(tgts))
         engineer(len(tgts), now)
         return total
@@ -542,7 +543,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
         if attack:
             amount *= _crit_factor(stats["summon_crit"] + extra_crit, 2.0 + stats["summon_rating"])
         dealt = amount * taken(False) * _execute_factor(stats, now) * count
-        sources[name] = sources.get(name, 0.0) + dealt
+        sources.add_exec(name, dealt, now, _execute_factor(stats, now))
         if procs:
             engineer(count, now)
         return dealt
@@ -858,17 +859,17 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
         gain_mana(attack_mana_gain(stats))
         if stats["fire_orb"]:
             splash = (20.0 + 0.35 * strength) * targets * taken(True) * _execute_factor(stats, moment)
-            sources["Всплеск огня"] = sources.get("Всплеск огня", 0.0) + splash
+            sources.add_exec("Всплеск огня", splash, moment, _execute_factor(stats, moment))
             note_damage_mana(targets)
         if sulfuras is not None:
             execute = _execute_factor(stats, moment)
             if sulfuras.attack():
                 splash = strength * typed("magical", moment) * taken(True) * execute * targets
                 splash *= _crit_factor(stats["crit"], 2.0 + stats["rating"])
-                sources["Sulfuras"] = sources.get("Sulfuras", 0.0) + splash
+                sources.add_exec("Sulfuras", splash, moment, execute)
                 note_damage_mana(targets)
             echo = power * taken(True) * execute * sulfuras_echo_chance(stats["luck"])
-            sources["Sulfuras (удар)"] = sources.get("Sulfuras (удар)", 0.0) + echo
+            sources.add_exec("Sulfuras (удар)", echo, moment, execute)
         next_attack = moment + attack_interval(moment)
 
     total = sum(sources.values())
@@ -879,7 +880,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
     stats["policy_reinforce"] = 1.0 if use_reinforce else 0.0
     stats["policy_exo"] = 1.0 if use_exo else 0.0
     stats["spec_level"] = float(SPEC_LEVEL[spec])
-    return Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
+    return attach(Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left))
 
 
 def best_points(build: Build, targets: int, spec: str) -> tuple[float, dict[str, int]]:

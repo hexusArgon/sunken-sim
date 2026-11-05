@@ -48,6 +48,7 @@ from sunken_sim.shadow import (
     target_hp,
 )
 from sunken_sim.stacking import stack_fields
+from sunken_sim.ledger import Ledger, attach, score_events  # noqa: F401
 
 BASE_STR = int(13 + (LEVEL - 1) * 1.2)
 BASE_AGI = int(26 + (LEVEL - 1) * 2.6)
@@ -354,7 +355,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "upheaval") -> Report:
     haste = stats["haste"]
     charged = has(TALENT_CHARGED_BLADE) or bool(stats["stormweaver"])
 
-    sources: dict[str, float] = {
+    sources: dict[str, float] = Ledger({
         "Автоатака": 0.0,
         "Skyslash": 0.0,
         "Tornado": 0.0,
@@ -362,7 +363,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "upheaval") -> Report:
         "Windstorm": 0.0,
         "Cyclone": 0.0,
         "Всплеск огня": 0.0,
-    }
+    })
     actions: list[tuple[float, str]] = []
     mana = stats["mana_max"]
     mana_time = 0.0
@@ -520,7 +521,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "upheaval") -> Report:
             share = _chance(chance / 100.0)
         else:
             dealt = amount * taken
-        sources[name] = sources.get(name, 0.0) + dealt
+        sources.add_exec(name, dealt, now, _execute_factor(stats, now))
         note_damage_mana(1.0)
         if spec == "upheaval" and dealt >= 1.0:
             if dice["upheaval_reset"].roll(0.035 * luck_mult):
@@ -765,17 +766,17 @@ def simulate(build: Build, targets: int = 5, spec: str = "upheaval") -> Report:
         gain_mana(attack_mana_gain(stats))
         if stats["fire_orb"]:
             splash = (20.0 + 0.35 * agi) * targets * taken_for(min(1, targets - 1), moment) * _execute_factor(stats, moment)
-            sources["Всплеск огня"] += splash
+            sources.add_exec("Всплеск огня", splash, moment, _execute_factor(stats, moment))
             note_damage_mana(targets)
         if sulfuras is not None:
             execute = _execute_factor(stats, moment)
             taken = taken_for(0, moment)
             if sulfuras.attack():
                 splash = agi * (1.0 + stats["magic_add"]) * (1.15 if stats["glass"] else 1.0) * taken * execute * targets
-                sources["Sulfuras"] = sources.get("Sulfuras", 0.0) + splash
+                sources.add_exec("Sulfuras", splash, moment, execute)
                 note_damage_mana(targets)
             echo = power * taken * execute * sulfuras_echo_chance(stats["luck"])
-            sources["Sulfuras (удар)"] = sources.get("Sulfuras (удар)", 0.0) + echo
+            sources.add_exec("Sulfuras (удар)", echo, moment, execute)
         next_attack = moment + SWING / (1.0 + attack_speed(moment))
 
     total = sum(sources.values())
@@ -783,7 +784,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "upheaval") -> Report:
     mana_left = 0.0 if stats["mana_max"] <= 0 else 100.0 * mana / stats["mana_max"]
     stats = dict(stats)
     stats.update({f"n_{k}": float(v) for k, v in counters.items()})
-    return Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
+    return attach(Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left))
 
 
 def best_points(build: Build, targets: int, spec: str) -> tuple[float, dict[str, int]]:
