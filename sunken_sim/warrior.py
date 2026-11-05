@@ -321,6 +321,88 @@ def _cooldown(base: float, haste: float, stats: dict) -> float:
     return max(0.5, (base * stats["cd_temp"] - stats["flat_cdr"]) / (1.0 + haste))
 
 
+
+def _timeline_key(build: Build, stats: dict, spec: str, targets: int) -> tuple:
+    items = tuple(sorted(item.rawcode for item in build.items))
+    talents = tuple(sorted(build.talents))
+    glyphs = tuple(sorted(build.glyphs))
+    esc = (
+        build.potency_points,
+        build.mastery_points,
+        build.crit_points,
+        build.luck_points,
+        getattr(build, "haste_points", 0),
+        getattr(build, "attack_speed_points", 0),
+        getattr(build, "damage_points", 0),
+        getattr(build, "mana_points", 0),
+        getattr(build, "pet_damage_points", 0),
+    )
+    return (items, talents, glyphs, esc, spec, targets, round(stats["str"], 6), round(stats.get("agi", 0), 6))
+
+
+_TIMELINE: dict[tuple, tuple] = {}
+
+
+def score_events(
+    events: list[tuple],
+    stats: dict,
+    *,
+    taken: float,
+    taken_auto: float,
+    spec: str,
+) -> dict[str, float]:
+    """Event tuple:
+    (when, name, raw, magical, count, pot_scale, auto, mastery_now, enraged,
+     auto_pct_scale, special)
+    special: None | "splash" | "echo" | "flat"
+    """
+    from sunken_sim.shadow import _crit_factor, _execute_factor, target_hp
+
+    sources: dict[str, float] = {}
+    for ev in events:
+        when, name, raw, magical, count, pot_scale, auto, mastery_now, enraged, auto_pct_scale, special = ev
+        if special == "splash":
+            sources[name] = sources.get(name, 0.0) + raw * count * taken * _execute_factor(stats, when)
+            continue
+        if special == "echo":
+            sources[name] = sources.get(name, 0.0) + raw * taken_auto * _execute_factor(stats, when)
+            continue
+        if special == "flat":
+            sources[name] = sources.get(name, 0.0) + raw * count
+            continue
+        amount = raw + stats["potency"] * pot_scale
+        if stats.get("relentless") and auto:
+            amount *= 1.0 + 0.25 * 0.80
+        bonus = 1.0 + (stats["magic_add"] if magical else stats["phys_add"])
+        if stats["sulfuron"]:
+            bonus += 0.13 + 0.25 * target_hp(when)
+        if magical and stats["spellbinder"]:
+            bonus += 0.05 + 0.005 * mastery_now
+        if stats["glass"]:
+            bonus *= 1.15
+        if enraged:
+            bonus *= 1.10
+        amount *= bonus
+        crit = stats["crit"]
+        rating = stats["rating"]
+        if enraged and spec == "fury":
+            crit += 10.0
+        physical = not magical
+        if physical and stats["demolish"]:
+            amount *= _crit_factor(crit, 1.40 + rating)
+        elif stats["slaughterhouse"] and physical:
+            extra = (15.0 + 2.0 * stats["agi"]) / 100.0
+            amount *= _crit_factor(crit, 2.0 + rating + extra)
+        else:
+            amount *= _crit_factor(crit, 2.0 + rating)
+        use_taken = taken_auto if auto else taken
+        amount *= use_taken * _execute_factor(stats, when)
+        if auto_pct_scale:
+            amount *= stats["auto_pct"]
+        sources[name] = sources.get(name, 0.0) + amount * count
+    return sources
+
+
 def simulate(build: Build, targets: int = 5, spec: str = "arms") -> Report:
     if spec not in SPECS:
         raise ValueError(spec)
@@ -336,6 +418,13 @@ def simulate(build: Build, targets: int = 5, spec: str = "arms") -> Report:
     armor_pen = stats["armor_pen"] + (sunder_extra if spec == "arms" else 0.0)
     taken = armor_taken(DUMMY_ARMOR - armor_pen)
     taken_auto = armor_taken(DUMMY_ARMOR - armor_pen - (sunder_extra if spec == "fury" else 0.0))
+    cache_key = _timeline_key(build, stats, spec, targets)
+    cached = _TIMELINE.get(cache_key)
+    if cached is not None:
+        events, actions, mana_left = cached
+        sources = score_events(events, stats, taken=taken, taken_auto=taken_auto, spec=spec)
+        total = sum(sources.values())
+        return Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
 
     mastery_mult = 1.40 if stats["weapons_master"] else 1.00
     arms_mastery = lambda m: (1.0 + (0.10 + 0.006 * m) * mastery_mult) if spec == "arms" else 1.0
@@ -365,6 +454,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "arms") -> Report:
     bt_extra = False
     ww_on_cd_until = -1.0
     actions: list[tuple[float, str]] = []
+    events: list[tuple] = []
     mana = stats["mana_max"]
     mana_time = 0.0
     sulfuras = Sulfuras() if _wears(build, "I0BR") else None
@@ -402,7 +492,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "arms") -> Report:
             return _crit_factor(crit, 2.0 + rating + extra)
         return _crit_factor(crit, 2.0 + rating)
 
-    def deal(name: str, raw: float, magical: bool, count: int, when: float, potency_scale: float = 1.0, auto: bool = False) -> float:
+    def deal(name: str, raw: float, magical: bool, count: int, when: float, potency_scale: float = 1.0, auto: bool = False, auto_pct_scale: bool = False) -> float:
         amount = raw + stats["potency"] * potency_scale
         if stats["relentless"] and auto:
             amount *= 1.0 + 0.25 * 0.80
@@ -410,7 +500,23 @@ def simulate(build: Build, targets: int = 5, spec: str = "arms") -> Report:
         amount *= crit_factor(when, not magical)
         use_taken = taken_auto if auto else taken
         amount *= use_taken * _execute_factor(stats, when)
-        sources[name] += amount * count
+        if auto_pct_scale:
+            amount *= stats["auto_pct"]
+        events.append(
+            (
+                when,
+                name,
+                raw,
+                magical,
+                count,
+                potency_scale,
+                auto,
+                mastery(),
+                bool(enraged(when)),
+                auto_pct_scale,
+                None,
+            )
+        )
         return amount * count
 
     def dcs(now: float) -> float:
@@ -603,10 +709,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "arms") -> Report:
             recover(moment)
             power = dcs(moment)
             auto_raw = power * titans_auto_mult(moment)
-            before = sources["Автоатака"]
-            deal("Автоатака", auto_raw, False, 1, moment, stats["attack_potency"], auto=True)
-            if stats["auto_pct"] != 1.0:
-                sources["Автоатака"] = before + (sources["Автоатака"] - before) * stats["auto_pct"]
+            auto_dealt = deal("Автоатака", auto_raw, False, 1, moment, stats["attack_potency"], auto=True, auto_pct_scale=True)
             mana = min(stats["mana_max"], mana + attack_mana_gain(stats))
             note_damage_mana(1)
             on_attack_enrage(moment)
@@ -615,8 +718,8 @@ def simulate(build: Build, targets: int = 5, spec: str = "arms") -> Report:
             cleave_chance = (30.0 + 5.0 * RANK) / 100.0 * (1.0 + stats["luck"])
             cleave_ratio = 0.40 + (0.10 if moment < ww_on_cd_until else 0.0)
             if targets > 1 and cleave_chance > 0:
-                auto_dealt = sources["Автоатака"] - before
-                sources["Whirlwind (cleave)"] += auto_dealt * cleave_chance * cleave_ratio * (targets - 1)
+                share = auto_dealt * cleave_chance * cleave_ratio * (targets - 1)
+                events.append((moment, "Whirlwind (cleave)", share, False, 1, 0.0, False, mastery(), False, False, "flat"))
                 note_damage_mana(targets - 1)
 
             if bt_extra:
@@ -630,17 +733,13 @@ def simulate(build: Build, targets: int = 5, spec: str = "arms") -> Report:
                 note_damage_mana(1)
 
             if stats["fire_orb"]:
-                splash = (20.0 + 0.35 * stats["str"]) * targets * taken * _execute_factor(stats, moment)
-                sources["Всплеск огня"] += splash
+                events.append((moment, "Всплеск огня", 20.0 + 0.35 * stats["str"], False, targets, 0.0, False, mastery(), False, False, "splash"))
                 note_damage_mana(targets)
             if sulfuras is not None:
-                execute = _execute_factor(stats, moment)
                 if sulfuras.attack():
-                    splash = stats["str"] * typed(True, moment) * crit_factor(moment, False) * taken * execute * targets
-                    sources["Sulfuras"] = sources.get("Sulfuras", 0.0) + splash
+                    deal("Sulfuras", stats["str"], True, targets, moment, 0.0, auto=False)
                     note_damage_mana(targets)
-                echo = power * taken_auto * execute * sulfuras_echo_chance(stats["luck"])
-                sources["Sulfuras (удар)"] = sources.get("Sulfuras (удар)", 0.0) + echo
+                events.append((moment, "Sulfuras", power * sulfuras_echo_chance(stats["luck"]), False, 1, 0.0, False, mastery(), False, False, "echo"))
 
             if _has(build, TALENT_BLADESTORM) and next_ww > moment:
                 next_ww = max(moment, next_ww - 0.20)
@@ -650,9 +749,13 @@ def simulate(build: Build, targets: int = 5, spec: str = "arms") -> Report:
         break
 
 
-    total = sum(sources.values())
     recover(FIGHT)
     mana_left = 0.0 if stats["mana_max"] <= 0 else 100.0 * mana / stats["mana_max"]
+    while len(_TIMELINE) >= 8000:
+        _TIMELINE.pop(next(iter(_TIMELINE)))
+    _TIMELINE[cache_key] = (list(events), actions, mana_left)
+    sources = score_events(events, stats, taken=taken, taken_auto=taken_auto, spec=spec)
+    total = sum(sources.values())
     return Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
 
 
