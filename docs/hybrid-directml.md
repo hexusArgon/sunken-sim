@@ -13,7 +13,7 @@
 | locked | только CPU, torch не импортируется | mage/arcane |
 | hybrid-timeline | (retired for mage) | — |
 | hybrid-compile | CPU-таймлайн (без кэша), GPU compile, CPU score | priest×3, shaman×3, warlock×3, rogue×2, hunter×3, druid×2, feral_druid×3 + ledger kind-heroes |
-| gpu-timeline | batched next-event timeline + GPU kind-score | warrior/pala/shaman/priest x3, mage fire/frost, rogue x2, druid x2 |
+| gpu-timeline | batched next-event timeline + GPU kind-score | warrior/pala/shaman/priest x3, mage fire/frost, rogue x2, druid x2, hunter/warlock/feral/berserker/DK/DH |
 | cpu-only | local-hybrid (device + v1 stat-parity), бои = simulate модуля | остальные |
 
 Дальше GPU-compile для остальных нужен split simulate → events → compile → score
@@ -33,9 +33,9 @@
 1. **Timeline on GPU** — warrior×3 + paladin×3 done (parity green). Remaining CPU timeline:
    mage/priest/rogue GPU TL done; remaining:
    warlock×3, hunter×3, druid×2, feral_druid×3,
-   kind-heroes (berserker/DK/DH/dragon_sentinel/monk/necromancer/siren/tidewarrior/
-   tinker/windmaster/witch_doctor). Branchy classes stay CPU timeline + GPU kind-score
-   until ported.
+   kind-heroes remaining: dragon_sentinel/monk/necromancer/siren/tidewarrior/
+   tinker/windmaster/witch_doctor (berserker/DK/DH done). Branchy classes stay CPU
+   timeline + GPU kind-score until ported.
 2. **ESC / stat-kernel on GPU** — `farm/hybrid/stat_kernel.py` wired into `BatchFights.greedy_points`:
    batched dps_many trials + safe zero-delta attr skip (attrs that tied baseline after a
    real improving step are dropped). Exact event-reuse rescoring is **not** used yet:
@@ -120,6 +120,13 @@ Events: (when, name, weight, kind); kinds PHYS / MAG / EXEC / FLAT.
 PHYS: phys/crit/taken baked, ×execute; MAG: base+slope×mastery on GPU; EXEC/FLAT as usual.
 DIAMOND (I00D): timelines() picks best bound key like simulate().
 Parity smoke 2026-11-05: GPU vs CPU abs/rel ≤ 1e-4 (RX 6800 XT DirectML).
+
+
+## Demon Hunter Havoc / Vengeance / Devourer
+Status: **gpu-timeline**. Python-float clocks + per-row pending heap (Eye Beam 0.03 ticks /
+Collapsing Star delay); cast_time = CAST_POINT+CAST_BACKSWING (CPU pre-sum). Sulfuras → CPU.
+Code: `farm/hybrid/demon_hunter_gpu_timeline.py` + wire `farm/hybrid/demon_hunter.py`.
+Parity 2026-11-05: 8 builds × 3 specs = 24/24 GPU timeline+kind vs CPU simulate (abs≤1e-3 or rel≤1e-4).
 
 ## Arcane Mage
 mage/arcane жёстко на CPU (`farm/hybrid/lock.py`). GpuLocked.
