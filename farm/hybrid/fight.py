@@ -2,7 +2,8 @@
 
 Split of one fight (30 s, same rules as sunken_sim.mage.simulate):
 
-  1. CPU: the event timeline (who casts what and when). This is the old
+  1. Timeline: GPU next-event state machine when FARM_HYBRID_GPU_TIMELINE!=0
+     (fire/frost); else CPU simulate capture. This is the old
      sunken_sim.mage.simulate loop, unchanged; we only capture its events
      instead of letting it compile them.
   2. GPU: the per-event compile of that timeline, batched over many fights:
@@ -488,7 +489,7 @@ def compiled_dict(tl: Timeline, row: np.ndarray, hell_hits) -> dict:
 
 
 class GpuFights(BatchFights):
-    """Batched mage fights: CPU timelines, device compile, CPU score."""
+    """Batched mage fights: GPU timeline (fire/frost) + device compile + CPU score."""
 
     def __init__(self, device, hero: str, spec: str, targets: int) -> None:
         import torch
@@ -519,12 +520,44 @@ class GpuFights(BatchFights):
         return out
 
     def dps_many(self, builds: list) -> list[float]:
+        import os
+        from sunken_sim import mage as mod
+
+        want = os.environ.get("FARM_HYBRID_GPU_TIMELINE", "auto").strip().lower()
+        use_gpu_tl = (
+            want not in ("0", "false", "off", "cpu")
+            and (want in ("1", "true", "force") or bool(getattr(self.device, "gpu", False)))
+            and self.spec in ("fire", "frost")
+        )
         tls: list[Timeline] = []
         owner: list[int] = []
-        for index, build in enumerate(builds):
-            for tl in timelines(build, self.targets, self.spec):
-                tls.append(tl)
+        if use_gpu_tl and builds:
+            from farm.hybrid.mage_gpu_timeline import generate_mage_timelines
+
+            flat_builds: list = []
+            flat_keys: list = []
+            owners_flat: list[int] = []
+            for index, build in enumerate(builds):
+                if mod._wears(build, "I00D"):
+                    keys = [name for name in mod._buttons(self.spec) if name != "Evocation"]
+                else:
+                    keys = [None]
+                for key in keys:
+                    flat_builds.append(build)
+                    flat_keys.append(key)
+                    owners_flat.append(index)
+            rows = generate_mage_timelines(
+                self.torch, self.target, flat_builds, self.spec, self.targets, flat_keys
+            )
+            for build, key, row, index in zip(flat_builds, flat_keys, rows, owners_flat):
+                events, stats, used_spec, evocation = row
+                tls.append(Timeline(build, stats, used_spec, evocation, events, key))
                 owner.append(index)
+        else:
+            for index, build in enumerate(builds):
+                for tl in timelines(build, self.targets, self.spec):
+                    tls.append(tl)
+                    owner.append(index)
         scores = self._scores(tls) if tls else []
         self.fights += len(builds)
         best: list[float | None] = [None] * len(builds)

@@ -2,12 +2,11 @@
 
 Statuses (same words as the docs status matrix):
   locked           - CPU sim only, the GPU path is never even imported (Arcane Mage).
-  hybrid-timeline  - pilot: CPU timeline with an exact timeline cache, GPU compile
-                     sums, CPU closed-form score (Mage Fire / Frost).
+  hybrid-timeline  - (retired for mage) CPU timeline + exact cache + GPU compile.
   hybrid-compile   - CPU timeline (module's own cache), GPU compile sums, CPU score
                      (Priest Shadow / Discipline / Holy).
   gpu-timeline     - batched next-event timeline generation (float64 clocks on CPU
-                     when DirectML lacks f64) + GPU kind-score (Warrior x3, Paladin x3, Shaman x3).
+                     when DirectML lacks f64) + GPU kind-score (Warrior/Paladin/Shaman x3, Mage fire/frost).
   cpu-only         - runs under local-hybrid (device detect, v1 stat-kernel parity,
                      same payload), but fights are the module's own simulate. The
                      module sums damage inside simulate, so there is nothing to hand
@@ -56,7 +55,7 @@ MODULES = {
 }
 PRIEST_SPECS = ("shadow", "discipline", "holy")
 
-TIMELINE_SPECS = frozenset({("mage", "fire"), ("mage", "frost")})
+TIMELINE_SPECS = frozenset()  # mage fire/frost moved to GPU_TIMELINE_SPECS
 PALADIN_SPECS = ("retribution", "protection", "holy")
 SHAMAN_SPECS = ("restoration", "enhancement", "elemental")
 WARRIOR_SPECS = ("protection", "arms", "fury")
@@ -64,6 +63,7 @@ GPU_TIMELINE_SPECS = frozenset(
     {("warrior", spec) for spec in WARRIOR_SPECS}
     | {("paladin", spec) for spec in PALADIN_SPECS}
     | {("shaman", spec) for spec in SHAMAN_SPECS}
+    | {("mage", "fire"), ("mage", "frost")}
 )
 WARLOCK_SPECS = ("demonology", "destruction", "affliction")
 ROGUE_SPECS = ("subtlety", "combat")
@@ -139,6 +139,10 @@ def make_engine(device, hero: str, spec: str, targets: int):
 
         return GpuFights(device, hero, spec, targets)
     if kind in (COMPILE, GPU_TIMELINE):
+        if hero == "mage":
+            from farm.hybrid.fight import GpuFights
+
+            return GpuFights(device, hero, spec, targets)
         if hero == "paladin":
             from farm.hybrid.paladin import PaladinFights
 
@@ -205,7 +209,7 @@ def specs_of(hero: str) -> tuple[str, ...]:
 _NOTES = {
     LOCKED: "CPU sim, GpuLocked, torch never imported",
     TIMELINE: "CPU timeline + exact timeline cache, GPU compile sums, CPU score",
-    GPU_TIMELINE: "batched next-event timeline (f64 clocks; DirectML kind-score); Warrior x3, Paladin x3, Shaman x3",
+    GPU_TIMELINE: "batched next-event timeline (f64 clocks; DirectML kind-score); Warrior/Paladin/Shaman x3, Mage fire/frost",
     COMPILE: "CPU timeline (module _TIMELINE), GPU compile sums, CPU score (priest/paladin/shaman/warlock/rogue/hunter/druid/feral_druid/berserker/death_knight/demon_hunter/dragon_sentinel/monk/necromancer/siren/tidewarrior/tinker/windmaster/witch_doctor)",
     CPU: "local-hybrid runner + v1 stat parity; fights = module simulate (no compile split yet)",
 }

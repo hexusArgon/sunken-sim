@@ -11,9 +11,9 @@
 | статус | смысл | кто |
 |---|---|---|
 | locked | только CPU, torch не импортируется | mage/arcane |
-| hybrid-timeline | CPU-таймлайн + точный timeline-cache, GPU compile, CPU score | mage/fire, mage/frost |
+| hybrid-timeline | (retired for mage) | — |
 | hybrid-compile | CPU-таймлайн (без кэша), GPU compile, CPU score | priest×3, shaman×3, warlock×3, rogue×2, hunter×3, druid×2, feral_druid×3 + ledger kind-heroes |
-| gpu-timeline | batched next-event timeline + GPU kind-score | warrior×3, paladin×3 |
+| gpu-timeline | batched next-event timeline + GPU kind-score | warrior×3, paladin×3, shaman×3, mage fire/frost|
 | cpu-only | local-hybrid (device + v1 stat-parity), бои = simulate модуля | остальные |
 
 Дальше GPU-compile для остальных нужен split simulate → events → compile → score
@@ -24,14 +24,14 @@
 |---|---|
 | priest×3, paladin×3, shaman×3, warrior×3 | kind/weight moments (reference) |
 | warlock×3, rogue×2, hunter×3, druid×2 | kind/weight moments (upgraded from flat sum) |
-| mage fire/frost | kind-compile in timeline hybrid |
+| mage fire/frost | gpu-timeline (true TL + kind-compile) |
 | mage arcane | locked CPU |
 | feral_druid×3 (primal/guardian/savage) | kind/weight moments (PHYS/MAG/EXEC/FLAT) |
 | remaining cpu-only | not yet |
 
 ### Pending (next tasks)
 1. **Timeline on GPU** — warrior×3 + paladin×3 done (parity green). Remaining CPU timeline:
-   shaman×3 done, mage fire/frost (true GPU timeline; cache today),
+   mage fire/frost done; remaining:
    priest/shadow×3, warlock×3, rogue×2, hunter×3, druid×2, feral_druid×3,
    kind-heroes (berserker/DK/DH/dragon_sentinel/monk/necromancer/siren/tidewarrior/
    tinker/windmaster/witch_doctor). Branchy classes stay CPU timeline + GPU kind-score
@@ -47,11 +47,14 @@ Warrior + Paladin: batched next-event state machines in
 `farm/hybrid/warrior_gpu_timeline.py` / `paladin_gpu_timeline.py` + shared
 `farm/hybrid/timeline_gpu.py`. Clocks run in **float64 on CPU** (DirectML has no
 reliable f64); kind-score stays on DirectML. Opt out: `FARM_HYBRID_GPU_TIMELINE=0`.
-Mage fire/frost still CPU timeline + exact cache + GPU compile.
+Mage fire/frost: true GPU timeline (see below).
 Everyone else: CPU timeline + GPU kind-score (hybrid-compile).
 
 ## Mage Fire / Frost
-Код: `farm/hybrid/fight.py`.
+Код: `farm/hybrid/fight.py` + `mage_gpu_timeline.py` + `sunken_sim/mage.py`.
+Status: **gpu-timeline** (pending+choose, MAX_BOMB_CHAINS=4, MAX_HYDRA=256 + expired reclaim).
+Staff CD-reset only stacks on Overpowered/pads (CPU gate). Opt out: `FARM_HYBRID_GPU_TIMELINE=0`.
+Parity 2026-11-05: 8×fire + 8×frost = 16/16 vs CPU simulate (RX 6800 XT DirectML).
 
 ## Priest Shadow / Discipline / Holy
 Код: `farm/hybrid/priest.py`.
