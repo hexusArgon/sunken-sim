@@ -13,7 +13,7 @@
 | locked | только CPU, torch не импортируется | mage/arcane |
 | hybrid-timeline | (retired for mage) | — |
 | hybrid-compile | CPU-таймлайн (без кэша), GPU compile, CPU score | priest×3, shaman×3, warlock×3, rogue×2, hunter×3, druid×2, feral_druid×3 + ledger kind-heroes |
-| gpu-timeline | batched next-event timeline + GPU kind-score | warrior/pala/shaman/priest x3, mage fire/frost, rogue x2, druid x2, hunter/warlock/feral/berserker/DK/DH/DS/monk |
+| gpu-timeline | batched next-event timeline + GPU kind-score | warrior/pala/shaman/priest x3, mage fire/frost, rogue x2, druid x2, hunter/warlock/feral/berserker/DK/DH/DS/monk/necro |
 | cpu-only | local-hybrid (device + v1 stat-parity), бои = simulate модуля | остальные |
 
 Дальше GPU-compile для остальных нужен split simulate → events → compile → score
@@ -33,8 +33,8 @@
 1. **Timeline on GPU** — warrior×3 + paladin×3 done (parity green). Remaining CPU timeline:
    mage/priest/rogue GPU TL done; remaining:
    warlock×3, hunter×3, druid×2, feral_druid×3,
-   kind-heroes remaining: necromancer/siren/tidewarrior/
-   tinker/windmaster/witch_doctor (berserker/DK/DH/DS/monk done). Branchy classes stay CPU
+   kind-heroes remaining: siren/tidewarrior/
+   tinker/windmaster/witch_doctor (berserker/DK/DH/DS/monk/necro done). Branchy classes stay CPU
    timeline + GPU kind-score until ported.
 2. **ESC / stat-kernel on GPU** — `farm/hybrid/stat_kernel.py` wired into `BatchFights.greedy_points`:
    batched dps_many trials + safe zero-delta attr skip (attrs that tied baseline after a
@@ -139,6 +139,12 @@ Parity 2026-11-05: 8 builds × 3 specs = 24/24 GPU timeline+kind vs CPU simulate
 ## Monk Windwalker / Brewmaster / Mistweaver
 Status: **gpu-timeline**. Best-of POLICIES with CPU-exact fight loop; cast_time pre-sum.
 Sulfuras → CPU. Code: `farm/hybrid/monk_gpu_timeline.py` + wire `farm/hybrid/monk.py`.
+Parity 2026-11-05: 8 builds × 3 specs = 24/24 GPU timeline+kind vs CPU simulate (abs≤1e-3 or rel≤1e-4).
+
+
+## Necromancer Bone / Blood / Essence
+Status: **gpu-timeline**. Best-of POLICIES (Transfusion × Raise Dead); cast_time pre-sum.
+Sulfuras → CPU. Code: `farm/hybrid/necromancer_gpu_timeline.py` + wire `farm/hybrid/necromancer.py`.
 Parity 2026-11-05: 8 builds × 3 specs = 24/24 GPU timeline+kind vs CPU simulate (abs≤1e-3 or rel≤1e-4).
 
 ## Arcane Mage
