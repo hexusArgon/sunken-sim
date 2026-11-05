@@ -13,7 +13,7 @@
 | locked | только CPU, torch не импортируется | mage/arcane |
 | hybrid-timeline | (retired for mage) | — |
 | hybrid-compile | CPU-таймлайн (без кэша), GPU compile, CPU score | priest×3, shaman×3, warlock×3, rogue×2, hunter×3, druid×2, feral_druid×3 + ledger kind-heroes |
-| gpu-timeline | batched next-event timeline + GPU kind-score | warrior×3, paladin×3, shaman×3, mage fire/frost|
+| gpu-timeline | batched next-event timeline + GPU kind-score | warrior/pala/shaman/priest x3, mage fire/frost, rogue x2 |
 | cpu-only | local-hybrid (device + v1 stat-parity), бои = simulate модуля | остальные |
 
 Дальше GPU-compile для остальных нужен split simulate → events → compile → score
@@ -31,8 +31,8 @@
 
 ### Pending (next tasks)
 1. **Timeline on GPU** — warrior×3 + paladin×3 done (parity green). Remaining CPU timeline:
-   mage fire/frost + priest x3 done; remaining:
-   priest/shadow×3, warlock×3, rogue×2, hunter×3, druid×2, feral_druid×3,
+   mage/priest/rogue GPU TL done; remaining:
+   warlock×3, hunter×3, druid×2, feral_druid×3,
    kind-heroes (berserker/DK/DH/dragon_sentinel/monk/necromancer/siren/tidewarrior/
    tinker/windmaster/witch_doctor). Branchy classes stay CPU timeline + GPU kind-score
    until ported.
@@ -88,10 +88,11 @@ Execute baked at pack; GPU moments sum(w)/sum(w*thp)/sum(w*M). CPU score_events 
 Parity smoke 2026-11-05: GPU vs CPU abs/rel ≤ 1e-4 (RX 6800 XT DirectML).
 
 ## Rogue Subtlety / Combat
-Код: `farm/hybrid/rogue.py` + `sunken_sim/rogue.py` kind-score timeline.
-Events: (when, name, weight, kind); kinds PHYS / EXEC / MAG / FLAT.
-Execute baked at pack; GPU kind-weight moments. CPU score_events = reference.
-Parity smoke 2026-11-05: GPU vs CPU abs/rel ≤ 1e-4.
+File: farm/hybrid/rogue.py + farm/hybrid/rogue_gpu_timeline.py.
+
+Status: **gpu-timeline** (pending+choose; Vendetta release, Vanish pressure, Subterfuge mana rewind).
+Parity 2026-11-05: 16 builds × 2 specs = 32/32 GPU timeline+kind vs CPU simulate (abs≤1e-3 or rel≤1e-4).
+
 
 ## Hunter Marksmanship / Beast Mastery / Survival
 Код: `farm/hybrid/hunter.py` + `sunken_sim/hunter.py` kind-score timeline.
@@ -139,7 +140,7 @@ python -m unittest farm.test_hybrid
 
 ## Priest GPU timeline (shadow / discipline / holy)
 
-arm/hybrid/priest_gpu_timeline.py — batched f64 clocks on CPU, kind-score on DirectML.
+farm/hybrid/priest_gpu_timeline.py — batched f64 clocks on CPU, kind-score on DirectML.
 Mirrors sunken_sim.shadow._fight_events (CAST_POINT finish queue, SWP Cosmic EV, Radiance/Renew/Image).
 Gate: FARM_HYBRID_GPU_TIMELINE. Parity: 	ools/_parity_priest_gpu_tl.py (16 builds × 3 specs, ≤1e-4).
 Batch fix: on_swp expiry zeroing must be masked to rows whose tick fires (otherwise sibling rows clear EV weights early).

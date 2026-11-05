@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""GPU kind/weight compile for Rogue. DirectML.
+"""GPU kind/weight compile for Rogue. DirectML.\n\nTimeline: farm.hybrid.rogue_gpu_timeline (pending+choose).\nSet FARM_HYBRID_GPU_TIMELINE=0 to force CPU sunken_sim.rogue.simulate.
 
 Event: (when, name, weight, kind)
   KIND_PHYS / KIND_EXEC / KIND_MAG / KIND_FLAT
@@ -171,12 +171,29 @@ class RogueFights(BatchFights):
         return out
 
     def dps_many(self, builds: list) -> list[float]:
+        import os
+
+        want = os.environ.get("FARM_HYBRID_GPU_TIMELINE", "auto").strip().lower()
+        use_gpu_tl = (
+            want not in ("0", "false", "off", "cpu")
+            and (want in ("1", "true", "force") or bool(getattr(self.device, "gpu", False)))
+        )
         tls: list[Timeline] = []
         owner: list[int] = []
-        for index, build in enumerate(builds):
-            for tl in timelines(build, self.targets, self.spec):
-                tls.append(tl)
+        if use_gpu_tl and builds:
+            from farm.hybrid.rogue_gpu_timeline import generate_rogue_timelines
+
+            rows = generate_rogue_timelines(
+                self.torch, self.target, builds, self.spec, self.targets
+            )
+            for index, (events, stats) in enumerate(rows):
+                tls.append(Timeline(builds[index], stats, self.spec, events))
                 owner.append(index)
+        else:
+            for index, build in enumerate(builds):
+                for tl in timelines(build, self.targets, self.spec):
+                    tls.append(tl)
+                    owner.append(index)
         scores = self._scores(tls) if tls else []
         self.fights += len(builds)
         best: list[float | None] = [None] * len(builds)
