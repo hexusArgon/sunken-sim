@@ -310,12 +310,48 @@ def _chance(value: float) -> float:
     return max(0.0, min(1.0, value))
 
 
+
+def _timeline_key(build: Build, stats: dict, spec: str, targets: int) -> tuple:
+    items = tuple(sorted(item.rawcode for item in build.items))
+    talents = tuple(sorted(build.talents))
+    glyphs = tuple(sorted(build.glyphs))
+    esc = (
+        build.potency_points,
+        build.mastery_points,
+        build.crit_points,
+        build.luck_points,
+        getattr(build, "haste_points", 0),
+        getattr(build, "attack_speed_points", 0),
+        getattr(build, "damage_points", 0),
+        getattr(build, "mana_points", 0),
+        getattr(build, "pet_damage_points", 0),
+    )
+    return (items, talents, glyphs, esc, spec, targets, round(stats.get("agi", 0), 6), round(stats.get("str", 0), 6))
+
+
+_TIMELINE: dict[tuple, tuple] = {}
+
+
+def score_events(events: list[tuple[str, float]]) -> dict[str, float]:
+    sources: dict[str, float] = {}
+    for name, amount in events:
+        sources[name] = sources.get(name, 0.0) + amount
+    return sources
+
+
 def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
     if spec not in SPECS:
         raise ValueError(spec)
     if targets < 1:
         raise ValueError(targets)
     stats = stats_of(build)
+    cache_key = _timeline_key(build, stats, spec, targets)
+    cached = _TIMELINE.get(cache_key)
+    if cached is not None:
+        events, actions, mana_left = cached
+        sources = score_events(events)
+        total = sum(sources.values())
+        return Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
     luck_mult = 1.0 + stats["luck"]
     has = lambda code: _has(build, code)  # noqa: E731
     agi = stats["agi"]
@@ -339,6 +375,12 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
         "Всплеск огня": 0.0,
     }
     actions: list[tuple[float, str]] = []
+    events: list[tuple[str, float]] = []
+
+    def add_damage(name: str, amount: float) -> None:
+        if amount:
+            events.append((name, amount))
+
     mana = stats["mana_max"]
     mana_time = 0.0
     sulfuras = Sulfuras() if _wears(build, "I0BR") else None
@@ -424,7 +466,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
             return
         chance = _chance((0.07 if attack else 0.04) * luck_mult) * count
         dealt = vend_acc * taken_for(0, now, enhanced=True) * chance
-        sources["Coup de Grace"] += dealt
+        add_damage("Coup de Grace", dealt)
         vend_acc += vendetta_feed * dealt
 
     def landed(dealt: float, index: int, now: float, attack: bool, count: float) -> None:
@@ -466,7 +508,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
                 dealt += share * flat * mult * _execute_factor(stats, now)
         else:
             dealt = amount * taken
-        sources[name] = sources.get(name, 0.0) + dealt * count
+        add_damage(name, dealt * count)
         landed(dealt, index, now, attack, count)
         return dealt, share
 
@@ -521,7 +563,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
     def release(now: float) -> None:
         nonlocal vend_acc, vend_start, vend_until
         # ENHANCED: skips PreDamage_Increase; the B04N buff (and Marked armor) is gone.
-        sources["Vendetta"] += vend_acc * armor_taken(float(DUMMY_ARMOR))
+        add_damage("Vendetta", vend_acc * armor_taken(float(DUMMY_ARMOR)))
         vend_acc = 0.0
         vend_start = vend_until = -1.0
         if has(TALENT_HONOR_AMONG_THIEVES):
@@ -673,7 +715,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
             chance_now = stats["crit"] + (5.0 if has(TALENT_FIND_WEAKNESS) else 0.0)
             attack_inc += 0.40 + 0.01 * chance_now
         auto_name = strike_name if dispatch else "Автоатака"
-        before = sources[auto_name]
+        mark = len(events)
         _dealt, share = hit(
             auto_name,
             raw,
@@ -684,7 +726,14 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
             sure_crit=dispatch,
         )
         if stats["auto_pct"] != 1.0:
-            sources[auto_name] = before + (sources[auto_name] - before) * stats["auto_pct"]
+
+            for i in range(mark, len(events)):
+
+                n, a = events[i]
+
+                if n == auto_name:
+
+                    events[i] = (n, a * stats["auto_pct"])
         if dispatch:
             strike_until = -1.0
         if spec == "subtlety" and moment < strike_until:
@@ -703,22 +752,26 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
         note_damage_mana(1)
         if stats["fire_orb"]:
             splash = (20.0 + 0.35 * agi) * targets * taken_for(1, moment) * _execute_factor(stats, moment)
-            sources["Всплеск огня"] += splash
+            add_damage("Всплеск огня", splash)
             note_damage_mana(targets)
         if sulfuras is not None:
             execute = _execute_factor(stats, moment)
             taken = taken_for(0, moment)
             if sulfuras.attack():
                 splash = agi * (1.0 + stats["magic_add"]) * (1.15 if stats["glass"] else 1.0) * taken * execute * targets
-                sources["Sulfuras"] = sources.get("Sulfuras", 0.0) + splash
+                add_damage("Sulfuras", splash)
                 note_damage_mana(targets)
             echo = power * taken * execute * sulfuras_echo_chance(stats["luck"])
-            sources["Sulfuras (удар)"] = sources.get("Sulfuras (удар)", 0.0) + echo
+            add_damage("Sulfuras (удар)", echo)
         next_attack = moment + attack_interval(moment)
 
-    total = sum(sources.values())
     recover(FIGHT)
     mana_left = 0.0 if stats["mana_max"] <= 0 else 100.0 * mana / stats["mana_max"]
+    while len(_TIMELINE) >= 8000:
+        _TIMELINE.pop(next(iter(_TIMELINE)))
+    _TIMELINE[cache_key] = (list(events), actions, mana_left)
+    sources = score_events(events)
+    total = sum(sources.values())
     return Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
 
 

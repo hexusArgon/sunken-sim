@@ -12,11 +12,11 @@
 |---|---|---|
 | locked | только CPU, torch не импортируется | mage/arcane |
 | hybrid-timeline | CPU-таймлайн + точный timeline-cache, GPU compile, CPU score | mage/fire, mage/frost |
-| hybrid-compile | CPU-таймлайн (кэш модуля), GPU compile, CPU score | priest×3, paladin×3, shaman×3, warrior×3, warlock×3 |
+| hybrid-compile | CPU-таймлайн (кэш модуля), GPU compile, CPU score | priest×3, paladin×3, shaman×3, warrior×3, warlock×3, rogue×2 |
 | cpu-only | local-hybrid (device + v1 stat-parity), бои = simulate модуля | остальные |
 
 Дальше GPU-compile для остальных нужен split simulate → events → compile → score
-в sunken_sim. Порт-очередь: `registry.PORT_ORDER` (rogue, …). Warrior+Warlock done.
+в sunken_sim. Порт-очередь: `registry.PORT_ORDER` (hunter, …). Warrior+Warlock+Rogue done.
 
 ### Честно про таймлайн на GPU
 Состояние боя (кто/когда кастует) по-прежнему на CPU. hybrid-timeline = точный
@@ -43,6 +43,10 @@ Enrage (*1.10) в weight; fury enrage +10 crit — отдельные kind; auto
 
 ## Warlock Demonology / Destruction / Affliction
 Код: `farm/hybrid/warlock.py` + `sunken_sim/warlock.py` flat-event timeline (policy best).
+Events уже полностью scored; GPU батчит sum(amount)/FIGHT.
+
+## Rogue Subtlety / Combat
+Код: `farm/hybrid/rogue.py` + `sunken_sim/rogue.py` flat-event timeline.
 Events уже полностью scored; GPU батчит sum(amount)/FIGHT.
 
 ## Arcane Mage
