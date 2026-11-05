@@ -1,11 +1,13 @@
-"""CPU vs GPU fight parity for Mage Fire/Frost (never Arcane).
+"""CPU vs GPU fight parity for every spec with a GPU engine (farm.hybrid.registry; never Arcane).
 
   .venv-dml\Scripts\python.exe tools\run_hybrid_parity.py --spec fire --n 2000
   .venv-dml\Scripts\python.exe tools\run_hybrid_parity.py --spec frost --n 500 --finish 3
+  .venv-dml\Scripts\python.exe tools\run_hybrid_parity.py --hero priest --spec shadow --n 1000 --finish 3
 
 Builds are fixed by --seed: random item chunks from the top-80 space, random
-talents/glyphs, random ESC points. Reference is sunken_sim.mage.simulate.
-Writes JSON to farm-data-hybrid-smoke/parity-<spec>-<device>.json.
+talents/glyphs, random ESC points. Reference is the farm CPU fight
+(farm.score._fight -> sunken_sim.<module>.simulate).
+Writes JSON to farm-data-hybrid-smoke/parity-<hero>-<spec>-<device>.json.
 """
 from __future__ import annotations
 
@@ -51,6 +53,7 @@ def sample_builds(space, items, n: int, seed: int, targets: int):
 
 def main() -> None:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--hero", default="mage")
     parser.add_argument("--spec", default="fire")
     parser.add_argument("--n", type=int, default=1000)
     parser.add_argument("--seed", type=int, default=15)
@@ -61,14 +64,19 @@ def main() -> None:
 
     from farm.catalog import load
     from farm.hybrid.device import detect
-    from farm.hybrid.fight import GpuFights, compare, cpu_dps, gpu_fights_for
+    from farm.hybrid import registry
+    from farm.hybrid.engine import compare
 
-    if not gpu_fights_for("mage", args.spec):
-        raise SystemExit(f"mage/{args.spec}: GPU fights not allowed")
-    device = detect("mage", args.spec)
-    space, items = load("mage", args.spec, "mixed", None, args.top)
+    hero = args.hero
+    if not registry.gpu_engine_for(hero, args.spec):
+        raise SystemExit(f"{hero}/{args.spec}: {registry.status(hero, args.spec)}, no GPU engine")
+    device = detect(hero, args.spec)
+    space, items = load(hero, args.spec, "mixed", None, args.top)
     builds = sample_builds(space, items, args.n, args.seed, args.targets)
-    engine = GpuFights(device, "mage", args.spec, args.targets)
+    engine = registry.make_engine(device, hero, args.spec, args.targets)
+
+    def cpu_dps(build, targets, spec):
+        return registry.cpu_dps(hero, spec, targets, build)
 
     t0 = time.perf_counter()
     ref = [cpu_dps(b, args.targets, args.spec) for _, b in builds]
@@ -76,7 +84,9 @@ def main() -> None:
     got = engine.dps_many([b for _, b in builds])
     t2 = time.perf_counter()
     report = {
+        "hero": hero,
         "spec": args.spec,
+        "status": registry.status(hero, args.spec),
         "targets": args.targets,
         "seed": args.seed,
         "device": device.kind,
@@ -101,7 +111,7 @@ def main() -> None:
             equipped = tuple(items[code] for code in space.decode(chunk)[0])
             call = (equipped, space.talents, space.glyphs, space.picks_without, space.picks_with, space.glyph_picks)
             a0 = time.perf_counter()
-            cpu = finish_sextuple("mage", args.spec, args.targets, *call)
+            cpu = finish_sextuple(hero, args.spec, args.targets, *call)
             a1 = time.perf_counter()
             gpu = engine.finish_sextuple(*call)
             a2 = time.perf_counter()
@@ -120,8 +130,12 @@ def main() -> None:
                 }
             )
         report["finish"] = rows
+    if registry.status(hero, args.spec) == registry.TIMELINE:
+        from farm.hybrid.fight import TL_COUNTS
 
-    out = Path(os.environ["FARM_DATA"]) / f"parity-{args.spec}-{device.kind}.json"
+        report["timeline_cache"] = dict(TL_COUNTS)
+
+    out = Path(os.environ["FARM_DATA"]) / f"parity-{hero}-{args.spec}-{device.kind}.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2))

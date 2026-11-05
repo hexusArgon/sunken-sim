@@ -1,10 +1,15 @@
 """Hybrid entry: worker "local-hybrid". Opt-in only.
 
-v1: GPU (DirectML) does batched item-stat prep + parity self-check on the first span.
-v2: for Mage Fire/Frost (farm.hybrid.fight.GPU_FIGHT_SPECS) fights go through
-farm.hybrid.fight.eval_span: CPU timeline, GPU compile sums, CPU closed-form score.
-A parent parity check vs the CPU sim must pass, else the job runs the old CPU path.
-Other specs: fights are the old CPU sim. Arcane Mage never touches the GPU path.
+Every class and spec runs here (farm.hybrid.registry has the status matrix):
+
+  v1 (all specs but locked): GPU (DirectML) batched item-stat prep + parity check.
+  hybrid-timeline (Mage Fire/Frost) and hybrid-compile (Priest): fights go through
+     farm.hybrid.engine.eval_span with the spec's engine (registry.make_engine):
+     CPU timeline, GPU compile sums, CPU closed-form score. A parent parity check
+     vs the CPU sim (farm.score._fight) must pass, else the job runs the old CPU
+     path; every worker process also self-checks its first fights.
+  cpu-only: fights are the module's own CPU simulate (same payload).
+  locked (Arcane Mage): old CPU runner, no device detection, no torch import.
 """
 
 from __future__ import annotations
@@ -14,7 +19,7 @@ import time
 from farm.hybrid import HYBRID_WORKER
 from farm.hybrid.device import detect
 from farm.hybrid.lock import cpu_locked
-from farm.hybrid.fight import gpu_fights_for
+from farm.hybrid import registry
 
 PREP_SPAN = 4096
 
@@ -54,7 +59,7 @@ def fight_check(device, hero: str, spec: str, targets: int, top: int | None = 80
     import random
 
     from farm.catalog import load
-    from farm.hybrid.fight import GpuFights, compare, cpu_dps
+    from farm.hybrid.engine import compare
     from sunken_sim.shadow import Build
 
     space, items = load(hero, spec, pool, None, top)
@@ -65,9 +70,9 @@ def fight_check(device, hero: str, spec: str, targets: int, top: int | None = 80
         talents = frozenset(rng.sample(list(space.talents), space.picks_with)) if i % 2 else frozenset()
         builds.append(Build(talents, frozenset(), equipped, 0, 0, 0, 0))
     t0 = time.perf_counter()
-    ref = [cpu_dps(b, targets, spec) for b in builds]
+    ref = [registry.cpu_dps(hero, spec, targets, b) for b in builds]
     t1 = time.perf_counter()
-    got = GpuFights(device, hero, spec, targets).dps_many(builds)
+    got = registry.make_engine(device, hero, spec, targets).dps_many(builds)
     t2 = time.perf_counter()
     res = compare(ref, got)
     res.update({"device": device.kind, "cpu_s": round(t1 - t0, 3), "gpu_s": round(t2 - t1, 3)})
@@ -83,7 +88,15 @@ def run_job(job: dict, box: dict, tick) -> dict:
         return cpu_runner.run_job(job, box, tick)
 
     device = detect(hero, spec)
-    info = {"hybrid": {"worker": job.get("worker", HYBRID_WORKER), "device": device.kind, "name": device.name, "reason": device.reason}}
+    info = {
+        "hybrid": {
+            "worker": job.get("worker", HYBRID_WORKER),
+            "status": registry.status(hero, spec),
+            "device": device.kind,
+            "name": device.name,
+            "reason": device.reason,
+        }
+    }
     try:
         from farm.catalog import load
 
@@ -96,11 +109,11 @@ def run_job(job: dict, box: dict, tick) -> dict:
     except Exception as exc:  # prep must never break the farm
         info["hybrid"]["prep_error"] = f"{exc.__class__.__name__}: {exc}"
     eval_fn = None
-    if gpu_fights_for(hero, spec) and "fallback" not in info["hybrid"]:
+    if registry.gpu_engine_for(hero, spec) and "fallback" not in info["hybrid"]:
         try:
             info["hybrid"]["fights"] = fight_check(device, hero, spec, int(job["targets"]), job.get("top") or None, job["pool"])
             if info["hybrid"]["fights"]["ok"]:
-                from farm.hybrid.fight import eval_span as hybrid_eval_span
+                from farm.hybrid.engine import eval_span as hybrid_eval_span
 
                 eval_fn = hybrid_eval_span
             else:

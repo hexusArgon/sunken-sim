@@ -243,5 +243,243 @@ class FightTest(unittest.TestCase):
                 self._parity(spec, info)
 
 
+def _sample(hero, spec, n, seed, points_every=3):
+    from farm.catalog import load
+    from sunken_sim.esc import apply_points, empty_points
+    from sunken_sim.shadow import Build
+    import random
+
+    space, items = load(hero, spec, "mixed", None, 80)
+    rng = random.Random(seed)
+    builds = []
+    for i in range(n):
+        equipped = tuple(items[c] for c in space.decode(rng.randrange(space.total))[0])
+        talents = frozenset(rng.sample(list(space.talents), space.picks_with)) if i % 2 else frozenset()
+        glyphs = frozenset(rng.sample(list(space.glyphs), space.glyph_picks)) if i % 4 == 3 else frozenset()
+        build = Build(talents, glyphs, equipped, 0, 0, 0, 0)
+        if i % points_every == 0:
+            points = empty_points()
+            for name in list(points):
+                points[name] = rng.randrange(0, 4)
+            build = apply_points(build, points)
+        builds.append(build)
+    return builds
+
+
+class RegistryTest(unittest.TestCase):
+    """farm.hybrid.registry: one status per hero/spec, Arcane locked."""
+
+    def test_statuses(self):
+        from farm.hybrid import registry
+
+        self.assertEqual(registry.status("mage", "arcane"), registry.LOCKED)
+        self.assertEqual(registry.status("Mage", " Arcane "), registry.LOCKED)
+        self.assertEqual(registry.status("mage", "fire"), registry.TIMELINE)
+        self.assertEqual(registry.status("mage", "frost"), registry.TIMELINE)
+        for spec in registry.PRIEST_SPECS:
+            self.assertEqual(registry.status("priest", spec), registry.COMPILE)
+        self.assertEqual(registry.status("paladin", "retribution"), registry.CPU)
+        self.assertFalse(registry.gpu_engine_for("mage", "arcane"))
+        self.assertTrue(registry.gpu_engine_for("priest", "holy"))
+
+    def test_matrix_covers_every_class(self):
+        from farm.hybrid import registry
+
+        table = registry.matrix()
+        heroes = {row["hero"] for row in table}
+        self.assertEqual(heroes, set(registry.MODULES))
+        self.assertTrue(all(row["status"] in registry.STATUSES for row in table))
+        locked = [(r["hero"], r["spec"]) for r in table if r["status"] == registry.LOCKED]
+        self.assertEqual(locked, [("mage", "arcane")])
+
+    def test_make_engine_refuses(self):
+        from farm.hybrid import registry
+        from farm.hybrid.device import DeviceInfo
+
+        with self.assertRaises(GpuLocked):
+            registry.make_engine(DeviceInfo("cpu", "cpu"), "mage", "arcane", 5)
+        with self.assertRaises(ValueError):
+            registry.make_engine(DeviceInfo("cpu", "cpu"), "paladin", "retribution", 5)
+
+    def test_cpu_only_spec_runs_old_fights(self):
+        with mock.patch.dict(os.environ, {"FARM_HYBRID_DEVICE": "cpu"}), \
+             mock.patch.object(cpu_runner, "run_job", return_value={"done": 1}) as old, \
+             mock.patch.object(hybrid_runner, "prep_check", return_value={"parity": True}), \
+             mock.patch("farm.catalog.load", return_value=(FakeSpace([("A", "B", "C")]), _items())), \
+             mock.patch.object(hybrid_runner, "fight_check") as check:
+            ticks = []
+            hybrid_runner.run_job(_job("paladin", "retribution"), {}, ticks.append)
+        check.assert_not_called()
+        self.assertNotIn("eval_fn", old.call_args.kwargs)
+        self.assertEqual(ticks[0]["hybrid"]["status"], "cpu-only")
+        self.assertFalse(ticks[0]["hybrid"]["gpu_fights"])
+
+    def test_priest_passes_engine_eval_span(self):
+        from farm.hybrid import engine
+
+        with mock.patch.dict(os.environ, {"FARM_HYBRID_DEVICE": "cpu"}), \
+             mock.patch.object(cpu_runner, "run_job", return_value={"done": 1}) as old, \
+             mock.patch.object(hybrid_runner, "prep_check", return_value={"parity": True}), \
+             mock.patch("farm.catalog.load", return_value=(FakeSpace([("A", "B", "C")]), _items())), \
+             mock.patch.object(hybrid_runner, "fight_check", return_value={"ok": True, "n": 1}):
+            ticks = []
+            hybrid_runner.run_job(_job("priest", "shadow"), {}, ticks.append)
+        self.assertIs(old.call_args.kwargs.get("eval_fn"), engine.eval_span)
+        self.assertEqual(ticks[0]["hybrid"]["status"], "hybrid-compile")
+
+
+class EngineFallbackTest(unittest.TestCase):
+    """farm.hybrid.engine.eval_span: a worker that fails its self-check runs the old eval_span."""
+
+    def tearDown(self):
+        from farm.hybrid import engine
+
+        engine.reset()
+
+    def _run(self, gpu_value):
+        from farm.hybrid import engine, registry
+
+        class Fake(engine.BatchFights):
+            def dps_many(self, builds):
+                return [gpu_value] * len(builds)
+
+        engine.reset()
+        sub = {"start": 0, "done": 1, "fights": 1, "hits": [], "errors": 0, "error": ""}
+        with mock.patch.multiple(
+            cpu_runner, _HERO="priest", _SPEC="shadow", _TARGETS=5, _SPACE=FakeSpace([("A", "B", "C")]),
+            _ITEMS=_items(), _SOURCES={}, _STOP=None, create=True,
+        ), mock.patch.object(cpu_runner, "eval_span", return_value=sub) as old, \
+             mock.patch.object(cpu_runner, "claim_item_bars", return_value=False), \
+             mock.patch.object(registry, "make_engine", return_value=Fake()), \
+             mock.patch("farm.hybrid.device.detect", return_value=None), \
+             mock.patch.object(registry, "cpu_dps", return_value=100.0):
+            out = engine.eval_span(0, 1)
+        return out, old, engine._ENGINE_STATE
+
+    @unittest.skipUnless(HAS_TORCH, "torch not installed")
+    def test_self_check_mismatch_falls_back(self):
+        out, old, state = self._run(101.0)
+        old.assert_called_once()
+        self.assertEqual(state, "cpu")
+        self.assertEqual(out["done"], 1)
+
+    @unittest.skipUnless(HAS_TORCH, "torch not installed")
+    def test_self_check_match_stays_gpu(self):
+        out, old, state = self._run(100.0)
+        old.assert_not_called()
+        self.assertEqual(state, "gpu")
+        self.assertEqual(out["fights"], 1)
+
+
+class PriestTest(unittest.TestCase):
+    """GPU compile stage for Priest (farm.hybrid.priest) vs the CPU sim."""
+
+    def _parity(self, info):
+        from farm.hybrid import registry
+        from farm.hybrid.engine import compare
+
+        for spec in registry.PRIEST_SPECS:
+            with self.subTest(spec=spec):
+                try:
+                    builds = _sample("priest", spec, 16, 11)
+                except Exception as exc:  # catalog cache missing on this box
+                    self.skipTest(f"catalog: {exc}")
+                ref = [registry.cpu_dps("priest", spec, 5, b) for b in builds]
+                got = registry.make_engine(info, "priest", spec, 5).dps_many(builds)
+                res = compare(ref, got)
+                self.assertTrue(res["ok"], res)
+
+    @unittest.skipUnless(HAS_TORCH, "torch not installed")
+    def test_priest_torch_cpu_parity(self):
+        from farm.hybrid.device import DeviceInfo
+
+        self._parity(DeviceInfo("cpu", "cpu"))
+
+    def test_priest_dml_parity_if_present(self):
+        info = detect("priest", "shadow")
+        if not info.gpu:
+            self.skipTest(f"no DirectML: {info.reason}")
+        self._parity(info)
+
+
+class TimelineCacheTest(unittest.TestCase):
+    """Mage exact timeline cache: same events + stats as a fresh simulate."""
+
+    def test_cache_equals_fresh_simulate(self):
+        from farm.hybrid import fight
+        from sunken_sim.esc import ESC_ATTRS, apply_points, empty_points
+
+        for spec in ("fire", "frost"):
+            with self.subTest(spec=spec):
+                try:
+                    bases = _sample("mage", spec, 6, 21, points_every=99)
+                except Exception as exc:
+                    self.skipTest(f"catalog: {exc}")
+                fight._TL_CACHE.clear()
+                before = fight.TL_COUNTS["hit"]
+                for base in bases:
+                    for name in ESC_ATTRS:
+                        points = empty_points()
+                        points[name] = 1
+                        build = apply_points(base, points)
+                        cached = fight.timelines(build, 5, spec)
+                        fresh = fight.timelines(build, 5, spec, cache=False)
+                        self.assertEqual(len(cached), len(fresh))
+                        for a, b in zip(cached, fresh):
+                            self.assertEqual(a.events, b.events, (spec, name, a.bound))
+                            self.assertEqual(a.stats, b.stats, (spec, name, a.bound))
+                            self.assertEqual((a.spec, a.evocation, a.bound), (b.spec, b.evocation, b.bound))
+                self.assertGreater(fight.TL_COUNTS["hit"], before)
+
+    def test_timeline_stats_cover_reads(self):
+        """Drift guard for map hotfixes: every sheet key the timeline reads is in the cache key."""
+        from farm.hybrid import fight
+        from sunken_sim import mage
+
+        seen = set()
+        on = [False]
+
+        class Track(dict):
+            def __getitem__(self, k):
+                if on[0]:
+                    seen.add(k)
+                return dict.__getitem__(self, k)
+
+            def get(self, k, d=None):
+                if on[0]:
+                    seen.add(k)
+                return dict.get(self, k, d)
+
+            def __contains__(self, k):
+                if on[0]:
+                    seen.add(k)
+                return dict.__contains__(self, k)
+
+        old_sheet, old_raws = mage.sheet, mage._raws
+
+        def sheet(build):
+            on[0] = True
+            return Track(old_sheet(build))
+
+        def raws(stats, build):
+            on[0] = False
+            try:
+                return old_raws(dict(stats), build)
+            finally:
+                on[0] = True
+
+        for spec in ("fire", "frost"):
+            try:
+                builds = _sample("mage", spec, 40, 5)
+            except Exception as exc:
+                self.skipTest(f"catalog: {exc}")
+            with mock.patch.object(mage, "sheet", sheet), mock.patch.object(mage, "_raws", raws), fight._capture():
+                for build in builds:
+                    mage.simulate(build, 5, None, None, spec, use_history=False)
+                    on[0] = False
+        self.assertTrue(seen)
+        self.assertLessEqual(seen, set(fight.TIMELINE_STATS) | {"crit"})
+
+
 if __name__ == "__main__":
     unittest.main()
