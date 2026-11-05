@@ -12,9 +12,9 @@
 |---|---|---|
 | locked | только CPU, torch не импортируется | mage/arcane |
 | hybrid-timeline | CPU-таймлайн + точный timeline-cache, GPU compile, CPU score | mage/fire, mage/frost |
-| hybrid-compile | CPU-таймлайн (без кэша), GPU compile, CPU score | priest×3, paladin×3, shaman×3, warlock×3, rogue×2, hunter×3, druid×2, feral_druid×3 + ledger kind-heroes |
+| hybrid-compile | CPU-таймлайн (без кэша), GPU compile, CPU score | priest×3, shaman×3, warlock×3, rogue×2, hunter×3, druid×2, feral_druid×3 + ledger kind-heroes |
 | gpu-timeline | batched next-event timeline + GPU kind-score | warrior×3, paladin×3 |
-| cpu-only | local-hybrid (device + v1 stat-parity), бои = simulate модуля | — (реальных спеков нет; только неизвестный hero/spec) |
+| cpu-only | local-hybrid (device + v1 stat-parity), бои = simulate модуля | остальные |
 
 Дальше GPU-compile для остальных нужен split simulate → events → compile → score
 в sunken_sim. Порт-очередь: `registry.PORT_ORDER` (feral_druid, …). Warrior+Warlock+Rogue+Hunter+Druid+FeralDruid done.
@@ -27,12 +27,16 @@
 | mage fire/frost | kind-compile in timeline hybrid |
 | mage arcane | locked CPU |
 | feral_druid×3 (primal/guardian/savage) | kind/weight moments (PHYS/MAG/EXEC/FLAT) |
-| berserker×3, death_knight×3, demon_hunter×3, dragon_sentinel×3, monk×3, necromancer×3, siren×3, tidewarrior×2, tinker×3, windmaster×3, witch_doctor×2 | ledger kind/weight moments (EXEC/FLAT) |
+| remaining cpu-only | not yet |
 
 ### Pending (next tasks)
-1. **Timeline on GPU** — warrior×3 + paladin×3 done; roll out to shaman/mage fire-frost/others.
-2. **ESC / stat-kernel on GPU** — matrix greedy between fights (all compile classes).
-
+1. **Timeline on GPU** — warrior×3 + paladin×3 done (parity green). Remaining CPU timeline:
+   shaman×3 (choose+pending+spirits), mage fire/frost (true GPU timeline; cache today),
+   priest/shadow×3, warlock×3, rogue×2, hunter×3, druid×2, feral_druid×3,
+   kind-heroes (berserker/DK/DH/dragon_sentinel/monk/necromancer/siren/tidewarrior/
+   tinker/windmaster/witch_doctor). Branchy classes stay CPU timeline + GPU kind-score
+   until ported.
+2. **ESC / stat-kernel on GPU** — matrix greedy between fights (all compile classes). Ready next.
 
 ### Честно про таймлайн на GPU
 Warrior + Paladin: batched next-event state machines in
@@ -100,24 +104,6 @@ Events: (when, name, weight, kind); kinds PHYS / MAG / EXEC / FLAT.
 PHYS: phys/crit/taken baked, ×execute; MAG: base+slope×mastery on GPU; EXEC/FLAT as usual.
 DIAMOND (I00D): timelines() picks best bound key like simulate().
 Parity smoke 2026-11-05: GPU vs CPU abs/rel ≤ 1e-4 (RX 6800 XT DirectML).
-
-## Ledger kind-score: Berserker, Death Knight, Demon Hunter, Dragon Sentinel, Monk, Necromancer, Siren, Tidewarrior, Tinker, Windmaster, Witch Doctor
-Код: `sunken_sim/ledger.py` + `farm/hybrid/kindscore.py` (общий `KindFights`), тонкие
-`farm/hybrid/<hero>.py`. В `simulate()` модуля `sources` — это `Ledger` (dict + список
-событий (when, name, weight, kind)); `Report.events` уходит в GPU.
-Kinds: **EXEC** — точки урона, где множитель execute(when) уже был в формуле
-(weight = dealt / execute, execute пересчитывается при pack); **FLAT** — всё остальное
-как дельта записи (`sources[x] += ...`, auto_pct-масштаб, probe/restore Axe Mastery,
-Outbreak ×times, cleave Tidewarrior). Без PHYS/MAG-разложения: crit/taken/мастери
-уже внутри weight, на GPU только one-hot(kind) × weight bmm (float32) + CPU sum / FIGHT.
-Выбор политики (POLICIES) остаётся в `simulate()` на CPU.
-CPU dps старого и нового `simulate` совпадает бит-в-бит (tools/_ledger_parity.py, 31 спек).
-Parity smoke 2026-11-05, DirectML (RX 6800 XT), n=300 + finish 2, tol 1e-4:
-berserker 1.3e-5/1.0e-5/1.2e-5, death_knight ≤2.8e-6, demon_hunter ≤4.2e-6,
-dragon_sentinel ≤8.4e-7, monk ≤1.0e-6, necromancer ≤1.04e-5, siren ≤2.5e-6,
-tidewarrior ≤1.6e-6, tinker ≤3.2e-6, windmaster ≤5.0e-6, witch_doctor ≤6.2e-6;
-finish — те же talents/glyphs/points. Скорость ≈ CPU (таймлайн остаётся на CPU;
-GPU даёт только score). Все спеки: `tools/_kind_parity_all.py`.
 
 ## Arcane Mage
 mage/arcane жёстко на CPU (`farm/hybrid/lock.py`). GpuLocked.
