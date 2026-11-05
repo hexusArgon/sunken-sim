@@ -43,6 +43,7 @@ from sunken_sim.shadow import (
     target_hp,
 )
 from sunken_sim.stacking import stack_fields
+from sunken_sim.ledger import Ledger, attach, score_events  # noqa: F401
 
 BASE_STR = int(14 + (LEVEL - 1) * 1.4)  # O00H ustr/ustp
 BASE_AGI = int(10 + (LEVEL - 1) * 1.0)  # uagi; uagp missing in w3u → 1.0 from lvl6 fit
@@ -385,7 +386,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
     summon_taken = armor_taken(DUMMY_ARMOR)
     pen_taken = armor_taken(DUMMY_ARMOR - 8.0)  # A042: 8 armor penetration
 
-    sources: dict[str, float] = {"Автоатака": 0.0}
+    sources: dict[str, float] = Ledger({"Автоатака": 0.0})
     actions: list[tuple[float, str]] = []
     mana = mana_max
     mana_time = 0.0
@@ -498,7 +499,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
         elif stats["spell_crit"]:
             amount *= _crit_factor(stats["crit"], stats["spell_mult"] + stats["rating"])
         dealt = amount * hero_taken * _execute_factor(stats, now)
-        sources[name] = sources.get(name, 0.0) + dealt * count
+        sources.add_exec(name, dealt * count, now, _execute_factor(stats, now))
         note_damage_mana(count)
         ce_proc(count, now)
         return dealt
@@ -512,7 +513,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
             amount *= _crit_factor(stats["summon_crit"] + crit_bonus, 2.0 + stats["summon_rating"])
         taken = pen_share * pen_taken + (1.0 - pen_share) * summon_taken
         dealt = amount * taken * _execute_factor(stats, now)
-        sources[name] = sources.get(name, 0.0) + dealt * count
+        sources.add_exec(name, dealt * count, now, _execute_factor(stats, now))
         ce_proc(count, now)
         if has(TALENT_SERRATION) and depth < 3:
             chance = _chance(0.05 * luck_mult) * count
@@ -738,23 +739,23 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
         gain_mana(attack_mana_gain(stats))
         if stats["fire_orb"]:
             splash = (20.0 + 0.35 * stats["int"]) * targets * hero_taken * _execute_factor(stats, moment)
-            sources["Всплеск огня"] = sources.get("Всплеск огня", 0.0) + splash
+            sources.add_exec("Всплеск огня", splash, moment, _execute_factor(stats, moment))
             note_damage_mana(targets)
         if sulfuras is not None:
             execute = _execute_factor(stats, moment)
             if sulfuras.attack():
                 splash = stats["int"] * typed(True, moment) * hero_taken * execute * targets
                 splash *= _crit_factor(stats["crit"], 2.0 + stats["rating"])
-                sources["Sulfuras"] = sources.get("Sulfuras", 0.0) + splash
+                sources.add_exec("Sulfuras", splash, moment, execute)
                 note_damage_mana(targets)
             echo = power * hero_taken * execute * sulfuras_echo_chance(stats["luck"])
-            sources["Sulfuras (удар)"] = sources.get("Sulfuras (удар)", 0.0) + echo
+            sources.add_exec("Sulfuras (удар)", echo, moment, execute)
         next_attack = moment + interval(moment)
 
     total = sum(sources.values())
     recover(FIGHT)
     mana_left = 0.0 if mana_max <= 0 else 100.0 * mana / mana_max
-    report = Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
+    report = attach(Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left))
     return report
 
 

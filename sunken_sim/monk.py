@@ -42,6 +42,7 @@ from sunken_sim.shadow import (
     target_hp,
 )
 from sunken_sim.stacking import stack_fields
+from sunken_sim.ledger import Ledger, attach, score_events  # noqa: F401
 
 BASE_STR = int(24 + (LEVEL - 1) * 2.4)
 BASE_AGI = int(13 + (LEVEL - 1) * 1.3)
@@ -372,7 +373,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, bool, bo
     mastery = int(stats["mastery"])
     taken = armor_taken(DUMMY_ARMOR - stats["armor_pen"])
 
-    sources: dict[str, float] = {
+    sources: dict[str, float] = Ledger({
         "Автоатака": 0.0,
         "Fortifying Brew (удар)": 0.0,
         "Power Strike": 0.0,
@@ -381,7 +382,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, bool, bo
         "White Tiger": 0.0,
         "Wrath of Xuen": 0.0,
         "Всплеск огня": 0.0,
-    }
+    })
     actions: list[tuple[float, str]] = []
     mana = stats["mana_max"]
     mana_time = 0.0
@@ -450,7 +451,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, bool, bo
             amount *= _crit_factor(stats["crit"], stats["spell_mult"] + stats["rating"])
             crits = _chance(stats["crit"] / 100.0) * count
         dealt = amount * taken * _execute_factor(stats, now)
-        sources[name] = sources.get(name, 0.0) + dealt * count
+        sources.add_exec(name, dealt * count, now, _execute_factor(stats, now))
         note_damage_mana(count)
         if has(TALENT_FISTS_OF_FURY):
             fof = min(50.0 * LEVEL, fof + 0.10 * dealt * count)
@@ -474,7 +475,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, bool, bo
             amount *= _crit_factor(chance, rating)
             crits = _chance(chance / 100.0)
         dealt = amount * taken * _execute_factor(stats, now)
-        sources[name] = sources.get(name, 0.0) + dealt
+        sources.add_exec(name, dealt, now, _execute_factor(stats, now))
         note_damage_mana(1)
         cut_wrath(crits, now)
         return dealt
@@ -706,23 +707,23 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, bool, bo
         gain_mana(attack_mana_gain(stats))
         if stats["fire_orb"]:
             splash = (20.0 + 0.35 * stats["str"]) * targets * taken * _execute_factor(stats, moment)
-            sources["Всплеск огня"] += splash
+            sources.add_exec("Всплеск огня", splash, moment, _execute_factor(stats, moment))
             note_damage_mana(targets)
         if sulfuras is not None:
             execute = _execute_factor(stats, moment)
             if sulfuras.attack():
                 splash = stats["str"] * typed(True, moment) * taken * execute * targets
                 splash *= _crit_factor(stats["crit"], 2.0 + stats["rating"])
-                sources["Sulfuras"] = sources.get("Sulfuras", 0.0) + splash
+                sources.add_exec("Sulfuras", splash, moment, execute)
                 note_damage_mana(targets)
             echo = power * taken * execute * sulfuras_echo_chance(stats["luck"])
-            sources["Sulfuras (удар)"] = sources.get("Sulfuras (удар)", 0.0) + echo
+            sources.add_exec("Sulfuras (удар)", echo, moment, execute)
         next_attack = moment + interval(moment)
 
     total = sum(sources.values())
     recover(FIGHT)
     mana_left = 0.0 if stats["mana_max"] <= 0 else 100.0 * mana / stats["mana_max"]
-    return Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
+    return attach(Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left))
 
 
 def best_points(build: Build, targets: int, spec: str) -> tuple[float, dict[str, int]]:
