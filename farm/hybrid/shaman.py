@@ -1,5 +1,10 @@
 ﻿# -*- coding: utf-8 -*-
-"""GPU compile stage for Shaman (restoration / enhancement / elemental)."""
+"""GPU timeline (elemental) + kind-score compile for Shaman. DirectML.
+
+Elemental timeline: farm.hybrid.shaman_gpu_timeline (batched pending+choose).
+Restoration / Enhancement stay CPU events_for until spirit slots pass parity.
+Set FARM_HYBRID_GPU_TIMELINE=0 to force CPU timeline for elemental too.
+"""
 
 from __future__ import annotations
 
@@ -41,15 +46,25 @@ class Timeline:
     taken: float
 
 
-def timelines(build, targets: int, spec: str) -> list[Timeline]:
+def timelines(build, targets: int, spec: str, *, gpu_bundle=None) -> list[Timeline]:
+    """CPU timeline (events_for), or events from a GPU timeline batch bundle.
+
+    gpu_bundle: optional dict (id(build), bound_key) -> (events, stats, codes, taken)
+    produced by farm.hybrid.shaman_gpu_timeline.generate_shaman_timelines.
+    bound_key is None or a buttons() key (chain/shield/lava/totem/spirit).
+    """
     from sunken_sim import shaman
 
     if shaman._wears(build, shaman.DIAMOND):
-        bounds = [shaman.BOUND_NAME[k] for k in shaman.buttons(spec)]
+        bound_pairs = [(k, shaman.BOUND_NAME[k]) for k in shaman.buttons(spec)]
     else:
-        bounds = [None]
+        bound_pairs = [(None, None)]
     out = []
-    for bound in bounds:
+    for bkey, bound in bound_pairs:
+        if gpu_bundle is not None and (id(build), bkey) in gpu_bundle:
+            events, stats, codes, taken = gpu_bundle[(id(build), bkey)]
+            out.append(Timeline(build, stats, codes, spec, events, taken))
+            continue
         events, _actions, _mana, stats, codes, taken, _bk, _rep = shaman.events_for(
             build, targets, spec, bound
         )
@@ -246,10 +261,40 @@ class ShamanFights(BatchFights):
         return out
 
     def dps_many(self, builds: list) -> list[float]:
+        import os
+
+        gpu_bundle = None
+        want = os.environ.get("FARM_HYBRID_GPU_TIMELINE", "auto").strip().lower()
+        use_gpu_tl = (
+            self.spec == "elemental"
+            and want not in ("0", "false", "cpu")
+            and (want in ("1", "true", "force") or bool(getattr(self.device, "gpu", False)))
+        )
+        if use_gpu_tl and builds:
+            from sunken_sim import shaman as mod
+            from farm.hybrid.shaman_gpu_timeline import generate_shaman_timelines
+
+            flat_builds = []
+            flat_keys = []
+            for index, build in enumerate(builds):
+                if mod._wears(build, mod.DIAMOND):
+                    keys = list(mod.buttons(self.spec))
+                else:
+                    keys = [None]
+                for bkey in keys:
+                    flat_builds.append(build)
+                    flat_keys.append(bkey)
+            rows = generate_shaman_timelines(
+                self.torch, self.target, flat_builds, self.spec, self.targets, flat_keys
+            )
+            gpu_bundle = {
+                (id(build), bkey): row
+                for build, bkey, row in zip(flat_builds, flat_keys, rows)
+            }
         tls: list[Timeline] = []
         owner: list[int] = []
         for index, build in enumerate(builds):
-            for tl in timelines(build, self.targets, self.spec):
+            for tl in timelines(build, self.targets, self.spec, gpu_bundle=gpu_bundle):
                 tls.append(tl)
                 owner.append(index)
         scores = self._scores(tls) if tls else []

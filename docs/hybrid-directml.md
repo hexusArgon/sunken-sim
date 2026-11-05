@@ -31,7 +31,7 @@
 
 ### Pending (next tasks)
 1. **Timeline on GPU** — warrior×3 + paladin×3 done (parity green). Remaining CPU timeline:
-   shaman×3 (choose+pending+spirits), mage fire/frost (true GPU timeline; cache today),
+   shaman resto/enh (spirits); elemental done, mage fire/frost (true GPU timeline; cache today),
    priest/shadow×3, warlock×3, rogue×2, hunter×3, druid×2, feral_druid×3,
    kind-heroes (berserker/DK/DH/dragon_sentinel/monk/necromancer/siren/tidewarrior/
    tinker/windmaster/witch_doctor). Branchy classes stay CPU timeline + GPU kind-score
@@ -65,8 +65,11 @@ Parity 2026-11-05: 16 builds × 3 specs = 48/48 GPU timeline+kind vs CPU simulat
 (RX 6800 XT DirectML; abs/rel ≤ 1e-4).
 
 ## Shaman Restoration / Enhancement / Elemental
-Код: `farm/hybrid/shaman.py` + `sunken_sim/shaman.py` event/score split.
-GPU vs CPU rel ≤ 1e-6 (smoke 2026-11-05).
+Код: `farm/hybrid/shaman.py` + `shaman_gpu_timeline.py` + `sunken_sim/shaman.py`.
+Status: **gpu-timeline** for Elemental (pending+choose, no spirits). Restoration /
+Enhancement stay hybrid-compile until spirit slots pass parity.
+Opt out: `FARM_HYBRID_GPU_TIMELINE=0`.
+
 
 ## Warrior Protection / Arms / Fury
 Код: `farm/hybrid/warrior.py` + `warrior_gpu_timeline.py` + `timeline_gpu.py` +

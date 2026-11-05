@@ -7,7 +7,7 @@ Statuses (same words as the docs status matrix):
   hybrid-compile   - CPU timeline (module's own cache), GPU compile sums, CPU score
                      (Priest Shadow / Discipline / Holy).
   gpu-timeline     - batched next-event timeline generation (float64 clocks on CPU
-                     when DirectML lacks f64) + GPU kind-score (Warrior x3, Paladin x3).
+                     when DirectML lacks f64) + GPU kind-score (Warrior x3, Paladin x3, Shaman elemental).
   cpu-only         - runs under local-hybrid (device detect, v1 stat-kernel parity,
                      same payload), but fights are the module's own simulate. The
                      module sums damage inside simulate, so there is nothing to hand
@@ -63,6 +63,7 @@ WARRIOR_SPECS = ("protection", "arms", "fury")
 GPU_TIMELINE_SPECS = frozenset(
     {("warrior", spec) for spec in WARRIOR_SPECS}
     | {("paladin", spec) for spec in PALADIN_SPECS}
+    | {("shaman", "elemental")}
 )
 WARLOCK_SPECS = ("demonology", "destruction", "affliction")
 ROGUE_SPECS = ("subtlety", "combat")
@@ -72,7 +73,8 @@ FERAL_DRUID_SPECS = ("primal", "guardian", "savage")
 COMPILE_SPECS = frozenset(
     {("priest", spec) for spec in PRIEST_SPECS}
     # paladin moved to GPU_TIMELINE_SPECS
-    | {("shaman", spec) for spec in SHAMAN_SPECS}
+    | {("shaman", spec) for spec in SHAMAN_SPECS if spec != "elemental"}
+    # shaman elemental moved to GPU_TIMELINE_SPECS
     # warrior moved to GPU_TIMELINE_SPECS
     | {("warlock", spec) for spec in WARLOCK_SPECS}
     | {("rogue", spec) for spec in ROGUE_SPECS}
@@ -204,7 +206,7 @@ def specs_of(hero: str) -> tuple[str, ...]:
 _NOTES = {
     LOCKED: "CPU sim, GpuLocked, torch never imported",
     TIMELINE: "CPU timeline + exact timeline cache, GPU compile sums, CPU score",
-    GPU_TIMELINE: "batched next-event timeline (f64 clocks; DirectML kind-score); Warrior x3, Paladin x3",
+    GPU_TIMELINE: "batched next-event timeline (f64 clocks; DirectML kind-score); Warrior x3, Paladin x3, Shaman elemental",
     COMPILE: "CPU timeline (module _TIMELINE), GPU compile sums, CPU score (priest/paladin/shaman/warlock/rogue/hunter/druid/feral_druid/berserker/death_knight/demon_hunter/dragon_sentinel/monk/necromancer/siren/tidewarrior/tinker/windmaster/witch_doctor)",
     CPU: "local-hybrid runner + v1 stat parity; fights = module simulate (no compile split yet)",
 }
