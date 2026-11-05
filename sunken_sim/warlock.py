@@ -366,6 +366,45 @@ POLICIES = tuple(
 )
 
 
+
+def _timeline_key(build: Build, stats: dict, spec: str, targets: int, policy: tuple) -> tuple:
+    items = tuple(sorted(item.rawcode for item in build.items))
+    talents = tuple(sorted(build.talents))
+    glyphs = tuple(sorted(build.glyphs))
+    esc = (
+        build.potency_points,
+        build.mastery_points,
+        build.crit_points,
+        build.luck_points,
+        getattr(build, "haste_points", 0),
+        getattr(build, "attack_speed_points", 0),
+        getattr(build, "damage_points", 0),
+        getattr(build, "mana_points", 0),
+        getattr(build, "pet_damage_points", 0),
+    )
+    return (
+        items,
+        talents,
+        glyphs,
+        esc,
+        spec,
+        targets,
+        policy,
+        round(stats.get("int", 0), 6),
+        round(stats.get("mastery", 0), 6),
+    )
+
+
+_TIMELINE: dict[tuple, tuple] = {}
+
+
+def score_events(events: list[tuple[str, float]]) -> dict[str, float]:
+    sources: dict[str, float] = {}
+    for name, amount in events:
+        sources[name] = sources.get(name, 0.0) + amount
+    return sources
+
+
 def simulate(build: Build, targets: int = 5, spec: str = "demonology") -> Report:
     """Best of the policies (Haunt focus / spread, Life Tap, Siphon Life channel)."""
     best = None
@@ -401,9 +440,22 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
     mana_max = stats["mana_max"]
     crit_stat = stats["crit"]
     pen = stats["armor_pen"]
+    cache_key = _timeline_key(build, stats, spec, targets, policy)
+    cached = _TIMELINE.get(cache_key)
+    if cached is not None:
+        events, actions, mana_left = cached
+        sources = score_events(events)
+        total = sum(sources.values())
+        return Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
 
     sources: dict[str, float] = {"Автоатака": 0.0}
     actions: list[tuple[float, str]] = []
+    events: list[tuple[str, float]] = []
+
+    def add_damage(name: str, amount: float) -> None:
+        if amount:
+            events.append((name, amount))
+
     mana = mana_max
     mana_time = 0.0
     hp = hp_max
@@ -534,7 +586,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
             if i == 0:
                 first = dealt
             total += dealt
-        sources[name] = sources.get(name, 0.0) + total * weight
+        add_damage(name, total * weight)
         note_damage_mana(len(tgts) * weight)
         return first, (share if (attack or stats["spell_crit"]) else 0.0)
 
@@ -562,7 +614,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
             if i == 0:
                 first = dealt
             total += dealt
-        sources[name] = sources.get(name, 0.0) + total * weight
+        add_damage(name, total * weight)
         return first, share
 
     def malefic(now: float, t: int) -> None:
@@ -677,7 +729,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
             return
         haunted = sum(1 for t in range(targets) if haunt_until[t] > now)
         if haunted:
-            sources["Havoc"] = sources.get("Havoc", 0.0) + 0.12 * dealt * haunted
+            add_damage("Havoc", 0.12 * dealt * haunted)
 
     def demon_speed(d: dict, now: float) -> float:
         speed = 0.0
@@ -850,7 +902,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
                     havoc(moment, dealt)
                 if has(TALENT_DEMON_RAGE):
                     cleave = 0.15 * dealt * (max(1, targets - 1))
-                    sources["Demon Rage (cleave)"] = sources.get("Demon Rage (cleave)", 0.0) + cleave
+                    add_damage("Demon Rage (cleave)", cleave)
                 swing = FELGUARD_SWING * (1.20 if has(TALENT_CONSUMPTION) else 1.0)
             agony_chance(moment, 0, 0.05 * luck_mult)
             backdraft_on_attack(moment, share, False, label)
@@ -940,11 +992,14 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
         power = white + stats["damage"]
         if has(TALENT_DRAIN_SOUL) and moment < drain_until:
             power += 5.0 + 5.0 * TARGET_LEVEL  # A0R1 Nbr1
-        before = sources["Автоатака"]
+        mark = len(events)
         dealt, share = hero_hit("Автоатака", power, moment, [0], magical=True, attack=True,
                                 potency_scale=stats["attack_potency"])
         if stats["auto_pct"] != 1.0:
-            sources["Автоатака"] = before + (sources["Автоатака"] - before) * stats["auto_pct"]
+            for i in range(mark, len(events)):
+                n, a = events[i]
+                if n == "Автоатака":
+                    events[i] = (n, a * stats["auto_pct"])
         havoc(moment, dealt)
         agony_chance(moment, 0, 0.05 * luck_mult)
         backdraft_on_attack(moment, share, True, "Warlock")
@@ -959,22 +1014,26 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
         gain_mana(attack_mana_gain(stats))
         if stats["fire_orb"]:
             splash = (20.0 + 0.35 * stats["int"]) * targets * taken(0, True, moment) * _execute_factor(stats, moment)
-            sources["Всплеск огня"] = sources.get("Всплеск огня", 0.0) + splash
+            add_damage("Всплеск огня", splash)
             note_damage_mana(targets)
         if sulfuras is not None:
             execute = _execute_factor(stats, moment)
             if sulfuras.attack():
                 splash = stats["int"] * typed(True, moment) * taken(0, True, moment) * execute * targets
                 splash *= _crit_factor(hero_crit_chance(moment), 2.0 + stats["rating"])
-                sources["Sulfuras"] = sources.get("Sulfuras", 0.0) + splash
+                add_damage("Sulfuras", splash)
                 note_damage_mana(targets)
             echo = power * taken(0, True, moment) * execute * sulfuras_echo_chance(stats["luck"])
-            sources["Sulfuras (удар)"] = sources.get("Sulfuras (удар)", 0.0) + echo
+            add_damage("Sulfuras (удар)", echo)
         next_attack = moment + interval(moment)
 
-    total = sum(sources.values())
     recover(FIGHT)
     mana_left = 0.0 if mana_max <= 0 else 100.0 * mana / mana_max
+    while len(_TIMELINE) >= 8000:
+        _TIMELINE.pop(next(iter(_TIMELINE)))
+    _TIMELINE[cache_key] = (list(events), actions, mana_left)
+    sources = score_events(events)
+    total = sum(sources.values())
     report = Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
     return report
 
