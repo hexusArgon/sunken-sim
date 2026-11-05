@@ -175,6 +175,79 @@ def _bound_key(bound_spell: str | None) -> str | None:
     raise ValueError(bound_spell)
 
 
+
+
+_TIMELINE: dict[tuple, tuple] = {}
+
+
+def _timeline_key(build: Build, stats: dict, spec: str, targets: int, bound_key: str | None) -> tuple:
+    items = tuple(sorted(item.rawcode for item in build.items))
+    talents = tuple(sorted(build.talents))
+    glyphs = tuple(sorted(build.glyphs))
+    esc = (
+        build.potency_points,
+        build.mastery_points,
+        build.crit_points,
+        build.luck_points,
+        getattr(build, "haste_points", 0),
+        getattr(build, "attack_speed_points", 0),
+        getattr(build, "damage_points", 0),
+        getattr(build, "mana_points", 0),
+        getattr(build, "pet_damage_points", 0),
+    )
+    return (
+        items,
+        talents,
+        glyphs,
+        esc,
+        spec,
+        targets,
+        bound_key,
+        round(stats.get("agi", 0), 6),
+        round(stats.get("str", 0), 6),
+        round(stats.get("mastery", 0), 6),
+        round(stats.get("crit", 0), 6),
+    )
+
+
+# Event kinds for GPU kind/weight compile (farm/hybrid/feral_druid.py).
+KIND_PHYS = 0.0  # weight * execute (phys/crit/taken baked)
+KIND_MAG = 1.0  # weight * magical_mult * execute
+KIND_EXEC = 2.0  # weight * execute
+KIND_FLAT = 3.0  # fully scored
+
+
+def score_events(events: list, stats: dict, codes: frozenset[str]) -> dict[str, float]:
+    """Score typed timeline events into named sources.
+
+    Event: (when, name, weight, kind)
+      KIND_PHYS: weight * execute
+      KIND_MAG: weight * magical_mult(codes, when, mastery) * execute
+      KIND_EXEC: weight * execute
+      KIND_FLAT: weight as-is
+    weight is pre-execute (and for PHYS/MAG: crit/taken/[physical] already applied).
+    """
+    sources: dict[str, float] = {}
+    for when, name, weight, kind in events:
+        if kind == KIND_FLAT:
+            amount = weight
+        elif kind == KIND_EXEC:
+            amount = weight * _execute_factor(stats, when)
+        elif kind == KIND_PHYS:
+            amount = weight * _execute_factor(stats, when)
+        elif kind == KIND_MAG:
+            amount = (
+                weight
+                * _magical_multiplier(codes, when, stats["mastery"])
+                * _execute_factor(stats, when)
+            )
+        else:
+            raise ValueError(f"unknown feral event kind {kind}")
+        if amount:
+            sources[name] = sources.get(name, 0.0) + amount
+    return sources
+
+
 def simulate(build: Build, targets: int = 5, spec: str = "primal", bound_spell: str | None = None) -> Report:
     if spec not in SPECS:
         raise ValueError(spec)
@@ -236,6 +309,25 @@ def _report(build, total_sources, actions, stats, targets, bound_key, mana) -> R
 def _simulate_feral(build: Build, targets: int, spec: str, bound_key: str | None) -> Report:
     stats = sheet(build, spec)
     codes = frozenset(item.rawcode for item in build.items) | build.talents | build.glyphs
+    cache_key = _timeline_key(build, stats, spec, targets, bound_key)
+    cached = _TIMELINE.get(cache_key)
+    if cached is not None:
+        events, actions, mana_left, cached_codes = cached
+        sources = score_events(events, stats, cached_codes)
+        total = sum(sources.values())
+        mode = next((name for code, name in ORB_MODE.items() if _wears(build, code)), None)
+        return Report(
+            build,
+            total / FIGHT,
+            total,
+            sources,
+            actions,
+            stats,
+            targets,
+            orb_mode=mode,
+            bound_spell=BOUND_NAME.get(bound_key or "", None),
+            mana_left=mana_left,
+        )
     cooldown = _common(build, stats, bound_key)
     primal = spec == "primal"
     bear = spec == "guardian"
@@ -270,14 +362,7 @@ def _simulate_feral(build: Build, targets: int, spec: str, bound_key: str | None
         if lunar:
             rating_bonus += 0.15
 
-    sources: dict[str, float] = {
-        "Автоатака": 0.0,
-        "Swipe": 0.0,
-        "Savage Bite": 0.0,
-        "Rake": 0.0,
-        "Feral Frenzy": 0.0,
-        "Всплеск огня": 0.0,
-    }
+    events: list = []
     actions: list[tuple[float, str]] = []
     clock = _Clock()
     state = {"mana": stats["mana_max"], "mana_time": 0.0, "fer": 0.0, "fer_time": 0.0}
@@ -354,9 +439,7 @@ def _simulate_feral(build: Build, targets: int, spec: str, bound_key: str | None
             return
         is_magic = lunar if magical is None else magical
         amount = raw + stats["potency"] * potency_scale
-        if is_magic:
-            amount *= _magical_multiplier(codes, now, stats["mastery"])
-        else:
+        if not is_magic:
             amount *= physical(now)
         attack_mult = (1.0 + attack_inc) * _crit_factor(crit_of(), 2.0 + stats["rating"] + rating_bonus)
         if stats["spell_crit"]:
@@ -369,11 +452,11 @@ def _simulate_feral(build: Build, targets: int, spec: str, bound_key: str | None
             amount *= attack_share * attack_mult + (1.0 - attack_share) * spell_mult
         share = max(0.0, min(1.0, main_share))
         amount *= share * taken_main(now) + (1.0 - share) * taken_plain
-        amount *= _execute_factor(stats, now)
-        sources[name] = sources.get(name, 0.0) + amount * count
+        weight = amount * count
+        if weight:
+            events.append((now, name, weight, KIND_MAG if is_magic else KIND_PHYS))
         if stats.get("damage_mana_pct"):
             state["mana"] = min(stats["mana_max"], state["mana"] + stats["damage_mana_pct"] * stats["mana_max"] * count)
-
     def apply_rake(now: float, indexes) -> None:
         nonlocal rake_clock
         for index in indexes:
@@ -487,10 +570,10 @@ def _simulate_feral(build: Build, targets: int, spec: str, bound_key: str | None
         next_hit_bonus = 0.0
         if _has(build, TALENT_FRESH_WOUND):
             raw += 0.02 * stats["max_hp"]
-        before = sources["Автоатака"]
         deal("Автоатака", raw, now, 1.0, True, 1.0, magical=False, potency_scale=stats["attack_potency"])
-        if stats["auto_pct"] != 1.0:
-            sources["Автоатака"] = before + (sources["Автоатака"] - before) * stats["auto_pct"]
+        if stats["auto_pct"] != 1.0 and events and events[-1][1] == "Автоатака":
+            t, n, w, k = events[-1]
+            events[-1] = (t, n, w * stats["auto_pct"], k)
         state["mana"] = min(stats["mana_max"], state["mana"] + attack_mana_gain(stats))
         if cat and now >= rake[0]:
             apply_rake(now, [0])
@@ -499,22 +582,23 @@ def _simulate_feral(build: Build, targets: int, spec: str, bound_key: str | None
             chance = (1.0 - crit_p) * proc(5.0) + crit_p * proc(7.5)
             if chance > 0:
                 swipe_hit(now, swipe_raw(now), "Feral Frenzy", chance)
-        execute = _execute_factor(stats, now)
         if fire_orb:
-            sources["Всплеск огня"] += (20.0 + 0.35 * stats["int"]) * targets * taken_plain * execute
+            splash_w = (20.0 + 0.35 * stats["int"]) * targets * taken_plain
+            if splash_w:
+                events.append((now, "Всплеск огня", splash_w, KIND_EXEC))
         if sulfuras is not None:
             if sulfuras.attack():
-                splash = (
+                splash_w = (
                     stats["agi"]
-                    * _magical_multiplier(codes, now, stats["mastery"])
                     * (_crit_factor(crit_of(), stats["spell_mult"] + stats["rating"]) if stats["spell_crit"] else 1.0)
                     * taken_plain
-                    * execute
                     * targets
                 )
-                sources["Sulfuras"] = sources.get("Sulfuras", 0.0) + splash
-            echo = dcs(now) * taken_plain * execute * sulfuras_echo_chance(stats["luck"])
-            sources["Sulfuras (удар)"] = sources.get("Sulfuras (удар)", 0.0) + echo
+                if splash_w:
+                    events.append((now, "Sulfuras", splash_w, KIND_MAG))
+            echo_w = dcs(now) * taken_plain * sulfuras_echo_chance(stats["luck"])
+            if echo_w:
+                events.append((now, "Sulfuras (удар)", echo_w, KIND_EXEC))
 
     def on_rake(now: float) -> None:
         nonlocal rake_clock
@@ -573,6 +657,11 @@ def _simulate_feral(build: Build, targets: int, spec: str, bound_key: str | None
             on_rake(now)
 
     recover(FIGHT)
+    mana_left = 0.0 if stats["mana_max"] <= 0 else 100.0 * state["mana"] / stats["mana_max"]
+    while len(_TIMELINE) >= 8000:
+        _TIMELINE.pop(next(iter(_TIMELINE)))
+    _TIMELINE[cache_key] = (list(events), actions, mana_left, codes)
+    sources = score_events(events, stats, codes)
     return _report(build, sources, actions, stats, targets, bound_key, state["mana"])
 
 

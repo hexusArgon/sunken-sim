@@ -12,11 +12,11 @@
 |---|---|---|
 | locked | только CPU, torch не импортируется | mage/arcane |
 | hybrid-timeline | CPU-таймлайн + точный timeline-cache, GPU compile, CPU score | mage/fire, mage/frost |
-| hybrid-compile | CPU-таймлайн (кэш модуля), GPU compile, CPU score | priest×3, paladin×3, shaman×3, warrior×3, warlock×3, rogue×2, hunter×3, druid×2 |
+| hybrid-compile | CPU-таймлайн (без кэша), GPU compile, CPU score | priest×3, paladin×3, shaman×3, warrior×3, warlock×3, rogue×2, hunter×3, druid×2, feral_druid×3 |
 | cpu-only | local-hybrid (device + v1 stat-parity), бои = simulate модуля | остальные |
 
 Дальше GPU-compile для остальных нужен split simulate → events → compile → score
-в sunken_sim. Порт-очередь: `registry.PORT_ORDER` (feral_druid, …). Warrior+Warlock+Rogue+Hunter+Druid done.
+в sunken_sim. Порт-очередь: `registry.PORT_ORDER` (feral_druid, …). Warrior+Warlock+Rogue+Hunter+Druid+FeralDruid done.
 
 ### Score depth (kind-GPU vs flat)
 | Specs | Score on GPU |
@@ -25,7 +25,8 @@
 | warlock×3, rogue×2, hunter×3, druid×2 | kind/weight moments (upgraded from flat sum) |
 | mage fire/frost | kind-compile in timeline hybrid |
 | mage arcane | locked CPU |
-| remaining cpu-only (feral_druid, …) | not yet |
+| feral_druid×3 (primal/guardian/savage) | kind/weight moments (PHYS/MAG/EXEC/FLAT) |
+| remaining cpu-only | not yet |
 
 ### Pending (next tasks — not this commit)
 1. **Timeline on GPU** — event queue / next-cast state machine on DirectML (all classes).
@@ -79,6 +80,14 @@ DIAMOND (I00D): timelines() перебирает buttons(spec) bound keys, бе�
 (как simulate()). Без DIAMOND — bound_key=None.
 Events: (when, name, weight, kind); GPU kind-weight moments. CPU score_events = reference.
 Parity smoke 2026-11-05: GPU vs CPU abs/rel ≤ 1e-4 (incl. DIAMOND).
+
+
+## Feral Druid Primal / Guardian / Savage
+Код: `farm/hybrid/feral_druid.py` + `sunken_sim/feral_druid.py` kind-score timeline.
+Events: (when, name, weight, kind); kinds PHYS / MAG / EXEC / FLAT.
+PHYS: phys/crit/taken baked, ×execute; MAG: base+slope×mastery on GPU; EXEC/FLAT as usual.
+DIAMOND (I00D): timelines() picks best bound key like simulate().
+Parity smoke 2026-11-05: GPU vs CPU abs/rel ≤ 1e-4 (RX 6800 XT DirectML).
 
 ## Arcane Mage
 mage/arcane жёстко на CPU (`farm/hybrid/lock.py`). GpuLocked.
