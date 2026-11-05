@@ -13,7 +13,7 @@
 | locked | только CPU, torch не импортируется | mage/arcane |
 | hybrid-timeline | (retired for mage) | — |
 | hybrid-compile | CPU-таймлайн (без кэша), GPU compile, CPU score | priest×3, shaman×3, warlock×3, rogue×2, hunter×3, druid×2, feral_druid×3 + ledger kind-heroes |
-| gpu-timeline | batched next-event timeline + GPU kind-score | warrior/pala/shaman/priest x3, mage fire/frost, rogue x2 |
+| gpu-timeline | batched next-event timeline + GPU kind-score | warrior/pala/shaman/priest x3, mage fire/frost, rogue x2, druid x2 |
 | cpu-only | local-hybrid (device + v1 stat-parity), бои = simulate модуля | остальные |
 
 Дальше GPU-compile для остальных нужен split simulate → events → compile → score
@@ -101,7 +101,12 @@ Execute baked at pack; GPU kind-weight moments. CPU score_events = reference.
 Parity smoke 2026-11-05: GPU vs CPU abs/rel ≤ 1e-4.
 
 ## Druid Restoration / Balance
-Код: `farm/hybrid/druid.py` + `sunken_sim/druid.py` kind-score timeline.
+Код: `farm/hybrid/druid.py` + `druid_gpu_timeline.py` + `sunken_sim/druid.py`.
+Status: **gpu-timeline** (pending heap -> slots ordered (time, push order); wisps/starfalls
+as expiring slot tables; f64 clocks on CPU, kind-score on DirectML). Rows = build x bound key.
+Opt out: `FARM_HYBRID_GPU_TIMELINE=0`.
+Parity 2026-11-05: 64 builds x 2 specs = 128/128 (abs<=1e-3 or rel<=1e-4); events
+structurally identical to CPU, max diff ~2e-15 (wisp sum order).
 DIAMOND (I00D): timelines() перебирает buttons(spec) bound keys, берёт best total events
 (как simulate()). Без DIAMOND — bound_key=None.
 Events: (when, name, weight, kind); GPU kind-weight moments. CPU score_events = reference.

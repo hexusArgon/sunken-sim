@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 """GPU kind/weight compile for Druid (restoration / balance). DirectML.
 
+Timeline: farm.hybrid.druid_gpu_timeline (pending+choose, f64 CPU clocks).
+Set FARM_HYBRID_GPU_TIMELINE=0 to force CPU sunken_sim.druid timelines.
+
 Event shape from sunken_sim.druid.score_events:
   (when, name, raw, count, mastery_scale, attack, has_wisp, extra, special)
   special: None | "splash" | "echo" | "treant" | "sulfuras"
@@ -255,13 +258,53 @@ class DruidFights(BatchFights):
             out.extend(score_row(tl, row) / FIGHT for tl, row in zip(part, sums))
         return out
 
-    def dps_many(self, builds: list) -> list:
-        tls = []
+    def _gpu_timelines(self, builds: list) -> list:
+        from sunken_sim import druid
+        from sunken_sim.shadow import armor_taken, DUMMY_ARMOR
+        from farm.hybrid.druid_gpu_timeline import generate_druid_timelines
+
+        rows = []
         owner = []
         for index, build in enumerate(builds):
-            for tl in timelines(build, self.targets, self.spec):
+            for bound_key in _bound_keys(build, self.spec):
+                rows.append((build, bound_key))
+                owner.append(index)
+        out = generate_druid_timelines(self.torch, self.target, rows, self.spec, self.targets)
+        best: list = [None] * len(builds)
+        best_total = [-1.0] * len(builds)
+        for index, (build, _key), (events, stats) in zip(owner, rows, out):
+            codes = frozenset(item.rawcode for item in build.items) | build.talents | build.glyphs
+            pen = stats["armor_pen"]
+            taken_plain = armor_taken(DUMMY_ARMOR - pen)
+            taken_wisp = armor_taken(DUMMY_ARMOR - pen - druid.WISP_ARMOR)
+            if len(rows) == len(builds):
+                total = 0.0
+            else:
+                total = sum(druid.score_events(events, stats, codes, taken_plain, taken_wisp).values())
+            if best[index] is None or total > best_total[index]:
+                best_total[index] = total
+                best[index] = Timeline(build, stats, codes, self.spec, events, taken_plain, taken_wisp)
+        return best
+
+    def dps_many(self, builds: list) -> list:
+        import os
+
+        want = os.environ.get("FARM_HYBRID_GPU_TIMELINE", "auto").strip().lower()
+        use_gpu_tl = (
+            want not in ("0", "false", "off", "cpu")
+            and (want in ("1", "true", "force") or bool(getattr(self.device, "gpu", False)))
+        )
+        tls = []
+        owner = []
+        if use_gpu_tl and builds:
+            for index, tl in enumerate(self._gpu_timelines(builds)):
                 tls.append(tl)
                 owner.append(index)
+        else:
+            for index, build in enumerate(builds):
+                for tl in timelines(build, self.targets, self.spec):
+                    tls.append(tl)
+                    owner.append(index)
         scores = self._scores(tls) if tls else []
         self.fights += len(builds)
         best = [None] * len(builds)
