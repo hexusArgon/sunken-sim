@@ -1,74 +1,61 @@
-# Гибрид GPU+CPU (DirectML)
+﻿# Гибрид GPU+CPU (DirectML)
 
 ## Что это
 Опциональный воркер local-hybrid. Видеокарта AMD Radeon RX 6800 XT, бэкенд —
-**DirectML** (	orch-directml), не CUDA. Обычный local-esc не менялся.
+**DirectML** (torch-directml), не CUDA. Обычный local-esc не менялся.
 
-Все классы/спеки проходят через arm/hybrid/registry.py (матрица статусов).
-Общий батч-поиск талантов/глифов/ESC — arm/hybrid/engine.py.
+Все классы/спеки проходят через `farm/hybrid/registry.py` (матрица статусов).
+Общий батч-поиск талантов/глифов/ESC — `farm/hybrid/engine.py`.
 
-## Статусы (v3)
+## Статусы (v3+)
 | статус | смысл | кто |
 |---|---|---|
 | locked | только CPU, torch не импортируется | mage/arcane |
 | hybrid-timeline | CPU-таймлайн + точный timeline-cache, GPU compile, CPU score | mage/fire, mage/frost |
-| hybrid-compile | CPU-таймлайн (кэш модуля), GPU compile, CPU score | priest shadow/discipline/holy |
-| cpu-only | local-hybrid (device + v1 stat-parity), бои = simulate модуля | остальные 53 спека |
+| hybrid-compile | CPU-таймлайн (кэш модуля), GPU compile, CPU score | priest×3, paladin×3, shaman×3 |
+| cpu-only | local-hybrid (device + v1 stat-parity), бои = simulate модуля | остальные |
 
 Дальше GPU-compile для остальных нужен split simulate → events → compile → score
-в sunken_sim (как у mage/priest). Порт-очередь в 
-egistry.PORT_ORDER: paladin, shaman.
+в sunken_sim. Порт-очередь: `registry.PORT_ORDER` (warrior, warlock, …).
 
 ### Честно про таймлайн на GPU
 Состояние боя (кто/когда кастует) по-прежнему на CPU. hybrid-timeline = точный
 кэш таймлайна + GPU на взвешенных суммах. Полный перенос state machine на GPU —
-отдельный этап.
+отдельный этап (ещё не сделан ни для одного класса).
 
-## Mage Fire / Frost (как v2 + cache)
-Код: arm/hybrid/fight.py.
-
-### Защита
-- Перед джобой: 64 билда CPU vs GPU. Не прошло → вся джоба на CPU.
-- В каждом процессе: первые 8 боёв vs CPU. Не прошло → процесс на CPU.
-- Ошибка пачки → старый eval_span.
-- Допуск: относительная ошибка DPS ≤ 1e-4 (DPS_TOL).
-
-### Сверка (DirectML, top-80 mixed, 5 целей)
-| спек | билдов | max abs | max rel | CPU мс/бой | гибрид мс/бой |
-|---|---|---|---|---|---|
-| fire | 500 | 0.00026 | 2.3e-7 | 13.1 | 5.7 |
-| frost | 2000 | — | 1.4e-6 | 19.2 | 5.4 |
-
-(Смоук v2, 3000 чанков fire, 2 воркера: гибрид 387.9 с vs CPU 900.4 с, max rel 6.2e-8.)
+## Mage Fire / Frost
+Код: `farm/hybrid/fight.py`.
 
 ## Priest Shadow / Discipline / Holy
-Код: arm/hybrid/priest.py. Моменты sum(w), sum(w·t), sum(w·t²) на GPU;
-пороги execute и Holy Fire amp — CPU float64.
+Код: `farm/hybrid/priest.py`.
 
-| спек | билдов | max rel | CPU мс/бой | гибрид мс/бой |
-|---|---|---|---|---|
-| shadow | 500 | 1.4e-7 | 1.68 | 0.85 |
-| discipline | 1000 | 1.5e-7 | 2.09 | 0.79 |
-| holy | 1000 | 1.4e-7 | 1.11 | 0.71 |
+## Paladin Retribution / Protection / Holy
+Код: `farm/hybrid/paladin.py` + `sunken_sim/paladin.py` event/score split.
+GPU vs CPU rel ≤ 1e-7 (smoke 2026-11-05).
 
-inish_sextuple (shadow, 2 чанка): те же таланты/глифы/ESC/число боёв, rel ≤ 4.1e-8.
+## Shaman Restoration / Enhancement / Elemental
+Код: `farm/hybrid/shaman.py` + `sunken_sim/shaman.py` event/score split.
+GPU vs CPU rel ≤ 1e-6 (smoke 2026-11-05).
 
 ## Arcane Mage
-mage/arcane жёстко на CPU (arm/hybrid/lock.py). GpuLocked. Скрипты Arcane не менялись.
+mage/arcane жёстко на CPU (`farm/hybrid/lock.py`). GpuLocked.
+
+## I0E4 Colossal Sledgehammer (2.5.2b)
+`own_stun_duration_pct` (+25%) и `stun_hit_damage` (100) парсятся в library.
+Paladin Hammer of Justice добавляет Stun-хит на 100. +25% длительности стана
+пока не влияет на DPS (нет окон «враг в стане» в симах).
 
 ## Запуск
-`
+```
 cd C:\Users\eseid\sunken-sim
 .venv-dml\Scripts\python.exe -m farm.hybrid.registry
 .venv-dml\Scripts\python.exe tools\run_hybrid_parity.py --spec fire --n 2000 --finish 3
 .venv-dml\Scripts\python.exe tools\run_hybrid_parity.py --hero priest --spec shadow --n 1000 --finish 3
-.venv-dml\Scripts\python.exe tools\run_hybrid_smoke.py --count 3000 --compare
-`
-FARM_HYBRID_DEVICE: uto / cpu / dml.
+```
+FARM_HYBRID_DEVICE: auto / cpu / dml.
 
 ## Тесты
-`
+```
 python -m unittest farm.test_hybrid
 .venv-dml\Scripts\python.exe -m unittest farm.test_hybrid
-`
-30 тестов OK в .venv-dml (2026-11-05).
+```

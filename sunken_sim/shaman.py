@@ -133,6 +133,77 @@ def _bound_key(bound_spell: str | None) -> str | None:
     raise ValueError(bound_spell)
 
 
+def _timeline_key(build: Build, stats: dict, spec: str, targets: int, bound_key: str | None) -> tuple:
+    items = tuple(sorted(item.rawcode for item in build.items))
+    talents = tuple(sorted(build.talents))
+    glyphs = tuple(sorted(build.glyphs))
+    esc = (
+        build.potency_points,
+        build.mastery_points,
+        build.crit_points,
+        build.luck_points,
+        getattr(build, "haste_points", 0),
+        getattr(build, "attack_speed_points", 0),
+        getattr(build, "damage_points", 0),
+        getattr(build, "mana_points", 0),
+        getattr(build, "pet_damage_points", 0),
+    )
+    return (items, talents, glyphs, esc, spec, targets, bound_key, round(stats["int"], 6), round(stats["ad"], 6))
+
+
+_TIMELINE: dict[tuple, tuple] = {}
+
+
+def score_events(
+    events: list[tuple],
+    stats: dict,
+    codes: frozenset[str],
+    taken: float,
+) -> dict[str, float]:
+    """Score shaman timeline events. Event shape:
+    (kind, name, raw, now, count, attack, magical, mastery, crit, fusion, auto_scale)
+    kind: "deal" | "splash" | "echo" | "spirit"
+    """
+    sources: dict[str, float] = {}
+    for ev in events:
+        kind = ev[0]
+        if kind == "splash":
+            # (splash, name, raw_per_target_total_already?, now, count) — we store full pre-taken amount pieces
+            _, name, raw, now, count = ev
+            sources[name] = sources.get(name, 0.0) + raw * count * taken * _execute_factor(stats, now)
+            continue
+        if kind == "echo":
+            _, name, raw, now = ev
+            sources[name] = sources.get(name, 0.0) + raw * taken * _execute_factor(stats, now)
+            continue
+        if kind == "spirit":
+            _, name, hit, now, crit, fusion = ev
+            amount = hit * _crit_factor(crit, 2.0)
+            if fusion:
+                amount *= 1.25
+            amount *= taken * _execute_factor(stats, now)
+            sources[name] = sources.get(name, 0.0) + amount
+            continue
+        # deal
+        _, name, raw, now, count, attack, magical, mastery, crit, fusion, auto_scale = ev
+        if count <= 0:
+            continue
+        amount = raw + stats["potency"]
+        if magical:
+            amount *= _magical_multiplier(codes, now, mastery)
+        if attack:
+            amount *= _crit_factor(crit, 2.0 + stats["rating"])
+        elif stats["spell_crit"]:
+            amount *= _crit_factor(crit, stats["spell_mult"] + stats["rating"])
+        if fusion:
+            amount *= 1.25
+        amount *= taken * _execute_factor(stats, now)
+        if auto_scale:
+            amount *= stats["auto_pct"]
+        sources[name] = sources.get(name, 0.0) + amount * count
+    return sources
+
+
 def simulate(build: Build, targets: int = 5, spec: str = "restoration", bound_spell: str | None = None) -> Report:
     if spec not in SPECS:
         raise ValueError(spec)
@@ -149,6 +220,25 @@ def simulate(build: Build, targets: int = 5, spec: str = "restoration", bound_sp
     stats = sheet(build)
     codes = frozenset(item.rawcode for item in build.items) | build.talents | build.glyphs
     taken = armor_taken(DUMMY_ARMOR - stats["armor_pen"])
+    cache_key = _timeline_key(build, stats, spec, targets, bound_key)
+    cached = _TIMELINE.get(cache_key)
+    if cached is not None:
+        events, actions, mana_left = cached
+        sources = score_events(events, stats, codes, taken)
+        total = sum(sources.values())
+        mode = next((name for code, name in ORB_MODE.items() if _wears(build, code)), None)
+        return Report(
+            build,
+            total / FIGHT,
+            total,
+            sources,
+            actions,
+            stats,
+            targets,
+            orb_mode=mode,
+            bound_spell=BOUND_NAME.get(bound_key or "", None),
+            mana_left=mana_left,
+        )
     elemental = spec == "elemental"
     enhancement = spec == "enhancement"
     overcharge = _has(build, TALENT_OVERCHARGE)
@@ -183,6 +273,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "restoration", bound_sp
         "Всплеск огня": 0.0,
     }
     actions: list[tuple[float, str]] = []
+    events: list[tuple] = []
     mana = stats["mana_max"]
     mana_time = 0.0
     hero_ready = 0.0
@@ -261,23 +352,25 @@ def simulate(build: Build, targets: int = 5, spec: str = "restoration", bound_sp
         mana = min(stats["mana_max"], mana + cast_mana_back(cost, stats))
         return True
 
-    def deal(name: str, raw: float, now: float, count: float, attack: bool, magical: bool, from_thunder: bool = False) -> None:
+    def deal(name: str, raw: float, now: float, count: float, attack: bool, magical: bool, from_thunder: bool = False, auto_scale: bool = False) -> None:
         nonlocal mana
         if count <= 0 or now >= FIGHT:
             return
-        mastery = mastery_of(now)
-        crit = crit_of(now)
-        amount = raw + stats["potency"]
-        if magical:
-            amount *= _magical_multiplier(codes, now, mastery)
-        if attack:
-            amount *= _crit_factor(crit, 2.0 + stats["rating"])
-        elif stats["spell_crit"]:
-            amount *= _crit_factor(crit, stats["spell_mult"] + stats["rating"])
-        if fusion_up(now):
-            amount *= 1.25
-        amount *= taken * _execute_factor(stats, now)
-        sources[name] = sources.get(name, 0.0) + amount * count
+        events.append(
+            (
+                "deal",
+                name,
+                raw,
+                now,
+                count,
+                attack,
+                magical,
+                mastery_of(now),
+                crit_of(now),
+                1.0 if fusion_up(now) else 0.0,
+                auto_scale,
+            )
+        )
         if stats.get("damage_mana_pct"):
             mana = min(stats["mana_max"], mana + stats["damage_mana_pct"] * stats["mana_max"] * count)
         if thunder and not from_thunder:
@@ -523,29 +616,33 @@ def simulate(build: Build, targets: int = 5, spec: str = "restoration", bound_sp
             if charges <= 1e-9:
                 charges = 0.0
                 shield_until = -1.0
-        before = sources["Автоатака"]
-        deal("Автоатака", stats["ad"], now, 1.0, True, True)
-        if stats["auto_pct"] != 1.0:
-            sources["Автоатака"] = before + (sources["Автоатака"] - before) * stats["auto_pct"]
+        deal("Автоатака", stats["ad"], now, 1.0, True, True, auto_scale=True)
         mana = min(stats["mana_max"], mana + attack_mana_gain(stats))
         if fire_orb:
-            splash = (20.0 + 0.35 * stats["int"]) * targets * taken * _execute_factor(stats, now)
-            sources["Всплеск огня"] += splash
+            events.append(("splash", "Всплеск огня", 20.0 + 0.35 * stats["int"], now, float(targets)))
         if sulfuras is not None:
-            execute = _execute_factor(stats, now)
             if sulfuras.attack():
-                splash = (
-                    stats["int"]
-                    * _magical_multiplier(codes, now, mastery_of(now))
-                    * (_crit_factor(crit_of(now), stats["spell_mult"] + stats["rating"]) if stats["spell_crit"] else 1.0)
-                    * (1.25 if fusion_up(now) else 1.0)
-                    * taken
-                    * execute
-                    * targets
+                # same path as deal(magical spell, no potency on Sulfuras splash historically — wait old used int*mult without +potency)
+                # Old: int * magical * spell_crit * fusion * taken * exec * targets  (NO potency)
+                # Emulate via deal with raw=int and then we'd add potency — wrong.
+                # Use special: store as deal with a flag? Simpler: emit deal-like but raw already final before taken?
+                # Emit as deal with raw=stats["int"] and subtract potency in score? Hack: kind sulfuras_splash
+                events.append(
+                    (
+                        "deal",
+                        "Sulfuras",
+                        stats["int"] - stats["potency"],  # cancel +potency in score_events
+                        now,
+                        float(targets),
+                        False,
+                        True,
+                        mastery_of(now),
+                        crit_of(now),
+                        1.0 if fusion_up(now) else 0.0,
+                        False,
+                    )
                 )
-                sources["Sulfuras"] = sources.get("Sulfuras", 0.0) + splash
-            echo = stats["ad"] * taken * execute * sulfuras_echo_chance(stats["luck"])
-            sources["Sulfuras (удар)"] = sources.get("Sulfuras (удар)", 0.0) + echo
+            events.append(("echo", "Sulfuras (удар)", stats["ad"] * sulfuras_echo_chance(stats["luck"]), now))
         attack_count += 1
         if spirit_call and attack_count >= 4:
             attack_count = 0
@@ -573,11 +670,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "restoration", bound_sp
             return
         hit = 8.0 + int(0.25 * stats["ad"])
         crit = 10.0 + (8.0 if wrath and totem_up(now) else 0.0)
-        amount = hit * _crit_factor(crit, 2.0)
-        if fusion_up(now):
-            amount *= 1.25
-        amount *= taken * _execute_factor(stats, now)
-        sources["Feral Spirit"] += amount
+        events.append(("spirit", "Feral Spirit", hit, now, crit, 1.0 if fusion_up(now) else 0.0))
         if thunder:
             chance = proc(2.0)
             if chance > 0:
@@ -650,8 +743,13 @@ def simulate(build: Build, targets: int = 5, spec: str = "restoration", bound_sp
         continue
 
     recover(FIGHT)
-    total = sum(sources.values())
     mana_left = 0.0 if stats["mana_max"] <= 0 else 100.0 * mana / stats["mana_max"]
+    key = _timeline_key(build, stats, spec, targets, bound_key)
+    while len(_TIMELINE) >= 8000:
+        _TIMELINE.pop(next(iter(_TIMELINE)))
+    _TIMELINE[key] = (events, actions, mana_left)
+    sources = score_events(events, stats, codes, taken)
+    total = sum(sources.values())
     mode = next((name for code, name in ORB_MODE.items() if _wears(build, code)), None)
     return Report(
         build,
@@ -666,6 +764,25 @@ def simulate(build: Build, targets: int = 5, spec: str = "restoration", bound_sp
         mana_left=mana_left,
     )
 
+
+
+def events_for(build: Build, targets: int, spec: str, bound_spell: str | None = None) -> tuple:
+    """Return (events, actions, mana_left, stats, codes, taken, bound_key, knowledge_unused).
+
+    Runs simulate once (fills _TIMELINE) then reads the cache. Diamond I00D
+    callers should pass an explicit bound or let simulate pick the best bound
+    themselves for DPS; for hybrid we expand bounds outside.
+    """
+    if _wears(build, DIAMOND) and bound_spell is None:
+        raise ValueError("events_for needs bound_spell when I00D is equipped")
+    report = simulate(build, targets, spec, bound_spell)
+    stats = sheet(build)
+    bound_key = _bound_key(bound_spell)
+    codes = frozenset(item.rawcode for item in build.items) | build.talents | build.glyphs
+    taken = armor_taken(DUMMY_ARMOR - stats["armor_pen"])
+    key = _timeline_key(build, stats, spec, targets, bound_key)
+    events, actions, mana_left = _TIMELINE[key]
+    return events, actions, mana_left, stats, codes, taken, bound_key, report
 
 def best_points(build: Build, targets: int, spec: str) -> tuple[float, dict[str, int]]:
     from sunken_sim.esc import apply_points, greedy_points, points_payload

@@ -55,17 +55,19 @@ PRIEST_SPECS = ("shadow", "discipline", "holy")
 
 TIMELINE_SPECS = frozenset({("mage", "fire"), ("mage", "frost")})
 PALADIN_SPECS = ("retribution", "protection", "holy")
+SHAMAN_SPECS = ("restoration", "enhancement", "elemental")
 COMPILE_SPECS = frozenset(
     {("priest", spec) for spec in PRIEST_SPECS}
     | {("paladin", spec) for spec in PALADIN_SPECS}
+    | {("shaman", spec) for spec in SHAMAN_SPECS}
 )
 
 # Port order for the cpu-only classes. Each needs the same split as mage/priest
 # (simulate -> event list -> compile -> score) inside sunken_sim, with an
 # events-equality test against the old simulate before any GPU work.
 PORT_ORDER = (
-    ("shaman", "top80 presets; sources[...] summed inside simulate"),
-    ("warrior", "next after shaman"),
+    ("warrior", "deal funnel next"),
+    ("warlock", "after warrior"),
 )
 
 
@@ -101,6 +103,10 @@ def make_engine(device, hero: str, spec: str, targets: int):
             from farm.hybrid.paladin import PaladinFights
 
             return PaladinFights(device, hero, spec, targets)
+        if hero == "shaman":
+            from farm.hybrid.shaman import ShamanFights
+
+            return ShamanFights(device, hero, spec, targets)
         from farm.hybrid.priest import PriestFights
 
         return PriestFights(device, hero, spec, targets)
@@ -130,7 +136,7 @@ def specs_of(hero: str) -> tuple[str, ...]:
 _NOTES = {
     LOCKED: "CPU sim, GpuLocked, torch never imported",
     TIMELINE: "CPU timeline + exact timeline cache, GPU compile sums, CPU score",
-    COMPILE: "CPU timeline (module _TIMELINE), GPU compile sums, CPU score (priest + paladin)",
+    COMPILE: "CPU timeline (module _TIMELINE), GPU compile sums, CPU score (priest/paladin/shaman)",
     CPU: "local-hybrid runner + v1 stat parity; fights = module simulate (no compile split yet)",
 }
 
