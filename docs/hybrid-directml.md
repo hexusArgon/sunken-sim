@@ -12,7 +12,8 @@
 |---|---|---|
 | locked | только CPU, torch не импортируется | mage/arcane |
 | hybrid-timeline | CPU-таймлайн + точный timeline-cache, GPU compile, CPU score | mage/fire, mage/frost |
-| hybrid-compile | CPU-таймлайн (без кэша), GPU compile, CPU score | priest×3, paladin×3, shaman×3, warrior×3, warlock×3, rogue×2, hunter×3, druid×2, feral_druid×3 |
+| hybrid-compile | CPU-таймлайн (без кэша), GPU compile, CPU score | priest×3, paladin×3, shaman×3, warlock×3, rogue×2, hunter×3, druid×2, feral_druid×3 + ledger kind-heroes |
+| gpu-timeline | batched next-event timeline + GPU kind-score | warrior×3 (protection/arms/fury) |
 | cpu-only | local-hybrid (device + v1 stat-parity), бои = simulate модуля | остальные |
 
 Дальше GPU-compile для остальных нужен split simulate → events → compile → score
@@ -28,15 +29,18 @@
 | feral_druid×3 (primal/guardian/savage) | kind/weight moments (PHYS/MAG/EXEC/FLAT) |
 | remaining cpu-only | not yet |
 
-### Pending (next tasks — not this commit)
-1. **Timeline on GPU** — event queue / next-cast state machine on DirectML (all classes).
+### Pending (next tasks)
+1. **Timeline on GPU** — warrior×3 done (pilot); roll out to paladin/shaman/mage fire-frost/others.
 2. **ESC / stat-kernel on GPU** — matrix greedy between fights (all compile classes).
 
 
 ### Честно про таймлайн на GPU
-Состояние боя (кто/когда кастует) по-прежнему на CPU. hybrid-timeline = точный
-кэш таймлайна + GPU на взвешенных суммах. Полный перенос state machine на GPU —
-отдельный этап (ещё не сделан ни для одного класса).
+Warrior (protection/arms/fury): batched next-event state machine in
+`farm/hybrid/warrior_gpu_timeline.py` + shared helpers `farm/hybrid/timeline_gpu.py`.
+Clocks run in **float64 on CPU** (DirectML has no reliable f64); kind-score stays on
+DirectML. Opt out: `FARM_HYBRID_GPU_TIMELINE=0`. Parity smoke: 96/96 vs CPU simulate
+(rel/abs ≤ 1e-4). Mage fire/frost still CPU timeline + exact cache + GPU compile.
+Everyone else: CPU timeline + GPU kind-score (hybrid-compile).
 
 ## Mage Fire / Frost
 Код: `farm/hybrid/fight.py`.
@@ -53,8 +57,12 @@ GPU vs CPU rel ≤ 1e-7 (smoke 2026-11-05).
 GPU vs CPU rel ≤ 1e-6 (smoke 2026-11-05).
 
 ## Warrior Protection / Arms / Fury
-Код: `farm/hybrid/warrior.py` + `sunken_sim/warrior.py` event/score split.
+Код: `farm/hybrid/warrior.py` + `warrior_gpu_timeline.py` + `timeline_gpu.py` +
+`sunken_sim/warrior.py` event/score split.
+Status: **gpu-timeline**. Batched priority clocks (shout>ww>bt>demo>attack),
+Sulfuras pot_scale=0, exact equality for pick_priority (no 1e-7 epsilon).
 Enrage (*1.10) в weight; fury enrage +10 crit — отдельные kind; auto → taken_auto; cleave flat.
+Parity 2026-11-05: 32 builds × 3 specs = 96/96 GPU timeline+kind vs CPU simulate.
 
 ## Warlock Demonology / Destruction / Affliction
 Код: `farm/hybrid/warlock.py` + `sunken_sim/warlock.py` kind-score timeline.

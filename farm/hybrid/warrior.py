@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-"""GPU compile stage for Warrior (protection / arms / fury). DirectML.
+"""GPU timeline + kind-score compile for Warrior (protection / arms / fury). DirectML.
+
+Timeline generation: farm.hybrid.warrior_gpu_timeline (batched next-event on device).
+Set FARM_HYBRID_GPU_TIMELINE=0 to force the CPU sunken_sim.warrior.simulate timeline.
 
 Event shape from sunken_sim.warrior.score_events:
   (when, name, raw, magical, count, pot_scale, auto, mastery_now, enraged,
@@ -102,8 +105,17 @@ def _taken_pair(build, stats: dict, spec: str) -> tuple[float, float]:
     return taken, taken_auto
 
 
-def timelines(build, targets: int, spec: str) -> list[Timeline]:
+def timelines(build, targets: int, spec: str, *, gpu_bundle=None) -> list[Timeline]:
+    """CPU timeline (module cache), or events from a GPU timeline batch bundle.
+
+    gpu_bundle: optional dict id(build) -> (events, stats, taken, taken_auto)
+    produced by farm.hybrid.warrior_gpu_timeline.generate_warrior_timelines.
+    """
     from sunken_sim import warrior
+
+    if gpu_bundle is not None and id(build) in gpu_bundle:
+        events, stats, taken, taken_auto = gpu_bundle[id(build)]
+        return [Timeline(build, stats, spec, events, taken, taken_auto)]
 
     stats = warrior.stats_of(build)
     taken, taken_auto = _taken_pair(build, stats, spec)
@@ -114,7 +126,6 @@ def timelines(build, targets: int, spec: str) -> list[Timeline]:
         cached = warrior._TIMELINE[key]
     events, _actions, _mana = cached
     return [Timeline(build, stats, spec, events, taken, taken_auto)]
-
 
 _EVENT_CACHE: dict[int, tuple] = {}
 
@@ -316,10 +327,28 @@ class WarriorFights(BatchFights):
         return out
 
     def dps_many(self, builds: list) -> list[float]:
+        import os
+
         tls: list[Timeline] = []
         owner: list[int] = []
+        gpu_bundle = None
+        # GPU timeline when on DirectML (or FARM_HYBRID_GPU_TIMELINE=1). Opt out with =0.
+        want = os.environ.get('FARM_HYBRID_GPU_TIMELINE', 'auto').strip().lower()
+        use_gpu_tl = want not in ('0', 'false', 'cpu') and (
+            want in ('1', 'true', 'force') or bool(getattr(self.device, 'gpu', False))
+        )
+        if use_gpu_tl and builds:
+            from farm.hybrid.warrior_gpu_timeline import generate_warrior_timelines
+
+            rows = generate_warrior_timelines(
+                self.torch, self.target, builds, self.spec, self.targets
+            )
+            gpu_bundle = {
+                id(build): (events, stats, taken, taken_auto)
+                for build, (events, stats, taken, taken_auto) in zip(builds, rows)
+            }
         for index, build in enumerate(builds):
-            for tl in timelines(build, self.targets, self.spec):
+            for tl in timelines(build, self.targets, self.spec, gpu_bundle=gpu_bundle):
                 tls.append(tl)
                 owner.append(index)
         scores = self._scores(tls) if tls else []
