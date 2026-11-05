@@ -13,7 +13,7 @@
 | locked | только CPU, torch не импортируется | mage/arcane |
 | hybrid-timeline | (retired for mage) | — |
 | hybrid-compile | CPU-таймлайн (без кэша), GPU compile, CPU score | priest×3, shaman×3, warlock×3, rogue×2, hunter×3, druid×2, feral_druid×3 + ledger kind-heroes |
-| gpu-timeline | batched next-event timeline + GPU kind-score | warrior/pala/shaman/priest x3, mage fire/frost, rogue x2, druid x2, hunter/warlock/feral/berserker/DK/DH/DS/monk/necro |
+| gpu-timeline | batched next-event timeline + GPU kind-score | warrior/pala/shaman/priest x3, mage fire/frost, rogue x2, druid x2, hunter/warlock/feral/berserker/DK/DH/DS/monk/necro/siren/tide/tinker/wind/wd |
 | cpu-only | local-hybrid (device + v1 stat-parity), бои = simulate модуля | остальные |
 
 Дальше GPU-compile для остальных нужен split simulate → events → compile → score
@@ -33,9 +33,8 @@
 1. **Timeline on GPU** — warrior×3 + paladin×3 done (parity green). Remaining CPU timeline:
    mage/priest/rogue GPU TL done; remaining:
    warlock×3, hunter×3, druid×2, feral_druid×3,
-   kind-heroes remaining: siren/tidewarrior/
-   tinker/windmaster/witch_doctor (berserker/DK/DH/DS/monk/necro done). Branchy classes stay CPU
-   timeline + GPU kind-score until ported.
+   kind-heroes: ALL done (berserker…witch_doctor). Branchy classes that remain
+   hybrid-compile (resto shaman etc.) stay CPU timeline + GPU kind-score.
 2. **ESC / stat-kernel on GPU** — `farm/hybrid/stat_kernel.py` wired into `BatchFights.greedy_points`:
    batched dps_many trials + safe zero-delta attr skip (attrs that tied baseline after a
    real improving step are dropped). Exact event-reuse rescoring is **not** used yet:
@@ -146,6 +145,32 @@ Parity 2026-11-05: 8 builds × 3 specs = 24/24 GPU timeline+kind vs CPU simulate
 Status: **gpu-timeline**. Best-of POLICIES (Transfusion × Raise Dead); cast_time pre-sum.
 Sulfuras → CPU. Code: `farm/hybrid/necromancer_gpu_timeline.py` + wire `farm/hybrid/necromancer.py`.
 Parity 2026-11-05: 8 builds × 3 specs = 24/24 GPU timeline+kind vs CPU simulate (abs≤1e-3 or rel≤1e-4).
+
+
+## Siren Sharpshooter / Watershaper / Seagrace
+Status: **gpu-timeline**. Best-of POLICIES (Liquid Arrows × Song); cast_time pre-sum.
+Sulfuras → CPU. Code: `farm/hybrid/siren_gpu_timeline.py` + wire `farm/hybrid/siren.py`.
+Parity 2026-11-05: 8 builds × 3 specs = 24/24 (abs≤1e-3 or rel≤1e-4).
+
+## Tidewarrior Myrmidon / Guardian
+Status: **gpu-timeline**. Best-of POLICIES (Serpentine Fury × Call of the Sea recall); cast_time pre-sum.
+Sulfuras → CPU. Code: `farm/hybrid/tidewarrior_gpu_timeline.py` + wire `farm/hybrid/tidewarrior.py`.
+Parity 2026-11-05: 8 builds × 2 specs = 16/16.
+
+## Tinker Engineering / Demolitions / Nanotech
+Status: **gpu-timeline**. Best-of POLICIES (Reinforce × Exosuit); cast_time pre-sum.
+Sulfuras → CPU. Code: `farm/hybrid/tinker_gpu_timeline.py` + wire `farm/hybrid/tinker.py`.
+Parity 2026-11-05: 8 builds × 3 specs = 24/24.
+
+## Windmaster Upheaval / Storm / Combat
+Status: **gpu-timeline**. Single-policy simulate (no POLICIES); cast_time pre-sum.
+Sulfuras → CPU. Code: `farm/hybrid/windmaster_gpu_timeline.py` + wire `farm/hybrid/windmaster.py`.
+Parity 2026-11-05: 8 builds × 3 specs = 24/24.
+
+## Witch Doctor Voodoo / Poison
+Status: **gpu-timeline**. Best-of POLICIES (Soul Possession × spider/toad first); cast_time pre-sum.
+Sulfuras → CPU. Code: `farm/hybrid/witch_doctor_gpu_timeline.py` + wire `farm/hybrid/witch_doctor.py`.
+Parity 2026-11-05: 8 builds × 2 specs = 16/16.
 
 ## Arcane Mage
 mage/arcane жёстко на CPU (`farm/hybrid/lock.py`). GpuLocked.

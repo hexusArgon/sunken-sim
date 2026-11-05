@@ -68,6 +68,11 @@ DEMON_HUNTER_SPECS = ("havoc", "vengeance", "devourer")
 DRAGON_SENTINEL_SPECS = ("ruby", "obsidian", "emerald")
 MONK_SPECS = ("windwalker", "brewmaster", "mistweaver")
 NECROMANCER_SPECS = ("bone", "blood", "essence")
+SIREN_SPECS = ("sharpshooter", "watershaper", "seagrace")
+TIDEWARRIOR_SPECS = ("myrmidon", "guardian")
+TINKER_SPECS = ("engineering", "demolitions", "nanotech")
+WINDMASTER_SPECS = ("upheaval", "storm", "combat")
+WITCH_DOCTOR_SPECS = ("voodoo", "poison")
 GPU_TIMELINE_SPECS = frozenset(
     {("warrior", spec) for spec in WARRIOR_SPECS}
     | {("paladin", spec) for spec in PALADIN_SPECS}
@@ -85,6 +90,11 @@ GPU_TIMELINE_SPECS = frozenset(
     | {("dragon_sentinel", spec) for spec in DRAGON_SENTINEL_SPECS}
     | {("monk", spec) for spec in MONK_SPECS}
     | {("necromancer", spec) for spec in NECROMANCER_SPECS}
+    | {("siren", spec) for spec in SIREN_SPECS}
+    | {("tidewarrior", spec) for spec in TIDEWARRIOR_SPECS}
+    | {("tinker", spec) for spec in TINKER_SPECS}
+    | {("windmaster", spec) for spec in WINDMASTER_SPECS}
+    | {("witch_doctor", spec) for spec in WITCH_DOCTOR_SPECS}
 )
 HUNTER_SPECS = ("marksmanship", "beast_mastery", "survival")
 DRUID_SPECS = ("restoration", "balance")
@@ -219,8 +229,8 @@ def specs_of(hero: str) -> tuple[str, ...]:
 _NOTES = {
     LOCKED: "CPU sim, GpuLocked, torch never imported",
     TIMELINE: "CPU timeline + exact timeline cache, GPU compile sums, CPU score",
-    GPU_TIMELINE: "batched next-event timeline (f64 clocks; DirectML kind-score); Warrior/Paladin/Shaman/Priest x3, Mage fire/frost, Rogue x2, Druid x2, Hunter x3, Warlock x3, Feral Druid x3, Berserker x3, Death Knight x3, Demon Hunter x3, Dragon Sentinel x3, Monk x3, Necromancer x3",
-    COMPILE: "CPU timeline (module _TIMELINE), GPU compile sums, CPU score (siren/tidewarrior/tinker/windmaster/witch_doctor)",
+    GPU_TIMELINE: "batched next-event timeline (f64 clocks; DirectML kind-score); Warrior/Paladin/Shaman/Priest x3, Mage fire/frost, Rogue x2, Druid x2, Hunter x3, Warlock x3, Feral Druid x3, Berserker x3, Death Knight x3, Demon Hunter x3, Dragon Sentinel x3, Monk x3, Necromancer x3, Siren x3, Tidewarrior x2, Tinker x3, Windmaster x3, Witch Doctor x2",
+    COMPILE: "CPU timeline (module _TIMELINE), GPU compile sums, CPU score (none — kind-heroes done)",
     CPU: "local-hybrid runner + v1 stat parity; fights = module simulate (no compile split yet)",
 }
 
