@@ -48,29 +48,10 @@ class BatchFights:
         raise NotImplementedError
 
     def greedy_points(self, build) -> tuple[float, dict[str, int]]:
-        """sunken_sim.esc.greedy_points with each step's trials in one batch."""
-        from sunken_sim.esc import ESC_ATTRS, ESC_CAP, apply_points, empty_points
-        from sunken_sim.shadow import SKILL_POINTS
+        """sunken_sim.esc.greedy_points with batched trials + zero-delta skip."""
+        from farm.hybrid.stat_kernel import greedy_points_batched
 
-        counts = empty_points()
-        best = self.dps_many([apply_points(build, counts)])[0]
-        for _ in range(SKILL_POINTS):
-            names = [name for name in ESC_ATTRS if counts[name] < ESC_CAP]
-            if not names:
-                break
-            trials = []
-            for name in names:
-                trial = dict(counts)
-                trial[name] += 1
-                trials.append(apply_points(build, trial))
-            scores = self.dps_many(trials)
-            pick, pick_dps = None, -1.0
-            for name, dps in zip(names, scores):
-                if dps > pick_dps:
-                    pick, pick_dps = name, dps
-            counts[pick] += 1
-            best = pick_dps
-        return best, counts
+        return greedy_points_batched(self.dps_many, build)
 
     def finish_sextuple(self, equipped, talent_codes, glyph_codes, picks_without, picks_with, glyph_picks):
         """farm.score.finish_sextuple, batched. Same return shape and fight count."""

@@ -36,7 +36,11 @@
    kind-heroes (berserker/DK/DH/dragon_sentinel/monk/necromancer/siren/tidewarrior/
    tinker/windmaster/witch_doctor). Branchy classes stay CPU timeline + GPU kind-score
    until ported.
-2. **ESC / stat-kernel on GPU** — matrix greedy between fights (all compile classes). Ready next.
+2. **ESC / stat-kernel on GPU** — `farm/hybrid/stat_kernel.py` wired into `BatchFights.greedy_points`:
+   batched dps_many trials + safe zero-delta attr skip (attrs that tied baseline after a
+   real improving step are dropped). Exact event-reuse rescoring is **not** used yet:
+   flat/cleave raws bake crit/potency at emit (warrior). Closed-form kernel needs
+   per-class event algebra; next after more GPU timelines.
 
 ### Честно про таймлайн на GPU
 Warrior + Paladin: batched next-event state machines in
