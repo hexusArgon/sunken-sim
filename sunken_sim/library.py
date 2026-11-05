@@ -392,6 +392,8 @@ class Item:
     stun_duration: float = 0.0
     cast_stun_chance: float = 0.0
     cast_stun_duration: float = 0.0
+    own_stun_duration_pct: float = 0.0  # +N% to YOUR stuns (I0E4)
+    stun_hit_damage: float = 0.0  # flat damage whenever you Stun (I0E4)
     spell_crit: bool = False
     double_attack_potency: bool = False
     auto_pct: float = 0.0
@@ -448,6 +450,8 @@ def _parse_tip(tip: str) -> dict:
         "stun_duration": _first_float(r"Stun you for (\d+(?:[.,]\d+)?)", "\n".join(line for line in lines if "spellcasts have" not in line.lower())),
         "cast_stun_chance": _sum_ints(r"spellcasts have (\d+)% chance to stun you", tip) / 100,
         "cast_stun_duration": _first_float(r"spellcasts have \d+% chance to stun you for (\d+(?:[.,]\d+)?)", tip),
+        "own_stun_duration_pct": _sum_ints(r"duration of your Stuns by (\d+)%", tip) / 100,
+        "stun_hit_damage": float(_sum_ints(r"Whenever you Stun an enemy, they take (\d+) damage", tip)),
         "spell_crit": "Magical Type effects benefit from Critical Strike" in tip,
         "double_attack_potency": "Potency at double effectiveness" in tip,
         "auto_pct": _sum_ints(r"auto-attacks by (\d+)%", tip) / 100,

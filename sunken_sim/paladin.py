@@ -269,6 +269,8 @@ def stats_of(build: Build) -> dict[str, float]:
     if _has(build, TALENT_DIVINE_KNOWLEDGE):
         regen += 0.03 * intel * 0.80
     cast_stun_lock = 0.0
+    stun_hit_damage = 0.0
+    own_stun_duration_pct = 0.0
     seen_stun: set[str] = set()
     for item in build.items:
         if item.rawcode in seen_stun:
@@ -276,6 +278,8 @@ def stats_of(build: Build) -> dict[str, float]:
         seen_stun.add(item.rawcode)
         if item.cast_stun_chance and item.cast_stun_duration > 0:
             cast_stun_lock += item.cast_stun_chance * item.cast_stun_duration
+        stun_hit_damage += getattr(item, "stun_hit_damage", 0.0) or 0.0
+        own_stun_duration_pct += getattr(item, "own_stun_duration_pct", 0.0) or 0.0
     return {
         "str": strength,
         "agi": agility,
@@ -309,6 +313,8 @@ def stats_of(build: Build) -> dict[str, float]:
         "mana_max": mana_max,
         "mana_regen": regen,
         "cast_stun_lock": cast_stun_lock,
+        "stun_hit_damage": stun_hit_damage,
+        "own_stun_duration_pct": own_stun_duration_pct,
         **passive,
     }
 
@@ -317,30 +323,42 @@ def _cooldown(base: float, haste: float, stats: dict) -> float:
     return max(0.5, (base * stats["cd_temp"] - stats["flat_cdr"]) / (1.0 + haste))
 
 
-def simulate(build: Build, targets: int = 5, spec: str = "retribution") -> Report:
-    if spec not in SPECS:
-        raise ValueError(spec)
-    if targets < 1:
-        raise ValueError(targets)
-    stats = stats_of(build)
-    taken = armor_taken(DUMMY_ARMOR - stats["armor_pen"])
-    attack_crit = _crit_factor(stats["crit"], 2.0 + stats["rating"])
-    spell_crit = _crit_factor(stats["crit"], stats["spell_mult"] + stats["rating"]) if stats["spell_crit"] else 1.0
-    knowledge = (
-        1.0 + 0.003 * stats["int"]
-        if spec == "retribution" and _has(build, TALENT_DIVINE_KNOWLEDGE)
-        else 1.0
-    )
+def _typed_bonus(stats: dict, magical: bool, when: float, mastery_now: float, knowledge: float) -> float:
+    bonus = 1.0 + (stats["magic_add"] if magical else stats["phys_add"])
+    if stats["sulfuron"]:
+        bonus += 0.13 + 0.25 * target_hp(when)
+    if magical and stats["spellbinder"]:
+        bonus += 0.05 + 0.005 * mastery_now
+    if stats["glass"]:
+        bonus *= 1.15
+    if magical:
+        bonus *= knowledge
+    return bonus
 
-    sources = {
-        "Автоатака": 0.0,
-        "Crusader Strike": 0.0,
-        "Blessed Hammer": 0.0,
-        "Divine Storm": 0.0,
-        "Hammer of Justice": 0.0,
-        "Righteous Fury": 0.0,
-        "Всплеск огня": 0.0,
-    }
+
+def _timeline_key(build: Build, stats: dict, spec: str, targets: int) -> tuple:
+    items = tuple(sorted(item.rawcode for item in build.items))
+    talents = tuple(sorted(build.talents))
+    glyphs = tuple(sorted(build.glyphs))
+    esc = (
+        build.potency_points,
+        build.mastery_points,
+        build.crit_points,
+        build.luck_points,
+        getattr(build, "haste_points", 0),
+        getattr(build, "attack_speed_points", 0),
+        getattr(build, "damage_points", 0),
+        getattr(build, "mana_points", 0),
+        getattr(build, "pet_damage_points", 0),
+    )
+    return (items, talents, glyphs, esc, spec, targets, round(stats["str"], 6), round(stats["int"], 6))
+
+
+_TIMELINE: dict[tuple, tuple] = {}
+
+
+def _fight_events(build: Build, stats: dict, spec: str, targets: int) -> tuple:
+    """CPU timeline: list of damage events + actions + mana_left. No scoring."""
     haste = stats["haste"]
     mastery_bonus = 0.0
     zeal_charges = 0
@@ -353,6 +371,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "retribution") -> Repor
     busy = 0.0
     hammers: list[dict] = []
     actions: list[tuple[float, str]] = []
+    events: list[tuple] = []
     fury_attacks = 0
     crusade = 0
     hammer_duration = 12.0 if _has(build, TALENT_DIVINE_HAMMER) else 9.0
@@ -366,29 +385,14 @@ def simulate(build: Build, targets: int = 5, spec: str = "retribution") -> Repor
     def mastery() -> float:
         return stats["mastery"] + mastery_bonus
 
-    def typed(magical: bool, when: float) -> float:
-        bonus = 1.0 + (stats["magic_add"] if magical else stats["phys_add"])
-        if stats["sulfuron"]:
-            bonus += 0.13 + 0.25 * target_hp(when)
-        if magical and stats["spellbinder"]:
-            bonus += 0.05 + 0.005 * mastery()
-        if stats["glass"]:
-            bonus *= 1.15
-        if magical:
-            bonus *= knowledge
-        return bonus
-
-    def deal(name: str, raw: float, magical: bool, count: int, when: float, potency_scale: float = 1.0) -> None:
-        amount = raw + stats["potency"] * potency_scale
-        amount *= typed(magical, when)
-        amount *= spell_crit if magical else attack_crit
-        amount *= taken * _execute_factor(stats, when)
-        sources[name] += amount * count
+    def emit(name: str, raw: float, magical: bool, count: int, when: float, potency_scale: float = 1.0, auto_scale: bool = False) -> None:
+        events.append((when, name, raw, magical, count, potency_scale, mastery(), auto_scale))
 
     def hammer_count(now: float) -> float:
         return sum(hammer["weight"] for hammer in hammers if hammer["start"] <= now < hammer["end"])
 
     def spawn(now: float, weight: float) -> None:
+        nonlocal hammers
         if weight <= 0:
             return
         first = orbit[0] if orbit else hammer_duration
@@ -456,7 +460,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "retribution") -> Repor
         if due and hit_at <= moment + 1e-9:
             recover(moment)
             for hammer in due:
-                deal(
+                emit(
                     "Blessed Hammer",
                     (5.0 + 10.0 * RANK + 0.45 * stats["str"]) * hammer["weight"],
                     True,
@@ -495,50 +499,50 @@ def simulate(build: Build, targets: int = 5, spec: str = "retribution") -> Repor
                     raw *= 1.10 + 0.01 * mastery()
                 if stats["judgement"]:
                     raw *= 1.0 + 0.05 * hammer_count(moment)
-                deal("Crusader Strike", raw, True, 1, moment)
+                emit("Crusader Strike", raw, True, 1, moment)
                 note_damage_mana(1)
                 cs_until = -1.0
                 if _has(build, TALENT_DIVINE_STORM):
                     storm = 20.0 + stats["str"] + stats["int"] + mastery()
                     if spec != "retribution":
                         storm *= 0.5
-                    deal("Divine Storm", storm, True, targets, moment)
+                    emit("Divine Storm", storm, True, targets, moment)
                     note_damage_mana(targets)
-            before_auto = sources["Автоатака"]
-            deal(
+            emit(
                 "Автоатака",
                 WHITE_BASE + 0.75 * stats["str"] + stats["damage"],
                 False,
                 1,
                 moment,
                 stats["attack_potency"],
+                True,
             )
-            if stats["auto_pct"] != 1.0:
-                sources["Автоатака"] = before_auto + (sources["Автоатака"] - before_auto) * stats["auto_pct"]
             mana = min(stats["mana_max"], mana + attack_mana_gain(stats))
             note_damage_mana(1)
             fury_attacks += 1
             if not _has(build, TALENT_HAMMER_OF_JUSTICE) and fury_attacks >= 3:
                 fury_attacks = 0
-                deal("Righteous Fury", 5.0 + 25.0 * RANK + 2.0 * stats["str"], True, 1, moment)
+                emit("Righteous Fury", 5.0 + 25.0 * RANK + 2.0 * stats["str"], True, 1, moment)
                 note_damage_mana(1)
             if stats["fire_orb"]:
-                splash = (20.0 + 0.35 * stats["str"]) * targets * taken * _execute_factor(stats, moment)
-                sources["Всплеск огня"] += splash
+                # fire splash: no potency / crit / typed in the old path — keep same
+                emit("Всплеск огня", (20.0 + 0.35 * stats["str"]), False, targets, moment, 0.0, False)
+                # Old code skipped typed/crit and used taken*execute only; flag via pot_scale=-1 sentinel? 
+                # Handled in score_events via name special-case below.
                 note_damage_mana(targets)
             if sulfuras is not None:
-                execute = _execute_factor(stats, moment)
                 if sulfuras.attack():
-                    splash = stats["str"] * typed(True, moment) * spell_crit * taken * execute * targets
-                    sources["Sulfuras"] = sources.get("Sulfuras", 0.0) + splash
+                    emit("Sulfuras", stats["str"], True, targets, moment, 0.0, False)
                     note_damage_mana(targets)
-                echo = (
-                    (WHITE_BASE + 0.75 * stats["str"] + stats["damage"])
-                    * taken
-                    * execute
-                    * sulfuras_echo_chance(stats["luck"])
+                emit(
+                    "Sulfuras (удар)",
+                    (WHITE_BASE + 0.75 * stats["str"] + stats["damage"]) * sulfuras_echo_chance(stats["luck"]),
+                    False,
+                    1,
+                    moment,
+                    0.0,
+                    False,
                 )
-                sources["Sulfuras (удар)"] = sources.get("Sulfuras (удар)", 0.0) + echo
             if _has(build, TALENT_CRUSADE) and crusade < 20:
                 crusade = min(20, crusade + 2)
                 haste = stats["haste"] + crusade / 100.0
@@ -582,16 +586,84 @@ def simulate(build: Build, targets: int = 5, spec: str = "retribution") -> Repor
                 continue
             actions.append((moment, "Hammer of Justice"))
             raw = (60.0 + 1.75 * stats["str"]) * (1.0 + 0.01 * stats["int"])
-            deal("Hammer of Justice", raw, True, 1, moment)
+            emit("Hammer of Justice", raw, True, 1, moment)
+            if stats.get("stun_hit_damage"):
+                # I0E4: flat 100 whenever you Stun; through typed/crit/armor like other hits.
+                emit("Stun", float(stats["stun_hit_damage"]), False, 1, moment, 0.0, False)
             busy = cast(moment)
             next_hoj = moment + _cooldown(HOJ_COOLDOWN, haste, stats)
             next_attack = max(next_attack, busy)
             continue
         break
 
-    total = sum(sources.values())
     recover(FIGHT)
     mana_left = 0.0 if stats["mana_max"] <= 0 else 100.0 * mana / stats["mana_max"]
+    return events, actions, mana_left
+
+
+def score_events(
+    events: list[tuple],
+    stats: dict,
+    *,
+    attack_crit: float,
+    spell_crit: float,
+    knowledge: float,
+    taken: float,
+) -> dict[str, float]:
+    """Score timeline events. Fire-orb splash keeps the old taken*execute-only path."""
+    sources: dict[str, float] = {}
+    for when, name, raw, magical, count, pot_scale, mastery_now, auto_scale in events:
+        if name == "Всплеск огня":
+            # old: (20+0.35*str)*targets * taken * execute  (no typed/crit/potency)
+            amount = raw * taken * _execute_factor(stats, when)
+            sources[name] = sources.get(name, 0.0) + amount * count
+            continue
+        if name == "Sulfuras (удар)":
+            # old: white * taken * execute * echo_chance  (no typed/crit; pot already in raw via echo)
+            amount = raw * taken * _execute_factor(stats, when)
+            sources[name] = sources.get(name, 0.0) + amount * count
+            continue
+        amount = raw + stats["potency"] * pot_scale
+        amount *= _typed_bonus(stats, magical, when, mastery_now, knowledge)
+        amount *= spell_crit if magical else attack_crit
+        amount *= taken * _execute_factor(stats, when)
+        if auto_scale:
+            amount *= stats["auto_pct"]
+        sources[name] = sources.get(name, 0.0) + amount * count
+    return sources
+
+
+def simulate(build: Build, targets: int = 5, spec: str = "retribution") -> Report:
+    if spec not in SPECS:
+        raise ValueError(spec)
+    if targets < 1:
+        raise ValueError(targets)
+    stats = stats_of(build)
+    taken = armor_taken(DUMMY_ARMOR - stats["armor_pen"])
+    attack_crit = _crit_factor(stats["crit"], 2.0 + stats["rating"])
+    spell_crit = _crit_factor(stats["crit"], stats["spell_mult"] + stats["rating"]) if stats["spell_crit"] else 1.0
+    knowledge = (
+        1.0 + 0.003 * stats["int"]
+        if spec == "retribution" and _has(build, TALENT_DIVINE_KNOWLEDGE)
+        else 1.0
+    )
+    key = _timeline_key(build, stats, spec, targets)
+    cached = _TIMELINE.get(key)
+    if cached is None:
+        cached = _fight_events(build, stats, spec, targets)
+        while len(_TIMELINE) >= 8000:
+            _TIMELINE.pop(next(iter(_TIMELINE)))
+        _TIMELINE[key] = cached
+    events, actions, mana_left = cached
+    sources = score_events(
+        events,
+        stats,
+        attack_crit=attack_crit,
+        spell_crit=spell_crit,
+        knowledge=knowledge,
+        taken=taken,
+    )
+    total = sum(sources.values())
     return Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
 
 
