@@ -12,11 +12,11 @@
 |---|---|---|
 | locked | только CPU, torch не импортируется | mage/arcane |
 | hybrid-timeline | CPU-таймлайн + точный timeline-cache, GPU compile, CPU score | mage/fire, mage/frost |
-| hybrid-compile | CPU-таймлайн (кэш модуля), GPU compile, CPU score | priest×3, paladin×3, shaman×3, warrior×3, warlock×3, rogue×2, hunter×3 |
+| hybrid-compile | CPU-таймлайн (кэш модуля), GPU compile, CPU score | priest×3, paladin×3, shaman×3, warrior×3, warlock×3, rogue×2, hunter×3, druid×2 |
 | cpu-only | local-hybrid (device + v1 stat-parity), бои = simulate модуля | остальные |
 
 Дальше GPU-compile для остальных нужен split simulate → events → compile → score
-в sunken_sim. Порт-очередь: `registry.PORT_ORDER` (druid, …). Warrior+Warlock+Rogue+Hunter done.
+в sunken_sim. Порт-очередь: `registry.PORT_ORDER` (feral_druid, …). Warrior+Warlock+Rogue+Hunter+Druid done.
 
 ### Честно про таймлайн на GPU
 Состояние боя (кто/когда кастует) по-прежнему на CPU. hybrid-timeline = точный
@@ -52,6 +52,11 @@ Events уже полностью scored; GPU батчит sum(amount)/FIGHT.
 ## Hunter Marksmanship / Beast Mastery / Survival
 Код: `farm/hybrid/hunter.py` + `sunken_sim/hunter.py` flat-event timeline.
 Events уже полностью scored; GPU батчит sum(amount)/FIGHT.
+
+## Druid Restoration / Balance
+Код: `farm/hybrid/druid.py` + `sunken_sim/druid.py` flat-event timeline.
+DIAMOND (I00D): timelines() перебирает buttons(spec) bound keys, берёт best total events
+(как simulate()). Без DIAMOND — bound_key=None. GPU батчит sum(amount)/FIGHT.
 
 ## Arcane Mage
 mage/arcane жёстко на CPU (`farm/hybrid/lock.py`). GpuLocked.

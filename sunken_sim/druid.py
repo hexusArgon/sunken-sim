@@ -229,8 +229,53 @@ def _report(build, total_sources, actions, stats, targets, bound_key, mana) -> R
     )
 
 
+
+def _timeline_key(build: Build, stats: dict, spec: str, targets: int, bound_key: str | None) -> tuple:
+    items = tuple(sorted(item.rawcode for item in build.items))
+    talents = tuple(sorted(build.talents))
+    glyphs = tuple(sorted(build.glyphs))
+    esc = (
+        build.potency_points,
+        build.mastery_points,
+        build.crit_points,
+        build.luck_points,
+        getattr(build, "haste_points", 0),
+        getattr(build, "attack_speed_points", 0),
+        getattr(build, "damage_points", 0),
+        getattr(build, "mana_points", 0),
+        getattr(build, "pet_damage_points", 0),
+    )
+    return (
+        items,
+        talents,
+        glyphs,
+        esc,
+        spec,
+        targets,
+        bound_key,
+        round(stats.get("int", 0), 6),
+        round(stats.get("agi", 0), 6),
+    )
+
+
+_TIMELINE: dict[tuple, tuple] = {}
+
+
+def score_events(events: list[tuple[str, float]]) -> dict[str, float]:
+    sources: dict[str, float] = {}
+    for name, amount in events:
+        sources[name] = sources.get(name, 0.0) + amount
+    return sources
+
+
 def _simulate_druid(build: Build, targets: int, spec: str, bound_key: str | None) -> Report:
     stats = sheet(build, spec)
+    cache_key = _timeline_key(build, stats, spec, targets, bound_key)
+    cached = _TIMELINE.get(cache_key)
+    if cached is not None:
+        events, actions, mana_left_val = cached
+        sources = score_events(events)
+        return _report(build, sources, actions, stats, targets, bound_key, mana_left_val)
     codes = frozenset(item.rawcode for item in build.items) | build.talents | build.glyphs
     cooldown = _common(build, stats, bound_key)
     balance = spec == "balance"
@@ -259,6 +304,12 @@ def _simulate_druid(build: Build, targets: int, spec: str, bound_key: str | None
         "Всплеск огня": 0.0,
     }
     actions: list[tuple[float, str]] = []
+    events: list[tuple[str, float]] = []
+
+    def add_damage(name: str, amount: float) -> None:
+        if amount:
+            events.append((name, amount))
+
     clock = _Clock()
     state = {"mana": stats["mana_max"], "mana_time": 0.0}
     ready = {key: 0.0 for key in buttons(spec)}
@@ -320,7 +371,7 @@ def _simulate_druid(build: Build, targets: int, spec: str, bound_key: str | None
         elif stats["spell_crit"]:
             amount *= _crit_factor(stats["crit"], stats["spell_mult"] + stats["rating"])
         amount *= _execute_factor(stats, now)
-        sources[name] = sources.get(name, 0.0) + amount * count
+        add_damage(name, amount * count)
         if stats.get("damage_mana_pct"):
             state["mana"] = min(stats["mana_max"], state["mana"] + stats["damage_mana_pct"] * stats["mana_max"] * count)
 
@@ -423,14 +474,21 @@ def _simulate_druid(build: Build, targets: int, spec: str, bound_key: str | None
 
     def on_attack(now: float) -> None:
         recover(now)
-        before = sources["Автоатака"]
+        mark = len(events)
         deal("Автоатака", stats["ad"], now, 1.0, True, main_wisp(now))
         if stats["auto_pct"] != 1.0:
-            sources["Автоатака"] = before + (sources["Автоатака"] - before) * stats["auto_pct"]
+
+            for i in range(mark, len(events)):
+
+                n, a = events[i]
+
+                if n == "Автоатака":
+
+                    events[i] = (n, a * stats["auto_pct"])
         state["mana"] = min(stats["mana_max"], state["mana"] + attack_mana_gain(stats))
         execute = _execute_factor(stats, now)
         if fire_orb:
-            sources["Всплеск огня"] += (20.0 + 0.35 * stats["int"]) * targets * taken_plain * execute
+            add_damage("Всплеск огня", (20.0 + 0.35 * stats["int"]) * targets * taken_plain * execute)
         if sulfuras is not None:
             if sulfuras.attack():
                 splash = (
@@ -441,9 +499,9 @@ def _simulate_druid(build: Build, targets: int, spec: str, bound_key: str | None
                     * execute
                     * targets
                 )
-                sources["Sulfuras"] = sources.get("Sulfuras", 0.0) + splash
+                add_damage("Sulfuras", splash)
             echo = stats["ad"] * taken_plain * execute * sulfuras_echo_chance(stats["luck"])
-            sources["Sulfuras (удар)"] = sources.get("Sulfuras (удар)", 0.0) + echo
+            add_damage("Sulfuras (удар)", echo)
 
     guard = 0
     while guard < 200000:
@@ -495,13 +553,17 @@ def _simulate_druid(build: Build, targets: int, spec: str, bound_key: str | None
             expire = payload
             if now <= expire + 1e-9:
                 hit = TREANT_HIT * taken_plain * _execute_factor(stats, now)
-                sources["Treants"] += hit
+                add_damage("Treants", hit)
                 if rooted(now):
                     root_tick(now, 1.0, main_wisp(now))
                 if now + TREANT_SWING <= expire + 1e-9:
                     clock.push(now + TREANT_SWING, "treant", expire)
 
     recover(FIGHT)
+    while len(_TIMELINE) >= 8000:
+        _TIMELINE.pop(next(iter(_TIMELINE)))
+    _TIMELINE[cache_key] = (list(events), actions, state["mana"])
+    sources = score_events(events)
     return _report(build, sources, actions, stats, targets, bound_key, state["mana"])
 
 
