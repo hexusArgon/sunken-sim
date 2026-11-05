@@ -48,10 +48,10 @@ class BatchFights:
         raise NotImplementedError
 
     def greedy_points(self, build) -> tuple[float, dict[str, int]]:
-        """sunken_sim.esc.greedy_points with batched trials + zero-delta skip."""
+        """sunken_sim.esc.greedy_points with structural + zero-delta attr skips."""
         from farm.hybrid.stat_kernel import greedy_points_batched
 
-        return greedy_points_batched(self.dps_many, build)
+        return greedy_points_batched(self.dps_many, build, hero=getattr(self, "hero", None))
 
     def finish_sextuple(self, equipped, talent_codes, glyph_codes, picks_without, picks_with, glyph_picks):
         """farm.score.finish_sextuple, batched. Same return shape and fight count."""

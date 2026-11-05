@@ -30,16 +30,14 @@
 | remaining cpu-only | not yet |
 
 ### Pending (next tasks)
-1. **Timeline on GPU** — warrior×3 + paladin×3 done (parity green). Remaining CPU timeline:
-   mage/priest/rogue GPU TL done; remaining:
-   warlock×3, hunter×3, druid×2, feral_druid×3,
-   kind-heroes: ALL done (berserker…witch_doctor). Branchy classes that remain
-   hybrid-compile (resto shaman etc.) stay CPU timeline + GPU kind-score.
-2. **ESC / stat-kernel on GPU** — `farm/hybrid/stat_kernel.py` wired into `BatchFights.greedy_points`:
-   batched dps_many trials + safe zero-delta attr skip (attrs that tied baseline after a
-   real improving step are dropped). Exact event-reuse rescoring is **not** used yet:
-   flat/cleave raws bake crit/potency at emit (warrior). Closed-form kernel needs
-   per-class event algebra; next after more GPU timelines.
+1. **GPU fight timelines** — done for every unlocked spec (58). Only **mage/arcane**
+   stays locked. Kind-heroes (berserker…witch_doctor) included.
+2. **ESC / stat-kernel deepen** — `farm/hybrid/stat_kernel.py` on
+   `BatchFights.greedy_points`: structural skips (`healing_power` always;
+   `pet_damage` except pet heroes) + zero-delta skip after a real improving step.
+   Exact event-reuse rescoring still deferred: flat/cleave bake crit/potency into
+   raw — needs per-class event algebra next.
+
 
 ### Честно про таймлайн на GPU
 Warrior + Paladin: batched next-event state machines in

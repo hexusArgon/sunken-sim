@@ -3,8 +3,12 @@
 
 Exact event-reuse rescoring is unsafe for most heroes: flat/cleave/splash raws
 often bake crit/potency/luck at emit time (see warrior Whirlwind cleave). A true
-closed-form stat-kernel needs per-class event algebra; until GPU timelines cover
-more heroes, greedy stays on full dps_many batches.
+closed-form stat-kernel needs per-class event algebra; until that lands, greedy
+stays on full dps_many batches with structural attr skips + zero-delta skip.
+
+Structural skips (never trial):
+  - healing_power: no DPS class sim reads stats["healing_power"]
+  - pet_damage: only heroes that scale pets/summons (see PET_DAMAGE_HEROES)
 
 Zero-delta skip: after a step that finds a real improvement, attrs that tied the
 pre-step baseline are dropped for later steps (they cannot win a strict '>' pick
@@ -19,14 +23,40 @@ from sunken_sim.shadow import SKILL_POINTS
 
 _EPS = 1e-12
 
+# Heroes whose sim multiplies pet/summon damage by stats["pet_damage"].
+PET_DAMAGE_HEROES = frozenset({
+    "hunter",
+    "necromancer",
+    "siren",
+    "tidewarrior",
+    "tinker",
+    "warlock",
+    "witch_doctor",
+})
 
-def greedy_points_batched(dps_many, build, *, total: int | None = None, cap: int = ESC_CAP):
-    """Batched ESC greedy with safe zero-delta attr skip."""
+
+def structural_skip_attrs(hero: str | None) -> frozenset[str]:
+    """Attrs that cannot change DPS for this hero (skip every greedy step)."""
+    skip = {"healing_power"}
+    if hero is None or hero not in PET_DAMAGE_HEROES:
+        skip.add("pet_damage")
+    return frozenset(skip)
+
+
+def greedy_points_batched(
+    dps_many,
+    build,
+    *,
+    total: int | None = None,
+    cap: int = ESC_CAP,
+    hero: str | None = None,
+):
+    """Batched ESC greedy with structural + zero-delta attr skips."""
     if total is None:
         total = SKILL_POINTS
     counts = empty_points()
     best = float(dps_many([apply_points(build, counts)])[0])
-    skip: set[str] = set()
+    skip: set[str] = set(structural_skip_attrs(hero))
     for _ in range(total):
         names = [name for name in ESC_ATTRS if counts[name] < cap and name not in skip]
         if not names:
