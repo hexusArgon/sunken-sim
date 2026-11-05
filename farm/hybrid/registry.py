@@ -60,6 +60,7 @@ PALADIN_SPECS = ("retribution", "protection", "holy")
 SHAMAN_SPECS = ("restoration", "enhancement", "elemental")
 WARRIOR_SPECS = ("protection", "arms", "fury")
 ROGUE_SPECS = ("subtlety", "combat")
+WARLOCK_SPECS = ("demonology", "destruction", "affliction")
 GPU_TIMELINE_SPECS = frozenset(
     {("warrior", spec) for spec in WARRIOR_SPECS}
     | {("paladin", spec) for spec in PALADIN_SPECS}
@@ -69,15 +70,14 @@ GPU_TIMELINE_SPECS = frozenset(
     | {("rogue", spec) for spec in ROGUE_SPECS}
     | {("druid", "restoration"), ("druid", "balance")}
     | {("hunter", "marksmanship"), ("hunter", "beast_mastery"), ("hunter", "survival")}
+    | {("warlock", spec) for spec in WARLOCK_SPECS}
 )
-WARLOCK_SPECS = ("demonology", "destruction", "affliction")
 HUNTER_SPECS = ("marksmanship", "beast_mastery", "survival")
 DRUID_SPECS = ("restoration", "balance")
 FERAL_DRUID_SPECS = ("primal", "guardian", "savage")
 COMPILE_SPECS = frozenset(
-    # priest/paladin/shaman/warrior/mage/rogue/druid moved to GPU_TIMELINE_SPECS
-    {("warlock", spec) for spec in WARLOCK_SPECS}
-    | {("feral_druid", spec) for spec in FERAL_DRUID_SPECS}
+    # warlock moved to GPU_TIMELINE_SPECS
+    {("feral_druid", spec) for spec in FERAL_DRUID_SPECS}
 )
 
 # Ledger kind-score heroes (sunken_sim/ledger.py + farm/hybrid/kindscore.py):
@@ -207,8 +207,8 @@ def specs_of(hero: str) -> tuple[str, ...]:
 _NOTES = {
     LOCKED: "CPU sim, GpuLocked, torch never imported",
     TIMELINE: "CPU timeline + exact timeline cache, GPU compile sums, CPU score",
-    GPU_TIMELINE: "batched next-event timeline (f64 clocks; DirectML kind-score); Warrior/Paladin/Shaman/Priest x3, Mage fire/frost, Rogue x2, Druid x2, Hunter x3",
-    COMPILE: "CPU timeline (module _TIMELINE), GPU compile sums, CPU score (warlock/feral_druid/berserker/death_knight/demon_hunter/dragon_sentinel/monk/necromancer/siren/tidewarrior/tinker/windmaster/witch_doctor)",
+    GPU_TIMELINE: "batched next-event timeline (f64 clocks; DirectML kind-score); Warrior/Paladin/Shaman/Priest x3, Mage fire/frost, Rogue x2, Druid x2, Hunter x3, Warlock x3",
+    COMPILE: "CPU timeline (module _TIMELINE), GPU compile sums, CPU score (feral_druid/berserker/death_knight/demon_hunter/dragon_sentinel/monk/necromancer/siren/tidewarrior/tinker/windmaster/witch_doctor)",
     CPU: "local-hybrid runner + v1 stat parity; fights = module simulate (no compile split yet)",
 }
 
