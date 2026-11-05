@@ -54,6 +54,7 @@ from sunken_sim.shadow import (
     target_hp,
 )
 from sunken_sim.stacking import stack_fields
+from sunken_sim.ledger import Ledger, attach, score_events  # noqa: F401
 
 WHITE_STR = int(26 + (LEVEL - 1) * 2.6)  # H01H ustr/ustp
 WHITE_AGI = int(12.5 + (LEVEL - 1) * 1.3)  # uagp 1.3; lvl6 white 19 → base 12.5
@@ -395,7 +396,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
     stored_crit = stats["crit"] + SERP_PASSIVE_CRIT  # CriticalStrike_Chance after the first hit
     pen = stats["armor_pen"]
 
-    sources: dict[str, float] = {"Автоатака": 0.0}
+    sources: dict[str, float] = Ledger({"Автоатака": 0.0})
     actions: list[tuple[float, str]] = []
     counters = {"tidal_proc": 0, "tidal_active": 0, "amplify": 0, "murloc_hits": 0, "ship": 0}
     mana = mana_max
@@ -496,7 +497,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
             if i == 0:
                 first = amount
             total += amount
-        sources[name] = sources.get(name, 0.0) + total
+        sources.add_exec(name, total, now, execute)
         note_damage_mana(len(tgts))
         return first
 
@@ -505,7 +506,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
         if attack:
             amount *= _crit_factor(stats["summon_crit"] + extra_crit, 2.0 + stats["summon_rating"])
         dealt = amount * taken(False, t, now) * _execute_factor(stats, now) * pressure(t, now)
-        sources[name] = sources.get(name, 0.0) + dealt
+        sources.add_exec(name, dealt, now, _execute_factor(stats, now))
         return dealt
 
     def cleave(name: str, dealt: float) -> None:
@@ -712,17 +713,17 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
         gain_mana(attack_mana_gain(stats))
         if stats["fire_orb"]:
             splash = (20.0 + 0.35 * strength) * targets * taken(True, 0, moment) * _execute_factor(stats, moment)
-            sources["Всплеск огня"] = sources.get("Всплеск огня", 0.0) + splash
+            sources.add_exec("Всплеск огня", splash, moment, _execute_factor(stats, moment))
             note_damage_mana(targets)
         if sulfuras is not None:
             execute = _execute_factor(stats, moment)
             if sulfuras.attack():
                 splash = strength * typed(True, moment) * taken(True, 0, moment) * execute * targets
                 splash *= _crit_factor(stored_crit, 2.0 + stats["rating"])
-                sources["Sulfuras"] = sources.get("Sulfuras", 0.0) + splash
+                sources.add_exec("Sulfuras", splash, moment, execute)
                 note_damage_mana(targets)
             echo = power * taken(True, 0, moment) * execute * sulfuras_echo_chance(stats["luck"])
-            sources["Sulfuras (удар)"] = sources.get("Sulfuras (удар)", 0.0) + echo
+            sources.add_exec("Sulfuras (удар)", echo, moment, execute)
         next_attack = moment + attack_interval(moment)
 
     total = sum(sources.values())
@@ -733,7 +734,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
     stats["angler_stacks"] = float(angler)
     stats["policy_serp"] = 1.0 if use_serp else 0.0
     stats["policy_recall"] = 1.0 if recall else 0.0
-    return Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
+    return attach(Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left))
 
 
 def best_points(build: Build, targets: int, spec: str) -> tuple[float, dict[str, int]]:
