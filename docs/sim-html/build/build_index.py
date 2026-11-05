@@ -28,12 +28,13 @@ def add(cls, spec, page, level, runs_by_pool):
                         sources=[(n, float(v)) for n, v in r.get("sources", [])])
     specs.append(dict(cls=cls, spec=spec, page=page, level=level, pools=pools))
 
-# Mage: Fire from mage.tsx (level from DATA), Frost / Arcane level 6 from mage-legacy.tsx
+# Mage: Fire + Arcane (partial lvl15) from mage.tsx; Frost lvl6 from mage-legacy.tsx
 mf = const("mage.tsx", "DATA")
 add("Mage", "Fire", "mage.html", mf["level"], {p: max(mf["runs"][p], key=lambda r: float(r["dps"])) for p, _ in POOLS if p in mf["runs"]})
+ma = const("mage.tsx", "ARCANE_DATA")
+add("Mage", "Arcane", "mage.html", ma["level"], {p: max(ma["runs"][p], key=lambda r: float(r["dps"])) for p, _ in POOLS if p in ma["runs"]})
 md = const("mage-legacy.tsx", "DATA")
-for sp, t in [("arcane", "Arcane"), ("frost", "Frost")]:
-    add("Mage", t, "mage.html", 6, {p: max(md[sp]["runs"][p], key=lambda r: float(r["dps"])) for p, _ in POOLS})
+add("Mage", "Frost", "mage.html", 6, {p: max(md["frost"]["runs"][p], key=lambda r: float(r["dps"])) for p, _ in POOLS})
 # Paladin / Shaman (level 6), keys spec|pool|place
 for f, cls, page, names in [("paladin.tsx", "Paladin", "paladin.html", {"retribution": "Retribution", "protection": "Protection"}),
                             ("shaman.tsx", "Shaman", "shaman.html", {"enhancement": "Enhancement", "elemental": "Elemental"})]:
