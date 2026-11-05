@@ -398,10 +398,47 @@ def _timeline_key(build: Build, stats: dict, spec: str, targets: int, policy: tu
 _TIMELINE: dict[tuple, tuple] = {}
 
 
-def score_events(events: list[tuple[str, float]]) -> dict[str, float]:
+# Event kinds for GPU kind/weight compile (farm/hybrid/warlock.py).
+KIND_HERO_MAG = 0.0
+KIND_HERO_PHYS = 1.0
+KIND_EXEC = 2.0  # weight * execute(when) only (summon / fire splash / sulf echo)
+KIND_FLAT = 3.0  # fully scored already (Havoc, Demon Rage cleave)
+
+
+def _typed_bonus(stats: dict, magical: bool, now: float) -> float:
+    bonus = 1.0 + (stats["magic_add"] if magical else stats["phys_add"])
+    if stats["sulfuron"]:
+        bonus += 0.13 + 0.25 * target_hp(now)
+    if magical and stats["spellbinder"]:
+        bonus += 0.05 + 0.005 * stats["mastery"]
+    if stats["glass"]:
+        bonus *= 1.15
+    return bonus
+
+
+def score_events(events: list, stats: dict) -> dict[str, float]:
+    """Score typed timeline events into named sources.
+
+    Event: (when, name, weight, kind)
+      KIND_HERO_MAG/PHYS: weight * typed * execute
+      KIND_EXEC: weight * execute
+      KIND_FLAT: weight as-is
+    weight is pre-typed / pre-execute (crit, taken, potency, agony already applied).
+    """
     sources: dict[str, float] = {}
-    for name, amount in events:
-        sources[name] = sources.get(name, 0.0) + amount
+    for when, name, weight, kind in events:
+        if kind == KIND_FLAT:
+            amount = weight
+        elif kind == KIND_EXEC:
+            amount = weight * _execute_factor(stats, when)
+        elif kind == KIND_HERO_MAG:
+            amount = weight * _typed_bonus(stats, True, when) * _execute_factor(stats, when)
+        elif kind == KIND_HERO_PHYS:
+            amount = weight * _typed_bonus(stats, False, when) * _execute_factor(stats, when)
+        else:
+            raise ValueError(f"unknown warlock event kind {kind}")
+        if amount:
+            sources[name] = sources.get(name, 0.0) + amount
     return sources
 
 
@@ -444,17 +481,22 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
     cached = _TIMELINE.get(cache_key)
     if cached is not None:
         events, actions, mana_left = cached
-        sources = score_events(events)
+        sources = score_events(events, stats)
         total = sum(sources.values())
         return Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
 
     sources: dict[str, float] = {"Автоатака": 0.0}
     actions: list[tuple[float, str]] = []
-    events: list[tuple[str, float]] = []
+    events: list = []
 
     def add_damage(name: str, amount: float) -> None:
+        """Fully-scored flat event (Havoc / Demon Rage / legacy)."""
         if amount:
-            events.append((name, amount))
+            events.append((0.0, name, amount, KIND_FLAT))
+
+    def add_event(when: float, name: str, weight: float, kind: float) -> None:
+        if weight:
+            events.append((when, name, weight, kind))
 
     mana = mana_max
     mana_time = 0.0
@@ -563,12 +605,11 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
         chance = hero_crit_chance(now)
         share = max(0.0, min(100.0, chance)) / 100.0
         first = 0.0
-        total = 0.0
+        pre_total = 0.0
         execute = _execute_factor(stats, now)
-        kind = typed(magical, now)
+        typed_m = typed(magical, now)
         for i, t in enumerate(tgts):
             amount = raw + stats["potency"] * potency_scale + agony_flat(t, now)
-            amount *= kind
             if chaos:
                 amount *= CHAOS_UNARMORED
             rating = stats["rating"]
@@ -582,11 +623,13 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
                 amount *= _crit_factor(chance, stats["spell_mult"] + rating)
             else:
                 pass
-            dealt = amount * taken(t, True, now) * execute
+            pre = amount * taken(t, True, now)
+            dealt = pre * typed_m * execute
             if i == 0:
                 first = dealt
-            total += dealt
-        add_damage(name, total * weight)
+            pre_total += pre
+        ev_kind = KIND_HERO_MAG if magical else KIND_HERO_PHYS
+        add_event(now, name, pre_total * weight, ev_kind)
         note_damage_mana(len(tgts) * weight)
         return first, (share if (attack or stats["spell_crit"]) else 0.0)
 
@@ -601,7 +644,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
             chance += 10.0 + 0.25 * crit_stat
         share = max(0.0, min(100.0, chance)) / 100.0 if attack else 0.0
         first = 0.0
-        total = 0.0
+        pre_total = 0.0
         execute = _execute_factor(stats, now)
         for i, t in enumerate(tgts):
             amount = raw + stats["potency"] + agony_flat(t, now)
@@ -610,11 +653,12 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
                 amount *= CHAOS_UNARMORED
             if attack:
                 amount *= _crit_factor(chance, 2.0 + stats["summon_rating"])
-            dealt = amount * taken(t, False, now) * execute
+            pre = amount * taken(t, False, now)
+            dealt = pre * execute
             if i == 0:
                 first = dealt
-            total += dealt
-        add_damage(name, total * weight)
+            pre_total += pre
+        add_event(now, name, pre_total * weight, KIND_EXEC)
         return first, share
 
     def malefic(now: float, t: int) -> None:
@@ -997,9 +1041,9 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
                                 potency_scale=stats["attack_potency"])
         if stats["auto_pct"] != 1.0:
             for i in range(mark, len(events)):
-                n, a = events[i]
+                when, n, w, k = events[i]
                 if n == "Автоатака":
-                    events[i] = (n, a * stats["auto_pct"])
+                    events[i] = (when, n, w * stats["auto_pct"], k)
         havoc(moment, dealt)
         agony_chance(moment, 0, 0.05 * luck_mult)
         backdraft_on_attack(moment, share, True, "Warlock")
@@ -1013,18 +1057,17 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
             backdraft_on_attack(moment, cb_share, True, "Warlock")
         gain_mana(attack_mana_gain(stats))
         if stats["fire_orb"]:
-            splash = (20.0 + 0.35 * stats["int"]) * targets * taken(0, True, moment) * _execute_factor(stats, moment)
-            add_damage("Всплеск огня", splash)
+            splash_w = (20.0 + 0.35 * stats["int"]) * targets * taken(0, True, moment)
+            add_event(moment, "Всплеск огня", splash_w, KIND_EXEC)
             note_damage_mana(targets)
         if sulfuras is not None:
-            execute = _execute_factor(stats, moment)
             if sulfuras.attack():
-                splash = stats["int"] * typed(True, moment) * taken(0, True, moment) * execute * targets
-                splash *= _crit_factor(hero_crit_chance(moment), 2.0 + stats["rating"])
-                add_damage("Sulfuras", splash)
+                splash_w = stats["int"] * taken(0, True, moment) * targets
+                splash_w *= _crit_factor(hero_crit_chance(moment), 2.0 + stats["rating"])
+                add_event(moment, "Sulfuras", splash_w, KIND_HERO_MAG)
                 note_damage_mana(targets)
-            echo = power * taken(0, True, moment) * execute * sulfuras_echo_chance(stats["luck"])
-            add_damage("Sulfuras (удар)", echo)
+            echo_w = power * taken(0, True, moment) * sulfuras_echo_chance(stats["luck"])
+            add_event(moment, "Sulfuras (удар)", echo_w, KIND_EXEC)
         next_attack = moment + interval(moment)
 
     recover(FIGHT)
@@ -1032,7 +1075,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
     while len(_TIMELINE) >= 8000:
         _TIMELINE.pop(next(iter(_TIMELINE)))
     _TIMELINE[cache_key] = (list(events), actions, mana_left)
-    sources = score_events(events)
+    sources = score_events(events, stats)
     total = sum(sources.values())
     report = Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
     return report

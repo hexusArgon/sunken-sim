@@ -367,10 +367,45 @@ def _timeline_key(build: Build, stats: dict, spec: str, targets: int) -> tuple:
 _TIMELINE: dict[tuple, tuple] = {}
 
 
-def score_events(events: list[tuple[str, float]]) -> dict[str, float]:
+# Event kinds for GPU kind/weight compile (farm/hybrid/hunter.py).
+KIND_PHYS = 0.0  # weight * physical(thp) * execute
+KIND_EXEC = 1.0  # weight * execute (pet / untyped / splash / echo)
+KIND_MAG = 2.0  # weight * (1+magic_add)*glass * execute (Sulfuras)
+KIND_FLAT = 3.0
+
+
+def _physical_bonus(stats: dict, now: float) -> float:
+    bonus = 1.0 + stats["phys_add"]
+    if stats["sulfuron"]:
+        bonus += 0.13 + 0.25 * target_hp(now)
+    if stats["glass"]:
+        bonus *= 1.15
+    return bonus
+
+
+def _mag_simple(stats: dict) -> float:
+    return (1.0 + stats["magic_add"]) * (1.15 if stats["glass"] else 1.0)
+
+
+def score_events(events: list, stats: dict) -> dict[str, float]:
+    """Score typed timeline events into named sources.
+
+    Event: (when, name, weight, kind)
+    """
     sources: dict[str, float] = {}
-    for name, amount in events:
-        sources[name] = sources.get(name, 0.0) + amount
+    for when, name, weight, kind in events:
+        if kind == KIND_FLAT:
+            amount = weight
+        elif kind == KIND_EXEC:
+            amount = weight * _execute_factor(stats, when)
+        elif kind == KIND_PHYS:
+            amount = weight * _physical_bonus(stats, when) * _execute_factor(stats, when)
+        elif kind == KIND_MAG:
+            amount = weight * _mag_simple(stats) * _execute_factor(stats, when)
+        else:
+            raise ValueError(f"unknown hunter event kind {kind}")
+        if amount:
+            sources[name] = sources.get(name, 0.0) + amount
     return sources
 
 
@@ -384,7 +419,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
     cached = _TIMELINE.get(cache_key)
     if cached is not None:
         events, actions, mana_left = cached
-        sources = score_events(events)
+        sources = score_events(events, stats)
         total = sum(sources.values())
         return Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
     luck_mult = 1.0 + stats["luck"]
@@ -406,11 +441,15 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
         "Всплеск огня": 0.0,
     }
     actions: list[tuple[float, str]] = []
-    events: list[tuple[str, float]] = []
+    events: list = []
 
     def add_damage(name: str, amount: float) -> None:
         if amount:
-            events.append((name, amount))
+            events.append((0.0, name, amount, KIND_FLAT))
+
+    def add_event(when: float, name: str, weight: float, kind: float) -> None:
+        if weight:
+            events.append((when, name, weight, kind))
 
     mana = stats["mana_max"]
     mana_time = 0.0
@@ -526,13 +565,13 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
         Returns (dealt, crit share)."""
         nonlocal quiver
         amount = raw + potency(now) * potency_scale
-        if typed:
-            amount *= physical(now)
         amount *= 1.0 + ASPECT
-        taken = taken_for(index, now) * _execute_factor(stats, now)
-        plain = amount * taken
+        armor = taken_for(index, now)
+        execute = _execute_factor(stats, now)
+        phys = physical(now) if typed else 1.0
         share = 0.0
-        dealt = plain
+        pre_plain = amount * armor
+        pre = pre_plain
         if attack > 0:
             inc = 1.0
             if has(TALENT_MONGOOSE):
@@ -541,20 +580,21 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
                 inc += 0.15
             chance = hero_crit(now)
             mult = hero_rating(now)
-            normal = amount * inc * taken * _crit_factor(chance, mult)
+            normal_pre = amount * inc * armor * _crit_factor(chance, mult)
             armed = quiver * attack if has(TALENT_WINDRUNNER) else 0.0
-            boosted = amount * inc * (1.0 + chance / 100.0) * taken * mult
-            attack_dealt = (1.0 - armed / attack) * normal + (armed / attack) * boosted
+            boosted_pre = amount * inc * (1.0 + chance / 100.0) * armor * mult
+            attack_pre = (1.0 - armed / attack) * normal_pre + (armed / attack) * boosted_pre
             share = attack * ((1.0 - armed / attack) * _chance(chance / 100.0) + armed / attack)
-            dealt = (1.0 - attack) * plain + attack * attack_dealt
+            pre = (1.0 - attack) * pre_plain + attack * attack_pre
             if armed:
                 quiver -= armed
             if has(TALENT_POISONED_ARROWS) and attack >= 0.5:
                 stung[index] = max(stung[index], now + STING_DUR)
-        add_damage(name, dealt * count)
+        kind = KIND_PHYS if typed else KIND_EXEC
+        add_event(now, name, pre * count, kind)
+        dealt = pre * phys * execute
         note_damage_mana(count)
         return dealt, share
-
     def pet_hit(name: str, raw: float, now: float, kind: str, index: int = 0, attack: bool = True) -> float:
         """Pet damage: Pet Damage %, Scent of Blood, Aspect, summon crit on attacks."""
         amount = raw * (1.0 + stats["pet_damage"]) * (1.0 + ASPECT)
@@ -562,7 +602,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
         if has(TALENT_SCENT_OF_BLOOD) and target_hp(now) < 0.40:
             increase += 0.28
         amount *= increase
-        taken = taken_for(index, now, hunter=False) * _execute_factor(stats, now)
+        armor = taken_for(index, now, hunter=False)
         share = 0.0
         if attack:
             inc = 1.0
@@ -573,12 +613,11 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
             if has(TALENT_UNMATCHED):
                 rating += 0.25 + 0.15 * hero_crit(now) / 100.0
             share = _chance(chance / 100.0)
-            dealt = amount * inc * taken * _crit_factor(chance, rating)
+            pre = amount * inc * armor * _crit_factor(chance, rating)
         else:
-            dealt = amount * taken
-        add_damage(name, dealt)
+            pre = amount * armor
+        add_event(now, name, pre, KIND_EXEC)
         return share
-
     def howl(now: float) -> None:
         nonlocal howl_stacks
         if has(TALENT_HOWL) and howl_stacks < 3:
@@ -826,14 +865,10 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
         mark = len(events)
         _dealt, share = hit("Автоатака", raw, moment, attack=1.0, potency_scale=stats["attack_potency"])
         if stats["auto_pct"] != 1.0:
-
             for i in range(mark, len(events)):
-
-                n, a = events[i]
-
+                when, n, w, k = events[i]
                 if n == "Автоатака":
-
-                    events[i] = (n, a * stats["auto_pct"])
+                    events[i] = (when, n, w * stats["auto_pct"], k)
         # OnDamage_Heroes, real hunter attacks.
         if spec == "marksmanship":
             hit("Marksmanship", 40.0 + 3.0 * mastery, moment, typed=False, potency_scale=0.0, count=share)
@@ -848,18 +883,17 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
             split_flag = True
         gain_mana(attack_mana_gain(stats))
         if stats["fire_orb"]:
-            splash = (20.0 + 0.35 * agi) * targets * taken_for(min(1, targets - 1), moment) * _execute_factor(stats, moment)
-            add_damage("Всплеск огня", splash)
+            splash_w = (20.0 + 0.35 * agi) * targets * taken_for(min(1, targets - 1), moment)
+            add_event(moment, "Всплеск огня", splash_w, KIND_EXEC)
             note_damage_mana(targets)
         if sulfuras is not None:
-            execute = _execute_factor(stats, moment)
             taken = taken_for(0, moment)
             if sulfuras.attack():
-                splash = agi * (1.0 + stats["magic_add"]) * (1.15 if stats["glass"] else 1.0) * taken * execute * targets
-                add_damage("Sulfuras", splash)
+                splash_w = agi * taken * targets
+                add_event(moment, "Sulfuras", splash_w, KIND_MAG)
                 note_damage_mana(targets)
-            echo = power * taken * execute * sulfuras_echo_chance(stats["luck"])
-            add_damage("Sulfuras (удар)", echo)
+            echo_w = power * taken * sulfuras_echo_chance(stats["luck"])
+            add_event(moment, "Sulfuras (удар)", echo_w, KIND_EXEC)
         next_attack = moment + hunter_interval(moment)
 
     recover(FIGHT)
@@ -867,7 +901,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
     while len(_TIMELINE) >= 8000:
         _TIMELINE.pop(next(iter(_TIMELINE)))
     _TIMELINE[cache_key] = (list(events), actions, mana_left)
-    sources = score_events(events)
+    sources = score_events(events, stats)
     total = sum(sources.values())
     return Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
 

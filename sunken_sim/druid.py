@@ -261,22 +261,55 @@ def _timeline_key(build: Build, stats: dict, spec: str, targets: int, bound_key:
 _TIMELINE: dict[tuple, tuple] = {}
 
 
-def score_events(events: list[tuple[str, float]]) -> dict[str, float]:
+def score_events(
+    events: list,
+    stats: dict,
+    codes: frozenset,
+    taken_plain: float,
+    taken_wisp: float,
+) -> dict[str, float]:
+    """Score typed timeline events into named sources.
+
+    Event: (when, name, raw, count, mastery_scale, attack, has_wisp, extra, special)
+    special: None | "splash" | "echo" | "treant" | "sulfuras"
+    """
     sources: dict[str, float] = {}
-    for name, amount in events:
-        sources[name] = sources.get(name, 0.0) + amount
+    for ev in events:
+        when, name, raw, count, mastery_scale, attack, has_wisp, extra, special = ev
+        if special in ("splash", "echo", "treant"):
+            amount = raw * count * taken_plain * _execute_factor(stats, when)
+        elif special == "sulfuras":
+            amount = raw * count * _magical_multiplier(codes, when, stats["mastery"], 0.0)
+            if stats["spell_crit"]:
+                amount *= _crit_factor(stats["crit"], stats["spell_mult"] + stats["rating"])
+            amount *= taken_plain * _execute_factor(stats, when)
+        else:
+            amount = (raw * mastery_scale + stats["potency"]) * _magical_multiplier(
+                codes, when, stats["mastery"], extra
+            )
+            amount *= taken_wisp if has_wisp else taken_plain
+            if attack:
+                amount *= _crit_factor(stats["crit"], 2.0 + stats["rating"])
+            elif stats["spell_crit"]:
+                amount *= _crit_factor(stats["crit"], stats["spell_mult"] + stats["rating"])
+            amount *= _execute_factor(stats, when) * count
+        if amount:
+            sources[name] = sources.get(name, 0.0) + amount
     return sources
 
 
 def _simulate_druid(build: Build, targets: int, spec: str, bound_key: str | None) -> Report:
     stats = sheet(build, spec)
+    codes = frozenset(item.rawcode for item in build.items) | build.talents | build.glyphs
+    pen = stats["armor_pen"]
+    taken_plain = armor_taken(DUMMY_ARMOR - pen)
+    taken_wisp = armor_taken(DUMMY_ARMOR - pen - WISP_ARMOR)
     cache_key = _timeline_key(build, stats, spec, targets, bound_key)
     cached = _TIMELINE.get(cache_key)
     if cached is not None:
         events, actions, mana_left_val = cached
-        sources = score_events(events)
+        sources = score_events(events, stats, codes, taken_plain, taken_wisp)
         return _report(build, sources, actions, stats, targets, bound_key, mana_left_val)
-    codes = frozenset(item.rawcode for item in build.items) | build.talents | build.glyphs
     cooldown = _common(build, stats, bound_key)
     balance = spec == "balance"
     surge = 1.5 if _has(build, TALENT_STARSURGE) else 1.0
@@ -288,9 +321,6 @@ def _simulate_druid(build: Build, targets: int, spec: str, bound_key: str | None
     spread = _has(build, TALENT_WISP_SPREAD)
     echo_talent = _has(build, TALENT_STELLAR_ECHO)
     missile = _has(build, TALENT_STARFALL_MISSILE)
-    pen = stats["armor_pen"]
-    taken_plain = armor_taken(DUMMY_ARMOR - pen)
-    taken_wisp = armor_taken(DUMMY_ARMOR - pen - WISP_ARMOR)
     wisp_life = WISP_LIFE + (4.0 if wisp_talent else 0.0)
 
     sources: dict[str, float] = {
@@ -304,11 +334,12 @@ def _simulate_druid(build: Build, targets: int, spec: str, bound_key: str | None
         "Всплеск огня": 0.0,
     }
     actions: list[tuple[float, str]] = []
-    events: list[tuple[str, float]] = []
+    # Typed: (when, name, raw, count, mastery_scale, attack, has_wisp, extra, special)
+    events: list[tuple] = []
 
-    def add_damage(name: str, amount: float) -> None:
-        if amount:
-            events.append((name, amount))
+    def add_special(when: float, name: str, raw: float, count: float, special: str) -> None:
+        if raw and count:
+            events.append((when, name, raw, count, 1.0, False, False, 0.0, special))
 
     clock = _Clock()
     state = {"mana": stats["mana_max"], "mana_time": 0.0}
@@ -350,12 +381,10 @@ def _simulate_druid(build: Build, targets: int, spec: str, bound_key: str | None
         return now < root_until
 
     def deal(name: str, raw: float, now: float, count: float, attack: bool, wisp_share: float, mastery_scale: float = 1.0) -> None:
-        """Magical damage from the Druid. wisp_share is the part of hits on Wisp targets."""
+        """Emit typed magical hits; score_events / GPU apply typed/taken/crit/execute."""
         if count <= 0 or now >= FIGHT:
             return
-        mastery = stats["mastery"]
         wisp_share = max(0.0, min(1.0, wisp_share))
-        amount = 0.0
         for share, has_wisp in ((wisp_share, True), (1.0 - wisp_share, False)):
             if share <= 0:
                 continue
@@ -363,15 +392,7 @@ def _simulate_druid(build: Build, targets: int, spec: str, bound_key: str | None
             if wrath:
                 extra += 0.15 if has_wisp else 0.0
                 extra += 0.10 if rooted(now) else 0.0
-            part = (raw * mastery_scale + stats["potency"]) * _magical_multiplier(codes, now, mastery, extra)
-            part *= taken_wisp if has_wisp else taken_plain
-            amount += share * part
-        if attack:
-            amount *= _crit_factor(stats["crit"], 2.0 + stats["rating"])
-        elif stats["spell_crit"]:
-            amount *= _crit_factor(stats["crit"], stats["spell_mult"] + stats["rating"])
-        amount *= _execute_factor(stats, now)
-        add_damage(name, amount * count)
+            events.append((now, name, raw, count * share, mastery_scale, attack, has_wisp, extra, None))
         if stats.get("damage_mana_pct"):
             state["mana"] = min(stats["mana_max"], state["mana"] + stats["damage_mana_pct"] * stats["mana_max"] * count)
 
@@ -474,34 +495,15 @@ def _simulate_druid(build: Build, targets: int, spec: str, bound_key: str | None
 
     def on_attack(now: float) -> None:
         recover(now)
-        mark = len(events)
-        deal("Автоатака", stats["ad"], now, 1.0, True, main_wisp(now))
-        if stats["auto_pct"] != 1.0:
-
-            for i in range(mark, len(events)):
-
-                n, a = events[i]
-
-                if n == "Автоатака":
-
-                    events[i] = (n, a * stats["auto_pct"])
+        auto_count = stats["auto_pct"] if stats["auto_pct"] != 1.0 else 1.0
+        deal("Автоатака", stats["ad"], now, auto_count, True, main_wisp(now))
         state["mana"] = min(stats["mana_max"], state["mana"] + attack_mana_gain(stats))
-        execute = _execute_factor(stats, now)
         if fire_orb:
-            add_damage("Всплеск огня", (20.0 + 0.35 * stats["int"]) * targets * taken_plain * execute)
+            add_special(now, "Всплеск огня", (20.0 + 0.35 * stats["int"]) * targets, 1.0, "splash")
         if sulfuras is not None:
             if sulfuras.attack():
-                splash = (
-                    stats["int"]
-                    * _magical_multiplier(codes, now, stats["mastery"])
-                    * (_crit_factor(stats["crit"], stats["spell_mult"] + stats["rating"]) if stats["spell_crit"] else 1.0)
-                    * taken_plain
-                    * execute
-                    * targets
-                )
-                add_damage("Sulfuras", splash)
-            echo = stats["ad"] * taken_plain * execute * sulfuras_echo_chance(stats["luck"])
-            add_damage("Sulfuras (удар)", echo)
+                add_special(now, "Sulfuras", stats["int"], float(targets), "sulfuras")
+            add_special(now, "Sulfuras (удар)", stats["ad"] * sulfuras_echo_chance(stats["luck"]), 1.0, "echo")
 
     guard = 0
     while guard < 200000:
@@ -552,8 +554,7 @@ def _simulate_druid(build: Build, targets: int, spec: str, bound_key: str | None
         elif kind == "treant":
             expire = payload
             if now <= expire + 1e-9:
-                hit = TREANT_HIT * taken_plain * _execute_factor(stats, now)
-                add_damage("Treants", hit)
+                add_special(now, "Treants", TREANT_HIT, 1.0, "treant")
                 if rooted(now):
                     root_tick(now, 1.0, main_wisp(now))
                 if now + TREANT_SWING <= expire + 1e-9:
@@ -563,7 +564,7 @@ def _simulate_druid(build: Build, targets: int, spec: str, bound_key: str | None
     while len(_TIMELINE) >= 8000:
         _TIMELINE.pop(next(iter(_TIMELINE)))
     _TIMELINE[cache_key] = (list(events), actions, state["mana"])
-    sources = score_events(events)
+    sources = score_events(events, stats, codes, taken_plain, taken_wisp)
     return _report(build, sources, actions, stats, targets, bound_key, state["mana"])
 
 

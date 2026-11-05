@@ -1,8 +1,14 @@
 # -*- coding: utf-8 -*-
-"""GPU compile stage for Warlock (demonology / destruction / affliction). DirectML.
+"""GPU kind/weight compile for Warlock (demonology / destruction / affliction). DirectML.
 
-Warlock timelines are flat pre-scored (name, amount) events from sunken_sim.warlock.
-GPU path batches sum(amount)/FIGHT; CPU still builds the policy timelines.
+Event shape from sunken_sim.warlock.score_events:
+  (when, name, weight, kind)
+    KIND_HERO_MAG / KIND_HERO_PHYS: weight * typed(thp, mastery) * execute
+    KIND_EXEC: weight * execute
+    KIND_FLAT: weight as-is
+
+Execute is baked into weight at pack time; GPU reduces kind moments
+sum(w), sum(w*thp), sum(w*M) then score_row applies typed coeffs.
 """
 
 from __future__ import annotations
@@ -15,7 +21,25 @@ from farm.hybrid.engine import BatchFights
 from farm.hybrid.lock import assert_gpu_allowed
 
 MAX_BATCH = 512
+
+KIND_HERO_MAG = 0.0
+KIND_HERO_PHYS = 1.0
+KIND_EXEC = 2.0
+KIND_FLAT = 3.0
 _PAD = -1.0
+
+_KIND_IDS = (KIND_HERO_MAG, KIND_HERO_PHYS, KIND_EXEC, KIND_FLAT)
+
+COLUMNS = (
+    ("mag_w",),
+    ("mag_wt",),
+    ("mag_wm",),
+    ("phys_w",),
+    ("phys_wt",),
+    ("phys_wm",),
+    ("exec_w",),
+    ("flat_w",),
+)
 
 
 @dataclass
@@ -23,7 +47,7 @@ class Timeline:
     build: object
     stats: dict
     spec: str
-    events: list[tuple[str, float]]
+    events: list
 
 
 def _policies_for(spec: str, targets: int):
@@ -50,7 +74,8 @@ def timelines(build, targets: int, spec: str) -> list[Timeline]:
             warlock._simulate(build, targets, spec, policy)
             cached = warlock._TIMELINE[key]
         events, _actions, _mana = cached
-        total = sum(amount for _n, amount in events)
+        sources = warlock.score_events(events, stats)
+        total = sum(sources.values())
         if total > best_total:
             best_total = total
             best_events = events
@@ -59,27 +84,117 @@ def timelines(build, targets: int, spec: str) -> list[Timeline]:
     return [Timeline(build, stats, spec, best_events)]
 
 
+_EVENT_CACHE: dict[int, tuple] = {}
+
+
+def _event_arrays(events: list, stats: dict) -> tuple:
+    from sunken_sim.shadow import _execute_factor
+    from sunken_sim import warlock
+
+    key = id(events)
+    found = _EVENT_CACHE.get(key)
+    if found is not None and found[0] is events:
+        return found[1]
+
+    n = len(events)
+    kind = np.empty(n, dtype=np.float64)
+    weight = np.empty(n, dtype=np.float64)
+    mastery = np.empty(n, dtype=np.float64)
+    when = np.empty(n, dtype=np.float64)
+    mstat = float(stats["mastery"])
+
+    for i, ev in enumerate(events):
+        t, _name, w, k = ev
+        when[i] = t
+        mastery[i] = mstat
+        ex = _execute_factor(stats, t)
+        if k == warlock.KIND_FLAT or k == KIND_FLAT:
+            kind[i] = KIND_FLAT
+            weight[i] = w
+        elif k == warlock.KIND_EXEC or k == KIND_EXEC:
+            kind[i] = KIND_EXEC
+            weight[i] = w * ex
+        elif k == warlock.KIND_HERO_MAG or k == KIND_HERO_MAG:
+            kind[i] = KIND_HERO_MAG
+            weight[i] = w * ex
+        elif k == warlock.KIND_HERO_PHYS or k == KIND_HERO_PHYS:
+            kind[i] = KIND_HERO_PHYS
+            weight[i] = w * ex
+        else:
+            raise ValueError(f"unknown warlock kind {k}")
+    arrays = (kind, weight, mastery, when)
+    _EVENT_CACHE[key] = (events, arrays)
+    if len(_EVENT_CACHE) > 4000:
+        _EVENT_CACHE.clear()
+    return arrays
+
+
 def pack(tls: list[Timeline]) -> dict:
+    from sunken_sim.shadow import target_hp
+
     count = len(tls)
-    width = max(1, max(len(tl.events) for tl in tls))
-    weight = np.zeros((count, width), dtype=np.float64)
-    mask = np.zeros((count, width), dtype=np.float64)
+    width = max(1, max((len(tl.events) for tl in tls), default=1))
+    kind = np.full((count, width), _PAD)
+    weight = np.zeros((count, width))
+    mastery = np.zeros((count, width))
+    thp = np.zeros((count, width))
     for row, tl in enumerate(tls):
-        for i, (_name, amount) in enumerate(tl.events):
-            weight[row, i] = amount
-            mask[row, i] = 1.0
-    return {"weight": weight, "mask": mask}
+        k, w, m, when = _event_arrays(tl.events, tl.stats)
+        n = len(tl.events)
+        kind[row, :n] = k
+        weight[row, :n] = w
+        mastery[row, :n] = m
+        thp[row, :n] = np.array([target_hp(t) for t in when], dtype=np.float64)
+    return {"kind": kind, "weight": weight, "mastery": mastery, "thp": thp}
 
 
 def compile_sums(torch, target, packed: dict) -> np.ndarray:
-    weight = torch.from_numpy(np.ascontiguousarray(packed["weight"], dtype=np.float32)).to(target)
-    mask = torch.from_numpy(np.ascontiguousarray(packed["mask"], dtype=np.float32)).to(target)
-    totals = (weight * mask).sum(dim=1)
-    return totals.detach().cpu().numpy().astype(np.float64).reshape(-1, 1)
+    def up(name: str):
+        return torch.from_numpy(np.ascontiguousarray(packed[name], dtype=np.float32)).to(target)
+
+    kind, weight, mastery, thp = up("kind"), up("weight"), up("mastery"), up("thp")
+    feats = torch.stack([weight, weight * thp, weight * mastery], dim=2)
+    ids = torch.tensor(_KIND_IDS, dtype=torch.float32, device=target)
+    onehot = (kind.unsqueeze(-1) == ids).to(feats.dtype)
+    moments = torch.bmm(onehot.transpose(1, 2), feats).cpu().numpy().astype(np.float64)
+    out = np.zeros((moments.shape[0], len(COLUMNS)))
+    # mag: kinds[0] -> w,wt,wm
+    out[:, 0:3] = moments[:, 0, :]
+    # phys: kinds[1]
+    out[:, 3:6] = moments[:, 1, :]
+    # exec: kinds[2] only w
+    out[:, 6] = moments[:, 2, 0]
+    # flat: kinds[3] only w
+    out[:, 7] = moments[:, 3, 0]
+    return out
+
+
+def _typed_coeffs(stats: dict, magical: bool) -> tuple[float, float, float, float]:
+    """Return (a0, a1, slope, glass) for typed = glass * (a0 + a1*thp + slope*M)."""
+    a0 = 1.0 + (stats["magic_add"] if magical else stats["phys_add"])
+    a1 = 0.0
+    slope = 0.0
+    if stats["sulfuron"]:
+        a0 += 0.13
+        a1 += 0.25
+    if magical and stats["spellbinder"]:
+        a0 += 0.05
+        slope += 0.005
+    glass = 1.15 if stats["glass"] else 1.0
+    return a0, a1, slope, glass
 
 
 def score_row(tl: Timeline, row: np.ndarray) -> float:
-    return float(row[0])
+    a0m, a1m, sm, gm = _typed_coeffs(tl.stats, True)
+    a0p, a1p, sp, gp = _typed_coeffs(tl.stats, False)
+    total = 0.0
+    # mag
+    total += gm * (a0m * row[0] + a1m * row[1] + sm * row[2])
+    # phys
+    total += gp * (a0p * row[3] + a1p * row[4] + sp * row[5])
+    # exec + flat
+    total += row[6] + row[7]
+    return float(total)
 
 
 class WarlockFights(BatchFights):

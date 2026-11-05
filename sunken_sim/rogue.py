@@ -332,10 +332,46 @@ def _timeline_key(build: Build, stats: dict, spec: str, targets: int) -> tuple:
 _TIMELINE: dict[tuple, tuple] = {}
 
 
-def score_events(events: list[tuple[str, float]]) -> dict[str, float]:
+# Event kinds for GPU kind/weight compile (farm/hybrid/rogue.py).
+KIND_PHYS = 0.0  # weight * physical(thp) * execute
+KIND_EXEC = 1.0  # weight * execute
+KIND_MAG = 2.0  # weight * (1+magic_add)*glass * execute  (Sulfuras splash)
+KIND_FLAT = 3.0  # fully scored
+
+
+def _physical_bonus(stats: dict, now: float, spec: str) -> float:
+    strike_phys = 0.15 if spec == "subtlety" else 0.0
+    bonus = 1.0 + stats["phys_add"] + strike_phys
+    if stats["sulfuron"]:
+        bonus += 0.13 + 0.25 * target_hp(now)
+    if stats["glass"]:
+        bonus *= 1.15
+    return bonus
+
+
+def _mag_simple(stats: dict) -> float:
+    return (1.0 + stats["magic_add"]) * (1.15 if stats["glass"] else 1.0)
+
+
+def score_events(events: list, stats: dict, spec: str = "subtlety") -> dict[str, float]:
+    """Score typed timeline events into named sources.
+
+    Event: (when, name, weight, kind)
+    """
     sources: dict[str, float] = {}
-    for name, amount in events:
-        sources[name] = sources.get(name, 0.0) + amount
+    for when, name, weight, kind in events:
+        if kind == KIND_FLAT:
+            amount = weight
+        elif kind == KIND_EXEC:
+            amount = weight * _execute_factor(stats, when)
+        elif kind == KIND_PHYS:
+            amount = weight * _physical_bonus(stats, when, spec) * _execute_factor(stats, when)
+        elif kind == KIND_MAG:
+            amount = weight * _mag_simple(stats) * _execute_factor(stats, when)
+        else:
+            raise ValueError(f"unknown rogue event kind {kind}")
+        if amount:
+            sources[name] = sources.get(name, 0.0) + amount
     return sources
 
 
@@ -349,7 +385,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
     cached = _TIMELINE.get(cache_key)
     if cached is not None:
         events, actions, mana_left = cached
-        sources = score_events(events)
+        sources = score_events(events, stats, spec)
         total = sum(sources.values())
         return Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
     luck_mult = 1.0 + stats["luck"]
@@ -375,11 +411,15 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
         "Всплеск огня": 0.0,
     }
     actions: list[tuple[float, str]] = []
-    events: list[tuple[str, float]] = []
+    events: list = []
 
     def add_damage(name: str, amount: float) -> None:
         if amount:
-            events.append((name, amount))
+            events.append((0.0, name, amount, KIND_FLAT))
+
+    def add_event(when: float, name: str, weight: float, kind: float) -> None:
+        if weight:
+            events.append((when, name, weight, kind))
 
     mana = stats["mana_max"]
     mana_time = 0.0
@@ -489,12 +529,14 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
         sure_crit: bool = False,
     ) -> tuple[float, float]:
         """Physical hit through PreDamage_Increase. Returns (dealt, crit share)."""
-        amount = raw + stats["potency"] * potency_scale
-        amount *= increase(now) * physical(now)
+        base = (raw + stats["potency"] * potency_scale) * increase(now)
         share = 0.0
-        taken = taken_for(index, now) * _execute_factor(stats, now)
+        armor = taken_for(index, now)
+        execute = _execute_factor(stats, now)
+        phys = physical(now)
+        bounty_pre = 0.0
         if attack:
-            amount *= attack_inc
+            base *= attack_inc
             chance = 100.0 if sure_crit else stats["crit"] + crit_bonus
             if has(TALENT_FIND_WEAKNESS):
                 chance += 5.0
@@ -502,13 +544,16 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
                 chance += 15.0
             share = max(0.0, min(100.0, chance)) / 100.0
             mult = 2.0 + stats["rating"]
-            dealt = amount * taken * _crit_factor(chance, mult)
+            pre = base * armor * _crit_factor(chance, mult)
             if stats["bounty_blades"]:
                 flat = 40.0 if (index == 0 and vend_on(now)) else 15.0
-                dealt += share * flat * mult * _execute_factor(stats, now)
+                bounty_pre = share * flat * mult
         else:
-            dealt = amount * taken
-        add_damage(name, dealt * count)
+            pre = base * armor
+        add_event(now, name, pre * count, KIND_PHYS)
+        if bounty_pre:
+            add_event(now, name, bounty_pre * count, KIND_EXEC)
+        dealt = pre * phys * execute + bounty_pre * execute
         landed(dealt, index, now, attack, count)
         return dealt, share
 
@@ -726,14 +771,10 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
             sure_crit=dispatch,
         )
         if stats["auto_pct"] != 1.0:
-
             for i in range(mark, len(events)):
-
-                n, a = events[i]
-
+                when, n, w, k = events[i]
                 if n == auto_name:
-
-                    events[i] = (n, a * stats["auto_pct"])
+                    events[i] = (when, n, w * stats["auto_pct"], k)
         if dispatch:
             strike_until = -1.0
         if spec == "subtlety" and moment < strike_until:
@@ -751,18 +792,17 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
         gain_mana(attack_mana_gain(stats))
         note_damage_mana(1)
         if stats["fire_orb"]:
-            splash = (20.0 + 0.35 * agi) * targets * taken_for(1, moment) * _execute_factor(stats, moment)
-            add_damage("Всплеск огня", splash)
+            splash_w = (20.0 + 0.35 * agi) * targets * taken_for(1, moment)
+            add_event(moment, "Всплеск огня", splash_w, KIND_EXEC)
             note_damage_mana(targets)
         if sulfuras is not None:
-            execute = _execute_factor(stats, moment)
             taken = taken_for(0, moment)
             if sulfuras.attack():
-                splash = agi * (1.0 + stats["magic_add"]) * (1.15 if stats["glass"] else 1.0) * taken * execute * targets
-                add_damage("Sulfuras", splash)
+                splash_w = agi * taken * targets
+                add_event(moment, "Sulfuras", splash_w, KIND_MAG)
                 note_damage_mana(targets)
-            echo = power * taken * execute * sulfuras_echo_chance(stats["luck"])
-            add_damage("Sulfuras (удар)", echo)
+            echo_w = power * taken * sulfuras_echo_chance(stats["luck"])
+            add_event(moment, "Sulfuras (удар)", echo_w, KIND_EXEC)
         next_attack = moment + attack_interval(moment)
 
     recover(FIGHT)
@@ -770,7 +810,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
     while len(_TIMELINE) >= 8000:
         _TIMELINE.pop(next(iter(_TIMELINE)))
     _TIMELINE[cache_key] = (list(events), actions, mana_left)
-    sources = score_events(events)
+    sources = score_events(events, stats, spec)
     total = sum(sources.values())
     return Report(build, total / FIGHT, total, sources, actions, stats, targets, mana_left=mana_left)
 
