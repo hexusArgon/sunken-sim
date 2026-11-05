@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 """GPU kind/weight compile for Hunter. DirectML.
 
+Timeline: farm.hybrid.hunter_gpu_timeline (pending+choose, f64 CPU clocks).
+Set FARM_HYBRID_GPU_TIMELINE=0 to force CPU sunken_sim.hunter timelines.
+
 Event: (when, name, weight, kind)
   KIND_PHYS / KIND_EXEC / KIND_MAG / KIND_FLAT
 Execute baked at pack; GPU moments sum(w), sum(w*thp) for PHYS.
@@ -168,13 +171,31 @@ class HunterFights(BatchFights):
             out.extend(score_row(tl, row) / FIGHT for tl, row in zip(part, sums))
         return out
 
+    def _gpu_timelines(self, builds: list) -> list:
+        from farm.hybrid.hunter_gpu_timeline import generate_hunter_timelines
+
+        out = generate_hunter_timelines(self.torch, self.target, builds, self.spec, self.targets)
+        return [Timeline(build, stats, self.spec, events) for build, (events, stats) in zip(builds, out)]
+
     def dps_many(self, builds: list) -> list[float]:
+        import os
+
+        want = os.environ.get("FARM_HYBRID_GPU_TIMELINE", "auto").strip().lower()
+        use_gpu_tl = (
+            want not in ("0", "false", "off", "cpu")
+            and (want in ("1", "true", "force") or bool(getattr(self.device, "gpu", False)))
+        )
         tls: list[Timeline] = []
         owner: list[int] = []
-        for index, build in enumerate(builds):
-            for tl in timelines(build, self.targets, self.spec):
+        if use_gpu_tl and builds:
+            for index, tl in enumerate(self._gpu_timelines(builds)):
                 tls.append(tl)
                 owner.append(index)
+        else:
+            for index, build in enumerate(builds):
+                for tl in timelines(build, self.targets, self.spec):
+                    tls.append(tl)
+                    owner.append(index)
         scores = self._scores(tls) if tls else []
         self.fights += len(builds)
         best: list[float | None] = [None] * len(builds)

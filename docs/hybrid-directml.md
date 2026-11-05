@@ -95,6 +95,7 @@ Parity 2026-11-05: 16 builds × 2 specs = 32/32 GPU timeline+kind vs CPU simulat
 
 
 ## Hunter Marksmanship / Beast Mastery / Survival
+GPU timeline: `farm/hybrid/hunter_gpu_timeline.py` (pending+choose, pets, dither). Parity `tools/_parity_hunter_gpu_tl.py` 16×3 ≤1e-4.
 Код: `farm/hybrid/hunter.py` + `sunken_sim/hunter.py` kind-score timeline.
 Events: (when, name, weight, kind); kinds PHYS / EXEC / MAG / FLAT.
 Execute baked at pack; GPU kind-weight moments. CPU score_events = reference.

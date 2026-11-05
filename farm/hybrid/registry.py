@@ -68,6 +68,7 @@ GPU_TIMELINE_SPECS = frozenset(
     | {("priest", spec) for spec in PRIEST_SPECS}
     | {("rogue", spec) for spec in ROGUE_SPECS}
     | {("druid", "restoration"), ("druid", "balance")}
+    | {("hunter", "marksmanship"), ("hunter", "beast_mastery"), ("hunter", "survival")}
 )
 WARLOCK_SPECS = ("demonology", "destruction", "affliction")
 HUNTER_SPECS = ("marksmanship", "beast_mastery", "survival")
@@ -76,7 +77,6 @@ FERAL_DRUID_SPECS = ("primal", "guardian", "savage")
 COMPILE_SPECS = frozenset(
     # priest/paladin/shaman/warrior/mage/rogue/druid moved to GPU_TIMELINE_SPECS
     {("warlock", spec) for spec in WARLOCK_SPECS}
-    | {("hunter", spec) for spec in HUNTER_SPECS}
     | {("feral_druid", spec) for spec in FERAL_DRUID_SPECS}
 )
 
@@ -207,8 +207,8 @@ def specs_of(hero: str) -> tuple[str, ...]:
 _NOTES = {
     LOCKED: "CPU sim, GpuLocked, torch never imported",
     TIMELINE: "CPU timeline + exact timeline cache, GPU compile sums, CPU score",
-    GPU_TIMELINE: "batched next-event timeline (f64 clocks; DirectML kind-score); Warrior/Paladin/Shaman/Priest x3, Mage fire/frost, Rogue x2, Druid x2",
-    COMPILE: "CPU timeline (module _TIMELINE), GPU compile sums, CPU score (warlock/hunter/feral_druid/berserker/death_knight/demon_hunter/dragon_sentinel/monk/necromancer/siren/tidewarrior/tinker/windmaster/witch_doctor)",
+    GPU_TIMELINE: "batched next-event timeline (f64 clocks; DirectML kind-score); Warrior/Paladin/Shaman/Priest x3, Mage fire/frost, Rogue x2, Druid x2, Hunter x3",
+    COMPILE: "CPU timeline (module _TIMELINE), GPU compile sums, CPU score (warlock/feral_druid/berserker/death_knight/demon_hunter/dragon_sentinel/monk/necromancer/siren/tidewarrior/tinker/windmaster/witch_doctor)",
     CPU: "local-hybrid runner + v1 stat parity; fights = module simulate (no compile split yet)",
 }
 
