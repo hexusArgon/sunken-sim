@@ -1,9 +1,12 @@
 ﻿# -*- coding: utf-8 -*-
-"""GPU compile stage for Paladin (retribution / protection / holy). DirectML.
+"""GPU timeline + kind-score compile for Paladin (retribution / protection / holy). DirectML.
+
+Timeline generation: farm.hybrid.paladin_gpu_timeline (batched next-event).
+Set FARM_HYBRID_GPU_TIMELINE=0 to force the CPU paladin._fight_events timeline.
 
 Split (same rules as sunken_sim.paladin.simulate):
 
-  1. CPU timeline: paladin._fight_events behind paladin._TIMELINE.
+  1. Timeline: GPU batched next-event (default) or CPU _fight_events + _TIMELINE.
   2. CPU float64: per-event execute factor (discrete HP steps).
   3. GPU: moments sum(w), sum(w*t), sum(w*M) for magic / phys, plus splash/echo.
   4. CPU closed-form score from moments.
@@ -52,8 +55,17 @@ class Timeline:
     knowledge: float
 
 
-def timelines(build, targets: int, spec: str) -> list[Timeline]:
+def timelines(build, targets: int, spec: str, *, gpu_bundle=None) -> list[Timeline]:
+    """CPU timeline (module cache), or events from a GPU timeline batch bundle.
+
+    gpu_bundle: optional dict id(build) -> (events, stats, knowledge)
+    produced by farm.hybrid.paladin_gpu_timeline.generate_paladin_timelines.
+    """
     from sunken_sim import paladin
+
+    if gpu_bundle is not None and id(build) in gpu_bundle:
+        events, stats, knowledge = gpu_bundle[id(build)]
+        return [Timeline(build, stats, spec, events, knowledge)]
 
     stats = paladin.stats_of(build)
     knowledge = (
@@ -215,10 +227,27 @@ class PaladinFights(BatchFights):
         return out
 
     def dps_many(self, builds: list) -> list[float]:
+        import os
+
+        gpu_bundle = None
+        want = os.environ.get("FARM_HYBRID_GPU_TIMELINE", "auto").strip().lower()
+        use_gpu_tl = want not in ("0", "false", "cpu") and (
+            want in ("1", "true", "force") or bool(getattr(self.device, "gpu", False))
+        )
+        if use_gpu_tl and builds:
+            from farm.hybrid.paladin_gpu_timeline import generate_paladin_timelines
+
+            rows = generate_paladin_timelines(
+                self.torch, self.target, builds, self.spec, self.targets
+            )
+            gpu_bundle = {
+                id(build): (events, stats, knowledge)
+                for build, (events, stats, knowledge) in zip(builds, rows)
+            }
         tls: list[Timeline] = []
         owner: list[int] = []
         for index, build in enumerate(builds):
-            for tl in timelines(build, self.targets, self.spec):
+            for tl in timelines(build, self.targets, self.spec, gpu_bundle=gpu_bundle):
                 tls.append(tl)
                 owner.append(index)
         scores = self._scores(tls) if tls else []
