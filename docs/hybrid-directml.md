@@ -31,7 +31,7 @@
 
 ### Pending (next tasks)
 1. **Timeline on GPU** — warrior×3 + paladin×3 done (parity green). Remaining CPU timeline:
-   mage fire/frost done; remaining:
+   mage fire/frost + priest x3 done; remaining:
    priest/shadow×3, warlock×3, rogue×2, hunter×3, druid×2, feral_druid×3,
    kind-heroes (berserker/DK/DH/dragon_sentinel/monk/necromancer/siren/tidewarrior/
    tinker/windmaster/witch_doctor). Branchy classes stay CPU timeline + GPU kind-score
@@ -136,3 +136,10 @@ FARM_HYBRID_DEVICE: auto / cpu / dml.
 python -m unittest farm.test_hybrid
 .venv-dml\Scripts\python.exe -m unittest farm.test_hybrid
 ```
+
+## Priest GPU timeline (shadow / discipline / holy)
+
+arm/hybrid/priest_gpu_timeline.py — batched f64 clocks on CPU, kind-score on DirectML.
+Mirrors sunken_sim.shadow._fight_events (CAST_POINT finish queue, SWP Cosmic EV, Radiance/Renew/Image).
+Gate: FARM_HYBRID_GPU_TIMELINE. Parity: 	ools/_parity_priest_gpu_tl.py (16 builds × 3 specs, ≤1e-4).
+Batch fix: on_swp expiry zeroing must be masked to rows whose tick fires (otherwise sibling rows clear EV weights early).

@@ -296,12 +296,43 @@ class PriestFights(BatchFights):
         return out
 
     def dps_many(self, builds: list) -> list[float]:
+        import os
+        from sunken_sim import shadow as mod
+
+        want = os.environ.get("FARM_HYBRID_GPU_TIMELINE", "auto").strip().lower()
+        use_gpu_tl = (
+            want not in ("0", "false", "off", "cpu")
+            and (want in ("1", "true", "force") or bool(getattr(self.device, "gpu", False)))
+        )
         tls: list[Timeline] = []
         owner: list[int] = []
-        for index, build in enumerate(builds):
-            for tl in timelines(build, self.targets, self.spec):
-                tls.append(tl)
+        if use_gpu_tl and builds:
+            from farm.hybrid.priest_gpu_timeline import generate_priest_timelines
+
+            flat_builds = []
+            flat_keys = []
+            owners_flat = []
+            for index, build in enumerate(builds):
+                if mod._wears(build, "I00D"):
+                    keys = list(mod._cast_spells(build, self.spec))
+                else:
+                    keys = [None]
+                for key in keys:
+                    flat_builds.append(build)
+                    flat_keys.append(key)
+                    owners_flat.append(index)
+            rows = generate_priest_timelines(
+                self.torch, self.target, flat_builds, self.spec, self.targets, flat_keys
+            )
+            for build, key, row, index in zip(flat_builds, flat_keys, rows, owners_flat):
+                events, stats, windows, _bk = row
+                tls.append(Timeline(build, stats, self.spec, events, windows, key))
                 owner.append(index)
+        else:
+            for index, build in enumerate(builds):
+                for tl in timelines(build, self.targets, self.spec):
+                    tls.append(tl)
+                    owner.append(index)
         scores = self._scores(tls) if tls else []
         self.fights += len(builds)
         best: list[float | None] = [None] * len(builds)
