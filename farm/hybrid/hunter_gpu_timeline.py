@@ -475,7 +475,8 @@ def _hunter_batch(torch, device, dtype, builds, spec, T):
     def cut_cds(mask, now, fraction=0.0, seconds=0.0):
         nonlocal ready
         now, fraction, seconds = full(now), full(fraction), full(seconds)
-        for k in range(5):
+        # CPU cut_cooldowns skips Call Pet; only wrath/sting/multi/trap.
+        for k in range(1, 5):
             left = ready[:, k] - now
             pos = mask & (left > 0)
             ready[:, k] = torch.where(pos, now + torch.clamp(left * (1.0 - fraction) - seconds, min=0.0), ready[:, k])

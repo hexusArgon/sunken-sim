@@ -165,6 +165,7 @@ GPU timeline: `farm/hybrid/hunter_gpu_timeline.py` (pending+choose, pets, dither
 Events: (when, name, weight, kind); kinds PHYS / EXEC / MAG / FLAT.
 Execute baked at pack; GPU kind-weight moments. CPU score_events = reference.
 Parity smoke 2026-11-05: GPU vs CPU abs/rel ≤ 1e-4.
+2026-11-06: cut_cds no longer shortens Call Pet (CPU cut_cooldowns skips it). That extra CDR made Survival ESC mastery vs pet_damage shift Multi-Shot and sting ticks; GPU then preferred mastery=1/pet_damage=9 (743.608) over CPU's damage=20/pet_damage=10 (745.756). After the fix both maps match CPU exactly. Regression: arm/hybrid/test_hunter_gpu_timeline.py.
 
 ## Druid Restoration / Balance
 Код: `farm/hybrid/druid.py` + `druid_gpu_timeline.py` + `sunken_sim/druid.py`.
@@ -294,5 +295,5 @@ DirectML для самой алгебры по-прежнему `FARM_HYBRID_ESC
 
 Замер _bench_esc_device.py --heroes warrior,hunter,shaman --n 1 --repeat 2 (2026-11-06): сумма wall ref 67.07 с, cpu-алгебра 46.48 с (1.44×), gpu-алгебра 55.54 с (1.21×), auto 47.30 с (1.42×) и осталась на cpu. DirectML-проба (_probe_esc_device_dml.py) без fallback. GPU-маршрут алгебры не включаем по умолчанию.
 
-mage и priest входят в плоскую алгебру (модуль priest — shadow, farm-id priest). Их simulate при трассировке и в тестах вызывается с use_history=False: кэш истории на каталожных билдах расходится со свежим прогоном (crit/potency против damage/mana). Пересчёт дополнительно сверяется с dps_many; атрибут, который не совпал (у hunter/survival так ведёт себя pet_damage на GPU-таймлайне), дальше идёт обычным боем.
+mage и priest входят в плоскую алгебру (модуль priest — shadow, farm-id priest). Их simulate при трассировке и в тестах вызывается с use_history=False: кэш истории на каталожных билдах расходится со свежим прогоном (crit/potency против damage/mana). Пересчёт дополнительно сверяется с dps_many; атрибут, который не совпал, дальше идёт обычным боем. Расхождение hunter/survival pet_damage на GPU-таймлайне было из-за лишней резки Call Pet и исправлено 2026-11-06.
 
