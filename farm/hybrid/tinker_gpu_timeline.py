@@ -51,9 +51,16 @@ class _Overflow(Exception):
     pass
 
 
-def generate_tinker_timelines(torch, device, builds, spec: str, targets: int):
-    if spec not in ('engineering', 'demolitions', 'nanotech'):
+MAX_STEPS = 400000
+
+
+def generate_tinker_timelines(torch, device, builds, spec: str, targets: int, policies=None):
+    """Best-policy rows by default, or one explicit fixed policy per input row."""
+    if spec not in mod.SPECS:
         raise ValueError(f"tinker GPU timeline unexpected spec {spec}")
+    if policies is not None:
+        if len(policies) != len(builds) or any(p not in mod.policies_for(spec) for p in policies):
+            raise ValueError("one valid Tinker policy is required per build")
     if not builds:
         return []
     _ = (torch, device)
@@ -61,20 +68,23 @@ def generate_tinker_timelines(torch, device, builds, spec: str, targets: int):
         for b in builds:
             if _wears(b, "I0BR"):
                 raise _Overflow("sulfuras")
-        return [_best_fight(b, int(targets), spec) for b in builds]
+        if policies is None:
+            return [_best_fight(b, int(targets), spec) for b in builds]
+        return [_fight_one(b, int(targets), spec, p)[:2] for b, p in zip(builds, policies)]
     except _Overflow:
         out = []
-        for b in builds:
-            report = mod.simulate(b, int(targets), spec)
+        for i, b in enumerate(builds):
+            report = (mod.simulate(b, int(targets), spec) if policies is None else
+                      mod._simulate(b, int(targets), spec, policies[i]))
             out.append((list(report.events), report.stats))
         return out
 
 
 def _best_fight(build, targets, spec):
     best = None
-    for policy in POLICIES:
+    for policy in mod.policies_for(spec):
         events, stats, total = _fight_one(build, targets, spec, policy)
-        if best is None or total > best[0] + 1e-9:
+        if best is None or total / FIGHT > best[0] / FIGHT + 1e-9:
             best = (total, events, stats)
     return best[1], best[2]
 
@@ -193,19 +203,22 @@ def _fight_one(build: Build, targets: int, spec: str, policy: tuple[bool, bool])
                 spawn_goblin(now, ENGINEER_LIFE)
 
     def hero_hit(name: str, raw: float, now: float, tgts: list[int], *, kind: str | None, attack: bool,
-                 potency_scale: float = 1.0, mult: float = 1.0) -> float:
+                 potency_scale: float = 1.0, mult: float = 1.0, source_scale: float = 1.0) -> float:
         chance = stats["crit"]
         execute = _execute_factor(stats, now)
-        factor = typed(kind, now)
-        total = 0.0
+        factor = typed(kind, now) * mult
+        if attack:
+            factor *= _crit_factor(chance, 2.0 + stats["rating"])
+        elif stats["spell_crit"]:
+            factor *= _crit_factor(chance, stats["spell_mult"] + stats["rating"])
+        weight, coeff = 0.0, 0.0
         for _t in tgts:
-            amount = (raw + stats["potency"] * potency_scale) * factor * mult
-            if attack:
-                amount *= _crit_factor(chance, 2.0 + stats["rating"])
-            elif stats["spell_crit"]:
-                amount *= _crit_factor(chance, stats["spell_mult"] + stats["rating"])
-            total += amount * taken(True) * execute
-        sources.add_exec(name, total, now, execute)
+            weight += raw * factor * taken(True)
+            coeff += potency_scale * factor * taken(True)
+        total = (weight + stats["potency"] * coeff) * execute
+        sources.add_exec(name, total * source_scale, now, execute,
+                         raw_weight=weight * source_scale, pot_coeff=coeff * source_scale)
+        # Scaling displayed auto damage must not scale hit/proc/mana counts.
         note_damage_mana(len(tgts))
         engineer(len(tgts), now)
         return total
@@ -224,11 +237,14 @@ def _fight_one(build: Build, targets: int, spec: str, policy: tuple[bool, bool])
             increase += 0.10  # ASSUMPTION: dummy is not Heavy / Hero / Divine (else 0.50)
         if wears(ITEM_BELT) and ionized(now):
             increase += 0.30
-        amount = (raw + stats["potency"]) * (1.0 + pet_bonus(now)) * typed(kind, now) * mult * (1.0 + increase)
+        factor = (1.0 + pet_bonus(now)) * typed(kind, now) * mult * (1.0 + increase)
         if attack:
-            amount *= _crit_factor(stats["summon_crit"] + extra_crit, 2.0 + stats["summon_rating"])
-        dealt = amount * taken(False) * _execute_factor(stats, now) * count
-        sources.add_exec(name, dealt, now, _execute_factor(stats, now))
+            factor *= _crit_factor(stats["summon_crit"] + extra_crit, 2.0 + stats["summon_rating"])
+        factor *= taken(False) * count
+        weight, coeff = raw * factor, factor
+        execute = _execute_factor(stats, now)
+        dealt = (weight + stats["potency"] * coeff) * execute
+        sources.add_exec(name, dealt, now, execute, raw_weight=weight, pot_coeff=coeff)
         if procs:
             engineer(count, now)
         return dealt
@@ -356,8 +372,8 @@ def _fight_one(build: Build, targets: int, spec: str, policy: tuple[bool, bool])
     loops = 0
     while True:
         loops += 1
-        if loops > 400000:
-            break
+        if loops > MAX_STEPS:
+            raise _Overflow("steps")
         attack_at = max(next_attack, busy, clock)
         cast_at = FIGHT * 10
         choice = None
@@ -530,11 +546,8 @@ def _fight_one(build: Build, targets: int, spec: str, policy: tuple[bool, bool])
         moment = attack_at
         recover(moment)
         power = dcs()
-        before = sources["Автоатака"]
         hero_hit("Автоатака", power, moment, [0], kind="physical", attack=True,
-                 potency_scale=stats["attack_potency"])
-        if stats["auto_pct"] != 1.0:
-            sources["Автоатака"] = before + (sources["Автоатака"] - before) * stats["auto_pct"]
+                 potency_scale=stats["attack_potency"], source_scale=stats["auto_pct"])
         napalm("attack", 0, moment)
         overclock(None, moment, True)
         if has(TALENT_WRIST):

@@ -38,6 +38,13 @@ Metamorphosis potency bonuses stay in raw; auto_pct scales both channels.
 DemonHunterFights clusters only potency_points; crit/luck proc dithers, mastery
 extra hits and all timing/resource stats stay in the key. ESC algebra folds the
 coefficient with its symbolic potency leaf before building its device program.
+Tinker fixed-policy hero/summon hits now carry raw weight plus pot_coeff.
+TinkerFights clusters every eligible Reinforce/Exosuit policy, then reselects
+with CPU float64 scoring and the CPU DPS tie tolerance per original build.
+Only potency_points is omitted; never reuse the representative's winning policy.
+Dragon Sentinel remains unsafe under Gift of Life: potency changes Lifebinder
+cadence. Monk's capped Fists of Fury and Windmaster tornado duration also need
+more than blind affine tape reuse; Necromancer Call of the Grave changes cadence.
 Other
 heroes still bake some
 flat/cleave/splash raws at emit time; a closed-form kernel for them needs

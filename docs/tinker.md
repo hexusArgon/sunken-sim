@@ -44,3 +44,42 @@ Nano Deconstruction I0N6 (лечение союзника при смертел�
 - Шансы — детерминированный dither; урон крита — матожидание. Luck: множитель 1 + Luck (+ Master Gambler).
 - Overclocking действует и на призывов; наноботы его не получают (A0BZ).
 - Тип атаки siege: таблицы типов атаки/брони у пустышки нет (×1.0).
+
+
+## Hybrid potency tape reuse (2026-11-07)
+
+Fixed-policy hero and summon hits emit
+`(when, name, raw_weight, KIND_EXEC, pot_coeff)`. Damage scoring is
+`(raw_weight + potency * pot_coeff) * execute(when)`. This includes goblins,
+sentries, turret-owned missiles, Zap, Suicide Goblin, Napalm and Exosuit
+hits. Engineering's mana-based pet bonus stays in both channels, with the
+same recovery calls and proc counts. `auto_pct` scales both channels, not
+hit counts. Potency-independent Fire Orb/Sulfuras events remain four-tuples.
+
+`TinkerFights` generates each unique fixed-policy tape once per hybrid batch.
+The key includes Reinforce/Exosuit policy, spec, targets, ordered items,
+talents, glyphs, every ESC field except potency_points, and all non-potency
+sheet stats. Each original build rescores every eligible policy in CPU
+float64 before choosing its winner, preserving CPU policy order and the
+`1e-9` DPS tie tolerance. Sharing only a representative's winning policy
+would be unsafe. Non-Nanotech rows exclude Exosuit policies, as on CPU.
+`generate_tinker_timelines(..., policies=None)` retains the best-policy API;
+an explicit aligned policy list requests fixed-policy rows, including when
+Sulfuras or step overflow requires CPU fallback.
+
+Crit/luck, mastery, pet damage, timing and mana remain in the key. Potency is
+only an additive hit term for a fixed Tinker policy; proc counts, resource
+flows and scheduling do not read dealt damage. The generic Ledger scorer,
+kindscore packer and symbolic ESC/device path handle the coefficient. The
+ESC trace still guards policy selection; a guard failure must fight afresh.
+There is no CPU timeline cache. Scheduling remains on CPU Python floats;
+DirectML reduces kind scores. No speedup is claimed without a benchmark.
+
+Eligibility caveats for other Ledger heroes: Dragon Sentinel's Gift of Life
+changes Lifebinder tick cadence with potency; Windmaster tornado lifetime
+and Necromancer Call of the Grave also alter event cadence. Monk's Fists of
+Fury caps a damage-dependent accumulator. Death Knight's Virulent Plague
+makes Outbreak quadratic. These heroes are not blindly clustered here.
+
+Tests: `farm.hybrid.test_tinker_event_reuse` and
+`tools/_parity_tinker_gpu_tl.py` (all three specializations).

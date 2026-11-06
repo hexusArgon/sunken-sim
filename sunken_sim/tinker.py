@@ -382,12 +382,43 @@ class _Dither:
 POLICIES = tuple((reinforce, exo) for reinforce in (True, False) for exo in (False, True))
 
 
+def policies_for(spec: str) -> tuple:
+    """Keep CPU order and exclude Exosuit policies outside Nanotech."""
+    return tuple(p for p in POLICIES if not p[1] or spec == "nanotech")
+
+
+def _timeline_key(build: Build, stats: dict, spec: str, targets: int, policy: tuple) -> tuple:
+    """Safe GPU tape cluster key; only potency_points is unbaked.
+
+    This is a fixed-policy key, never a key for the representative's winner.
+    Crit/luck affect proc dithers; mastery, pets, timing and resources stay baked.
+    All policy tapes must be rescored before choosing a winner for each build.
+
+    Item order is retained (duplicate-item stacking can depend on it). Full
+    computed stats protect custom items sharing rawcodes. No CPU tape cache.
+    """
+    from dataclasses import fields
+
+    def freeze(value):
+        if isinstance(value, dict):
+            return tuple(sorted((k, freeze(v)) for k, v in value.items()))
+        if isinstance(value, (tuple, list)):
+            return tuple(freeze(v) for v in value)
+        if isinstance(value, (set, frozenset)):
+            return tuple(sorted(value))
+        return value
+
+    esc = tuple((f.name, getattr(build, f.name)) for f in fields(build)
+                if f.name.endswith("_points") and f.name != "potency_points")
+    return (tuple(item.rawcode for item in build.items), tuple(sorted(build.talents)),
+            tuple(sorted(build.glyphs)), esc, spec, targets, policy,
+            freeze({k: v for k, v in stats.items() if k != "potency"}))
+
+
 def simulate(build: Build, targets: int = 5, spec: str = "engineering") -> Report:
     """Best of the policies (Reinforce on / off; Nanotech: Exosuit on / off)."""
     best = None
-    for policy in POLICIES:
-        if policy[1] and spec != "nanotech":
-            continue
+    for policy in policies_for(spec):
         report = _simulate(build, targets, spec, policy)
         if best is None or report.dps > best.dps + 1e-9:
             best = report
@@ -508,19 +539,22 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
                 spawn_goblin(now, ENGINEER_LIFE)
 
     def hero_hit(name: str, raw: float, now: float, tgts: list[int], *, kind: str | None, attack: bool,
-                 potency_scale: float = 1.0, mult: float = 1.0) -> float:
+                 potency_scale: float = 1.0, mult: float = 1.0, source_scale: float = 1.0) -> float:
         chance = stats["crit"]
         execute = _execute_factor(stats, now)
-        factor = typed(kind, now)
-        total = 0.0
+        factor = typed(kind, now) * mult
+        if attack:
+            factor *= _crit_factor(chance, 2.0 + stats["rating"])
+        elif stats["spell_crit"]:
+            factor *= _crit_factor(chance, stats["spell_mult"] + stats["rating"])
+        weight, coeff = 0.0, 0.0
         for _t in tgts:
-            amount = (raw + stats["potency"] * potency_scale) * factor * mult
-            if attack:
-                amount *= _crit_factor(chance, 2.0 + stats["rating"])
-            elif stats["spell_crit"]:
-                amount *= _crit_factor(chance, stats["spell_mult"] + stats["rating"])
-            total += amount * taken(True) * execute
-        sources.add_exec(name, total, now, execute)
+            weight += raw * factor * taken(True)
+            coeff += potency_scale * factor * taken(True)
+        total = (weight + stats["potency"] * coeff) * execute
+        sources.add_exec(name, total * source_scale, now, execute,
+                         raw_weight=weight * source_scale, pot_coeff=coeff * source_scale)
+        # Scaling displayed auto damage must not scale hit/proc/mana counts.
         note_damage_mana(len(tgts))
         engineer(len(tgts), now)
         return total
@@ -539,11 +573,14 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
             increase += 0.10  # ASSUMPTION: dummy is not Heavy / Hero / Divine (else 0.50)
         if wears(ITEM_BELT) and ionized(now):
             increase += 0.30
-        amount = (raw + stats["potency"]) * (1.0 + pet_bonus(now)) * typed(kind, now) * mult * (1.0 + increase)
+        factor = (1.0 + pet_bonus(now)) * typed(kind, now) * mult * (1.0 + increase)
         if attack:
-            amount *= _crit_factor(stats["summon_crit"] + extra_crit, 2.0 + stats["summon_rating"])
-        dealt = amount * taken(False) * _execute_factor(stats, now) * count
-        sources.add_exec(name, dealt, now, _execute_factor(stats, now))
+            factor *= _crit_factor(stats["summon_crit"] + extra_crit, 2.0 + stats["summon_rating"])
+        factor *= taken(False) * count
+        weight, coeff = raw * factor, factor
+        execute = _execute_factor(stats, now)
+        dealt = (weight + stats["potency"] * coeff) * execute
+        sources.add_exec(name, dealt, now, execute, raw_weight=weight, pot_coeff=coeff)
         if procs:
             engineer(count, now)
         return dealt
@@ -845,11 +882,8 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
         moment = attack_at
         recover(moment)
         power = dcs()
-        before = sources["Автоатака"]
         hero_hit("Автоатака", power, moment, [0], kind="physical", attack=True,
-                 potency_scale=stats["attack_potency"])
-        if stats["auto_pct"] != 1.0:
-            sources["Автоатака"] = before + (sources["Автоатака"] - before) * stats["auto_pct"]
+                 potency_scale=stats["attack_potency"], source_scale=stats["auto_pct"])
         napalm("attack", 0, moment)
         overclock(None, moment, True)
         if has(TALENT_WRIST):
