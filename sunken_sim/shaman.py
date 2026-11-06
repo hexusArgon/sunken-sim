@@ -137,10 +137,10 @@ def _timeline_key(build: Build, stats: dict, spec: str, targets: int, bound_key:
     items = tuple(sorted(item.rawcode for item in build.items))
     talents = tuple(sorted(build.talents))
     glyphs = tuple(sorted(build.glyphs))
+    # Crit and potency are applied in score_events. Luck stays: proc()
+    # changes Thunderstorm / lesser-chain weights during the fight.
     esc = (
-        build.potency_points,
         build.mastery_points,
-        build.crit_points,
         build.luck_points,
         getattr(build, "haste_points", 0),
         getattr(build, "attack_speed_points", 0),
@@ -163,6 +163,8 @@ def score_events(
     """Score shaman timeline events. Event shape:
     (kind, name, raw, now, count, attack, magical, mastery, crit, fusion, auto_scale)
     kind: "deal" | "splash" | "echo" | "spirit"
+    deal/spirit store a totem crit bonus (0 or +8), not the full crit rating.
+    echo stores white attack damage; chance is applied here.
     """
     sources: dict[str, float] = {}
     for ev in events:
@@ -174,7 +176,9 @@ def score_events(
             continue
         if kind == "echo":
             _, name, raw, now = ev
-            sources[name] = sources.get(name, 0.0) + raw * taken * _execute_factor(stats, now)
+            sources[name] = sources.get(name, 0.0) + (
+                raw * taken * _execute_factor(stats, now) * sulfuras_echo_chance(stats["luck"])
+            )
             continue
         if kind == "spirit":
             _, name, hit, now, crit, fusion = ev
@@ -185,10 +189,12 @@ def score_events(
             sources[name] = sources.get(name, 0.0) + amount
             continue
         # deal
-        _, name, raw, now, count, attack, magical, mastery, crit, fusion, auto_scale = ev
+        _, name, raw, now, count, attack, magical, mastery, crit_bonus, fusion, auto_scale = ev
         if count <= 0:
             continue
-        amount = raw + stats["potency"]
+        crit = min(100.0, stats["crit"] + crit_bonus)
+        # Sulfuras splash historically has no potency (old int * magical * spell crit).
+        amount = raw + (0.0 if name == "Sulfuras" else stats["potency"])
         if magical:
             amount *= _magical_multiplier(codes, now, mastery)
         if attack:
@@ -314,9 +320,8 @@ def simulate(build: Build, targets: int = 5, spec: str = "restoration", bound_sp
         bonus = 6.0 if wrath and totem_up(now) else 0.0
         return stats["mastery"] + bonus
 
-    def crit_of(now: float) -> float:
-        bonus = 8.0 if wrath and totem_up(now) else 0.0
-        return min(100.0, stats["crit"] + bonus)
+    def crit_bonus_of(now: float) -> float:
+        return 8.0 if wrath and totem_up(now) else 0.0
 
     def fusion_up(now: float) -> bool:
         return now < fusion_until
@@ -369,7 +374,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "restoration", bound_sp
                 attack,
                 magical,
                 mastery_of(now),
-                crit_of(now),
+                crit_bonus_of(now),
                 1.0 if fusion_up(now) else 0.0,
                 auto_scale,
             )
@@ -634,18 +639,18 @@ def simulate(build: Build, targets: int = 5, spec: str = "restoration", bound_sp
                     (
                         "deal",
                         "Sulfuras",
-                        stats["int"] - stats["potency"],  # cancel +potency in score_events
+                        stats["int"],
                         now,
                         float(targets),
                         False,
                         True,
                         mastery_of(now),
-                        crit_of(now),
+                        crit_bonus_of(now),
                         1.0 if fusion_up(now) else 0.0,
                         False,
                     )
                 )
-            events.append(("echo", "Sulfuras (удар)", stats["ad"] * sulfuras_echo_chance(stats["luck"]), now))
+            events.append(("echo", "Sulfuras (удар)", stats["ad"], now))
         attack_count += 1
         if spirit_call and attack_count >= 4:
             attack_count = 0

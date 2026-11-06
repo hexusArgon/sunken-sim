@@ -3,6 +3,12 @@
 
 Timeline: farm.hybrid.shaman_gpu_timeline (pending+choose+spirit slots).
 Set FARM_HYBRID_GPU_TIMELINE=0 to force CPU timeline for elemental too.
+
+Crit and potency are applied at pack/score time. Deal events store a totem
+crit bonus (0 or +8), not the full rating; Sulfuras echo stores white attack
+damage and chance is applied at pack/score. Luck stays in `_timeline_key`
+because proc() changes Thunderstorm and lesser-chain weights. ShamanFights
+clusters GPU timelines by that key and rescores crit/potency per build.
 """
 
 from __future__ import annotations
@@ -75,9 +81,18 @@ _EVENT_CACHE: dict[int, tuple] = {}
 
 
 def _event_arrays(events: list, stats: dict) -> tuple:
-    from sunken_sim.shadow import _execute_factor, FIGHT
+    from sunken_sim.shadow import _execute_factor, FIGHT, sulfuras_echo_chance
 
-    key = id(events)
+    key = (
+        id(events),
+        float(stats["potency"]),
+        float(stats["crit"]),
+        float(stats.get("rating", 0.0)),
+        float(stats.get("spell_mult", 0.0)),
+        bool(stats.get("spell_crit")),
+        float(stats.get("luck", 0.0)),
+        float(stats.get("auto_pct", 1.0)),
+    )
     found = _EVENT_CACHE.get(key)
     if found is not None and found[0] is events:
         return found[1]
@@ -100,7 +115,7 @@ def _event_arrays(events: list, stats: dict) -> tuple:
         elif k0 == "echo":
             _, _name, raw, now = ev
             kind[i] = K_ECHO
-            weight[i] = raw * _execute_factor(stats, now)
+            weight[i] = raw * _execute_factor(stats, now) * sulfuras_echo_chance(stats["luck"])
             mastery[i] = 0.0
             when[i] = now
         elif k0 == "spirit":
@@ -115,11 +130,13 @@ def _event_arrays(events: list, stats: dict) -> tuple:
             mastery[i] = 0.0
             when[i] = now
         else:
-            _, _name, raw, now, count, attack, magical, mast, crit, fus, auto_scale = ev
+            _, _name, raw, now, count, attack, magical, mast, crit_bonus, fus, auto_scale = ev
             from sunken_sim.shadow import _crit_factor
 
             execute = _execute_factor(stats, now)
-            w = (raw + stats["potency"]) * count * execute
+            crit = min(100.0, stats["crit"] + crit_bonus)
+            potency = 0.0 if _name == "Sulfuras" else stats["potency"]
+            w = (raw + potency) * count * execute
             if attack:
                 w *= _crit_factor(crit, 2.0 + stats["rating"])
                 kind[i] = K_ATTACK
@@ -249,6 +266,43 @@ class ShamanFights(BatchFights):
         self.targets = int(targets)
         self.fights = 0
 
+    def _reuse_gpu_timelines(self, builds: list) -> dict:
+        """Generate one GPU tape per timeline key; rescore crit/potency per build."""
+        from sunken_sim import shaman as mod
+        from sunken_sim.shadow import armor_taken, DUMMY_ARMOR
+        from farm.hybrid.shaman_gpu_timeline import generate_shaman_timelines
+
+        pairs = []
+        keys = []
+        first = {}
+        order = []
+        for build in builds:
+            stats = mod.stats_of(build)
+            if mod._wears(build, mod.DIAMOND):
+                bkeys = list(mod.buttons(self.spec))
+            else:
+                bkeys = [None]
+            for bkey in bkeys:
+                key = mod._timeline_key(build, stats, self.spec, self.targets, bkey)
+                pairs.append((build, bkey))
+                keys.append(key)
+                if key not in first:
+                    first[key] = (build, bkey)
+                    order.append(key)
+        unique_builds = [first[k][0] for k in order]
+        unique_bound = [first[k][1] for k in order]
+        rows = generate_shaman_timelines(
+            self.torch, self.target, unique_builds, self.spec, self.targets, unique_bound
+        )
+        events_by_key = {key: row[0] for key, row in zip(order, rows)}
+        bundle = {}
+        for (build, bkey), key in zip(pairs, keys):
+            stats = mod.stats_of(build)
+            codes = frozenset(item.rawcode for item in build.items) | build.talents | build.glyphs
+            taken = armor_taken(DUMMY_ARMOR - stats["armor_pen"])
+            bundle[(id(build), bkey)] = (events_by_key[key], stats, codes, taken)
+        return bundle
+
     def _scores(self, tls: list[Timeline]) -> list[float]:
         from sunken_sim.shaman import FIGHT
 
@@ -269,26 +323,7 @@ class ShamanFights(BatchFights):
             and (want in ("1", "true", "force") or bool(getattr(self.device, "gpu", False)))
         )
         if use_gpu_tl and builds:
-            from sunken_sim import shaman as mod
-            from farm.hybrid.shaman_gpu_timeline import generate_shaman_timelines
-
-            flat_builds = []
-            flat_keys = []
-            for index, build in enumerate(builds):
-                if mod._wears(build, mod.DIAMOND):
-                    keys = list(mod.buttons(self.spec))
-                else:
-                    keys = [None]
-                for bkey in keys:
-                    flat_builds.append(build)
-                    flat_keys.append(bkey)
-            rows = generate_shaman_timelines(
-                self.torch, self.target, flat_builds, self.spec, self.targets, flat_keys
-            )
-            gpu_bundle = {
-                (id(build), bkey): row
-                for build, bkey, row in zip(flat_builds, flat_keys, rows)
-            }
+            gpu_bundle = self._reuse_gpu_timelines(builds)
         tls: list[Timeline] = []
         owner: list[int] = []
         for index, build in enumerate(builds):

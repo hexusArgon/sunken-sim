@@ -8,9 +8,10 @@ Clocks run float64 on CPU when DirectML lacks f64; kind-score stays on DirectML.
 CPU simulate() / events_for remains the parity oracle (rel/abs <= 1e-4).
 
 Event tuples match sunken_sim.shaman.events_for for farm.hybrid.shaman kind-score:
-  ("deal", name, raw, now, count, attack, magical, mastery, crit, fusion, auto_scale)
+  ("deal", name, raw, now, count, attack, magical, mastery, crit_bonus, fusion, auto_scale)
   ("splash", name, raw, now, count)
-  ("echo", name, raw, now)
+  ("echo", name, raw, now)  # raw is white ad; chance applied at score
+Deal crit field is the totem bonus (0 or +8), not the full rating. Spirit still stores 10 or 18 (pet crit).
 """
 
 from __future__ import annotations
@@ -395,10 +396,6 @@ def _shaman_batch(torch, device, dtype, builds, spec, targets, bound_keys):
         bonus = torch.where((wrath > 0.5) & (now < totem_until), 6.0 * ones, zeros)
         return mastery0 + bonus
 
-    def crit_of(now):
-        bonus = torch.where((wrath > 0.5) & (now < totem_until), 8.0 * ones, zeros)
-        return torch.clamp(crit0 + bonus, max=100.0)
-
     def fusion_up(now):
         return (now < fusion_until).to(dtype)
 
@@ -445,7 +442,7 @@ def _shaman_batch(torch, device, dtype, builds, spec, targets, bound_keys):
         if not bool(mask.any()):
             return
         mast = mastery_of(when)
-        crit = crit_of(when)
+        crit = torch.where((wrath > 0.5) & (when < totem_until), 8.0 * ones, zeros)
         fus = fusion_up(when)
         _push(
             torch, bufs, mask, when, raw,
@@ -801,9 +798,9 @@ def _shaman_batch(torch, device, dtype, builds, spec, targets, bound_keys):
         # sulfuras
         sul = mask & (has_sulf > 0.5) & (sulf_armed > 0.5)
         sulf_armed = torch.where(sul, zeros, sulf_armed)
-        # deal with raw=int-potency to cancel +potency in score
-        push_deal(sul, now, intel - potency, targets_f * ones, name_id=N_SULF)
-        echo_raw = ad * (0.10 * (1.0 + luck))
+        # Sulfuras splash has no potency; score skips it by name.
+        push_deal(sul, now, intel, targets_f * ones, name_id=N_SULF)
+        echo_raw = ad
         _push(torch, bufs, mask & (has_sulf > 0.5), now, echo_raw, kind=K_ECHO, name_id=N_SULF_ECHO)
         attack_count = torch.where(mask, attack_count + 1.0, attack_count)
         sc = mask & (spirit_call > 0.5) & (attack_count >= 4.0)

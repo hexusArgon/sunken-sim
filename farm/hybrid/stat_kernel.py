@@ -8,7 +8,11 @@ change. Paladin Sulfuras echo is unbaked the same way; crit and potency
 reuse the tape, and luck reuses it when Divine Toll / bell is absent (Toll
 still bakes luck into extra hammer weight). Druid Sulfuras echo is unbaked
 the same way; crit and potency reuse the tape, luck stays because proc()
-changes wisp spread and extra hits. Other heroes still bake some
+changes wisp spread and extra hits. Shaman Sulfuras echo is unbaked the
+same way; deal events store a totem crit bonus and score applies hero
+crit and potency (Sulfuras splash still has no potency). Luck stays
+because proc() changes Thunderstorm and lesser-chain weights. Other
+heroes still bake some
 flat/cleave/splash raws at emit time; a closed-form kernel for them needs
 the same per-class unbake. Until then, greedy stays on full dps_many batches
 with structural attr skips only.
