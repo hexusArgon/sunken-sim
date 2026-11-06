@@ -54,7 +54,10 @@
    `tools/_esc_greedy_parity.py`.
    Exact event-reuse: warrior Whirlwind cleave and Sulfuras echo are unbaked
    (2026-11-06). Crit, potency and luck reuse the CPU/GPU tape (`_timeline_key`
-   omits those points; WarriorFights clusters GPU timelines). Other classes
+   omits those points; WarriorFights clusters GPU timelines). Paladin
+   Sulfuras echo is unbaked the same way (2026-11-06); crit and potency reuse
+   the CPU/GPU tape, and luck reuses it when Divine Toll / bell is absent
+   (Toll still scales extra hammer weight inside the fight). Other classes
    still bake some flat/cleave/splash raws.
 3. **ESC guarded event algebra (`FARM_HYBRID_ESC_ALGEBRA`, default `auto`)** —
    `farm/hybrid/esc_algebra.py`, Ledger kind-heroes. Один CPU-трейс текущего

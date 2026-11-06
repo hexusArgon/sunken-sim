@@ -340,11 +340,16 @@ def _timeline_key(build: Build, stats: dict, spec: str, targets: int) -> tuple:
     items = tuple(sorted(item.rawcode for item in build.items))
     talents = tuple(sorted(build.talents))
     glyphs = tuple(sorted(build.glyphs))
+    # crit/potency applied at score. Luck stays when Divine Toll or the bell
+    # item scales extra hammer weight (attack cadence, mastery, HoJ CDR).
+    luck_key = (
+        build.luck_points
+        if _has(build, TALENT_DIVINE_TOLL) or stats.get("bell")
+        else 0
+    )
     esc = (
-        build.potency_points,
         build.mastery_points,
-        build.crit_points,
-        build.luck_points,
+        luck_key,
         getattr(build, "haste_points", 0),
         getattr(build, "attack_speed_points", 0),
         getattr(build, "damage_points", 0),
@@ -536,7 +541,7 @@ def _fight_events(build: Build, stats: dict, spec: str, targets: int) -> tuple:
                     note_damage_mana(targets)
                 emit(
                     "Sulfuras (удар)",
-                    (WHITE_BASE + 0.75 * stats["str"] + stats["damage"]) * sulfuras_echo_chance(stats["luck"]),
+                    WHITE_BASE + 0.75 * stats["str"] + stats["damage"],
                     False,
                     1,
                     moment,
@@ -619,8 +624,8 @@ def score_events(
             sources[name] = sources.get(name, 0.0) + amount * count
             continue
         if name == "Sulfuras (удар)":
-            # old: white * taken * execute * echo_chance  (no typed/crit; pot already in raw via echo)
-            amount = raw * taken * _execute_factor(stats, when)
+            # white * taken * execute * echo_chance  (no typed/crit/potency)
+            amount = raw * taken * _execute_factor(stats, when) * sulfuras_echo_chance(stats["luck"])
             sources[name] = sources.get(name, 0.0) + amount * count
             continue
         amount = raw + stats["potency"] * pot_scale

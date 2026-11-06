@@ -13,6 +13,12 @@ Split (same rules as sunken_sim.paladin.simulate):
 
 typed(magical) is linear in target HP t and in the event's mastery_now M, so the
 per-event loop of score_events collapses to these moments.
+
+Crit and potency are applied at pack/score time. Sulfuras echo stores white
+power; echo chance is applied at pack/score time. Divine Toll still bakes
+luck into extra hammer weight, so luck stays in `_timeline_key` when the
+talent or bell item is present. PaladinFights clusters GPU timelines by that
+key and rescores crit/potency (and luck, when Toll is absent) per build.
 """
 
 from __future__ import annotations
@@ -88,10 +94,15 @@ _EVENT_CACHE: dict[int, tuple] = {}
 
 
 def _event_arrays(events: list, stats: dict) -> tuple[np.ndarray, ...]:
-    """kind, weight=(raw+pot*scale)*count*[auto], mastery, when — cached by list id."""
-    from sunken_sim.shadow import _execute_factor, FIGHT
+    """kind, weight=(raw+pot*scale)*count*[auto], mastery, when — cached by list id + score stats."""
+    from sunken_sim.shadow import _execute_factor, FIGHT, sulfuras_echo_chance
 
-    key = id(events)
+    key = (
+        id(events),
+        float(stats["potency"]),
+        float(stats.get("auto_pct", 1.0)),
+        float(stats.get("luck", 0.0)),
+    )
     found = _EVENT_CACHE.get(key)
     if found is not None and found[0] is events:
         return found[1]
@@ -111,7 +122,7 @@ def _event_arrays(events: list, stats: dict) -> tuple[np.ndarray, ...]:
             weight[i] = raw * count * execute
         elif name == "Sulfuras (удар)":
             kind[i] = KIND_ECHO
-            weight[i] = raw * count * execute
+            weight[i] = raw * count * execute * sulfuras_echo_chance(stats["luck"])
         else:
             kind[i] = KIND_MAGIC if magical else KIND_PHYS
             w = (raw + stats["potency"] * pot_scale) * count * execute
@@ -216,6 +227,37 @@ class PaladinFights(BatchFights):
         self.targets = int(targets)
         self.fights = 0
 
+    def _reuse_gpu_timelines(self, builds: list) -> dict:
+        """Generate one GPU tape per timeline key; rescore crit/potency per build."""
+        from sunken_sim import paladin
+        from farm.hybrid.paladin_gpu_timeline import generate_paladin_timelines
+
+        keys = []
+        first = {}
+        order = []
+        for build in builds:
+            stats = paladin.stats_of(build)
+            key = paladin._timeline_key(build, stats, self.spec, self.targets)
+            keys.append(key)
+            if key not in first:
+                first[key] = build
+                order.append(key)
+        unique = [first[k] for k in order]
+        rows = generate_paladin_timelines(
+            self.torch, self.target, unique, self.spec, self.targets
+        )
+        events_by_key = {key: row[0] for key, row in zip(order, rows)}
+        bundle = {}
+        for build, key in zip(builds, keys):
+            stats = paladin.stats_of(build)
+            knowledge = (
+                1.0 + 0.003 * stats["int"]
+                if self.spec == "retribution" and paladin._has(build, paladin.TALENT_DIVINE_KNOWLEDGE)
+                else 1.0
+            )
+            bundle[id(build)] = (events_by_key[key], stats, knowledge)
+        return bundle
+
     def _scores(self, tls: list[Timeline]) -> list[float]:
         from sunken_sim.paladin import FIGHT
 
@@ -235,15 +277,7 @@ class PaladinFights(BatchFights):
             want in ("1", "true", "force") or bool(getattr(self.device, "gpu", False))
         )
         if use_gpu_tl and builds:
-            from farm.hybrid.paladin_gpu_timeline import generate_paladin_timelines
-
-            rows = generate_paladin_timelines(
-                self.torch, self.target, builds, self.spec, self.targets
-            )
-            gpu_bundle = {
-                id(build): (events, stats, knowledge)
-                for build, (events, stats, knowledge) in zip(builds, rows)
-            }
+            gpu_bundle = self._reuse_gpu_timelines(builds)
         tls: list[Timeline] = []
         owner: list[int] = []
         for index, build in enumerate(builds):

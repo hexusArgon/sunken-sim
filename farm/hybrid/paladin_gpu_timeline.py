@@ -88,7 +88,6 @@ def generate_paladin_timelines(torch, device, builds, spec: str, targets: int):
         CAST_BACKSWING,
         CAST_POINT,
         FIGHT,
-        sulfuras_echo_chance,
     )
 
     if spec not in mod.SPECS:
@@ -459,12 +458,7 @@ def generate_paladin_timelines(torch, device, builds, spec: str, targets: int):
                     push(fire, moment, str_, magical=1.0, count=targets_f, pot_scale=0.0, special=SPEC_FLAT)
                     note_dmg_mana(targets, fire)
                     sulf_armed = torch.where(fire, torch.zeros_like(sulf_armed), sulf_armed)
-                echo_ch = torch.tensor(
-                    [sulfuras_echo_chance(float(luck[i])) for i in range(B)],
-                    dtype=dtype,
-                    device=device,
-                )
-                push(sul, moment, white_raw * echo_ch, magical=0.0, count=1.0, pot_scale=0.0, special=SPEC_ECHO)
+                push(sul, moment, white_raw, magical=0.0, count=1.0, pot_scale=0.0, special=SPEC_ECHO)
             # crusade
             cr = m_at & (has_crusade > 0.5) & (crusade < 20)
             if bool(cr.any()):
