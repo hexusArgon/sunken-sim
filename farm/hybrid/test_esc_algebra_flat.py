@@ -46,5 +46,11 @@ class FlatAlgebraTest(unittest.TestCase):
         self.assertNotIn("crit_points", tr.fields)
 
 
+    def test_hunter_not_enabled(self):
+        # Regression: BM/MM farm boards diverged when hunter used flat algebra.
+        self.assertNotIn("hunter", A.FLAT_SOURCE_HEROES)
+        self.assertNotIn("hunter", A.ALGEBRA_HEROES)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -275,3 +275,6 @@ Batch fix: on_swp expiry zeroing must be masked to rows whose tick fires (otherw
 ## ESC-алгебра: flat-герои (2026-11-06)
 
 К 11 Ledger-героям добавлены warrior, hunter, paladin, rogue, warlock (`FLAT_SOURCE_HEROES`). Для них события берутся из `report.sources` как KIND_FLAT, а мемо `_TIMELINE` на время трассировки отключается, чтобы ключ не читал ESC-поля. Parity `tools/_esc_algebra_parity.py`: 28/28 точно. Haste, attack speed и мана меняют таймлайн, поэтому для них бои остаются.
+
+
+Hunter временно исключён из `FLAT_SOURCE_HEROES`: на beast_mastery и marksmanship алгебра обнуляла `pet_damage` (9 очков) и клала их в `healing_power`/`crit`, из-за чего DPS лидера падал примерно на 1.9% и 3.5% против полного перебора. Survival совпадал. Включать hunter обратно только после того, как `pet_damage` попадёт в символьное выражение.

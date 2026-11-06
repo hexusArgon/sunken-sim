@@ -48,7 +48,9 @@ ALGEBRA_HEROES = frozenset({
 
 # stats_of heroes whose simulate() returns plain-dict sources (no Ledger events);
 # traced through their per-source totals (FLAT events, see trace_current).
-FLAT_SOURCE_HEROES = frozenset({"hunter", "paladin", "rogue", "warlock", "warrior"})
+FLAT_SOURCE_HEROES = frozenset({"paladin", "rogue", "warlock", "warrior"})
+# hunter excluded: flat sources do not carry pet_damage, so algebra dumps
+# those points into healing_power/crit and loses ~2-3.5% DPS on BM/MM.
 ALGEBRA_HEROES = ALGEBRA_HEROES | FLAT_SOURCE_HEROES
 
 
