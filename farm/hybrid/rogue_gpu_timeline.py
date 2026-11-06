@@ -564,9 +564,11 @@ def _rogue_batch(torch, device, dtype, builds, spec, targets):
             break
 
         # priority: release > pressure > cast (if cast<=attack) > attack
-        is_rel = alive & (torch.abs(moment - release_at) < 1e-12)
-        is_pres = alive & ~is_rel & (torch.abs(moment - pressure_at) < 1e-12)
-        is_cast = alive & ~is_rel & ~is_pres & (cast_at <= attack_at + 1e-15) & (choice >= 0) & (torch.abs(moment - cast_at) < 1e-12)
+        # Match CPU exact equality: no 1e-12/1e-15 slacks. A slack here turns a
+        # microscopically earlier auto into a cast and drops that white hit.
+        is_rel = alive & (moment == release_at)
+        is_pres = alive & ~is_rel & (moment == pressure_at)
+        is_cast = alive & ~is_rel & ~is_pres & (cast_at <= attack_at) & (choice >= 0) & (moment == cast_at)
         is_atk = alive & ~is_rel & ~is_pres & ~is_cast
 
         if bool(is_rel.any()):
