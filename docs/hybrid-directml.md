@@ -62,7 +62,11 @@
    in the key because proc() changes wisp spread and extra hits. Shaman
    Sulfuras echo is unbaked the same way; deal events store a totem crit
    bonus and score applies hero crit and potency. Luck stays in the key
-   because proc() changes Thunderstorm and lesser-chain weights. Other
+   because proc() changes Thunderstorm and lesser-chain weights. Priest
+   events already store raw (when, kind, hits); score applies crit, potency,
+   mastery and luck, so `_timeline_key` omits those points (mastery still
+   affects the key through cast_refund_mastery, and crit through baked
+   crit_as swing). PriestFights clusters GPU timelines by that key. Other
    classes still bake some flat/cleave/splash raws.
 3. **ESC guarded event algebra (`FARM_HYBRID_ESC_ALGEBRA`, default `auto`)** —
    `farm/hybrid/esc_algebra.py`, Ledger kind-heroes. Один CPU-трейс текущего
@@ -132,7 +136,9 @@ Staff CD-reset only stacks on Overpowered/pads (CPU gate). Opt out: `FARM_HYBRID
 Parity 2026-11-05: 8×fire + 8×frost = 16/16 vs CPU simulate (RX 6800 XT DirectML).
 
 ## Priest Shadow / Discipline / Holy
-Код: `farm/hybrid/priest.py`.
+Код: `farm/hybrid/priest.py` + `priest_gpu_timeline.py` + `sunken_sim/shadow.py`.
+Status: **gpu-timeline**. Crit, potency and luck rescore the same tape;
+PriestFights clusters GPU timelines by `_timeline_key`.
 
 ## Paladin Retribution / Protection / Holy
 Код: `farm/hybrid/paladin.py` + `paladin_gpu_timeline.py` + `sunken_sim/paladin.py`.

@@ -3,6 +3,7 @@
 
 Float64 clocks on CPU (DirectML lacks reliable f64); events match
 sunken_sim.shadow._fight_events: (when, kind, hits). Windows list for Holy Fire.
+PriestFights clusters batches by `_timeline_key` so crit/potency/luck share a tape.
 """
 from __future__ import annotations
 

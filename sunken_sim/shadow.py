@@ -534,7 +534,10 @@ _TIMELINE: dict[tuple, tuple] = {}
 def _timeline_key(build: Build, stats: dict, spec: str, targets: int, bound_spell: str | None) -> tuple:
     """Schedule identity. Haste, attack speed, cooldowns and mana change when casts happen.
 
-    Intellect, Potency, Mastery and crit only change the damage of those casts.
+    Potency, crit and luck are applied in score_events (and compile/score_compiled),
+    so they are omitted here. Mastery also rescores damage, but cast_refund_mastery
+    stays in the key because it changes mana during the fight. Crit can still change
+    swing via baked crit_as uptime in character().
     """
     spells = _cast_spells(build, spec)
     base_cd = {

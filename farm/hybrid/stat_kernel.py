@@ -11,7 +11,11 @@ the same way; crit and potency reuse the tape, luck stays because proc()
 changes wisp spread and extra hits. Shaman Sulfuras echo is unbaked the
 same way; deal events store a totem crit bonus and score applies hero
 crit and potency (Sulfuras splash still has no potency). Luck stays
-because proc() changes Thunderstorm and lesser-chain weights. Other
+because proc() changes Thunderstorm and lesser-chain weights. Priest
+events already store raw (when, kind, hits); score applies crit, potency,
+mastery and luck, so `_timeline_key` omits those points (mastery still
+affects the key through cast_refund_mastery, and crit through baked
+crit_as swing). PriestFights clusters GPU timelines by that key. Other
 heroes still bake some
 flat/cleave/splash raws at emit time; a closed-form kernel for them needs
 the same per-class unbake. Until then, greedy stays on full dps_many batches

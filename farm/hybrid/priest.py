@@ -16,6 +16,11 @@ Split of one fight (same rules as sunken_sim.shadow.simulate):
 DPS must match shadow.simulate within DPS_TOL (relative). shadow.score_events
 and shadow.compile_events + score_compiled are the same math (the ESC greedy in
 farm.score uses the second); _crit_factor clamps crit to 100 in both.
+
+Crit, potency, mastery and luck are applied at score time (score_events /
+score_row / score_compiled). `_timeline_key` omits those points except mastery
+through cast_refund_mastery, and crit through baked crit_as swing. PriestFights
+clusters GPU timelines by that key and rescores each build.
 """
 
 from __future__ import annotations
@@ -68,8 +73,12 @@ class Timeline:
     bound: str | None
 
 
-def timelines(build, targets: int, spec: str) -> list[Timeline]:
-    """Same timelines shadow.simulate(use_history=False) scores, one per bound spell for I00D."""
+def timelines(build, targets: int, spec: str, *, gpu_bundle=None) -> list[Timeline]:
+    """Same timelines shadow.simulate(use_history=False) scores, one per bound spell for I00D.
+
+    gpu_bundle: optional dict (id(build), bound) -> (events, stats, windows)
+    produced by PriestFights._reuse_gpu_timelines.
+    """
     from sunken_sim import shadow
 
     if shadow._wears(build, "I00D"):
@@ -80,6 +89,10 @@ def timelines(build, targets: int, spec: str) -> list[Timeline]:
         bounds = [None]
     out = []
     for bound in bounds:
+        if gpu_bundle is not None and (id(build), bound) in gpu_bundle:
+            events, stats, windows = gpu_bundle[(id(build), bound)]
+            out.append(Timeline(build, stats, spec, events, windows, bound))
+            continue
         stats = shadow.character(build)
         key = shadow._timeline_key(build, stats, spec, targets, bound)
         cached = shadow._TIMELINE.get(key)
@@ -285,6 +298,41 @@ class PriestFights(BatchFights):
         self.targets = int(targets)
         self.fights = 0
 
+    def _reuse_gpu_timelines(self, builds: list) -> dict:
+        """Generate one GPU tape per timeline key; rescore crit/potency/luck per build."""
+        from sunken_sim import shadow as mod
+        from farm.hybrid.priest_gpu_timeline import generate_priest_timelines
+
+        pairs = []
+        keys = []
+        first = {}
+        order = []
+        for build in builds:
+            stats = mod.character(build)
+            if mod._wears(build, "I00D"):
+                bkeys = list(mod._cast_spells(build, self.spec))
+            else:
+                bkeys = [None]
+            for bkey in bkeys:
+                key = mod._timeline_key(build, stats, self.spec, self.targets, bkey)
+                pairs.append((build, bkey))
+                keys.append(key)
+                if key not in first:
+                    first[key] = (build, bkey)
+                    order.append(key)
+        unique_builds = [first[k][0] for k in order]
+        unique_bound = [first[k][1] for k in order]
+        rows = generate_priest_timelines(
+            self.torch, self.target, unique_builds, self.spec, self.targets, unique_bound
+        )
+        events_by_key = {key: row for key, row in zip(order, rows)}
+        bundle = {}
+        for (build, bkey), key in zip(pairs, keys):
+            events, _rep_stats, windows, _bk = events_by_key[key]
+            stats = mod.character(build)
+            bundle[(id(build), bkey)] = (events, stats, windows)
+        return bundle
+
     def _scores(self, tls: list[Timeline]) -> list[float]:
         from sunken_sim.shadow import FIGHT
 
@@ -297,42 +345,21 @@ class PriestFights(BatchFights):
 
     def dps_many(self, builds: list) -> list[float]:
         import os
-        from sunken_sim import shadow as mod
 
+        gpu_bundle = None
         want = os.environ.get("FARM_HYBRID_GPU_TIMELINE", "auto").strip().lower()
         use_gpu_tl = (
             want not in ("0", "false", "off", "cpu")
             and (want in ("1", "true", "force") or bool(getattr(self.device, "gpu", False)))
         )
+        if use_gpu_tl and builds:
+            gpu_bundle = self._reuse_gpu_timelines(builds)
         tls: list[Timeline] = []
         owner: list[int] = []
-        if use_gpu_tl and builds:
-            from farm.hybrid.priest_gpu_timeline import generate_priest_timelines
-
-            flat_builds = []
-            flat_keys = []
-            owners_flat = []
-            for index, build in enumerate(builds):
-                if mod._wears(build, "I00D"):
-                    keys = list(mod._cast_spells(build, self.spec))
-                else:
-                    keys = [None]
-                for key in keys:
-                    flat_builds.append(build)
-                    flat_keys.append(key)
-                    owners_flat.append(index)
-            rows = generate_priest_timelines(
-                self.torch, self.target, flat_builds, self.spec, self.targets, flat_keys
-            )
-            for build, key, row, index in zip(flat_builds, flat_keys, rows, owners_flat):
-                events, stats, windows, _bk = row
-                tls.append(Timeline(build, stats, self.spec, events, windows, key))
+        for index, build in enumerate(builds):
+            for tl in timelines(build, self.targets, self.spec, gpu_bundle=gpu_bundle):
+                tls.append(tl)
                 owner.append(index)
-        else:
-            for index, build in enumerate(builds):
-                for tl in timelines(build, self.targets, self.spec):
-                    tls.append(tl)
-                    owner.append(index)
         scores = self._scores(tls) if tls else []
         self.fights += len(builds)
         best: list[float | None] = [None] * len(builds)
