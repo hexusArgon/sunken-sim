@@ -33,7 +33,6 @@ from sunken_sim.shadow import (
     armor_taken,
     attack_mana_gain,
     cast_mana_back,
-    sulfuras_echo_chance,
     target_hp,
 )
 from sunken_sim.stacking import stack_fields
@@ -326,11 +325,11 @@ def _timeline_key(build: Build, stats: dict, spec: str, targets: int) -> tuple:
     items = tuple(sorted(item.rawcode for item in build.items))
     talents = tuple(sorted(build.talents))
     glyphs = tuple(sorted(build.glyphs))
-    # crit/potency are applied in score_events; Whirlwind cleave is unbaked
-    # so the tape can be reused when only those points change.
+    # crit/potency/luck are applied in score_events; Whirlwind cleave and
+    # Sulfuras echo keep luck out of the raw, so the tape can be reused
+    # when only those points change.
     esc = (
         build.mastery_points,
-        build.luck_points,
         getattr(build, "haste_points", 0),
         getattr(build, "attack_speed_points", 0),
         getattr(build, "damage_points", 0),
@@ -354,7 +353,7 @@ def score_events(
     """Event tuple:
     (when, name, raw, magical, count, pot_scale, auto, mastery_now, enraged,
      auto_pct_scale, special)
-    special: None | "splash" | "echo" | "flat"
+    special: None | "splash" | "echo" | "flat" | "cleave"
     """
     from sunken_sim.shadow import _crit_factor, _execute_factor, target_hp
 
@@ -365,7 +364,11 @@ def score_events(
             sources[name] = sources.get(name, 0.0) + raw * count * taken * _execute_factor(stats, when)
             continue
         if special == "echo":
-            sources[name] = sources.get(name, 0.0) + raw * taken_auto * _execute_factor(stats, when)
+            from sunken_sim.shadow import sulfuras_echo_chance
+
+            amount = raw * taken_auto * _execute_factor(stats, when)
+            amount *= sulfuras_echo_chance(stats["luck"])
+            sources[name] = sources.get(name, 0.0) + amount
             continue
         if special == "flat":
             sources[name] = sources.get(name, 0.0) + raw * count
@@ -399,6 +402,8 @@ def score_events(
         amount *= use_taken * _execute_factor(stats, when)
         if auto_pct_scale:
             amount *= stats["auto_pct"]
+        if special == "cleave":
+            amount *= 1.0 + stats["luck"]
         sources[name] = sources.get(name, 0.0) + amount * count
     return sources
 
@@ -492,7 +497,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "arms") -> Report:
             return _crit_factor(crit, 2.0 + rating + extra)
         return _crit_factor(crit, 2.0 + rating)
 
-    def deal(name: str, raw: float, magical: bool, count: int, when: float, potency_scale: float = 1.0, auto: bool = False, auto_pct_scale: bool = False) -> float:
+    def deal(name: str, raw: float, magical: bool, count: int, when: float, potency_scale: float = 1.0, auto: bool = False, auto_pct_scale: bool = False, special=None) -> float:
         amount = raw + stats["potency"] * potency_scale
         if stats["relentless"] and auto:
             amount *= 1.0 + 0.25 * 0.80
@@ -514,7 +519,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "arms") -> Report:
                 mastery(),
                 bool(enraged(when)),
                 auto_pct_scale,
-                None,
+                special,
             )
         )
         return amount * count
@@ -716,8 +721,9 @@ def simulate(build: Build, targets: int = 5, spec: str = "arms") -> Report:
             # Whirlwind cleave: same scoring path as the auto (crit/potency/enrage
             # at score time). scale multiplies both raw and pot_scale so
             # (raw + potency * pot_scale) stays linear in the auto.
+            # Luck (1+luck) is applied in score_events via special="cleave".
             # Emit before on_attack_enrage so the enraged flag matches the auto.
-            cleave_chance = (30.0 + 5.0 * RANK) / 100.0 * (1.0 + stats["luck"])
+            cleave_chance = (30.0 + 5.0 * RANK) / 100.0
             cleave_ratio = 0.40 + (0.10 if moment < ww_on_cd_until else 0.0)
             if targets > 1 and cleave_chance > 0:
                 scale = cleave_chance * cleave_ratio
@@ -730,6 +736,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "arms") -> Report:
                     stats["attack_potency"] * scale,
                     auto=True,
                     auto_pct_scale=True,
+                    special="cleave",
                 )
                 note_damage_mana(targets - 1)
 
@@ -752,7 +759,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "arms") -> Report:
                 if sulfuras.attack():
                     deal("Sulfuras", stats["str"], True, targets, moment, 0.0, auto=False)
                     note_damage_mana(targets)
-                events.append((moment, "Sulfuras", power * sulfuras_echo_chance(stats["luck"]), False, 1, 0.0, False, mastery(), False, False, "echo"))
+                events.append((moment, "Sulfuras", power, False, 1, 0.0, False, mastery(), False, False, "echo"))
 
             if _has(build, TALENT_BLADESTORM) and next_ww > moment:
                 next_ww = max(moment, next_ww - 0.20)

@@ -29,12 +29,14 @@ SPEC_NONE = 0
 SPEC_SPLASH = 1
 SPEC_ECHO = 2
 SPEC_FLAT = 3
+SPEC_CLEAVE = 4
 
 SPECIAL_NAME = {
     SPEC_NONE: None,
     SPEC_SPLASH: "splash",
     SPEC_ECHO: "echo",
     SPEC_FLAT: "flat",
+    SPEC_CLEAVE: "cleave",
 }
 
 

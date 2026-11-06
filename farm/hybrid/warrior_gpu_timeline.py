@@ -11,6 +11,7 @@ CPU simulate() remains the parity oracle (rel/abs <= 1e-4).
 from __future__ import annotations
 
 from farm.hybrid.timeline_gpu import (
+    SPEC_CLEAVE,
     SPEC_ECHO,
     SPEC_NONE,
     SPEC_SPLASH,
@@ -54,7 +55,6 @@ def generate_warrior_timelines(torch, device, builds, spec: str, targets: int):
         FIGHT,
         armor_taken,
         cast_mana_back,
-        sulfuras_echo_chance,
     )
 
     if spec not in mod.SPECS:
@@ -103,7 +103,6 @@ def generate_warrior_timelines(torch, device, builds, spec: str, targets: int):
     attack_potency = _stat_vec(torch, device, dtype, builds, stats_list, "attack_potency")
     auto_pct = _stat_vec(torch, device, dtype, builds, stats_list, "auto_pct", 1.0)
     hp = _stat_vec(torch, device, dtype, builds, stats_list, "hp")
-    luck = _stat_vec(torch, device, dtype, builds, stats_list, "luck")
     potency = _stat_vec(torch, device, dtype, builds, stats_list, "potency")  # unused in event raw
 
     has_warcry = _flag_vec(torch, device, dtype, builds, lambda b: mod._has(b, mod.TALENT_WARCRY))
@@ -206,7 +205,7 @@ def generate_warrior_timelines(torch, device, builds, spec: str, targets: int):
         bonus = torch.where(has_warcry > 0.5, torch.full_like(value, 15.0 + 20.0 * rank), torch.full_like(value, 10.0 + 15.0 * rank))
         return value + torch.where(shout_on, bonus, torch.zeros_like(value))
 
-    def push_deal(mask, when, raw, *, magical=0.0, count=1.0, pot_scale=1.0, auto=0.0, auto_pct_scale=0.0):
+    def push_deal(mask, when, raw, *, magical=0.0, count=1.0, pot_scale=1.0, auto=0.0, auto_pct_scale=0.0, special=SPEC_NONE):
         enr = (when < enrage_until).to(torch.float32)
         bufs.push_mask(
             torch,
@@ -220,7 +219,7 @@ def generate_warrior_timelines(torch, device, builds, spec: str, targets: int):
             mastery=mastery,
             enraged=enr,
             auto_pct=auto_pct_scale,
-            special=SPEC_NONE,
+            special=special,
         )
 
     def attack_interval(now):
@@ -375,7 +374,7 @@ def generate_warrior_timelines(torch, device, builds, spec: str, targets: int):
 
             # Unbaked cleave before the enrage proc, matching CPU order.
             if targets > 1:
-                cleave_chance = (30.0 + 5.0 * rank) / 100.0 * (1.0 + luck)
+                cleave_chance = (30.0 + 5.0 * rank) / 100.0
                 cleave_ratio = 0.40 + torch.where(
                     moment < ww_on_cd_until,
                     torch.full_like(moment, 0.10),
@@ -393,6 +392,7 @@ def generate_warrior_timelines(torch, device, builds, spec: str, targets: int):
                         pot_scale=attack_potency * scale,
                         auto=1.0,
                         auto_pct_scale=1.0,
+                        special=SPEC_CLEAVE,
                     )
                     note_dmg_mana(targets - 1, do_cleave)
 
@@ -469,7 +469,7 @@ def generate_warrior_timelines(torch, device, builds, spec: str, targets: int):
                         torch,
                         mask_i,
                         torch.full((B,), now, dtype=dtype, device=device),
-                        torch.full((B,), pow_i * sulfuras_echo_chance(s["luck"]), dtype=dtype, device=device),
+                        torch.full((B,), pow_i, dtype=dtype, device=device),
                         magical=0.0,
                         count=1.0,
                         pot_scale=0.0,

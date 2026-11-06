@@ -6,11 +6,13 @@ Set FARM_HYBRID_GPU_TIMELINE=0 to force the CPU sunken_sim.warrior.simulate time
 
 Event shape from sunken_sim.warrior.score_events:
   (when, name, raw, magical, count, pot_scale, auto, mastery_now, enraged,
-   auto_pct_scale, special)  special: None | "splash" | "echo" | "flat"
+   auto_pct_scale, special)  special: None | "splash" | "echo" | "flat" | "cleave"
 
 Enrage (*1.10 typed) is baked into weight. Fury enrage also +10 crit → separate kinds.
 Auto hits use taken_auto. Whirlwind cleave is a regular auto-like event
-(raw and pot_scale scaled by chance×ratio), not a pre-scored FLAT.
+(raw and pot_scale scaled by base chance×ratio); (1+luck) is applied at
+pack/score time. Sulfuras echo stores white power; echo chance is applied
+at pack/score time.
 """
 
 from __future__ import annotations
@@ -158,6 +160,7 @@ def _event_arrays(events: list, stats: dict, fury: bool) -> tuple[np.ndarray, ..
         float(stats["potency"]),
         float(stats.get("auto_pct", 1.0)),
         bool(stats.get("relentless")),
+        float(stats.get("luck", 0.0)),
     )
     found = _EVENT_CACHE.get(key)
     if found is not None and found[0] is events:
@@ -177,8 +180,10 @@ def _event_arrays(events: list, stats: dict, fury: bool) -> tuple[np.ndarray, ..
             kind[i] = KIND_SPLASH
             weight[i] = raw * count * execute
         elif special == "echo":
+            from sunken_sim.shadow import sulfuras_echo_chance
+
             kind[i] = KIND_ECHO
-            weight[i] = raw * count * execute
+            weight[i] = raw * count * execute * sulfuras_echo_chance(stats["luck"])
         elif special == "flat":
             kind[i] = KIND_FLAT
             weight[i] = raw * count
@@ -191,6 +196,8 @@ def _event_arrays(events: list, stats: dict, fury: bool) -> tuple[np.ndarray, ..
                 w *= stats["auto_pct"]
             if enraged:
                 w *= 1.10
+            if special == "cleave":
+                w *= 1.0 + stats["luck"]
             weight[i] = w
     arrays = (kind, weight, mastery, when)
     if len(_EVENT_CACHE) >= 16384:
@@ -323,7 +330,7 @@ class WarriorFights(BatchFights):
         self.fights = 0
 
     def _reuse_gpu_timelines(self, builds: list) -> dict:
-        """Generate one GPU tape per timeline key; rescore crit/potency per build."""
+        """Generate one GPU tape per timeline key; rescore crit/potency/luck per build."""
         from sunken_sim import warrior
         from farm.hybrid.warrior_gpu_timeline import generate_warrior_timelines
 

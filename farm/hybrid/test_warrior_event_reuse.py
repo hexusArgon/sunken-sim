@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Warrior event-reuse: unbaked Whirlwind cleave, crit/potency rescore the same tape."""
+"""Warrior event-reuse: unbaked Whirlwind cleave and Sulfuras echo; crit/potency/luck rescore the same tape."""
 
 from __future__ import annotations
 
@@ -42,23 +42,26 @@ class WarriorEventReuseTests(unittest.TestCase):
                 cleaves = [ev for ev in events if ev[1] == "Whirlwind (cleave)"]
                 self.assertTrue(cleaves, "expected Whirlwind (cleave) events")
                 for ev in cleaves:
-                    self.assertIsNone(ev[-1])
+                    self.assertEqual(ev[-1], "cleave")
                     self.assertTrue(ev[6])  # auto
                     self.assertGreater(ev[4], 0)  # count = targets-1
 
                 crit_build = _plus(base, "crit")
                 pot_build = _plus(base, "potency")
+                luck_build = _plus(base, "luck")
                 reused_crit = mod.simulate(crit_build, 5, spec)
                 reused_pot = mod.simulate(pot_build, 5, spec)
+                reused_luck = mod.simulate(luck_build, 5, spec)
                 self.assertEqual(len(mod._TIMELINE), keys)
 
-                saved = dict(mod._TIMELINE)
                 mod._TIMELINE.clear()
                 fresh_crit = mod.simulate(crit_build, 5, spec)
                 fresh_pot = mod.simulate(pot_build, 5, spec)
+                fresh_luck = mod.simulate(luck_build, 5, spec)
                 for name, reused, fresh in (
                     ("crit", reused_crit, fresh_crit),
                     ("potency", reused_pot, fresh_pot),
+                    ("luck", reused_luck, fresh_luck),
                 ):
                     scale = max(1.0, abs(_dps(fresh)))
                     self.assertLessEqual(
@@ -81,16 +84,18 @@ class WarriorEventReuseTests(unittest.TestCase):
 
         base = _catalog_build("warrior", "arms", 0)
         crit_build = _plus(base, "crit")
-        builds = [base, crit_build]
+        luck_build = _plus(base, "luck")
+        builds = [base, crit_build, luck_build]
         for spec in mod.SPECS:
             with self.subTest(spec=spec):
                 pairs = generate_warrior_timelines(torch, torch.device("cpu"), builds, spec, 5)
                 self.assertEqual(_shape(pairs[0][0]), _shape(pairs[1][0]))
+                self.assertEqual(_shape(pairs[0][0]), _shape(pairs[2][0]))
                 engine = make_engine(detect("warrior", spec), "warrior", spec, 5)
                 gpu = engine.dps_many(builds)
                 mod._TIMELINE.clear()
                 cpu = [_dps(mod.simulate(b, 5, spec)) for b in builds]
-                for label, cpu_dps, gpu_dps in zip(("base", "crit"), cpu, gpu):
+                for label, cpu_dps, gpu_dps in zip(("base", "crit", "luck"), cpu, gpu):
                     scale = max(1.0, abs(cpu_dps))
                     self.assertLessEqual(
                         abs(gpu_dps - cpu_dps) / scale,

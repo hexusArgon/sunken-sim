@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """ESC / stat-kernel helpers for hybrid DirectML greedy.
 
-Warrior Whirlwind cleave is unbaked (2026-11-06): crit and potency are applied
-in score_events / kind-score, so CPU `_timeline_key` and WarriorFights reuse
-the event tape when only those points change. Other heroes still bake some
-flat/cleave/splash raws at emit time; a closed-form kernel for them needs the
-same per-class unbake. Until then, greedy stays on full dps_many batches with
-structural attr skips only.
+Warrior Whirlwind cleave and Sulfuras echo are unbaked (2026-11-06): crit,
+potency and luck are applied in score_events / kind-score, so CPU
+`_timeline_key` and WarriorFights reuse the event tape when only those points
+change. Other heroes still bake some flat/cleave/splash raws at emit time; a
+closed-form kernel for them needs the same per-class unbake. Until then,
+greedy stays on full dps_many batches with structural attr skips only.
 
 Result must equal sunken_sim.esc.greedy_points (every under-cap attr tried each
 step, strict '>', earliest attr wins ties, points spent even with no gain).
