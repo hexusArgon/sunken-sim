@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 """ESC / stat-kernel helpers for hybrid DirectML greedy.
 
-Exact event-reuse rescoring is unsafe for most heroes: flat/cleave/splash raws
-often bake crit/potency/luck at emit time (see warrior Whirlwind cleave). A true
-closed-form stat-kernel needs per-class event algebra; until that lands, greedy
-stays on full dps_many batches with structural attr skips only.
+Warrior Whirlwind cleave is unbaked (2026-11-06): crit and potency are applied
+in score_events / kind-score, so CPU `_timeline_key` and WarriorFights reuse
+the event tape when only those points change. Other heroes still bake some
+flat/cleave/splash raws at emit time; a closed-form kernel for them needs the
+same per-class unbake. Until then, greedy stays on full dps_many batches with
+structural attr skips only.
 
 Result must equal sunken_sim.esc.greedy_points (every under-cap attr tried each
 step, strict '>', earliest attr wins ties, points spent even with no gain).

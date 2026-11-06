@@ -52,8 +52,10 @@
    Zero-delta skip удалён 2026-11-05: неточен (demon_hunter/havoc 590.55 vs
    596.84). Регрессия: `farm/hybrid/test_stat_kernel_greedy.py`, свип
    `tools/_esc_greedy_parity.py`.
-   Exact event-reuse rescoring still deferred: flat/cleave bake crit/potency into
-   raw — needs per-class event algebra next.
+   Exact event-reuse: warrior Whirlwind cleave is unbaked (2026-11-06). Crit and
+   potency reuse the CPU/GPU tape (`_timeline_key` omits those points;
+   WarriorFights clusters GPU timelines). Luck is still baked into cleave chance
+   and Sulfuras echo. Other classes still bake some flat/cleave/splash raws.
 3. **ESC guarded event algebra (`FARM_HYBRID_ESC_ALGEBRA`, default `auto`)** —
    `farm/hybrid/esc_algebra.py`, Ledger kind-heroes. Один CPU-трейс текущего
    билда: float-ключи `stats_of`, которые меняют trial'ы, заменяются `Sym`;

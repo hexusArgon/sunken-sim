@@ -326,10 +326,10 @@ def _timeline_key(build: Build, stats: dict, spec: str, targets: int) -> tuple:
     items = tuple(sorted(item.rawcode for item in build.items))
     talents = tuple(sorted(build.talents))
     glyphs = tuple(sorted(build.glyphs))
+    # crit/potency are applied in score_events; Whirlwind cleave is unbaked
+    # so the tape can be reused when only those points change.
     esc = (
-        build.potency_points,
         build.mastery_points,
-        build.crit_points,
         build.luck_points,
         getattr(build, "haste_points", 0),
         getattr(build, "attack_speed_points", 0),
@@ -709,18 +709,31 @@ def simulate(build: Build, targets: int = 5, spec: str = "arms") -> Report:
             recover(moment)
             power = dcs(moment)
             auto_raw = power * titans_auto_mult(moment)
-            auto_dealt = deal("Автоатака", auto_raw, False, 1, moment, stats["attack_potency"], auto=True, auto_pct_scale=True)
+            deal("Автоатака", auto_raw, False, 1, moment, stats["attack_potency"], auto=True, auto_pct_scale=True)
             mana = min(stats["mana_max"], mana + attack_mana_gain(stats))
             note_damage_mana(1)
-            on_attack_enrage(moment)
 
-            # Whirlwind cleave passive: chance (30+5*rank)%; 40% (+10% if WW on CD) of auto to other targets
+            # Whirlwind cleave: same scoring path as the auto (crit/potency/enrage
+            # at score time). scale multiplies both raw and pot_scale so
+            # (raw + potency * pot_scale) stays linear in the auto.
+            # Emit before on_attack_enrage so the enraged flag matches the auto.
             cleave_chance = (30.0 + 5.0 * RANK) / 100.0 * (1.0 + stats["luck"])
             cleave_ratio = 0.40 + (0.10 if moment < ww_on_cd_until else 0.0)
             if targets > 1 and cleave_chance > 0:
-                share = auto_dealt * cleave_chance * cleave_ratio * (targets - 1)
-                events.append((moment, "Whirlwind (cleave)", share, False, 1, 0.0, False, mastery(), False, False, "flat"))
+                scale = cleave_chance * cleave_ratio
+                deal(
+                    "Whirlwind (cleave)",
+                    auto_raw * scale,
+                    False,
+                    targets - 1,
+                    moment,
+                    stats["attack_potency"] * scale,
+                    auto=True,
+                    auto_pct_scale=True,
+                )
                 note_damage_mana(targets - 1)
+
+            on_attack_enrage(moment)
 
             if bt_extra:
                 bt_extra = False

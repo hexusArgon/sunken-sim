@@ -12,7 +12,6 @@ from __future__ import annotations
 
 from farm.hybrid.timeline_gpu import (
     SPEC_ECHO,
-    SPEC_FLAT,
     SPEC_NONE,
     SPEC_SPLASH,
     buffers_to_warrior_events,
@@ -366,19 +365,7 @@ def generate_warrior_timelines(torch, device, builds, spec: str, targets: int):
                 auto=1.0,
                 auto_pct_scale=1.0,
             )
-            # We need auto_dealt for cleave — approximate from raw path is hard without full score.
-            # CPU uses returned dealt (fully modified). For cleave flat event it uses that.
-            # Recompute expected dealt lightly for cleave only (phys path approx):
-            # Keep parity: rebuild dealt using same factors as score for PHYS auto.
-            # Simpler approach matching CPU structure: compute dealt via typed*crit*taken*exec*auto_pct
-            # Import score pieces.
-            from sunken_sim.shadow import _crit_factor, _execute_factor, target_hp
-
-            # For GPU batch we need per-row dealt. Use numpy fallback for cleave amount to
-            # guarantee parity with CPU deal() return — run a small CPU helper per active row.
-            # (cleave is rare enough; main timeline clocks stay on GPU)
             atk_idx = torch.nonzero(m_atk, as_tuple=False).view(-1).tolist()
-            # mana from attack
             from sunken_sim.shadow import attack_mana_gain
 
             for i in atk_idx:
@@ -386,69 +373,38 @@ def generate_warrior_timelines(torch, device, builds, spec: str, targets: int):
                 mana[i] = min(float(mana_max[i]), float(mana[i]) + attack_mana_gain(s))
             note_dmg_mana(1, m_atk)
 
-            # Snapshot enrage BEFORE on_attack_enrage — auto deal + cleave share use pre-proc state.
-            enrage_before = enrage_until.clone()
+            # Unbaked cleave before the enrage proc, matching CPU order.
+            if targets > 1:
+                cleave_chance = (30.0 + 5.0 * rank) / 100.0 * (1.0 + luck)
+                cleave_ratio = 0.40 + torch.where(
+                    moment < ww_on_cd_until,
+                    torch.full_like(moment, 0.10),
+                    torch.zeros_like(moment),
+                )
+                scale = cleave_chance * cleave_ratio
+                do_cleave = m_atk & (scale > 0)
+                if bool(do_cleave.any()):
+                    push_deal(
+                        do_cleave,
+                        moment,
+                        auto_raw * scale,
+                        magical=0.0,
+                        count=float(targets - 1),
+                        pot_scale=attack_potency * scale,
+                        auto=1.0,
+                        auto_pct_scale=1.0,
+                    )
+                    note_dmg_mana(targets - 1, do_cleave)
+
             enrage_attacks = enrage_attacks + m_atk.to(enrage_attacks.dtype)
             proc = m_atk & ((enrage_attacks % 10) == 0)
             enrage_until = torch.where(proc, moment + float(mod.ENRAGE_DUR), enrage_until)
 
-            # cleave / bt_extra / orbs / sulfuras / bladestorm — per-row for exact deal() parity
+            # bt_extra / orbs / sulfuras / bladestorm — per-row for exact deal() parity
             for i in atk_idx:
                 s = stats_list[i]
                 now = float(moment[i])
                 pow_i = float(power[i])
-                # Reconstruct dealt like deal() for auto (enrage state at deal time = before proc)
-                amount = float(auto_raw[i]) + s["potency"] * s["attack_potency"]
-                if s["relentless"]:
-                    amount *= 1.0 + 0.25 * 0.80
-                # typed phys
-                bonus = 1.0 + s["phys_add"]
-                if s["sulfuron"]:
-                    bonus += 0.13 + 0.25 * target_hp(now)
-                if s["glass"]:
-                    bonus *= 1.15
-                if now < float(enrage_before[i]):
-                    bonus *= 1.10
-                amount *= bonus
-                crit = s["crit"]
-                if is_fury and now < float(enrage_before[i]):
-                    crit += 10.0
-                if s["demolish"]:
-                    cf = _crit_factor(crit, 1.40 + s["rating"])
-                elif s["slaughterhouse"]:
-                    extra = (15.0 + 2.0 * s["agi"]) / 100.0
-                    cf = _crit_factor(crit, 2.0 + s["rating"] + extra)
-                else:
-                    cf = _crit_factor(crit, 2.0 + s["rating"])
-                amount *= cf
-                amount *= taken_auto_list[i] * _execute_factor(s, now)
-                amount *= s["auto_pct"]
-                auto_dealt = amount  # count=1
-
-                # cleave
-                cleave_chance = (30.0 + 5.0 * rank) / 100.0 * (1.0 + s["luck"])
-                cleave_ratio = 0.40 + (0.10 if now < float(ww_on_cd_until[i]) else 0.0)
-                if targets > 1 and cleave_chance > 0:
-                    share = auto_dealt * cleave_chance * cleave_ratio * (targets - 1)
-                    # push flat via tensor API for this single row
-                    mask_i = torch.zeros(B, dtype=torch.bool, device=device)
-                    mask_i[i] = True
-                    bufs.push_mask(
-                        torch,
-                        mask_i,
-                        torch.full((B,), now, dtype=dtype, device=device),
-                        torch.full((B,), share, dtype=dtype, device=device),
-                        magical=0.0,
-                        count=1.0,
-                        pot_scale=0.0,
-                        auto=0.0,
-                        mastery=float(mastery[i]),
-                        enraged=0.0,
-                        auto_pct=0.0,
-                        special=SPEC_FLAT,
-                    )
-                    if s["damage_mana_pct"]:
-                        mana[i] = min(float(mana_max[i]), float(mana[i]) + s["damage_mana_pct"] * s["mana_max"] * (targets - 1))
 
                 # bt extra
                 if float(bt_extra[i]) > 0.5:

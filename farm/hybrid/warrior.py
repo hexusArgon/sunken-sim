@@ -9,7 +9,8 @@ Event shape from sunken_sim.warrior.score_events:
    auto_pct_scale, special)  special: None | "splash" | "echo" | "flat"
 
 Enrage (*1.10 typed) is baked into weight. Fury enrage also +10 crit → separate kinds.
-Auto hits use taken_auto; flat cleave is pre-scored.
+Auto hits use taken_auto. Whirlwind cleave is a regular auto-like event
+(raw and pot_scale scaled by chance×ratio), not a pre-scored FLAT.
 """
 
 from __future__ import annotations
@@ -152,7 +153,12 @@ def _kind_for(magical: bool, auto: bool, enraged: bool, fury: bool) -> float:
 def _event_arrays(events: list, stats: dict, fury: bool) -> tuple[np.ndarray, ...]:
     from sunken_sim.shadow import _execute_factor
 
-    key = id(events)
+    key = (
+        id(events),
+        float(stats["potency"]),
+        float(stats.get("auto_pct", 1.0)),
+        bool(stats.get("relentless")),
+    )
     found = _EVENT_CACHE.get(key)
     if found is not None and found[0] is events:
         return found[1]
@@ -316,6 +322,33 @@ class WarriorFights(BatchFights):
         self.targets = int(targets)
         self.fights = 0
 
+    def _reuse_gpu_timelines(self, builds: list) -> dict:
+        """Generate one GPU tape per timeline key; rescore crit/potency per build."""
+        from sunken_sim import warrior
+        from farm.hybrid.warrior_gpu_timeline import generate_warrior_timelines
+
+        keys = []
+        first = {}
+        order = []
+        for build in builds:
+            stats = warrior.stats_of(build)
+            key = warrior._timeline_key(build, stats, self.spec, self.targets)
+            keys.append(key)
+            if key not in first:
+                first[key] = build
+                order.append(key)
+        unique = [first[k] for k in order]
+        rows = generate_warrior_timelines(
+            self.torch, self.target, unique, self.spec, self.targets
+        )
+        events_by_key = {key: row[0] for key, row in zip(order, rows)}
+        bundle = {}
+        for build, key in zip(builds, keys):
+            stats = warrior.stats_of(build)
+            taken, taken_auto = _taken_pair(build, stats, self.spec)
+            bundle[id(build)] = (events_by_key[key], stats, taken, taken_auto)
+        return bundle
+
     def _scores(self, tls: list[Timeline]) -> list[float]:
         from sunken_sim.warrior import FIGHT
 
@@ -338,15 +371,7 @@ class WarriorFights(BatchFights):
             want in ('1', 'true', 'force') or bool(getattr(self.device, 'gpu', False))
         )
         if use_gpu_tl and builds:
-            from farm.hybrid.warrior_gpu_timeline import generate_warrior_timelines
-
-            rows = generate_warrior_timelines(
-                self.torch, self.target, builds, self.spec, self.targets
-            )
-            gpu_bundle = {
-                id(build): (events, stats, taken, taken_auto)
-                for build, (events, stats, taken, taken_auto) in zip(builds, rows)
-            }
+            gpu_bundle = self._reuse_gpu_timelines(builds)
         for index, build in enumerate(builds):
             for tl in timelines(build, self.targets, self.spec, gpu_bundle=gpu_bundle):
                 tls.append(tl)
