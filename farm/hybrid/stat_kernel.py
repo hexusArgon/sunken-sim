@@ -6,7 +6,9 @@ potency and luck are applied in score_events / kind-score, so CPU
 `_timeline_key` and WarriorFights reuse the event tape when only those points
 change. Paladin Sulfuras echo is unbaked the same way; crit and potency
 reuse the tape, and luck reuses it when Divine Toll / bell is absent (Toll
-still bakes luck into extra hammer weight). Other heroes still bake some
+still bakes luck into extra hammer weight). Druid Sulfuras echo is unbaked
+the same way; crit and potency reuse the tape, luck stays because proc()
+changes wisp spread and extra hits. Other heroes still bake some
 flat/cleave/splash raws at emit time; a closed-form kernel for them needs
 the same per-class unbake. Until then, greedy stays on full dps_many batches
 with structural attr skips only.

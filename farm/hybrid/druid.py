@@ -10,6 +10,12 @@ Event shape from sunken_sim.druid.score_events:
 
 GPU moments: per kind sum(w), sum(w*t), sum(w*M), sum(w*extra).
 Magical multiplier = A0 + A1*t + slope*M + ef*extra (see _magic_coeffs).
+
+Crit and potency are applied at pack/score time. Sulfuras echo stores white
+attack damage; echo chance is applied at pack/score time. Luck stays in
+`_timeline_key` because proc() changes wisp spread and extra hit counts.
+DruidFights clusters GPU timelines by that key and rescores crit/potency
+per build.
 """
 
 from __future__ import annotations
@@ -92,9 +98,17 @@ _EVENT_CACHE: dict[int, tuple] = {}
 
 
 def _event_arrays(events: list, stats: dict) -> tuple:
-    from sunken_sim.shadow import _execute_factor, _crit_factor
+    from sunken_sim.shadow import _execute_factor, _crit_factor, sulfuras_echo_chance
 
-    key = id(events)
+    key = (
+        id(events),
+        float(stats["potency"]),
+        float(stats["crit"]),
+        float(stats.get("rating", 0.0)),
+        float(stats.get("spell_mult", 0.0)),
+        bool(stats.get("spell_crit")),
+        float(stats.get("luck", 0.0)),
+    )
     found = _EVENT_CACHE.get(key)
     if found is not None and found[0] is events:
         return found[1]
@@ -117,7 +131,7 @@ def _event_arrays(events: list, stats: dict) -> tuple:
             extra[i] = 0.0
         elif special == "echo":
             kind[i] = KIND_ECHO
-            weight[i] = raw * count * execute
+            weight[i] = raw * count * execute * sulfuras_echo_chance(stats["luck"])
             extra[i] = 0.0
         elif special == "treant":
             kind[i] = KIND_TREANT
@@ -265,19 +279,35 @@ class DruidFights(BatchFights):
 
         rows = []
         owner = []
+        keys = []
+        first = {}
+        order = []
         for index, build in enumerate(builds):
+            stats = druid.sheet(build, self.spec)
             for bound_key in _bound_keys(build, self.spec):
+                key = druid._timeline_key(build, stats, self.spec, self.targets, bound_key)
                 rows.append((build, bound_key))
                 owner.append(index)
-        out = generate_druid_timelines(self.torch, self.target, rows, self.spec, self.targets)
+                keys.append(key)
+                if key not in first:
+                    first[key] = (build, bound_key)
+                    order.append(key)
+        unique_rows = [first[k] for k in order]
+        generated = generate_druid_timelines(
+            self.torch, self.target, unique_rows, self.spec, self.targets
+        )
+        events_by_key = {key: evs for key, (evs, _st) in zip(order, generated)}
         best: list = [None] * len(builds)
         best_total = [-1.0] * len(builds)
-        for index, (build, _key), (events, stats) in zip(owner, rows, out):
+        single_bound = len(rows) == len(builds)
+        for index, (build, _bound), key in zip(owner, rows, keys):
+            events = events_by_key[key]
+            stats = druid.sheet(build, self.spec)
             codes = frozenset(item.rawcode for item in build.items) | build.talents | build.glyphs
             pen = stats["armor_pen"]
             taken_plain = armor_taken(DUMMY_ARMOR - pen)
             taken_wisp = armor_taken(DUMMY_ARMOR - pen - druid.WISP_ARMOR)
-            if len(rows) == len(builds):
+            if single_bound:
                 total = 0.0
             else:
                 total = sum(druid.score_events(events, stats, codes, taken_plain, taken_wisp).values())

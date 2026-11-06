@@ -238,10 +238,10 @@ def _timeline_key(build: Build, stats: dict, spec: str, targets: int, bound_key:
     items = tuple(sorted(item.rawcode for item in build.items))
     talents = tuple(sorted(build.talents))
     glyphs = tuple(sorted(build.glyphs))
+    # crit/potency applied at score. Luck stays: proc() scales wisp spread,
+    # entanglement doubles and wisp-item extra hits inside the fight.
     esc = (
-        build.potency_points,
         build.mastery_points,
-        build.crit_points,
         build.luck_points,
         getattr(build, "haste_points", 0),
         getattr(build, "attack_speed_points", 0),
@@ -280,8 +280,13 @@ def score_events(
     sources: dict[str, float] = {}
     for ev in events:
         when, name, raw, count, mastery_scale, attack, has_wisp, extra, special = ev
-        if special in ("splash", "echo", "treant"):
+        if special in ("splash", "treant"):
             amount = raw * count * taken_plain * _execute_factor(stats, when)
+        elif special == "echo":
+            amount = (
+                raw * count * taken_plain * _execute_factor(stats, when)
+                * sulfuras_echo_chance(stats["luck"])
+            )
         elif special == "sulfuras":
             amount = raw * count * _magical_multiplier(codes, when, stats["mastery"], 0.0)
             if stats["spell_crit"]:
@@ -507,7 +512,7 @@ def _simulate_druid(build: Build, targets: int, spec: str, bound_key: str | None
         if sulfuras is not None:
             if sulfuras.attack():
                 add_special(now, "Sulfuras", stats["int"], float(targets), "sulfuras")
-            add_special(now, "Sulfuras (удар)", stats["ad"] * sulfuras_echo_chance(stats["luck"]), 1.0, "echo")
+            add_special(now, "Sulfuras (удар)", stats["ad"], 1.0, "echo")
 
     guard = 0
     while guard < 200000:

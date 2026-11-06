@@ -57,8 +57,10 @@
    omits those points; WarriorFights clusters GPU timelines). Paladin
    Sulfuras echo is unbaked the same way (2026-11-06); crit and potency reuse
    the CPU/GPU tape, and luck reuses it when Divine Toll / bell is absent
-   (Toll still scales extra hammer weight inside the fight). Other classes
-   still bake some flat/cleave/splash raws.
+   (Toll still scales extra hammer weight inside the fight). Druid Sulfuras
+   echo is unbaked the same way; crit and potency reuse the tape, luck stays
+   in the key because proc() changes wisp spread and extra hits. Other
+   classes still bake some flat/cleave/splash raws.
 3. **ESC guarded event algebra (`FARM_HYBRID_ESC_ALGEBRA`, default `auto`)** —
    `farm/hybrid/esc_algebra.py`, Ledger kind-heroes. Один CPU-трейс текущего
    билда: float-ключи `stats_of`, которые меняют trial'ы, заменяются `Sym`;

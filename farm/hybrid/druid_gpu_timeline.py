@@ -96,7 +96,7 @@ def _cpu_events_batch(rows, spec, targets):
 
 def _row_consts(mod, build, spec, targets, bound_key):
     """Per-row constants computed with the exact CPU float expressions."""
-    from sunken_sim.shadow import attack_mana_gain, cast_mana_back, sulfuras_echo_chance
+    from sunken_sim.shadow import attack_mana_gain, cast_mana_back
 
     stats = mod.sheet(build, spec)
     has = lambda code: mod._has(build, code)  # noqa: E731
@@ -153,7 +153,7 @@ def _row_consts(mod, build, spec, targets, bound_key):
     c["fire_raw"] = (20.0 + 0.35 * stats["int"]) * targets
     c["sulf"] = 1.0 if wears(mod.SULFURAS_CODE) else 0.0
     c["sulf_raw"] = stats["int"]
-    c["sulf_echo_raw"] = stats["ad"] * sulfuras_echo_chance(stats["luck"])
+    c["sulf_echo_raw"] = stats["ad"]
     return c, stats
 
 
