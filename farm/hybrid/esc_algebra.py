@@ -51,11 +51,13 @@ ALGEBRA_HEROES = frozenset({
 FLAT_SOURCE_HEROES = frozenset({
     "paladin", "rogue", "warlock", "warrior", "hunter",
     "shaman", "druid", "feral_druid",
+    "mage", "shadow",
 })
-# mage/priest have sheet/character as stats_of, but flat-source algebra
-# picked damage/mana over crit/potency on catalog builds — keep them out
-# until their score path traces those leaves correctly.
-ALGEBRA_HEROES = ALGEBRA_HEROES | FLAT_SOURCE_HEROES
+# Farm id for sunken_sim.shadow is priest. Mage/priest traces must call
+# simulate(..., use_history=False); the history cache otherwise disagrees
+# with a fresh tape (crit/potency vs damage/mana on catalog builds).
+_FARM_NAME = {"shadow": "priest"}
+ALGEBRA_HEROES = ALGEBRA_HEROES | frozenset(_FARM_NAME.get(h, h) for h in FLAT_SOURCE_HEROES)
 
 
 def hero_flat_sources(module) -> bool:
@@ -664,6 +666,25 @@ def greedy_points_algebra(
         return names, trials, cand, {n: module.stats_of(trials[n]) for n in cand}
 
     validated_tokens: set[int] = set()
+    force_fight: set[str] = set()  # ESC attrs whose algebra disagreed with dps_many
+    checked_many: set[int] = set()
+
+    def _agree_with_many(tr, out, trials):
+        """Drop rescored attrs that do not match the caller's dps_many (GPU timeline)."""
+        if not out or trials is None or tr.token in checked_many:
+            return out
+        checked_many.add(tr.token)
+        names = list(out)
+        ref = [float(x) for x in dps_many([trials[n] for n in names])]
+        info.calls += 1
+        kept = {}
+        for n, r in zip(names, ref):
+            if abs(out[n] - r) / max(abs(r), 1.0) <= 1e-4:
+                kept[n] = out[n]
+            else:
+                force_fight.add(n)
+        return kept
+
 
     def leaf_values(tr, names, trial_stats):
         return {key: np.asarray([float(trial_stats[n][key]) for n in names]) for key in set(tr.program.leaves.values())}
@@ -708,11 +729,13 @@ def greedy_points_algebra(
             return None
         return dict(zip(sel, (float(x) for x in dps)))
 
-    def rescore(tr, tr_stats, tr_keys, cand, trial_stats):
+    def rescore(tr, tr_stats, tr_keys, cand, trial_stats, trials=None):
         """-> (scores, approx names)."""
         used = tr.weight_keys or weight_leaves(tr)
         ok_names = []
         for n in cand:
+            if n in force_fight:
+                continue
             if BUILD_FIELD[n] in tr.fields:
                 continue
             delta = _changed(tr_stats, trial_stats[n])
@@ -740,15 +763,16 @@ def greedy_points_algebra(
                     info.validated += len(exact)
                     if set(exact) != set(out):
                         raise RuntimeError("device/CPU guard mismatch")
-                    return exact, set()
+                    return _agree_with_many(tr, exact, trials), set()
                 info.approx += len(out)
-                return out, set(out)
+                kept = _agree_with_many(tr, out, trials)
+                return kept, set(kept)
         t0 = time.perf_counter()
         out = exact_scores(tr, ok_names, trial_stats)
         info.cpu_calls += 1
         if router is not None and device is not None:
             router.record("cpu", time.perf_counter() - t0)
-        return out, set()
+        return _agree_with_many(tr, out, trials), set()
 
     def _new_trace(names, cand, trial_stats):
         tr = None
@@ -854,7 +878,7 @@ def greedy_points_algebra(
         s_counts, s_best = dict(counts), best
         s_names, s_trials, s_cand, s_stats = names, trials, cand, trial_stats
         while True:
-            scores, approx = rescore(tr, base, tr_keys, s_cand, s_stats) if tr is not None else ({}, set())
+            scores, approx = rescore(tr, base, tr_keys, s_cand, s_stats, s_trials) if tr is not None else ({}, set())
             pending = [n for n in s_cand if n not in scores]
             spick, sdps = pick_of(s_names, scores, s_best, exclude=pending)
             path.append((s_names, s_trials, s_cand, scores, pending, spick, approx, s_stats))

@@ -30,8 +30,21 @@ def _specs(farm_hero: str):
 
 
 def _many(hero, spec, targets=5):
+    import inspect
+
     mod = A.hero_module(hero)
-    return lambda builds: [float(mod.simulate(b, targets, spec=spec).dps) for b in builds]
+    use_hist = "use_history" in inspect.signature(mod.simulate).parameters
+
+    def fn(builds):
+        out = []
+        for b in builds:
+            kw = {"spec": spec}
+            if use_hist:
+                kw["use_history"] = False
+            out.append(float(mod.simulate(b, targets, **kw).dps))
+        return out
+
+    return fn
 
 
 class FlatAlgebraTest(unittest.TestCase):
@@ -72,11 +85,22 @@ class FlatAlgebraTest(unittest.TestCase):
                 self.assertEqual(got[1], ref[1], spec)
                 self.assertAlmostEqual(got[0], ref[0], delta=1e-9 * max(1.0, abs(ref[0])))
 
-    def test_mage_priest_not_enabled_until_parity(self):
-        self.assertNotIn("mage", A.FLAT_SOURCE_HEROES)
-        self.assertNotIn("shadow", A.FLAT_SOURCE_HEROES)
-        self.assertNotIn("priest", A.ALGEBRA_HEROES)
-        self.assertNotIn("mage", A.ALGEBRA_HEROES)
+    def test_mage_priest_all_specs_match_full_greedy(self):
+        self.assertIn("mage", A.FLAT_SOURCE_HEROES)
+        self.assertIn("shadow", A.FLAT_SOURCE_HEROES)
+        self.assertIn("priest", A.ALGEBRA_HEROES)
+        self.assertIn("mage", A.ALGEBRA_HEROES)
+        self.assertNotIn("shadow", A.ALGEBRA_HEROES)
+        for hero, specs in (("mage", ("frost", "fire", "arcane")),
+                            ("priest", ("shadow", "discipline", "holy"))):
+            for spec in specs:
+                with self.subTest(hero=hero, spec=spec):
+                    build = _catalog_build(hero, spec, 0)
+                    many = _many(hero, spec)
+                    ref = greedy_points(lambda c: many([apply_points(build, c)])[0])
+                    got = A.greedy_points_algebra(many, build, hero, spec, 5, skip=structural_skip_attrs(hero))
+                    self.assertEqual(got[1], ref[1], f"{hero}/{spec}")
+                    self.assertAlmostEqual(got[0], ref[0], delta=1e-9 * max(1.0, abs(ref[0])))
 
 
 if __name__ == "__main__":

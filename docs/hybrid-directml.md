@@ -294,4 +294,5 @@ DirectML для самой алгебры по-прежнему `FARM_HYBRID_ESC
 
 Замер _bench_esc_device.py --heroes warrior,hunter,shaman --n 1 --repeat 2 (2026-11-06): сумма wall ref 67.07 с, cpu-алгебра 46.48 с (1.44×), gpu-алгебра 55.54 с (1.21×), auto 47.30 с (1.42×) и осталась на cpu. DirectML-проба (_probe_esc_device_dml.py) без fallback. GPU-маршрут алгебры не включаем по умолчанию.
 
-mage и priest получили stats_of (sheet / character), но в FLAT_SOURCE_HEROES не входят: на каталожном билде алгебра взяла damage/mana вместо crit/potency.
+mage и priest входят в плоскую алгебру (модуль priest — shadow, farm-id priest). Их simulate при трассировке и в тестах вызывается с use_history=False: кэш истории на каталожных билдах расходится со свежим прогоном (crit/potency против damage/mana). Пересчёт дополнительно сверяется с dps_many; атрибут, который не совпал (у hunter/survival так ведёт себя pet_damage на GPU-таймлайне), дальше идёт обычным боем.
+
