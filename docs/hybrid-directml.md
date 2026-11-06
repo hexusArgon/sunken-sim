@@ -270,3 +270,8 @@ farm/hybrid/priest_gpu_timeline.py — batched f64 clocks on CPU, kind-score on 
 Mirrors sunken_sim.shadow._fight_events (CAST_POINT finish queue, SWP Cosmic EV, Radiance/Renew/Image).
 Gate: FARM_HYBRID_GPU_TIMELINE. Parity: 	ools/_parity_priest_gpu_tl.py (16 builds × 3 specs, ≤1e-4).
 Batch fix: on_swp expiry zeroing must be masked to rows whose tick fires (otherwise sibling rows clear EV weights early).
+
+
+## ESC-алгебра: flat-герои (2026-11-06)
+
+К 11 Ledger-героям добавлены warrior, hunter, paladin, rogue, warlock (`FLAT_SOURCE_HEROES`). Для них события берутся из `report.sources` как KIND_FLAT, а мемо `_TIMELINE` на время трассировки отключается, чтобы ключ не читал ESC-поля. Parity `tools/_esc_algebra_parity.py`: 28/28 точно. Haste, attack speed и мана меняют таймлайн, поэтому для них бои остаются.

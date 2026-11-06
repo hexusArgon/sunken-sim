@@ -21,9 +21,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIGS = {
-    "off": {},
-    "cross": {"FARM_HYBRID_CROSS_BUILD": "1"},
-    "alg_auto": {"FARM_HYBRID_ESC_ALGEBRA": "auto"},
+    "off": {"FARM_HYBRID_CROSS_BUILD": "0", "FARM_HYBRID_ESC_ALGEBRA": "0"},
+    "cross": {"FARM_HYBRID_CROSS_BUILD": "1", "FARM_HYBRID_ESC_ALGEBRA": "0"},
+    "alg_auto": {"FARM_HYBRID_CROSS_BUILD": "0", "FARM_HYBRID_ESC_ALGEBRA": "auto"},
     "cross_alg": {"FARM_HYBRID_CROSS_BUILD": "1", "FARM_HYBRID_ESC_ALGEBRA": "auto"},
 }
 FLAGS = ("FARM_HYBRID_CROSS_BUILD", "FARM_HYBRID_ESC_ALGEBRA", "FARM_HYBRID_ESC_ALGEBRA_DEVICE")

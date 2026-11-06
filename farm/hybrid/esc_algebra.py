@@ -46,6 +46,16 @@ ALGEBRA_HEROES = frozenset({
 })
 
 
+# stats_of heroes whose simulate() returns plain-dict sources (no Ledger events);
+# traced through their per-source totals (FLAT events, see trace_current).
+FLAT_SOURCE_HEROES = frozenset({"hunter", "paladin", "rogue", "warlock", "warrior"})
+ALGEBRA_HEROES = ALGEBRA_HEROES | FLAT_SOURCE_HEROES
+
+
+def hero_flat_sources(module) -> bool:
+    return module.__name__.rsplit(".", 1)[-1] in FLAT_SOURCE_HEROES
+
+
 class Untraceable(BaseException):  # not swallowable by `except Exception`
     def __init__(self, msg: str, sym: "Sym | None" = None) -> None:
         super().__init__(msg)
@@ -389,6 +399,15 @@ def trace_current(module, build, targets: int, spec: str, keys: set[str]) -> Tra
         return stats
 
     prev_fields = _FIELDS
+    # Timeline memo (warrior/hunter/paladin/rogue/warlock): its key reads every
+    # ESC *_points field and a hit would replay concrete events without guards,
+    # while a miss would store Sym events. Trace with an always-miss key and a
+    # throwaway memo, restored afterwards.
+    memo = getattr(module, "_TIMELINE", None) if hasattr(module, "_timeline_key") else None
+    if memo is not None:
+        orig_key = module._timeline_key
+        module._timeline_key = lambda *_a, **_k: object()
+        module._TIMELINE = {}
     module.stats_of = patched
     _FIELDS = log
     _TAPE = tape
@@ -403,9 +422,19 @@ def trace_current(module, build, targets: int, spec: str, keys: set[str]) -> Tra
         _TAPE = None
         _FIELDS = prev_fields
         module.stats_of = orig
+        if memo is not None:
+            module._timeline_key = orig_key
+            module._TIMELINE = memo
     if bad:
         return Trace(False, bad[0])
     events = getattr(report, "events", None)
+    if events is None and hero_flat_sources(module) and isinstance(getattr(report, "sources", None), dict):
+        # stats_of heroes without a Ledger (warrior/hunter/paladin/rogue/warlock):
+        # dps == sum(sources.values()) / FIGHT, every per-source total already a
+        # tape value -> one FLAT event per source, in dict order (same sum).
+        from sunken_sim.ledger import KIND_FLAT
+
+        events = [(0.0, name, value, KIND_FLAT) for name, value in report.sources.items()]
     if events is None:
         return Trace(False, "no ledger events")
     timed = [when.i for when, _name, _w, _k in events if isinstance(when, Sym)]
