@@ -2,7 +2,8 @@
 """Batched next-event timeline for Berserker (headhunter / poison / fury).
 
 Faithful port of sunken_sim.berserker.simulate onto batched torch.
-Ledger events: KIND_EXEC (when, name, dealt/execute) and KIND_FLAT (when=0).
+Ledger events: KIND_EXEC (when, name, raw_weight, kind, pot_coeff).
+Scoring applies (raw_weight + potency * pot_coeff) * execute; crit/luck stay baked.
 f64 clocks on CPU; DirectML kind-score via kindscore.pack.
 Sulfuras → CPU overflow for the batch.
 """
@@ -61,19 +62,24 @@ def _cpu_fallback(builds, spec, targets):
     return out
 
 
-def _push(torch, bufs, mask, when, weight, name_id, kind):
+def _push(torch, bufs, mask, when, weight, name_id, kind, pot_coeff=0.0):
     if not bool(mask.any()):
         return
     B = int(mask.shape[0])
     w = weight if isinstance(weight, torch.Tensor) else torch.full((B,), float(weight), dtype=bufs["weight"].dtype, device=weight.device if isinstance(weight, torch.Tensor) else bufs["weight"].device)
     when_t = when if isinstance(when, torch.Tensor) else torch.full((B,), float(when), dtype=bufs["when"].dtype, device=bufs["when"].device)
-    active = mask & (bufs["length"] < MAX_EVENTS) & (w != 0)
+    pc = pot_coeff if isinstance(pot_coeff, torch.Tensor) else torch.full_like(w, float(pot_coeff))
+    nonzero = (w != 0) | (pc != 0)
+    if bool((mask & nonzero & (bufs["length"] >= MAX_EVENTS)).any()):
+        raise _Overflow("events")
+    active = mask & nonzero
     if not bool(active.any()):
         return
     rows = torch.arange(B, device=bufs["when"].device)
     idx = bufs["length"].clone()
     bufs["when"][rows[active], idx[active]] = when_t[active]
     bufs["weight"][rows[active], idx[active]] = w[active]
+    bufs["pot_coeff"][rows[active], idx[active]] = pc[active]
     if isinstance(name_id, torch.Tensor):
         bufs["name"][rows[active], idx[active]] = name_id[active]
     else:
@@ -90,6 +96,7 @@ def _make_bufs(torch, device, B, dtype):
         "when": torch.zeros((B, MAX_EVENTS), dtype=dtype, device=device),
         "name": torch.zeros((B, MAX_EVENTS), dtype=torch.int64, device=device),
         "weight": torch.zeros((B, MAX_EVENTS), dtype=dtype, device=device),
+        "pot_coeff": torch.zeros((B, MAX_EVENTS), dtype=dtype, device=device),
         "kind": torch.zeros((B, MAX_EVENTS), dtype=dtype, device=device),
         "length": torch.zeros(B, dtype=torch.int64, device=device),
     }
@@ -102,10 +109,11 @@ def _finalize(bufs, stats_list):
     names = bufs["name"].detach().cpu()
     weights = bufs["weight"].detach().cpu()
     kinds = bufs["kind"].detach().cpu()
+    coeffs = bufs["pot_coeff"].detach().cpu()
     for i, stats in enumerate(stats_list):
         n = int(lengths[i])
         events = [
-            (float(whens[i, j]), NAMES[int(names[i, j])], float(weights[i, j]), float(kinds[i, j]))
+            (float(whens[i, j]), NAMES[int(names[i, j])], float(weights[i, j]), float(kinds[i, j]), float(coeffs[i, j]))
             for j in range(n)
         ]
         out.append((events, stats))
@@ -133,7 +141,9 @@ def _berserker_batch(torch, device, dtype, builds, spec, T):
     )
 
     B = len(builds)
-    Tt = min(int(T), MAX_T)
+    if T < 1 or T > MAX_T:
+        raise _Overflow("targets")
+    Tt = int(T)
     fight = float(FIGHT)
     cast_point = float(CAST_POINT)
     cast_time = float(CAST_POINT + CAST_BACKSWING)
@@ -325,18 +335,12 @@ def _berserker_batch(torch, device, dtype, builds, spec, T):
         weight = torch.where(ex != 0, dealt / ex, zeros)
         _push(torch, bufs, mask & (dealt != 0), when, weight, name_id, KIND_EXEC)
 
-    def add_flat(mask, name_id, delta):
-        _push(torch, bufs, mask & (full(delta) != 0), zeros, full(delta), name_id, KIND_FLAT)
-
-    def finish(mask, name_id, amount, index, when, count=1.0):
+    def finish(mask, name_id, raw, index, when, count=1.0, pot_coeff=0.0):
         when = full(when)
-        amount = full(amount)
-        count = full(count)
-        taken = taken_for(index, when)
-        ex = execute_t(when)
-        dealt = amount * taken * ex * fury_mult * count
-        add_exec(mask, name_id, dealt, when)
-        return dealt
+        scale = taken_for(index, when) * fury_mult * full(count)
+        weight, coeff = full(raw) * scale, full(pot_coeff) * scale
+        _push(torch, bufs, mask, when, weight, name_id, KIND_EXEC, coeff)
+        return (weight + potency * coeff) * execute_t(when)
 
     def chance(v):
         return torch.clamp(full(v), 0.0, 1.0)
@@ -366,15 +370,15 @@ def _berserker_batch(torch, device, dtype, builds, spec, T):
         active = mask & (surge_p[:, index] > 0)
         if not bool(active.any()):
             return
-        raw = full(15.0 * LEVEL) + 2.5 * agi + potency
-        finish(active, N_SURGE, raw * generic(when), index, when, surge_p[:, index])
+        raw = full(15.0 * LEVEL) + 2.5 * agi
+        finish(active, N_SURGE, raw * generic(when), index, when, surge_p[:, index], generic(when))
         surge_p[:, index] = torch.where(active, zeros, surge_p[:, index])
 
-    def attack_hit(mask, name_id, raw, when, pot_scale, index=0):
+    def attack_hit(mask, name_id, raw, when, pot_scale, index=0, count=1.0):
         when = full(when)
         raw = full(raw)
         pot_scale = full(pot_scale)
-        amount = raw + potency * pot_scale
+        amount = raw
         increase = ones.clone()
         if headhunter:
             increase = increase + 0.12
@@ -387,13 +391,15 @@ def _berserker_batch(torch, device, dtype, builds, spec, T):
         mult = full(2.0) + rating
         if headhunter:
             mult = mult + 0.10 + 0.008 * mastery
-        expected = amount * cf(chance_c, mult)
+        crit_factor = cf(chance_c, mult)
+        expected = amount * crit_factor
+        coeff = pot_scale * increase * crit_factor
         expected = expected + torch.where(
             blood_hunter,
             torch.clamp(chance_c, 0.0, 100.0) / 100.0 * (full(15.0) + 0.05 * hp) * mult,
             zeros,
         )
-        return finish(mask, name_id, expected * physical(when), index, when)
+        return finish(mask, name_id, expected * physical(when), index, when, count, coeff * physical(when))
 
     def dcs(now):
         value = full(mod.WHITE_BASE) + 0.75 * agi + damage + full(float(mod.TROPHIES))
@@ -407,14 +413,15 @@ def _berserker_batch(torch, device, dtype, builds, spec, T):
         for code_on in (deadly, wound, leeching):
             calls = calls + torch.where(code_on, chance(0.30 * luck_mult), zeros)
         scale = torch.where(dambala, full(0.25), full(0.15))
-        raw = full(10.0 * mod.RANK) + scale * dcs(now) + potency
-        raw = raw * cf(crit0 * luck_mult, full(1.5) + rating)
-        raw = raw * torch.where(deadly, ones + 0.005 * 100.0 * (ones - target_hp_t(now)), ones)
+        raw = full(10.0 * mod.RANK) + scale * dcs(now)
+        coeff = cf(crit0 * luck_mult, full(1.5) + rating)
+        coeff = coeff * torch.where(deadly, ones + 0.005 * 100.0 * (ones - target_hp_t(now)), ones)
+        raw = raw * coeff
         ticks = ones.clone()
         if poison:
             ticks = ticks + chance((full(5.0) + 0.5 * mastery) / 100.0)
         typed = torch.where(hemotoxin, physical(now), generic(now))
-        finish(mask, N_VA, raw * typed, index, now, calls * ticks)
+        finish(mask, N_VA, raw * typed, index, now, calls * ticks, coeff * typed)
         if not poison:
             ch = ones - (ones - chance(0.02 * luck_mult)) ** calls
             surge_proc(mask, index, now, ch)
@@ -451,33 +458,9 @@ def _berserker_batch(torch, device, dtype, builds, spec, T):
         speed = torch.clamp(speed, -0.8, 4.0)
         return swing / (ones + speed)
 
-    def axe_dealt(mask, now):
-        """Compute Axe Mastery dealt (exec-included) without emitting."""
-        # Shadow attack_hit path amounts
-        when = full(now)
-        raw = full(20.0) + 1.25 * dcs(when)
-        amount = raw + potency * attack_potency
-        increase = ones.clone()
-        if headhunter:
-            increase = increase + 0.12
-        increase = increase + torch.where(executor & (target_hp_t(when) <= 0.40), full(0.35), zeros)
-        amount = amount * increase
-        chance_c = crit0.clone()
-        chance_c = chance_c + torch.where(
-            boneslicer, full(10.0) + 0.5 * (full(100.0) * (ones - hero_ratio_t(when))), zeros
-        )
-        mult = full(2.0) + rating
-        if headhunter:
-            mult = mult + 0.10 + 0.008 * mastery
-        expected = amount * cf(chance_c, mult)
-        expected = expected + torch.where(
-            blood_hunter,
-            torch.clamp(chance_c, 0.0, 100.0) / 100.0 * (full(15.0) + 0.05 * hp) * mult,
-            zeros,
-        )
-        taken = taken_for(0, when)
-        ex = execute_t(when)
-        return expected * physical(when) * taken * ex * fury_mult
+    def axe_hit(mask, now, count):
+        attack_hit(mask, N_AXE, full(20.0) + 1.25 * dcs(now), now,
+                   attack_potency, count=count)
 
     # state
     mana = mana_max.clone()
@@ -547,13 +530,12 @@ def _berserker_batch(torch, device, dtype, builds, spec, T):
         is_land = alive & (moment == land) & (land < BIG)
         if bool(is_land.any()):
             pop_land(is_land)
-            raw = full(80.0 * mod.RANK - 20.0) + 2.2 * agi + potency
+            raw = full(80.0 * mod.RANK - 20.0) + 2.2 * agi
             for index in range(min(Tt, T)):
                 va = moment < va_until[:, index]
-                amount = raw * torch.where(
-                    poison_bomb, torch.where(va, full(1.6), full(1.3)), ones
-                )
-                finish(is_land, N_SACK, amount * physical(moment), index, moment)
+                coeff = torch.where(poison_bomb, torch.where(va, full(1.6), full(1.3)), ones)
+                finish(is_land, N_SACK, raw * coeff * physical(moment), index, moment,
+                       pot_coeff=coeff * physical(moment))
                 poison_spec_proc(is_land, index, moment)
                 va_until[:, index] = torch.where(
                     is_land, torch.maximum(va_until[:, index], moment + mod.VA_DUR), va_until[:, index]
@@ -576,8 +558,7 @@ def _berserker_batch(torch, device, dtype, builds, spec, T):
         if bool(is_press.any()):
             do = is_press & axe_t
             if bool(do.any()):
-                dealt = axe_dealt(do, moment)
-                add_flat(do, N_AXE, chance(0.05 * luck_mult) * dealt)
+                axe_hit(do, moment, chance(0.05 * luck_mult))
             next_pressure = torch.where(is_press, next_pressure + mod.PRESSURE_STEP, next_pressure)
             acted = acted | is_press
 
@@ -617,9 +598,9 @@ def _berserker_batch(torch, device, dtype, builds, spec, T):
                 mana = torch.where(ok, mana - mod.SKULL_MANA, mana)
                 mana = torch.where(ok, torch.minimum(mana_max, mana + skull_back), mana)
                 hit = moment + cast_point
-                raw = full(150.0 * mod.RANK) + 2.0 * dcs(hit) + full(0.05 * MEDIAN_MONSTER_HP) + potency
-                raw = raw * torch.where(executor & (target_hp_t(hit) <= 0.40), full(1.35), ones)
-                finish(ok, N_SKULL, raw * physical(hit), 0, hit)
+                raw = full(150.0 * mod.RANK) + 2.0 * dcs(hit) + full(0.05 * MEDIAN_MONSTER_HP)
+                coeff = torch.where(executor & (target_hp_t(hit) <= 0.40), full(1.35), ones)
+                finish(ok, N_SKULL, raw * coeff * physical(hit), 0, hit, pot_coeff=coeff * physical(hit))
                 poison_spec_proc(ok, 0, hit)
                 note_damage_mana(ok, 1.0)
                 busy_n = moment + cast_time + cast_stun
@@ -635,19 +616,8 @@ def _berserker_batch(torch, device, dtype, builds, spec, T):
             power = dcs(moment)
             had_va = moment < va_until[:, 0]
             surge_consume(is_auto, 0, moment)
-            # attack_hit emits; then scale FLAT for auto_pct != 1
-            # Compute dealt via attack_hit
-            attack_hit(is_auto, N_AUTO, power, moment, attack_potency, 0)
-            # auto_pct: if != 1, convert last EXEC to scaled — approximate by FLAT adjust
-            need_pct = is_auto & (auto_pct != 1.0)
-            if bool(need_pct.any()):
-                # scale the weight of the just-pushed auto event
-                for i in range(B):
-                    if not bool(need_pct[i]):
-                        continue
-                    j = int(bufs["length"][i].item()) - 1
-                    if j >= 0 and int(bufs["name"][i, j].item()) == N_AUTO:
-                        bufs["weight"][i, j] = bufs["weight"][i, j] * auto_pct[i]
+            # Scale both raw and coefficient; no potency-baked FLAT adjustment.
+            attack_hit(is_auto, N_AUTO, power, moment, attack_potency, count=auto_pct)
             poison_spec_proc(is_auto, 0, moment)
             mana = torch.where(is_auto, torch.minimum(mana_max, mana + amg), mana)
             note_damage_mana(is_auto, 1.0)
@@ -657,20 +627,19 @@ def _berserker_batch(torch, device, dtype, builds, spec, T):
                 va_tick(blades_tick, 0, moment)
             if bool((is_auto & snake).any()):
                 ch = chance(0.20 * luck_mult)
-                raw = full(2.0) * (full(10.0 * mod.RANK) + 0.5 * agi) + potency
+                raw = full(2.0) * (full(10.0 * mod.RANK) + 0.5 * agi)
                 for index in range(min(Tt, T)):
-                    finish(is_auto & snake, N_SNAKE, raw * generic(moment), index, moment, ch)
+                    finish(is_auto & snake, N_SNAKE, raw * generic(moment), index, moment, ch, generic(moment))
                     # consume surge portion
                     active_s = is_auto & snake & (surge_p[:, index] > 0) & (moment - surge_at[:, index] <= mod.SURGE_DUR)
                     consumed = surge_p[:, index] * ch
-                    surge_value = (full(15.0 * LEVEL) + 2.5 * agi + potency) * generic(moment)
-                    finish(active_s, N_SURGE, surge_value, index, moment, consumed)
+                    surge_value = (full(15.0 * LEVEL) + 2.5 * agi) * generic(moment)
+                    finish(active_s, N_SURGE, surge_value, index, moment, consumed, generic(moment))
                     surge_p[:, index] = torch.where(active_s, surge_p[:, index] - consumed, surge_p[:, index])
                 note_damage_mana(is_auto & snake, float(T) * ch)
             if bool((is_auto & axe_t).any()):
                 rolls = ones + torch.where(blood_craze, chance(0.30 * luck_mult), zeros)
-                dealt = axe_dealt(is_auto & axe_t, moment)
-                add_flat(is_auto & axe_t, N_AXE, rolls * chance(0.10 * luck_mult) * dealt)
+                axe_hit(is_auto & axe_t, moment, rolls * chance(0.10 * luck_mult))
             if bool((is_auto & fire_orb).any()):
                 splash = (full(20.0) + 0.35 * agi) * float(T) * taken_for(0, moment) * execute_t(moment) * fury_mult
                 add_exec(is_auto & fire_orb, N_FIRE, splash, moment)

@@ -30,6 +30,9 @@ Rogue hit events store raw weight plus pot_coeff; Vendetta and Coup
 keep both parts so `_timeline_key` omits potency_points. Crit stays
 (Combat Potency / Dispatch) and luck stays (proc rolls and Sulfuras
 echo). RogueFights clusters GPU timelines by that key.
+Berserker Ledger events also keep raw weight plus pot_coeff (including Axe
+Mastery and auto_pct); BerserkerFights clusters GPU tapes omitting only potency.
+Crit/luck remain baked. There is no Berserker CPU timeline cache.
 Other
 heroes still bake some
 flat/cleave/splash raws at emit time; a closed-form kernel for them needs

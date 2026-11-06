@@ -319,6 +319,30 @@ def _chance(value: float) -> float:
     return max(0.0, min(1.0, value))
 
 
+def _timeline_key(build: Build, stats: dict, spec: str, targets: int) -> tuple:
+    """Safe GPU tape cluster key; only potency_points is unbaked.
+
+    Item order is retained (duplicate-item stacking can depend on it). Full
+    computed stats protect custom items sharing rawcodes. No CPU tape cache.
+    """
+    from dataclasses import fields
+
+    def freeze(value):
+        if isinstance(value, dict):
+            return tuple(sorted((k, freeze(v)) for k, v in value.items()))
+        if isinstance(value, (tuple, list)):
+            return tuple(freeze(v) for v in value)
+        if isinstance(value, (set, frozenset)):
+            return tuple(sorted(value))
+        return value
+
+    esc = tuple((f.name, getattr(build, f.name)) for f in fields(build)
+                if f.name.endswith("_points") and f.name != "potency_points")
+    return (tuple(item.rawcode for item in build.items), tuple(sorted(build.talents)),
+            tuple(sorted(build.glyphs)), esc, spec, targets,
+            freeze({k: v for k, v in stats.items() if k != "potency"}))
+
+
 def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report:
     if spec not in SPECS:
         raise ValueError(spec)
@@ -391,10 +415,14 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
             bonus *= 1.15
         return bonus
 
-    def finish(name: str, amount: float, index: int, when: float, count: float = 1.0) -> float:
-        amount *= taken_for(index, when) * _execute_factor(stats, when) * fury_mult
-        sources.add_exec(name, amount * count, when, _execute_factor(stats, when))
-        return amount * count
+    def finish(name: str, raw: float, index: int, when: float, count: float = 1.0,
+               pot_coeff: float = 0.0) -> float:
+        execute = _execute_factor(stats, when)
+        scale = taken_for(index, when) * fury_mult * count
+        weight, coeff = raw * scale, pot_coeff * scale
+        dealt = (weight + stats["potency"] * coeff) * execute
+        sources.add_exec(name, dealt, when, execute, raw_weight=weight, pot_coeff=coeff)
+        return dealt
 
     def surge_proc(index: int, when: float, chance: float) -> None:
         if when - surge_at[index] > SURGE_DUR:
@@ -412,12 +440,13 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
             surge_p[index] = 0.0
         if surge_p[index] <= 0:
             return
-        raw = 15.0 * LEVEL + 2.5 * agi + stats["potency"]
-        finish("Surge of Toxins", raw * generic(when), index, when, surge_p[index])
+        raw = 15.0 * LEVEL + 2.5 * agi
+        finish("Surge of Toxins", raw * generic(when), index, when, surge_p[index], generic(when))
         surge_p[index] = 0.0
 
-    def attack_hit(name: str, raw: float, when: float, potency_scale: float, index: int = 0) -> float:
-        amount = raw + stats["potency"] * potency_scale
+    def attack_hit(name: str, raw: float, when: float, potency_scale: float,
+                   index: int = 0, count: float = 1.0) -> float:
+        amount = raw
         increase = 1.0
         if spec == "headhunter":
             increase += 0.12  # Blood Fury always on
@@ -430,11 +459,13 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
         mult = 2.0 + stats["rating"]
         if spec == "headhunter":
             mult += 0.10 + 0.008 * mastery
-        expected = amount * _crit_factor(chance, mult)
+        crit_factor = _crit_factor(chance, mult)
+        expected = amount * crit_factor
+        pot_coeff = potency_scale * increase * crit_factor
         if has(TALENT_BLOOD_HUNTER):
             share = max(0.0, min(100.0, chance)) / 100.0
             expected += share * (15.0 + 0.05 * stats["hp"]) * mult
-        return finish(name, expected * physical(when), index, when)
+        return finish(name, expected * physical(when), index, when, count, pot_coeff * physical(when))
 
     def dcs(now: float) -> float:
         value = WHITE_BASE + 0.75 * agi + stats["damage"]
@@ -450,15 +481,18 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
             if has(code):
                 calls += _chance(0.30 * luck_mult)
         scale = 0.25 if has(TALENT_MIGHT_OF_DAMBALA) else 0.15
-        raw = 10.0 * RANK + scale * dcs(now) + stats["potency"]
-        raw *= _crit_factor(stats["crit"] * luck_mult, 1.5 + stats["rating"])
+        raw = 10.0 * RANK + scale * dcs(now)
+        coeff = _crit_factor(stats["crit"] * luck_mult, 1.5 + stats["rating"])
+        raw *= coeff
         if has(TALENT_DEADLY_POISON):
-            raw *= 1.0 + 0.005 * 100.0 * (1.0 - target_hp(now))
+            deadly = 1.0 + 0.005 * 100.0 * (1.0 - target_hp(now))
+            raw *= deadly
+            coeff *= deadly
         ticks = 1.0
         if spec == "poison":
             ticks += _chance((5.0 + 0.5 * mastery) / 100.0)
         typed_mult = physical(now) if has(TALENT_HEMOTOXIN) else generic(now)
-        finish("Venomous Axes", raw * typed_mult, index, now, calls * ticks)
+        finish("Venomous Axes", raw * typed_mult, index, now, calls * ticks, coeff * typed_mult)
         if spec != "poison":
             surge_proc(index, now, 1.0 - (1.0 - _chance(0.02 * luck_mult)) ** calls)
         else:
@@ -502,13 +536,11 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
         speed = min(4.0, max(-0.8, speed))
         return swing / (1.0 + speed)
 
-    def axe_value(now: float) -> float:
-        raw = 20.0 + 1.25 * dcs(now)
-        before = sources["Axe Mastery"]
-        attack_hit("Axe Mastery", raw, now, stats["attack_potency"])
-        dealt = sources["Axe Mastery"] - before
-        sources["Axe Mastery"] = before
-        return dealt
+    def axe_hit(now: float, count: float) -> None:
+        # Emit the scaled raw/coeff directly; probing/restoring the Ledger would
+        # create potency-baked FLAT deltas (including a negative probe restore).
+        attack_hit("Axe Mastery", 20.0 + 1.25 * dcs(now), now,
+                   stats["attack_potency"], count=count)
 
     next_attack = 0.0
     next_sack = 0.0
@@ -529,12 +561,13 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
         # Timers that do not depend on the hero's hands.
         if moment == land:
             pending_sack.pop(0)
-            raw = 80.0 * RANK - 20.0 + 2.2 * agi + stats["potency"]
+            raw = 80.0 * RANK - 20.0 + 2.2 * agi
             for index in range(targets):
-                amount = raw
+                coeff = 1.0
                 if has(TALENT_POISON_BOMB):
-                    amount *= 1.6 if va_on(index, moment) else 1.3
-                finish("Toxic Sack", amount * physical(moment), index, moment)
+                    coeff = 1.6 if va_on(index, moment) else 1.3
+                finish("Toxic Sack", raw * coeff * physical(moment), index, moment,
+                       pot_coeff=coeff * physical(moment))
                 poison_spec_proc(index, moment)
                 va_until[index] = max(va_until[index], moment + VA_DUR)
             note_damage_mana(targets)
@@ -547,7 +580,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
             continue
         if moment == next_pressure:
             if has(TALENT_AXE_MASTERY):
-                sources["Axe Mastery"] += _chance(0.05 * luck_mult) * axe_value(moment)
+                axe_hit(moment, _chance(0.05 * luck_mult))
             next_pressure += PRESSURE_STEP
             continue
         if moment < busy:
@@ -575,10 +608,9 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
                 continue
             actions.append((moment, "Skull Split"))
             hit = moment + CAST_POINT
-            raw = 150.0 * RANK + 2.0 * dcs(hit) + 0.05 * MEDIAN_MONSTER_HP + stats["potency"]
-            if has(TALENT_EXECUTOR) and target_hp(hit) <= 0.40:
-                raw *= 1.35
-            finish("Skull Split", raw * physical(hit), 0, hit)
+            raw = 150.0 * RANK + 2.0 * dcs(hit) + 0.05 * MEDIAN_MONSTER_HP
+            coeff = 1.35 if has(TALENT_EXECUTOR) and target_hp(hit) <= 0.40 else 1.0
+            finish("Skull Split", raw * coeff * physical(hit), 0, hit, pot_coeff=coeff * physical(hit))
             poison_spec_proc(0, hit)
             note_damage_mana(1)
             busy = cast(moment)
@@ -590,10 +622,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
             power = dcs(moment)
             had_va = va_on(0, moment)
             surge_consume(0, moment)
-            before = sources["Автоатака"]
-            attack_hit("Автоатака", power, moment, stats["attack_potency"])
-            if stats["auto_pct"] != 1.0:
-                sources["Автоатака"] = before + (sources["Автоатака"] - before) * stats["auto_pct"]
+            attack_hit("Автоатака", power, moment, stats["attack_potency"], count=stats["auto_pct"])
             poison_spec_proc(0, moment)
             mana = min(stats["mana_max"], mana + attack_mana_gain(stats))
             note_damage_mana(1)
@@ -602,19 +631,19 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
                 va_tick(0, moment)
             if has(TALENT_WAY_OF_THE_SNAKE):
                 chance = _chance(0.20 * luck_mult)
-                raw = 2.0 * (10.0 * RANK + 0.5 * agi) + stats["potency"]
+                raw = 2.0 * (10.0 * RANK + 0.5 * agi)
                 for index in range(targets):
-                    finish("Way of the Snake", raw * generic(moment), index, moment, chance)
+                    finish("Way of the Snake", raw * generic(moment), index, moment, chance, generic(moment))
                     if surge_p[index] > 0 and moment - surge_at[index] <= SURGE_DUR:
                         consumed = surge_p[index] * chance
-                        surge_value = (15.0 * LEVEL + 2.5 * agi + stats["potency"]) * generic(moment)
-                        finish("Surge of Toxins", surge_value, index, moment, consumed)
+                        surge_value = (15.0 * LEVEL + 2.5 * agi) * generic(moment)
+                        finish("Surge of Toxins", surge_value, index, moment, consumed, generic(moment))
                         surge_p[index] -= consumed
                 note_damage_mana(targets * chance)
             if has(TALENT_AXE_MASTERY):
                 # Blood Fury self-damage on every attack doubles the Axe Mastery roll.
                 rolls = 1.0 + (_chance(0.30 * luck_mult) if has(TALENT_BLOOD_CRAZE) else 0.0)
-                sources["Axe Mastery"] += rolls * _chance(0.10 * luck_mult) * axe_value(moment)
+                axe_hit(moment, rolls * _chance(0.10 * luck_mult))
             if stats["fire_orb"]:
                 splash = (20.0 + 0.35 * agi) * targets * taken_for(0, moment) * _execute_factor(stats, moment)
                 sources.add_exec("Всплеск огня", splash * fury_mult, moment, _execute_factor(stats, moment))

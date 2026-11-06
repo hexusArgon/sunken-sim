@@ -486,6 +486,10 @@ def trace_current(module, build, targets: int, spec: str, keys: set[str]) -> Tra
         events = [(0.0, name, value, KIND_FLAT) for name, value in report.sources.items()]
     if events is None:
         return Trace(False, "no ledger events")
+    # Ledger's reusable five-tuples -> the algebra's four-tuple IR. Fold using
+    # the *symbolic* potency leaf, before Program.build, never its traced value.
+    events = [(ev[0], ev[1], ev[2] + report.stats.get("potency", 0.0) * ev[4], ev[3])
+              if len(ev) > 4 else ev for ev in events]
     timed = [when.i for when, _name, _w, _k in events if isinstance(when, Sym)]
     if timed:
         return Trace(False, "event time depends on traced stat", blame=frozenset(tape.leaves_of(timed)))

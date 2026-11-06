@@ -16,9 +16,19 @@ class BerserkerFights(KindFights):
     MODULE = "berserker"
 
     def _gpu_timelines(self, builds: list) -> list[tuple[list, dict]]:
+        """One tape per safe key; restore original row order and each row's stats."""
         from farm.hybrid.berserker_gpu_timeline import generate_berserker_timelines
 
-        return generate_berserker_timelines(self.torch, self.target, builds, self.spec, self.targets)
+        stats = [self.module.stats_of(b) for b in builds]
+        keys = [self.module._timeline_key(b, s, self.spec, self.targets)
+                for b, s in zip(builds, stats)]
+        unique = {}
+        for key, build in zip(keys, builds):
+            unique.setdefault(key, build)
+        generated = generate_berserker_timelines(
+            self.torch, self.target, list(unique.values()), self.spec, self.targets)
+        tapes = {key: events for key, (events, _stats) in zip(unique, generated)}
+        return [(tapes[key], s) for key, s in zip(keys, stats)]
 
     def dps_many(self, builds: list) -> list[float]:
         from sunken_sim.shadow import FIGHT

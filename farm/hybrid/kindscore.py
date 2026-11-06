@@ -6,7 +6,8 @@ siren, tidewarrior, tinker, windmaster, witch_doctor. Per-hero files in
 farm/hybrid/<hero>.py only name the module.
 
 CPU: module simulate() (its own policy pick) -> report.events (when, name, weight, kind).
-Pack: KIND_EXEC weight * execute(when) baked on CPU, KIND_FLAT as-is.
+Pack: optional pot_coeff adds potency * pot_coeff to weight first;
+KIND_EXEC then multiplies execute(when), KIND_FLAT remains as-is.
 GPU (DirectML): one-hot(kind) x [weight] bmm -> per-kind moments; CPU sums / FIGHT.
 CPU reference: sunken_sim.ledger.score_events.
 """
@@ -48,7 +49,10 @@ def pack(rows: list[tuple[list, dict]]) -> dict:
     weight = np.zeros((count, width))
     for r, (events, stats) in enumerate(rows):
         cache: dict[float, float] = {}
-        for i, (when, _name, w, k) in enumerate(events):
+        for i, ev in enumerate(events):
+            when, _name, w, k = ev[:4]
+            if len(ev) > 4:
+                w = w + stats.get("potency", 0.0) * ev[4]
             kind[r, i] = k
             if k == KIND_EXEC:
                 ex = cache.get(when)

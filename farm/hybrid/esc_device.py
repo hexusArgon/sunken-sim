@@ -109,6 +109,8 @@ class DeviceProgram:
         from sunken_sim.shadow import _execute_factor
 
         prog = trace.program
+        # trace_current folds optional Ledger pot_coeff into symbolic weights;
+        # this device IR is always four-tuples (including potency dependencies).
         ev_nodes = [w.i for (_t, _n, w, _k) in trace.events if isinstance(w, Sym)]
         mask = closure(prog, ev_nodes)
         self.torch, self.device, self.dtype = torch, device, dtype
