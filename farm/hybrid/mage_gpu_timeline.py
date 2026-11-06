@@ -2,7 +2,8 @@
 """GPU next-event timeline for Mage Fire / Frost.
 
 Batched float64 state machine (pending cast + swing/bomb/hydra/hellfire/wave/ring
-clocks + per-target bomb/chill/freeze). Arcane stays locked on CPU.
+clocks + per-target bomb/chill/freeze). Arcane: Evocation + mana ticks, arcane reset
+chance (mastery + splinter) and Blast stacks; parity-gated (tools/_parity_mage_arcane.py).
 
 Clocks run float64 on CPU when DirectML lacks f64; existing fight.compile_sums
 kind-compile stays on DirectML. CPU mage.simulate() remains the parity oracle
@@ -20,6 +21,8 @@ MAX_T = 8          # per-target bomb/chill/freeze
 MAX_HYDRA = 256    # hydra expiry groups (lava appends often)
 MAX_WAVES = 24     # blizzard wave slots
 MAX_BOMB_CHAINS = 4  # concurrent bomb tick heaps (CPU can dual-arm)
+MAX_MANA = 32     # pending Evocation mana ticks (arcane)
+MAX_PENDING = 16  # queued cast finishes (CPU inner cast loop uses a stale heap time)
 
 # Spell ids for pending / choose
 S_NONE = 0
@@ -98,8 +101,8 @@ def generate_mage_timelines(torch, device, builds, spec: str, targets: int, boun
     """
     from sunken_sim import mage as mod
 
-    if spec not in ("fire", "frost"):
-        raise ValueError(f"mage GPU timeline only fire/frost, got {spec}")
+    if spec not in ("fire", "frost", "arcane"):
+        raise ValueError(f"mage GPU timeline only fire/frost/arcane, got {spec}")
     B = len(builds)
     if B == 0:
         return []
@@ -247,6 +250,7 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys):
     targets_f = float(T)
     is_fire = spec == "fire"
     is_frost = spec == "frost"
+    is_arcane = spec == "arcane"
 
     # fire swing keeps attack_base (simulate mutates stats["swing"])
     stats_list = []
@@ -272,6 +276,7 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys):
     attack_speed = _stat_vec(torch, device, dtype, stats_list, "attack_speed")
     attack_base = _stat_vec(torch, device, dtype, stats_list, "attack_base")
     luck = _stat_vec(torch, device, dtype, stats_list, "luck")
+    mastery = _stat_vec(torch, device, dtype, stats_list, "mastery")
     crit = _stat_vec(torch, device, dtype, stats_list, "crit")
     crit_as = _stat_vec(torch, device, dtype, stats_list, "crit_as")
     crit_as_duration = _stat_vec(torch, device, dtype, stats_list, "crit_as_duration")
@@ -330,7 +335,8 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys):
         ones,
         zeros,
     )
-    stacks_on = torch.where(girdle > 0.5, ones, zeros)  # arcane or girdle; arcane locked
+    arcane_v = torch.full((B,), 1.0 if is_arcane else 0.0, dtype=dtype, device=device)
+    stacks_on = torch.where((arcane_v > 0.5) | (girdle > 0.5), ones, zeros)  # arcane or girdle
     split_on = torch.where(
         (torch.full((B,), fire_f, dtype=dtype, device=device) > 0.5) | (girdle > 0.5),
         ones,
@@ -372,6 +378,7 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys):
     cd_bliz = cooldown(13.0, bk_bliz)
     cd_hydra = cooldown(13.0, bk_hydra, 3.0 * hydra_helm)
     cd_blast = cooldown(8.0, bk_blast, 2.0 * amp)
+    cd_evo = cooldown(13.0, bk_scale("Evocation"))
 
     cost_bomb = torch.full((B,), 30.0, dtype=dtype, device=device)
     cost_ring = torch.full((B,), 40.0, dtype=dtype, device=device)
@@ -399,6 +406,9 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys):
     ready_bliz = torch.zeros(B, dtype=dtype, device=device)
     ready_hydra = torch.zeros(B, dtype=dtype, device=device)
     ready_blast = torch.zeros(B, dtype=dtype, device=device)
+    ready_evo = torch.zeros(B, dtype=dtype, device=device)
+    mana_at = torch.full((B, MAX_MANA), fight, dtype=dtype, device=device)
+    mana_on = torch.zeros((B, MAX_MANA), dtype=torch.bool, device=device)
 
     next_swing = torch.zeros(B, dtype=dtype, device=device)
     next_hell = torch.where(hellfire > 0.5, zeros, torch.full((B,), fight, dtype=dtype, device=device))
@@ -410,9 +420,12 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys):
     ring_at = torch.full((B,), fight, dtype=dtype, device=device)
     bolt2_at = torch.full((B,), fight, dtype=dtype, device=device)
 
-    pending_active = torch.zeros(B, dtype=torch.bool, device=device)
-    pending_at = torch.full((B,), fight, dtype=dtype, device=device)
-    pending_spell = torch.zeros(B, dtype=torch.int64, device=device)
+    # pending finishes: a chained cast (stale CPU heap time) can start before earlier
+    # finishes resolve, so keep a small queue; the head is the earliest finish.
+    pq_on = torch.zeros((B, MAX_PENDING), dtype=torch.bool, device=device)
+    pq_at = torch.full((B, MAX_PENDING), fight, dtype=dtype, device=device)
+    pq_spell = torch.zeros((B, MAX_PENDING), dtype=torch.int64, device=device)
+    rows_b = torch.arange(B, device=device)
 
     # per-target
     bomb_exp = torch.full((B, MAX_T), -1.0, dtype=dtype, device=device)
@@ -654,9 +667,13 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys):
             apply_chill(mask, idx, now, duration, explicit_freeze)
 
     def reset_chance():
-        # fire/frost: staff only stacks on Overpowered/pads (CPU returns 0 without them)
-        base = (overpowered > 0.5) | (pads > 0.5)
-        chance = torch.where(base, torch.full((B,), 0.15, dtype=dtype, device=device) + 0.05 * staff, zeros)
+        # CPU: 0 unless arcane / Overpowered / pads; 0.15 (+ arcane 0.05 + 0.002*(mastery+splinter)) (+ staff 0.05)
+        base = (arcane_v > 0.5) | (overpowered > 0.5) | (pads > 0.5)
+        chance = torch.full((B,), 0.15, dtype=dtype, device=device)
+        if is_arcane:
+            chance = chance + (0.05 + 0.002 * (mastery + splinter))
+        chance = torch.where(staff > 0.5, chance + 0.05, chance)
+        chance = torch.where(base, chance, zeros)
         return torch.clamp(chance, max=1.0)
 
     def on_hero_auto(mask, now):
@@ -851,10 +868,26 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys):
         m = mask & (spell == S_BLAST)
         if bool(m.any()):
             finish_blast(m, now)
+        # Evocation: three mana ticks at +1/+2/+3 s (CPU push drops when >= FIGHT)
+        m = mask & (spell == S_EVO)
+        if bool(m.any()):
+            for r in m.nonzero(as_tuple=False).view(-1).tolist():
+                r = int(r)
+                t0 = float(now[r])
+                for k in (1.0, 2.0, 3.0):
+                    when = t0 + k
+                    if when >= fight:
+                        continue
+                    free = (~mana_on[r]).nonzero(as_tuple=False).view(-1)
+                    if len(free) == 0:
+                        raise RuntimeError("MAX_MANA exceeded")
+                    j = int(free[0])
+                    mana_on[r, j] = True
+                    mana_at[r, j] = when
 
     def do_cast(mask, spell, now):
-        nonlocal hero_ready, busy_until, ready_bomb, ready_ring, ready_bliz, ready_hydra, ready_blast
-        nonlocal pending_active, pending_at, pending_spell, sulf_armed, mana
+        nonlocal hero_ready, busy_until, ready_bomb, ready_ring, ready_bliz, ready_hydra, ready_blast, ready_evo
+        nonlocal sulf_armed, mana
         if not bool(mask.any()):
             return
         # costs
@@ -875,8 +908,9 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys):
         dur = torch.where(spell == S_BLIZ, cd_bliz, dur)
         dur = torch.where(spell == S_HYDRA, cd_hydra, dur)
         dur = torch.where(spell == S_BLAST, cd_blast, dur)
+        dur = torch.where(spell == S_EVO, cd_evo, dur)
         sulf_armed = torch.where(okm & (has_sulf > 0.5) & (sulf_armed < 0.5), ones, sulf_armed)
-        busy = now + CAST_TIME + cast_stun_lock
+        busy = now + CAST_POINT + CAST_BACKSWING + cast_stun_lock  # CPU summation order (ulp ties)
         busy_until = torch.where(okm, busy, busy_until)
         hero_ready = torch.where(okm, busy, hero_ready)
         chance = reset_chance()
@@ -892,17 +926,25 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys):
         ready_bliz = torch.where(self_reset & (spell == S_BLIZ), now + dur * factor, ready_bliz)
         ready_hydra = torch.where(self_reset & (spell == S_HYDRA), now + dur * factor, ready_hydra)
         ready_blast = torch.where(self_reset & (spell == S_BLAST), now + dur * factor, ready_blast)
+        ready_evo = torch.where(self_reset & (spell == S_EVO), now + dur * factor, ready_evo)
         # redirect path: name gets full CD, blast remaining * (1-chance)
         ready_bomb = torch.where(use_redirect & (spell == S_BOMB), now + dur, ready_bomb)
         ready_ring = torch.where(use_redirect & (spell == S_RING), now + dur, ready_ring)
         ready_bliz = torch.where(use_redirect & (spell == S_BLIZ), now + dur, ready_bliz)
         ready_hydra = torch.where(use_redirect & (spell == S_HYDRA), now + dur, ready_hydra)
+        ready_evo = torch.where(use_redirect & (spell == S_EVO), now + dur, ready_evo)
         rem = torch.clamp(ready_blast - now, min=0.0)
         ready_blast = torch.where(use_redirect, now + rem * factor, ready_blast)
         # pending finish
-        pending_active = torch.where(okm, true, pending_active)
-        pending_at = torch.where(okm, now + CAST_POINT, pending_at)
-        pending_spell = torch.where(okm, spell, pending_spell)
+        full = okm & pq_on.all(dim=1)
+        if bool(full.any()):
+            raise RuntimeError("mage GPU timeline: MAX_PENDING exceeded")
+        slot = (~pq_on).to(torch.int64).argmax(dim=1)  # first free slot
+        r = rows_b[okm]
+        k = slot[okm]
+        pq_on[r, k] = True
+        pq_at[r, k] = (now + CAST_POINT)[okm]
+        pq_spell[r, k] = spell[okm]
 
     def choose(now):
         spell = torch.zeros(B, dtype=torch.int64, device=device)
@@ -927,6 +969,12 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys):
         take = ~has & (ready_ring <= now) & (mana >= cost_ring)
         spell = torch.where(take, torch.full_like(spell, S_RING), spell)
         has = has | take
+        if is_arcane:
+            # CPU: some ordered button ready but unaffordable -> Evocation if ready (cost 0)
+            waiting = (bomb_soon & (ready_bomb <= now)) | (ready_blast <= now) | (ready_ring <= now)
+            take = ~has & waiting & (ready_evo <= now) & (mana >= 0.0)
+            spell = torch.where(take, torch.full_like(spell, S_EVO), spell)
+            has = has | take
         return spell, has
 
     def on_swing(mask, now):
@@ -1069,6 +1117,11 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys):
     steps = 0
     while bool(alive.any()) and steps < MAX_STEPS:
         steps += 1
+        pq_t = torch.where(pq_on, pq_at, torch.full_like(pq_at, fight))
+        pq_head = pq_t.argmin(dim=1)  # ties: lowest slot; finishes are strictly increasing
+        pending_at = pq_t[rows_b, pq_head]
+        pending_spell = pq_spell[rows_b, pq_head]
+        pending_active = pq_on[rows_b, pq_head]
         pending_t = torch.where(pending_active, pending_at, torch.full_like(pending_at, fight))
         wave_next = torch.where(
             wave_alive.any(dim=1),
@@ -1081,7 +1134,8 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys):
             torch.where(bomb_tick_on, bomb_tick_at, torch.full_like(bomb_tick_at, fight)).min(dim=1).values,
             torch.full((B,), fight, dtype=dtype, device=device),
         )
-        for clock in (next_hell, bomb_next, next_hydra_tick, ring_at, bolt2_at, pending_t, wave_next):
+        mana_next = torch.where(mana_on, mana_at, torch.full_like(mana_at, fight)).min(dim=1).values
+        for clock in (next_hell, bomb_next, next_hydra_tick, ring_at, bolt2_at, pending_t, wave_next, mana_next):
             moment = torch.minimum(moment, clock)
 
         alive = alive & (moment < fight)
@@ -1092,34 +1146,88 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys):
         m_pend = alive & pending_active & (pending_at <= moment) & (pending_at < fight)
         m_hero = alive & (hero_ready <= moment) & (hero_ready < fight)
         m_acted = false.clone()
-        if bool(m_hero.any()):
-            recover(hero_ready, m_hero)
+
+        def hero_loop(m_try):
+            """CPU inner loop: while hero_ready <= heap time read before casting."""
+            if not bool(m_try.any()):
+                return false
+            recover(hero_ready, m_try)
             spell, has_spell = choose(hero_ready)
-            cast_m = m_hero & has_spell
-            if bool(cast_m.any()):
-                do_cast(cast_m, spell, hero_ready)
-                m_acted = m_acted | cast_m
+            cast_m = m_try & has_spell
+            if not bool(cast_m.any()):
+                return cast_m
+            do_cast(cast_m, spell, hero_ready)
+            # the heap time is stale: a second cast can land before the first finish.
+            chain = cast_m
+            while True:
+                nxt = chain & (hero_ready <= moment) & (hero_ready < fight)
+                if not bool(nxt.any()):
+                    break
+                recover(hero_ready, nxt)
+                spell, has_spell = choose(hero_ready)
+                chain = nxt & has_spell
+                if not bool(chain.any()):
+                    break
+                do_cast(chain, spell, hero_ready)
+            return cast_m
+
+        if bool(m_hero.any()):
+            m_acted = m_acted | hero_loop(m_hero)
 
         m_fire = alive & ~m_acted & (moment < fight)
+        popped = false.clone()
+
+        def pop(m_ev):
+            """Before each further same-time heap pop the CPU re-runs the hero loop
+            (recover at hero_ready, maybe cast) and recovers to the event time."""
+            nonlocal m_fire, m_acted, popped
+            m_ev = m_ev & m_fire
+            again = m_ev & popped
+            if bool(again.any()):
+                cast = hero_loop(again & (hero_ready <= moment) & (hero_ready < fight))
+                if bool(cast.any()):
+                    m_acted = m_acted | cast
+                    m_fire = m_fire & ~cast  # rest of this timestamp next step
+                    m_ev = m_ev & ~cast
+                    again = again & ~cast
+                recover(moment, again)
+            popped = popped | m_ev
+            return m_ev
+
         if bool(m_fire.any()):
             recover(moment, m_fire)
-            on_swing(m_fire & (next_swing == moment), moment)
-            on_hell(m_fire & (next_hell == moment), moment)
-            on_hydra(m_fire & (next_hydra_tick == moment), moment)
-            on_bomb_tick(m_fire & (bomb_next == moment), moment)
-            on_ring(m_fire & (ring_at == moment), moment)
-            on_bolt2(m_fire & (bolt2_at == moment), moment)
-            on_wave(m_fire & (wave_next == moment), moment)
+            # Evocation ticks are pushed 1-3 s ahead, so on exact ties they usually
+            # carry the lowest heap seq: pop them first.
+            m_mana = pop(mana_next == moment)
+            if bool(m_mana.any()):  # one tick per step (CPU pops one heap event per loop)
+                slot = torch.where(mana_on, mana_at, torch.full_like(mana_at, fight)).argmin(dim=1)
+                rows = torch.arange(B, device=device)
+                mana = torch.where(m_mana, mana + 0.10 * (mana_max - mana), mana)
+                mana_on[rows[m_mana], slot[m_mana]] = False
+                mana_at[rows[m_mana], slot[m_mana]] = fight
+            on_swing(pop(next_swing == moment), moment)
+            on_hell(pop(next_hell == moment), moment)
+            on_hydra(pop(next_hydra_tick == moment), moment)
+            on_bomb_tick(pop(bomb_next == moment), moment)
+            on_ring(pop(ring_at == moment), moment)
+            on_bolt2(pop(bolt2_at == moment), moment)
+            on_wave(pop(wave_next == moment), moment)
 
         if bool(m_pend.any()):
             # finish after world events at the same timestamp (CPU heap seq)
             still = m_pend & ~m_acted
+            if bool((still & popped).any()):
+                m_fire = m_fire | still  # finish is one more pop at this timestamp
+                still = pop(still)
             if bool(still.any()):
                 recover(pending_at, still)
                 do_resolve(still, pending_spell, pending_at)
                 m_acted = m_acted | still
-            pending_active = torch.where(m_pend, false, pending_active)
-            pending_at = torch.where(m_pend, torch.full_like(pending_at, fight), pending_at)
+                # pop the head (rows where the hero acted keep theirs for the next step)
+                r = rows_b[still]
+                k = pq_head[still]
+                pq_on[r, k] = False
+                pq_at[r, k] = fight
 
         alive = alive & (m_acted | (moment < fight))
 
@@ -1127,7 +1235,7 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys):
         raise RuntimeError(f"mage GPU timeline hit MAX_STEPS={MAX_STEPS} with rows still alive")
     recover(torch.full((B,), fight, dtype=dtype, device=device))
     events_list = _buffers_to_events(bufs)
-    evocation = False  # fire/frost
+    evocation = is_arcane
     return [
         (events_list[i], stats_list[i], spec, evocation)
         for i in range(B)

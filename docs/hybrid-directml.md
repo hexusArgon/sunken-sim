@@ -7,6 +7,16 @@
 Все классы/спеки проходят через `farm/hybrid/registry.py` (матрица статусов).
 Общий батч-поиск талантов/глифов/ESC — `farm/hybrid/engine.py`.
 
+## Флаги по умолчанию (с 2026-11-06)
+| флаг | по умолчанию | выключить |
+|---|---|---|
+| `FARM_HYBRID_CROSS_BUILD` | вкл (мультибилд) | `0` |
+| `FARM_HYBRID_ESC_ALGEBRA` | `auto` (Router batched/algebra) | `0` |
+| `FARM_HYBRID_ESC_ALGEBRA_DEVICE` | `cpu` | — |
+| `FARM_HYBRID_ARCANE_GPU` | вкл | `0` |
+
+Живой farm-замер (`tools/_bench_live_worker.py`, witch_doctor, 24 задачи): off 210.6 s, cross+alg 178.8 s (1.18×), лидерборды идентичны.
+
 ## Статусы (v3+)
 | статус | смысл | кто |
 |---|---|---|
@@ -33,10 +43,68 @@
 1. **GPU fight timelines** — done for every unlocked spec (58). Only **mage/arcane**
    stays locked. Kind-heroes (berserker…witch_doctor) included.
 2. **ESC / stat-kernel deepen** — `farm/hybrid/stat_kernel.py` on
-   `BatchFights.greedy_points`: structural skips (`healing_power` always;
-   `pet_damage` except pet heroes) + zero-delta skip after a real improving step.
+   `BatchFights.greedy_points`: результат = полный `esc.greedy_points`.
+   Structural skips (`healing_power` always; `pet_damage` except pet heroes) не
+   играются, но участвуют в выборе со score = текущий DPS (те же tie-break и
+   «потратить без прироста»). Skip снимается, если в файлах героя
+   (`sunken_sim/<module>.py`, `farm/hybrid/<hero>*.py`, общие) есть чтение
+   `stats["attr"]` / `.get("attr")` / `V("attr")`; неизвестный герой → без skip.
+   Zero-delta skip удалён 2026-11-05: неточен (demon_hunter/havoc 590.55 vs
+   596.84). Регрессия: `farm/hybrid/test_stat_kernel_greedy.py`, свип
+   `tools/_esc_greedy_parity.py`.
    Exact event-reuse rescoring still deferred: flat/cleave bake crit/potency into
    raw — needs per-class event algebra next.
+3. **ESC guarded event algebra (`FARM_HYBRID_ESC_ALGEBRA`, default `auto`)** —
+   `farm/hybrid/esc_algebra.py`, Ledger kind-heroes. Один CPU-трейс текущего
+   билда: float-ключи `stats_of`, которые меняют trial'ы, заменяются `Sym`;
+   арифметика пишется в tape, каждое ветвление по ним (`<`, `==`, `bool`,
+   `min/max`, `int/floor`, `float()`) — guard. Ключи, от которых зависит время
+   событий (haste/AS), исключаются (blame → retrace), их attr'ы играются.
+   Trial'ы считаются векторно (numpy float64, по уровням tape): все guards
+   держатся → тот же путь сима → события трейса с новыми весами (те же IEEE-оп).
+   Скоринг rescored-строк: `score_engine` = тот же `pack` + `compile_sums`
+   (DirectML), CPU-режим `score_cpu` = точная копия `score_events`.
+   Трейс живёт через шаги, пока выбор был rescored; иначе retrace.
+   Спекуляция: внутри guard-региона greedy проходит шаги вперёд, все
+   недоказуемые trial'ы раунда — один `dps_many`; первый шаг, где выиграл
+   сыгранный attr, обрывает раунд (лишние бои выбрасываются). `auto`: онлайн-фит
+   t = c0 + c1·builds, спекуляция только при c0 > c1·(боёв на шаг). Выбор пути
+   меняет только число боёв, не score.
+   Fallback: guard fail / нечисловой ключ / чтение `*_points` вне `stats_of` /
+   исключение трейса → обычный `dps_many`. В engine любая ошибка → batched.
+   Guards и tape — только CPU float64 (DirectML без f64); на GPU только
+   kind-score. Тесты `farm/hybrid/test_esc_algebra.py`, бенч
+   `tools/_bench_esc_algebra.py --mode cpu|engine`.
+   **Выбор стратегии по замеру (default `FARM_HYBRID_ESC_ALGEBRA=auto`)** —
+   `esc_device.Router` с плечами batched/algebra на hero/spec: warmup 2+2,
+   медиана окна 8, переключение при выигрыше ≥10%, re-probe проигравшего с
+   удвоением интервала. Оба плеча точные (очки = full greedy), меняется только
+   время: на дешёвых спеках (DH, windmaster/combat, tidewarrior) алгебра
+   медленнее batched, router оставляет batched.
+   **Device-маршрут алгебры (opt-in `FARM_HYBRID_ESC_ALGEBRA_DEVICE=cpu|gpu|auto`,
+   default `cpu`)** — `farm/hybrid/esc_device.py`. `gpu`: guards-замыкание tape
+   остаётся CPU float64 (numpy); weight-замыкание (узлы весов событий) считается
+   на torch-устройстве в float32: узлы переложены так, что каждая группа уровня —
+   непрерывный слайс (`index_select` → op → slice copy; без CPU-fallback на
+   DirectML, проверка `tools/_probe_esc_device_dml.py`), затем exec-factor·вес и
+   сумма блоками по 64 событий f32 на устройстве, f64 по блокам на хосте.
+   Значения приблизительные: если соперник в пределах `TIE_REL=1e-4` от
+   победителя шага, приблизительные значения (и возвращаемый best) пересчитываются
+   точно (CPU f64 + `score_engine`, батч ≥2 — DirectML bmm при батче 1 даёт
+   другой f32-результат). Каждый пересчёт и первый вызов на трейс (кросс-чек) —
+   замер ошибки; > `ERR_LIMIT=2.5e-5` → device-маршрут выключается (замер на
+   RX 6800 XT: max 3e-6). Буферы (индексы, базовые значения, gather/exec событий)
+   — LRU `esc_device.CACHE` (≤8 записей, ≤256 MiB), ключ = (token трейса, device,
+   dtype, SCHEMA): новый билд → новый трейс → новый token, чужие веса не
+   переиспользуются; `esc_device.reset()`. Маршрут `auto` мерит полное время
+   (упаковка, upload, ядра, блокирующий `.cpu()`, хост-редукция; для gpu ещё и
+   точные пересчёты). Честно: guards-замыкание покрывает ~90–99% групп tape, так
+   что CPU f64 работа почти не уменьшается, а DirectML добавляет запуск ядер;
+   замер per-call: gpu в 1.04–28× медленнее cpu (сумма 4.3×), буферы экономят
+   ~40% gpu-вызова. Поэтому default `cpu`, `auto` выбирает cpu. Тесты
+   `farm/hybrid/test_esc_device.py` (`FARM_HYBRID_TEST_DML=1` — и на DirectML),
+   бенчи `tools/_bench_esc_device_micro.py`, `_bench_esc_device.py`,
+   `_bench_esc_strategy.py`.
 
 
 ### Честно про таймлайн на GPU
@@ -171,7 +239,10 @@ Sulfuras → CPU. Code: `farm/hybrid/witch_doctor_gpu_timeline.py` + wire `farm/
 Parity 2026-11-05: 8 builds × 2 specs = 16/16.
 
 ## Arcane Mage
-mage/arcane жёстко на CPU (`farm/hybrid/lock.py`). GpuLocked.
+mage/arcane по умолчанию идёт через GPU-таймлайн (`farm/hybrid/lock.py`).
+
+GPU-таймлайн Arcane совпадает с CPU-симом: Evocation, тики маны, шанс сброса, стаки Arcane Blast. Проверка: `tools/_parity_mage_arcane.py` (N=8/32, режим STARVE и Evocation), тесты `farm/hybrid/test_mage_arcane.py`.
+Вернуть на CPU: `FARM_HYBRID_ARCANE_GPU=0` (тогда GpuLocked).
 
 ## I0E4 Colossal Sledgehammer (2.5.2b)
 `own_stun_duration_pct` (+25%) и `stun_hit_damage` (100) парсятся в library.

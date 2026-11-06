@@ -39,7 +39,8 @@ from farm.hybrid.engine import DPS_TOL, BatchFights, compare, eval_span  # noqa:
 from farm.hybrid.lock import assert_gpu_allowed, cpu_locked
 
 # Specs whose fights may run through the GPU compile stage.
-GPU_FIGHT_SPECS: frozenset[tuple[str, str]] = frozenset({("mage", "fire"), ("mage", "frost")})
+# arcane is still gated by lock.cpu_locked (FARM_HYBRID_ARCANE_GPU=1 lifts it)
+GPU_FIGHT_SPECS: frozenset[tuple[str, str]] = frozenset({("mage", "fire"), ("mage", "frost"), ("mage", "arcane")})
 MAX_BATCH = 512  # timelines per device call
 
 BUCKETS = (
@@ -527,7 +528,7 @@ class GpuFights(BatchFights):
         use_gpu_tl = (
             want not in ("0", "false", "off", "cpu")
             and (want in ("1", "true", "force") or bool(getattr(self.device, "gpu", False)))
-            and self.spec in ("fire", "frost")
+            and self.spec in ("fire", "frost", "arcane")
         )
         tls: list[Timeline] = []
         owner: list[int] = []

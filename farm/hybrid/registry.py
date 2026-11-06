@@ -77,7 +77,7 @@ GPU_TIMELINE_SPECS = frozenset(
     {("warrior", spec) for spec in WARRIOR_SPECS}
     | {("paladin", spec) for spec in PALADIN_SPECS}
     | {("shaman", spec) for spec in SHAMAN_SPECS}
-    | {("mage", "fire"), ("mage", "frost")}
+    | {("mage", "fire"), ("mage", "frost"), ("mage", "arcane")}  # arcane: only when unlocked (lock.py)
     | {("priest", spec) for spec in PRIEST_SPECS}
     | {("rogue", spec) for spec in ROGUE_SPECS}
     | {("druid", "restoration"), ("druid", "balance")}
