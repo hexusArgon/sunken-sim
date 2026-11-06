@@ -33,6 +33,11 @@ echo). RogueFights clusters GPU timelines by that key.
 Berserker Ledger events also keep raw weight plus pot_coeff (including Axe
 Mastery and auto_pct); BerserkerFights clusters GPU tapes omitting only potency.
 Crit/luck remain baked. There is no Berserker CPU timeline cache.
+Demon Hunter deal events likewise store raw weight plus pot_coeff. Havoc and
+Metamorphosis potency bonuses stay in raw; auto_pct scales both channels.
+DemonHunterFights clusters only potency_points; crit/luck proc dithers, mastery
+extra hits and all timing/resource stats stay in the key. ESC algebra folds the
+coefficient with its symbolic potency leaf before building its device program.
 Other
 heroes still bake some
 flat/cleave/splash raws at emit time; a closed-form kernel for them needs

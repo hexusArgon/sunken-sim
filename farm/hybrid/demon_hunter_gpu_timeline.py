@@ -3,7 +3,7 @@
 
 Lockstep python-float scheduling (CPU-exact cast_time = CAST_POINT+CAST_BACKSWING)
 with per-row pending heaps for Eye Beam / Collapsing Star. Damage mirrors
-sunken_sim.demon_hunter.simulate; ledger KIND_EXEC events collected per row.
+sunken_sim.demon_hunter.simulate; ledger KIND_EXEC raw/pot_coeff events per row.
 Sulfuras → _Overflow → CPU fallback. torch/device kept for API parity with
 other GPU timelines; clocks stay on CPU floats (DirectML kind-score after pack).
 """
@@ -167,8 +167,9 @@ def _fight_one(build, spec, targets):
             fury = min(mod.FURY_MAX, fury + amount)
         fury = min(mod.FURY_MAX, fury + amount)
 
-    def potency(now: float) -> float:
-        value = stats["potency"]
+    def potency_bonus(now: float) -> float:
+        # Only the form/spec bonus is baked; ESC/item potency is scored later.
+        value = 0.0
         if havoc:
             value += 2.0
             if meta:
@@ -203,31 +204,37 @@ def _fight_one(build, spec, targets):
             bonus *= 1.25 + 0.01 * drain_stacks
         return bonus
 
-    def taken(t: int, now: float) -> float:
+    def taken(t: int, now: float, *, execute: bool = True) -> float:
         armor = DUMMY_ARMOR - stats["armor_pen"]
         if fallout_until[t] > now:
             armor -= mod.FALLOUT_ARMOR
-        return armor_taken(armor) * _execute_factor(stats, now)
+        return armor_taken(armor) * (_execute_factor(stats, now) if execute else 1.0)
 
-    def deal(name: str, raw: float, t: int, now: float, kind: str, chaos: bool = False):
+    def deal(name: str, raw: float, t: int, now: float, kind: str, chaos: bool = False,
+             *, count: float = 1.0) -> tuple[float, float]:
+        """Emit affine potency weights; proc/mana counts remain per hit, not count."""
         attack = kind == "attack"
         scale = (stats["attack_potency"] if attack else 1.0) + (0.35 if havoc else 0.0)
-        amount = raw + potency(now) * scale
-        amount *= increase(attack)
+        raw = raw + potency_bonus(now) * scale
+        factor = increase(attack)
         share = 0.0
         if attack:
-            amount *= typed(False, now) * (CHAOS_UNARMORED if chaos else 1.0)
+            factor *= typed(False, now) * (CHAOS_UNARMORED if chaos else 1.0)
             chance = crit_chance()
             share = max(0.0, min(100.0, chance)) / 100.0
-            amount *= _crit_factor(chance, 2.0 + stats["rating"])
+            factor *= _crit_factor(chance, 2.0 + stats["rating"])
         elif kind == "magic":
-            amount *= typed(True, now)
+            factor *= typed(True, now)
             if stats["spell_crit"]:
                 chance = crit_chance()
                 share = max(0.0, min(100.0, chance)) / 100.0
-                amount *= _crit_factor(chance, stats["spell_mult"] + stats["rating"])
-        amount *= taken(t, now)
-        sources.add_exec(name, amount, now, _execute_factor(stats, now))
+                factor *= _crit_factor(chance, stats["spell_mult"] + stats["rating"])
+        factor *= taken(t, now, execute=False)
+        weight, coeff = raw * factor, scale * factor
+        execute = _execute_factor(stats, now)
+        amount = (weight + stats["potency"] * coeff) * execute
+        sources.add_exec(name, amount * count, now, execute,
+                         raw_weight=weight * count, pot_coeff=coeff * count)
         note_damage_mana(1)
         if havoc and fury_dither.roll(0.08 * luck_mult):
             gen(1)
@@ -360,7 +367,7 @@ def _fight_one(build, spec, targets):
     while True:
         guard += 1
         if guard > MAX_STEPS:
-            break
+            raise _Overflow("steps")
         attack_at = max(next_attack, busy)
         cast_at = FIGHT * 10
         choice = None
@@ -477,10 +484,9 @@ def _fight_one(build, spec, targets):
         moment = attack_at
         recover(moment)
         power = dcs()
-        before = sources["Автоатака"]
-        _dealt, share = deal("Автоатака", power, 0, moment, "attack", chaos=meta)
-        if stats["auto_pct"] != 1.0:
-            sources["Автоатака"] = before + (sources["Автоатака"] - before) * stats["auto_pct"]
+        # Scale both raw and coefficient, without a potency-baked FLAT delta.
+        _dealt, share = deal("Автоатака", power, 0, moment, "attack", chaos=meta,
+                             count=stats["auto_pct"])
         on_attack(0, moment, share, False)
         gain_mana(attack_mana_gain(stats))
         if stats["fire_orb"]:

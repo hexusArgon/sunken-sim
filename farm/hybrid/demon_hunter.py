@@ -15,9 +15,19 @@ class DemonHunterFights(KindFights):
     MODULE = "demon_hunter"
 
     def _gpu_timelines(self, builds: list) -> list[tuple[list, dict]]:
+        """Generate one tape per safe key; preserve row order and each row's stats."""
         from farm.hybrid.demon_hunter_gpu_timeline import generate_demon_hunter_timelines
 
-        return generate_demon_hunter_timelines(self.torch, self.target, builds, self.spec, self.targets)
+        stats = [self.module.stats_of(b) for b in builds]
+        keys = [self.module._timeline_key(b, s, self.spec, self.targets)
+                for b, s in zip(builds, stats)]
+        unique = {}
+        for key, build in zip(keys, builds):
+            unique.setdefault(key, build)
+        generated = generate_demon_hunter_timelines(
+            self.torch, self.target, list(unique.values()), self.spec, self.targets)
+        tapes = {key: events for key, (events, _stats) in zip(unique, generated)}
+        return [(tapes[key], s) for key, s in zip(keys, stats)]
 
     def dps_many(self, builds: list) -> list[float]:
         from sunken_sim.shadow import FIGHT

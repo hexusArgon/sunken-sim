@@ -84,3 +84,35 @@ Metamorphosis A0RD: 10 с, 0 маны, жмётся, как только гот�
 Лучшие таланты (одним слотом): Chaos Nova (220,2 / 144,3 / 262,5), Incubus (152,1 / 97,0 / 204,6), Singularity (145,7 / 92,5 / 203,5). Прогон: 334 предмета, 15 талантов, 12 глифов.
 
 Аномалии карты — `docs/demon_hunter-anomalies.md`.
+
+
+## Hybrid potency tape reuse (2026-11-07)
+
+Both `sunken_sim/demon_hunter.py` and the hybrid timeline generator emit
+`(when, name, raw_weight, KIND_EXEC, pot_coeff)` for hero hits. Scoring is
+`(raw_weight + stats["potency"] * pot_coeff) * execute(when)`. Legacy four-tuples
+remain valid for potency-independent Fire Orb and Sulfuras damage. Havoc's +2
+and Metamorphosis's additional `4 + 0.15 * AGI` stay in the raw channel; the
+Havoc +0.35 potency scale applies to both channels. `auto_pct` scales both
+channels without writing a potency-baked FLAT correction.
+
+`DemonHunterFights` generates one tape per safe key within each GPU-timeline
+batch, then rescores that tape with each original build's stats. Only
+`potency_points` is omitted from ESC fields; item order, talents, glyphs, spec,
+target count and all non-potency computed stats remain in the key. Crit and luck
+remain baked because proc dithers influence Fallout, Fury and extra attacks;
+mastery changes extra Immolation hits, while haste, attack speed and mana can
+change scheduling. There is no CPU timeline cache. ESC algebra normalizes the
+optional coefficient into a symbolic potency expression before building its
+four-tuple device IR.
+
+This reuses work; it is not GPU-native timeline scheduling: the existing
+scheduler runs on CPU Python floats and DirectML runs kind-score reduction.
+Sulfuras and step overflow retain the CPU fallback. No speedup is claimed
+without a benchmark. Regression suite: `farm.hybrid.test_demon_hunter_event_reuse`;
+all-spec parity runner: `tools/_parity_dh_gpu_tl.py`.
+
+Death Knight was checked first but not changed: Virulent Plague multiplies
+Outbreak by `(1 + (0.12 + 0.005 * potency) * luck_mult)`, while the hit itself
+also contains potency. That is quadratic, not the affine coefficient format
+used here; it must not be blindly clustered under the same optimization.
