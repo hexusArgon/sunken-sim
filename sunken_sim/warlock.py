@@ -371,8 +371,10 @@ def _timeline_key(build: Build, stats: dict, spec: str, targets: int, policy: tu
     items = tuple(sorted(item.rawcode for item in build.items))
     talents = tuple(sorted(build.talents))
     glyphs = tuple(sorted(build.glyphs))
+    # potency_points omitted: score_events applies stats["potency"] via pot_coeff.
+    # crit stays: Backdraft chance and several baked crit weights use hero/summon crit.
+    # luck stays: Malefic Hood, agony/haunt rolls, and Sulfuras echo change the tape.
     esc = (
-        build.potency_points,
         build.mastery_points,
         build.crit_points,
         build.luck_points,
@@ -419,14 +421,19 @@ def _typed_bonus(stats: dict, magical: bool, now: float) -> float:
 def score_events(events: list, stats: dict) -> dict[str, float]:
     """Score typed timeline events into named sources.
 
-    Event: (when, name, weight, kind)
+    Event: (when, name, weight, kind, pot_coeff=0)
       KIND_HERO_MAG/PHYS: weight * typed * execute
       KIND_EXEC: weight * execute
       KIND_FLAT: weight as-is
-    weight is pre-typed / pre-execute (crit, taken, potency, agony already applied).
+    weight is pre-typed / pre-execute (crit, taken, agony already applied).
+    potency is applied here as weight + potency * pot_coeff.
     """
     sources: dict[str, float] = {}
-    for when, name, weight, kind in events:
+    potency = stats["potency"]
+    for ev in events:
+        when, name, weight, kind = ev[0], ev[1], ev[2], ev[3]
+        pot_c = ev[4] if len(ev) > 4 else 0.0
+        weight = weight + potency * pot_c
         if kind == KIND_FLAT:
             amount = weight
         elif kind == KIND_EXEC:
@@ -489,14 +496,14 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
     actions: list[tuple[float, str]] = []
     events: list = []
 
-    def add_damage(name: str, amount: float) -> None:
+    def add_damage(name: str, amount: float, pot_c: float = 0.0) -> None:
         """Fully-scored flat event (Havoc / Demon Rage / legacy)."""
-        if amount:
-            events.append((0.0, name, amount, KIND_FLAT))
+        if amount or pot_c:
+            events.append((0.0, name, amount, KIND_FLAT, pot_c))
 
-    def add_event(when: float, name: str, weight: float, kind: float) -> None:
-        if weight:
-            events.append((when, name, weight, kind))
+    def add_event(when: float, name: str, weight: float, kind: float, pot_c: float = 0.0) -> None:
+        if weight or pot_c:
+            events.append((when, name, weight, kind, pot_c))
 
     mana = mana_max
     mana_time = 0.0
@@ -601,65 +608,82 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
                  weight: float = 1.0, potency_scale: float = 1.0, chaos: bool = False) -> tuple[float, float]:
         """Damage by the Warlock on each target in tgts. Returns (dealt on first target, crit share)."""
         if weight <= 0 or not tgts:
-            return 0.0, 0.0
+            return 0.0, 0.0, 0.0
         chance = hero_crit_chance(now)
         share = max(0.0, min(100.0, chance)) / 100.0
         first = 0.0
+        first_pot = 0.0
         pre_total = 0.0
+        pre_pot_total = 0.0
         execute = _execute_factor(stats, now)
         typed_m = typed(magical, now)
         for i, t in enumerate(tgts):
-            amount = raw + stats["potency"] * potency_scale + agony_flat(t, now)
+            base = raw + agony_flat(t, now)
+            mult = 1.0
             if chaos:
-                amount *= CHAOS_UNARMORED
+                mult *= CHAOS_UNARMORED
             rating = stats["rating"]
             if has(TALENT_CREMATION):
                 rating += 0.15
             if has(TALENT_INCINERATE) and immolate_until[t] > now:
                 rating += 0.30
             if attack:
-                amount *= _crit_factor(chance, 2.0 + rating)
+                mult *= _crit_factor(chance, 2.0 + rating)
             elif stats["spell_crit"]:
-                amount *= _crit_factor(chance, stats["spell_mult"] + rating)
-            else:
-                pass
-            pre = amount * taken(t, True, now)
+                mult *= _crit_factor(chance, stats["spell_mult"] + rating)
+            take = taken(t, True, now)
+            pre = base * mult * take
+            pre_pot = potency_scale * mult * take
             dealt = pre * typed_m * execute
+            dealt_pot = pre_pot * typed_m * execute
             if i == 0:
                 first = dealt
+                first_pot = dealt_pot
             pre_total += pre
+            pre_pot_total += pre_pot
         ev_kind = KIND_HERO_MAG if magical else KIND_HERO_PHYS
-        add_event(now, name, pre_total * weight, ev_kind)
+        add_event(now, name, pre_total * weight, ev_kind, pre_pot_total * weight)
         note_damage_mana(len(tgts) * weight)
-        return first, (share if (attack or stats["spell_crit"]) else 0.0)
+        return first, first_pot, (share if (attack or stats["spell_crit"]) else 0.0)
 
     def summon_hit(name: str, raw: float, now: float, tgts: list[int], *, magical: bool, attack: bool,
                    weight: float = 1.0, crit_bonus: float = 0.0, increase: float = 0.0,
                    chaos: bool = False) -> tuple[float, float]:
         """Damage by a demon: potency, Pet Damage (+ Revel in Pain), summon crit, armor."""
         if weight <= 0 or not tgts:
-            return 0.0, 0.0
+            return 0.0, 0.0, 0.0
         chance = stats["summon_crit"] + crit_bonus
         if has(TALENT_DEMONIC_EMPOWERMENT):
             chance += 10.0 + 0.25 * crit_stat
         share = max(0.0, min(100.0, chance)) / 100.0 if attack else 0.0
         first = 0.0
+        first_pot = 0.0
         pre_total = 0.0
+        pre_pot_total = 0.0
         execute = _execute_factor(stats, now)
+        pet = 1.0 + stats["pet_damage"] + increase
         for i, t in enumerate(tgts):
-            amount = raw + stats["potency"] + agony_flat(t, now)
-            amount *= 1.0 + stats["pet_damage"] + increase
+            base = (raw + agony_flat(t, now)) * pet
+            pot_part = pet
             if chaos:
-                amount *= CHAOS_UNARMORED
+                base *= CHAOS_UNARMORED
+                pot_part *= CHAOS_UNARMORED
             if attack:
-                amount *= _crit_factor(chance, 2.0 + stats["summon_rating"])
-            pre = amount * taken(t, False, now)
+                cf = _crit_factor(chance, 2.0 + stats["summon_rating"])
+                base *= cf
+                pot_part *= cf
+            take = taken(t, False, now)
+            pre = base * take
+            pre_pot = pot_part * take
             dealt = pre * execute
+            dealt_pot = pre_pot * execute
             if i == 0:
                 first = dealt
+                first_pot = dealt_pot
             pre_total += pre
-        add_event(now, name, pre_total * weight, KIND_EXEC)
-        return first, share
+            pre_pot_total += pre_pot
+        add_event(now, name, pre_total * weight, KIND_EXEC, pre_pot_total * weight)
+        return first, first_pot, share
 
     def malefic(now: float, t: int) -> None:
         if stats["hood"]:
@@ -768,12 +792,14 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
         chance *= luck_mult
         backdraft(now, _chance(chance), hero_source, by_name)
 
-    def havoc(now: float, dealt: float) -> None:
-        if not has(TALENT_HAVOC) or dealt <= 0:
+    def havoc(now: float, dealt: float, dealt_pot: float = 0.0) -> None:
+        if not has(TALENT_HAVOC):
+            return
+        if dealt == 0.0 and dealt_pot == 0.0:
             return
         haunted = sum(1 for t in range(targets) if haunt_until[t] > now)
         if haunted:
-            add_damage("Havoc", 0.12 * dealt * haunted)
+            add_damage("Havoc", 0.12 * dealt * haunted, 0.12 * dealt_pot * haunted)
 
     def demon_speed(d: dict, now: float) -> float:
         speed = 0.0
@@ -931,22 +957,22 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
             increase = REVEL_BONUS if d["revel"] else 0.0
             d["revel"] = False
             if d["kind"] == "imp":
-                dealt, share = summon_hit("Imp", d["raw"], moment, [0], magical=True, attack=True,
+                dealt, dealt_pot, share = summon_hit("Imp", d["raw"], moment, [0], magical=True, attack=True,
                                           increase=increase)
-                havoc(moment, dealt)
+                havoc(moment, dealt, dealt_pot)
                 swing = IMP_SWING
                 label = "Imp"
             else:
                 wrathguard = has(TALENT_WRATHGUARD)
                 raw = 7.0 + int(8.0 * RANK + 0.20 * dcs(moment) + 0.02 * hp_max) + 1.0
                 label = "Wrathguard" if wrathguard else "Felguard"
-                dealt, share = summon_hit(label, raw, moment, [0], magical=False, attack=True,
+                dealt, dealt_pot, share = summon_hit(label, raw, moment, [0], magical=False, attack=True,
                                           increase=increase, chaos=wrathguard)
                 if wrathguard:
-                    havoc(moment, dealt)
+                    havoc(moment, dealt, dealt_pot)
                 if has(TALENT_DEMON_RAGE):
-                    cleave = 0.15 * dealt * (max(1, targets - 1))
-                    add_damage("Demon Rage (cleave)", cleave)
+                    extra = max(1, targets - 1)
+                    add_damage("Demon Rage (cleave)", 0.15 * dealt * extra, 0.15 * dealt_pot * extra)
                 swing = FELGUARD_SWING * (1.20 if has(TALENT_CONSUMPTION) else 1.0)
             agony_chance(moment, 0, 0.05 * luck_mult)
             backdraft_on_attack(moment, share, False, label)
@@ -1037,14 +1063,16 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
         if has(TALENT_DRAIN_SOUL) and moment < drain_until:
             power += 5.0 + 5.0 * TARGET_LEVEL  # A0R1 Nbr1
         mark = len(events)
-        dealt, share = hero_hit("Автоатака", power, moment, [0], magical=True, attack=True,
+        dealt, dealt_pot, share = hero_hit("Автоатака", power, moment, [0], magical=True, attack=True,
                                 potency_scale=stats["attack_potency"])
         if stats["auto_pct"] != 1.0:
+            scale = stats["auto_pct"]
             for i in range(mark, len(events)):
-                when, n, w, k = events[i]
+                when, n, w, k, *rest = events[i]
                 if n == "Автоатака":
-                    events[i] = (when, n, w * stats["auto_pct"], k)
-        havoc(moment, dealt)
+                    pot_c = rest[0] * scale if rest else 0.0
+                    events[i] = (when, n, w * scale, k, pot_c)
+        havoc(moment, dealt, dealt_pot)
         agony_chance(moment, 0, 0.05 * luck_mult)
         backdraft_on_attack(moment, share, True, "Warlock")
         if has_cb and moment < cb_buff_until:
@@ -1052,8 +1080,8 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, str, boo
             raw = (75.0 + 1.5 * dcs(moment)) * (1.0 + 0.01 * crit_stat)
             if has(TALENT_CHAOTIC_ENERGIES):
                 raw *= 1.0 + 0.255
-            cb_dealt, cb_share = hero_hit("Chaos Bolt", raw, moment, [0], magical=False, attack=True, chaos=True)
-            havoc(moment, cb_dealt)
+            cb_dealt, cb_dealt_pot, cb_share = hero_hit("Chaos Bolt", raw, moment, [0], magical=False, attack=True, chaos=True)
+            havoc(moment, cb_dealt, cb_dealt_pot)
             backdraft_on_attack(moment, cb_share, True, "Warlock")
         gain_mana(attack_mana_gain(stats))
         if stats["fire_orb"]:

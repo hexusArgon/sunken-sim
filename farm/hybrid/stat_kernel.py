@@ -19,7 +19,14 @@ crit_as swing). PriestFights clusters GPU timelines by that key. Feral deal even
 store raw weight plus pot_coeff and score applies potency, so
 `_timeline_key` omits potency_points; crit stays (swipe threshold and
 Feral Frenzy) and luck stays (Razor share and Sulfuras echo).
-FeralDruidFights clusters GPU timelines by that key. Other
+FeralDruidFights clusters GPU timelines by that key. Warlock
+hero/summon hits store raw weight plus pot_coeff (Havoc and Demon
+Rage keep both parts); score applies potency, so `_timeline_key`
+omits potency_points. Crit stays because Backdraft uses crit share,
+and luck stays because Malefic Hood, agony/haunt rolls and Sulfuras
+echo change the tape. WarlockFights clusters GPU timelines by that
+key (one policy per row via generate_warlock_timelines(..., policies=)).
+Other
 heroes still bake some
 flat/cleave/splash raws at emit time; a closed-form kernel for them needs
 the same per-class unbake. Until then, greedy stays on full dps_many batches

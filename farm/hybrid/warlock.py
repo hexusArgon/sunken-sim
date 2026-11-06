@@ -4,10 +4,10 @@
 Timeline: farm.hybrid.warlock_gpu_timeline (pending+choose+demons, f64 CPU clocks).
 Set FARM_HYBRID_GPU_TIMELINE=0 to force CPU sunken_sim.warlock timelines.
 Event shape from sunken_sim.warlock.score_events:
-  (when, name, weight, kind)
-    KIND_HERO_MAG / KIND_HERO_PHYS: weight * typed(thp, mastery) * execute
-    KIND_EXEC: weight * execute
-    KIND_FLAT: weight as-is
+  (when, name, weight, kind, pot_coeff=0)
+    KIND_HERO_MAG / KIND_HERO_PHYS: (weight + potency*pot_coeff) * typed(thp, mastery) * execute
+    KIND_EXEC: (weight + potency*pot_coeff) * execute
+    KIND_FLAT: weight + potency*pot_coeff
 Execute baked into weight at pack; GPU kind-score then score_row.
 """
 
@@ -61,19 +61,22 @@ def _policies_for(spec: str, targets: int):
         yield policy
 
 
-def timelines(build, targets: int, spec: str) -> list[Timeline]:
+def timelines(build, targets: int, spec: str, *, gpu_bundle=None) -> list[Timeline]:
     from sunken_sim import warlock
 
     stats = warlock.stats_of(build)
     best_events = None
     best_total = -1.0
     for policy in _policies_for(spec, targets):
-        key = warlock._timeline_key(build, stats, spec, targets, policy)
-        cached = warlock._TIMELINE.get(key)
-        if cached is None:
-            warlock._simulate(build, targets, spec, policy)
-            cached = warlock._TIMELINE[key]
-        events, _actions, _mana = cached
+        if gpu_bundle is not None and (id(build), policy) in gpu_bundle:
+            events, stats = gpu_bundle[(id(build), policy)]
+        else:
+            key = warlock._timeline_key(build, stats, spec, targets, policy)
+            cached = warlock._TIMELINE.get(key)
+            if cached is None:
+                warlock._simulate(build, targets, spec, policy)
+                cached = warlock._TIMELINE[key]
+            events, _actions, _mana = cached
         sources = warlock.score_events(events, stats)
         total = sum(sources.values())
         if total > best_total:
@@ -91,7 +94,8 @@ def _event_arrays(events: list, stats: dict) -> tuple:
     from sunken_sim.shadow import _execute_factor
     from sunken_sim import warlock
 
-    key = id(events)
+    potency = float(stats["potency"])
+    key = (id(events), potency)
     found = _EVENT_CACHE.get(key)
     if found is not None and found[0] is events:
         return found[1]
@@ -104,7 +108,9 @@ def _event_arrays(events: list, stats: dict) -> tuple:
     mstat = float(stats["mastery"])
 
     for i, ev in enumerate(events):
-        t, _name, w, k = ev
+        t, _name, w, k = ev[0], ev[1], ev[2], ev[3]
+        pot_c = ev[4] if len(ev) > 4 else 0.0
+        w = w + potency * pot_c
         when[i] = t
         mastery[i] = mstat
         ex = _execute_factor(stats, t)
@@ -222,31 +228,54 @@ class WarlockFights(BatchFights):
             out.extend(score_row(tl, row) / FIGHT for tl, row in zip(part, sums))
         return out
 
-    def _gpu_timelines(self, builds: list) -> list:
-        from farm.hybrid.warlock_gpu_timeline import generate_warlock_timelines
+    def _reuse_gpu_timelines(self, builds: list) -> dict:
+        """Generate one GPU tape per timeline key; rescore potency per build."""
+        from sunken_sim import warlock as mod
+        from farm.hybrid.warlock_gpu_timeline import generate_warlock_timelines, _policies_for
 
-        out = generate_warlock_timelines(self.torch, self.target, builds, self.spec, self.targets)
-        return [Timeline(build, stats, self.spec, events) for build, (events, stats) in zip(builds, out)]
+        pairs = []
+        keys = []
+        first = {}
+        order = []
+        for build in builds:
+            stats = mod.stats_of(build)
+            for policy in _policies_for(self.spec, self.targets):
+                key = mod._timeline_key(build, stats, self.spec, self.targets, policy)
+                pairs.append((build, policy))
+                keys.append(key)
+                if key not in first:
+                    first[key] = (build, policy)
+                    order.append(key)
+        unique_builds = [first[k][0] for k in order]
+        unique_pols = [first[k][1] for k in order]
+        rows = generate_warlock_timelines(
+            self.torch, self.target, unique_builds, self.spec, self.targets, unique_pols
+        )
+        events_by_key = {key: row for key, row in zip(order, rows)}
+        bundle = {}
+        for (build, policy), key in zip(pairs, keys):
+            events, _rep_stats = events_by_key[key]
+            stats = mod.stats_of(build)
+            bundle[(id(build), policy)] = (events, stats)
+        return bundle
 
     def dps_many(self, builds: list) -> list[float]:
         import os
 
+        gpu_bundle = None
         want = os.environ.get("FARM_HYBRID_GPU_TIMELINE", "auto").strip().lower()
         use_gpu_tl = (
             want not in ("0", "false", "off", "cpu")
             and (want in ("1", "true", "force") or bool(getattr(self.device, "gpu", False)))
         )
+        if use_gpu_tl and builds:
+            gpu_bundle = self._reuse_gpu_timelines(builds)
         tls: list[Timeline] = []
         owner: list[int] = []
-        if use_gpu_tl and builds:
-            for index, tl in enumerate(self._gpu_timelines(builds)):
+        for index, build in enumerate(builds):
+            for tl in timelines(build, self.targets, self.spec, gpu_bundle=gpu_bundle):
                 tls.append(tl)
                 owner.append(index)
-        else:
-            for index, build in enumerate(builds):
-                for tl in timelines(build, self.targets, self.spec):
-                    tls.append(tl)
-                    owner.append(index)
         scores = self._scores(tls) if tls else []
         self.fights += len(builds)
         best: list[float | None] = [None] * len(builds)

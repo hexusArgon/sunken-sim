@@ -57,7 +57,7 @@ def _policies_for(spec: str, targets: int):
         yield policy
 
 
-def generate_warlock_timelines(torch, device, builds, spec: str, targets: int):
+def generate_warlock_timelines(torch, device, builds, spec: str, targets: int, policies=None):
     if spec not in ("demonology", "destruction", "affliction"):
         raise ValueError(f"warlock GPU timeline specs demo/destro/affli, got {spec}")
     if not builds:
@@ -65,10 +65,17 @@ def generate_warlock_timelines(torch, device, builds, spec: str, targets: int):
     dev_type = getattr(device, "type", str(device))
     if dev_type in ("privateuseone", "dml") or "privateuseone" in str(device):
         device = torch.device("cpu")
-    policies = list(_policies_for(spec, int(targets)))
+    if policies is not None:
+        if len(policies) != len(builds):
+            raise ValueError("policies must align with builds")
+        try:
+            return _warlock_batch(torch, device, torch.float64, list(builds), list(policies), spec, int(targets))
+        except _Overflow:
+            return _cpu_one(builds, policies, spec, targets)
+    policy_list = list(_policies_for(spec, int(targets)))
     exp_builds, exp_pols, owners = [], [], []
     for i, b in enumerate(builds):
-        for p in policies:
+        for p in policy_list:
             exp_builds.append(b); exp_pols.append(p); owners.append(i)
     try:
         rows = _warlock_batch(torch, device, torch.float64, exp_builds, exp_pols, spec, int(targets))
@@ -85,6 +92,20 @@ def generate_warlock_timelines(torch, device, builds, spec: str, targets: int):
     out = []
     for i, b in enumerate(builds):
         out.append(best[i] if best[i] is not None else ([], mod.stats_of(b)))
+    return out
+
+
+def _cpu_one(builds, policies, spec, targets):
+    from sunken_sim import warlock as mod
+    out = []
+    for build, policy in zip(builds, policies):
+        stats = mod.stats_of(build)
+        key = mod._timeline_key(build, stats, spec, targets, policy)
+        cached = mod._TIMELINE.get(key)
+        if cached is None:
+            mod._simulate(build, targets, spec, policy)
+            cached = mod._TIMELINE[key]
+        out.append((list(cached[0]), stats))
     return out
 
 
@@ -117,17 +138,19 @@ def _armor_taken_t(torch, armor, factor):
     return out
 
 
-def _push(torch, bufs, mask, when, weight, name_id, kind):
+def _push(torch, bufs, mask, when, weight, name_id, kind, pot=None):
     if not bool(mask.any()):
         return
     B = int(mask.shape[0])
-    active = mask & (bufs["length"] < MAX_EVENTS) & (weight != 0)
+    pot_t = pot if pot is not None else torch.zeros_like(weight)
+    active = mask & (bufs["length"] < MAX_EVENTS) & ((weight != 0) | (pot_t != 0))
     if not bool(active.any()):
         return
     rows = torch.arange(B, device=weight.device)
     idx = bufs["length"].clone()
     bufs["when"][rows[active], idx[active]] = when[active]
     bufs["weight"][rows[active], idx[active]] = weight[active]
+    bufs["pot"][rows[active], idx[active]] = pot_t[active]
     if isinstance(name_id, torch.Tensor):
         bufs["name"][rows[active], idx[active]] = name_id[active]
     else:
@@ -145,6 +168,7 @@ def _make_bufs(torch, device, B, dtype):
         "name": torch.zeros((B, MAX_EVENTS), dtype=torch.int64, device=device),
         "weight": torch.zeros((B, MAX_EVENTS), dtype=dtype, device=device),
         "kind": torch.zeros((B, MAX_EVENTS), dtype=dtype, device=device),
+        "pot": torch.zeros((B, MAX_EVENTS), dtype=dtype, device=device),
         "length": torch.zeros(B, dtype=torch.int64, device=device),
     }
 
@@ -156,9 +180,10 @@ def _finalize(bufs, stats_list):
     names = bufs["name"].detach().cpu()
     weights = bufs["weight"].detach().cpu()
     kinds = bufs["kind"].detach().cpu()
+    pots = bufs["pot"].detach().cpu()
     for i, stats in enumerate(stats_list):
         n = int(lengths[i])
-        events = [(float(whens[i, j]), NAMES[int(names[i, j])], float(weights[i, j]), float(kinds[i, j]))
+        events = [(float(whens[i, j]), NAMES[int(names[i, j])], float(weights[i, j]), float(kinds[i, j]), float(pots[i, j]))
                   for j in range(n)]
         out.append((events, stats))
     return out
@@ -485,36 +510,44 @@ def _warlock_batch(torch, device, dtype, builds, policies, spec, T):
         return torch.where(glass, bonus * 1.15, bonus)
 
     def hero_hit(mask, name, raw, now, indices, magical=True, attack=False, weight=1.0, pot_scale=1.0, chaos=False):
-        """One aggregated event across indices. Returns (dealt_on_first_typed_exec, crit_share)."""
+        """One aggregated event across indices. Returns (dealt_base, dealt_pot, crit_share)."""
         if not bool(mask.any()) or not indices:
-            return zeros, zeros
+            return zeros, zeros, zeros
         now = full(now); raw = full(raw); weight = full(weight); pot_scale = full(pot_scale)
         is_atk = ones if attack is True else zeros
         ch = hero_crit(now)
         share = torch.where((is_atk > 0.5) | spell_crit_f, torch.clamp(ch, 0.0, 100.0) / 100.0, zeros)
         pre_total = zeros.clone()
+        pre_pot_total = zeros.clone()
         first_pre = zeros.clone()
+        first_pot = zeros.clone()
         for i, index in enumerate(indices):
-            amount = raw + potency0 * pot_scale + agony_flat(index, now)
+            base = raw + agony_flat(index, now)
+            scale = pot_scale
             if chaos:
-                amount = amount * chaos_u
+                base = base * chaos_u
+                scale = scale * chaos_u
             rating = rating0 + torch.where(cremation, full(0.15), zeros)
             rating = rating + torch.where(incinerate & (immolate_until[:, index] > now), full(0.30), zeros)
-            amount = torch.where(is_atk > 0.5, amount * cf(ch, 2.0 + rating),
-                                 torch.where(spell_crit_f, amount * cf(ch, spell_mult + rating), amount))
-            pre = amount * taken(index, now, True)
+            crit_m = torch.where(is_atk > 0.5, cf(ch, 2.0 + rating),
+                                 torch.where(spell_crit_f, cf(ch, spell_mult + rating), ones))
+            take = taken(index, now, True)
+            pre = base * crit_m * take
+            pre_pot = scale * crit_m * take
             pre_total = pre_total + pre
+            pre_pot_total = pre_pot_total + pre_pot
             if i == 0:
                 first_pre = pre
+                first_pot = pre_pot
         kind = KIND_HERO_MAG if magical else KIND_HERO_PHYS
-        _push(torch, bufs, mask, now, pre_total * weight, name, kind)
+        _push(torch, bufs, mask, now, pre_total * weight, name, kind, pot=pre_pot_total * weight)
         note_dmp(mask, full(float(len(indices))) * weight)
-        dealt = first_pre * typed_bonus(magical, now) * exec_f(now)
-        return dealt, share
+        tf = typed_bonus(magical, now) * exec_f(now)
+        return first_pre * tf, first_pot * tf, share
 
     def summon_hit(mask, name, raw, now, indices, magical=True, attack=True, weight=1.0, increase=0.0, chaos=False):
         if not bool(mask.any()) or not indices:
-            return zeros, zeros
+            return zeros, zeros, zeros
         now = full(now); raw = full(raw); weight = full(weight); increase = full(increase)
         ch = summon_crit + torch.where(demonic_emp, full(10.0) + 0.25 * crit0, zeros)
         share = torch.where(torch.tensor(bool(attack), device=device), torch.clamp(ch, 0.0, 100.0) / 100.0, zeros) if not isinstance(attack, torch.Tensor) else torch.where(attack, torch.clamp(ch, 0.0, 100.0) / 100.0, zeros)
@@ -523,20 +556,31 @@ def _warlock_batch(torch, device, dtype, builds, policies, spec, T):
         elif attack is True:
             share = torch.clamp(ch, 0.0, 100.0) / 100.0
         pre_total = zeros.clone()
+        pre_pot_total = zeros.clone()
         first_pre = zeros.clone()
+        first_pot = zeros.clone()
+        pet = 1.0 + pet_damage + increase
         for i, index in enumerate(indices):
-            amount = (raw + potency0 + agony_flat(index, now)) * (1.0 + pet_damage + increase)
+            base = (raw + agony_flat(index, now)) * pet
+            pot_part = pet
             if chaos:
-                amount = amount * chaos_u
+                base = base * chaos_u
+                pot_part = pot_part * chaos_u
             if attack:
-                amount = amount * cf(ch, 2.0 + summon_rating)
-            pre = amount * taken(index, now, False)
+                cm = cf(ch, 2.0 + summon_rating)
+                base = base * cm
+                pot_part = pot_part * cm
+            take = taken(index, now, False)
+            pre = base * take
+            pre_pot = pot_part * take
             pre_total = pre_total + pre
+            pre_pot_total = pre_pot_total + pre_pot
             if i == 0:
                 first_pre = pre
-        _push(torch, bufs, mask, now, pre_total * weight, name, KIND_EXEC)
-        dealt = first_pre * exec_f(now)
-        return dealt, share
+                first_pot = pre_pot
+        _push(torch, bufs, mask, now, pre_total * weight, name, KIND_EXEC, pot=pre_pot_total * weight)
+        ex = exec_f(now)
+        return first_pre * ex, first_pot * ex, share
 
     def malefic(mask, now, t):
         w = chance(0.33 * luck_mult)
@@ -645,14 +689,16 @@ def _warlock_batch(torch, device, dtype, builds, policies, spec, T):
         ch = ch * luck_mult
         backdraft(m, now, chance(ch), hero_source, by_name_id)
 
-    def havoc(mask, now, dealt):
-        m = mask & havoc_t & (dealt > 0)
+    def havoc(mask, now, dealt, dealt_pot=None):
+        pot = dealt_pot if dealt_pot is not None else torch.zeros_like(dealt)
+        m = mask & havoc_t & ((dealt != 0) | (pot != 0))
         if not bool(m.any()):
             return
         now = full(now)
         haunted = (haunt_until > now.view(B, 1)).sum(dim=1).to(dtype)
         amt = 0.12 * dealt * haunted
-        _push(torch, bufs, m & (haunted > 0), now, amt, N_HAVOC, KIND_FLAT)
+        amt_pot = 0.12 * pot * haunted
+        _push(torch, bufs, m & (haunted > 0), now, amt, N_HAVOC, KIND_FLAT, pot=amt_pot)
 
     def demon_speed(slot, now):
         speed = torch.where(is_demo | all_mastery, full(0.08) + 0.006 * mastery, zeros)
@@ -844,8 +890,8 @@ def _warlock_batch(torch, device, dtype, builds, policies, spec, T):
                 # imp
                 m = active & (dem_kind[:, slot] == K_IMP)
                 if bool(m.any()):
-                    dealt, share = summon_hit(m, N_IMP, dem_raw[:, slot], moment, [0], magical=True, attack=True, increase=increase)
-                    havoc(m, moment, dealt)
+                    dealt, dealt_pot, share = summon_hit(m, N_IMP, dem_raw[:, slot], moment, [0], magical=True, attack=True, increase=increase)
+                    havoc(m, moment, dealt, dealt_pot)
                     swing = full(float(mod.IMP_SWING))
                     backdraft_on_attack(m, moment, share, False, N_BACK_IMP)
                     dem_next[:, slot] = torch.where(m, moment + swing / (1.0 + demon_speed(slot, moment)), dem_next[:, slot])
@@ -855,14 +901,17 @@ def _warlock_batch(torch, device, dtype, builds, policies, spec, T):
                     raw = full(7.0) + torch.floor(full(8.0 * RANK) + 0.20 * dcs(moment) + 0.02 * hp_max) + 1.0
                     nm = torch.where(wrathguard, full(float(N_WRATHGUARD)), full(float(N_FELGUARD))).to(torch.int64)
                     # summon_hit with per-row name: push twice
-                    dealt_f, share_f = summon_hit(m & ~wrathguard, N_FELGUARD, raw, moment, [0], magical=False, attack=True, increase=increase, chaos=False)
-                    dealt_w, share_w = summon_hit(m & wrathguard, N_WRATHGUARD, raw, moment, [0], magical=False, attack=True, increase=increase, chaos=True)
+                    dealt_f, pot_f, share_f = summon_hit(m & ~wrathguard, N_FELGUARD, raw, moment, [0], magical=False, attack=True, increase=increase, chaos=False)
+                    dealt_w, pot_w, share_w = summon_hit(m & wrathguard, N_WRATHGUARD, raw, moment, [0], magical=False, attack=True, increase=increase, chaos=True)
                     dealt = torch.where(wrathguard, dealt_w, dealt_f)
+                    dealt_pot = torch.where(wrathguard, pot_w, pot_f)
                     share = torch.where(wrathguard, share_w, share_f)
-                    havoc(m & wrathguard, moment, dealt)
+                    havoc(m & wrathguard, moment, dealt, dealt_pot)
                     # demon rage cleave FLAT
-                    cleave = 0.15 * dealt * float(max(1, Tt - 1))
-                    _push(torch, bufs, m & demon_rage_t, moment, cleave, N_DEMON_RAGE, KIND_FLAT)
+                    extra = float(max(1, Tt - 1))
+                    cleave = 0.15 * dealt * extra
+                    cleave_pot = 0.15 * dealt_pot * extra
+                    _push(torch, bufs, m & demon_rage_t, moment, cleave, N_DEMON_RAGE, KIND_FLAT, pot=cleave_pot)
                     swing = full(float(mod.FELGUARD_SWING)) * torch.where(consumption, full(1.20), ones)
                     backdraft_on_attack(m & ~wrathguard, moment, share, False, N_BACK_FEL)
                     backdraft_on_attack(m & wrathguard, moment, share, False, N_BACK_WG)
@@ -989,8 +1038,8 @@ def _warlock_batch(torch, device, dtype, builds, policies, spec, T):
             power = power + torch.where(drain_soul & (now < drain_until), full(5.0 + 5.0 * lvl), zeros)
             if bool((is_auto & (auto_pct != 1.0)).any()):
                 raise _Overflow("auto_pct")
-            dealt, share = hero_hit(is_auto, N_AUTO, power, now, [0], magical=True, attack=True, pot_scale=attack_potency)
-            havoc(is_auto, now, dealt)
+            dealt, dealt_pot, share = hero_hit(is_auto, N_AUTO, power, now, [0], magical=True, attack=True, pot_scale=attack_potency)
+            havoc(is_auto, now, dealt, dealt_pot)
             agony_chance(is_auto, now, 0, 0.05 * luck_mult)
             backdraft_on_attack(is_auto, now, share, True, N_BACKDRAFT)
             # chaos bolt proc
@@ -999,8 +1048,8 @@ def _warlock_batch(torch, device, dtype, builds, policies, spec, T):
                 cb_buff_until = torch.where(m, full(-1.0), cb_buff_until)
                 raw = (full(75.0) + 1.5 * dcs(now)) * (1.0 + 0.01 * crit0)
                 raw = torch.where(chaotic, raw * 1.255, raw)
-                cb_dealt, cb_share = hero_hit(m, N_CB, raw, now, [0], magical=False, attack=True, chaos=True)
-                havoc(m, now, cb_dealt)
+                cb_dealt, cb_dealt_pot, cb_share = hero_hit(m, N_CB, raw, now, [0], magical=False, attack=True, chaos=True)
+                havoc(m, now, cb_dealt, cb_dealt_pot)
                 backdraft_on_attack(m, now, cb_share, True, N_BACKDRAFT)
             gain(is_auto, amg)
             if bool(fire_orb.any()):
