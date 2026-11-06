@@ -26,6 +26,10 @@ omits potency_points. Crit stays because Backdraft uses crit share,
 and luck stays because Malefic Hood, agony/haunt rolls and Sulfuras
 echo change the tape. WarlockFights clusters GPU timelines by that
 key (one policy per row via generate_warlock_timelines(..., policies=)).
+Rogue hit events store raw weight plus pot_coeff; Vendetta and Coup
+keep both parts so `_timeline_key` omits potency_points. Crit stays
+(Combat Potency / Dispatch) and luck stays (proc rolls and Sulfuras
+echo). RogueFights clusters GPU timelines by that key.
 Other
 heroes still bake some
 flat/cleave/splash raws at emit time; a closed-form kernel for them needs

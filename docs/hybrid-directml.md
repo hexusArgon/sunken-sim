@@ -70,7 +70,7 @@
    deal events store raw weight plus pot_coeff (2026-11-07); score applies
    potency, so `_timeline_key` omits potency_points. Crit stays (swipe
    threshold and Feral Frenzy) and luck stays (Razor share and Sulfuras
-   echo). FeralDruidFights clusters GPU timelines by that key. Warlock potency is unbaked the same way (Havoc and Demon Rage store both raw and pot_coeff); `_timeline_key` omits potency_points. Crit and luck stay (Backdraft / Malefic / agony rolls). WarlockFights clusters GPU timelines by key and generate_warlock_timelines(..., policies=). Other
+   echo). FeralDruidFights clusters GPU timelines by that key. Warlock potency is unbaked the same way (Havoc and Demon Rage store both raw and pot_coeff); `_timeline_key` omits potency_points. Crit and luck stay (Backdraft / Malefic / agony rolls). WarlockFights clusters GPU timelines by key and generate_warlock_timelines(..., policies=). Rogue potency is unbaked the same way (Vendetta and Coup store both raw and pot_coeff); `_timeline_key` omits potency_points. Crit and luck stay (Combat Potency / proc rolls). RogueFights clusters GPU timelines by key. Other
    classes still bake some flat/cleave/splash raws.
 3. **ESC guarded event algebra (`FARM_HYBRID_ESC_ALGEBRA`, default `auto`)** —
    `farm/hybrid/esc_algebra.py`, Ledger kind-heroes. Один CPU-трейс текущего

@@ -86,23 +86,28 @@ def _make_bufs(torch, device, B, dtype):
         "name": torch.zeros((B, MAX_EVENTS), dtype=torch.int64, device=device),
         "weight": z(),
         "kind": z(),
+        "pot": z(),
         "length": torch.zeros(B, dtype=torch.int64, device=device),
     }
 
 
-def _push(torch, bufs, mask, when, weight, name_id, kind):
+def _push(torch, bufs, mask, when, weight, name_id, kind, pot=None):
     if not bool(mask.any()):
         return
     B = int(mask.shape[0])
     active = mask & (bufs["length"] < MAX_EVENTS)
     if not bool(active.any()):
         return
-    rows = torch.arange(B, device=weight.device)
+    rows = torch.arange(B, device=weight.device if isinstance(weight, torch.Tensor) else bufs["when"].device)
     idx = bufs["length"]
     w = weight if isinstance(weight, torch.Tensor) else torch.full((B,), float(weight), dtype=bufs["when"].dtype, device=bufs["when"].device)
+    pot_t = pot if pot is not None else torch.zeros_like(w)
+    if not isinstance(pot_t, torch.Tensor):
+        pot_t = torch.full_like(w, float(pot_t))
     wh = when if isinstance(when, torch.Tensor) else torch.full((B,), float(when), dtype=w.dtype, device=w.device)
     bufs["when"][rows[active], idx[active]] = wh[active]
     bufs["weight"][rows[active], idx[active]] = w[active]
+    bufs["pot"][rows[active], idx[active]] = pot_t[active]
     nid = name_id if isinstance(name_id, torch.Tensor) else torch.full((B,), int(name_id), dtype=torch.int64, device=w.device)
     kid = kind if isinstance(kind, torch.Tensor) else torch.full((B,), float(kind), dtype=w.dtype, device=w.device)
     bufs["name"][rows[active], idx[active]] = nid[active]
@@ -132,6 +137,7 @@ def _buffers_to_events(bufs, strike_name: str):
     name = bufs["name"].detach().cpu()
     weight = bufs["weight"].detach().cpu()
     kind = bufs["kind"].detach().cpu()
+    pot = bufs["pot"].detach().cpu()
     length = bufs["length"].detach().cpu()
     out = []
     for b in range(when.shape[0]):
@@ -139,7 +145,7 @@ def _buffers_to_events(bufs, strike_name: str):
         ev = []
         for i in range(n):
             nid = int(name[b, i].item())
-            ev.append((float(when[b, i]), names.get(nid, AUTO), float(weight[b, i]), float(kind[b, i])))
+            ev.append((float(when[b, i]), names.get(nid, AUTO), float(weight[b, i]), float(kind[b, i]), float(pot[b, i])))
         out.append(ev)
     return out
 
@@ -262,6 +268,7 @@ def _rogue_batch(torch, device, dtype, builds, spec, targets):
     vend_start = torch.full((B,), -1.0, dtype=dtype, device=device)
     vend_until = torch.full((B,), -1.0, dtype=dtype, device=device)
     vend_acc = zeros.clone()
+    vend_pot = zeros.clone()
     planning_until = torch.full((B,), -1.0, dtype=dtype, device=device)
     ambush_until = torch.full((B,), -1.0, dtype=dtype, device=device)
     spree_until = torch.full((B,), -1.0, dtype=dtype, device=device)
@@ -285,7 +292,7 @@ def _rogue_batch(torch, device, dtype, builds, spec, targets):
     # --- helpers using nonlocal state ---
     st = {
         "mana": mana, "mana_time": mana_time, "busy": busy, "next_attack": next_attack,
-        "vend_start": vend_start, "vend_until": vend_until, "vend_acc": vend_acc,
+        "vend_start": vend_start, "vend_until": vend_until, "vend_acc": vend_acc, "vend_pot": vend_pot,
         "planning_until": planning_until, "ambush_until": ambush_until,
         "spree_until": spree_until, "strike_until": strike_until,
         "stealth_pending": stealth_pending, "behind_pending": behind_pending,
@@ -370,33 +377,39 @@ def _rogue_batch(torch, device, dtype, builds, spec, targets):
         extra_t = extra if isinstance(extra, torch.Tensor) else torch.full_like(now, float(extra))
         st["busy"] = torch.where(mask, now + cast_time + extra_t + cast_stun_lock, st["busy"])
 
-    def push_flat0(mask, weight, name_id):
+    def push_flat0(mask, weight, name_id, pot=None):
         """add_damage: when stamped 0.0"""
-        m = mask & (weight > 0)
-        _push(torch, bufs, m, zeros, weight, name_id, KIND_FLAT)
+        pot_t = pot if pot is not None else zeros
+        m = mask & ((weight > 0) | (pot_t > 0))
+        _push(torch, bufs, m, zeros, weight, name_id, KIND_FLAT, pot=pot_t)
 
-    def push_k(mask, when, weight, name_id, kind):
-        m = mask & (weight > 0)
-        _push(torch, bufs, m, when, weight, name_id, kind)
+    def push_k(mask, when, weight, name_id, kind, pot=None):
+        pot_t = pot if pot is not None else zeros
+        m = mask & ((weight > 0) | (pot_t > 0))
+        _push(torch, bufs, m, when, weight, name_id, kind, pot=pot_t)
 
     def coup(now, attack, count, mask):
-        m = mask & (t_coup > 0.5) & (st["vend_acc"] > 0)
+        m = mask & (t_coup > 0.5) & ((st["vend_acc"] > 0) | (st["vend_pot"] > 0))
         if not bool(m.any()):
             return
         rate = 0.07 if attack else 0.04
         cnt = count if isinstance(count, torch.Tensor) else torch.full_like(st["vend_acc"], float(count))
         ch = chance(rate * luck_mult) * cnt
-        dealt = st["vend_acc"] * taken_for(0, now, enhanced=True) * ch
-        push_flat0(m, dealt, N_COUP)
+        take = taken_for(0, now, enhanced=True)
+        dealt = st["vend_acc"] * take * ch
+        dealt_p = st["vend_pot"] * take * ch
+        push_flat0(m, dealt, N_COUP, pot=dealt_p)
         st["vend_acc"] = torch.where(m, st["vend_acc"] + vendetta_feed * dealt, st["vend_acc"])
+        st["vend_pot"] = torch.where(m, st["vend_pot"] + vendetta_feed * dealt_p, st["vend_pot"])
 
-    def landed(dealt, index, now, attack, count, mask):
+    def landed(dealt, dealt_pot, index, now, attack, count, mask):
         if index != 0:
             return
         m = mask & vend_on(now)
         if not bool(m.any()):
             return
         st["vend_acc"] = torch.where(m, st["vend_acc"] + vendetta_feed * dealt, st["vend_acc"])
+        st["vend_pot"] = torch.where(m, st["vend_pot"] + vendetta_feed * dealt_pot, st["vend_pot"])
         coup(now, attack, count, m)
 
     def hit(name_id, raw, now, mask, *, index=0, attack=False, count=1.0,
@@ -407,12 +420,15 @@ def _rogue_batch(torch, device, dtype, builds, spec, targets):
         atk_inc = attack_inc if attack_inc is not None else ones
         cnt = count if isinstance(count, torch.Tensor) else torch.full_like(raw if isinstance(raw, torch.Tensor) else ones, float(count))
         raw_t = raw if isinstance(raw, torch.Tensor) else torch.full_like(ones, float(raw))
-        base = (raw_t + potency * pot_s) * increase(now, mask)
+        inc = increase(now, mask)
+        raw_part = raw_t * inc
+        pot_part = pot_s * inc
         armor = taken_for(index, now)
         share = zeros.clone()
         bounty_pre = zeros.clone()
         if attack:
-            base = base * atk_inc
+            raw_part = raw_part * atk_inc
+            pot_part = pot_part * atk_inc
             if sure_crit:
                 chance_c = torch.full_like(crit, 100.0)
             else:
@@ -426,7 +442,8 @@ def _rogue_batch(torch, device, dtype, builds, spec, targets):
                 [_crit_factor(float(chance_c[i].item()), float(mult[i].item())) for i in range(B)],
                 dtype=dtype, device=device,
             )
-            pre = base * armor * cf
+            pre = raw_part * armor * cf
+            pre_pot = pot_part * armor * cf
             if float(bounty.max()) > 0:
                 if index == 0:
                     flat = torch.where(vend_on(now), torch.full_like(ones, 40.0), torch.full_like(ones, 15.0))
@@ -434,14 +451,17 @@ def _rogue_batch(torch, device, dtype, builds, spec, targets):
                     flat = torch.full_like(ones, 15.0)
                 bounty_pre = torch.where(bounty > 0.5, share * flat * mult, zeros)
         else:
-            pre = base * armor
+            pre = raw_part * armor
+            pre_pot = pot_part * armor
 
         w = pre * cnt
+        wp = pre_pot * cnt
         bw = bounty_pre * cnt
         if apply_auto_pct:
             w = w * auto_pct
+            wp = wp * auto_pct
             bw = bw * auto_pct
-        push_k(mask, now, w, name_id, KIND_PHYS)
+        push_k(mask, now, w, name_id, KIND_PHYS, pot=wp)
         if float(bounty.max()) > 0:
             push_k(mask & (bounty > 0.5), now, bw, name_id, KIND_EXEC)
 
@@ -451,7 +471,8 @@ def _rogue_batch(torch, device, dtype, builds, spec, targets):
             dtype=dtype, device=device,
         )
         dealt = pre * phys * ex + bounty_pre * ex
-        landed(dealt, index, now, attack, cnt, mask)
+        dealt_pot = pre_pot * phys * ex
+        landed(dealt, dealt_pot, index, now, attack, cnt, mask)
         return dealt, share
 
     def rupture(now, count, from_potency, mask):
@@ -505,8 +526,10 @@ def _rogue_batch(torch, device, dtype, builds, spec, targets):
 
     def release(now, mask):
         amt = st["vend_acc"] * taken_enh_t
-        push_flat0(mask, amt, N_VENDETTA)
+        amt_pot = st["vend_pot"] * taken_enh_t
+        push_flat0(mask, amt, N_VENDETTA, pot=amt_pot)
         st["vend_acc"] = torch.where(mask, zeros, st["vend_acc"])
+        st["vend_pot"] = torch.where(mask, zeros, st["vend_pot"])
         st["vend_start"] = torch.where(mask, torch.full_like(st["vend_start"], -1.0), st["vend_start"])
         st["vend_until"] = torch.where(mask, torch.full_like(st["vend_until"], -1.0), st["vend_until"])
         m_hon = mask & (t_honor > 0.5)
@@ -590,6 +613,7 @@ def _rogue_batch(torch, device, dtype, builds, spec, targets):
                     st["vend_start"] = torch.where(ok, hit_at, st["vend_start"])
                     st["vend_until"] = torch.where(ok, hit_at + float(mod.VENDETTA_DUR), st["vend_until"])
                     st["vend_acc"] = torch.where(ok, zeros, st["vend_acc"])
+                    st["vend_pot"] = torch.where(ok, zeros, st["vend_pot"])
                     st["clocks"][:, C_VENDETTA] = torch.where(
                         ok, moment + cd(mod.VENDETTA_CD, vendetta_flat), st["clocks"][:, C_VENDETTA]
                     )

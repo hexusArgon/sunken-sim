@@ -315,8 +315,10 @@ def _timeline_key(build: Build, stats: dict, spec: str, targets: int) -> tuple:
     items = tuple(sorted(item.rawcode for item in build.items))
     talents = tuple(sorted(build.talents))
     glyphs = tuple(sorted(build.glyphs))
+    # potency_points omitted: score_events applies stats["potency"] via pot_coeff.
+    # crit stays: Combat Potency extra rupture and Dispatch bonus use crit share.
+    # luck stays: Combat Potency / Hidden Blades / Shuriken / Sulfuras echo change the tape.
     esc = (
-        build.potency_points,
         build.mastery_points,
         build.crit_points,
         build.luck_points,
@@ -356,10 +358,15 @@ def _mag_simple(stats: dict) -> float:
 def score_events(events: list, stats: dict, spec: str = "subtlety") -> dict[str, float]:
     """Score typed timeline events into named sources.
 
-    Event: (when, name, weight, kind)
+    Event: (when, name, weight, kind, pot_coeff=0)
+    potency is applied here as weight + potency * pot_coeff.
     """
     sources: dict[str, float] = {}
-    for when, name, weight, kind in events:
+    potency = stats["potency"]
+    for ev in events:
+        when, name, weight, kind = ev[0], ev[1], ev[2], ev[3]
+        pot_c = ev[4] if len(ev) > 4 else 0.0
+        weight = weight + potency * pot_c
         if kind == KIND_FLAT:
             amount = weight
         elif kind == KIND_EXEC:
@@ -413,13 +420,13 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
     actions: list[tuple[float, str]] = []
     events: list = []
 
-    def add_damage(name: str, amount: float) -> None:
-        if amount:
-            events.append((0.0, name, amount, KIND_FLAT))
+    def add_damage(name: str, amount: float, pot_c: float = 0.0) -> None:
+        if amount or pot_c:
+            events.append((0.0, name, amount, KIND_FLAT, pot_c))
 
-    def add_event(when: float, name: str, weight: float, kind: float) -> None:
-        if weight:
-            events.append((when, name, weight, kind))
+    def add_event(when: float, name: str, weight: float, kind: float, pot_c: float = 0.0) -> None:
+        if weight or pot_c:
+            events.append((when, name, weight, kind, pot_c))
 
     mana = stats["mana_max"]
     mana_time = 0.0
@@ -429,6 +436,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
     vend_start = -1.0
     vend_until = -1.0
     vend_acc = 0.0
+    vend_pot = 0.0
     planning_until = -1.0
     ambush_until = -1.0
     spree_until = -1.0
@@ -501,18 +509,24 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
         return value
 
     def coup(now: float, attack: bool, count: float) -> None:
-        nonlocal vend_acc
-        if not has(TALENT_COUP_DE_GRACE) or vend_acc <= 0:
+        nonlocal vend_acc, vend_pot
+        if not has(TALENT_COUP_DE_GRACE):
+            return
+        if vend_acc <= 0 and vend_pot <= 0:
             return
         chance = _chance((0.07 if attack else 0.04) * luck_mult) * count
-        dealt = vend_acc * taken_for(0, now, enhanced=True) * chance
-        add_damage("Coup de Grace", dealt)
+        take = taken_for(0, now, enhanced=True)
+        dealt = vend_acc * take * chance
+        dealt_p = vend_pot * take * chance
+        add_damage("Coup de Grace", dealt, dealt_p)
         vend_acc += vendetta_feed * dealt
+        vend_pot += vendetta_feed * dealt_p
 
-    def landed(dealt: float, index: int, now: float, attack: bool, count: float) -> None:
-        nonlocal vend_acc
+    def landed(dealt: float, dealt_pot: float, index: int, now: float, attack: bool, count: float) -> None:
+        nonlocal vend_acc, vend_pot
         if index == 0 and vend_on(now):
             vend_acc += vendetta_feed * dealt
+            vend_pot += vendetta_feed * dealt_pot
             coup(now, attack, count)
 
     def hit(
@@ -529,14 +543,17 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
         sure_crit: bool = False,
     ) -> tuple[float, float]:
         """Physical hit through PreDamage_Increase. Returns (dealt, crit share)."""
-        base = (raw + stats["potency"] * potency_scale) * increase(now)
+        inc = increase(now)
+        raw_part = raw * inc
+        pot_part = potency_scale * inc
         share = 0.0
         armor = taken_for(index, now)
         execute = _execute_factor(stats, now)
         phys = physical(now)
         bounty_pre = 0.0
         if attack:
-            base *= attack_inc
+            raw_part *= attack_inc
+            pot_part *= attack_inc
             chance = 100.0 if sure_crit else stats["crit"] + crit_bonus
             if has(TALENT_FIND_WEAKNESS):
                 chance += 5.0
@@ -544,17 +561,21 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
                 chance += 15.0
             share = max(0.0, min(100.0, chance)) / 100.0
             mult = 2.0 + stats["rating"]
-            pre = base * armor * _crit_factor(chance, mult)
+            cf = _crit_factor(chance, mult)
+            pre = raw_part * armor * cf
+            pre_pot = pot_part * armor * cf
             if stats["bounty_blades"]:
                 flat = 40.0 if (index == 0 and vend_on(now)) else 15.0
                 bounty_pre = share * flat * mult
         else:
-            pre = base * armor
-        add_event(now, name, pre * count, KIND_PHYS)
+            pre = raw_part * armor
+            pre_pot = pot_part * armor
+        add_event(now, name, pre * count, KIND_PHYS, pre_pot * count)
         if bounty_pre:
             add_event(now, name, bounty_pre * count, KIND_EXEC)
         dealt = pre * phys * execute + bounty_pre * execute
-        landed(dealt, index, now, attack, count)
+        dealt_pot = pre_pot * phys * execute
+        landed(dealt, dealt_pot, index, now, attack, count)
         return dealt, share
 
     def rupture(now: float, count: float, from_potency: bool) -> None:
@@ -606,10 +627,12 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
         return swing / (1.0 + speed)
 
     def release(now: float) -> None:
-        nonlocal vend_acc, vend_start, vend_until
+        nonlocal vend_acc, vend_pot, vend_start, vend_until
         # ENHANCED: skips PreDamage_Increase; the B04N buff (and Marked armor) is gone.
-        add_damage("Vendetta", vend_acc * armor_taken(float(DUMMY_ARMOR)))
+        take = armor_taken(float(DUMMY_ARMOR))
+        add_damage("Vendetta", vend_acc * take, vend_pot * take)
         vend_acc = 0.0
+        vend_pot = 0.0
         vend_start = vend_until = -1.0
         if has(TALENT_HONOR_AMONG_THIEVES):
             recover(now)
@@ -683,7 +706,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
                     continue
                 actions.append((moment, "Vendetta"))
                 busy = cast(moment, VENDETTA_FOLLOW)
-                vend_start, vend_until, vend_acc = hit_at, hit_at + VENDETTA_DUR, 0.0
+                vend_start, vend_until, vend_acc, vend_pot = hit_at, hit_at + VENDETTA_DUR, 0.0, 0.0
                 nxt[name] = moment + _cooldown(VENDETTA_CD, haste, stats, vendetta_flat)
                 # Paranoia is not credited on Vendetta's own cast (trigger order unknown).
                 if has(TALENT_HIDDEN_BLADES):
@@ -771,10 +794,12 @@ def simulate(build: Build, targets: int = 5, spec: str = "subtlety") -> Report:
             sure_crit=dispatch,
         )
         if stats["auto_pct"] != 1.0:
+            scale = stats["auto_pct"]
             for i in range(mark, len(events)):
-                when, n, w, k = events[i]
+                when, n, w, k, *rest = events[i]
                 if n == auto_name:
-                    events[i] = (when, n, w * stats["auto_pct"], k)
+                    pot_c = rest[0] * scale if rest else 0.0
+                    events[i] = (when, n, w * scale, k, pot_c)
         if dispatch:
             strike_until = -1.0
         if spec == "subtlety" and moment < strike_until:

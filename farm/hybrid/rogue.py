@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """GPU kind/weight compile for Rogue. DirectML.\n\nTimeline: farm.hybrid.rogue_gpu_timeline (pending+choose).\nSet FARM_HYBRID_GPU_TIMELINE=0 to force CPU sunken_sim.rogue.simulate.
 
-Event: (when, name, weight, kind)
+Event: (when, name, weight, kind, pot_coeff=0)
   KIND_PHYS / KIND_EXEC / KIND_MAG / KIND_FLAT
 Execute baked at pack; GPU moments sum(w), sum(w*thp) for PHYS.
+potency is applied in _event_arrays as weight + potency * pot_coeff.
 """
 
 from __future__ import annotations
@@ -34,9 +35,12 @@ class Timeline:
     events: list
 
 
-def timelines(build, targets: int, spec: str) -> list[Timeline]:
+def timelines(build, targets: int, spec: str, *, gpu_bundle=None) -> list[Timeline]:
     from sunken_sim import rogue as mod
 
+    if gpu_bundle is not None and id(build) in gpu_bundle:
+        events, stats = gpu_bundle[id(build)]
+        return [Timeline(build, stats, spec, events)]
     stats = mod.stats_of(build)
     key = mod._timeline_key(build, stats, spec, targets)
     cached = mod._TIMELINE.get(key)
@@ -54,7 +58,8 @@ def _event_arrays(events: list, stats: dict) -> tuple:
     from sunken_sim.shadow import _execute_factor
     from sunken_sim import rogue as mod
 
-    key = id(events)
+    potency = float(stats["potency"])
+    key = (id(events), potency)
     found = _EVENT_CACHE.get(key)
     if found is not None and found[0] is events:
         return found[1]
@@ -64,7 +69,9 @@ def _event_arrays(events: list, stats: dict) -> tuple:
     weight = np.empty(n, dtype=np.float64)
     when = np.empty(n, dtype=np.float64)
     for i, ev in enumerate(events):
-        t, _name, w, k = ev
+        t, _name, w, k = ev[0], ev[1], ev[2], ev[3]
+        pot_c = ev[4] if len(ev) > 4 else 0.0
+        w = w + potency * pot_c
         when[i] = t
         ex = _execute_factor(stats, t)
         if k in (mod.KIND_FLAT, KIND_FLAT):
@@ -170,30 +177,49 @@ class RogueFights(BatchFights):
             out.extend(score_row(tl, row) / FIGHT for tl, row in zip(part, sums))
         return out
 
+    def _reuse_gpu_timelines(self, builds: list) -> dict:
+        """Generate one GPU tape per timeline key; rescore potency per build."""
+        from sunken_sim import rogue as mod
+        from farm.hybrid.rogue_gpu_timeline import generate_rogue_timelines
+
+        keys = []
+        first = {}
+        order = []
+        for build in builds:
+            stats = mod.stats_of(build)
+            key = mod._timeline_key(build, stats, self.spec, self.targets)
+            keys.append(key)
+            if key not in first:
+                first[key] = build
+                order.append(key)
+        unique_builds = [first[k] for k in order]
+        rows = generate_rogue_timelines(
+            self.torch, self.target, unique_builds, self.spec, self.targets
+        )
+        events_by_key = {key: row for key, row in zip(order, rows)}
+        bundle = {}
+        for build, key in zip(builds, keys):
+            events, _rep = events_by_key[key]
+            bundle[id(build)] = (events, mod.stats_of(build))
+        return bundle
+
     def dps_many(self, builds: list) -> list[float]:
         import os
 
+        gpu_bundle = None
         want = os.environ.get("FARM_HYBRID_GPU_TIMELINE", "auto").strip().lower()
         use_gpu_tl = (
             want not in ("0", "false", "off", "cpu")
             and (want in ("1", "true", "force") or bool(getattr(self.device, "gpu", False)))
         )
+        if use_gpu_tl and builds:
+            gpu_bundle = self._reuse_gpu_timelines(builds)
         tls: list[Timeline] = []
         owner: list[int] = []
-        if use_gpu_tl and builds:
-            from farm.hybrid.rogue_gpu_timeline import generate_rogue_timelines
-
-            rows = generate_rogue_timelines(
-                self.torch, self.target, builds, self.spec, self.targets
-            )
-            for index, (events, stats) in enumerate(rows):
-                tls.append(Timeline(builds[index], stats, self.spec, events))
+        for index, build in enumerate(builds):
+            for tl in timelines(build, self.targets, self.spec, gpu_bundle=gpu_bundle):
+                tls.append(tl)
                 owner.append(index)
-        else:
-            for index, build in enumerate(builds):
-                for tl in timelines(build, self.targets, self.spec):
-                    tls.append(tl)
-                    owner.append(index)
         scores = self._scores(tls) if tls else []
         self.fights += len(builds)
         best: list[float | None] = [None] * len(builds)
