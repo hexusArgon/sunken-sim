@@ -3,7 +3,7 @@
 
 Faithful port of sunken_sim.feral_druid._simulate_feral onto batched torch.
 Rows = builds x bound_keys (DIAMOND expands; else one None). f64 clocks on CPU.
-Event: (when, name, weight, kind) = KIND_PHYS/MAG/EXEC/FLAT.
+Event: (when, name, weight, kind, pot_coeff) = KIND_PHYS/MAG/EXEC/FLAT.
 """
 from __future__ import annotations
 
@@ -48,7 +48,23 @@ def _bound_keys_for(build, spec: str):
     return [None]
 
 
-def generate_feral_timelines(torch, device, builds, spec: str, targets: int):
+def _cpu_one(build, spec, targets, bk):
+    from sunken_sim import feral_druid as mod
+
+    stats = mod.sheet(build, spec)
+    key = mod._timeline_key(build, stats, spec, targets, bk)
+    cached = mod._TIMELINE.get(key)
+    if cached is None:
+        if bk is None:
+            mod._simulate_feral(build, targets, spec, None)
+        else:
+            mod.simulate(build, targets, spec, mod.BOUND_NAME[bk])
+        cached = mod._TIMELINE[key]
+    events, _a, _m, codes = cached
+    return (list(events), stats, codes)
+
+
+def generate_feral_timelines(torch, device, builds, spec: str, targets: int, bounds=None):
     if spec not in ("primal", "guardian", "savage"):
         raise ValueError(f"feral GPU timeline specs primal/guardian/savage, got {spec}")
     if not builds:
@@ -56,6 +72,13 @@ def generate_feral_timelines(torch, device, builds, spec: str, targets: int):
     dev_type = getattr(device, "type", str(device))
     if dev_type in ("privateuseone", "dml") or "privateuseone" in str(device):
         device = torch.device("cpu")
+    if bounds is not None:
+        if len(bounds) != len(builds):
+            raise ValueError("generate_feral_timelines bounds must match builds")
+        try:
+            return _feral_batch(torch, device, torch.float64, list(builds), list(bounds), spec, int(targets))
+        except _Overflow:
+            return [_cpu_one(b, spec, targets, bk) for b, bk in zip(builds, bounds)]
     exp_builds, exp_bounds, owners = [], [], []
     for i, b in enumerate(builds):
         for bk in _bound_keys_for(b, spec):
@@ -94,15 +117,7 @@ def _cpu_best(builds, spec, targets):
         stats = mod.sheet(build, spec)
         best_events, best_tot, best_codes = None, -1.0, frozenset()
         for bk in _bound_keys_for(build, spec):
-            key = mod._timeline_key(build, stats, spec, targets, bk)
-            cached = mod._TIMELINE.get(key)
-            if cached is None:
-                if bk is None:
-                    mod._simulate_feral(build, targets, spec, None)
-                else:
-                    mod.simulate(build, targets, spec, mod.BOUND_NAME[bk])
-                cached = mod._TIMELINE[key]
-            events, _a, _m, codes = cached
+            events, stats, codes = _cpu_one(build, spec, targets, bk)
             total = sum(mod.score_events(list(events), stats, codes).values())
             if total > best_tot:
                 best_tot = total
@@ -112,17 +127,20 @@ def _cpu_best(builds, spec, targets):
     return out
 
 
-def _push(torch, bufs, mask, when, weight, name_id, kind):
+def _push(torch, bufs, mask, when, weight, name_id, kind, pot=None):
     if not bool(mask.any()):
         return
     B = int(mask.shape[0])
-    active = mask & (bufs["length"] < MAX_EVENTS) & (weight != 0)
+    if pot is None:
+        pot = torch.zeros_like(weight)
+    active = mask & (bufs["length"] < MAX_EVENTS) & ((weight != 0) | (pot != 0))
     if not bool(active.any()):
         return
     rows = torch.arange(B, device=weight.device)
     idx = bufs["length"].clone()
     bufs["when"][rows[active], idx[active]] = when[active]
     bufs["weight"][rows[active], idx[active]] = weight[active]
+    bufs["pot"][rows[active], idx[active]] = pot[active]
     bufs["name"][rows[active], idx[active]] = int(name_id) if not isinstance(name_id, torch.Tensor) else name_id[active]
     bufs["kind"][rows[active], idx[active]] = float(kind) if not isinstance(kind, torch.Tensor) else kind[active]
     bufs["length"] = bufs["length"] + active.to(torch.int64)
@@ -133,6 +151,7 @@ def _make_bufs(torch, device, B, dtype):
         "when": torch.zeros((B, MAX_EVENTS), dtype=dtype, device=device),
         "name": torch.zeros((B, MAX_EVENTS), dtype=torch.int64, device=device),
         "weight": torch.zeros((B, MAX_EVENTS), dtype=dtype, device=device),
+        "pot": torch.zeros((B, MAX_EVENTS), dtype=dtype, device=device),
         "kind": torch.zeros((B, MAX_EVENTS), dtype=dtype, device=device),
         "length": torch.zeros(B, dtype=torch.int64, device=device),
     }
@@ -144,11 +163,18 @@ def _finalize(bufs, stats_list, codes_list):
     whens = bufs["when"].detach().cpu()
     names = bufs["name"].detach().cpu()
     weights = bufs["weight"].detach().cpu()
+    pots = bufs["pot"].detach().cpu()
     kinds = bufs["kind"].detach().cpu()
     for i, (stats, codes) in enumerate(zip(stats_list, codes_list)):
         n = int(lengths[i])
         events = [
-            (float(whens[i, j]), NAMES[int(names[i, j])], float(weights[i, j]), float(kinds[i, j]))
+            (
+                float(whens[i, j]),
+                NAMES[int(names[i, j])],
+                float(weights[i, j]),
+                float(kinds[i, j]),
+                float(pots[i, j]),
+            )
             for j in range(n)
         ]
         out.append((events, stats, codes))
@@ -466,20 +492,22 @@ def _feral_batch(torch, device, dtype, builds, bounds, spec, T):
             is_magic = torch.full((B,), magical, dtype=torch.bool, device=device)
         else:
             is_magic = magical
-        amount = raw + potency0 * pot_scale
-        amount = torch.where(is_magic, amount, amount * physical(now))
+        phys = physical(now)
+        base = torch.where(is_magic, ones, phys)
         attack_mult = (ones + attack_inc) * cf(crit_of(), 2.0 + rating0 + rating_bonus)
         spell_m = torch.where(spell_crit_f, cf(crit_of(), spell_mult + rating0 + rating_bonus), ones)
-        amount = torch.where(
+        hit_mult = torch.where(
             torch.full((B,), attack, dtype=torch.bool, device=device) if isinstance(attack, bool) else attack,
-            amount * attack_mult,
-            amount * (attack_share * attack_mult + (ones - attack_share) * spell_m),
+            attack_mult,
+            attack_share * attack_mult + (ones - attack_share) * spell_m,
         )
         share = torch.clamp(main_share, 0.0, 1.0)
-        amount = amount * (share * taken_main(now) + (ones - share) * taken_plain)
-        weight = amount * count
+        taken = share * taken_main(now) + (ones - share) * taken_plain
+        mult = base * hit_mult * taken
+        weight = raw * mult * count
+        pot = pot_scale * mult * count
         kind = torch.where(is_magic, full(KIND_MAG), full(KIND_PHYS))
-        _push(torch, bufs, mask & (weight != 0), now, weight, name_id, kind)
+        _push(torch, bufs, mask & ((weight != 0) | (pot != 0)), now, weight, name_id, kind, pot)
         # damage mana
         mana_gain = dmp * mana_max * count
         nonlocal mana

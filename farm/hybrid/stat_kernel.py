@@ -15,7 +15,11 @@ because proc() changes Thunderstorm and lesser-chain weights. Priest
 events already store raw (when, kind, hits); score applies crit, potency,
 mastery and luck, so `_timeline_key` omits those points (mastery still
 affects the key through cast_refund_mastery, and crit through baked
-crit_as swing). PriestFights clusters GPU timelines by that key. Other
+crit_as swing). PriestFights clusters GPU timelines by that key. Feral deal events
+store raw weight plus pot_coeff and score applies potency, so
+`_timeline_key` omits potency_points; crit stays (swipe threshold and
+Feral Frenzy) and luck stays (Razor share and Sulfuras echo).
+FeralDruidFights clusters GPU timelines by that key. Other
 heroes still bake some
 flat/cleave/splash raws at emit time; a closed-form kernel for them needs
 the same per-class unbake. Until then, greedy stays on full dps_many batches

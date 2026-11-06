@@ -184,8 +184,10 @@ def _timeline_key(build: Build, stats: dict, spec: str, targets: int, bound_key:
     items = tuple(sorted(item.rawcode for item in build.items))
     talents = tuple(sorted(build.talents))
     glyphs = tuple(sorted(build.glyphs))
+    # potency_points omitted: score_events applies stats["potency"] via pot_coeff.
+    # crit stays: swipe 1.15 threshold and Feral Frenzy weights use crit_of().
+    # luck stays: Razor attack_share and Sulfuras echo chance change stored weights.
     esc = (
-        build.potency_points,
         build.mastery_points,
         build.crit_points,
         build.luck_points,
@@ -211,7 +213,7 @@ def _timeline_key(build: Build, stats: dict, spec: str, targets: int, bound_key:
 
 
 # Event kinds for GPU kind/weight compile (farm/hybrid/feral_druid.py).
-KIND_PHYS = 0.0  # weight * execute (phys/crit/taken baked)
+KIND_PHYS = 0.0  # weight * execute (phys/crit/taken baked; potency scored later)
 KIND_MAG = 1.0  # weight * magical_mult * execute
 KIND_EXEC = 2.0  # weight * execute
 KIND_FLAT = 3.0  # fully scored
@@ -220,15 +222,20 @@ KIND_FLAT = 3.0  # fully scored
 def score_events(events: list, stats: dict, codes: frozenset[str]) -> dict[str, float]:
     """Score typed timeline events into named sources.
 
-    Event: (when, name, weight, kind)
+    Event: (when, name, weight, kind, pot_coeff=0)
       KIND_PHYS: weight * execute
       KIND_MAG: weight * magical_mult(codes, when, mastery) * execute
       KIND_EXEC: weight * execute
       KIND_FLAT: weight as-is
     weight is pre-execute (and for PHYS/MAG: crit/taken/[physical] already applied).
+    potency is applied here as weight + potency * pot_coeff.
     """
     sources: dict[str, float] = {}
-    for when, name, weight, kind in events:
+    potency = stats["potency"]
+    for ev in events:
+        when, name, weight, kind = ev[0], ev[1], ev[2], ev[3]
+        pot_c = ev[4] if len(ev) > 4 else 0.0
+        weight = weight + potency * pot_c
         if kind == KIND_FLAT:
             amount = weight
         elif kind == KIND_EXEC:
@@ -442,23 +449,22 @@ def _simulate_feral(build: Build, targets: int, spec: str, bound_key: str | None
         if count <= 0 or now >= FIGHT:
             return
         is_magic = lunar if magical is None else magical
-        amount = raw + stats["potency"] * potency_scale
-        if not is_magic:
-            amount *= physical(now)
+        mult = 1.0 if is_magic else physical(now)
         attack_mult = (1.0 + attack_inc) * _crit_factor(crit_of(), 2.0 + stats["rating"] + rating_bonus)
         if stats["spell_crit"]:
             spell_mult = _crit_factor(crit_of(), stats["spell_mult"] + stats["rating"] + rating_bonus)
         else:
             spell_mult = 1.0
         if attack:
-            amount *= attack_mult
+            mult *= attack_mult
         else:
-            amount *= attack_share * attack_mult + (1.0 - attack_share) * spell_mult
+            mult *= attack_share * attack_mult + (1.0 - attack_share) * spell_mult
         share = max(0.0, min(1.0, main_share))
-        amount *= share * taken_main(now) + (1.0 - share) * taken_plain
-        weight = amount * count
-        if weight:
-            events.append((now, name, weight, KIND_MAG if is_magic else KIND_PHYS))
+        mult *= share * taken_main(now) + (1.0 - share) * taken_plain
+        weight = raw * mult * count
+        pot_coeff = potency_scale * mult * count
+        if weight or pot_coeff:
+            events.append((now, name, weight, KIND_MAG if is_magic else KIND_PHYS, pot_coeff))
         if stats.get("damage_mana_pct"):
             state["mana"] = min(stats["mana_max"], state["mana"] + stats["damage_mana_pct"] * stats["mana_max"] * count)
     def apply_rake(now: float, indexes) -> None:
@@ -576,8 +582,10 @@ def _simulate_feral(build: Build, targets: int, spec: str, bound_key: str | None
             raw += 0.02 * stats["max_hp"]
         deal("Автоатака", raw, now, 1.0, True, 1.0, magical=False, potency_scale=stats["attack_potency"])
         if stats["auto_pct"] != 1.0 and events and events[-1][1] == "Автоатака":
-            t, n, w, k = events[-1]
-            events[-1] = (t, n, w * stats["auto_pct"], k)
+            t, n, w, k, *rest = events[-1]
+            scale = stats["auto_pct"]
+            pot_c = rest[0] * scale if rest else 0.0
+            events[-1] = (t, n, w * scale, k, pot_c)
         state["mana"] = min(stats["mana_max"], state["mana"] + attack_mana_gain(stats))
         if cat and now >= rake[0]:
             apply_rake(now, [0])
@@ -589,7 +597,7 @@ def _simulate_feral(build: Build, targets: int, spec: str, bound_key: str | None
         if fire_orb:
             splash_w = (20.0 + 0.35 * stats["int"]) * targets * taken_plain
             if splash_w:
-                events.append((now, "Всплеск огня", splash_w, KIND_EXEC))
+                events.append((now, "Всплеск огня", splash_w, KIND_EXEC, 0.0))
         if sulfuras is not None:
             if sulfuras.attack():
                 splash_w = (
@@ -599,10 +607,10 @@ def _simulate_feral(build: Build, targets: int, spec: str, bound_key: str | None
                     * targets
                 )
                 if splash_w:
-                    events.append((now, "Sulfuras", splash_w, KIND_MAG))
+                    events.append((now, "Sulfuras", splash_w, KIND_MAG, 0.0))
             echo_w = dcs(now) * taken_plain * sulfuras_echo_chance(stats["luck"])
             if echo_w:
-                events.append((now, "Sulfuras (удар)", echo_w, KIND_EXEC))
+                events.append((now, "Sulfuras (удар)", echo_w, KIND_EXEC, 0.0))
 
     def on_rake(now: float) -> None:
         nonlocal rake_clock
