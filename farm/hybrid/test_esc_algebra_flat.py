@@ -5,7 +5,6 @@ python -m unittest farm.hybrid.test_esc_algebra_flat
 """
 from __future__ import annotations
 
-import importlib
 import unittest
 
 from farm.hybrid import esc_algebra as A
@@ -13,17 +12,33 @@ from farm.hybrid.stat_kernel import structural_skip_attrs
 from farm.hybrid.test_stat_kernel_greedy import _catalog_build
 from sunken_sim.esc import apply_points, greedy_points
 
+_FARM_HERO = {"shadow": "priest"}
+
+
+def _farm_hero(module_hero: str) -> str:
+    return _FARM_HERO.get(module_hero, module_hero)
+
+
+def _specs(farm_hero: str):
+    mod = A.hero_module(farm_hero)
+    specs = getattr(mod, "SPECS", None)
+    if specs:
+        return tuple(specs)
+    if farm_hero == "priest":
+        return ("shadow", "discipline", "holy")
+    raise AssertionError(f"no SPECS for {farm_hero}")
+
 
 def _many(hero, spec, targets=5):
-    mod = importlib.import_module(f"sunken_sim.{hero}")
-    return lambda builds: [float(mod.simulate(b, targets, spec).dps) for b in builds]
+    mod = A.hero_module(hero)
+    return lambda builds: [float(mod.simulate(b, targets, spec=spec).dps) for b in builds]
 
 
 class FlatAlgebraTest(unittest.TestCase):
     def test_exact_vs_full_greedy(self):
-        for hero in sorted(A.FLAT_SOURCE_HEROES):
-            mod = importlib.import_module(f"sunken_sim.{hero}")
-            spec = mod.SPECS[0]
+        for module_hero in sorted(A.FLAT_SOURCE_HEROES):
+            hero = _farm_hero(module_hero)
+            spec = _specs(hero)[0]
             with self.subTest(hero=hero, spec=spec):
                 build = _catalog_build(hero, spec, 0)
                 many = _many(hero, spec)
@@ -45,11 +60,23 @@ class FlatAlgebraTest(unittest.TestCase):
         self.assertEqual(warrior._TIMELINE, before)
         self.assertNotIn("crit_points", tr.fields)
 
+    def test_hunter_all_specs_match_full_greedy(self):
+        from sunken_sim import hunter
 
-    def test_hunter_not_enabled(self):
-        # Regression: BM/MM farm boards diverged when hunter used flat algebra.
-        self.assertNotIn("hunter", A.FLAT_SOURCE_HEROES)
-        self.assertNotIn("hunter", A.ALGEBRA_HEROES)
+        for spec in hunter.SPECS:
+            with self.subTest(spec=spec):
+                build = _catalog_build("hunter", spec, 0)
+                many = _many("hunter", spec)
+                ref = greedy_points(lambda c: many([apply_points(build, c)])[0])
+                got = A.greedy_points_algebra(many, build, "hunter", spec, 5, skip=structural_skip_attrs("hunter"))
+                self.assertEqual(got[1], ref[1], spec)
+                self.assertAlmostEqual(got[0], ref[0], delta=1e-9 * max(1.0, abs(ref[0])))
+
+    def test_mage_priest_not_enabled_until_parity(self):
+        self.assertNotIn("mage", A.FLAT_SOURCE_HEROES)
+        self.assertNotIn("shadow", A.FLAT_SOURCE_HEROES)
+        self.assertNotIn("priest", A.ALGEBRA_HEROES)
+        self.assertNotIn("mage", A.ALGEBRA_HEROES)
 
 
 if __name__ == "__main__":

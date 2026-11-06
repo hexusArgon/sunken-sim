@@ -48,14 +48,28 @@ ALGEBRA_HEROES = frozenset({
 
 # stats_of heroes whose simulate() returns plain-dict sources (no Ledger events);
 # traced through their per-source totals (FLAT events, see trace_current).
-FLAT_SOURCE_HEROES = frozenset({"paladin", "rogue", "warlock", "warrior"})
-# hunter excluded: flat sources do not carry pet_damage, so algebra dumps
-# those points into healing_power/crit and loses ~2-3.5% DPS on BM/MM.
+FLAT_SOURCE_HEROES = frozenset({
+    "paladin", "rogue", "warlock", "warrior", "hunter",
+    "shaman", "druid", "feral_druid",
+})
+# mage/priest have sheet/character as stats_of, but flat-source algebra
+# picked damage/mana over crit/potency on catalog builds — keep them out
+# until their score path traces those leaves correctly.
 ALGEBRA_HEROES = ALGEBRA_HEROES | FLAT_SOURCE_HEROES
 
 
 def hero_flat_sources(module) -> bool:
     return module.__name__.rsplit(".", 1)[-1] in FLAT_SOURCE_HEROES
+
+
+def hero_module(hero: str):
+    """sunken_sim module for a farm hero id (priest -> shadow)."""
+    try:
+        from farm.hybrid.registry import MODULES
+        name = MODULES.get(hero, hero)
+    except Exception:
+        name = {"priest": "shadow"}.get(hero, hero)
+    return importlib.import_module(f"sunken_sim.{name}")
 
 
 class Untraceable(BaseException):  # not swallowable by `except Exception`
@@ -331,6 +345,7 @@ class Trace:
     nodes: int = 0
     blame: frozenset = frozenset()  # traced keys that caused the failure (retry without them)
     token: int = 0  # unique per successful trace: key of persistent device buffers
+    weight_keys: frozenset = frozenset()  # stat keys that flow into event weights
 
 
 class _FieldLog:
@@ -378,6 +393,29 @@ def changed_keys(before: dict, after: dict) -> frozenset:
     return frozenset(out)
 
 
+
+def weight_leaves(trace: "Trace") -> frozenset[str]:
+    """Stat keys that actually flow into event weights (not merely wrapped as leaves)."""
+    if not trace.ok or trace.program is None:
+        return frozenset()
+    prog = trace.program
+    seen: set[int] = set()
+    stack = [w.i for _when, _name, w, _k in trace.events if isinstance(w, Sym)]
+    out: set[str] = set()
+    while stack:
+        i = int(stack.pop())
+        if i < 0 or i in seen:
+            continue
+        seen.add(i)
+        key = prog.leaves.get(i)
+        if key is not None:
+            out.add(key)
+        elif 0 <= i < len(prog.op) and int(prog.op[i]) > _CONST:
+            stack.append(int(prog.a[i]))
+            stack.append(int(prog.b[i]))
+    return frozenset(out)
+
+
 def trace_current(module, build, targets: int, spec: str, keys: set[str]) -> Trace:
     """Run module.simulate(build) once with stats[k] -> Sym leaf for k in keys."""
     global _TAPE, _FIELDS
@@ -414,7 +452,14 @@ def trace_current(module, build, targets: int, spec: str, keys: set[str]) -> Tra
     _FIELDS = log
     _TAPE = tape
     try:
-        report = module.simulate(tracked, targets, spec)
+        import inspect as _inspect
+        _sig = _inspect.signature(module.simulate)
+        _kw = {}
+        if "spec" in _sig.parameters:
+            _kw["spec"] = spec
+        if "use_history" in _sig.parameters:
+            _kw["use_history"] = False
+        report = module.simulate(tracked, targets, **_kw)
     except Untraceable as exc:
         blame = frozenset(tape.leaves_of([exc.sym.i])) if exc.sym is not None else frozenset()
         return Trace(False, f"trace: {exc}", blame=blame)
@@ -445,9 +490,11 @@ def trace_current(module, build, targets: int, spec: str, keys: set[str]) -> Tra
     executes = report.stats.get("executes") if isinstance(report.stats, dict) else None
     from farm.hybrid.esc_device import new_token
 
-    return Trace(
+    tr = Trace(
         True, "", Program.build(tape), list(events), executes, frozenset(log.fields), len(tape.op), token=new_token()
     )
+    tr.weight_keys = weight_leaves(tr)
+    return tr
 
 
 def event_weights(trace: Trace, V: np.ndarray) -> np.ndarray:
@@ -529,6 +576,8 @@ class AlgebraStats:
     t_exact: float = 0.0
     router: dict = field(default_factory=dict)
     notes: list = field(default_factory=list)
+    attr_kind: dict = field(default_factory=dict)  # attr -> rescore|fight|mixed|skip
+    reused_rounds: int = 0  # steps that reused the previous trace (event-reuse)
 
 
 def _changed(before: dict, after: dict):
@@ -575,7 +624,7 @@ def greedy_points_algebra(
     from farm.hybrid import esc_device as ed
     from sunken_sim.shadow import SKILL_POINTS
 
-    module = importlib.import_module(f"sunken_sim.{hero}")
+    module = hero_module(hero)
     scorer = scorer or score_cpu
     total = SKILL_POINTS if total is None else total
     info = AlgebraStats()
@@ -661,9 +710,16 @@ def greedy_points_algebra(
 
     def rescore(tr, tr_stats, tr_keys, cand, trial_stats):
         """-> (scores, approx names)."""
-        ok_names = [
-            n for n in cand if BUILD_FIELD[n] not in tr.fields and _changed(tr_stats, trial_stats[n]) <= tr_keys
-        ]
+        used = tr.weight_keys or weight_leaves(tr)
+        ok_names = []
+        for n in cand:
+            if BUILD_FIELD[n] in tr.fields:
+                continue
+            delta = _changed(tr_stats, trial_stats[n])
+            # Only rescore when every changed stat actually flows into a weight.
+            # A wrapped-but-unused leaf (pinned pet_damage, etc.) must be fought.
+            if delta <= tr_keys and delta <= used:
+                ok_names.append(n)
         if not ok_names:
             return {}, set()
         route = router.choose() if (router is not None and device is not None) else "cpu"
@@ -783,6 +839,7 @@ def greedy_points_algebra(
         # -- trace the current build (or keep the last one while still inside it) ----
         if carry is not None:
             tr, base, tr_keys = carry
+            info.reused_rounds += 1
         else:
             tr, base, tr_keys = _new_trace(names, cand, trial_stats)
         spec_now = bool(speculate) and not auto
@@ -833,6 +890,14 @@ def greedy_points_algebra(
                 pick, pick_dps = pick_of(p_names, full, best)
             info.rescored += len(scores)
             used += len(pending)
+            for n in scores:
+                prev = info.attr_kind.get(n)
+                info.attr_kind[n] = "rescore" if prev in (None, "rescore") else "mixed"
+            for n in pending:
+                prev = info.attr_kind.get(n)
+                info.attr_kind[n] = "fight" if prev in (None, "fight") else "mixed"
+            for n in skip:
+                info.attr_kind.setdefault(n, "skip")
             counts[pick] += 1
             current = p_trials[pick]
             if pick in skip:

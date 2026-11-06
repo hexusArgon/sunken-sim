@@ -204,6 +204,9 @@ def score_events(
     return sources
 
 
+stats_of = sheet
+
+
 def simulate(build: Build, targets: int = 5, spec: str = "restoration", bound_spell: str | None = None) -> Report:
     if spec not in SPECS:
         raise ValueError(spec)
@@ -217,7 +220,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "restoration", bound_sp
                 best = report
         return best
     bound_key = _bound_key(bound_spell)
-    stats = sheet(build)
+    stats = stats_of(build)
     codes = frozenset(item.rawcode for item in build.items) | build.talents | build.glyphs
     taken = armor_taken(DUMMY_ARMOR - stats["armor_pen"])
     cache_key = _timeline_key(build, stats, spec, targets, bound_key)
@@ -776,7 +779,7 @@ def events_for(build: Build, targets: int, spec: str, bound_spell: str | None = 
     if _wears(build, DIAMOND) and bound_spell is None:
         raise ValueError("events_for needs bound_spell when I00D is equipped")
     report = simulate(build, targets, spec, bound_spell)
-    stats = sheet(build)
+    stats = stats_of(build)
     bound_key = _bound_key(bound_spell)
     codes = frozenset(item.rawcode for item in build.items) | build.talents | build.glyphs
     taken = armor_taken(DUMMY_ARMOR - stats["armor_pen"])

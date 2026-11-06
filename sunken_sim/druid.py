@@ -168,6 +168,10 @@ def _bound_key(bound_spell: str | None) -> str | None:
     raise ValueError(bound_spell)
 
 
+def stats_of(build: Build, spec: str = "balance") -> dict[str, float]:
+    return sheet(build, spec)
+
+
 def simulate(build: Build, targets: int = 5, spec: str = "balance", bound_spell: str | None = None) -> Report:
     if spec not in SPECS:
         raise ValueError(spec)
@@ -299,7 +303,7 @@ def score_events(
 
 
 def _simulate_druid(build: Build, targets: int, spec: str, bound_key: str | None) -> Report:
-    stats = sheet(build, spec)
+    stats = stats_of(build, spec)
     codes = frozenset(item.rawcode for item in build.items) | build.talents | build.glyphs
     pen = stats["armor_pen"]
     taken_plain = armor_taken(DUMMY_ARMOR - pen)

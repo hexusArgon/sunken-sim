@@ -172,6 +172,9 @@ def _raws(stats: dict, build: Build) -> dict[str, float]:
     }
 
 
+stats_of = sheet
+
+
 def simulate(
     build: Build,
     targets: int = 1,
@@ -208,7 +211,7 @@ def simulate(
             return best_report
         return remember("mage", spec, best_report, bound_spell)
 
-    stats = sheet(build)
+    stats = stats_of(build)
     if spec == "fire":
         # Hydra takes the mage's attack speed. His own swing keeps the base cooldown.
         stats["swing"] = stats["attack_base"]

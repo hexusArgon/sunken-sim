@@ -182,7 +182,7 @@ class BatchFights:
         all calls shares device batches (chunked_many). Selection per call keeps
         the strict '>' first-wins rule; fights formula unchanged. ESC here is the
         exact batched greedy (stat_kernel.greedy_points_many), or with esc="algebra"
-        (default when FARM_HYBRID_ESC_ALGEBRA=1/auto) one guarded-algebra greedy per
+        (when FARM_HYBRID_ESC_ALGEBRA=1, or auto after the batched-vs-algebra router) one guarded-algebra greedy per
         call, run in lockstep (farm/hybrid/lockstep.py) so the fights all those
         greedies still need share device batches.
         """
@@ -218,19 +218,37 @@ class BatchFights:
                     best_dps, best_glyphs = dps, combo
             st.append(best_glyphs)
             finals.append(Build(frozenset(best_talents), frozenset(best_glyphs), equipped, 0, 0, 0, 0))
+        import time
+
         hero = getattr(self, "hero", None)
+        strategy = None
         if esc is None:
             try:
                 from farm.hybrid import esc_device as ed
                 from farm.hybrid.esc_algebra import ALGEBRA_HEROES
 
-                esc = "algebra" if ed.algebra_mode() != "off" and hero in ALGEBRA_HEROES else "batched"
+                amode = ed.algebra_mode()
+                if amode != "off" and hero in ALGEBRA_HEROES:
+                    if amode == "auto":
+                        strategy = ed.router_for(
+                            (hero, self.spec, "cross"), "auto", arms=("batched", "algebra"), hysteresis=0.9
+                        )
+                        esc = strategy.choose()
+                    else:
+                        esc = "algebra"
+                else:
+                    esc = "batched"
             except Exception:  # pragma: no cover
                 esc = "batched"
+        t0 = time.perf_counter()
         if esc == "algebra":
             greedy = self._greedy_algebra_many(finals, limit)
+            if strategy is not None:
+                strategy.record("algebra", time.perf_counter() - t0)
         else:
             greedy = greedy_points_many(many, finals, hero=hero)
+            if strategy is not None:
+                strategy.record("batched", time.perf_counter() - t0)
         out = []
         for (equipped, combos, glyph_combos, _o), st, (pointed, points) in zip(rows, state, greedy):
             fights = len(combos) + len(glyph_combos) + SKILL_POINTS * len(ESC_ATTRS)

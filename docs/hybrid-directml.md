@@ -278,3 +278,20 @@ Batch fix: on_swp expiry zeroing must be masked to rows whose tick fires (otherw
 
 
 Hunter временно исключён из `FLAT_SOURCE_HEROES`: на beast_mastery и marksmanship алгебра обнуляла `pet_damage` (9 очков) и клала их в `healing_power`/`crit`, из-за чего DPS лидера падал примерно на 1.9% и 3.5% против полного перебора. Survival совпадал. Включать hunter обратно только после того, как `pet_damage` попадёт в символьное выражение.
+
+
+## ESC-алгебра: used-leaves, auto в cross-build, теги (2026-11-06)
+
+Пересчёт без боя разрешён только если каждый изменившийся стат реально входит в веса событий (`weight_keys`). Обёрнутый, но не использованный лист (например hunter `pet_damage`, если его запиннили в конкретное число) идёт в обычный бой. Hunter снова в `FLAT_SOURCE_HEROES`.
+
+К алгебре через `sheet`/`character` как `stats_of` подключены mage, shaman, druid, feral_druid и priest (модуль `shadow`). У mage/priest трассировка идёт с `use_history=False` и `simulate(..., spec=spec)`.
+
+`FARM_HYBRID_ESC_ALGEBRA=auto` теперь сравнивает batched и algebra и в `finish_many` (кросс-билд), а не только в одиночном `greedy_points`. Спеки вроде tidewarrior, где алгебра была медленнее, после прогрева уходят на обычный перебор.
+
+В `AlgebraStats.attr_kind` каждый ESC-атрибут помечается как `rescore` (пересчёт без боя), `fight` (таймлайн / нет в выражении), `mixed` или `skip`. `reused_rounds` считает шаги, которые переиспользовали предыдущий след событий.
+
+DirectML для самой алгебры по-прежнему `FARM_HYBRID_ESC_ALGEBRA_DEVICE=cpu` по умолчанию; GPU-маршрут включается только если замер показывает выигрыш и ошибка f32 ниже порога.
+
+Замер _bench_esc_device.py --heroes warrior,hunter,shaman --n 1 --repeat 2 (2026-11-06): сумма wall ref 67.07 с, cpu-алгебра 46.48 с (1.44×), gpu-алгебра 55.54 с (1.21×), auto 47.30 с (1.42×) и осталась на cpu. DirectML-проба (_probe_esc_device_dml.py) без fallback. GPU-маршрут алгебры не включаем по умолчанию.
+
+mage и priest получили stats_of (sheet / character), но в FLAT_SOURCE_HEROES не входят: на каталожном билде алгебра взяла damage/mana вместо crit/potency.

@@ -1130,6 +1130,9 @@ def score_compiled(
     return total
 
 
+stats_of = character
+
+
 def simulate(
     build: Build,
     targets: int = 1,
@@ -1160,7 +1163,7 @@ def simulate(
         if not use_history:
             return best_report
         return remember("priest", spec, best_report, bound_spell)
-    stats = character(build)
+    stats = stats_of(build)
     key = _timeline_key(build, stats, spec, targets, bound_spell)
     cached = _TIMELINE.get(key)
     if cached is None:

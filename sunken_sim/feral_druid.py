@@ -248,6 +248,10 @@ def score_events(events: list, stats: dict, codes: frozenset[str]) -> dict[str, 
     return sources
 
 
+def stats_of(build: Build, spec: str = "primal") -> dict[str, float]:
+    return sheet(build, spec)
+
+
 def simulate(build: Build, targets: int = 5, spec: str = "primal", bound_spell: str | None = None) -> Report:
     if spec not in SPECS:
         raise ValueError(spec)
@@ -307,7 +311,7 @@ def _report(build, total_sources, actions, stats, targets, bound_key, mana) -> R
     )
 
 def _simulate_feral(build: Build, targets: int, spec: str, bound_key: str | None) -> Report:
-    stats = sheet(build, spec)
+    stats = stats_of(build, spec)
     codes = frozenset(item.rawcode for item in build.items) | build.talents | build.glyphs
     cache_key = _timeline_key(build, stats, spec, targets, bound_key)
     cached = _TIMELINE.get(cache_key)
