@@ -380,10 +380,12 @@ def columns() -> tuple[str, ...]:
 COLUMNS = columns()
 
 
-def compile_sums(torch, target, packed: dict) -> np.ndarray:
+def compile_sums(torch, target, packed: dict, workspace=None, device_result=False):
     """Device part: [timelines, COLUMNS] weighted sums. torch ops only."""
 
     def up(name):
+        if workspace is not None:
+            return workspace.up(name, packed[name])
         return torch.from_numpy(np.ascontiguousarray(packed[name], dtype=np.float32)).to(target)
 
     kind = up("kind")
@@ -400,7 +402,8 @@ def compile_sums(torch, target, packed: dict) -> np.ndarray:
     qt, tlum, pu, ps, ja, evo, fire_m = flag(6), flag(7), flag(8), flag(9), flag(10), flag(11), flag(12)
 
     def is_kind(name):
-        return (kind == float(KIND_IDS[name])).to(torch.float32)
+        value = float(KIND_IDS[name]) if workspace is None else workspace.constant(name, KIND_IDS[name])
+        return (kind == value).to(torch.float32)
 
     pet = is_kind("hydra") + is_kind("cleave")
     dealt = 1.0 + furnace * (1.0 - pet) * 0.20 * (1.0 - ratio) + low * (0.15 * glad + 0.15 * crimson)
@@ -460,7 +463,7 @@ def compile_sums(torch, target, packed: dict) -> np.ndarray:
         out[f"pot_base:{name}"] = mk * b * pot
         out[f"pot_slope:{name}"] = mk * s * pot
     stacked = torch.stack([out[name] for name in COLUMNS], dim=2).sum(dim=1)
-    return stacked.cpu().numpy().astype(np.float64)
+    return stacked if device_result else stacked.cpu().numpy().astype(np.float64)
 
 
 def compiled_dict(tl: Timeline, row: np.ndarray, hell_hits) -> dict:
@@ -511,16 +514,34 @@ class GpuFights(BatchFights):
         self.timeline_counts = {}
         from farm.hybrid.mage_reuse import TapeLRU
         self.tape_cache = TapeLRU()
+        from farm.hybrid.mage_device import DevicePool
+        self.device_pool = DevicePool(torch, self.target)
+        from collections import Counter
+        self.score_counts = Counter()
 
     def _scores(self, tls: list[Timeline]) -> list[float]:
         from sunken_sim import mage
         from sunken_sim.shadow import FIGHT
 
+        import os
+        from farm.hybrid.mage_device import parts
+        pool = self.device_pool if self.spec == "fire" and os.environ.get("FARM_FIRE_DEVICE_POOL", "1") != "0" else None
         out: list[float] = []
-        for begin in range(0, len(tls), MAX_BATCH):
-            part = tls[begin : begin + MAX_BATCH]
-            packed = pack(part)
-            sums = compile_sums(self.torch, self.target, packed)
+        for part, fits in parts(tls, MAX_BATCH):
+            self.score_counts['device_batches' if fits else 'oversized_batches'] += 1
+            self.score_counts['max_batch_rows'] = max(self.score_counts['max_batch_rows'], len(part))
+            if fits:
+                packed = pack(part)
+                try:
+                    sums = compile_sums(self.torch, self.target, packed, workspace=pool)
+                except RuntimeError:
+                    self.score_counts['device_compile_fallback_rows'] += len(part)
+                    fits = False
+            if not fits:
+                for tl in part:
+                    compiled = mage._compile(tl.events, tl.build, tl.stats, tl.spec, tl.evocation)
+                    out.append(mage._score(compiled, tl.stats, tl.build, tl.spec)[0] / FIGHT)
+                continue
             for tl, row, hell in zip(part, sums, packed["hell_hits"]):
                 total, _sources = mage._score(compiled_dict(tl, row, hell), tl.stats, tl.build, tl.spec)
                 out.append(total / FIGHT)
