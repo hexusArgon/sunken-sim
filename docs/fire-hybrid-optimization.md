@@ -75,3 +75,17 @@ old imports; disk commits are not evidence of hot deployment. Discord's adapter
 imports the hybrid runner lazily, and fresh spawned workers import from disk, but
 actual runtime adoption must be verified on the user's next job without duplicating
 or interrupting it.
+
+
+## Follow-up validation and corrected selection
+
+See [fire-hybrid-followup.md](fire-hybrid-followup.md) for real unique-sextuple
+benchmarks and the precision counterexample found beyond single-fight parity.
+`FARM_MAGE_FAST_HYDRA=1` adds bitwise-equivalent host first-free-slot writes.
+`FARM_FIRE_EXACT_SELECTION=1` now applies the conservative near-tie/chunk-winner
+CPU canonicalization even with GPU final disabled, using CPU owner grouping.
+Disabling GPU final no longer disables that correctness guard. The unsafe
+`FARM_FIRE_EXACT_SELECTION=0` control can reproduce a pre-existing ESC selection
+loss; it is not a recommended default. GPU final arithmetic remains opt-in.
+Actual GPU clocks are still not enabled: the live DirectML f64 arithmetic probe
+fails precision even though nominal f64 tensor allocation succeeds.
