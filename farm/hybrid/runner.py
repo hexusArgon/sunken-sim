@@ -92,6 +92,13 @@ def run_job(job: dict, box: dict, tick) -> dict:
     }
 
     def cpu(reason):
+        if meta.get('selection') is not None:
+            meta['selection'] = dict(meta['selection'], actual='cpu')
+            meta.setdefault('registry_status',meta['status'])
+            meta['status'] = 'cpu-selected'
+            if meta['device'] != 'cpu':
+                meta['attempted_device'] = dict(device=meta['device'],name=meta['name'])
+            meta.update(device='cpu',name='cpu',gpu_fights=False)
         meta["fallback"] = reason
         tick({"hybrid": meta})
         return cpu_runner.run_job(dict(job, hybrid=dict(meta)), box, tick)
@@ -101,6 +108,16 @@ def run_job(job: dict, box: dict, tick) -> dict:
         return cpu(f"{hero}/{spec} locked to CPU")
     if not registry.gpu_engine_for(hero, spec):
         return cpu(f"{hero}/{spec}: no supported hybrid fight engine")
+    from farm.hybrid.fire_route import select
+    selection = select(job)
+    if selection is not None:
+        meta['selection'] = selection
+        if selection['selected'] == 'cpu':
+            meta['registry_status'] = meta['status']
+            meta['status'] = 'cpu-selected'
+            return cpu(selection['policy'])
+        import os
+        meta['planner'] = os.environ.get('FARM_FIRE_PLANNER', 'scalar')
     try:
         device = detect(hero, spec)
     except Exception as exc:
@@ -126,6 +143,9 @@ def run_job(job: dict, box: dict, tick) -> dict:
     except Exception as exc:
         return cpu(f"fight parity failed: {type(exc).__name__}: {exc}")
     meta["gpu_fights"] = True
+    if meta.get('selection') is not None:
+        meta['selection'] = dict(meta['selection'],actual='hybrid')
+        meta['actual_planner'] = 'scalar' if meta['planner'] in ('auto','scalar') or os.environ.get('FARM_HYBRID_GPU_TIMELINE','auto').strip().lower() in ('0','false','off','cpu') else 'vector+exact-scalar-verification'
     tick({"hybrid": meta})
     return cpu_runner.run_job(dict(job, hybrid=dict(meta)), box, tick, eval_fn=hybrid_eval_span)
 

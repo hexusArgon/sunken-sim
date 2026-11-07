@@ -43,7 +43,7 @@ def _items():
 
 
 def _job(hero, spec, worker=HYBRID_WORKER):
-    return {"id": "t", "worker": worker, "hero": hero, "spec": spec, "pool": "mixed", "start": 0, "end": 0, "targets": 1}
+    return {"id": "t", "fire_backend": "hybrid", "worker": worker, "hero": hero, "spec": spec, "pool": "mixed", "start": 0, "end": 0, "targets": 1}
 
 
 class LockTest(unittest.TestCase):

@@ -13,7 +13,7 @@ from farm.protocol import parse_progress, status_text
 
 def job(**kwargs):
     return dict(dict(id='fixture',worker='eseid-main',hero='mage',spec='fire',pool='mixed',targets=5,
-                     top=100,start=0,end=0,admission_policy='all',search_schema=2),**kwargs)
+                     fire_backend='hybrid',top=100,start=0,end=0,admission_policy='all',search_schema=2),**kwargs)
 
 
 class DiscordRouteTest(unittest.TestCase):
