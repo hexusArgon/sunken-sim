@@ -307,6 +307,35 @@ def _buffers_to_events(bufs):
     return out
 
 
+def _store_hydra_groups(torch, alive, expire, counts, mask, now, duration, count):
+    """First free slot per active row; exact CPU view writes, device control kept.
+
+    Reclamation/cap/cadence remain in spawn_hydras. Full rows are unchanged just
+    as in the original loop. Compute expiry with Torch in the original dtype.
+    """
+    import os
+    if mask.device.type == 'cpu' and os.environ.get('FARM_MAGE_FAST_HYDRA', '1') != '0':
+        import numpy as np
+        live = alive.numpy()
+        rows = np.flatnonzero(mask.numpy())
+        if not len(rows): return
+        free = ~live[rows]
+        has_room = free.any(axis=1)
+        slots = free.argmax(axis=1)[has_room]
+        rows = rows[has_room]
+        live[rows, slots] = True
+        expire.numpy()[rows, slots] = (now + duration).numpy()[rows]
+        counts.numpy()[rows, slots] = count.numpy()[rows]
+        return
+    for r in torch.arange(mask.shape[0], device=mask.device)[mask].tolist():
+        free = (~alive[r]).nonzero(as_tuple=False).view(-1)
+        if free.numel() == 0: continue
+        j = int(free[0])
+        alive[r, j] = True
+        expire[r, j] = float(now[r] + duration[r])
+        counts[r, j] = float(count[r])
+
+
 def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys, prepared_stats=None):
     from sunken_sim import mage as mod
     from sunken_sim.shadow import (
@@ -655,16 +684,7 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys, prepare
         do = mask & (count > 0)
         if not bool(do.any()):
             return
-        rows = torch.arange(B, device=device)
-        for r in rows[do].tolist():
-            r = int(r)
-            free = (~hy_alive[r]).nonzero(as_tuple=False).view(-1)
-            if free.numel() == 0:
-                continue  # CPU list is unbounded; 256 + reclaim covers lava
-            j = int(free[0])
-            hy_alive[r, j] = True
-            hy_expire[r, j] = float(now[r] + duration[r])
-            hy_count[r, j] = float(count[r])
+        _store_hydra_groups(torch, hy_alive, hy_expire, hy_count, do, now, duration, count)
         # arm tick
         fresh = do & ~hydra_ticking
         hydra_ticking = hydra_ticking | do

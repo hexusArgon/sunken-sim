@@ -9,7 +9,7 @@ import math,os,hashlib,inspect,re,functools
 from pathlib import Path
 from types import CodeType
 
-VERIFIED_SOURCES = {'sunken_sim.mage': '627496ad2f6f9549ff61c0152f21d32205bde1d4f4e0457199130684d22e5e65', 'sunken_sim.shadow': 'cc655a33d29dc37ec421ee55ab2bf5472d2389c34952072973db606aa2cbad48', 'sunken_sim.pressure': '05960bd54bda601731bcd0e3102910496a1193b1ceefd9bdf2359340995b27a3', 'farm.hybrid.mage_gpu_timeline': 'cf080f6e4d3bd150d7e55d9f1b98a1ad49ce06cae800b338bda865b11140a61e'}
+VERIFIED_SOURCES = {'sunken_sim.mage': '627496ad2f6f9549ff61c0152f21d32205bde1d4f4e0457199130684d22e5e65', 'sunken_sim.shadow': 'cc655a33d29dc37ec421ee55ab2bf5472d2389c34952072973db606aa2cbad48', 'sunken_sim.pressure': '05960bd54bda601731bcd0e3102910496a1193b1ceefd9bdf2359340995b27a3', 'farm.hybrid.mage_gpu_timeline': 'bf0cd3f41ce85b233be05824ac0c6e2ed1eed97f78aee9e70019cb2d86e2f869'}
 
 
 def freeze(value):
