@@ -2,8 +2,8 @@
 
 Split of one fight (30 s, same rules as sunken_sim.mage.simulate):
 
-  1. Timeline: GPU next-event state machine when FARM_HYBRID_GPU_TIMELINE!=0
-     (fire/frost); else CPU simulate capture. This is the old
+  1. Timeline: CPU float64 batched next-event state machine when
+     FARM_HYBRID_GPU_TIMELINE!=0; else CPU simulate capture. This is the old
      sunken_sim.mage.simulate loop, unchanged; we only capture its events
      instead of letting it compile them.
   2. GPU: the per-event compile of that timeline, batched over many fights:
@@ -304,9 +304,12 @@ def _event_arrays(events: list, mana_max: float) -> tuple:
         np.array([1.0 if ev[5].get("magical") else 0.0 for ev in events], dtype=np.float64),
         hell,
     )
-    if len(_EVENT_CACHE) >= 2 * TL_CACHE_MAX:
-        _EVENT_CACHE.clear()
-    _EVENT_CACHE[key] = (events, mana_max, arrays)
+    # Engine-owned immutable tapes must not be retained beyond the bounded LRU.
+    # Legacy list timelines keep their pre-existing independent array cache.
+    if isinstance(events, list):
+        if len(_EVENT_CACHE) >= 2 * TL_CACHE_MAX:
+            _EVENT_CACHE.clear()
+        _EVENT_CACHE[key] = (events, mana_max, arrays)
     return arrays
 
 
@@ -490,7 +493,7 @@ def compiled_dict(tl: Timeline, row: np.ndarray, hell_hits) -> dict:
 
 
 class GpuFights(BatchFights):
-    """Batched mage fights: GPU timeline (fire/frost) + device compile + CPU score."""
+    """CPU float64 scheduling, batched device compile, CPU final score."""
 
     def __init__(self, device, hero: str, spec: str, targets: int) -> None:
         import torch
@@ -506,6 +509,8 @@ class GpuFights(BatchFights):
         self.targets = int(targets)
         self.fights = 0
         self.timeline_counts = {}
+        from farm.hybrid.mage_reuse import TapeLRU
+        self.tape_cache = TapeLRU()
 
     def _scores(self, tls: list[Timeline]) -> list[float]:
         from sunken_sim import mage
@@ -548,10 +553,15 @@ class GpuFights(BatchFights):
                     flat_builds.append(build)
                     flat_keys.append(key)
                     owners_flat.append(index)
-            rows = generate_mage_timelines(
-                self.torch, self.target, flat_builds, self.spec, self.targets, flat_keys,
-                diagnostics=self.timeline_counts,
-            )
+            def generate(bs, keys, prepared):
+                return generate_mage_timelines(
+                    self.torch, self.target, bs, self.spec, self.targets, keys,
+                    diagnostics=self.timeline_counts,
+                )
+            if self.spec == "fire" and os.environ.get("FARM_FIRE_TAPE_CACHE", "1") != "0":
+                rows = self.tape_cache.rows(flat_builds, self.spec, self.targets, flat_keys, generate)
+            else:
+                rows = generate(flat_builds, flat_keys, None)
             for build, key, row, index in zip(flat_builds, flat_keys, rows, owners_flat):
                 events, stats, used_spec, evocation = row
                 tls.append(Timeline(build, stats, used_spec, evocation, events, key))
