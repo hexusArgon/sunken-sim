@@ -50,9 +50,16 @@ class _Overflow(Exception):
     pass
 
 
-def generate_siren_timelines(torch, device, builds, spec: str, targets: int):
-    if spec not in ('sharpshooter', 'watershaper', 'seagrace'):
+MAX_STEPS = 400000
+
+
+def generate_siren_timelines(torch, device, builds, spec: str, targets: int, policies=None):
+    """Best-policy rows by default, or one explicit fixed policy per input row."""
+    if spec not in mod.SPECS:
         raise ValueError(f"siren GPU timeline unexpected spec {spec}")
+    if policies is not None:
+        if len(policies) != len(builds) or any(p not in mod.POLICIES for p in policies):
+            raise ValueError("one valid Siren policy is required per build")
     if not builds:
         return []
     _ = (torch, device)
@@ -60,20 +67,23 @@ def generate_siren_timelines(torch, device, builds, spec: str, targets: int):
         for b in builds:
             if _wears(b, "I0BR"):
                 raise _Overflow("sulfuras")
-        return [_best_fight(b, int(targets), spec) for b in builds]
+        if policies is None:
+            return [_best_fight(b, int(targets), spec) for b in builds]
+        return [_fight_one(b, int(targets), spec, p)[:2] for b, p in zip(builds, policies)]
     except _Overflow:
         out = []
-        for b in builds:
-            report = mod.simulate(b, int(targets), spec)
+        for i, b in enumerate(builds):
+            report = (mod.simulate(b, int(targets), spec) if policies is None else
+                      mod._simulate(b, int(targets), spec, policies[i]))
             out.append((list(report.events), report.stats))
         return out
 
 
 def _best_fight(build, targets, spec):
     best = None
-    for policy in POLICIES:
+    for policy in mod.POLICIES:
         events, stats, total = _fight_one(build, targets, spec, policy)
-        if best is None or total > best[0] + 1e-9:
+        if best is None or total / FIGHT > best[0] / FIGHT + 1e-9:
             best = (total, events, stats)
     return best[1], best[2]
 
@@ -185,7 +195,7 @@ def _fight_one(build: Build, targets: int, spec: str, policy: tuple[bool, bool])
         return icy_flat if chill_until[t] > now else 0.0
 
     def hero_hit(name: str, raw: float, now: float, tgts: list[int], *, magical: bool, attack: bool,
-                 weight: float = 1.0, potency_scale: float = 1.0) -> float:
+                 weight: float = 1.0, potency_scale: float = 1.0, source_scale: float = 1.0) -> float:
         if weight <= 0 or not tgts:
             return 0.0
         chance = crit_stat
@@ -193,31 +203,36 @@ def _fight_one(build: Build, targets: int, spec: str, policy: tuple[bool, bool])
         if attack and has(TALENT_CORAL) and fletcher_until > now:
             chance += 10.0
             rating += 0.18
-        total = 0.0
         execute = _execute_factor(stats, now)
-        kind = typed(magical, now)
+        factor = typed(magical, now)
+        if attack:
+            factor *= _crit_factor(chance, 2.0 + rating)
+        elif stats["spell_crit"]:
+            factor *= _crit_factor(chance, stats["spell_mult"] + rating)
+        raw_weight, pot_coeff = 0.0, 0.0
         for t in tgts:
-            amount = raw + icy(t, now) + stats["potency"] * potency_scale
-            amount *= kind
-            if attack:
-                amount *= _crit_factor(chance, 2.0 + rating)
-            elif stats["spell_crit"]:
-                amount *= _crit_factor(chance, stats["spell_mult"] + rating)
-            total += amount * taken(True, t, now) * execute
-        sources.add_exec(name, total * weight, now, execute)
+            scale = factor * taken(True, t, now)
+            raw_weight += (raw + icy(t, now)) * scale
+            pot_coeff += potency_scale * scale
+        total = (raw_weight + stats["potency"] * pot_coeff) * execute
+        # auto_pct changes only this named source, never LA/procs/mana counts.
+        scale = weight * source_scale
+        sources.add_exec(name, total * scale, now, execute,
+                         raw_weight=raw_weight * scale, pot_coeff=pot_coeff * scale)
         note_damage_mana(len(tgts) * weight)
         return total
 
     def summon_hit(name: str, raw: float, now: float, t: int, *, attack: bool, extra_crit: float = 0.0,
                    increase: float = 0.0, weight: float = 1.0) -> float:
-        """Damage by an owner unit: potency, Pet Damage, summon crit, Icy Quiver flat, armor."""
-        amount = raw + icy(t, now) + stats["potency"]
-        amount *= 1.0 + stats["pet_damage"]
-        amount *= 1.0 + increase
+        """Owner hit; Icy Quiver is raw, elemental mana and crit multiply both channels."""
+        factor = (1.0 + stats["pet_damage"]) * (1.0 + increase)
         if attack:
-            amount *= _crit_factor(stats["summon_crit"] + extra_crit, 2.0 + stats["summon_rating"])
-        dealt = amount * taken(False, t, now) * _execute_factor(stats, now) * weight
-        sources.add_exec(name, dealt, now, _execute_factor(stats, now))
+            factor *= _crit_factor(stats["summon_crit"] + extra_crit, 2.0 + stats["summon_rating"])
+        factor *= taken(False, t, now) * weight
+        raw_weight, pot_coeff = (raw + icy(t, now)) * factor, factor
+        execute = _execute_factor(stats, now)
+        dealt = (raw_weight + stats["potency"] * pot_coeff) * execute
+        sources.add_exec(name, dealt, now, execute, raw_weight=raw_weight, pot_coeff=pot_coeff)
         return dealt
 
     def liquid_arrows(now: float, t: int, from_elemental: bool) -> None:
@@ -240,13 +255,14 @@ def _fight_one(build: Build, targets: int, spec: str, policy: tuple[bool, bool])
             raw *= 0.40
         hero_hit("Liquid Arrows", raw, now, [t], magical=True, attack=False)
 
-    def siren_attack(now: float, raw: float, name: str, potency_scale: float = 1.0) -> None:
+    def siren_attack(now: float, raw: float, name: str, potency_scale: float = 1.0, source_scale: float = 1.0) -> None:
         """A Siren attack (her own swing or the Mirror Image pierce hit): PreDamage_Heroes procs."""
         nonlocal armed
         t = 0
         if use_la:
             liquid_arrows(now, t, False)
-        hero_hit(name, raw, now, [t], magical=False, attack=True, potency_scale=potency_scale)
+        hero_hit(name, raw, now, [t], magical=False, attack=True, potency_scale=potency_scale,
+                 source_scale=source_scale)
         if armed:
             armed = False
             push(now + TIDAL_DELAY, "tidal", 0.0)
@@ -343,8 +359,8 @@ def _fight_one(build: Build, targets: int, spec: str, policy: tuple[bool, bool])
     clock = 0.0
     while True:
         loops += 1
-        if loops > 400000:
-            break
+        if loops > MAX_STEPS:
+            raise _Overflow("steps")
         attack_at = max(next_attack, busy, clock)
         cast_at = FIGHT * 10
         choice = None
@@ -446,10 +462,7 @@ def _fight_one(build: Build, targets: int, spec: str, policy: tuple[bool, bool])
         moment = attack_at
         recover(moment)
         power = dcs()
-        before = sources["Автоатака"]
-        siren_attack(moment, power, "Автоатака", stats["attack_potency"])
-        if stats["auto_pct"] != 1.0:
-            sources["Автоатака"] = before + (sources["Автоатака"] - before) * stats["auto_pct"]
+        siren_attack(moment, power, "Автоатака", stats["attack_potency"], stats["auto_pct"])
         gain_mana(attack_mana_gain(stats))
         if stats["fire_orb"]:
             splash = (20.0 + 0.35 * agi) * targets * taken(True, 0, moment) * _execute_factor(stats, moment)

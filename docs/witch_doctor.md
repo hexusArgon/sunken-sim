@@ -53,3 +53,43 @@ Voodoo 141.2, Poison 190.8 (5 целей).
 - Voodoo: Sulfuras 232.6, Elemental Orb (Fire) 227.8, Atiesh 220.4. Глифы: Unsealed Power 160.1, Glass Cannon 157.0.
 - Poison: Sulfuras 297.9, Sigil of Al'ar 287.9, Elemental Orb (Fire) 283.4. Глифы: Unsealed Power 215.8, Glass Cannon 211.6.
 - Классовые: Black Toad I0RO 186.4 / 252.6, Webmaster's Pendant I0RP 187.7 / 250.7, Idol of the Otherside I0RQ 154.9 / 208.9, Severed Eredar Head I0RR 146.7 / 201.5.
+
+
+## Fixed-policy potency tape reuse (2026-11-07)
+
+Hero and owner-unit hits emit optional five-tuples
+`(when, name, raw_weight, KIND_EXEC, pot_coeff)`. Scoring applies
+`(raw_weight + potency * pot_coeff) * execute(when)`; old four-tuples are
+unchanged. Fire Orb and Sulfuras remain potency-independent four-tuples.
+The source-only `auto_pct` multiplier scales both channels, not proc counts,
+resource gains or other sources. Zero raw damage retains a nonzero coefficient.
+
+The hybrid engine generates all four policies for each unique conservative key,
+then rescores and selects a winner separately for every original build in CPU
+float64, preserving policy order and the CPU `1e-9` DPS tie tolerance. Never
+reuse only the representative's winning policy. The key keeps spec, targets,
+policy, ordered item rawcodes, talents, glyphs, every ESC field except
+`potency_points` and all non-potency sheet stats (without rounding).
+Crit/luck, mastery, timing, mana and pet attributes remain baked/keyed.
+
+The timeline API's optional aligned `policies` list requests fixed-policy rows;
+omitting it preserves best-policy behavior. Sulfuras and explicit step overflow
+fall back to the corresponding CPU fixed policy, not a different winner.
+There is no CPU timeline cache. Scheduling remains CPU-side Python; DirectML
+reduces packed kind scores. No speedup is claimed without a benchmark.
+
+Shared Ledger/kindscore and ESC algebra/device already support this coefficient.
+ESC tracing normalizes five-tuples into its symbolic four-tuple IR and guards
+policy decisions; failed guards require a fresh fight. Tests cover old events,
+individual/all talents, fresh/reused potency, policy crossovers and near ties,
+strict keys, zero/negative auto multipliers, CPU/DirectML and fallback paths:
+`farm.hybrid.test_siren_witch_doctor_event_reuse`, plus the hero's official
+`tools/_parity_*_gpu_tl.py` for every specialization.
+
+Witch Doctor-specific invariants: Hex/Grasp and chaos multipliers apply to
+both channels. Weighted toads/venom preserve owner-proc weights and order;
+auto scaling does not scale those proc weights. Spirits Unbound still recovers
+mana at the original typed-hit call; mastery thresholds, summon/death schedules,
+Grave Injustice cooldown reductions and Poison Dart/ward dithers are independent
+of dealt damage for a fixed policy. They remain dependent on other keyed stats.
+Existing owner-unit multiplier semantics are preserved.

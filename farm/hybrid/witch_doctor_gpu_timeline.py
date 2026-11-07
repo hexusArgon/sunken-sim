@@ -50,9 +50,16 @@ class _Overflow(Exception):
     pass
 
 
-def generate_witch_doctor_timelines(torch, device, builds, spec: str, targets: int):
-    if spec not in ('voodoo', 'poison'):
+MAX_STEPS = 400000
+
+
+def generate_witch_doctor_timelines(torch, device, builds, spec: str, targets: int, policies=None):
+    """Best-policy rows by default, or one explicit fixed policy per input row."""
+    if spec not in mod.SPECS:
         raise ValueError(f"witch_doctor GPU timeline unexpected spec {spec}")
+    if policies is not None:
+        if len(policies) != len(builds) or any(p not in mod.POLICIES for p in policies):
+            raise ValueError("one valid Witch Doctor policy is required per build")
     if not builds:
         return []
     _ = (torch, device)
@@ -60,20 +67,23 @@ def generate_witch_doctor_timelines(torch, device, builds, spec: str, targets: i
         for b in builds:
             if _wears(b, "I0BR"):
                 raise _Overflow("sulfuras")
-        return [_best_fight(b, int(targets), spec) for b in builds]
+        if policies is None:
+            return [_best_fight(b, int(targets), spec) for b in builds]
+        return [_fight_one(b, int(targets), spec, p)[:2] for b, p in zip(builds, policies)]
     except _Overflow:
         out = []
-        for b in builds:
-            report = mod.simulate(b, int(targets), spec)
+        for i, b in enumerate(builds):
+            report = (mod.simulate(b, int(targets), spec) if policies is None else
+                      mod._simulate(b, int(targets), spec, policies[i]))
             out.append((list(report.events), report.stats))
         return out
 
 
 def _best_fight(build, targets, spec):
     best = None
-    for policy in POLICIES:
+    for policy in mod.POLICIES:
         events, stats, total = _fight_one(build, targets, spec, policy)
-        if best is None or total > best[0] + 1e-9:
+        if best is None or total / FIGHT > best[0] / FIGHT + 1e-9:
             best = (total, events, stats)
     return best[1], best[2]
 
@@ -230,30 +240,33 @@ def _fight_one(build: Build, targets: int, spec: str, policy: tuple[bool, str]) 
 
     def hero_hit(name: str, raw: float, now: float, tgts: list[int], *, magical: bool, attack: bool,
                  weight: float = 1.0, potency_scale: float = 1.0, chaos: bool = False,
-                 procs: bool = True) -> tuple[float, float]:
+                 procs: bool = True, source_scale: float = 1.0) -> tuple[float, float]:
         if weight <= 0 or not tgts:
             return 0.0, 0.0
         chance = crit_stat
         share = max(0.0, min(100.0, chance)) / 100.0
         first_dealt = 0.0
-        total = 0.0
+        raw_weight, pot_coeff = 0.0, 0.0
         execute = _execute_factor(stats, now)
-        kind = typed(magical, now)
+        kind = typed(magical, now)  # preserves Spirits Unbound's recovery call
         for i, t in enumerate(tgts):
-            amount = raw + stats["potency"] * potency_scale
-            amount *= kind
-            amount *= 1.0 + increase(t, now)
+            factor = kind * (1.0 + increase(t, now))
             if chaos:
-                amount *= CHAOS_UNARMORED
+                factor *= CHAOS_UNARMORED
             if attack:
-                amount *= _crit_factor(chance, 2.0 + stats["rating"])
+                factor *= _crit_factor(chance, 2.0 + stats["rating"])
             elif stats["spell_crit"]:
-                amount *= _crit_factor(chance, stats["spell_mult"] + stats["rating"])
-            dealt = amount * taken(True) * execute
+                factor *= _crit_factor(chance, stats["spell_mult"] + stats["rating"])
+            factor *= taken(True)
+            raw_weight += raw * factor
+            pot_coeff += potency_scale * factor
             if i == 0:
-                first_dealt = dealt
-            total += dealt
-        sources.add_exec(name, total * weight, now, execute)
+                first_dealt = (raw * factor + stats["potency"] * potency_scale * factor) * execute
+        total = (raw_weight + stats["potency"] * pot_coeff) * execute
+        scale = weight * source_scale
+        sources.add_exec(name, total * scale, now, execute,
+                         raw_weight=raw_weight * scale, pot_coeff=pot_coeff * scale)
+        # Source-only auto scaling must not alter weighted owner-proc dithers.
         note_damage_mana(len(tgts) * weight)
         if procs:
             for t in tgts:
@@ -262,22 +275,24 @@ def _fight_one(build: Build, targets: int, spec: str, policy: tuple[bool, str]) 
 
     def summon_hit(name: str, raw: float, now: float, tgts: list[int], *, attack: bool, kind: str,
                    weight: float = 1.0, chaos: bool = False, procs: bool = True) -> float:
-        """Damage by an owner unit: potency, Pet Damage, Hex / Grasp, summon crit, armor."""
+        """Owner-unit raw/potency channels; original weighting and proc order unchanged."""
         if weight <= 0 or not tgts:
             return 0.0
         chance = stats["summon_crit"]
-        total = 0.0
+        raw_weight, pot_coeff = 0.0, 0.0
         execute = _execute_factor(stats, now)
         for t in tgts:
-            amount = raw + stats["potency"]
-            amount *= 1.0 + stats["pet_damage"]
-            amount *= 1.0 + increase(t, now)
+            factor = (1.0 + stats["pet_damage"]) * (1.0 + increase(t, now))
             if chaos:
-                amount *= CHAOS_UNARMORED
+                factor *= CHAOS_UNARMORED
             if attack:
-                amount *= _crit_factor(chance, 2.0 + stats["summon_rating"])
-            total += amount * taken(False) * execute
-        sources.add_exec(name, total * weight, now, execute)
+                factor *= _crit_factor(chance, 2.0 + stats["summon_rating"])
+            factor *= taken(False)
+            raw_weight += raw * factor
+            pot_coeff += factor
+        total = (raw_weight + stats["potency"] * pot_coeff) * execute
+        sources.add_exec(name, total * weight, now, execute,
+                         raw_weight=raw_weight * weight, pot_coeff=pot_coeff * weight)
         if procs:
             for t in tgts:
                 on_owner_damage(now, t, hero=False, kind=kind, weight=weight)
@@ -337,8 +352,8 @@ def _fight_one(build: Build, targets: int, spec: str, policy: tuple[bool, str]) 
     clock = 0.0
     while True:
         loops += 1
-        if loops > 400000:
-            break
+        if loops > MAX_STEPS:
+            raise _Overflow("steps")
         attack_at = max(next_attack, busy, clock)
         cast_at = FIGHT * 10
         choice = None
@@ -459,11 +474,8 @@ def _fight_one(build: Build, targets: int, spec: str, policy: tuple[bool, str]) 
         recover(moment)
         white = WHITE_BASE + 0.75 * intel
         power = white + stats["damage"]
-        before = sources["Автоатака"]
         hero_hit("Автоатака", power, moment, [0], magical=True, attack=True,
-                 potency_scale=stats["attack_potency"])
-        if stats["auto_pct"] != 1.0:
-            sources["Автоатака"] = before + (sources["Автоатака"] - before) * stats["auto_pct"]
+                 potency_scale=stats["attack_potency"], source_scale=stats["auto_pct"])
         gain_mana(attack_mana_gain(stats))
         if stats["fire_orb"]:
             splash = (20.0 + 0.35 * stats["int"]) * targets * taken(True) * _execute_factor(stats, moment)

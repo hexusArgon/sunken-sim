@@ -356,6 +356,34 @@ class _Dither:
 POLICIES = tuple((soul, first) for soul in (True, False) for first in ("spider", "toad"))
 
 
+def _timeline_key(build: Build, stats: dict, spec: str, targets: int, policy: tuple) -> tuple:
+    """Safe GPU tape cluster key; only potency_points is unbaked.
+
+    This is a fixed-policy key, never a key for the representative's winner.
+    Crit/luck, mastery, pets, timing and resources stay baked.
+    All policy tapes must be rescored before choosing a winner for each build.
+
+    Item order is retained (duplicate-item stacking can depend on it). Full
+    computed stats protect custom items sharing rawcodes. No CPU tape cache.
+    """
+    from dataclasses import fields
+
+    def freeze(value):
+        if isinstance(value, dict):
+            return tuple(sorted((k, freeze(v)) for k, v in value.items()))
+        if isinstance(value, (tuple, list)):
+            return tuple(freeze(v) for v in value)
+        if isinstance(value, (set, frozenset)):
+            return tuple(sorted(value))
+        return value
+
+    esc = tuple((f.name, getattr(build, f.name)) for f in fields(build)
+                if f.name.endswith("_points") and f.name != "potency_points")
+    return (tuple(item.rawcode for item in build.items), tuple(sorted(build.talents)),
+            tuple(sorted(build.glyphs)), esc, spec, targets, policy,
+            freeze({k: v for k, v in stats.items() if k != "potency"}))
+
+
 def simulate(build: Build, targets: int = 5, spec: str = "voodoo") -> Report:
     """Best of the policies (Soul Possession on / off, spider or toad first)."""
     best = None
@@ -518,30 +546,33 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, str]) -
 
     def hero_hit(name: str, raw: float, now: float, tgts: list[int], *, magical: bool, attack: bool,
                  weight: float = 1.0, potency_scale: float = 1.0, chaos: bool = False,
-                 procs: bool = True) -> tuple[float, float]:
+                 procs: bool = True, source_scale: float = 1.0) -> tuple[float, float]:
         if weight <= 0 or not tgts:
             return 0.0, 0.0
         chance = crit_stat
         share = max(0.0, min(100.0, chance)) / 100.0
         first_dealt = 0.0
-        total = 0.0
+        raw_weight, pot_coeff = 0.0, 0.0
         execute = _execute_factor(stats, now)
-        kind = typed(magical, now)
+        kind = typed(magical, now)  # preserves Spirits Unbound's recovery call
         for i, t in enumerate(tgts):
-            amount = raw + stats["potency"] * potency_scale
-            amount *= kind
-            amount *= 1.0 + increase(t, now)
+            factor = kind * (1.0 + increase(t, now))
             if chaos:
-                amount *= CHAOS_UNARMORED
+                factor *= CHAOS_UNARMORED
             if attack:
-                amount *= _crit_factor(chance, 2.0 + stats["rating"])
+                factor *= _crit_factor(chance, 2.0 + stats["rating"])
             elif stats["spell_crit"]:
-                amount *= _crit_factor(chance, stats["spell_mult"] + stats["rating"])
-            dealt = amount * taken(True) * execute
+                factor *= _crit_factor(chance, stats["spell_mult"] + stats["rating"])
+            factor *= taken(True)
+            raw_weight += raw * factor
+            pot_coeff += potency_scale * factor
             if i == 0:
-                first_dealt = dealt
-            total += dealt
-        sources.add_exec(name, total * weight, now, execute)
+                first_dealt = (raw * factor + stats["potency"] * potency_scale * factor) * execute
+        total = (raw_weight + stats["potency"] * pot_coeff) * execute
+        scale = weight * source_scale
+        sources.add_exec(name, total * scale, now, execute,
+                         raw_weight=raw_weight * scale, pot_coeff=pot_coeff * scale)
+        # Source-only auto scaling must not alter weighted owner-proc dithers.
         note_damage_mana(len(tgts) * weight)
         if procs:
             for t in tgts:
@@ -550,22 +581,24 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, str]) -
 
     def summon_hit(name: str, raw: float, now: float, tgts: list[int], *, attack: bool, kind: str,
                    weight: float = 1.0, chaos: bool = False, procs: bool = True) -> float:
-        """Damage by an owner unit: potency, Pet Damage, Hex / Grasp, summon crit, armor."""
+        """Owner-unit raw/potency channels; original weighting and proc order unchanged."""
         if weight <= 0 or not tgts:
             return 0.0
         chance = stats["summon_crit"]
-        total = 0.0
+        raw_weight, pot_coeff = 0.0, 0.0
         execute = _execute_factor(stats, now)
         for t in tgts:
-            amount = raw + stats["potency"]
-            amount *= 1.0 + stats["pet_damage"]
-            amount *= 1.0 + increase(t, now)
+            factor = (1.0 + stats["pet_damage"]) * (1.0 + increase(t, now))
             if chaos:
-                amount *= CHAOS_UNARMORED
+                factor *= CHAOS_UNARMORED
             if attack:
-                amount *= _crit_factor(chance, 2.0 + stats["summon_rating"])
-            total += amount * taken(False) * execute
-        sources.add_exec(name, total * weight, now, execute)
+                factor *= _crit_factor(chance, 2.0 + stats["summon_rating"])
+            factor *= taken(False)
+            raw_weight += raw * factor
+            pot_coeff += factor
+        total = (raw_weight + stats["potency"] * pot_coeff) * execute
+        sources.add_exec(name, total * weight, now, execute,
+                         raw_weight=raw_weight * weight, pot_coeff=pot_coeff * weight)
         if procs:
             for t in tgts:
                 on_owner_damage(now, t, hero=False, kind=kind, weight=weight)
@@ -747,11 +780,8 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, str]) -
         recover(moment)
         white = WHITE_BASE + 0.75 * intel
         power = white + stats["damage"]
-        before = sources["Автоатака"]
         hero_hit("Автоатака", power, moment, [0], magical=True, attack=True,
-                 potency_scale=stats["attack_potency"])
-        if stats["auto_pct"] != 1.0:
-            sources["Автоатака"] = before + (sources["Автоатака"] - before) * stats["auto_pct"]
+                 potency_scale=stats["attack_potency"], source_scale=stats["auto_pct"])
         gain_mana(attack_mana_gain(stats))
         if stats["fire_orb"]:
             splash = (20.0 + 0.35 * stats["int"]) * targets * taken(True) * _execute_factor(stats, moment)

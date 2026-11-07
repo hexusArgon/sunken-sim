@@ -41,3 +41,24 @@ Ocean Shield I05P (снижение урона), Coral Trident I05G (лечен�
 - Крит для порога Tidal Strike и Shipwrecker — сохранённый CriticalStrike_Chance (крит + 12 от пассивки).
 - Шансы (проки Tidal, Rising Tides, стаки Angler) — детерминированный dither; урон крита — матожидание.
 - Тип атаки siege: таблицы типов атаки/брони у пустышки нет (×1.0, как у монаха).
+
+
+## Potency reuse eligibility caveat (2026-11-07)
+
+Not globally affine over accepted custom `Build` inputs: Coastal Swing's
+`dealt > 0` gate clips negative primary damage, and conditionally grants damage
+mana. A synthetic item (not a catalog item) with `damage=-78.25`, no glyphs,
+only Coastal Swing, targets=5 and policy `(True, False)` crosses that gate at
+potency_points 0/10/20. Guardian's Coastal Swing totals are
+`[0, 0, 47.600000000000016]`; Myrmidon's are `[242.76, 249.9, 302.26]`.
+Their second differences are 47.6 and 45.22, not zero. These resource-unconstrained
+witnesses have equal mana_left; the damage gate alone disproves universal affine
+reuse. Regression: `TidewarriorEligibilityTests` in
+`farm.hybrid.test_siren_witch_doctor_event_reuse`.
+
+Normal positive-damage catalog samples were affine for each fixed policy in
+this investigation; this is not a claim of a normal-catalog cadence failure.
+A future optimization must carry raw/potency through primary and cleave channels,
+preserve the positivity/resource branch and guard eligibility (or refight at a
+zero crossing), plus reselect all policies per build. Tidewarrior is unchanged
+here rather than silently excluding potency from a globally unsafe key.

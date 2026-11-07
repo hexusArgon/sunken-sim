@@ -45,8 +45,13 @@ Only potency_points is omitted; never reuse the representative's winning policy.
 Dragon Sentinel remains unsafe under Gift of Life: potency changes Lifebinder
 cadence. Monk's capped Fists of Fury and Windmaster tornado duration also need
 more than blind affine tape reuse; Necromancer Call of the Grave changes cadence.
-Other
-heroes still bake some
+Siren and Witch Doctor likewise split fixed-policy hero/owner hits and cluster
+all four policy tapes, reselecting each original build with CPU float64 scoring.
+Only potency_points is omitted; crit/luck, resource and timing stats stay keyed.
+Tidewarrior is not globally affine on custom negative-damage builds: Coastal
+Swing's dealt > 0 gate clips damage and conditionally grants mana. It remains
+unchanged pending an explicit eligibility/zero-crossing guard.
+Other heroes still bake some
 flat/cleave/splash raws at emit time; a closed-form kernel for them needs
 the same per-class unbake. Until then, greedy stays on full dps_many batches
 with structural attr skips only.

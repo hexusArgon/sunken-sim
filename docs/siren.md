@@ -41,3 +41,43 @@ Healing Waters I0OY (лечение), Flow of the Ocean I0MY (AS только с
 - Chill от Liquid Arrows = Bfro (frostnova A00H) только на цель; заморозка Stone Gaze не считается Bfro.
 - Мана цели 0 (Viper Sting ничего не крадёт, оглушение не оценивается).
 - Шансы — детерминированный dither.
+
+
+## Fixed-policy potency tape reuse (2026-11-07)
+
+Hero and owner-unit hits emit optional five-tuples
+`(when, name, raw_weight, KIND_EXEC, pot_coeff)`. Scoring applies
+`(raw_weight + potency * pot_coeff) * execute(when)`; old four-tuples are
+unchanged. Fire Orb and Sulfuras remain potency-independent four-tuples.
+The source-only `auto_pct` multiplier scales both channels, not proc counts,
+resource gains or other sources. Zero raw damage retains a nonzero coefficient.
+
+The hybrid engine generates all four policies for each unique conservative key,
+then rescores and selects a winner separately for every original build in CPU
+float64, preserving policy order and the CPU `1e-9` DPS tie tolerance. Never
+reuse only the representative's winning policy. The key keeps spec, targets,
+policy, ordered item rawcodes, talents, glyphs, every ESC field except
+`potency_points` and all non-potency sheet stats (without rounding).
+Crit/luck, mastery, timing, mana and pet attributes remain baked/keyed.
+
+The timeline API's optional aligned `policies` list requests fixed-policy rows;
+omitting it preserves best-policy behavior. Sulfuras and explicit step overflow
+fall back to the corresponding CPU fixed policy, not a different winner.
+There is no CPU timeline cache. Scheduling remains CPU-side Python; DirectML
+reduces packed kind scores. No speedup is claimed without a benchmark.
+
+Shared Ledger/kindscore and ESC algebra/device already support this coefficient.
+ESC tracing normalizes five-tuples into its symbolic four-tuple IR and guards
+policy decisions; failed guards require a fresh fight. Tests cover old events,
+individual/all talents, fresh/reused potency, policy crossovers and near ties,
+strict keys, zero/negative auto multipliers, CPU/DirectML and fallback paths:
+`farm.hybrid.test_siren_witch_doctor_event_reuse`, plus the hero's official
+`tools/_parity_*_gpu_tl.py` for every specialization.
+
+Siren-specific invariants: Icy Quiver adds raw damage only; Water Core's
+current-elemental-mana bonus, Neptulon's summon crit, Reflection copies and
+weighted hits multiply both channels as in the CPU model. Liquid Arrows,
+Song, elemental mana, chill/armor debuffs and proc dithers do not read dealt
+damage. Mirror and elemental timing remain policy- and non-potency-stat-dependent.
+The existing pet multiplier semantics (including no hero typed multiplier in
+`summon_hit`) are preserved, not revised by this optimization.
