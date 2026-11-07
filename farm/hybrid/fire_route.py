@@ -1,16 +1,12 @@
-"""Conservative Fire-only backend policy, not a speculative batch-size threshold.
-
-Limited real-search trials do not establish a GPU crossover for a full farm.
-Auto chooses the exact CPU oracle; explicit hybrid keeps parity/near-tie guards.
-"""
+"""One public Fire backend: hybrid. CPU oracle/planner/fallback remain internal."""
 import os
 
 def select(job):
     if (str(job.get('hero','')).strip().lower(),str(job.get('spec','')).strip().lower()) != ('mage','fire'):
         return None
-    mode=str(job.get('fire_backend') or os.environ.get('FARM_FIRE_BACKEND','auto')).strip().lower()
-    if mode not in ('auto','cpu','hybrid'):
-        raise ValueError('fire_backend/FARM_FIRE_BACKEND must be auto, cpu or hybrid')
-    return dict(requested=mode,selected='hybrid' if mode=='hybrid' else 'cpu',
-                policy='explicit override' if mode!='auto' else 'conservative CPU: no validated whole-search GPU crossover',
-                version='fire-scalar-v1')
+    mode=str(job.get('fire_backend') or os.environ.get('FARM_FIRE_BACKEND','hybrid')).strip().lower()
+    if mode not in ('hybrid','auto','cpu','staged','cpu-staged'):
+        raise ValueError('Fire has one backend: hybrid; legacy auto/cpu/staged normalize to hybrid')
+    legacy_staged=('fire_cpu_staged' in job or 'FARM_FIRE_CPU_STAGED' in os.environ)
+    return dict(requested=mode,selected='hybrid',policy='unified Fire hybrid',version='fire-hybrid-only-v1',
+                normalized=mode!='hybrid' or legacy_staged,legacy_staged_switch_ignored=legacy_staged)

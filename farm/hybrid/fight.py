@@ -546,6 +546,7 @@ class GpuFights(BatchFights):
                 phase = "compile"
                 try:
                     sums = compile_sums(self.torch, self.target, packed, workspace=pool, device_result=final_gpu)
+                    self.score_counts['gpu_compile_rows'] += len(part)
                     if final_gpu:
                         phase = "final"
                         from farm.hybrid.mage_final import score_rows
@@ -557,6 +558,7 @@ class GpuFights(BatchFights):
                     self.score_counts['device_' + phase + '_fallback_rows'] += len(part)
                     fits = False
             if not fits:
+                self.score_counts['cpu_compile_rows'] += len(part)
                 for tl in part:
                     compiled = mage._compile(tl.events, tl.build, tl.stats, tl.spec, tl.evocation)
                     exact = mage._score(compiled, tl.stats, tl.build, tl.spec)[0] / FIGHT
@@ -658,7 +660,7 @@ class GpuFights(BatchFights):
             and (want in ("1", "true", "force") or bool(getattr(self.device, "gpu", False)))
             and self.spec in ("fire", "frost", "arcane")
         )
-        planner = "scalar" if getattr(self,"cpu_staged",False) else os.environ.get("FARM_FIRE_PLANNER", "scalar").strip().lower()
+        planner = os.environ.get("FARM_FIRE_PLANNER", "scalar").strip().lower()
         if self.spec == "fire" and planner not in ("scalar", "vector", "auto"):
             raise ValueError("FARM_FIRE_PLANNER must be auto, scalar or vector")
         scalar = self.spec == "fire" and (planner in ("scalar", "auto") or want in ("0", "false", "off", "cpu"))
@@ -730,11 +732,6 @@ class GpuFights(BatchFights):
         try:
             scores = self._scores(tls) if tls else []
             self.fights += len(builds)
-            if getattr(self,"cpu_staged",False):
-                best=[None]*len(builds)
-                for index,value in zip(owner,scores):
-                    if best[index] is None or value>best[index]:best[index]=value
-                return [float(v) for v in best]
             if self.spec == "fire" and os.environ.get("FARM_FIRE_FINAL_GPU", "0") != "0" and builds:
                 return self._owner_scores(tls,owner,scores,len(builds))
             if self.spec == 'fire' and os.environ.get('FARM_FIRE_EXACT_SELECTION','1') != '0' and builds:

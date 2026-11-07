@@ -68,7 +68,7 @@ class LockTest(unittest.TestCase):
     def test_dispatch(self):
         self.assertIs(hybrid_runner.dispatch(_job("mage", "arcane")), cpu_runner.run_job)
         self.assertIs(hybrid_runner.dispatch(_job("mage", "arcane", "local-esc")), cpu_runner.run_job)
-        self.assertIs(hybrid_runner.dispatch(_job("mage", "fire", "local-esc")), cpu_runner.run_job)
+        self.assertIs(hybrid_runner.dispatch(_job("mage", "fire", "local-esc")), hybrid_runner.run_job)
         self.assertIs(hybrid_runner.dispatch(_job("mage", "fire")), hybrid_runner.run_job)
 
     @mock.patch.dict(os.environ, {"FARM_HYBRID_ARCANE_GPU": "0"})

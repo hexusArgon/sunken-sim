@@ -192,10 +192,10 @@ class PipelineTest(unittest.TestCase):
         item=NS(rawcode='A',name='A');space=NS(decode=lambda i:(('A',),(),()),talents=[],glyphs=[],picks_without=0,picks_with=0,glyph_picks=0,talent_names={},glyph_names={})
         finish=(3523.8,(),(),{},0)
         for bare,admit in ((99.,False),(100.,False),(101.,True)):
-            for route in ('cpu','hybrid-seq','hybrid-cross','cpu-staged'):
+            for route in ('cpu','hybrid-seq','hybrid-cross'):
                 fake=NS(checked=True,dps_many=mock.Mock(side_effect=lambda bs:[bare]*len(bs)),finish_sextuple=mock.Mock(return_value=finish),finish_many=mock.Mock(side_effect=lambda cs:[finish]*len(cs)))
-                with self.subTest(bare=bare,route=route), mock.patch.multiple(R,_SPACE=space,_ITEMS={'A':item},_SOURCES={'A':'shop'},_HERO='mage',_SPEC='fire',_TARGETS=5,_STOP=None,_BAR=(slots(scores=[100.]*10),threading.Lock())), mock.patch('farm.score.item_dps',return_value=bare), mock.patch('farm.score.finish_sextuple',return_value=finish) as cpu_finish, mock.patch.object(H,'_engine',return_value=fake),mock.patch.object(H,'_ENGINE_STATE','gpu'),mock.patch.object(H,'_cross_build_enabled',return_value=route in ('hybrid-cross','cpu-staged')):
-                    result=R.eval_span(99,100) if route=='cpu' else H.eval_span(99,100,cpu_engine=fake) if route=='cpu-staged' else H.eval_span(99,100)
+                with self.subTest(bare=bare,route=route), mock.patch.multiple(R,_SPACE=space,_ITEMS={'A':item},_SOURCES={'A':'shop'},_HERO='mage',_SPEC='fire',_TARGETS=5,_STOP=None,_BAR=(slots(scores=[100.]*10),threading.Lock())), mock.patch('farm.score.item_dps',return_value=bare), mock.patch('farm.score.finish_sextuple',return_value=finish) as cpu_finish, mock.patch.object(H,'_engine',return_value=fake),mock.patch.object(H,'_ENGINE_STATE','gpu'),mock.patch.object(H,'_cross_build_enabled',return_value=route=='hybrid-cross'):
+                    result=R.eval_span(99,100) if route=='cpu' else H.eval_span(99,100)
                     self.assertEqual(result['errors'],0);self.assertEqual(len(result['hits']),int(admit))
                     refined=cpu_finish.call_count+fake.finish_sextuple.call_count+fake.finish_many.call_count
                     self.assertEqual(refined,int(admit))

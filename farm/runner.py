@@ -615,8 +615,28 @@ def _sweep(done_up_to: int, ahead: list[tuple[int, int]]) -> int:
     return done_up_to
 
 
-def run_job(job: dict, box: dict, tick, eval_fn=None) -> dict:
-    """eval_fn: optional span scorer (same contract as eval_span); None = old CPU path."""
+def _record_fire_execution(job, payload):
+    """Parent-visible worker fallback telemetry; never call CPU work GPU-only."""
+    if (job.get('hero'),job.get('spec'))!=('mage','fire') or 'fire_execution' not in payload:return
+    meta=job.get('hybrid')
+    if meta is None:return
+    e=payload['fire_execution'];paths=meta.setdefault('worker_paths',{})
+    paths[e['actual']]=paths.get(e['actual'],0)+1
+    has_cpu=bool(paths.get('cpu-fallback') or paths.get('mixed'))
+    has_gpu=bool(paths.get('hybrid') or paths.get('mixed'))
+    if has_cpu:
+        meta.setdefault('attempted_device',dict(device=meta.get('device'),name=meta.get('name')))
+        meta.update(status='hybrid-with-cpu-fallback' if has_gpu else 'cpu-fallback',device='mixed' if has_gpu else 'cpu',name=meta['attempted_device'].get('name','cpu') if has_gpu else 'cpu',gpu_fights=has_gpu)
+        meta['actual_planner']='hybrid-with-cpu-fallback' if has_gpu else 'cpu-oracle-fallback'
+        if 'selection' in meta:meta['selection']=dict(meta['selection'],actual='mixed' if has_gpu else 'cpu')
+        meta['worker_fallbacks']=list(dict.fromkeys(meta.get('worker_fallbacks',[])+e.get('reasons',[])+(['CPU compile fallback'] if e.get('cpu_compile_rows') else [])))
+
+
+def run_job(job: dict, box: dict, tick, eval_fn=None, *, _fire_cpu_fallback=False) -> dict:
+    """Optional span scorer; fresh Fire delegates hybrid, other specs retain CPU."""
+    if (job.get('hero'),job.get('spec'))==('mage','fire') and eval_fn is None and not _fire_cpu_fallback:
+        from farm.hybrid.runner import run_job as hybrid_job
+        return hybrid_job(job,box,tick)
     from sunken_sim.history import release
 
     from farm.catalog import load
@@ -774,6 +794,9 @@ def run_job(job: dict, box: dict, tick, eval_fn=None) -> dict:
                             traceback.print_exc()
                         done_up_to = note_span(done_up_to, ahead, start_i, stop_i)
                     continue
+                _record_fire_execution(job,payload)
+                if "fire_execution" in payload and job.get("hybrid") is not None:
+                    tick({"hybrid": job["hybrid"]})
                 fights += int(payload.get("fights") or 0)
                 errors += int(payload.get("errors") or 0)
                 if payload.get("error") and errors <= 5:

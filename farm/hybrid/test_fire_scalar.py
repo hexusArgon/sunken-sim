@@ -145,20 +145,21 @@ class FireRouteTests(unittest.TestCase):
  def test_auto_explicit_and_nonfire_policy(self):
   from farm.hybrid.fire_route import select
   j=dict(hero='mage',spec='fire')
-  with mock.patch.dict(os.environ,{},clear=False):
-   os.environ.pop('FARM_FIRE_BACKEND',None);self.assertEqual(select(j)['selected'],'cpu')
-  with mock.patch.dict(os.environ,{'FARM_FIRE_BACKEND':'hybrid'}):
-   self.assertEqual(select(j)['selected'],'hybrid');self.assertEqual(select(dict(j,fire_backend='cpu'))['selected'],'cpu')
+  for mode in ('auto','cpu','staged','cpu-staged','hybrid'):
+   with mock.patch.dict(os.environ,{'FARM_FIRE_BACKEND':mode,'FARM_FIRE_CPU_STAGED':'1'}):
+    self.assertEqual(select(j)['selected'],'hybrid');self.assertEqual(select(dict(j,fire_backend=mode))['selected'],'hybrid')
   self.assertIsNone(select(dict(hero='priest',spec='shadow')))
   with self.assertRaises(ValueError):select(dict(j,fire_backend='bad'))
- def test_cpu_route_honest_status_no_device_and_offline_adapter(self):
+ def test_cpu_fallback_honest_status_and_offline_adapter(self):
   from farm import discord_runner,runner
   from farm.hybrid import runner as H
-  j=dict(hero='mage',spec='fire',worker='fixture',fire_backend='auto')
-  with mock.patch.object(H,'detect',side_effect=AssertionError('no device')) as d,mock.patch.object(runner,'run_job',return_value={'ok':1}) as run:
+  from farm.hybrid.device import DeviceInfo
+  j=dict(hero='mage',spec='fire',worker='fixture',fire_backend='cpu')
+  with mock.patch.object(H,'detect',return_value=DeviceInfo('cpu','cpu',reason='test GPU missing')) as d,mock.patch.object(runner,'run_job',return_value={'ok':1}) as run:
    self.assertEqual(discord_runner.run_job(j,{},lambda s:None),{'ok':1})
-  d.assert_not_called();meta=run.call_args.args[0]['hybrid']
-  self.assertEqual(meta['status'],'cpu-selected');self.assertEqual(meta['device'],'cpu');self.assertFalse(meta['gpu_fights'])
-  self.assertNotIn('eval_fn',run.call_args.kwargs)
+  d.assert_called_once();meta=run.call_args.args[0]['hybrid']
+  self.assertEqual(meta['status'],'cpu-fallback');self.assertEqual(meta['device'],'cpu');self.assertFalse(meta['gpu_fights'])
+  self.assertEqual(meta['selection']['selected'],'hybrid');self.assertEqual(meta['selection']['actual'],'cpu')
+  self.assertTrue(run.call_args.kwargs['_fire_cpu_fallback'])
 
 if __name__=='__main__':unittest.main()

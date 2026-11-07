@@ -22,8 +22,11 @@ Compatibility:
   the user's restored gate. Other unknown policies are rejected too.
 - The old `FARM_UNSAFE_BARE_GATE` switch is obsolete and ignored: neither0 nor1
   (nor any other value) enables all-admission. There is no all production mode.
-- Fresh bot/CLI jobs need no override. Fire auto/plainCPU routing, opt-in CPU staged,
-  explicit hybrid and worker/thread defaults are otherwise unchanged.
+- Fresh Fire bot/CLI/local jobs use one hybrid backend. Legacy auto/cpu/staged
+  backend requests normalize to hybrid with explicit metadata; staged switches
+  no longer select a CPU route. CPU oracle/planner/exact scoring and explicitly
+  labeled emergency CPU fallbacks remain. Other class routes and worker/thread
+  defaults are unchanged.
 
 Identity-aware merge/dedup fixes are retained. Snapshots store chunk identities,
 not anonymous threshold floats. Replaying one identity is not a new observation;

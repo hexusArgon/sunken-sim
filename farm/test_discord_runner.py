@@ -28,7 +28,7 @@ class DiscordRouteTest(unittest.TestCase):
         self.fight=patch('farm.hybrid.runner.fight_check',return_value={'ok':True})
         patch('farm.catalog.load',return_value=(object(),{}))
         self.cpu=patch('farm.runner.run_job',side_effect=self.run_backend)
-    def run_backend(self,j,b,t,eval_fn=None):
+    def run_backend(self,j,b,t,eval_fn=None,*,_fire_cpu_fallback=False):
         self.calls.append((j,b,eval_fn));t('worker\nпосчитано 2 · осталось 3');return {'done':True,'stopped':b['stop'],'path':'fixture'}
     def run_route(self):return D.run_job(self.job,self.box,self.ticks.append)
     def test_bot_imports_adapter(self):

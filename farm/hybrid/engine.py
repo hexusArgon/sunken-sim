@@ -341,15 +341,27 @@ def _self_check(builds, got) -> bool:
     return False
 
 
-def eval_span(start: int, stop: int, *, cpu_engine=None) -> dict:
+def eval_span(start: int, stop: int) -> dict:
     """farm.runner.eval_span with batched GPU fights. Same payload, same top-10 gate."""
     from farm import runner as R
     from farm.score import finish_sextuple
     from sunken_sim.shadow import Build
 
-    engine = _engine() if cpu_engine is None else cpu_engine
+    engine = _engine()
+    fire=(R._HERO,R._SPEC)==('mage','fire')
+    fallbacks=[]
+    counters=getattr(engine,'score_counts',{})
+    before_gpu=counters.get('gpu_compile_rows',0);before_cpu=counters.get('cpu_compile_rows',0)
+    def execution(payload):
+        if fire:
+            counts=getattr(engine,'score_counts',{})
+            gpu=counts.get('gpu_compile_rows',0)-before_gpu;cpu=counts.get('cpu_compile_rows',0)-before_cpu
+            actual=('mixed' if gpu else 'cpu-fallback') if fallbacks or cpu else 'hybrid'
+            payload['fire_execution']=dict(actual=actual,gpu_compile_rows=gpu,cpu_compile_rows=cpu,reasons=list(fallbacks))
+        return payload
     if engine is None:
-        return R.eval_span(start, stop)
+        fallbacks.append(_ENGINE_NOTE or 'worker GPU unavailable')
+        return execution(R.eval_span(start, stop))
     space = R._SPACE
     hits: list[dict] = []
     cross = _cross_build_enabled()
@@ -375,7 +387,8 @@ def eval_span(start: int, stop: int, *, cpu_engine=None) -> dict:
                 if res is None:
                     try:
                         res = engine.finish_sextuple(*call)
-                    except Exception:
+                    except Exception as exc:
+                        fallbacks.append('refinement CPU fallback: '+str(exc))
                         res = finish_sextuple(R._HERO, R._SPEC, R._TARGETS, *call)
                 dps, talent_codes, glyph_codes, points, extra = res
                 fights += extra
@@ -417,13 +430,8 @@ def eval_span(start: int, stop: int, *, cpu_engine=None) -> dict:
                 rows.append((chunk, equipped, sources, R.build_group(sources)))
             bare_builds = [Build(frozenset(), frozenset(), row[1], 0, 0, 0, 0) for row in rows]
             bares = engine.dps_many(bare_builds)
-            if cpu_engine is not None and not cpu_engine.checked:
-                from farm.hybrid.registry import cpu_dps
-                reference=[cpu_dps(R._HERO,R._SPEC,R._TARGETS,b) for b in bare_builds]
-                if reference != bares:
-                    return R.eval_span(start,stop)
-                cpu_engine.checked=True
-            if cpu_engine is None and _ENGINE_STATE == "pending" and not _self_check(bare_builds, bares):
+            if _ENGINE_STATE == "pending" and not _self_check(bare_builds, bares):
+                fallbacks.append(_ENGINE_NOTE or 'worker self-check failed')
                 sub = R.eval_span(index, stop)
                 hits.extend(sub["hits"])
                 fights += sub["fights"]
@@ -432,6 +440,7 @@ def eval_span(start: int, stop: int, *, cpu_engine=None) -> dict:
                 done = sub["done"]
                 break
         except Exception as exc:
+            fallbacks.append('span CPU fallback: '+str(exc))
             print(f"hybrid: exact CPU span fallback {index}:{end} ({type(exc).__name__}: {exc})", flush=True)
             sub = R.eval_span(index, end)
             hits.extend(sub["hits"])
@@ -461,7 +470,8 @@ def eval_span(start: int, stop: int, *, cpu_engine=None) -> dict:
             try:
                 try:
                     dps, talent_codes, glyph_codes, points, extra = engine.finish_sextuple(*call)
-                except Exception:
+                except Exception as exc:
+                    fallbacks.append('refinement CPU fallback: '+str(exc))
                     dps, talent_codes, glyph_codes, points, extra = finish_sextuple(R._HERO, R._SPEC, R._TARGETS, *call)
                 fights += extra
                 hits.append(
@@ -488,5 +498,5 @@ def eval_span(start: int, stop: int, *, cpu_engine=None) -> dict:
         index = end
     if queue:  # sextuples admitted in [start, done) are always finished before returning
         flush()
-    return {"start": start, "done": done, "fights": fights, "hits": R._compact(hits), "errors": errors, "error": error}
+    return execution({"start": start, "done": done, "fights": fights, "hits": R._compact(hits), "errors": errors, "error": error})
 

@@ -97,34 +97,28 @@ def run_job(job: dict, box: dict, tick) -> dict:
         if meta.get('selection') is not None:
             meta['selection'] = dict(meta['selection'], actual='cpu')
             meta.setdefault('registry_status',meta['status'])
-            meta['status'] = 'cpu-selected'
+            meta['status'] = 'cpu-fallback'
             if meta['device'] != 'cpu':
                 meta['attempted_device'] = dict(device=meta['device'],name=meta['name'])
             meta.update(device='cpu',name='cpu',gpu_fights=False)
         meta["fallback"] = reason
         tick({"hybrid": meta})
         if (hero,spec)==('mage','fire'):
-            from farm.hybrid.fire_cpu import enabled,eval_span as staged_eval_span
-            if enabled(job):
-                meta['actual_planner']='cpu-staged-scalar'
-                return cpu_runner.run_job(dict(job,hybrid=dict(meta)),box,tick,eval_fn=staged_eval_span)
+            meta['actual_planner']='cpu-oracle-fallback'
+            return cpu_runner.run_job(dict(job,hybrid=dict(meta)),box,tick,_fire_cpu_fallback=True)
         return cpu_runner.run_job(dict(job, hybrid=dict(meta)), box, tick)
 
-    # Never import torch/detect a device for locked/unsupported heroes/specs.
-    if cpu_locked(hero, spec):
-        return cpu(f"{hero}/{spec} locked to CPU")
-    if not registry.gpu_engine_for(hero, spec):
-        return cpu(f"{hero}/{spec}: no supported hybrid fight engine")
     from farm.hybrid.fire_route import select
     selection = select(job)
     if selection is not None:
         meta['selection'] = selection
-        if selection['selected'] == 'cpu':
-            meta['registry_status'] = meta['status']
-            meta['status'] = 'cpu-selected'
-            return cpu(selection['policy'])
         import os
         meta['planner'] = os.environ.get('FARM_FIRE_PLANNER', 'scalar')
+    # Locked/unsupported specs retain their existing CPU fallback behavior.
+    if cpu_locked(hero, spec):
+        return cpu(f"{hero}/{spec} locked to CPU")
+    if not registry.gpu_engine_for(hero, spec):
+        return cpu(f"{hero}/{spec}: no supported hybrid fight engine")
     try:
         device = detect(hero, spec)
     except Exception as exc:
@@ -158,9 +152,11 @@ def run_job(job: dict, box: dict, tick) -> dict:
 
 
 def dispatch(job: dict):
-    """Worker name -> run_job. Anything that is not local-hybrid is the old path."""
+    """Fire always uses hybrid; other specs retain worker-name routing."""
     from farm import runner as cpu_runner
 
+    if (job.get('hero'),job.get('spec'))==('mage','fire'):
+        return run_job
     if job.get("worker") == HYBRID_WORKER and not cpu_locked(job["hero"], job["spec"]):
         return run_job
     return cpu_runner.run_job
