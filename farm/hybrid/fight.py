@@ -559,7 +559,10 @@ class GpuFights(BatchFights):
             if not fits:
                 for tl in part:
                     compiled = mage._compile(tl.events, tl.build, tl.stats, tl.spec, tl.evocation)
-                    out.append(mage._score(compiled, tl.stats, tl.build, tl.spec)[0] / FIGHT)
+                    exact = mage._score(compiled, tl.stats, tl.build, tl.spec)[0] / FIGHT
+                    if getattr(self,"_exact_current",None) is not None:
+                        self._exact_current[len(out)] = exact
+                    out.append(exact)
                 continue
             for tl, row, hell in zip(part, sums, packed["hell_hits"]):
                 total, _sources = mage._score(compiled_dict(tl, row, hell), tl.stats, tl.build, tl.spec)
@@ -616,9 +619,29 @@ class GpuFights(BatchFights):
                 for i in ids:
                     if abs(result[i]-result[winner])<=tolerance[i]+tolerance[winner]:guarded.add(i)
         guarded.update(selected)
+        enabled=os.environ.get("FARM_FIRE_EXACT_TAPE_SCORE","1") != "0"
+        eligible=enabled and getattr(self,"_canonical_tapes",False)
+        # Unknown sources/aliases do not inherit a proof from a former capture.
+        if enabled and not eligible: guarded=set(range(count))
         for i in sorted(guarded):
             build=tls[groups[i][0]].build
-            exact=mage.simulate(build,self.targets,spec=self.spec,use_history=False).dps
+            expected=[k for k in mage._buttons(self.spec) if k != "Evocation"] if mage._wears(build,"I00D") else [None]
+            complete=[tls[j].bound for j in groups[i]] == expected
+            if eligible and complete:
+                exact=None
+                for j in groups[i]:
+                    if j not in self._exact_current:
+                        tl=tls[j]
+                        from farm.hybrid.mage_exact import compile_exact
+                        compiled=compile_exact(tl,self.tape_cache)
+                        self._exact_current[j]=mage._score(compiled,tl.stats,tl.build,tl.spec)[0]/FIGHT
+                        self.score_counts['canonical_tape_rows']+=1
+                    value=self._exact_current[j]
+                    if exact is None or value > exact: exact=value
+                self.score_counts['canonical_owner_builds']+=1
+            else:
+                exact=mage.simulate(build,self.targets,spec=self.spec,use_history=False).dps
+                self.score_counts['oracle_resim_builds']+=1
             if not math.isfinite(exact):raise ValueError('non-finite exact Mage score')
             result[i]=float(exact)
         self.score_counts['near_tie_exact_builds'] += len(guarded-selected | near)
@@ -635,7 +658,7 @@ class GpuFights(BatchFights):
             and (want in ("1", "true", "force") or bool(getattr(self.device, "gpu", False)))
             and self.spec in ("fire", "frost", "arcane")
         )
-        planner = os.environ.get("FARM_FIRE_PLANNER", "scalar").strip().lower()
+        planner = "scalar" if getattr(self,"cpu_staged",False) else os.environ.get("FARM_FIRE_PLANNER", "scalar").strip().lower()
         if self.spec == "fire" and planner not in ("scalar", "vector", "auto"):
             raise ValueError("FARM_FIRE_PLANNER must be auto, scalar or vector")
         scalar = self.spec == "fire" and (planner in ("scalar", "auto") or want in ("0", "false", "off", "cpu"))
@@ -697,18 +720,33 @@ class GpuFights(BatchFights):
                 for tl in timelines(build, self.targets, self.spec):
                     tls.append(tl)
                     owner.append(index)
-        scores = self._scores(tls) if tls else []
-        self.fights += len(builds)
-        if self.spec == "fire" and os.environ.get("FARM_FIRE_FINAL_GPU", "0") != "0" and builds:
-            return self._owner_scores(tls,owner,scores,len(builds))
-        if self.spec == 'fire' and os.environ.get('FARM_FIRE_EXACT_SELECTION','1') != '0' and builds:
-            return self._owner_scores(tls,owner,scores,len(builds),cpu_reduce=True)
-        best: list[float | None] = [None] * len(builds)
-        for index, dps in zip(owner, scores):
-            # mage.simulate keeps the first bound spell on ties (strict >).
-            if best[index] is None or dps > best[index]:
-                best[index] = dps
-        return [float(value) for value in best]
+        self._exact_current={}
+        self._canonical_tapes=False
+        if self.spec == "fire" and builds:
+            self.tape_cache.sync_context(self.spec,self.targets)
+            from sunken_sim.shadow import FIGHT as oracle_horizon
+            self._canonical_tapes=(self.tape_cache.split and mod.stats_of is mod.sheet and mod.FIGHT == oracle_horizon
+                and (not scalar or os.environ.get("FARM_FIRE_JIT_HYDRA","0") == "0"))
+        try:
+            scores = self._scores(tls) if tls else []
+            self.fights += len(builds)
+            if getattr(self,"cpu_staged",False):
+                best=[None]*len(builds)
+                for index,value in zip(owner,scores):
+                    if best[index] is None or value>best[index]:best[index]=value
+                return [float(v) for v in best]
+            if self.spec == "fire" and os.environ.get("FARM_FIRE_FINAL_GPU", "0") != "0" and builds:
+                return self._owner_scores(tls,owner,scores,len(builds))
+            if self.spec == 'fire' and os.environ.get('FARM_FIRE_EXACT_SELECTION','1') != '0' and builds:
+                return self._owner_scores(tls,owner,scores,len(builds),cpu_reduce=True)
+            best: list[float | None] = [None] * len(builds)
+            for index, dps in zip(owner, scores):
+                # mage.simulate keeps the first bound spell on ties (strict >).
+                if best[index] is None or dps > best[index]:
+                    best[index] = dps
+            return [float(value) for value in best]
+        finally:
+            self._exact_current=None
 
 
 def cpu_dps(build, targets: int, spec: str) -> float:

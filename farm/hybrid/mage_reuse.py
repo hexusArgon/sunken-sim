@@ -9,7 +9,7 @@ import math,os,hashlib,inspect,re,functools
 from pathlib import Path
 from types import CodeType
 
-VERIFIED_SOURCES = {'sunken_sim.mage': 'cd5678571b4526b89d15a27e85933373b4f9d9f0341a17c0e14adf569ab35e52', 'sunken_sim.shadow': '3eba194d21884bfdf1dc1b88ef8b8b13d80c5305d4f0d32b126ecaf823653e88', 'sunken_sim.pressure': '05960bd54bda601731bcd0e3102910496a1193b1ceefd9bdf2359340995b27a3', 'farm.hybrid.mage_gpu_timeline': 'bf0cd3f41ce85b233be05824ac0c6e2ed1eed97f78aee9e70019cb2d86e2f869', 'farm.hybrid.mage_scalar': '7297e83e27cc9922a7de3f4b6b3ff21e06794cd499d028d8b3591fa2dc24c711', 'sunken_sim.stacking': '8e6dafa56194a5114c032cbc36dbab30adf18d55f623d039245cc3ce6339dad5', 'farm.hybrid.mage_jit': '2800b52e315129922dbe04c6baabcb56eee1b9a323461f43a43c384a2019d150', 'farm.hybrid.mage_prepare': 'babb658bc157aea0c12c0c32578a94d8f9895209cbd4f7e5e746709a91f67e68'}
+VERIFIED_SOURCES = {'sunken_sim.mage': '02e25ba5e3fb829692b8a81e1c409ba4118927037cb7d732a18ecb40860d841b', 'sunken_sim.shadow': '3eba194d21884bfdf1dc1b88ef8b8b13d80c5305d4f0d32b126ecaf823653e88', 'sunken_sim.pressure': '05960bd54bda601731bcd0e3102910496a1193b1ceefd9bdf2359340995b27a3', 'farm.hybrid.mage_gpu_timeline': '3d4ae8f299e7bd7a9331f883bc7111dc04bb10e21dcf6109c7be6c55b7945a7b', 'farm.hybrid.mage_scalar': '7297e83e27cc9922a7de3f4b6b3ff21e06794cd499d028d8b3591fa2dc24c711', 'sunken_sim.stacking': '8e6dafa56194a5114c032cbc36dbab30adf18d55f623d039245cc3ce6339dad5', 'farm.hybrid.mage_jit': '2800b52e315129922dbe04c6baabcb56eee1b9a323461f43a43c384a2019d150', 'farm.hybrid.mage_prepare': 'babb658bc157aea0c12c0c32578a94d8f9895209cbd4f7e5e746709a91f67e68', 'farm.hybrid.mage_exact': '104a567ee1fb87d650f8ebffabdf828001b0a197dc54ecac907d02f8e3cc4cab'}
 
 
 def freeze(value):
@@ -68,8 +68,8 @@ class TapeLRU:
         self.counts["resident_bytes"]=self.counts["resident_entries"]=0
     def sync_context(self,spec,targets):
         from sunken_sim import mage,shadow,pressure,stacking
-        from farm.hybrid import mage_gpu_timeline as mt, mage_scalar as scalar, mage_jit as jit, mage_prepare as prep
-        modules=(mage,shadow,pressure,mt,scalar,stacking,jit,prep)
+        from farm.hybrid import mage_gpu_timeline as mt, mage_scalar as scalar, mage_jit as jit, mage_prepare as prep, mage_exact as exact
+        modules=(mage,shadow,pressure,mt,scalar,stacking,jit,prep,exact)
         try:
             sources=[Path(m.__file__).read_text(encoding='utf8') for m in modules]
         except (OSError,UnicodeError):

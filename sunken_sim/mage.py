@@ -692,7 +692,7 @@ def _magic(codes, when: float, mana: float, evocation: bool) -> tuple[float, flo
     return _magic_factors(codes, when, extra)
 
 
-def _compile(events: list[tuple], build: Build, stats: dict, spec: str, evocation: bool) -> dict:
+def _compile(events: list[tuple], build: Build, stats: dict, spec: str, evocation: bool, *, _damage_at=None) -> dict:
     codes = _codes(build)
     mana = stats["mana_max"]
     buckets = (
@@ -755,7 +755,7 @@ def _compile(events: list[tuple], build: Build, stats: dict, spec: str, evocatio
         return base_factor + slope * spl, slope
 
     for when, kind, hits, raw_w, pot_w, extra in events:
-        dealt = _damage_factor(build, stats, when, kind)
+        dealt = _damage_factor(build, stats, when, kind) if _damage_at is None else _damage_at(when, kind)
         raw_w *= dealt
         pot_w *= dealt
         if kind == "auto":

@@ -598,7 +598,9 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys, prepare
     def hydra_gap(now):
         if not is_fire:
             return torch.full((B,), 1.55, dtype=dtype, device=device)
-        return 1.55 / (1.0 + 0.75 * current_as(now))
+        # Scalar / Tensor uses reciprocal-multiply; scalar Python uses division.
+        return torch.tensor([1.55 / (1.0 + 0.75 * x) for x in current_as(now).tolist()],
+                            dtype=dtype,device=device)
 
     def bite_mat(now):
         # [B, MAX_T]
@@ -620,7 +622,16 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys, prepare
     def bite0(now):
         return bite_mat(now)[:, 0]
 
+    # Fire oracle keeps historical groups: choose(hero_ready) may query an older
+    # time than the last world event. Reclaiming by that event time is unsound.
+    # Keep insertion order and a finite capacity; overflow rejects, never clips.
+    hy_history = [[] for _ in range(B)] if is_fire else None
+
     def alive_hydras(now):
+        if is_fire:
+            return torch.tensor([sum(c for expiry,c in groups if expiry > t)
+                                 for groups,t in zip(hy_history,now.tolist())],
+                                dtype=dtype,device=device)
         now_c = now.unsqueeze(1)
         live = hy_alive & (hy_expire > now_c)
         return (hy_count * live.to(dtype)).sum(dim=1)
@@ -673,6 +684,20 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys, prepare
             count = torch.full((B,), float(count), dtype=dtype, device=device)
         if not isinstance(duration, torch.Tensor):
             duration = torch.full((B,), float(duration), dtype=dtype, device=device)
+        if is_fire:
+            do = torch.zeros(B,dtype=torch.bool,device=device)
+            for r in mask.nonzero(as_tuple=False).view(-1).tolist():
+                t=float(now[r]);groups=hy_history[r]
+                total=sum(c for expiry,c in groups if expiry > t)
+                n=min(float(count[r]),max(0.0,10.0-total))
+                if n <= 0: continue
+                if len(groups) >= MAX_HYDRA:
+                    raise RuntimeError("Fire Hydra history capacity exceeded")
+                groups.append((t+float(duration[r]),n));do[r]=True
+            fresh = do & ~hydra_ticking
+            hydra_ticking = hydra_ticking | do
+            next_hydra_tick = torch.where(fresh,now+hydra_gap(now),next_hydra_tick)
+            return
         # reclaim expired groups so lava procs can keep appending (CPU list is unbounded).
         # Only touch rows in mask — now may be fight/sentinel for other batch rows.
         now_c = now.unsqueeze(1)
