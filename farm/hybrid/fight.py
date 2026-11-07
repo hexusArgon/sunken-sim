@@ -561,16 +561,27 @@ class GpuFights(BatchFights):
                 out.append(total / FIGHT)
         return out
 
-    def _owner_scores(self,tls,owners,scores,count):
+    def _owner_scores(self,tls,owners,scores,count,cpu_reduce=False):
         from farm.hybrid.mage_final import owner_reduce
         from sunken_sim import mage
         from sunken_sim.shadow import FIGHT
         import math,os
         pool = self.device_pool if os.environ.get("FARM_FIRE_DEVICE_POOL","1") != "0" else None
         try:
-            info,groups=owner_reduce(self.torch,self.target,scores,owners,count,pool)
+            if cpu_reduce:
+                groups=[[] for _ in range(count)]
+                for j,i in enumerate(owners):groups[i].append(j)
+                if any(not g for g in groups):raise RuntimeError('missing owner timeline')
+                info=[]
+                for g in groups:
+                    ranked=sorted(g,key=lambda j:-scores[j])
+                    info.append((scores[ranked[0]],scores[ranked[1]] if len(ranked)>1 else -float('inf'),g.index(ranked[0])))
+                info=np.asarray(info,dtype=np.float64)
+                self.score_counts['cpu_owner_reductions'] += count
+            else:
+                info,groups=owner_reduce(self.torch,self.target,scores,owners,count,pool)
+                self.score_counts['gpu_owner_reductions'] += count
             result=[float(v) for v in info[:,0]]
-            self.score_counts['gpu_owner_reductions'] += count
             # Conservative tolerance guard, not a new proof of arbitrary DML rounding.
             tolerance=[max(1e-5,abs(v)*max(1e-4,(max(len(tls[j].events) for j in g)+128)*16*2**-24)) for v,g in zip(result,groups)]
             guarded={i for i,(row,g) in enumerate(zip(info,groups)) if len(g)>1 and float(row[0]-row[1])<=tolerance[i]}
@@ -658,6 +669,8 @@ class GpuFights(BatchFights):
         self.fights += len(builds)
         if self.spec == "fire" and os.environ.get("FARM_FIRE_FINAL_GPU", "0") != "0" and builds:
             return self._owner_scores(tls,owner,scores,len(builds))
+        if self.spec == 'fire' and os.environ.get('FARM_FIRE_EXACT_SELECTION','1') != '0' and builds:
+            return self._owner_scores(tls,owner,scores,len(builds),cpu_reduce=True)
         best: list[float | None] = [None] * len(builds)
         for index, dps in zip(owner, scores):
             # mage.simulate keeps the first bound spell on ties (strict >).
