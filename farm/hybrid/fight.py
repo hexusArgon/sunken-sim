@@ -172,19 +172,22 @@ def _tl_key(build, stats: dict, targets: int, spec: str, bound) -> tuple:
 
 @contextmanager
 def _sheet_once(build, stats: dict):
-    """mage.simulate calls sheet(build); hand it a copy of the sheet we already built."""
+    """Inject the prepared sheet into both public entry points (stats_of is an alias)."""
     from sunken_sim import mage
 
-    old = mage.sheet
+    old, old_stats = mage.sheet, mage.stats_of
 
     def sheet(b):
         return dict(stats) if b is build else old(b)
 
-    mage.sheet = sheet
+    def stats_of(b):
+        return dict(stats) if b is build else old_stats(b)
+
+    mage.sheet, mage.stats_of = sheet, stats_of
     try:
         yield
     finally:
-        mage.sheet = old
+        mage.sheet, mage.stats_of = old, old_stats
 
 
 def _delta(before: dict, after: dict) -> dict:

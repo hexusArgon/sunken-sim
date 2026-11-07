@@ -47,6 +47,7 @@ def _job(hero, spec, worker=HYBRID_WORKER):
 
 
 class LockTest(unittest.TestCase):
+    @mock.patch.dict(os.environ, {"FARM_HYBRID_ARCANE_GPU": "0"})
     def test_arcane_locked(self):
         self.assertTrue(cpu_locked("mage", "arcane"))
         self.assertTrue(cpu_locked(" Mage ", "ARCANE"))
@@ -56,27 +57,35 @@ class LockTest(unittest.TestCase):
             assert_gpu_allowed("mage", "arcane")
         assert_gpu_allowed("mage", "fire")
 
+    @mock.patch.dict(os.environ, {"FARM_HYBRID_ARCANE_GPU": "0"})
     def test_arcane_detect_is_cpu_even_when_dml_forced(self):
         with mock.patch.dict(os.environ, {"FARM_HYBRID_DEVICE": "dml"}):
             info = detect("mage", "arcane")
         self.assertEqual(info.kind, "cpu")
         self.assertFalse(info.gpu)
 
+    @mock.patch.dict(os.environ, {"FARM_HYBRID_ARCANE_GPU": "0"})
     def test_dispatch(self):
         self.assertIs(hybrid_runner.dispatch(_job("mage", "arcane")), cpu_runner.run_job)
         self.assertIs(hybrid_runner.dispatch(_job("mage", "arcane", "local-esc")), cpu_runner.run_job)
         self.assertIs(hybrid_runner.dispatch(_job("mage", "fire", "local-esc")), cpu_runner.run_job)
         self.assertIs(hybrid_runner.dispatch(_job("mage", "fire")), hybrid_runner.run_job)
 
+    @mock.patch.dict(os.environ, {"FARM_HYBRID_ARCANE_GPU": "0"})
     def test_arcane_run_job_never_detects_device(self):
         with mock.patch.object(cpu_runner, "run_job", return_value={"ok": 1}) as old, \
-             mock.patch.object(hybrid_runner, "detect", side_effect=AssertionError("GPU path touched")), \
-             mock.patch.object(hybrid_runner, "prep_check", side_effect=AssertionError("GPU path touched")):
+             mock.patch.object(hybrid_runner, "detect", side_effect=AssertionError("GPU path touched")) as detection, \
+             mock.patch.object(hybrid_runner, "prep_check", side_effect=AssertionError("GPU path touched")) as prep:
             ticks = []
             out = hybrid_runner.run_job(_job("mage", "arcane"), {}, ticks.append)
         self.assertEqual(out, {"ok": 1})
         old.assert_called_once()
-        self.assertEqual(ticks, [])
+        detection.assert_not_called()
+        prep.assert_not_called()
+        self.assertEqual(len(ticks), 1)
+        self.assertEqual(ticks[0]["hybrid"]["status"], "locked")
+        self.assertFalse(ticks[0]["hybrid"]["gpu_fights"])
+        self.assertEqual(ticks[0]["hybrid"]["fallback"], "mage/arcane locked to CPU")
 
     def test_arcane_scripts_stay_on_local_esc(self):
         for name in ("run_mage_arcane_top80_esc.py", "resume_mage_arcane_top80_esc.py"):
@@ -165,6 +174,7 @@ class KernelParityTest(unittest.TestCase):
 class FightTest(unittest.TestCase):
     """GPU fight stage (farm.hybrid.fight): lock, wiring, CPU-sim parity."""
 
+    @mock.patch.dict(os.environ, {"FARM_HYBRID_ARCANE_GPU": "0"})
     def test_arcane_never_gets_gpu_fights(self):
         from farm.hybrid.fight import GpuFights, gpu_fights_for
         from farm.hybrid.device import DeviceInfo
@@ -271,23 +281,25 @@ def _sample(hero, spec, n, seed, points_every=3):
 class RegistryTest(unittest.TestCase):
     """farm.hybrid.registry: one status per hero/spec, Arcane locked."""
 
+    @mock.patch.dict(os.environ, {"FARM_HYBRID_ARCANE_GPU": "0"})
     def test_statuses(self):
         from farm.hybrid import registry
 
         self.assertEqual(registry.status("mage", "arcane"), registry.LOCKED)
         self.assertEqual(registry.status("Mage", " Arcane "), registry.LOCKED)
-        self.assertEqual(registry.status("mage", "fire"), registry.TIMELINE)
-        self.assertEqual(registry.status("mage", "frost"), registry.TIMELINE)
+        self.assertEqual(registry.status("mage", "fire"), registry.GPU_TIMELINE)
+        self.assertEqual(registry.status("mage", "frost"), registry.GPU_TIMELINE)
         for spec in registry.PRIEST_SPECS:
-            self.assertEqual(registry.status("priest", spec), registry.COMPILE)
+            self.assertEqual(registry.status("priest", spec), registry.GPU_TIMELINE)
         # every real spec is ported; cpu-only is what an unknown spec falls back to
         self.assertEqual(registry.status("paladin", "no_such_spec"), registry.CPU)
         for hero, (specs, _cls) in registry.KIND_HEROES.items():
             for spec in specs:
-                self.assertEqual(registry.status(hero, spec), registry.COMPILE)
+                self.assertEqual(registry.status(hero, spec), registry.GPU_TIMELINE)
         self.assertFalse(registry.gpu_engine_for("mage", "arcane"))
         self.assertTrue(registry.gpu_engine_for("priest", "holy"))
 
+    @mock.patch.dict(os.environ, {"FARM_HYBRID_ARCANE_GPU": "0"})
     def test_matrix_covers_every_class(self):
         from farm.hybrid import registry
 
@@ -298,6 +310,7 @@ class RegistryTest(unittest.TestCase):
         locked = [(r["hero"], r["spec"]) for r in table if r["status"] == registry.LOCKED]
         self.assertEqual(locked, [("mage", "arcane")])
 
+    @mock.patch.dict(os.environ, {"FARM_HYBRID_ARCANE_GPU": "0"})
     def test_make_engine_refuses(self):
         from farm.hybrid import registry
         from farm.hybrid.device import DeviceInfo
@@ -331,7 +344,7 @@ class RegistryTest(unittest.TestCase):
             ticks = []
             hybrid_runner.run_job(_job("priest", "shadow"), {}, ticks.append)
         self.assertIs(old.call_args.kwargs.get("eval_fn"), engine.eval_span)
-        self.assertEqual(ticks[0]["hybrid"]["status"], "hybrid-compile")
+        self.assertEqual(ticks[0]["hybrid"]["status"], "gpu-timeline")
 
 
 class EngineFallbackTest(unittest.TestCase):
@@ -437,54 +450,112 @@ class TimelineCacheTest(unittest.TestCase):
                             self.assertEqual((a.spec, a.evocation, a.bound), (b.spec, b.evocation, b.bound))
                 self.assertGreater(fight.TL_COUNTS["hit"], before)
 
-    def test_timeline_stats_cover_reads(self):
-        """Drift guard for map hotfixes: every sheet key the timeline reads is in the cache key."""
-        from farm.hybrid import fight
+    def _timeline_reads(self):
+        """Track actual scheduler reads, not raw damage/scoring or key construction.
+
+        CPU simulate uses stats_of (an alias, NOT a call through mage.sheet).
+        The vector scheduler copies mappings; patch only its dict constructor so
+        reads from prepared_stats and Fire's copy remain observable.
+        """
+        from farm.hybrid import fight, mage_gpu_timeline as mt
         from sunken_sim import mage
 
         seen = set()
-        on = [False]
+        tracking = [True]
 
         class Track(dict):
-            def __getitem__(self, k):
-                if on[0]:
-                    seen.add(k)
-                return dict.__getitem__(self, k)
-
-            def get(self, k, d=None):
-                if on[0]:
-                    seen.add(k)
-                return dict.get(self, k, d)
-
-            def __contains__(self, k):
-                if on[0]:
-                    seen.add(k)
-                return dict.__contains__(self, k)
+            def __getitem__(self, key):
+                if tracking[0]: seen.add(key)
+                return super().__getitem__(key)
+            def get(self, key, default=None):
+                if tracking[0]: seen.add(key)
+                return super().get(key, default)
+            def __contains__(self, key):
+                if tracking[0]: seen.add(key)
+                return super().__contains__(key)
 
         old_sheet, old_raws = mage.sheet, mage._raws
-
         def sheet(build):
-            on[0] = True
             return Track(old_sheet(build))
-
         def raws(stats, build):
-            on[0] = False
-            try:
-                return old_raws(dict(stats), build)
-            finally:
-                on[0] = True
+            tracking[0] = False
+            try: return old_raws(dict(stats), build)
+            finally: tracking[0] = True
 
+        samples = []
         for spec in ("fire", "frost"):
-            try:
-                builds = _sample("mage", spec, 40, 5)
-            except Exception as exc:
-                self.skipTest(f"catalog: {exc}")
-            with mock.patch.object(mage, "sheet", sheet), mock.patch.object(mage, "_raws", raws), fight._capture():
+            builds = _sample("mage", spec, 40, 5)
+            samples.extend(builds)
+            seen.clear()
+            with mock.patch.object(mage, "sheet", sheet), \
+                 mock.patch.object(mage, "stats_of", sheet), \
+                 mock.patch.object(mage, "_raws", raws), fight._capture():
                 for build in builds:
                     mage.simulate(build, 5, None, None, spec, use_history=False)
-                    on[0] = False
-        self.assertTrue(seen)
-        self.assertLessEqual(seen, set(fight.TIMELINE_STATS) | {"crit"})
+            cpu_reads = set(seen)
+            self.assertTrue(cpu_reads, spec)
+            seen.clear()
+            with mock.patch.object(mt, "dict", Track, create=True):
+                mt._mage_batch(torch, torch.device("cpu"), torch.float64,
+                               builds, spec, 5, [None]*len(builds),
+                               prepared_stats=[old_sheet(b) for b in builds])
+            vector_reads = set(seen)
+            self.assertTrue(vector_reads, spec)
+            yield spec, samples[-len(builds):], cpu_reads, vector_reads
+
+    def _assert_key_covers(self, key, build, stats, reads):
+        original = key(build, stats, None)
+        for name in sorted(reads):
+            changed = dict(stats)
+            changed[name] = stats.get(name, 0) + 1
+            self.assertNotEqual(original, key(build, changed, None), name)
+
+    def test_timeline_stats_cover_reads(self):
+        """Both current vector/tape and CPU fallback caches cover every observed read."""
+        from farm.hybrid import fight
+        from farm.hybrid.mage_reuse import TapeLRU
+        from sunken_sim import mage
+        tape = TapeLRU()
+        tape.split = True  # exercise the verified (potency-omitting) key
+        for spec, builds, cpu_reads, vector_reads in self._timeline_reads():
+            for build in builds:
+                stats = mage.sheet(build)
+                # Force the conditional crit-AS branch on for the sensitivity
+                # check; otherwise crit is intentionally absent from CPU keys.
+                stats.update(crit_as=0.2, crit_as_duration=5)
+                self._assert_key_covers(lambda b,s,k: fight._tl_key(b,s,5,spec,k),
+                                        build, stats, cpu_reads)
+                self._assert_key_covers(tape.key, build, stats, vector_reads)
+            # Mutation proof: an omitted read key MUST be detected, for each cache.
+            with mock.patch.object(fight, "TIMELINE_STATS",
+                                   tuple(k for k in fight.TIMELINE_STATS if k != "mana_max")):
+                with self.assertRaisesRegex(AssertionError, "mana_max"):
+                    self._assert_key_covers(lambda b,s,k: fight._tl_key(b,s,5,spec,k),
+                                            build, stats, cpu_reads)
+            original = tape.key
+            def missing_mana(b, s, k):
+                return original(b, {n:v for n,v in s.items() if n != "mana_max"}, k)
+            with self.assertRaisesRegex(AssertionError, "mana_max"):
+                self._assert_key_covers(missing_mana, build, stats, vector_reads)
+
+    def test_sheet_once_uses_stats_alias_and_restores(self):
+        from farm.hybrid import fight
+        from sunken_sim import mage
+        build = _sample("mage", "frost", 1, 5)[0]
+        old_sheet, old_stats = mage.sheet, mage.stats_of
+        stats = mage.sheet(build)
+        stats["mana_max"] *= 0.12
+        stats["mana_regen"] *= 0.12
+        try:
+            with fight._sheet_once(build, stats), fight._capture() as sink:
+                mage.simulate(build, 5, None, None, "frost", use_history=False)
+                self.assertEqual(sink[0][2]["mana_max"], stats["mana_max"])
+                self.assertEqual(mage.sheet(build), stats)
+                raise RuntimeError("restore on exception")
+        except RuntimeError:
+            pass
+        self.assertIs(mage.sheet, old_sheet)
+        self.assertIs(mage.stats_of, old_stats)
 
 
 if __name__ == "__main__":
