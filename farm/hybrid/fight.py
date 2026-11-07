@@ -524,18 +524,32 @@ class GpuFights(BatchFights):
         from sunken_sim.shadow import FIGHT
 
         import os
-        from farm.hybrid.mage_device import parts
-        pool = self.device_pool if self.spec == "fire" and os.environ.get("FARM_FIRE_DEVICE_POOL", "1") != "0" else None
+        from farm.hybrid.mage_device import parts, DevicePool
+        from collections import Counter
+        # Official diagnostics historically construct a scoring-only __new__ engine.
+        if not hasattr(self, "score_counts"): self.score_counts = Counter()
+        if not hasattr(self, "device_pool"): self.device_pool = DevicePool(self.torch,self.target)
+        spec = getattr(self,"spec",tls[0].spec if tls else "fire")
+        pool = self.device_pool if spec == "fire" and os.environ.get("FARM_FIRE_DEVICE_POOL", "1") != "0" else None
+        final_gpu = spec == "fire" and os.environ.get("FARM_FIRE_FINAL_GPU", "0") != "0"
         out: list[float] = []
         for part, fits in parts(tls, MAX_BATCH):
             self.score_counts['device_batches' if fits else 'oversized_batches'] += 1
             self.score_counts['max_batch_rows'] = max(self.score_counts['max_batch_rows'], len(part))
             if fits:
                 packed = pack(part)
+                phase = "compile"
                 try:
-                    sums = compile_sums(self.torch, self.target, packed, workspace=pool)
+                    sums = compile_sums(self.torch, self.target, packed, workspace=pool, device_result=final_gpu)
+                    if final_gpu:
+                        phase = "final"
+                        from farm.hybrid.mage_final import score_rows
+                        values = score_rows(self.torch,self.target,sums,part,packed["hell_hits"],pool)
+                        out.extend(float(v) for v in values)
+                        self.score_counts['gpu_final_rows'] += len(part)
+                        continue
                 except RuntimeError:
-                    self.score_counts['device_compile_fallback_rows'] += len(part)
+                    self.score_counts['device_' + phase + '_fallback_rows'] += len(part)
                     fits = False
             if not fits:
                 for tl in part:
@@ -546,6 +560,39 @@ class GpuFights(BatchFights):
                 total, _sources = mage._score(compiled_dict(tl, row, hell), tl.stats, tl.build, tl.spec)
                 out.append(total / FIGHT)
         return out
+
+    def _owner_scores(self,tls,owners,scores,count):
+        from farm.hybrid.mage_final import owner_reduce
+        from sunken_sim import mage
+        from sunken_sim.shadow import FIGHT
+        import math
+        try:
+            info,groups=owner_reduce(self.torch,self.target,scores,owners,count,self.device_pool)
+            result=[float(v) for v in info[:,0]]
+            self.score_counts['gpu_owner_reductions'] += count
+            # Conservative tolerance guard, not a new proof of arbitrary DML rounding.
+            tolerance=[max(1e-5,abs(v)*max(1e-4,(max(len(tls[j].events) for j in g)+128)*16*2**-24)) for v,g in zip(result,groups)]
+            guarded={i for i,(row,g) in enumerate(zip(info,groups)) if len(g)>1 and float(row[0]-row[1])<=tolerance[i]}
+            # Preserve near-tie ordering between different builds, not only ring bindings.
+            order=sorted(range(count),key=lambda i:result[i])
+            for a,b in zip(order,order[1:]):
+                if result[b]-result[a]<=tolerance[a]+tolerance[b]:guarded.update((a,b))
+        except RuntimeError:
+            groups=[[] for _ in range(count)]
+            for j,i in enumerate(owners):groups[i].append(j)
+            result=[0.]*count;guarded=set(range(count))
+            self.score_counts['gpu_owner_fallback_builds'] += count
+        for i in sorted(guarded):
+            best=None
+            for j in groups[i]:
+                tl=tls[j]
+                compiled=mage._compile(tl.events,tl.build,tl.stats,tl.spec,tl.evocation)
+                exact=mage._score(compiled,tl.stats,tl.build,tl.spec)[0]/FIGHT
+                if not math.isfinite(exact):raise ValueError('non-finite exact Mage score')
+                if best is None or exact>best:best=exact
+            result[i]=float(best)
+        self.score_counts['near_tie_exact_builds'] += len(guarded)
+        return result
 
     def dps_many(self, builds: list) -> list[float]:
         import os
@@ -594,6 +641,8 @@ class GpuFights(BatchFights):
                     owner.append(index)
         scores = self._scores(tls) if tls else []
         self.fights += len(builds)
+        if self.spec == "fire" and os.environ.get("FARM_FIRE_FINAL_GPU", "0") != "0" and builds:
+            return self._owner_scores(tls,owner,scores,len(builds))
         best: list[float | None] = [None] * len(builds)
         for index, dps in zip(owner, scores):
             # mage.simulate keeps the first bound spell on ties (strict >).
