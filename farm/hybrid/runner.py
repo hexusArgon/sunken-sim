@@ -101,6 +101,11 @@ def run_job(job: dict, box: dict, tick) -> dict:
             meta.update(device='cpu',name='cpu',gpu_fights=False)
         meta["fallback"] = reason
         tick({"hybrid": meta})
+        if (hero,spec)==('mage','fire'):
+            from farm.hybrid.fire_cpu import enabled,eval_span as staged_eval_span
+            if enabled(job):
+                meta['actual_planner']='cpu-staged-scalar'
+                return cpu_runner.run_job(dict(job,hybrid=dict(meta)),box,tick,eval_fn=staged_eval_span)
         return cpu_runner.run_job(dict(job, hybrid=dict(meta)), box, tick)
 
     # Never import torch/detect a device for locked/unsupported heroes/specs.

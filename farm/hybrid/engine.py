@@ -341,13 +341,13 @@ def _self_check(builds, got) -> bool:
     return False
 
 
-def eval_span(start: int, stop: int) -> dict:
+def eval_span(start: int, stop: int, *, cpu_engine=None) -> dict:
     """farm.runner.eval_span with batched GPU fights. Same payload, same top-10 gate."""
     from farm import runner as R
     from farm.score import finish_sextuple
     from sunken_sim.shadow import Build
 
-    engine = _engine()
+    engine = _engine() if cpu_engine is None else cpu_engine
     if engine is None:
         return R.eval_span(start, stop)
     space = R._SPACE
@@ -417,7 +417,13 @@ def eval_span(start: int, stop: int) -> dict:
                 rows.append((chunk, equipped, sources, R.build_group(sources)))
             bare_builds = [Build(frozenset(), frozenset(), row[1], 0, 0, 0, 0) for row in rows]
             bares = engine.dps_many(bare_builds)
-            if _ENGINE_STATE == "pending" and not _self_check(bare_builds, bares):
+            if cpu_engine is not None and not cpu_engine.checked:
+                from farm.hybrid.registry import cpu_dps
+                reference=[cpu_dps(R._HERO,R._SPEC,R._TARGETS,b) for b in bare_builds]
+                if reference != bares:
+                    return R.eval_span(start,stop)
+                cpu_engine.checked=True
+            if cpu_engine is None and _ENGINE_STATE == "pending" and not _self_check(bare_builds, bares):
                 sub = R.eval_span(index, stop)
                 hits.extend(sub["hits"])
                 fights += sub["fights"]
