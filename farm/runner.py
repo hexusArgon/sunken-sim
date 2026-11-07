@@ -115,12 +115,16 @@ class CategoryBars:
 
 
 def claim_item_bars(bare: float, group: str | None, chunk: int | None = None) -> bool:
-    # Safe default and legacy callers fail open. Only explicit unsafe jobs prune.
+    # Standalone fight diagnostics have no farm coordinator/shared gate.
+    # Every production run_job initializes validated identity-aware slots below.
     if _BAR is None:
         return True
     slots, lock = _BAR
-    if slots.get('__policy__', A.ALL) != A.UNSAFE or chunk is None or any(len(slots[k]) < 3 for k in BAR_KEYS):
-        return True
+    A.policy({'admission_policy': slots.get('__policy__')})
+    if any(len(slots[k]) < 3 for k in BAR_KEYS):
+        raise ValueError('bare-top10 requires validated identity-aware gate state; anonymous legacy thresholds cannot be imported')
+    if chunk is None:
+        raise ValueError('bare-top10 requires chunk identity')
     with lock:
         before = A.Observations(_observations(slots))
         if not before.claim(chunk, bare, group):
@@ -588,8 +592,9 @@ def _write_result(job: dict, boards: Boards, done: int, stopped: bool, errors: i
         **A.metadata(job),
         **({"hybrid": job["hybrid"]} if "hybrid" in job else {}),
         'global_optimum_proven': False,
-        'admission_is_lossless': job.get('admission_policy', A.ALL) == A.ALL,
-        'item_admission_complete': job.get('admission_policy', A.ALL) == A.ALL and not stopped and not errors and done >= int(job['end']) - int(job['start']) + 1,
+        'admission_is_lossless': False,
+        'item_admission_complete': False,
+        'item_sweep_complete': not stopped and not errors and done >= int(job['end']) - int(job['start']) + 1,
         "about": A.description(job),
         "top": boards.ranked(boards.overall),
         "top_shop_random": boards.ranked(boards.by_group["shop_random"]),
@@ -616,6 +621,7 @@ def run_job(job: dict, box: dict, tick, eval_fn=None) -> dict:
 
     from farm.catalog import load
 
+    job = dict(job, admission_policy=A.policy(job))  # reject removed all before I/O/work
     space, items = load(job["hero"], job["spec"], job["pool"], job.get("preset") or None, job.get("top") or None)
     job = A.configure(job, space, items)
     print('search admission: ' + A.description(job), flush=True)

@@ -1,6 +1,6 @@
-"""Versioned, identity-aware item admission. No damage-only pruning by default.
+"""Versioned, identity-aware item admission. Bare top-10 by default.
 
-The optional unsafe gate is a search heuristic, never an admissible upper bound.
+The production gate is a search heuristic, never an admissible upper bound.
 Anonymous legacy float snapshots cannot identify observations and are ignored.
 """
 from __future__ import annotations
@@ -11,19 +11,25 @@ import os
 from pathlib import Path
 
 SCHEMA = 2
-ALL = 'all'
+BARE = 'bare-top10'
+LEGACY_ALL = 'all'
 UNSAFE = 'unsafe-bare-top10'
 KEYS = ('overall', 'shop', 'drop')
 LIMIT = 10
 
 
 def policy(job=None):
+    """One production policy; normalize the old unsafe spelling for fresh jobs.
+
+    FARM_UNSAFE_BARE_GATE is obsolete: neither 0 nor 1 selects all-admission.
+    Stored checkpoint metadata is never normalized when validating resumes.
+    """
     value = (job or {}).get('admission_policy')
-    if value is None:
-        value = UNSAFE if os.environ.get('FARM_UNSAFE_BARE_GATE', '') == '1' else ALL
-    if value not in (ALL, UNSAFE):
-        raise ValueError(f'Unknown admission_policy: {value!r}')
-    return value
+    if value is None or value in (BARE, UNSAFE):
+        return BARE
+    if value == LEGACY_ALL:
+        raise ValueError("admission_policy='all' has been removed; use 'bare-top10'")
+    raise ValueError(f'Unknown admission_policy: {value!r}; use {BARE!r}')
 
 
 def groups(group):
@@ -105,9 +111,7 @@ def suffix(job):
 
 
 def description(job):
-    mode = job.get('admission_policy', ALL)
-    text = ('Все шестёрки проходят к подбору талантов/глифов/ESC; отсечения по item-only DPS нет. '
-            if mode == ALL else
-            'UNSAFE HEURISTIC: item-only top-10 gate включён явно; синергичные билды могут быть потеряны. ')
-    return text + ('Полный обход предметов не доказывает глобальный максимум: подбор талантов, затем глифов, затем greedy ESC остаётся поэтапной эвристикой. '
-                   'top — общий top-10; top_shop_random — смешанные источники; top_shop — лавка; top_random — дроп. Легендарки входят в любой список.')
+    return ('Bare top-10: talents/glyphs/ESC are refined only when item-only DPS enters the current top-10 of a relevant category. '
+            'Heuristic: item-only DPS is not an upper bound on finished DPS; synergistic builds may be lost. No global optimum guarantee. '
+            'Talent selection, then glyph selection, then greedy ESC are staged as before. '
+            'top=overall; top_shop_random=mixed sources; top_shop=shop; top_random=drop; legendaries belong to any source category.')

@@ -13,7 +13,7 @@ from farm.protocol import parse_progress, status_text
 
 def job(**kwargs):
     return dict(dict(id='fixture',worker='eseid-main',hero='mage',spec='fire',pool='mixed',targets=5,
-                     fire_backend='hybrid',top=100,start=0,end=0,admission_policy='all',search_schema=2),**kwargs)
+                     fire_backend='hybrid',top=100,start=0,end=0,admission_policy='bare-top10',search_schema=2),**kwargs)
 
 
 class DiscordRouteTest(unittest.TestCase):
@@ -38,7 +38,7 @@ class DiscordRouteTest(unittest.TestCase):
         from farm.hybrid.engine import eval_span
         got=self.run_route();j,b,ev=self.calls[-1]
         self.assertIs(ev,eval_span);self.assertIs(b,self.box);self.assertEqual(j['worker'],'eseid-main')
-        self.assertEqual(j['admission_policy'],'all');self.assertEqual(j['search_schema'],2)
+        self.assertEqual(j['admission_policy'],'bare-top10');self.assertEqual(j['search_schema'],2)
         self.assertTrue(j['hybrid']['gpu_fights']);self.assertEqual(got['path'],'fixture')
         self.assertEqual(self.job,job());self.assertEqual(parse_progress(self.ticks[-1]),(2,3))
         self.assertIn('CPU scheduling + GPU scoring',self.ticks[-1]);self.assertTrue(all(isinstance(t,str) for t in self.ticks))
@@ -67,14 +67,14 @@ class DiscordRouteTest(unittest.TestCase):
     def test_fight_exception(self):
         self.fight.side_effect=RuntimeError('fixture');self.assert_cpu('fight parity failed')
     def test_progress_protocol_final_and_stop_not_replaced(self):
-        text=status_text(worker='eseid-main',hero='mage',spec='fire',pool='mixed',targets=5,start=0,end=4,done=2,left=3,best=None,admission_policy='all')
+        text=status_text(worker='eseid-main',hero='mage',spec='fire',pool='mixed',targets=5,start=0,end=4,done=2,left=3,best=None,admission_policy='bare-top10')
         self.assertEqual(parse_progress(text+'\nBackend: CPU'),(2,3))
     def test_backend_metadata_persists_without_changing_legacy_result_fields(self):
         with TemporaryDirectory() as d, mock.patch.object(C,'_result_path',return_value=Path(d)/'out.json'):
             j=job(hybrid={'device':'cpu','gpu_fights':False,'fallback':'fixture'})
             p=C._write_result(j,C.Boards(),1,False,0);got=json.loads(Path(p).read_text(encoding='utf8'))
             self.assertEqual(got['hybrid'],j['hybrid']);self.assertEqual(got['worker'],j['worker'])
-            self.assertTrue(got['admission_is_lossless']);self.assertFalse(got['global_optimum_proven'])
+            self.assertFalse(got['admission_is_lossless']);self.assertFalse(got['global_optimum_proven'])
     def test_legacy_cpu_result_has_no_invented_hybrid_field(self):
         with TemporaryDirectory() as d, mock.patch.object(C,'_result_path',return_value=Path(d)/'out.json'):
             p=C._write_result(job(),C.Boards(),1,False,0);self.assertNotIn('hybrid',json.loads(Path(p).read_text(encoding='utf8')))

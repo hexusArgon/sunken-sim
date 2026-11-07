@@ -80,6 +80,8 @@ def fight_check(device, hero: str, spec: str, targets: int, top: int | None = 80
 
 
 def run_job(job: dict, box: dict, tick) -> dict:
+    from farm import admission as A
+    job = dict(job, admission_policy=A.policy(job))
     from farm import runner as cpu_runner
 
     hero, spec = job["hero"], job["spec"]
