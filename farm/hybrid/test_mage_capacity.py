@@ -1,3 +1,4 @@
+import os
 """Reject clipped tapes; exact CPU fallback preserves row order/ESC/ring binding."""
 import unittest
 from unittest import mock
@@ -59,6 +60,7 @@ class CapacityUnitTest(unittest.TestCase):
         with self.assertRaises(ValueError):M.generate_mage_timelines(torch,torch.device('cpu'),[object()],'fire',5,[])
 
 
+@mock.patch.dict(os.environ, {"FARM_FIRE_PLANNER": "vector"})
 class DirectMLCapacityTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

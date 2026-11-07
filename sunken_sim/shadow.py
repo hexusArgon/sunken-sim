@@ -270,7 +270,7 @@ def attack_mana_gain(stats: dict) -> float:
     return gain
 
 
-def _mana_regen(build: Build, intel: float, mana_max: float, items: tuple) -> float:
+def _mana_regen(build: Build, intel: float, mana_max: float, items: tuple, _mana_passives=None) -> float:
     """Mana gained per second while below maximum.
 
     The map adds (1.20 + 0.10×intellect) plus item bonuses, then every 0.25 s
@@ -286,7 +286,7 @@ def _mana_regen(build: Build, intel: float, mana_max: float, items: tuple) -> fl
         rate += _MANA_REGEN_RATE.get(item.rawcode, 0.0)
         for match in _MP5.findall(item.tip):
             mp5 += float(match.replace(",", "."))
-    passive = _passive_mana(items)
+    passive = _passive_mana(items) if _mana_passives is None else _mana_passives
     stat = (1.20 + 0.10 * intel) * (1.0 + rate)
     stat += mp5 / 5.0
     stat += passive["mana_per_second"] * mana_max
@@ -302,6 +302,7 @@ def character(
     base_int: int | None = None,
     white_base: float = 10.0,
     bake_timed_buffs: bool = True,
+    _mana_passives=None,
 ) -> dict[str, float]:
     intel = BASE_INT if base_int is None else base_int
     strength = BASE_STR if base_str is None else base_str
@@ -457,8 +458,8 @@ def character(
         "swp_period": 1 / (1 + haste),
         "attack_base": attack_base,
         "swing": attack_base / (1 + attack_speed),
-        "mana_regen": _mana_regen(build, intel, mana, build.items),
-        **{key: value for key, value in _passive_mana(build.items).items() if key != "mana_per_second"},
+        "mana_regen": _mana_regen(build, intel, mana, build.items, _mana_passives),
+        **{key: value for key, value in (_passive_mana(build.items) if _mana_passives is None else _mana_passives).items() if key != "mana_per_second"},
     }
 
 

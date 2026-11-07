@@ -289,7 +289,7 @@ _EVENT_CACHE: dict = {}
 def _event_arrays(events: list, mana_max: float) -> tuple:
     """Per-event columns of one timeline; cached while the timeline cache holds the list."""
     key = id(events)
-    found = _EVENT_CACHE.get(key)
+    found = _EVENT_CACHE.get(key) if isinstance(events, list) else None
     if found is not None and found[0] is events and found[1] == mana_max:
         return found[2]
     kid = KIND_IDS.get
@@ -517,6 +517,8 @@ class GpuFights(BatchFights):
         self.timeline_counts = {}
         from farm.hybrid.mage_reuse import TapeLRU
         self.tape_cache = TapeLRU()
+        from farm.hybrid.mage_prepare import SheetLRU
+        self.sheet_cache = SheetLRU()
         from farm.hybrid.mage_device import DevicePool
         self.device_pool = DevicePool(torch, self.target)
         from collections import Counter
@@ -633,9 +635,15 @@ class GpuFights(BatchFights):
             and (want in ("1", "true", "force") or bool(getattr(self.device, "gpu", False)))
             and self.spec in ("fire", "frost", "arcane")
         )
+        planner = os.environ.get("FARM_FIRE_PLANNER", "scalar").strip().lower()
+        if self.spec == "fire" and planner not in ("scalar", "vector", "auto"):
+            raise ValueError("FARM_FIRE_PLANNER must be auto, scalar or vector")
+        scalar = self.spec == "fire" and (planner in ("scalar", "auto") or want in ("0", "false", "off", "cpu"))
+        if self.spec == "fire" and planner == "vector" and not scalar:
+            use_gpu_tl = True  # explicit planner override also works on torch CPU
         tls: list[Timeline] = []
         owner: list[int] = []
-        if use_gpu_tl and builds:
+        if (use_gpu_tl or scalar) and builds:
             from farm.hybrid.mage_gpu_timeline import generate_mage_timelines
 
             flat_builds: list = []
@@ -651,16 +659,37 @@ class GpuFights(BatchFights):
                     flat_keys.append(key)
                     owners_flat.append(index)
             def generate(bs, keys, prepared):
-                return generate_mage_timelines(
+                if scalar:
+                    from farm.hybrid.mage_scalar import generate_scalar_timelines
+                    return generate_scalar_timelines(bs, self.spec, self.targets, keys,
+                                                     prepared, self.timeline_counts)
+                rows = generate_mage_timelines(
                     self.torch, self.target, bs, self.spec, self.targets, keys,
                     diagnostics=self.timeline_counts, prepared_stats=prepared,
                 )
+                if self.spec == "fire":
+                    from farm.hybrid.mage_scalar import verify_vector_rows
+                    rows = verify_vector_rows(bs,self.spec,self.targets,keys,rows,prepared,self.timeline_counts)
+                return rows
+            self.tape_cache.mode = "scalar" if scalar else "vector"
+            prepared = None
+            prep_mode = os.environ.get("FARM_FIRE_PREP_CACHE", "0")
+            if self.spec == "fire" and prep_mode not in ("0", "once", "items", "full"):
+                raise ValueError("FARM_FIRE_PREP_CACHE must be 0, once, items or full")
+            if self.spec == "fire" and prep_mode == "once":
+                from farm.hybrid.mage_prepare import fresh_rows
+                prepared = fresh_rows(flat_builds, self.tape_cache, self.spec, self.targets)
+            elif self.spec == "fire" and prep_mode != "0":
+                prepared = self.sheet_cache.rows(flat_builds, self.tape_cache, self.spec, self.targets)
             if self.spec == "fire" and os.environ.get("FARM_FIRE_TAPE_CACHE", "1") != "0":
-                rows = self.tape_cache.rows(flat_builds, self.spec, self.targets, flat_keys, generate)
+                rows = self.tape_cache.rows(flat_builds, self.spec, self.targets, flat_keys, generate, prepared)
             else:
-                rows = generate(flat_builds, flat_keys, None)
+                rows = generate(flat_builds, flat_keys, prepared)
             for build, key, row, index in zip(flat_builds, flat_keys, rows, owners_flat):
                 events, stats, used_spec, evocation = row
+                if self.spec == "fire" and isinstance(events,list):
+                    from types import MappingProxyType
+                    events=tuple(tuple(ev[:5])+(MappingProxyType(dict(ev[5])),) for ev in events)
                 tls.append(Timeline(build, stats, used_spec, evocation, events, key))
                 owner.append(index)
         else:

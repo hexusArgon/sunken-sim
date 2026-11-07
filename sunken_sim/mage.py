@@ -115,8 +115,8 @@ def _damage_factor(build: Build, stats: dict, when: float, kind: str) -> float:
     return factor
 
 
-def sheet(build: Build) -> dict[str, float]:
-    stats = character(build, BASE_STR, BASE_AGI, BASE_INT, WHITE_BASE, bake_timed_buffs=False)
+def sheet(build: Build, *, _mana_passives=None) -> dict[str, float]:
+    stats = character(build, BASE_STR, BASE_AGI, BASE_INT, WHITE_BASE, bake_timed_buffs=False, _mana_passives=_mana_passives)
     arch = 1.35 if _has(build, "I0KU") else 1.0
     if _has(build, "I0KQ"):
         stats["potency"] += 3 + 0.05 * stats["int"] * arch
@@ -183,11 +183,19 @@ def simulate(
     spec: str = "frost",
     *,
     use_history: bool = True,
+    _capture_only: bool = False,
+    _prepared_stats: dict | None = None,
+    _hydra_sum=None,
+    _new_hydras=None,
 ) -> Report:
     from sunken_sim.history import recall, remember
 
     if spec not in SPECS:
         raise ValueError(spec)
+    if _capture_only:
+        use_history = False
+        if _wears(build, "I00D") and bound_spell is None:
+            raise ValueError("capture requires an explicit ring binding")
     if use_history and not (counter is not None and bound_spell is None):
         cached = recall("mage", spec, build, targets, bound_spell)
         if cached is not None:
@@ -211,11 +219,11 @@ def simulate(
             return best_report
         return remember("mage", spec, best_report, bound_spell)
 
-    stats = stats_of(build)
+    stats = stats_of(build) if _prepared_stats is None else dict(_prepared_stats)
     if spec == "fire":
         # Hydra takes the mage's attack speed. His own swing keeps the base cooldown.
         stats["swing"] = stats["attack_base"]
-    raw = _raws(stats, build)
+    raw = None if _capture_only else _raws(stats, build)
     events: list[tuple] = []
     actions: list[tuple[float, str]] = []
 
@@ -291,7 +299,7 @@ def simulate(
     bomb_power = [0.0] * targets
     chill_exp = [0.0] * targets
     freeze_exp = [0.0] * targets
-    hydras: list[tuple[float, float]] = []
+    hydras: list[tuple[float, float]] = [] if _new_hydras is None else _new_hydras()
     hydra_ticking = False
     blizzard_until = 0.0
     hero_ready = 0.0
@@ -321,6 +329,8 @@ def simulate(
         return sum(bite(index, now) for index in range(targets)) / targets
 
     def alive(now: float) -> float:
+        if _hydra_sum is not None:
+            return _hydra_sum(hydras, now)
         return sum(count for expiry, count in hydras if expiry > now)
 
     def spawn_hydras(now: float, count: float, duration: float) -> None:
@@ -656,6 +666,8 @@ def simulate(
 
     recover_mana(FIGHT)
     mana_left = 0.0 if stats["mana_max"] <= 0 else 100.0 * mana / stats["mana_max"]
+    if _capture_only:
+        return (events, stats, spec, evocation)
     compiled = _compile(events, build, stats, spec, evocation)
     if counter is not None:
         counter["engine"] = "mage"
