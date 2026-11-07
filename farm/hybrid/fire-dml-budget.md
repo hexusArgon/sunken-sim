@@ -1,0 +1,11 @@
+# Fire DirectML process budget
+
+Fresh Fire jobs still use the single hybrid route and the shared running **bare-top10** heuristic. CPU oracle/planner, exact winner guards, source/tape invalidation, ESC, merge/checkpoint semantics are unchanged.
+
+RX6800XT measurements found long native DirectML waits with15 live device owners. Serializing compile dispatch did not remove the stalls. The identical212992–213247 bare input (256×243 event shape) completed in0.392s with one device context and exact CPU scores. This establishes a context-count sensitivity, not a proven driver deadlock/root-cause fix.
+
+Containment: a job-owned, spawn-shared one-token budget is allocated only for Fire+DirectML. Only one worker creates a GPU engine; other workers use the existing **explicit CPU oracle fallback**, before importing/initializing a device. The full configured worker pool remains unchanged (normally15 on16 logical cores); this does NOT mean15 GPU contexts. No standalone CPU job backend is reintroduced.
+
+Metadata records `fire_dml_process_budget=1`, `pool_workers`, actual CPU/hybrid/mixed execution and fallback reason. No CPU work is presented as GPU-only. Tokens are held for the worker/job lifetime, fail closed after a failed owner, and are not a cache or a cross-job resource. No environment override bypasses the budget. Non-Fire classes and non-DML paths are unchanged.
+
+Limits: this is operational containment, not a single-GPU RPC service or repair of the native backend. Concurrent independent jobs do not share this job-local budget. Resident bots are not reloaded by a commit; only fresh processes adopt it. No full-run ETA follows from a short cold benchmark.

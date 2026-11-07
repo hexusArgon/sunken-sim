@@ -89,6 +89,16 @@ class BatchFights:
     def dps_many(self, builds: list) -> list[float]:  # pragma: no cover - interface
         raise NotImplementedError
 
+    def _canonical_fire_esc(self, builds, results, limit=CROSS_MAX_BUILDS):
+        # Algebra chooses points with its existing guards/tie policy; its projected
+        # score is not the canonical final Fire DPS. Re-score only selected builds.
+        if (getattr(self, "hero", None), getattr(self, "spec", None)) != ("mage", "fire"):
+            return results
+        from sunken_sim.esc import apply_points
+        selected = [apply_points(build, points) for build, (_score, points) in zip(builds, results)]
+        values = chunked_many(self.dps_many, selected, limit)
+        return [(value, points) for value, (_score, points) in zip(values, results)]
+
     def greedy_points(self, build) -> tuple[float, dict[str, int]]:
         """sunken_sim.esc.greedy_points (exact); structural attrs not fought, scored as current.
 
@@ -137,7 +147,7 @@ class BatchFights:
                     )
                     if strategy is not None:
                         strategy.record("algebra", time.perf_counter() - t0)
-                    return best, counts
+                    return self._canonical_fire_esc([build], [(best, counts)])[0]
             except _UseBatched:
                 pass
             except Exception as exc:  # pilot must never break a job: exact batched path
@@ -281,7 +291,7 @@ class BatchFights:
         out, _stats = run_lockstep(
             [search(b) for b in builds], self.dps_many, lambda many, bs: chunked_many(many, bs, limit)
         )
-        return out
+        return self._canonical_fire_esc(builds, out, limit)
 
 
 # --- farm worker side -------------------------------------------------------
@@ -309,6 +319,9 @@ def _engine():
     from farm import runner as R
     from farm.hybrid import registry
 
+    if (R._HERO, R._SPEC) == ("mage", "fire") and not getattr(R, "_FIRE_DML_ALLOWED", True):
+        _to_cpu("DirectML Fire context budget: one GPU owner per job; explicit CPU oracle fallback")
+        return None
     try:
         if not registry.gpu_engine_for(R._HERO, R._SPEC):
             raise ValueError(f"{R._HERO}/{R._SPEC} is {registry.status(R._HERO, R._SPEC)}")

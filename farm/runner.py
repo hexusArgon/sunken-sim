@@ -288,7 +288,20 @@ def source_map(items: dict) -> dict[str, str]:
     return found
 
 
-def init_worker(space: Space, items: dict, sources: dict, hero: str, spec: str, targets: int, bar, stop) -> None:
+def fire_dml_context_budget(job: dict, ctx):
+    # One live device owner per Fire DirectML job; others use honest CPU fallback.
+
+    # Multi-context stalls persisted even with serialized compile dispatch on RX6800XT.
+    # Containment, not a claim to repair the underlying backend/driver.
+    if (job.get("hero"), job.get("spec")) == ("mage", "fire") and (job.get("hybrid") or {}).get("device") == "dml":
+        return ctx.BoundedSemaphore(1)
+    return None
+
+
+_FIRE_DML_ALLOWED = True
+
+
+def init_worker(space: Space, items: dict, sources: dict, hero: str, spec: str, targets: int, bar, stop, fire_dml_budget=None) -> None:
     global _SPACE, _ITEMS, _SOURCES, _HERO, _SPEC, _TARGETS, _BAR, _STOP
     from sunken_sim.history import release
 
@@ -301,6 +314,8 @@ def init_worker(space: Space, items: dict, sources: dict, hero: str, spec: str, 
     _TARGETS = targets
     _BAR = bar
     _STOP = stop
+    global _FIRE_DML_ALLOWED
+    _FIRE_DML_ALLOWED = ((hero, spec) != ("mage", "fire") or fire_dml_budget is None or fire_dml_budget.acquire(False))
 
 
 def _compact(rows: list[dict]) -> list[dict]:
@@ -761,11 +776,17 @@ def run_job(job: dict, box: dict, tick, eval_fn=None, *, _fire_cpu_fallback=Fals
             pending[pool.submit(span_fn, next_index, stop_at)] = (next_index, stop_at, 0)
             next_index = stop_at
 
+    worker_args = (space, items, sources, job["hero"], job["spec"], int(job["targets"]), (slots, lock), stop_event)
+    dml_budget = fire_dml_context_budget(job, ctx)
+    if dml_budget is not None:
+        worker_args += (dml_budget,)
+        job["hybrid"]["fire_dml_process_budget"] = 1
+        job["hybrid"]["pool_workers"] = pool_size
     with ProcessPoolExecutor(
         max_workers=pool_size,
         mp_context=ctx,
         initializer=init_worker,
-        initargs=(space, items, sources, job["hero"], job["spec"], int(job["targets"]), (slots, lock), stop_event),
+        initargs=worker_args,
     ) as pool:
         while True:
             if box.get("stop"):
