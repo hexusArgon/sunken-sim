@@ -343,6 +343,7 @@ def status_text(
     rate_min: float | None = None,
     cpu: float | None = None,
     top: int | None = None,
+    admission_policy: str | None = None,
 ) -> str:
     lines = []
     if final and stopped:
@@ -365,6 +366,8 @@ def status_text(
         lines.append(f"прошло {clock(elapsed)} · осталось {clock(remaining)}")
         lines.append(f"бои/с {rate_text(rate)} · макс {rate_text(rate_max)} · мин {rate_text(rate_min)}")
         lines.append(f"ЦП {rate_text(cpu)}%")
+    if admission_policy is not None:
+        lines.append('UNSAFE HEURISTIC: bare top-10; максимум не доказан' if admission_policy == 'unsafe-bare-top10' else 'Без bare-отсечения; глобальный максимум не доказан')
     if errors:
         lines.append(f"ошибок {grouped(errors)}")
     if final and done:
@@ -382,7 +385,7 @@ def size_text(*, worker: str, hero: str, spec: str, pool: str, targets: int, tot
         (
             f"{worker}: {HERO_LABEL[hero]} · {spec}{top_label(top)} · {POOL_LABEL[pool]} · {targets} целей",
             f"всего чанков {grouped(total)} (номера 0–{grouped(last)})",
-            "один чанк — шестёрка предметов. Таланты, глифы и очки навыков считаются, только если её DPS без талантов выше 10-го места по DPS без талантов",
+            "один чанк — шестёрка предметов; по умолчанию все шестёрки проходят подбор талантов/глифов/ESC. Это поэтапная эвристика, не доказательство глобального максимума. Небезопасный bare top-10 gate — только явный opt-in",
             f"запуск всех чанков: /{worker} без start и end (или start:0 end:{last})",
         )
     )

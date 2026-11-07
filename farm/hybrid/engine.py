@@ -436,7 +436,7 @@ def eval_span(start: int, stop: int) -> dict:
         if cross:  # opt-in: admitted sextuples queued across sub-spans, finished in shared batches
             for (chunk, equipped, sources, group), bare in zip(rows, bares):
                 fights += 1
-                if R.claim_item_bars(bare, group):  # same claims, same order; gate reads only bare
+                if R.claim_item_bars(bare, group, chunk):  # same claims, same order; gate reads only bare
                     queue.append((chunk, equipped, sources, group, bare))
             if len(queue) >= CROSS_ROWS:
                 flush()
@@ -445,7 +445,7 @@ def eval_span(start: int, stop: int) -> dict:
             continue
         for (chunk, equipped, sources, group), bare in zip(rows, bares):
             fights += 1
-            if not R.claim_item_bars(bare, group):
+            if not R.claim_item_bars(bare, group, chunk):
                 continue
             call = (equipped, space.talents, space.glyphs, space.picks_without, space.picks_with, space.glyph_picks)
             try:

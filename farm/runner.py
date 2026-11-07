@@ -30,6 +30,8 @@ _TARGETS = 1
 _BAR = None
 _STOP = None
 BATCH = 16384
+from farm import admission as A
+
 TOP_BARE = 10
 BAR_KEYS = ("overall", "shop", "drop")
 BAR_LABEL = {
@@ -112,36 +114,34 @@ class CategoryBars:
         return {key: list(self.bars[key].scores) for key in BAR_KEYS}
 
 
-def claim_item_bars(bare: float, group: str | None) -> bool:
+def claim_item_bars(bare: float, group: str | None, chunk: int | None = None) -> bool:
+    # Safe default and legacy callers fail open. Only explicit unsafe jobs prune.
+    if _BAR is None:
+        return True
     slots, lock = _BAR
+    if slots.get('__policy__', A.ALL) != A.UNSAFE or chunk is None or any(len(slots[k]) < 3 for k in BAR_KEYS):
+        return True
     with lock:
-        before = CategoryBars(
-            {key: [slots[key][0][i] for i in range(slots[key][1].value)] for key in BAR_KEYS}
-        )
-        floors = {
-            key: before.bars[key].scores[-1] if len(before.bars[key].scores) >= TOP_BARE else None
-            for key in bars_for(group)
-        }
-        if not before.claim(bare, group):
+        before = A.Observations(_observations(slots))
+        if not before.claim(chunk, bare, group):
             return False
-        for key in bars_for(group):
-            scores, count = slots[key]
-            held = before.bars[key].scores
-            for index, value in enumerate(held):
-                scores[index] = value
-            count.value = len(held)
-            after = held[-1] if len(held) >= TOP_BARE else None
-            if after is not None and after != floors[key]:
-                print(f"планка топ-10 без талантов, {BAR_LABEL[key]} {after:.1f}", flush=True)
+        for key, rows in before.snapshot().items():
+            scores, count, identities = slots[key]
+            for i, row in enumerate(rows):
+                scores[i], identities[i] = row['dps'], row['chunk']
+            count.value = len(rows)
         return True
 
 
-def item_bar_snapshot(slots, lock) -> dict[str, list[float]]:
+def _observations(slots):
+    return {key: [{'chunk': int(slots[key][2][i]), 'dps': float(slots[key][0][i])}
+                  for i in range(slots[key][1].value)]
+            for key in BAR_KEYS if len(slots[key]) >= 3}
+
+
+def item_bar_snapshot(slots, lock):
     with lock:
-        return {
-            key: [float(slots[key][0][i]) for i in range(slots[key][1].value)]
-            for key in BAR_KEYS
-        }
+        return _observations(slots)
 
 
 def add_one(value: int) -> int:
@@ -264,6 +264,8 @@ def _result_path(job: dict):
         + (f"top{int(job['top'])}-" if job.get("top") else "")
         + f"{job['targets']}-{job['start']}-{job['end']}.json"
     )
+    if job.get('search_schema') == A.SCHEMA:
+        name = name[:-5] + '-' + A.suffix(job) + '.json'
     return data_dir() / "results" / name
 
 
@@ -334,7 +336,7 @@ def eval_span(start: int, stop: int) -> dict:
             group = build_group(sources)
             bare = item_dps(_HERO, _SPEC, _TARGETS, equipped)
             fights += 1
-            if not claim_item_bars(bare, group):
+            if not claim_item_bars(bare, group, index):
                 done = index + 1
                 continue
             dps, talent_codes, glyph_codes, points, extra = finish_sextuple(
@@ -390,7 +392,7 @@ def eval_index(index: int) -> dict | None:
     sources = [_SOURCES.get(item.rawcode, "drop") for item in equipped]
     group = build_group(sources)
     bare = item_dps(_HERO, _SPEC, _TARGETS, equipped)
-    if not claim_item_bars(bare, group):
+    if not claim_item_bars(bare, group, index):
         return {"chunk": index, "fights": 1, "skip": True}
     dps, talent_codes, glyph_codes, points, fights = finish_sextuple(
         _HERO,
@@ -447,25 +449,28 @@ def _remembered_bars(saved: dict, rows: list[dict]) -> dict[str, list[float]]:
     return _bars_from_rows(rows)
 
 
-def _merge_bars(left, right) -> dict[str, list[float]]:
-    merged = CategoryBars()
-    for raw in (left, right):
-        parsed = _as_bars(raw)
-        for key in BAR_KEYS:
-            for value in parsed[key]:
-                merged.bars[key].claim(value)
-    return merged.snapshot()
+def _merge_bars(left, right):
+    """Idempotent merge of attributed observations; legacy floats are ignored."""
+    return A.merge(left, right)
+
+
+def _job_checkpoint_path(job):
+    # Preserve original files and invalid legacy done watermarks byte-for-byte.
+    name = job['id']
+    if job.get('search_schema') == A.SCHEMA:
+        name += '-' + A.suffix(job)
+    return _checkpoint_path(name)
 
 
 def _load_checkpoint(job: dict, boards: Boards) -> tuple[int, list[tuple[int, int]], int, dict[str, list[float]]]:
-    path = _checkpoint_path(job["id"])
+    path = _job_checkpoint_path(job)
     if not path.exists():
         return int(job["start"]), [], 0, _empty_bars()
     try:
         saved = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
         return int(job["start"]), [], 0, _empty_bars()
-    if not _same_job(saved, job):
+    if saved.get("search_schema") != A.SCHEMA or not _same_job(saved, job):
         return int(job["start"]), [], 0, _empty_bars()
     rows = list(saved.get("top") or [])
     for row in rows:
@@ -478,10 +483,12 @@ def _load_checkpoint(job: dict, boards: Boards) -> tuple[int, list[tuple[int, in
     spans: list[tuple[int, int]] = []
     for start, stop in _load_spans(saved.get("ahead")):
         done_up_to = note_span(done_up_to, spans, start, stop)
-    return done_up_to, spans, int(saved.get("errors") or 0), _remembered_bars(saved, rows)
+    return done_up_to, spans, int(saved.get("errors") or 0), A.Observations(saved.get("item_observations")).snapshot()
 
 
 def _same_job(saved: dict, job: dict) -> bool:
+    if A.metadata(saved) != A.metadata(job):
+        return False
     for key in ("start", "end", "hero", "spec", "pool", "targets"):
         if str(saved.get(key)) != str(job.get(key)):
             return False
@@ -500,11 +507,19 @@ def _merge_checkpoint(payload: dict, saved: dict | None) -> dict:
     if not _same_job(saved, payload):
         return payload
     merged = dict(payload)
-    if int(saved.get("done_up_to") or 0) > int(payload.get("done_up_to") or 0):
-        merged["done_up_to"] = int(saved["done_up_to"])
-        merged["ahead"] = list(saved.get("ahead") or [])
+    watermark = max(int(saved.get('done_up_to') or 0), int(payload.get('done_up_to') or 0))
+    spans = []
+    for left, right in _load_spans(saved.get('ahead')) + _load_spans(payload.get('ahead')):
+        watermark = note_span(watermark, spans, left, right)
+    merged['done_up_to'], merged['ahead'] = watermark, [list(s) for s in spans]
     merged["errors"] = max(int(saved.get("errors") or 0), int(payload.get("errors") or 0))
-    merged["item_bar"] = _merge_bars(saved.get("item_bar"), payload.get("item_bar"))
+    if payload.get('search_schema') == A.SCHEMA:
+        merged['item_observations'] = _merge_bars(saved.get('item_observations'), payload.get('item_observations'))
+        merged['item_bar'] = A.Observations(merged['item_observations']).scores()  # display-only compatibility
+    else:
+        # Legacy snapshots have no identities: preserve the farther snapshot, never concatenate.
+        farther = saved if int(saved.get('done_up_to') or 0) > int(payload.get('done_up_to') or 0) else payload
+        merged['item_bar'] = _as_bars(farther.get('item_bar'))
     boards = Boards()
     for row in list(saved.get("top") or []) + list(payload.get("top") or []):
         boards.overall.add(row)
@@ -537,12 +552,14 @@ def _save_checkpoint(
         "done_up_to": done_up_to,
         "ahead": [[left, right] for left, right in ahead],
         "errors": errors,
-        "item_bar": item_bar,
+        "item_bar": A.Observations(item_bar).scores(),
+        "item_observations": item_bar,
+        **A.metadata(job),
         "top": boards.overall.rows(),
     }
     for group, key in GROUP_KEY.items():
         payload[key] = boards.by_group[group].rows()
-    path = _checkpoint_path(job["id"])
+    path = _job_checkpoint_path(job)
     try:
         with file_lock(path.with_name(path.name + ".lock")):
             saved = None
@@ -568,14 +585,11 @@ def _write_result(job: dict, boards: Boards, done: int, stopped: bool, errors: i
         "done": done,
         "stopped": stopped,
         "errors": errors,
-        "about": (
-            "Чанк — одна шестёрка предметов. Таланты, глифы и очки навыков считаются, если её DPS без них входит в топ-10 той же категории. "
-            "Shop + drop сравнивается с общим топ-10. Только Shop — с топ-10 лавки. Только Random drop — с топ-10 дропа. "
-            "Эти десять чисел запоминаются отдельно. "
-            "top — общий топ-10: чистый Shop, чистый дроп и оба источника. "
-            "top_shop — только лавка. top_random — только дроп. "
-            "top_shop_random — сразу и лавка, и дроп. Легендарки входят в любой список."
-        ),
+        **A.metadata(job),
+        'global_optimum_proven': False,
+        'admission_is_lossless': job.get('admission_policy', A.ALL) == A.ALL,
+        'item_admission_complete': job.get('admission_policy', A.ALL) == A.ALL and not stopped and not errors and done >= int(job['end']) - int(job['start']) + 1,
+        "about": A.description(job),
         "top": boards.ranked(boards.overall),
         "top_shop_random": boards.ranked(boards.by_group["shop_random"]),
         "top_shop": boards.ranked(boards.by_group["shop"]),
@@ -601,6 +615,9 @@ def run_job(job: dict, box: dict, tick, eval_fn=None) -> dict:
 
     from farm.catalog import load
 
+    space, items = load(job["hero"], job["spec"], job["pool"], job.get("preset") or None, job.get("top") or None)
+    job = A.configure(job, space, items)
+    print('search admission: ' + A.description(job), flush=True)
     start = int(job["start"])
     end_ex = int(job["end"]) + 1
     total = end_ex - start
@@ -609,19 +626,14 @@ def run_job(job: dict, box: dict, tick, eval_fn=None) -> dict:
     done_up_to = _sweep(max(done_up_to, start), ahead)
     ctx = multiprocessing.get_context("spawn")
     lock = ctx.Lock()
-    slots = {}
-    for key in BAR_KEYS:
-        scores = ctx.Array("d", TOP_BARE)
-        count = ctx.Value("i", 0)
-        for bare in remembered.get(key) or []:
-            bar = ItemBar([scores[i] for i in range(count.value)])
-            if bar.claim(bare):
-                for index, value in enumerate(bar.scores):
-                    scores[index] = value
-                count.value = len(bar.scores)
-        if count.value >= TOP_BARE:
-            print(f"планка топ-10 без талантов, {BAR_LABEL[key]} {scores[TOP_BARE - 1]:.1f}", flush=True)
-        slots[key] = (scores, count)
+    slots = {'__policy__': job['admission_policy']}
+    for key, rows in A.Observations(remembered).snapshot().items():
+        scores = ctx.Array('d', TOP_BARE)
+        identities = ctx.Array('q', TOP_BARE)
+        count = ctx.Value('i', len(rows))
+        for i, row in enumerate(rows):
+            scores[i], identities[i] = row['dps'], row['chunk']
+        slots[key] = (scores, count, identities)
     last_tick = 0.0
     started = time.monotonic()
     fights = 0
@@ -670,6 +682,7 @@ def run_job(job: dict, box: dict, tick, eval_fn=None) -> dict:
             rate_min=rate_min,
             cpu=cpu_percent(),
             top=job.get("top") or None,
+            admission_policy=job["admission_policy"],
         )
         try:
             tick(text)
@@ -697,7 +710,6 @@ def run_job(job: dict, box: dict, tick, eval_fn=None) -> dict:
         emit(final=True)
         return {"path": path, "done": finished(), "left": 0, "stopped": False, "errors": errors}
 
-    space, items = load(job["hero"], job["spec"], job["pool"], job.get("preset") or None, job.get("top") or None)
     sources = source_map(items)
     release()
     span = end_ex - done_up_to
