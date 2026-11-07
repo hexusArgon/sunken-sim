@@ -44,7 +44,7 @@ from farm.protocol import (
     status_text,
 )
 from farm.rest import Rest, RestError
-from farm.runner import run_job
+from farm.discord_runner import run_job
 
 PERMISSIONS = 125952
 STALE_SECONDS = 30

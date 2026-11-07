@@ -586,6 +586,7 @@ def _write_result(job: dict, boards: Boards, done: int, stopped: bool, errors: i
         "stopped": stopped,
         "errors": errors,
         **A.metadata(job),
+        **({"hybrid": job["hybrid"]} if "hybrid" in job else {}),
         'global_optimum_proven': False,
         'admission_is_lossless': job.get('admission_policy', A.ALL) == A.ALL,
         'item_admission_complete': job.get('admission_policy', A.ALL) == A.ALL and not stopped and not errors and done >= int(job['end']) - int(job['start']) + 1,

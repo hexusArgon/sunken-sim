@@ -83,49 +83,51 @@ def run_job(job: dict, box: dict, tick) -> dict:
     from farm import runner as cpu_runner
 
     hero, spec = job["hero"], job["spec"]
-    if cpu_locked(hero, spec):
-        # Hard lock: old CPU sim, no device detection, no torch import.
-        return cpu_runner.run_job(job, box, tick)
-
-    device = detect(hero, spec)
-    info = {
-        "hybrid": {
-            "worker": job.get("worker", HYBRID_WORKER),
-            "status": registry.status(hero, spec),
-            "device": device.kind,
-            "name": device.name,
-            "reason": device.reason,
-        }
+    meta = {
+        "worker": job.get("worker", HYBRID_WORKER),
+        "status": registry.status(hero, spec),
+        "device": "cpu",
+        "name": "cpu",
+        "gpu_fights": False,
     }
+
+    def cpu(reason):
+        meta["fallback"] = reason
+        tick({"hybrid": meta})
+        return cpu_runner.run_job(dict(job, hybrid=dict(meta)), box, tick)
+
+    # Never import torch/detect a device for locked/unsupported heroes/specs.
+    if cpu_locked(hero, spec):
+        return cpu(f"{hero}/{spec} locked to CPU")
+    if not registry.gpu_engine_for(hero, spec):
+        return cpu(f"{hero}/{spec}: no supported hybrid fight engine")
+    try:
+        device = detect(hero, spec)
+    except Exception as exc:
+        return cpu(f"device detection failed: {type(exc).__name__}: {exc}")
+    meta.update(device=device.kind, name=device.name, reason=device.reason)
+    if not device.gpu:
+        return cpu(device.reason or "GPU unavailable")
     try:
         from farm.catalog import load
-
         space, items = load(hero, spec, job["pool"], job.get("preset") or None, job.get("top") or None)
         start = int(job["start"])
         stop = min(int(job["end"]) + 1, start + PREP_SPAN)
-        info["hybrid"]["prep"] = prep_check(space, items, device, start, stop)
-        if not info["hybrid"]["prep"].get("parity", False):
-            info["hybrid"]["fallback"] = "parity failed, CPU only"
-    except Exception as exc:  # prep must never break the farm
-        info["hybrid"]["prep_error"] = f"{exc.__class__.__name__}: {exc}"
-    eval_fn = None
-    if registry.gpu_engine_for(hero, spec) and "fallback" not in info["hybrid"]:
-        try:
-            info["hybrid"]["fights"] = fight_check(device, hero, spec, int(job["targets"]), job.get("top") or None, job["pool"])
-            if info["hybrid"]["fights"]["ok"]:
-                from farm.hybrid.engine import eval_span as hybrid_eval_span
-
-                eval_fn = hybrid_eval_span
-            else:
-                info["hybrid"]["fallback"] = "fight parity failed, CPU fights"
-        except Exception as exc:
-            info["hybrid"]["fight_error"] = f"{exc.__class__.__name__}: {exc}"
-    info["hybrid"]["gpu_fights"] = eval_fn is not None
-    tick(info)
-    if eval_fn is None:
-        # Fights: unchanged CPU ProcessPool sim.
-        return cpu_runner.run_job(job, box, tick)
-    return cpu_runner.run_job(job, box, tick, eval_fn=eval_fn)
+        meta["prep"] = prep_check(space, items, device, start, stop)
+        if not meta["prep"].get("parity", False):
+            return cpu("item-stat parity failed")
+    except Exception as exc:
+        return cpu(f"item-stat prep failed: {type(exc).__name__}: {exc}")
+    try:
+        meta["fights"] = fight_check(device, hero, spec, int(job["targets"]), job.get("top") or None, job["pool"])
+        if not meta["fights"]["ok"]:
+            return cpu("fight parity failed")
+        from farm.hybrid.engine import eval_span as hybrid_eval_span
+    except Exception as exc:
+        return cpu(f"fight parity failed: {type(exc).__name__}: {exc}")
+    meta["gpu_fights"] = True
+    tick({"hybrid": meta})
+    return cpu_runner.run_job(dict(job, hybrid=dict(meta)), box, tick, eval_fn=hybrid_eval_span)
 
 
 def dispatch(job: dict):

@@ -317,7 +317,10 @@ def _engine():
         torch.set_num_threads(1)
         from farm.hybrid.device import detect
 
-        _ENGINE = registry.make_engine(detect(R._HERO, R._SPEC), R._HERO, R._SPEC, R._TARGETS)
+        device = detect(R._HERO, R._SPEC)
+        if not device.gpu:
+            raise RuntimeError(f"worker GPU unavailable: {device.reason}")
+        _ENGINE = registry.make_engine(device, R._HERO, R._SPEC, R._TARGETS)
         _ENGINE_STATE = "pending"
     except Exception as exc:
         _to_cpu(f"{exc.__class__.__name__}: {exc}")
@@ -423,6 +426,7 @@ def eval_span(start: int, stop: int) -> dict:
                 done = sub["done"]
                 break
         except Exception as exc:
+            print(f"hybrid: exact CPU span fallback {index}:{end} ({type(exc).__name__}: {exc})", flush=True)
             sub = R.eval_span(index, end)
             hits.extend(sub["hits"])
             fights += sub["fights"]

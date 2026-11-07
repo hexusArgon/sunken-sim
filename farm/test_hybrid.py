@@ -10,6 +10,7 @@ from unittest import mock
 from farm import runner as cpu_runner
 from farm.hybrid import HYBRID_WORKER, cpu_locked, detect
 from farm.hybrid import runner as hybrid_runner
+from farm.hybrid.device import DeviceInfo
 from farm.hybrid.kernel import decode_rows, item_table, parity, stat_fields, totals_cpu, totals_device
 from farm.hybrid.lock import GpuLocked, assert_gpu_allowed
 from sunken_sim.library import Item
@@ -115,7 +116,8 @@ class FallbackTest(unittest.TestCase):
         self.assertEqual(out, {"done": 1})
         old.assert_called_once()
         self.assertEqual(ticks[0]["hybrid"]["device"], "cpu")
-        self.assertTrue(ticks[0]["hybrid"]["prep"]["parity"])
+        self.assertFalse(ticks[0]["hybrid"]["gpu_fights"])
+        self.assertEqual(ticks[0]["hybrid"]["fallback"], "FARM_HYBRID_DEVICE=cpu")
 
 
 class KernelParityTest(unittest.TestCase):
@@ -177,7 +179,7 @@ class FightTest(unittest.TestCase):
     def test_hybrid_fire_passes_gpu_eval_span(self):
         from farm.hybrid import fight
 
-        with mock.patch.dict(os.environ, {"FARM_HYBRID_DEVICE": "cpu"}), \
+        with mock.patch.object(hybrid_runner, "detect", return_value=DeviceInfo("dml", "fixture")), \
              mock.patch.object(cpu_runner, "run_job", return_value={"done": 1}) as old, \
              mock.patch.object(hybrid_runner, "prep_check", return_value={"parity": True}), \
              mock.patch("farm.catalog.load", return_value=(FakeSpace([("A", "B", "C")]), _items())), \
@@ -188,7 +190,7 @@ class FightTest(unittest.TestCase):
         self.assertTrue(ticks[0]["hybrid"]["gpu_fights"])
 
     def test_hybrid_fire_parity_fail_is_cpu(self):
-        with mock.patch.dict(os.environ, {"FARM_HYBRID_DEVICE": "cpu"}), \
+        with mock.patch.object(hybrid_runner, "detect", return_value=DeviceInfo("dml", "fixture")), \
              mock.patch.object(cpu_runner, "run_job", return_value={"done": 1}) as old, \
              mock.patch.object(hybrid_runner, "prep_check", return_value={"parity": True}), \
              mock.patch("farm.catalog.load", return_value=(FakeSpace([("A", "B", "C")]), _items())), \
@@ -321,7 +323,7 @@ class RegistryTest(unittest.TestCase):
     def test_priest_passes_engine_eval_span(self):
         from farm.hybrid import engine
 
-        with mock.patch.dict(os.environ, {"FARM_HYBRID_DEVICE": "cpu"}), \
+        with mock.patch.object(hybrid_runner, "detect", return_value=DeviceInfo("dml", "fixture")), \
              mock.patch.object(cpu_runner, "run_job", return_value={"done": 1}) as old, \
              mock.patch.object(hybrid_runner, "prep_check", return_value={"parity": True}), \
              mock.patch("farm.catalog.load", return_value=(FakeSpace([("A", "B", "C")]), _items())), \
@@ -355,7 +357,7 @@ class EngineFallbackTest(unittest.TestCase):
         ), mock.patch.object(cpu_runner, "eval_span", return_value=sub) as old, \
              mock.patch.object(cpu_runner, "claim_item_bars", return_value=False), \
              mock.patch.object(registry, "make_engine", return_value=Fake()), \
-             mock.patch("farm.hybrid.device.detect", return_value=None), \
+             mock.patch("farm.hybrid.device.detect", return_value=DeviceInfo("dml", "fixture")), \
              mock.patch.object(registry, "cpu_dps", return_value=100.0):
             out = engine.eval_span(0, 1)
         return out, old, engine._ENGINE_STATE

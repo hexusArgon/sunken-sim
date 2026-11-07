@@ -505,6 +505,7 @@ class GpuFights(BatchFights):
         self.spec = spec
         self.targets = int(targets)
         self.fights = 0
+        self.timeline_counts = {}
 
     def _scores(self, tls: list[Timeline]) -> list[float]:
         from sunken_sim import mage
@@ -548,7 +549,8 @@ class GpuFights(BatchFights):
                     flat_keys.append(key)
                     owners_flat.append(index)
             rows = generate_mage_timelines(
-                self.torch, self.target, flat_builds, self.spec, self.targets, flat_keys
+                self.torch, self.target, flat_builds, self.spec, self.targets, flat_keys,
+                diagnostics=self.timeline_counts,
             )
             for build, key, row, index in zip(flat_builds, flat_keys, rows, owners_flat):
                 events, stats, used_spec, evocation = row

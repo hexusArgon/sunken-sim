@@ -99,7 +99,8 @@ class EvalSpanQueueTests(unittest.TestCase):
             R._HERO, R._SPEC, R._TARGETS, R._STOP = hero, spec, 5, None
             ranked = []
 
-            def claim(bare, group):  # deterministic gate: admit every 5th bare fight
+            def claim(bare, group, chunk):  # deterministic fixture, not the production admission policy
+                self.assertEqual(chunk, len(ranked))  # d24 identity contract
                 ranked.append(bare)
                 return len(ranked) % 5 == 1
 

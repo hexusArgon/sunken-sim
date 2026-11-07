@@ -15,6 +15,21 @@ Event tuples match sunken_sim.mage.simulate:
 
 from __future__ import annotations
 
+from collections import Counter
+
+# Per-process cumulative diagnostics; engines also pass their own accumulator.
+TIMELINE_COUNTS = Counter()
+
+
+class TimelineCapacityError(RuntimeError):
+    """Rejected rows plus complete, non-truncated rows from the same batch."""
+
+    def __init__(self, reasons, partial=None):
+        self.reasons = dict(reasons)
+        self.partial = partial
+        super().__init__(f"mage timeline capacity: {dict(Counter(self.reasons.values()))}")
+
+
 MAX_EVENTS = 2048
 MAX_STEPS = 400000
 MAX_T = 8          # per-target bomb/chill/freeze
@@ -94,7 +109,7 @@ def _flag_vec(torch, device, dtype, builds, pred):
     return torch.tensor([1.0 if pred(b) else 0.0 for b in builds], dtype=dtype, device=device)
 
 
-def generate_mage_timelines(torch, device, builds, spec: str, targets: int, bound_keys=None):
+def generate_mage_timelines(torch, device, builds, spec: str, targets: int, bound_keys=None, diagnostics=None):
     """Return list[(events, stats, used_spec, evocation)] aligned with builds.
 
     bound_keys: optional list[str|None] parallel to builds (Diamond I00D expand).
@@ -118,10 +133,43 @@ def generate_mage_timelines(torch, device, builds, spec: str, targets: int, boun
     if dev_type in ("privateuseone", "dml") or "privateuseone" in str(device):
         device = torch.device("cpu")
 
+    def count(key, n=1):
+        TIMELINE_COUNTS[key] += n
+        if diagnostics is not None and diagnostics is not TIMELINE_COUNTS:
+            diagnostics[key] = diagnostics.get(key, 0) + n
+
+    count("calls")
+    count("requested_rows", B)
     try:
-        return _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys)
-    except Exception:
+        result = _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys)
+    except TimelineCapacityError as exc:
+        # Never expose the rejected tape. Re-simulate only failed rows, retaining
+        # each row's Build (including ESC), spec, targets and ring binding.
+        result = exc.partial if exc.partial is not None else [None] * B
+        reasons = exc.reasons if exc.partial is not None else {
+            i: exc.reasons.get(i, "capacity_batch") for i in range(B)
+        }
+        rejected = sorted(reasons)
+        exact = _cpu_events_batch(
+            [builds[i] for i in rejected], spec, targets, [bound_keys[i] for i in rejected]
+        )
+        for i, row in zip(rejected, exact):
+            result[i] = row
+        count("vector_rows", B - len(rejected))
+        count("cpu_fallback_rows", len(rejected))
+        for reason, n in Counter(reasons.values()).items():
+            count(reason, n)
+        print(f"mage timeline exact CPU fallback: {dict(Counter(reasons.values()))}", flush=True)
+        return result
+    except Exception as exc:
+        # Other finite queue capacities/unsupported kernels fail closed too.
+        reason = "batch_exception:" + type(exc).__name__
+        count("cpu_fallback_rows", B)
+        count(reason, B)
+        print(f"mage timeline exact CPU fallback: {reason}, rows={B}", flush=True)
         return _cpu_events_batch(builds, spec, targets, bound_keys)
+    count("vector_rows", B)
+    return result
 
 
 def _cpu_events_batch(builds, spec, targets, bound_keys):
@@ -145,7 +193,7 @@ def _cpu_events_batch(builds, spec, targets, bound_keys):
             # first / only
             tl = tls[0]
         else:
-            tl = next((t for t in tls if t.bound == bk), tls[0])
+            tl = next(t for t in tls if t.bound == bk)
         out.append((list(tl.events), tl.stats, tl.spec, tl.evocation))
     return out
 
@@ -162,6 +210,7 @@ def _make_bufs(torch, device, B, dtype):
         "magical": z(),  # 1 if pyro magical flag set, else -1 sentinel unused
         "kind": z(),
         "length": torch.zeros(B, dtype=torch.int64, device=device),
+        "overflow": torch.zeros(B, dtype=torch.bool, device=device),
     }
 
 
@@ -171,6 +220,7 @@ def _push(torch, bufs, mask, when, hits, raw, pot, mana, splinter, kind_id, magi
     B = int(mask.shape[0])
     idx = bufs["length"].clamp(max=MAX_EVENTS - 1)
     rows = torch.arange(B, device=mask.device)
+    bufs["overflow"] |= mask & (bufs["length"] >= MAX_EVENTS)
     active = mask & (bufs["length"] < MAX_EVENTS)
 
     def put(key, value):
@@ -196,6 +246,9 @@ def _push(torch, bufs, mask, when, hits, raw, pot, mana, splinter, kind_id, magi
 
 
 def _buffers_to_events(bufs):
+    bad = bufs["overflow"].detach().cpu().tolist()
+    if any(bad):
+        raise TimelineCapacityError({i: "event_capacity" for i, value in enumerate(bad) if value})
     when = bufs["when"].detach().cpu().numpy()
     hits = bufs["hits"].detach().cpu().numpy()
     raw = bufs["raw"].detach().cpu().numpy()
@@ -1229,14 +1282,23 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys):
                 pq_on[r, k] = False
                 pq_at[r, k] = fight
 
-        alive = alive & (m_acted | (moment < fight))
+        # An overflowed row is rejected, not allowed to keep producing a clipped
+        # tape. Other rows continue independently to completion.
+        alive = alive & (m_acted | (moment < fight)) & ~bufs["overflow"]
 
-    if bool(alive.any()):
-        raise RuntimeError(f"mage GPU timeline hit MAX_STEPS={MAX_STEPS} with rows still alive")
     recover(torch.full((B,), fight, dtype=dtype, device=device))
-    events_list = _buffers_to_events(bufs)
-    evocation = is_arcane
-    return [
-        (events_list[i], stats_list[i], spec, evocation)
-        for i in range(B)
-    ]
+    bad = bufs["overflow"] | alive
+    indices = (~bad).nonzero(as_tuple=True)[0]
+    events_list = _buffers_to_events({key: value[indices] for key, value in bufs.items()})
+    out = [None] * B
+    for i, events in zip(indices.detach().cpu().tolist(), events_list):
+        out[i] = (events, stats_list[i], spec, is_arcane)
+    if bool(bad.any()):
+        reasons = {
+            i: "event_capacity" if overflow else "step_limit"
+            for i, (overflow, unfinished) in enumerate(zip(
+                bufs["overflow"].detach().cpu().tolist(), alive.detach().cpu().tolist()
+            )) if overflow or unfinished
+        }
+        raise TimelineCapacityError(reasons, out)
+    return out
