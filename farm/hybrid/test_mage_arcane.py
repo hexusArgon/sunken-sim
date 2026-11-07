@@ -1,4 +1,4 @@
-"""Arcane Mage on the GPU timeline: opt-in unlock + exact parity with the CPU sim."""
+"""Arcane default/unlock controls and equal-input scheduler / DirectML parity."""
 from __future__ import annotations
 
 import os
@@ -57,13 +57,14 @@ class ArcaneLockTest(unittest.TestCase):
 
 
 class ArcaneParityTest(unittest.TestCase):
-    def _check(self, builds, targets, starve=None):
+    def _check(self, builds, targets, starve=None, info=None):
         import torch
         from sunken_sim import mage
         from farm.hybrid import fight as F
         from farm.hybrid.mage_gpu_timeline import _mage_batch
 
         sheet = mage.sheet
+        self.assertIs(mage.stats_of, sheet, "CPU and vector sheet entry points must start identical")
 
         def starved(build):
             st = sheet(build)
@@ -71,7 +72,10 @@ class ArcaneParityTest(unittest.TestCase):
             st["mana_regen"] *= starve
             return st
 
-        with mock.patch.object(mage, "sheet", starved if starve else sheet):
+        # stats_of = sheet is a separate alias: patching sheet alone starves
+        # ONLY the vector scheduler and is not a valid parity test.
+        with mock.patch.object(mage, "sheet", starved if starve else sheet), \
+             mock.patch.object(mage, "stats_of", starved if starve else sheet):
             flat, keys = [], []
             for b in builds:
                 ks = [k for k in mage._buttons("arcane") if k != "Evocation"] if mage._wears(b, "I00D") else [None]
@@ -95,6 +99,20 @@ class ArcaneParityTest(unittest.TestCase):
                 if k is None:
                     rep = mage.simulate(b, targets, None, None, "arcane", use_history=False)
                     evo += sum(1 for _t, name in rep.actions if name == "Evocation")
+            if info is not None:
+                # Exercise the real hybrid path: f64 CPU clocks on DirectML,
+                # GPU kind reductions. Do not substitute a CPU DeviceInfo.
+                with mock.patch.dict(os.environ, {"FARM_HYBRID_GPU_TIMELINE": "1",
+                                                   "FARM_HYBRID_ARCANE_GPU": "1"}):
+                    engine = F.GpuFights(info, "mage", "arcane", targets)
+                    actual = engine.dps_many(builds)
+                expected = [mage.simulate(b, targets, spec="arcane", use_history=False).dps for b in builds]
+                result = F.compare(expected, actual)
+                self.assertTrue(result["ok"], result)
+                self.assertEqual(engine.timeline_counts.get("cpu_fallback_rows", 0), 0)
+                self.assertGreater(engine.timeline_counts["vector_rows"], 0)
+                print("Arcane parity", info.kind, "starve", starve, "targets", targets,
+                      "builds", len(builds), "events", sum(len(row[0]) for row in rows), result, flush=True)
             return evo
 
     def test_events_match_cpu(self):
@@ -104,6 +122,21 @@ class ArcaneParityTest(unittest.TestCase):
         # starved sheets make Evocation / mana ticks fire on both sides
         evo = self._check(_builds(4, 5), 5, starve=0.12)
         self.assertGreater(evo, 0)
+
+    def test_starvation_levels_cpu_and_directml(self):
+        from farm.hybrid.device import DeviceInfo, detect
+        info = detect("mage", "fire")
+        devices = [DeviceInfo("cpu", "cpu")]
+        if info.gpu:
+            devices.append(info)
+        elif os.environ.get("FARM_HYBRID_TEST_DML") == "1":
+            self.fail("DirectML required by FARM_HYBRID_TEST_DML=1: " + info.reason)
+        for target, seed in ((1, 7), (5, 5)):
+            builds = _builds(4, seed)
+            for level in (0.05, 0.12, 0.3, 1.0):
+                for device in devices:
+                    with self.subTest(targets=target, level=level, device=device.kind):
+                        self._check(builds, target, starve=level, info=device)
 
 
 if __name__ == "__main__":
