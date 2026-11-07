@@ -565,9 +565,10 @@ class GpuFights(BatchFights):
         from farm.hybrid.mage_final import owner_reduce
         from sunken_sim import mage
         from sunken_sim.shadow import FIGHT
-        import math
+        import math,os
+        pool = self.device_pool if os.environ.get("FARM_FIRE_DEVICE_POOL","1") != "0" else None
         try:
-            info,groups=owner_reduce(self.torch,self.target,scores,owners,count,self.device_pool)
+            info,groups=owner_reduce(self.torch,self.target,scores,owners,count,pool)
             result=[float(v) for v in info[:,0]]
             self.score_counts['gpu_owner_reductions'] += count
             # Conservative tolerance guard, not a new proof of arbitrary DML rounding.
@@ -582,16 +583,30 @@ class GpuFights(BatchFights):
             for j,i in enumerate(owners):groups[i].append(j)
             result=[0.]*count;guarded=set(range(count))
             self.score_counts['gpu_owner_fallback_builds'] += count
+        near = set(guarded)
+        # Canonicalize each gear group's winner even when the nearest competitor
+        # is in a different dps_many chunk/phase. Every chunk winner is CPU-exact;
+        # strict > selection across chunks therefore preserves first ties.
+        from farm.hybrid.mage_reuse import freeze
+        gear_groups = {}
+        for i,g in enumerate(groups):
+            build=tls[g[0]].build
+            key=tuple(freeze(vars(item)) for item in build.items)
+            gear_groups.setdefault(key,[]).append(i)
+        selected=set()
+        for ids in gear_groups.values():
+            winner=max(ids,key=lambda i:result[i]);selected.add(winner)
+            if 'tolerance' in locals():
+                for i in ids:
+                    if abs(result[i]-result[winner])<=tolerance[i]+tolerance[winner]:guarded.add(i)
+        guarded.update(selected)
         for i in sorted(guarded):
-            best=None
-            for j in groups[i]:
-                tl=tls[j]
-                compiled=mage._compile(tl.events,tl.build,tl.stats,tl.spec,tl.evocation)
-                exact=mage._score(compiled,tl.stats,tl.build,tl.spec)[0]/FIGHT
-                if not math.isfinite(exact):raise ValueError('non-finite exact Mage score')
-                if best is None or exact>best:best=exact
-            result[i]=float(best)
-        self.score_counts['near_tie_exact_builds'] += len(guarded)
+            build=tls[groups[i][0]].build
+            exact=mage.simulate(build,self.targets,spec=self.spec,use_history=False).dps
+            if not math.isfinite(exact):raise ValueError('non-finite exact Mage score')
+            result[i]=float(exact)
+        self.score_counts['near_tie_exact_builds'] += len(guarded-selected | near)
+        self.score_counts['selection_exact_builds'] += len(selected)
         return result
 
     def dps_many(self, builds: list) -> list[float]:
@@ -624,7 +639,7 @@ class GpuFights(BatchFights):
             def generate(bs, keys, prepared):
                 return generate_mage_timelines(
                     self.torch, self.target, bs, self.spec, self.targets, keys,
-                    diagnostics=self.timeline_counts,
+                    diagnostics=self.timeline_counts, prepared_stats=prepared,
                 )
             if self.spec == "fire" and os.environ.get("FARM_FIRE_TAPE_CACHE", "1") != "0":
                 rows = self.tape_cache.rows(flat_builds, self.spec, self.targets, flat_keys, generate)

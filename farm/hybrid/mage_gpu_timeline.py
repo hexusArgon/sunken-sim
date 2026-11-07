@@ -109,7 +109,7 @@ def _flag_vec(torch, device, dtype, builds, pred):
     return torch.tensor([1.0 if pred(b) else 0.0 for b in builds], dtype=dtype, device=device)
 
 
-def generate_mage_timelines(torch, device, builds, spec: str, targets: int, bound_keys=None, diagnostics=None):
+def generate_mage_timelines(torch, device, builds, spec: str, targets: int, bound_keys=None, diagnostics=None, prepared_stats=None):
     """Return list[(events, stats, used_spec, evocation)] aligned with builds.
 
     bound_keys: optional list[str|None] parallel to builds (Diamond I00D expand).
@@ -125,6 +125,8 @@ def generate_mage_timelines(torch, device, builds, spec: str, targets: int, boun
         bound_keys = [None] * B
     if len(bound_keys) != B:
         raise ValueError("bound_keys length mismatch")
+    if prepared_stats is not None and len(prepared_stats) != B:
+        raise ValueError("prepared_stats length mismatch")
     if targets > MAX_T:
         raise ValueError(f"targets {targets} > MAX_T {MAX_T}")
 
@@ -141,7 +143,8 @@ def generate_mage_timelines(torch, device, builds, spec: str, targets: int, boun
     count("calls")
     count("requested_rows", B)
     try:
-        result = _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys)
+        kwargs = {} if prepared_stats is None else {"prepared_stats": prepared_stats}
+        result = _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys, **kwargs)
     except TimelineCapacityError as exc:
         # Never expose the rejected tape. Re-simulate only failed rows, retaining
         # each row's Build (including ESC), spec, targets and ring binding.
@@ -215,6 +218,27 @@ def _make_bufs(torch, device, B, dtype):
 
 
 def _push(torch, bufs, mask, when, hits, raw, pot, mana, splinter, kind_id, magical=None):
+    # Profiling: repeated masked Torch indexing here was 30% of cold planning.
+    # Scheduler is explicitly CPU float64 on DirectML. Shared NumPy views perform
+    # the same selected-row assignments without 24 tiny Torch indexing dispatches.
+    import os
+    if mask.device.type == "cpu" and os.environ.get("FARM_MAGE_FAST_PUSH", "1") != "0":
+        import numpy as np
+        selected = mask.detach().numpy()
+        length = bufs["length"].detach().numpy()
+        bufs["overflow"].numpy()[:] |= selected & (length >= MAX_EVENTS)
+        rows = np.flatnonzero(selected & (length < MAX_EVENTS))
+        if not len(rows): return
+        indices = length[rows]
+        values = (when,hits,raw,pot,mana,splinter,kind_id,-1. if magical is None else magical)
+        for key,value in zip(("when","hits","raw","pot","mana","splinter","kind","magical"),values):
+            if isinstance(value,torch.Tensor):
+                value = value.detach().numpy()
+                if value.ndim: value = value[rows]
+            bufs[key].numpy()[rows,indices] = value
+        length[rows] += 1
+        TIMELINE_COUNTS['cpu_fast_push_calls'] += 1
+        return
     if not bool(mask.any()):
         return
     B = int(mask.shape[0])
@@ -283,7 +307,7 @@ def _buffers_to_events(bufs):
     return out
 
 
-def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys):
+def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys, prepared_stats=None):
     from sunken_sim import mage as mod
     from sunken_sim.shadow import (
         CAST_BACKSWING,
@@ -307,8 +331,8 @@ def _mage_batch(torch, device, dtype, builds, spec, targets, bound_keys):
 
     # fire swing keeps attack_base (simulate mutates stats["swing"])
     stats_list = []
-    for b in builds:
-        st = mod.sheet(b)
+    for i,b in enumerate(builds):
+        st = mod.sheet(b) if prepared_stats is None else dict(prepared_stats[i])
         if is_fire:
             st = dict(st)
             st["swing"] = st["attack_base"]

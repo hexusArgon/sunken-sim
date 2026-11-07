@@ -43,6 +43,12 @@ class DeviceTests(unittest.TestCase):
         capacity.DirectMLCapacityTest.setUpClass()
         cls.dev=capacity.DirectMLCapacityTest.device;cls.bs=capacity.DirectMLCapacityTest.builds
     def test_real_dml_reuses_updated_inputs_and_constants(self):
+        import torch
+        pool=DevicePool(torch,self.dev.handle)
+        for value in (1.,9.,-3.):
+            tensor=pool.up('changed-payload',np.full((4,8),value))
+            self.assertTrue(np.array_equal(tensor.cpu().numpy(),np.full((4,8),value)))
+        self.assertEqual(pool.counts['reuses'],2)
         g=registry.make_engine(self.dev,'mage','fire',5);a=g.dps_many(self.bs)
         p=empty_points();p['potency']=20;bs=[apply_points(b,p) for b in self.bs]
         g.dps_many(self.bs);b=g.dps_many(bs)

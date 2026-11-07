@@ -60,3 +60,13 @@ class FinalTests(unittest.TestCase):
         got=g._scores([tl])[0]
         exact=mage._score(mage._compile(tl.events,tl.build,tl.stats,tl.spec,tl.evocation),tl.stats,tl.build,tl.spec)[0]/FIGHT
         self.assertTrue(engine.compare([exact],[got])['ok'])
+
+    def test_cross_call_selection_anchors_remain_cpu_exact(self):
+        from types import SimpleNamespace
+        g=registry.make_engine(self.dev,'mage','fire',5)
+        a,b=self.bs[:2];tls=[fight.timelines(x,5,'fire',cache=False)[0] for x in (a,b)]
+        exact={id(a):100.00002,id(b):100.00001}
+        with mock.patch.object(mage,'simulate',side_effect=lambda build,*args,**kwargs:SimpleNamespace(dps=exact[id(build)])):
+            left=g._owner_scores([tls[0]],[0],[100.],1)[0]
+            right=g._owner_scores([tls[1]],[0],[100.1],1)[0]
+        self.assertGreater(left,right);self.assertEqual(g.score_counts['selection_exact_builds'],2)
