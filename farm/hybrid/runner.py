@@ -89,6 +89,10 @@ def run_job(job: dict, box: dict, tick) -> dict:
     job = dict(job, admission_policy=A.policy(job))
     from farm import runner as cpu_runner
 
+    from farm.hybrid.fire_broker import config as broker_config
+    if broker_config(job) is not None:
+        from farm.hybrid.fire_broker_path import run_job as broker_job
+        return broker_job(job, box, tick)
     hero, spec = job["hero"], job["spec"]
     fire_count = cpu_runner.fire_dml_worker_count(job) if (hero, spec) == ("mage", "fire") else 1
     meta = {

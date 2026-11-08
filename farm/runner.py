@@ -313,7 +313,7 @@ _SCOPED_DML_ALLOWED = True
 _FIRE_DML_ALLOWED = True
 
 
-def init_worker(space: Space, items: dict, sources: dict, hero: str, spec: str, targets: int, bar, stop, fire_dml_budget=None) -> None:
+def init_worker(space: Space, items: dict, sources: dict, hero: str, spec: str, targets: int, bar, stop, fire_dml_budget=None, fire_broker=None) -> None:
     global _SPACE, _ITEMS, _SOURCES, _HERO, _SPEC, _TARGETS, _BAR, _STOP
     from sunken_sim.history import release
 
@@ -333,6 +333,10 @@ def init_worker(space: Space, items: dict, sources: dict, hero: str, spec: str, 
     _FIRE_DML_ALLOWED = ((hero, spec) != ("mage", "fire") or fire_dml_budget is None or fire_dml_budget.acquire(False))
     if (hero, spec) == ("mage", "fire") and fire_dml_budget is not None:
         print(f"fire-dml lease pid={os.getpid()} allowed={int(_FIRE_DML_ALLOWED)}", flush=True)
+
+    if fire_broker is not None:
+        from farm.hybrid.fire_broker_path import init_client
+        init_client(fire_broker, targets)
 
 
 def _compact(rows: list[dict]) -> list[dict]:
@@ -506,6 +510,10 @@ def _load_checkpoint(job: dict, boards: Boards) -> tuple[int, list[tuple[int, in
         saved = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
         return int(job["start"]), [], 0, _empty_bars()
+    if saved.get("fire_broker_protocol") != job.get("fire_broker_protocol") and ("fire_broker_protocol" in saved or "fire_broker_protocol" in job):
+        raise ValueError("compile broker checkpoint protocol/config mismatch; refuse progress reset")
+    if "fire_broker_protocol" in job and (saved.get("search_schema") != A.SCHEMA or not _same_job(saved, job)):
+        raise ValueError("compile broker checkpoint source/catalog mismatch; refuse progress reset")
     if saved.get("search_schema") != A.SCHEMA or not _same_job(saved, job):
         return int(job["start"]), [], 0, _empty_bars()
     rows = list(saved.get("top") or [])
@@ -523,6 +531,8 @@ def _load_checkpoint(job: dict, boards: Boards) -> tuple[int, list[tuple[int, in
 
 
 def _same_job(saved: dict, job: dict) -> bool:
+    if saved.get("fire_broker_protocol") != job.get("fire_broker_protocol"):
+        return False
     if A.metadata(saved) != A.metadata(job):
         return False
     for key in ("start", "end", "hero", "spec", "pool", "targets"):
@@ -591,6 +601,7 @@ def _save_checkpoint(
         "item_bar": A.Observations(item_bar).scores(),
         "item_observations": item_bar,
         **A.metadata(job),
+        **({"fire_broker_protocol": job["fire_broker_protocol"]} if "fire_broker_protocol" in job else {}),
         "top": boards.overall.rows(),
     }
     for group, key in GROUP_KEY.items():
@@ -622,6 +633,7 @@ def _write_result(job: dict, boards: Boards, done: int, stopped: bool, errors: i
         "stopped": stopped,
         "errors": errors,
         **A.metadata(job),
+        **({"fire_broker_protocol": job["fire_broker_protocol"]} if "fire_broker_protocol" in job else {}),
         **({"hybrid": job["hybrid"]} if "hybrid" in job else {}),
         'global_optimum_proven': False,
         'admission_is_lossless': False,
@@ -674,7 +686,7 @@ def _record_fire_execution(job, payload):
         meta['worker_fallbacks']=list(dict.fromkeys(meta.get('worker_fallbacks',[])+e.get('reasons',[])+(['CPU compile fallback'] if e.get('cpu_compile_rows') else [])))
 
 
-def run_job(job: dict, box: dict, tick, eval_fn=None, *, _fire_cpu_fallback=False) -> dict:
+def run_job(job: dict, box: dict, tick, eval_fn=None, *, _fire_cpu_fallback=False, _fire_broker=None) -> dict:
     """Optional span scorer; fresh Fire delegates hybrid, other specs retain CPU."""
     if (job.get('hero'),job.get('spec'))==('mage','fire') and eval_fn is None and not _fire_cpu_fallback:
         from farm.hybrid.runner import run_job as hybrid_job
@@ -804,7 +816,7 @@ def run_job(job: dict, box: dict, tick, eval_fn=None, *, _fire_cpu_fallback=Fals
             next_index = stop_at
 
     worker_args = (space, items, sources, job["hero"], job["spec"], int(job["targets"]), (slots, lock), stop_event)
-    dml_budget = fire_dml_context_budget(job, ctx)
+    dml_budget = None if _fire_broker is not None else fire_dml_context_budget(job, ctx)
     if dml_budget is not None:
         worker_args += (dml_budget,)
         from farm.hybrid.mage_priest_resources import scoped, worker_count as scoped_worker_count
@@ -814,6 +826,8 @@ def run_job(job: dict, box: dict, tick, eval_fn=None, *, _fire_cpu_fallback=Fals
             raise ValueError("fire_dml_workers exceeds this job's pool size")
         job["hybrid"]["hybrid_dml_process_budget" if scoped_job else "fire_dml_process_budget"] = count
         job["hybrid"]["pool_workers"] = pool_size
+    if _fire_broker is not None:
+        worker_args += (None, _fire_broker)
     with ProcessPoolExecutor(
         max_workers=pool_size,
         mp_context=ctx,
@@ -848,6 +862,9 @@ def run_job(job: dict, box: dict, tick, eval_fn=None, *, _fire_cpu_fallback=Fals
                         done_up_to = note_span(done_up_to, ahead, start_i, stop_i)
                     continue
                 _record_fire_execution(job,payload)
+                if _fire_broker is not None:
+                    from farm.hybrid.fire_broker_path import record
+                    record(job, payload)
                 if "hybrid_execution" in payload and job.get("hybrid") is not None:
                     from farm.hybrid.mage_priest_resources import emit_tick
                     emit_tick(tick, job["hybrid"])
