@@ -288,13 +288,21 @@ def source_map(items: dict) -> dict[str, str]:
     return found
 
 
+def fire_dml_worker_count(job: dict) -> int:
+    """Job-local resource cap, not a scoring option; conservative default stays one."""
+    count = job.get("fire_dml_workers", 1)
+    if type(count) is not int or not 1 <= count <= 6:
+        raise ValueError("fire_dml_workers must be an integer from 1 to 6; default 1")
+    return count
+
+
 def fire_dml_context_budget(job: dict, ctx):
-    # One live device owner per Fire DirectML job; others use honest CPU fallback.
+    # Job-local live device owner cap; denied workers use honest CPU fallback.
 
     # Multi-context stalls persisted even with serialized compile dispatch on RX6800XT.
     # Containment, not a claim to repair the underlying backend/driver.
     if (job.get("hero"), job.get("spec")) == ("mage", "fire") and (job.get("hybrid") or {}).get("device") == "dml":
-        return ctx.BoundedSemaphore(1)
+        return ctx.BoundedSemaphore(fire_dml_worker_count(job))
     return None
 
 
@@ -316,6 +324,8 @@ def init_worker(space: Space, items: dict, sources: dict, hero: str, spec: str, 
     _STOP = stop
     global _FIRE_DML_ALLOWED
     _FIRE_DML_ALLOWED = ((hero, spec) != ("mage", "fire") or fire_dml_budget is None or fire_dml_budget.acquire(False))
+    if (hero, spec) == ("mage", "fire") and fire_dml_budget is not None:
+        print(f"fire-dml lease pid={os.getpid()} allowed={int(_FIRE_DML_ALLOWED)}", flush=True)
 
 
 def _compact(rows: list[dict]) -> list[dict]:
@@ -636,6 +646,12 @@ def _record_fire_execution(job, payload):
     meta=job.get('hybrid')
     if meta is None:return
     e=payload['fire_execution'];paths=meta.setdefault('worker_paths',{})
+    if 'pid' in e:
+        worker=meta.setdefault('worker_processes',{}).setdefault(str(e['pid']),dict(returned_spans=0,gpu_compile_rows=0,cpu_compile_rows=0))
+        worker.update(actual=e['actual'],engine_state=e.get('engine_state'))
+        worker['returned_spans']+=1
+        worker['gpu_compile_rows']+=int(e.get('gpu_compile_rows',0))
+        worker['cpu_compile_rows']+=int(e.get('cpu_compile_rows',0))
     paths[e['actual']]=paths.get(e['actual'],0)+1
     has_cpu=bool(paths.get('cpu-fallback') or paths.get('mixed'))
     has_gpu=bool(paths.get('hybrid') or paths.get('mixed'))
@@ -780,7 +796,10 @@ def run_job(job: dict, box: dict, tick, eval_fn=None, *, _fire_cpu_fallback=Fals
     dml_budget = fire_dml_context_budget(job, ctx)
     if dml_budget is not None:
         worker_args += (dml_budget,)
-        job["hybrid"]["fire_dml_process_budget"] = 1
+        count = fire_dml_worker_count(job)
+        if count > pool_size:
+            raise ValueError("fire_dml_workers exceeds this job's pool size")
+        job["hybrid"]["fire_dml_process_budget"] = count
         job["hybrid"]["pool_workers"] = pool_size
     with ProcessPoolExecutor(
         max_workers=pool_size,

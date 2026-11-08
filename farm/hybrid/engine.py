@@ -14,6 +14,7 @@ farm.runner.eval_span for the rest of the job.
 from __future__ import annotations
 
 import itertools
+import os
 
 DPS_TOL = 1e-4  # relative; DirectML sums in float32
 SUB_SPAN = 256  # chunks per device batch inside one eval_span
@@ -320,7 +321,7 @@ def _engine():
     from farm.hybrid import registry
 
     if (R._HERO, R._SPEC) == ("mage", "fire") and not getattr(R, "_FIRE_DML_ALLOWED", True):
-        _to_cpu("DirectML Fire context budget: one GPU owner per job; explicit CPU oracle fallback")
+        _to_cpu("DirectML Fire context budget exhausted; explicit CPU oracle fallback")
         return None
     try:
         if not registry.gpu_engine_for(R._HERO, R._SPEC):
@@ -370,7 +371,7 @@ def eval_span(start: int, stop: int) -> dict:
             counts=getattr(engine,'score_counts',{})
             gpu=counts.get('gpu_compile_rows',0)-before_gpu;cpu=counts.get('cpu_compile_rows',0)-before_cpu
             actual=('mixed' if gpu else 'cpu-fallback') if fallbacks or cpu else 'hybrid'
-            payload['fire_execution']=dict(actual=actual,gpu_compile_rows=gpu,cpu_compile_rows=cpu,reasons=list(fallbacks))
+            payload['fire_execution']=dict(actual=actual,gpu_compile_rows=gpu,cpu_compile_rows=cpu,reasons=list(fallbacks),pid=os.getpid(),engine_state=_ENGINE_STATE)
         return payload
     if engine is None:
         fallbacks.append(_ENGINE_NOTE or 'worker GPU unavailable')

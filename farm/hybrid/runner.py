@@ -85,6 +85,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
     from farm import runner as cpu_runner
 
     hero, spec = job["hero"], job["spec"]
+    fire_count = cpu_runner.fire_dml_worker_count(job) if (hero, spec) == ("mage", "fire") else 1
     meta = {
         "worker": job.get("worker", HYBRID_WORKER),
         "status": registry.status(hero, spec),
@@ -119,30 +120,40 @@ def run_job(job: dict, box: dict, tick) -> dict:
         return cpu(f"{hero}/{spec} locked to CPU")
     if not registry.gpu_engine_for(hero, spec):
         return cpu(f"{hero}/{spec}: no supported hybrid fight engine")
-    try:
-        device = detect(hero, spec)
-    except Exception as exc:
-        return cpu(f"device detection failed: {type(exc).__name__}: {exc}")
-    meta.update(device=device.kind, name=device.name, reason=device.reason)
-    if not device.gpu:
-        return cpu(device.reason or "GPU unavailable")
-    try:
-        from farm.catalog import load
-        space, items = load(hero, spec, job["pool"], job.get("preset") or None, job.get("top") or None)
-        start = int(job["start"])
-        stop = min(int(job["end"]) + 1, start + PREP_SPAN)
-        meta["prep"] = prep_check(space, items, device, start, stop)
-        if not meta["prep"].get("parity", False):
-            return cpu("item-stat parity failed")
-    except Exception as exc:
-        return cpu(f"item-stat prep failed: {type(exc).__name__}: {exc}")
-    try:
-        meta["fights"] = fight_check(device, hero, spec, int(job["targets"]), job.get("top") or None, job["pool"])
-        if not meta["fights"]["ok"]:
-            return cpu("fight parity failed")
+    if (hero, spec) == ("mage", "fire") and fire_count > 1:
+        # Keep no coordinator GPUcontext alive alongside the explicitly requested workers.
+        from farm.hybrid.preflight import isolated_fire_preflight
+        checked = isolated_fire_preflight(job)
+        if not checked["ok"]:
+            raise RuntimeError("Requested Fire DML workers: preflight failed: " + checked["reason"])
+        meta.update(checked["meta"])
+        meta["preflight"] = checked["lifecycle"]
         from farm.hybrid.engine import eval_span as hybrid_eval_span
-    except Exception as exc:
-        return cpu(f"fight parity failed: {type(exc).__name__}: {exc}")
+    else:
+        try:
+            device = detect(hero, spec)
+        except Exception as exc:
+            return cpu(f"device detection failed: {type(exc).__name__}: {exc}")
+        meta.update(device=device.kind, name=device.name, reason=device.reason)
+        if not device.gpu:
+            return cpu(device.reason or "GPU unavailable")
+        try:
+            from farm.catalog import load
+            space, items = load(hero, spec, job["pool"], job.get("preset") or None, job.get("top") or None)
+            start = int(job["start"])
+            stop = min(int(job["end"]) + 1, start + PREP_SPAN)
+            meta["prep"] = prep_check(space, items, device, start, stop)
+            if not meta["prep"].get("parity", False):
+                return cpu("item-stat parity failed")
+        except Exception as exc:
+            return cpu(f"item-stat prep failed: {type(exc).__name__}: {exc}")
+        try:
+            meta["fights"] = fight_check(device, hero, spec, int(job["targets"]), job.get("top") or None, job["pool"])
+            if not meta["fights"]["ok"]:
+                return cpu("fight parity failed")
+            from farm.hybrid.engine import eval_span as hybrid_eval_span
+        except Exception as exc:
+            return cpu(f"fight parity failed: {type(exc).__name__}: {exc}")
     meta["gpu_fights"] = True
     if meta.get('selection') is not None:
         meta['selection'] = dict(meta['selection'],actual='hybrid')
