@@ -546,7 +546,8 @@ class GpuFights(BatchFights):
                 phase = "compile"
                 try:
                     sums = compile_sums(self.torch, self.target, packed, workspace=pool, device_result=final_gpu)
-                    self.score_counts['gpu_compile_rows'] += len(part)
+                    counter = 'cpu_compile_rows' if spec in ('frost', 'arcane') and not getattr(getattr(self, 'device', None), 'gpu', False) else 'gpu_compile_rows'
+                    self.score_counts[counter] += len(part)
                     if final_gpu:
                         phase = "final"
                         from farm.hybrid.mage_final import score_rows

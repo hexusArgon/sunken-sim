@@ -75,6 +75,11 @@ def fight_check(device, hero: str, spec: str, targets: int, top: int | None = 80
     got = registry.make_engine(device, hero, spec, targets).dps_many(builds)
     t2 = time.perf_counter()
     res = compare(ref, got)
+    from farm.hybrid.mage_priest_resources import scoped
+    import math
+    if scoped(hero, spec) and not all(math.isfinite(v) for v in ref + got):
+        res["ok"] = False
+        res["reason"] = "non-finite preflight fight result"
     res.update({"device": device.kind, "cpu_s": round(t1 - t0, 3), "gpu_s": round(t2 - t1, 3)})
     return res
 
@@ -115,6 +120,10 @@ def run_job(job: dict, box: dict, tick) -> dict:
         meta['selection'] = selection
         import os
         meta['planner'] = os.environ.get('FARM_FIRE_PLANNER', 'scalar')
+    from farm.hybrid.mage_priest_resources import scoped, worker_count as scoped_worker_count
+    scoped_job = scoped(hero, spec)
+    if scoped_job:
+        scoped_worker_count(job)
     # Locked/unsupported specs retain their existing CPU fallback behavior.
     if cpu_locked(hero, spec):
         return cpu(f"{hero}/{spec} locked to CPU")
@@ -126,6 +135,14 @@ def run_job(job: dict, box: dict, tick) -> dict:
         checked = isolated_fire_preflight(job)
         if not checked["ok"]:
             raise RuntimeError("Requested Fire DML workers: preflight failed: " + checked["reason"])
+        meta.update(checked["meta"])
+        meta["preflight"] = checked["lifecycle"]
+        from farm.hybrid.engine import eval_span as hybrid_eval_span
+    elif scoped_job:
+        from farm.hybrid.mage_priest_preflight import isolated_preflight
+        checked = isolated_preflight(job)
+        if not checked["ok"]:
+            return cpu("isolated preflight failed: " + checked["reason"])
         meta.update(checked["meta"])
         meta["preflight"] = checked["lifecycle"]
         from farm.hybrid.engine import eval_span as hybrid_eval_span

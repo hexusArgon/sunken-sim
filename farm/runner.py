@@ -303,9 +303,13 @@ def fire_dml_context_budget(job: dict, ctx):
     # Containment, not a claim to repair the underlying backend/driver.
     if (job.get("hero"), job.get("spec")) == ("mage", "fire") and (job.get("hybrid") or {}).get("device") == "dml":
         return ctx.BoundedSemaphore(fire_dml_worker_count(job))
+    from farm.hybrid.mage_priest_resources import scoped, worker_count
+    if scoped(job.get("hero"), job.get("spec")) and (job.get("hybrid") or {}).get("device") == "dml":
+        return ctx.BoundedSemaphore(worker_count(job))
     return None
 
 
+_SCOPED_DML_ALLOWED = True
 _FIRE_DML_ALLOWED = True
 
 
@@ -322,6 +326,9 @@ def init_worker(space: Space, items: dict, sources: dict, hero: str, spec: str, 
     _TARGETS = targets
     _BAR = bar
     _STOP = stop
+    from farm.hybrid.mage_priest_resources import scoped
+    global _SCOPED_DML_ALLOWED
+    _SCOPED_DML_ALLOWED = (not scoped(hero, spec) or fire_dml_budget is None or fire_dml_budget.acquire(False))
     global _FIRE_DML_ALLOWED
     _FIRE_DML_ALLOWED = ((hero, spec) != ("mage", "fire") or fire_dml_budget is None or fire_dml_budget.acquire(False))
     if (hero, spec) == ("mage", "fire") and fire_dml_budget is not None:
@@ -642,6 +649,10 @@ def _sweep(done_up_to: int, ahead: list[tuple[int, int]]) -> int:
 
 def _record_fire_execution(job, payload):
     """Parent-visible worker fallback telemetry; never call CPU work GPU-only."""
+    from farm.hybrid.mage_priest_resources import scoped, record_execution
+    if scoped(job.get("hero"), job.get("spec")):
+        record_execution(job, payload)
+        return
     if (job.get('hero'),job.get('spec'))!=('mage','fire') or 'fire_execution' not in payload:return
     meta=job.get('hybrid')
     if meta is None:return
@@ -796,10 +807,12 @@ def run_job(job: dict, box: dict, tick, eval_fn=None, *, _fire_cpu_fallback=Fals
     dml_budget = fire_dml_context_budget(job, ctx)
     if dml_budget is not None:
         worker_args += (dml_budget,)
-        count = fire_dml_worker_count(job)
+        from farm.hybrid.mage_priest_resources import scoped, worker_count as scoped_worker_count
+        scoped_job = scoped(job["hero"], job["spec"])
+        count = scoped_worker_count(job) if scoped_job else fire_dml_worker_count(job)
         if count > pool_size:
             raise ValueError("fire_dml_workers exceeds this job's pool size")
-        job["hybrid"]["fire_dml_process_budget"] = count
+        job["hybrid"]["hybrid_dml_process_budget" if scoped_job else "fire_dml_process_budget"] = count
         job["hybrid"]["pool_workers"] = pool_size
     with ProcessPoolExecutor(
         max_workers=pool_size,
@@ -835,6 +848,9 @@ def run_job(job: dict, box: dict, tick, eval_fn=None, *, _fire_cpu_fallback=Fals
                         done_up_to = note_span(done_up_to, ahead, start_i, stop_i)
                     continue
                 _record_fire_execution(job,payload)
+                if "hybrid_execution" in payload and job.get("hybrid") is not None:
+                    from farm.hybrid.mage_priest_resources import emit_tick
+                    emit_tick(tick, job["hybrid"])
                 if "fire_execution" in payload and job.get("hybrid") is not None:
                     tick({"hybrid": job["hybrid"]})
                 fights += int(payload.get("fights") or 0)

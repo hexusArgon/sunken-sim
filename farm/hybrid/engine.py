@@ -93,6 +93,9 @@ class BatchFights:
     def _canonical_fire_esc(self, builds, results, limit=CROSS_MAX_BUILDS):
         # Algebra chooses points with its existing guards/tie policy; its projected
         # score is not the canonical final Fire DPS. Re-score only selected builds.
+        from farm.hybrid.mage_priest_resources import scoped, canonical_esc
+        if scoped(getattr(self, "hero", None), getattr(self, "spec", None)):
+            return canonical_esc(self, builds, results)
         if (getattr(self, "hero", None), getattr(self, "spec", None)) != ("mage", "fire"):
             return results
         from sunken_sim.esc import apply_points
@@ -158,7 +161,8 @@ class BatchFights:
         out = greedy_points_batched(self.dps_many, build, hero=hero)
         if strategy is not None:
             strategy.record("batched", time.perf_counter() - t0)
-        return out
+        from farm.hybrid.mage_priest_resources import canonical_esc
+        return canonical_esc(self, [build], [out])[0]
 
     def finish_sextuple(self, equipped, talent_codes, glyph_codes, picks_without, picks_with, glyph_picks):
         """farm.score.finish_sextuple, batched. Same return shape and fight count."""
@@ -260,6 +264,9 @@ class BatchFights:
             greedy = greedy_points_many(many, finals, hero=hero)
             if strategy is not None:
                 strategy.record("batched", time.perf_counter() - t0)
+        if esc != "algebra":
+            from farm.hybrid.mage_priest_resources import canonical_esc
+            greedy = canonical_esc(self, finals, greedy)
         out = []
         for (equipped, combos, glyph_combos, _o), st, (pointed, points) in zip(rows, state, greedy):
             fights = len(combos) + len(glyph_combos) + SKILL_POINTS * len(ESC_ATTRS)
@@ -323,6 +330,10 @@ def _engine():
     if (R._HERO, R._SPEC) == ("mage", "fire") and not getattr(R, "_FIRE_DML_ALLOWED", True):
         _to_cpu("DirectML Fire context budget exhausted; explicit CPU oracle fallback")
         return None
+    from farm.hybrid.mage_priest_resources import scoped
+    if scoped(R._HERO, R._SPEC) and not getattr(R, "_SCOPED_DML_ALLOWED", True):
+        _to_cpu("DirectML job budget exhausted; explicit CPU oracle fallback")
+        return None
     try:
         if not registry.gpu_engine_for(R._HERO, R._SPEC):
             raise ValueError(f"{R._HERO}/{R._SPEC} is {registry.status(R._HERO, R._SPEC)}")
@@ -347,6 +358,11 @@ def _self_check(builds, got) -> bool:
     from farm.hybrid.registry import cpu_dps
 
     ref = [cpu_dps(R._HERO, R._SPEC, R._TARGETS, b) for b in builds[:SELF_CHECK]]
+    from farm.hybrid.mage_priest_resources import scoped
+    import math
+    if scoped(R._HERO, R._SPEC) and (len(got) < len(ref) or not all(math.isfinite(v) for v in ref + list(got[:SELF_CHECK]))):
+        _to_cpu("self-check non-finite or incomplete results")
+        return False
     res = compare(ref, got[:SELF_CHECK])
     if res["ok"]:
         _ENGINE_STATE = "gpu"
@@ -363,10 +379,22 @@ def eval_span(start: int, stop: int) -> dict:
 
     engine = _engine()
     fire=(R._HERO,R._SPEC)==('mage','fire')
+    from farm.hybrid.mage_priest_resources import scoped
+    scoped_job = scoped(R._HERO, R._SPEC)
     fallbacks=[]
     counters=getattr(engine,'score_counts',{})
     before_gpu=counters.get('gpu_compile_rows',0);before_cpu=counters.get('cpu_compile_rows',0)
+    before_final=counters.get('canonical_final_builds',0)
     def execution(payload):
+        if scoped_job:
+            try:
+                counts=getattr(engine,'score_counts',{})
+                gpu=counts.get('gpu_compile_rows',0)-before_gpu;cpu=counts.get('cpu_compile_rows',0)-before_cpu
+                actual=('mixed' if gpu else 'cpu-fallback') if fallbacks or cpu else ('hybrid' if gpu else 'cpu-fallback')
+                payload['hybrid_execution']=dict(actual=actual,gpu_compile_rows=gpu,cpu_compile_rows=cpu,canonical_final_builds=counts.get('canonical_final_builds',0)-before_final,reasons=list(fallbacks),pid=os.getpid(),engine_state=_ENGINE_STATE,lease_allowed=getattr(R,'_SCOPED_DML_ALLOWED',True))
+            except Exception as exc:
+                from farm.hybrid.mage_priest_resources import notice
+                notice(f'hybrid: execution telemetry unavailable ({type(exc).__name__})')
         if fire:
             counts=getattr(engine,'score_counts',{})
             gpu=counts.get('gpu_compile_rows',0)-before_gpu;cpu=counts.get('cpu_compile_rows',0)-before_cpu

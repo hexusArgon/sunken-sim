@@ -297,6 +297,8 @@ class PriestFights(BatchFights):
         self.spec = spec
         self.targets = int(targets)
         self.fights = 0
+        from collections import Counter
+        self.score_counts = Counter()
 
     def _reuse_gpu_timelines(self, builds: list) -> dict:
         """Generate one GPU tape per timeline key; rescore crit/potency/luck per build."""
@@ -340,6 +342,7 @@ class PriestFights(BatchFights):
         for begin in range(0, len(tls), MAX_BATCH):
             part = tls[begin : begin + MAX_BATCH]
             sums = compile_sums(self.torch, self.target, pack(part))
+            self.score_counts["gpu_compile_rows" if self.device.gpu else "cpu_compile_rows"] += len(part)
             out.extend(score_row(tl, row) / FIGHT for tl, row in zip(part, sums))
         return out
 

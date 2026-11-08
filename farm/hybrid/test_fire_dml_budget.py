@@ -8,14 +8,14 @@ from farm.hybrid import engine as E, registry
 class FireDmlBudgetTest(unittest.TestCase):
  def test_only_fire_dml_gets_one_shared_context(self):
   ctx=mock.Mock();token=ctx.BoundedSemaphore.return_value
-  for hero,spec,device in [('mage','fire','cpu'),('mage','frost','dml'),('mage','arcane','dml'),('priest','shadow','dml')]:
+  for hero,spec,device in [('mage','fire','cpu'),('paladin','holy','dml'),('warrior','fury','dml')]:
    self.assertIsNone(R.fire_dml_context_budget(dict(hero=hero,spec=spec,hybrid={'device':device}),ctx))
   ctx.BoundedSemaphore.assert_not_called()
   self.assertIs(R.fire_dml_context_budget(dict(hero='mage',spec='fire',hybrid={'device':'dml'}),ctx),token)
   ctx.BoundedSemaphore.assert_called_once_with(1)
  def test_fifteen_workers_have_one_lease_without_waiting(self):
   budget=mp.get_context('spawn').BoundedSemaphore(1)
-  names=['_SPACE','_ITEMS','_SOURCES','_HERO','_SPEC','_TARGETS','_BAR','_STOP','_FIRE_DML_ALLOWED']
+  names=['_SPACE','_ITEMS','_SOURCES','_HERO','_SPEC','_TARGETS','_BAR','_STOP','_FIRE_DML_ALLOWED','_SCOPED_DML_ALLOWED']
   old={n:getattr(R,n) for n in names};leases=[]
   try:
    for _ in range(15):
@@ -24,10 +24,10 @@ class FireDmlBudgetTest(unittest.TestCase):
   finally:
    for n,v in old.items():setattr(R,n,v)
  def test_other_class_and_legacy_init_do_not_acquire(self):
-  names=['_SPACE','_ITEMS','_SOURCES','_HERO','_SPEC','_TARGETS','_BAR','_STOP','_FIRE_DML_ALLOWED']
+  names=['_SPACE','_ITEMS','_SOURCES','_HERO','_SPEC','_TARGETS','_BAR','_STOP','_FIRE_DML_ALLOWED','_SCOPED_DML_ALLOWED']
   old={n:getattr(R,n) for n in names};budget=mock.Mock()
   try:
-   R.init_worker(None,{},{} ,'mage','frost',5,None,None,budget);budget.acquire.assert_not_called();self.assertTrue(R._FIRE_DML_ALLOWED)
+   R.init_worker(None,{},{} ,'paladin','holy',5,None,None,budget);budget.acquire.assert_not_called();self.assertTrue(R._FIRE_DML_ALLOWED)
    R.init_worker(None,{},{} ,'mage','fire',5,None,None);self.assertTrue(R._FIRE_DML_ALLOWED)
   finally:
    for n,v in old.items():setattr(R,n,v)
@@ -51,7 +51,7 @@ class FireDmlBudgetTest(unittest.TestCase):
   result=e._canonical_fire_esc([b],[(8.999999,points)])
   self.assertEqual(result,[(9.,points)]);self.assertIs(result[0][1],points);self.assertEqual(len(e.dps_many.call_args.args[0]),2)
  def test_other_class_algebra_score_is_untouched(self):
-  e=E.BatchFights();e.hero='mage';e.spec='frost';e.dps_many=mock.Mock();r=[(7.,{})]
+  e=E.BatchFights();e.hero='paladin';e.spec='holy';e.dps_many=mock.Mock();r=[(7.,{})]
   self.assertIs(e._canonical_fire_esc([None],r),r);e.dps_many.assert_not_called()
  def test_real_dml_algebra_final_payload_matches_cpu_oracle(self):
   from farm.catalog import load

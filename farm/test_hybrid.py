@@ -336,7 +336,7 @@ class RegistryTest(unittest.TestCase):
     def test_priest_passes_engine_eval_span(self):
         from farm.hybrid import engine
 
-        with mock.patch.object(hybrid_runner, "detect", return_value=DeviceInfo("dml", "fixture")), \
+        with mock.patch("farm.hybrid.mage_priest_preflight.isolated_preflight", return_value={"ok": True, "meta": {"device": "dml", "name": "fixture"}, "lifecycle": {"exited": True, "exitcode": 0}}), \
              mock.patch.object(cpu_runner, "run_job", return_value={"done": 1}) as old, \
              mock.patch.object(hybrid_runner, "prep_check", return_value={"parity": True}), \
              mock.patch("farm.catalog.load", return_value=(FakeSpace([("A", "B", "C")]), _items())), \
