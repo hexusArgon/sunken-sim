@@ -1,0 +1,8061 @@
+{
+ "level": 15,
+ "targets": 5,
+ "spec": "holy",
+ "farm_file": "../sunken-sim-runs/priest-holy-opencl-top80-gpu/results/local-hybrid-priest-holy-mixed-top80-5-0-312052229-admission-v2-bare-top10-3adfd98af75f6e7e.json",
+ "done": 312052230,
+ "end": 312052229,
+ "errors": 0,
+ "stopped": false,
+ "spec_talents": [
+  "Smite",
+  "Empyreal Blaze",
+  "Catharsis",
+  "Insanity",
+  "Clairvoyance"
+ ],
+ "glyphs": [
+  "Fortitude",
+  "Unsealed Power",
+  "Fortune",
+  "Supremacy",
+  "Arc Striking",
+  "Battle Frenzy",
+  "Hellfire",
+  "Thunder",
+  "Blood Violence",
+  "Animosity",
+  "Glass Cannon",
+  "Mindhaste"
+ ],
+ "runs": {
+  "mixed": [
+   {
+    "farm_dps": 1852.1,
+    "dps": 1852.1,
+    "total": 55563,
+    "manaLeft": 99.1,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 9,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 3660198,
+    "sources": [
+     [
+      "Sulfuras",
+      551.7
+     ],
+     [
+      "Thunder",
+      356.0
+     ],
+     [
+      "Mind Spike",
+      325.3
+     ],
+     [
+      "Smite",
+      316.6
+     ],
+     [
+      "Автоатака",
+      146.7
+     ],
+     [
+      "Empyreal Blaze",
+      146.5
+     ],
+     [
+      "Sulfuras (удар)",
+      9.4
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "7.53",
+      "Renew"
+     ],
+     [
+      "9.07",
+      "Radiance"
+     ],
+     [
+      "9.52",
+      "Mind Spike"
+     ],
+     [
+      "13.71",
+      "Renew"
+     ],
+     [
+      "18.34",
+      "Radiance"
+     ],
+     [
+      "18.79",
+      "Mind Spike"
+     ],
+     [
+      "19.88",
+      "Renew"
+     ],
+     [
+      "26.06",
+      "Renew"
+     ],
+     [
+      "27.60",
+      "Radiance"
+     ],
+     [
+      "28.05",
+      "Mind Spike"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "221"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "31"
+     ],
+     [
+      "Сила атаки",
+      "202.8"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "19.0%"
+     ],
+     [
+      "Скорость атаки",
+      "55.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1722"
+     ],
+     [
+      "Реген маны",
+      "18.64/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.54 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1852.1,
+     "Empyreal Blaze": 1852.1,
+     "Catharsis": 1746.0,
+     "Insanity": 1852.1,
+     "Clairvoyance": 1642.6
+    },
+    "glyphDps": {
+     "Fortitude": 1852.1,
+     "Unsealed Power": 1773.5,
+     "Fortune": 1611.8,
+     "Supremacy": 1611.8,
+     "Arc Striking": 1611.8,
+     "Battle Frenzy": 1578.9,
+     "Hellfire": 1714.8,
+     "Thunder": 1852.1,
+     "Blood Violence": 1630.0,
+     "Animosity": 1629.4,
+     "Glass Cannon": 1852.1,
+     "Mindhaste": 1581.7
+    }
+   },
+   {
+    "farm_dps": 1688.2,
+    "dps": 1688.2,
+    "total": 50647,
+    "manaLeft": 100.0,
+    "bound_spell": null,
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 2,
+     "damage": 20,
+     "crit": 0,
+     "potency": 8,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 27887437,
+    "sources": [
+     [
+      "Sulfuras",
+      356.0
+     ],
+     [
+      "Всплеск огня",
+      321.4
+     ],
+     [
+      "Mind Spike",
+      235.7
+     ],
+     [
+      "Thunder",
+      230.5
+     ],
+     [
+      "Автоатака",
+      222.3
+     ],
+     [
+      "Smite",
+      200.4
+     ],
+     [
+      "Empyreal Blaze",
+      107.6
+     ],
+     [
+      "Sulfuras (удар)",
+      14.3
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "7.70",
+      "Renew"
+     ],
+     [
+      "8.76",
+      "Radiance"
+     ],
+     [
+      "9.21",
+      "Mind Spike"
+     ],
+     [
+      "14.05",
+      "Renew"
+     ],
+     [
+      "17.22",
+      "Radiance"
+     ],
+     [
+      "17.67",
+      "Mind Spike"
+     ],
+     [
+      "20.40",
+      "Renew"
+     ],
+     [
+      "25.69",
+      "Radiance"
+     ],
+     [
+      "26.14",
+      "Mind Spike"
+     ],
+     [
+      "26.75",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "248"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "245.0"
+     ],
+     [
+      "Potency",
+      "12.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "28.0%"
+     ],
+     [
+      "Скорость атаки",
+      "89.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1911"
+     ],
+     [
+      "Реген маны",
+      "20.80/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки",
+      "1.06 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.340"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1688.2,
+     "Empyreal Blaze": 1688.2,
+     "Catharsis": 1656.0,
+     "Insanity": 1688.2,
+     "Clairvoyance": 1558.6
+    },
+    "glyphDps": {
+     "Fortitude": 1688.2,
+     "Unsealed Power": 1680.9,
+     "Fortune": 1511.8,
+     "Supremacy": 1511.8,
+     "Arc Striking": 1511.8,
+     "Battle Frenzy": 1484.7,
+     "Hellfire": 1605.4,
+     "Thunder": 1688.2,
+     "Blood Violence": 1532.3,
+     "Animosity": 1538.5,
+     "Glass Cannon": 1688.2,
+     "Mindhaste": 1453.8
+    }
+   },
+   {
+    "farm_dps": 1680.5,
+    "dps": 1680.5,
+    "total": 50416,
+    "manaLeft": 99.6,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 20,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 3679174,
+    "sources": [
+     [
+      "Sulfuras",
+      495.7
+     ],
+     [
+      "Mind Spike",
+      366.3
+     ],
+     [
+      "Thunder",
+      325.6
+     ],
+     [
+      "Smite",
+      224.5
+     ],
+     [
+      "Автоатака",
+      138.4
+     ],
+     [
+      "Empyreal Blaze",
+      118.6
+     ],
+     [
+      "Sulfuras (удар)",
+      11.5
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "7.53",
+      "Renew"
+     ],
+     [
+      "9.07",
+      "Radiance"
+     ],
+     [
+      "9.52",
+      "Mind Spike"
+     ],
+     [
+      "15.25",
+      "Renew"
+     ],
+     [
+      "18.34",
+      "Radiance"
+     ],
+     [
+      "18.79",
+      "Mind Spike"
+     ],
+     [
+      "22.97",
+      "Renew"
+     ],
+     [
+      "27.60",
+      "Radiance"
+     ],
+     [
+      "28.05",
+      "Mind Spike"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "262"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "31"
+     ],
+     [
+      "Сила атаки",
+      "246.5"
+     ],
+     [
+      "Potency",
+      "5.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "18.0%"
+     ],
+     [
+      "Скорость атаки",
+      "55.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2009"
+     ],
+     [
+      "Реген маны",
+      "21.92/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки",
+      "1.54 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.240"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1680.5,
+     "Empyreal Blaze": 1680.5,
+     "Catharsis": 1607.5,
+     "Insanity": 1680.5,
+     "Clairvoyance": 1492.0
+    },
+    "glyphDps": {
+     "Fortitude": 1680.5,
+     "Unsealed Power": 1639.4,
+     "Fortune": 1467.2,
+     "Supremacy": 1467.2,
+     "Arc Striking": 1467.2,
+     "Battle Frenzy": 1382.0,
+     "Hellfire": 1568.3,
+     "Thunder": 1680.5,
+     "Blood Violence": 1487.4,
+     "Animosity": 1484.3,
+     "Glass Cannon": 1680.5,
+     "Mindhaste": 1520.6
+    }
+   },
+   {
+    "farm_dps": 1676.9,
+    "dps": 1676.9,
+    "total": 50306,
+    "manaLeft": 99.5,
+    "bound_spell": null,
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 20,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 8012617,
+    "sources": [
+     [
+      "Sulfuras",
+      368.2
+     ],
+     [
+      "Всплеск огня",
+      286.0
+     ],
+     [
+      "Mind Spike",
+      270.5
+     ],
+     [
+      "Thunder",
+      263.2
+     ],
+     [
+      "Smite",
+      227.5
+     ],
+     [
+      "Автоатака",
+      148.2
+     ],
+     [
+      "Empyreal Blaze",
+      101.2
+     ],
+     [
+      "Sulfuras (удар)",
+      12.2
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "7.47",
+      "Renew"
+     ],
+     [
+      "8.69",
+      "Radiance"
+     ],
+     [
+      "9.14",
+      "Mind Spike"
+     ],
+     [
+      "14.81",
+      "Renew"
+     ],
+     [
+      "17.26",
+      "Radiance"
+     ],
+     [
+      "17.71",
+      "Mind Spike"
+     ],
+     [
+      "22.16",
+      "Renew"
+     ],
+     [
+      "25.83",
+      "Radiance"
+     ],
+     [
+      "26.28",
+      "Mind Spike"
+     ],
+     [
+      "29.50",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "258"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "31"
+     ],
+     [
+      "Сила атаки",
+      "243.5"
+     ],
+     [
+      "Potency",
+      "5.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "18.0%"
+     ],
+     [
+      "Скорость атаки",
+      "63.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1981"
+     ],
+     [
+      "Реген маны",
+      "22.24/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки",
+      "1.22 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.240"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1676.9,
+     "Empyreal Blaze": 1676.9,
+     "Catharsis": 1627.8,
+     "Insanity": 1676.9,
+     "Clairvoyance": 1528.2
+    },
+    "glyphDps": {
+     "Fortitude": 1676.9,
+     "Unsealed Power": 1655.8,
+     "Fortune": 1497.0,
+     "Supremacy": 1497.0,
+     "Arc Striking": 1497.0,
+     "Battle Frenzy": 1529.1,
+     "Hellfire": 1572.4,
+     "Thunder": 1676.9,
+     "Blood Violence": 1516.5,
+     "Animosity": 1514.8,
+     "Glass Cannon": 1676.9,
+     "Mindhaste": 1458.0
+    }
+   },
+   {
+    "farm_dps": 1662.2,
+    "dps": 1662.2,
+    "total": 49865,
+    "manaLeft": 99.4,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 20,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 3706511,
+    "sources": [
+     [
+      "Sulfuras",
+      429.9
+     ],
+     [
+      "Thunder",
+      312.9
+     ],
+     [
+      "Mind Spike",
+      307.7
+     ],
+     [
+      "Smite",
+      274.0
+     ],
+     [
+      "Автоатака",
+      199.1
+     ],
+     [
+      "Empyreal Blaze",
+      125.5
+     ],
+     [
+      "Sulfuras (удар)",
+      13.0
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "7.47",
+      "Renew"
+     ],
+     [
+      "8.69",
+      "Radiance"
+     ],
+     [
+      "9.14",
+      "Mind Spike"
+     ],
+     [
+      "14.81",
+      "Renew"
+     ],
+     [
+      "17.26",
+      "Radiance"
+     ],
+     [
+      "17.71",
+      "Mind Spike"
+     ],
+     [
+      "22.16",
+      "Renew"
+     ],
+     [
+      "25.83",
+      "Radiance"
+     ],
+     [
+      "26.28",
+      "Mind Spike"
+     ],
+     [
+      "29.50",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "217"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "31"
+     ],
+     [
+      "Сила атаки",
+      "221.8"
+     ],
+     [
+      "Potency",
+      "5.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "18.0%"
+     ],
+     [
+      "Скорость атаки",
+      "63.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1694"
+     ],
+     [
+      "Реген маны",
+      "18.96/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.22 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1662.2,
+     "Empyreal Blaze": 1662.2,
+     "Catharsis": 1584.1,
+     "Insanity": 1662.2,
+     "Clairvoyance": 1489.0
+    },
+    "glyphDps": {
+     "Fortitude": 1662.2,
+     "Unsealed Power": 1607.6,
+     "Fortune": 1447.1,
+     "Supremacy": 1447.1,
+     "Arc Striking": 1447.1,
+     "Battle Frenzy": 1453.3,
+     "Hellfire": 1535.8,
+     "Thunder": 1662.2,
+     "Blood Violence": 1466.6,
+     "Animosity": 1471.0,
+     "Glass Cannon": 1662.2,
+     "Mindhaste": 1406.6
+    }
+   },
+   {
+    "farm_dps": 1661.6,
+    "dps": 1661.6,
+    "total": 49848,
+    "manaLeft": 99.4,
+    "bound_spell": null,
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 20,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 8012320,
+    "sources": [
+     [
+      "Sulfuras",
+      365.4
+     ],
+     [
+      "Thunder",
+      266.0
+     ],
+     [
+      "Mind Spike",
+      261.5
+     ],
+     [
+      "Всплеск огня",
+      248.8
+     ],
+     [
+      "Smite",
+      232.9
+     ],
+     [
+      "Автоатака",
+      169.2
+     ],
+     [
+      "Empyreal Blaze",
+      106.7
+     ],
+     [
+      "Sulfuras (удар)",
+      11.1
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "7.47",
+      "Renew"
+     ],
+     [
+      "8.69",
+      "Radiance"
+     ],
+     [
+      "9.14",
+      "Mind Spike"
+     ],
+     [
+      "14.81",
+      "Renew"
+     ],
+     [
+      "17.26",
+      "Radiance"
+     ],
+     [
+      "17.71",
+      "Mind Spike"
+     ],
+     [
+      "22.16",
+      "Renew"
+     ],
+     [
+      "25.83",
+      "Radiance"
+     ],
+     [
+      "26.28",
+      "Mind Spike"
+     ],
+     [
+      "29.50",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "217"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "31"
+     ],
+     [
+      "Сила атаки",
+      "221.8"
+     ],
+     [
+      "Potency",
+      "5.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "18.0%"
+     ],
+     [
+      "Скорость атаки",
+      "63.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1694"
+     ],
+     [
+      "Реген маны",
+      "18.96/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.22 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1661.6,
+     "Empyreal Blaze": 1661.6,
+     "Catharsis": 1595.3,
+     "Insanity": 1661.6,
+     "Clairvoyance": 1514.4
+    },
+    "glyphDps": {
+     "Fortitude": 1661.6,
+     "Unsealed Power": 1615.2,
+     "Fortune": 1478.8,
+     "Supremacy": 1478.8,
+     "Arc Striking": 1478.8,
+     "Battle Frenzy": 1504.0,
+     "Hellfire": 1554.2,
+     "Thunder": 1661.6,
+     "Blood Violence": 1495.3,
+     "Animosity": 1499.1,
+     "Glass Cannon": 1661.6,
+     "Mindhaste": 1444.4
+    }
+   },
+   {
+    "farm_dps": 1655.0,
+    "dps": 1655.0,
+    "total": 49649,
+    "manaLeft": 99.1,
+    "bound_spell": null,
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 20,
+     "crit": 0,
+     "potency": 9,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 47180930,
+    "sources": [
+     [
+      "Sulfuras",
+      357.2
+     ],
+     [
+      "Всплеск огня",
+      275.3
+     ],
+     [
+      "Mind Spike",
+      268.9
+     ],
+     [
+      "Thunder",
+      255.4
+     ],
+     [
+      "Smite",
+      217.6
+     ],
+     [
+      "Автоатака",
+      184.4
+     ],
+     [
+      "Empyreal Blaze",
+      84.0
+     ],
+     [
+      "Sulfuras (удар)",
+      12.2
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "7.80",
+      "Renew"
+     ],
+     [
+      "9.09",
+      "Radiance"
+     ],
+     [
+      "9.54",
+      "Mind Spike"
+     ],
+     [
+      "14.25",
+      "Renew"
+     ],
+     [
+      "18.12",
+      "Radiance"
+     ],
+     [
+      "18.57",
+      "Mind Spike"
+     ],
+     [
+      "20.70",
+      "Renew"
+     ],
+     [
+      "27.16",
+      "Radiance"
+     ],
+     [
+      "27.61",
+      "Mind Spike"
+     ],
+     [
+      "28.06",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "260"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "254.0"
+     ],
+     [
+      "Potency",
+      "4.5"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "25.0%"
+     ],
+     [
+      "Скорость атаки",
+      "55.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1995"
+     ],
+     [
+      "Реген маны",
+      "21.76/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.29 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.340"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1655.0,
+     "Empyreal Blaze": 1655.0,
+     "Catharsis": 1612.9,
+     "Insanity": 1655.0,
+     "Clairvoyance": 1515.4
+    },
+    "glyphDps": {
+     "Fortitude": 1655.0,
+     "Unsealed Power": 1636.5,
+     "Fortune": 1476.6,
+     "Supremacy": 1476.6,
+     "Arc Striking": 1476.6,
+     "Battle Frenzy": 1378.5,
+     "Hellfire": 1550.3,
+     "Thunder": 1655.0,
+     "Blood Violence": 1495.4,
+     "Animosity": 1498.7,
+     "Glass Cannon": 1655.0,
+     "Mindhaste": 1439.6
+    }
+   },
+   {
+    "farm_dps": 1649.0,
+    "dps": 1649.0,
+    "total": 49470,
+    "manaLeft": 98.5,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Infinity Breaker",
+      "code": "I0NI",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 20,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 3656511,
+    "sources": [
+     [
+      "Sulfuras",
+      426.1
+     ],
+     [
+      "Thunder",
+      312.0
+     ],
+     [
+      "Mind Spike",
+      303.5
+     ],
+     [
+      "Smite",
+      278.4
+     ],
+     [
+      "Автоатака",
+      205.2
+     ],
+     [
+      "Empyreal Blaze",
+      110.2
+     ],
+     [
+      "Sulfuras (удар)",
+      13.5
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "7.18",
+      "Renew"
+     ],
+     [
+      "8.35",
+      "Radiance"
+     ],
+     [
+      "8.80",
+      "Mind Spike"
+     ],
+     [
+      "14.19",
+      "Renew"
+     ],
+     [
+      "17.69",
+      "Radiance"
+     ],
+     [
+      "18.14",
+      "Mind Spike"
+     ],
+     [
+      "21.19",
+      "Renew"
+     ],
+     [
+      "27.02",
+      "Radiance"
+     ],
+     [
+      "27.47",
+      "Mind Spike"
+     ],
+     [
+      "27.92",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "215"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "31"
+     ],
+     [
+      "Сила атаки",
+      "220.2"
+     ],
+     [
+      "Potency",
+      "5.0"
+     ],
+     [
+      "Mastery",
+      "18"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "18.0%"
+     ],
+     [
+      "Скорость атаки",
+      "71.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1680"
+     ],
+     [
+      "Реген маны",
+      "18.16/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.17 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1649.0,
+     "Empyreal Blaze": 1649.0,
+     "Catharsis": 1573.8,
+     "Insanity": 1649.0,
+     "Clairvoyance": 1478.9
+    },
+    "glyphDps": {
+     "Fortitude": 1649.0,
+     "Unsealed Power": 1595.0,
+     "Fortune": 1435.7,
+     "Supremacy": 1435.7,
+     "Arc Striking": 1435.7,
+     "Battle Frenzy": 1459.1,
+     "Hellfire": 1524.1,
+     "Thunder": 1649.0,
+     "Blood Violence": 1454.7,
+     "Animosity": 1460.3,
+     "Glass Cannon": 1649.0,
+     "Mindhaste": 1459.0
+    }
+   },
+   {
+    "farm_dps": 1644.9,
+    "dps": 1644.9,
+    "total": 49348,
+    "manaLeft": 99.2,
+    "bound_spell": "Radiance",
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 20,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 247518306,
+    "sources": [
+     [
+      "Sulfuras",
+      422.2
+     ],
+     [
+      "Всплеск огня",
+      275.3
+     ],
+     [
+      "Mind Spike",
+      242.3
+     ],
+     [
+      "Thunder",
+      235.9
+     ],
+     [
+      "Автоатака",
+      185.1
+     ],
+     [
+      "Smite",
+      160.9
+     ],
+     [
+      "Empyreal Blaze",
+      111.1
+     ],
+     [
+      "Sulfuras (удар)",
+      12.0
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Radiance"
+     ],
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "6.48",
+      "Radiance"
+     ],
+     [
+      "7.77",
+      "Renew"
+     ],
+     [
+      "10.34",
+      "Mind Spike"
+     ],
+     [
+      "12.90",
+      "Radiance"
+     ],
+     [
+      "15.47",
+      "Renew"
+     ],
+     [
+      "19.32",
+      "Radiance"
+     ],
+     [
+      "19.77",
+      "Mind Spike"
+     ],
+     [
+      "23.17",
+      "Renew"
+     ],
+     [
+      "25.74",
+      "Radiance"
+     ],
+     [
+      "29.59",
+      "Mind Spike"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "255"
+     ],
+     [
+      "Сила",
+      "37"
+     ],
+     [
+      "Ловкость",
+      "32"
+     ],
+     [
+      "Сила атаки",
+      "250.2"
+     ],
+     [
+      "Potency",
+      "5.0"
+     ],
+     [
+      "Mastery",
+      "18"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "18.0%"
+     ],
+     [
+      "Скорость атаки",
+      "55.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1960"
+     ],
+     [
+      "Реген маны",
+      "21.36/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.28 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.340"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Radiance"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1644.9,
+     "Empyreal Blaze": 1644.9,
+     "Catharsis": 1615.7,
+     "Insanity": 1644.9,
+     "Clairvoyance": 1506.8
+    },
+    "glyphDps": {
+     "Fortitude": 1644.9,
+     "Unsealed Power": 1637.0,
+     "Fortune": 1467.8,
+     "Supremacy": 1467.8,
+     "Arc Striking": 1467.8,
+     "Battle Frenzy": 1509.1,
+     "Hellfire": 1544.0,
+     "Thunder": 1644.9,
+     "Blood Violence": 1488.6,
+     "Animosity": 1490.1,
+     "Glass Cannon": 1644.9,
+     "Mindhaste": 1607.0
+    }
+   },
+   {
+    "farm_dps": 1640.3,
+    "dps": 1640.3,
+    "total": 49208,
+    "manaLeft": 100.0,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Infinity Breaker",
+      "code": "I0NI",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 10,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 3555405,
+    "sources": [
+     [
+      "Sulfuras",
+      470.9
+     ],
+     [
+      "Thunder",
+      310.4
+     ],
+     [
+      "Smite",
+      292.5
+     ],
+     [
+      "Mind Spike",
+      261.1
+     ],
+     [
+      "Empyreal Blaze",
+      158.7
+     ],
+     [
+      "Автоатака",
+      137.9
+     ],
+     [
+      "Sulfuras (удар)",
+      8.8
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "6.95",
+      "Renew"
+     ],
+     [
+      "8.35",
+      "Radiance"
+     ],
+     [
+      "8.80",
+      "Mind Spike"
+     ],
+     [
+      "12.55",
+      "Renew"
+     ],
+     [
+      "16.75",
+      "Radiance"
+     ],
+     [
+      "17.20",
+      "Mind Spike"
+     ],
+     [
+      "18.15",
+      "Renew"
+     ],
+     [
+      "23.75",
+      "Renew"
+     ],
+     [
+      "25.15",
+      "Radiance"
+     ],
+     [
+      "25.60",
+      "Mind Spike"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "176"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "31"
+     ],
+     [
+      "Сила атаки",
+      "171.0"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "28"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "18.0%"
+     ],
+     [
+      "Скорость атаки",
+      "71.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1407"
+     ],
+     [
+      "Реген маны",
+      "15.04/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки",
+      "1.40 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1640.3,
+     "Empyreal Blaze": 1640.3,
+     "Catharsis": 1547.4,
+     "Insanity": 1640.3,
+     "Clairvoyance": 1456.5
+    },
+    "glyphDps": {
+     "Fortitude": 1640.3,
+     "Unsealed Power": 1562.8,
+     "Fortune": 1427.5,
+     "Supremacy": 1427.5,
+     "Arc Striking": 1427.5,
+     "Battle Frenzy": 1441.4,
+     "Hellfire": 1531.5,
+     "Thunder": 1640.3,
+     "Blood Violence": 1443.3,
+     "Animosity": 1444.0,
+     "Glass Cannon": 1640.3,
+     "Mindhaste": 1399.8
+    }
+   }
+  ],
+  "shop": [
+   {
+    "farm_dps": 1688.2,
+    "dps": 1688.2,
+    "total": 50647,
+    "manaLeft": 100.0,
+    "bound_spell": null,
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 2,
+     "damage": 20,
+     "crit": 0,
+     "potency": 8,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 27887437,
+    "sources": [
+     [
+      "Sulfuras",
+      356.0
+     ],
+     [
+      "Всплеск огня",
+      321.4
+     ],
+     [
+      "Mind Spike",
+      235.7
+     ],
+     [
+      "Thunder",
+      230.5
+     ],
+     [
+      "Автоатака",
+      222.3
+     ],
+     [
+      "Smite",
+      200.4
+     ],
+     [
+      "Empyreal Blaze",
+      107.6
+     ],
+     [
+      "Sulfuras (удар)",
+      14.3
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "7.70",
+      "Renew"
+     ],
+     [
+      "8.76",
+      "Radiance"
+     ],
+     [
+      "9.21",
+      "Mind Spike"
+     ],
+     [
+      "14.05",
+      "Renew"
+     ],
+     [
+      "17.22",
+      "Radiance"
+     ],
+     [
+      "17.67",
+      "Mind Spike"
+     ],
+     [
+      "20.40",
+      "Renew"
+     ],
+     [
+      "25.69",
+      "Radiance"
+     ],
+     [
+      "26.14",
+      "Mind Spike"
+     ],
+     [
+      "26.75",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "248"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "245.0"
+     ],
+     [
+      "Potency",
+      "12.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "28.0%"
+     ],
+     [
+      "Скорость атаки",
+      "89.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1911"
+     ],
+     [
+      "Реген маны",
+      "20.80/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки",
+      "1.06 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.340"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1688.2,
+     "Empyreal Blaze": 1688.2,
+     "Catharsis": 1656.0,
+     "Insanity": 1688.2,
+     "Clairvoyance": 1558.6
+    },
+    "glyphDps": {
+     "Fortitude": 1688.2,
+     "Unsealed Power": 1680.9,
+     "Fortune": 1511.8,
+     "Supremacy": 1511.8,
+     "Arc Striking": 1511.8,
+     "Battle Frenzy": 1484.7,
+     "Hellfire": 1605.4,
+     "Thunder": 1688.2,
+     "Blood Violence": 1532.3,
+     "Animosity": 1538.5,
+     "Glass Cannon": 1688.2,
+     "Mindhaste": 1453.8
+    }
+   },
+   {
+    "farm_dps": 1655.0,
+    "dps": 1655.0,
+    "total": 49649,
+    "manaLeft": 99.1,
+    "bound_spell": null,
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 20,
+     "crit": 0,
+     "potency": 9,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 47180930,
+    "sources": [
+     [
+      "Sulfuras",
+      357.2
+     ],
+     [
+      "Всплеск огня",
+      275.3
+     ],
+     [
+      "Mind Spike",
+      268.9
+     ],
+     [
+      "Thunder",
+      255.4
+     ],
+     [
+      "Smite",
+      217.6
+     ],
+     [
+      "Автоатака",
+      184.4
+     ],
+     [
+      "Empyreal Blaze",
+      84.0
+     ],
+     [
+      "Sulfuras (удар)",
+      12.2
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "7.80",
+      "Renew"
+     ],
+     [
+      "9.09",
+      "Radiance"
+     ],
+     [
+      "9.54",
+      "Mind Spike"
+     ],
+     [
+      "14.25",
+      "Renew"
+     ],
+     [
+      "18.12",
+      "Radiance"
+     ],
+     [
+      "18.57",
+      "Mind Spike"
+     ],
+     [
+      "20.70",
+      "Renew"
+     ],
+     [
+      "27.16",
+      "Radiance"
+     ],
+     [
+      "27.61",
+      "Mind Spike"
+     ],
+     [
+      "28.06",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "260"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "254.0"
+     ],
+     [
+      "Potency",
+      "4.5"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "25.0%"
+     ],
+     [
+      "Скорость атаки",
+      "55.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1995"
+     ],
+     [
+      "Реген маны",
+      "21.76/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.29 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.340"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1655.0,
+     "Empyreal Blaze": 1655.0,
+     "Catharsis": 1612.9,
+     "Insanity": 1655.0,
+     "Clairvoyance": 1515.4
+    },
+    "glyphDps": {
+     "Fortitude": 1655.0,
+     "Unsealed Power": 1636.5,
+     "Fortune": 1476.6,
+     "Supremacy": 1476.6,
+     "Arc Striking": 1476.6,
+     "Battle Frenzy": 1378.5,
+     "Hellfire": 1550.3,
+     "Thunder": 1655.0,
+     "Blood Violence": 1495.4,
+     "Animosity": 1498.7,
+     "Glass Cannon": 1655.0,
+     "Mindhaste": 1439.6
+    }
+   },
+   {
+    "farm_dps": 1644.9,
+    "dps": 1644.9,
+    "total": 49348,
+    "manaLeft": 99.2,
+    "bound_spell": "Radiance",
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 20,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 247518306,
+    "sources": [
+     [
+      "Sulfuras",
+      422.2
+     ],
+     [
+      "Всплеск огня",
+      275.3
+     ],
+     [
+      "Mind Spike",
+      242.3
+     ],
+     [
+      "Thunder",
+      235.9
+     ],
+     [
+      "Автоатака",
+      185.1
+     ],
+     [
+      "Smite",
+      160.9
+     ],
+     [
+      "Empyreal Blaze",
+      111.1
+     ],
+     [
+      "Sulfuras (удар)",
+      12.0
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Radiance"
+     ],
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "6.48",
+      "Radiance"
+     ],
+     [
+      "7.77",
+      "Renew"
+     ],
+     [
+      "10.34",
+      "Mind Spike"
+     ],
+     [
+      "12.90",
+      "Radiance"
+     ],
+     [
+      "15.47",
+      "Renew"
+     ],
+     [
+      "19.32",
+      "Radiance"
+     ],
+     [
+      "19.77",
+      "Mind Spike"
+     ],
+     [
+      "23.17",
+      "Renew"
+     ],
+     [
+      "25.74",
+      "Radiance"
+     ],
+     [
+      "29.59",
+      "Mind Spike"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "255"
+     ],
+     [
+      "Сила",
+      "37"
+     ],
+     [
+      "Ловкость",
+      "32"
+     ],
+     [
+      "Сила атаки",
+      "250.2"
+     ],
+     [
+      "Potency",
+      "5.0"
+     ],
+     [
+      "Mastery",
+      "18"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "18.0%"
+     ],
+     [
+      "Скорость атаки",
+      "55.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1960"
+     ],
+     [
+      "Реген маны",
+      "21.36/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.28 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.340"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Radiance"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1644.9,
+     "Empyreal Blaze": 1644.9,
+     "Catharsis": 1615.7,
+     "Insanity": 1644.9,
+     "Clairvoyance": 1506.8
+    },
+    "glyphDps": {
+     "Fortitude": 1644.9,
+     "Unsealed Power": 1637.0,
+     "Fortune": 1467.8,
+     "Supremacy": 1467.8,
+     "Arc Striking": 1467.8,
+     "Battle Frenzy": 1509.1,
+     "Hellfire": 1544.0,
+     "Thunder": 1644.9,
+     "Blood Violence": 1488.6,
+     "Animosity": 1490.1,
+     "Glass Cannon": 1644.9,
+     "Mindhaste": 1607.0
+    }
+   },
+   {
+    "farm_dps": 1625.0,
+    "dps": 1625.0,
+    "total": 48750,
+    "manaLeft": 100.0,
+    "bound_spell": null,
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Thunder",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 20,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 27887453,
+    "sources": [
+     [
+      "Всплеск огня",
+      351.9
+     ],
+     [
+      "Sulfuras",
+      341.9
+     ],
+     [
+      "Mind Spike",
+      230.3
+     ],
+     [
+      "Thunder",
+      215.3
+     ],
+     [
+      "Автоатака",
+      191.8
+     ],
+     [
+      "Smite",
+      186.6
+     ],
+     [
+      "Empyreal Blaze",
+      92.1
+     ],
+     [
+      "Sulfuras (удар)",
+      15.0
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "7.84",
+      "Renew"
+     ],
+     [
+      "8.92",
+      "Radiance"
+     ],
+     [
+      "9.37",
+      "Mind Spike"
+     ],
+     [
+      "14.32",
+      "Renew"
+     ],
+     [
+      "17.57",
+      "Radiance"
+     ],
+     [
+      "18.02",
+      "Mind Spike"
+     ],
+     [
+      "20.81",
+      "Renew"
+     ],
+     [
+      "26.21",
+      "Radiance"
+     ],
+     [
+      "26.66",
+      "Mind Spike"
+     ],
+     [
+      "27.30",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "289"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "266.8"
+     ],
+     [
+      "Potency",
+      "13.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "28.0%"
+     ],
+     [
+      "Скорость атаки",
+      "85.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2198"
+     ],
+     [
+      "Реген маны",
+      "24.08/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки",
+      "1.08 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.360"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1625.0,
+     "Empyreal Blaze": 1625.0,
+     "Catharsis": 1599.8,
+     "Insanity": 1625.0,
+     "Clairvoyance": 1501.3
+    },
+    "glyphDps": {
+     "Fortitude": 1625.0,
+     "Unsealed Power": 1625.0,
+     "Fortune": 1449.0,
+     "Supremacy": 1449.0,
+     "Arc Striking": 1449.0,
+     "Battle Frenzy": 1444.8,
+     "Hellfire": 1544.7,
+     "Thunder": 1625.0,
+     "Blood Violence": 1469.5,
+     "Animosity": 1473.1,
+     "Glass Cannon": 1616.7,
+     "Mindhaste": 1415.9
+    }
+   },
+   {
+    "farm_dps": 1597.1,
+    "dps": 1597.1,
+    "total": 47913,
+    "manaLeft": 98.6,
+    "bound_spell": null,
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Infinity Breaker",
+      "code": "I0NI",
+      "source": "shop"
+     },
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Thunder",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 20,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 8009017,
+    "sources": [
+     [
+      "Sulfuras",
+      343.8
+     ],
+     [
+      "Всплеск огня",
+      318.3
+     ],
+     [
+      "Mind Spike",
+      230.4
+     ],
+     [
+      "Thunder",
+      216.3
+     ],
+     [
+      "Автоатака",
+      208.3
+     ],
+     [
+      "Smite",
+      191.5
+     ],
+     [
+      "Empyreal Blaze",
+      73.5
+     ],
+     [
+      "Sulfuras (удар)",
+      15.0
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "8.14",
+      "Renew"
+     ],
+     [
+      "9.28",
+      "Radiance"
+     ],
+     [
+      "9.73",
+      "Mind Spike"
+     ],
+     [
+      "14.94",
+      "Renew"
+     ],
+     [
+      "18.34",
+      "Radiance"
+     ],
+     [
+      "18.79",
+      "Mind Spike"
+     ],
+     [
+      "21.73",
+      "Renew"
+     ],
+     [
+      "27.40",
+      "Radiance"
+     ],
+     [
+      "27.85",
+      "Mind Spike"
+     ],
+     [
+      "28.53",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "244"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "256.0"
+     ],
+     [
+      "Potency",
+      "5.0"
+     ],
+     [
+      "Mastery",
+      "18"
+     ],
+     [
+      "Шанс крита",
+      "12%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "10.0%"
+     ],
+     [
+      "Скорость атаки",
+      "76.6%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1883"
+     ],
+     [
+      "Реген маны",
+      "20.48/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.13 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.240"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "3"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1597.1,
+     "Empyreal Blaze": 1597.1,
+     "Catharsis": 1557.5,
+     "Insanity": 1597.1,
+     "Clairvoyance": 1244.5
+    },
+    "glyphDps": {
+     "Fortitude": 1597.1,
+     "Unsealed Power": 1597.1,
+     "Fortune": 1419.2,
+     "Supremacy": 1419.2,
+     "Arc Striking": 1419.2,
+     "Battle Frenzy": 1323.7,
+     "Hellfire": 1500.0,
+     "Thunder": 1597.1,
+     "Blood Violence": 1439.4,
+     "Animosity": 1358.3,
+     "Glass Cannon": 1582.1,
+     "Mindhaste": 1385.7
+    }
+   },
+   {
+    "farm_dps": 1596.1,
+    "dps": 1596.1,
+    "total": 47882,
+    "manaLeft": 97.8,
+    "bound_spell": null,
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Infinity Breaker",
+      "code": "I0NI",
+      "source": "shop"
+     },
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 20,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 8006482,
+    "sources": [
+     [
+      "Sulfuras",
+      343.2
+     ],
+     [
+      "Всплеск огня",
+      274.9
+     ],
+     [
+      "Автоатака",
+      232.8
+     ],
+     [
+      "Mind Spike",
+      227.9
+     ],
+     [
+      "Thunder",
+      222.9
+     ],
+     [
+      "Smite",
+      200.4
+     ],
+     [
+      "Empyreal Blaze",
+      80.2
+     ],
+     [
+      "Sulfuras (удар)",
+      13.7
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "8.14",
+      "Renew"
+     ],
+     [
+      "9.28",
+      "Radiance"
+     ],
+     [
+      "9.73",
+      "Mind Spike"
+     ],
+     [
+      "14.94",
+      "Renew"
+     ],
+     [
+      "18.34",
+      "Radiance"
+     ],
+     [
+      "18.79",
+      "Mind Spike"
+     ],
+     [
+      "21.73",
+      "Renew"
+     ],
+     [
+      "27.40",
+      "Radiance"
+     ],
+     [
+      "27.85",
+      "Mind Spike"
+     ],
+     [
+      "28.53",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "203"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "234.2"
+     ],
+     [
+      "Potency",
+      "5.0"
+     ],
+     [
+      "Mastery",
+      "18"
+     ],
+     [
+      "Шанс крита",
+      "12%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "10.0%"
+     ],
+     [
+      "Скорость атаки",
+      "76.6%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1596"
+     ],
+     [
+      "Реген маны",
+      "17.20/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.13 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "3"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1596.1,
+     "Empyreal Blaze": 1596.1,
+     "Catharsis": 1550.8,
+     "Insanity": 1596.1,
+     "Clairvoyance": 1255.1
+    },
+    "glyphDps": {
+     "Fortitude": 1596.1,
+     "Unsealed Power": 1577.8,
+     "Fortune": 1425.5,
+     "Supremacy": 1425.5,
+     "Arc Striking": 1425.5,
+     "Battle Frenzy": 1418.7,
+     "Hellfire": 1506.3,
+     "Thunder": 1596.1,
+     "Blood Violence": 1442.6,
+     "Animosity": 1368.9,
+     "Glass Cannon": 1596.1,
+     "Mindhaste": 1394.7
+    }
+   },
+   {
+    "farm_dps": 1590.3,
+    "dps": 1590.3,
+    "total": 47709,
+    "manaLeft": 99.2,
+    "bound_spell": null,
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Thunder",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 20,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 47180946,
+    "sources": [
+     [
+      "Sulfuras",
+      340.2
+     ],
+     [
+      "Всплеск огня",
+      296.9
+     ],
+     [
+      "Mind Spike",
+      263.8
+     ],
+     [
+      "Thunder",
+      239.5
+     ],
+     [
+      "Smite",
+      203.4
+     ],
+     [
+      "Автоатака",
+      156.9
+     ],
+     [
+      "Empyreal Blaze",
+      76.9
+     ],
+     [
+      "Sulfuras (удар)",
+      12.6
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "7.89",
+      "Renew"
+     ],
+     [
+      "9.19",
+      "Radiance"
+     ],
+     [
+      "9.64",
+      "Mind Spike"
+     ],
+     [
+      "14.42",
+      "Renew"
+     ],
+     [
+      "18.34",
+      "Radiance"
+     ],
+     [
+      "18.79",
+      "Mind Spike"
+     ],
+     [
+      "20.96",
+      "Renew"
+     ],
+     [
+      "27.49",
+      "Radiance"
+     ],
+     [
+      "27.94",
+      "Mind Spike"
+     ],
+     [
+      "28.39",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "301"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "275.8"
+     ],
+     [
+      "Potency",
+      "5.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "25.0%"
+     ],
+     [
+      "Скорость атаки",
+      "53.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2282"
+     ],
+     [
+      "Реген маны",
+      "25.04/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.31 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.360"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1590.3,
+     "Empyreal Blaze": 1590.3,
+     "Catharsis": 1555.2,
+     "Insanity": 1590.3,
+     "Clairvoyance": 1456.3
+    },
+    "glyphDps": {
+     "Fortitude": 1590.3,
+     "Unsealed Power": 1590.3,
+     "Fortune": 1418.3,
+     "Supremacy": 1418.3,
+     "Arc Striking": 1418.3,
+     "Battle Frenzy": 1336.7,
+     "Hellfire": 1493.0,
+     "Thunder": 1590.3,
+     "Blood Violence": 1437.2,
+     "Animosity": 1437.9,
+     "Glass Cannon": 1589.0,
+     "Mindhaste": 1380.7
+    }
+   },
+   {
+    "farm_dps": 1576.8,
+    "dps": 1576.8,
+    "total": 47305,
+    "manaLeft": 97.8,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Infinity Breaker",
+      "code": "I0NI",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 20,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 3656527,
+    "sources": [
+     [
+      "Sulfuras",
+      409.7
+     ],
+     [
+      "Автоатака",
+      277.9
+     ],
+     [
+      "Mind Spike",
+      272.0
+     ],
+     [
+      "Thunder",
+      266.0
+     ],
+     [
+      "Smite",
+      239.2
+     ],
+     [
+      "Empyreal Blaze",
+      95.7
+     ],
+     [
+      "Sulfuras (удар)",
+      16.4
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "8.14",
+      "Renew"
+     ],
+     [
+      "9.28",
+      "Radiance"
+     ],
+     [
+      "9.73",
+      "Mind Spike"
+     ],
+     [
+      "14.94",
+      "Renew"
+     ],
+     [
+      "18.34",
+      "Radiance"
+     ],
+     [
+      "18.79",
+      "Mind Spike"
+     ],
+     [
+      "21.73",
+      "Renew"
+     ],
+     [
+      "27.40",
+      "Radiance"
+     ],
+     [
+      "27.85",
+      "Mind Spike"
+     ],
+     [
+      "28.53",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "203"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "234.2"
+     ],
+     [
+      "Potency",
+      "5.0"
+     ],
+     [
+      "Mastery",
+      "18"
+     ],
+     [
+      "Шанс крита",
+      "12%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "10.0%"
+     ],
+     [
+      "Скорость атаки",
+      "76.6%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1596"
+     ],
+     [
+      "Реген маны",
+      "17.20/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.13 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "9"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1576.8,
+     "Empyreal Blaze": 1576.8,
+     "Catharsis": 1522.8,
+     "Insanity": 1576.8,
+     "Clairvoyance": 1171.7
+    },
+    "glyphDps": {
+     "Fortitude": 1576.8,
+     "Unsealed Power": 1555.1,
+     "Fortune": 1373.3,
+     "Supremacy": 1373.3,
+     "Arc Striking": 1373.3,
+     "Battle Frenzy": 1341.6,
+     "Hellfire": 1469.7,
+     "Thunder": 1576.8,
+     "Blood Violence": 1393.7,
+     "Animosity": 1294.4,
+     "Glass Cannon": 1576.8,
+     "Mindhaste": 1336.5
+    }
+   },
+   {
+    "farm_dps": 1544.2,
+    "dps": 1544.2,
+    "total": 46327,
+    "manaLeft": 98.9,
+    "bound_spell": null,
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Earthshaper",
+      "code": "I0AL",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 20,
+     "crit": 0,
+     "potency": 9,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 8121161,
+    "sources": [
+     [
+      "Sulfuras",
+      315.5
+     ],
+     [
+      "Всплеск огня",
+      264.9
+     ],
+     [
+      "Mind Spike",
+      247.1
+     ],
+     [
+      "Thunder",
+      226.5
+     ],
+     [
+      "Автоатака",
+      207.7
+     ],
+     [
+      "Smite",
+      194.5
+     ],
+     [
+      "Empyreal Blaze",
+      75.4
+     ],
+     [
+      "Sulfuras (удар)",
+      12.7
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "7.80",
+      "Renew"
+     ],
+     [
+      "9.09",
+      "Radiance"
+     ],
+     [
+      "9.54",
+      "Mind Spike"
+     ],
+     [
+      "14.25",
+      "Renew"
+     ],
+     [
+      "18.12",
+      "Radiance"
+     ],
+     [
+      "18.57",
+      "Mind Spike"
+     ],
+     [
+      "20.70",
+      "Renew"
+     ],
+     [
+      "27.16",
+      "Radiance"
+     ],
+     [
+      "27.61",
+      "Mind Spike"
+     ],
+     [
+      "28.06",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "248"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "265.0"
+     ],
+     [
+      "Potency",
+      "4.5"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "25.0%"
+     ],
+     [
+      "Скорость атаки",
+      "55.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1911"
+     ],
+     [
+      "Реген маны",
+      "20.80/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.29 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.340"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1544.2,
+     "Empyreal Blaze": 1544.2,
+     "Catharsis": 1514.6,
+     "Insanity": 1544.2,
+     "Clairvoyance": 1422.7
+    },
+    "glyphDps": {
+     "Fortitude": 1544.2,
+     "Unsealed Power": 1535.4,
+     "Fortune": 1379.0,
+     "Supremacy": 1379.0,
+     "Arc Striking": 1379.0,
+     "Battle Frenzy": 1294.3,
+     "Hellfire": 1452.7,
+     "Thunder": 1544.2,
+     "Blood Violence": 1397.0,
+     "Animosity": 1403.9,
+     "Glass Cannon": 1544.2,
+     "Mindhaste": 1346.7
+    }
+   },
+   {
+    "farm_dps": 1544.2,
+    "dps": 1544.2,
+    "total": 46325,
+    "manaLeft": 97.5,
+    "bound_spell": null,
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 20,
+     "crit": 0,
+     "potency": 9,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 8045757,
+    "sources": [
+     [
+      "Sulfuras",
+      287.9
+     ],
+     [
+      "Всплеск огня",
+      277.5
+     ],
+     [
+      "Mind Spike",
+      255.2
+     ],
+     [
+      "Thunder",
+      239.7
+     ],
+     [
+      "Smite",
+      211.1
+     ],
+     [
+      "Автоатака",
+      186.5
+     ],
+     [
+      "Empyreal Blaze",
+      74.1
+     ],
+     [
+      "Sulfuras (удар)",
+      12.3
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "7.56",
+      "Renew"
+     ],
+     [
+      "8.80",
+      "Radiance"
+     ],
+     [
+      "9.25",
+      "Mind Spike"
+     ],
+     [
+      "15.01",
+      "Renew"
+     ],
+     [
+      "18.74",
+      "Radiance"
+     ],
+     [
+      "19.19",
+      "Mind Spike"
+     ],
+     [
+      "22.47",
+      "Renew"
+     ],
+     [
+      "28.68",
+      "Radiance"
+     ],
+     [
+      "29.13",
+      "Mind Spike"
+     ],
+     [
+      "29.58",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "263"
+     ],
+     [
+      "Сила",
+      "45"
+     ],
+     [
+      "Ловкость",
+      "40"
+     ],
+     [
+      "Сила атаки",
+      "256.2"
+     ],
+     [
+      "Potency",
+      "4.5"
+     ],
+     [
+      "Mastery",
+      "25"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "22.0%"
+     ],
+     [
+      "Скорость атаки",
+      "61.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2016"
+     ],
+     [
+      "Реген маны",
+      "22.00/с"
+     ],
+     [
+      "Мана в конце",
+      "97%"
+     ],
+     [
+      "Интервал атаки",
+      "1.24 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.340"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1544.2,
+     "Empyreal Blaze": 1544.2,
+     "Catharsis": 1515.1,
+     "Insanity": 1544.2,
+     "Clairvoyance": 1419.8
+    },
+    "glyphDps": {
+     "Fortitude": 1544.2,
+     "Unsealed Power": 1537.1,
+     "Fortune": 1380.6,
+     "Supremacy": 1380.6,
+     "Arc Striking": 1380.6,
+     "Battle Frenzy": 1464.0,
+     "Hellfire": 1454.1,
+     "Thunder": 1544.2,
+     "Blood Violence": 1399.0,
+     "Animosity": 1402.9,
+     "Glass Cannon": 1544.2,
+     "Mindhaste": 1441.6
+    }
+   }
+  ],
+  "drop": [
+   {
+    "farm_dps": 1394.6,
+    "dps": 1394.6,
+    "total": 41837,
+    "manaLeft": 97.7,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sinister Deathblade",
+      "code": "ram1",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 10,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 114944445,
+    "sources": [
+     [
+      "Sulfuras",
+      367.5
+     ],
+     [
+      "Smite",
+      264.6
+     ],
+     [
+      "Thunder",
+      259.7
+     ],
+     [
+      "Mind Spike",
+      232.4
+     ],
+     [
+      "Автоатака",
+      129.1
+     ],
+     [
+      "Empyreal Blaze",
+      116.9
+     ],
+     [
+      "Удар тьмы",
+      14.3
+     ],
+     [
+      "Sulfuras (удар)",
+      10.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "5.90",
+      "Renew"
+     ],
+     [
+      "7.03",
+      "Radiance"
+     ],
+     [
+      "7.48",
+      "Mind Spike"
+     ],
+     [
+      "11.58",
+      "Renew"
+     ],
+     [
+      "13.85",
+      "Radiance"
+     ],
+     [
+      "14.30",
+      "Mind Spike"
+     ],
+     [
+      "17.26",
+      "Renew"
+     ],
+     [
+      "20.67",
+      "Radiance"
+     ],
+     [
+      "21.12",
+      "Mind Spike"
+     ],
+     [
+      "22.94",
+      "Renew"
+     ],
+     [
+      "27.49",
+      "Radiance"
+     ],
+     [
+      "27.94",
+      "Mind Spike"
+     ],
+     [
+      "28.39",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "197"
+     ],
+     [
+      "Сила",
+      "49"
+     ],
+     [
+      "Ловкость",
+      "50"
+     ],
+     [
+      "Сила атаки",
+      "187.8"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "13.0%"
+     ],
+     [
+      "Скорость атаки",
+      "76.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1554"
+     ],
+     [
+      "Реген маны",
+      "17.36/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.14 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1394.6,
+     "Empyreal Blaze": 1394.6,
+     "Catharsis": 1343.5,
+     "Insanity": 1394.6,
+     "Clairvoyance": 1244.2
+    },
+    "glyphDps": {
+     "Fortitude": 1394.6,
+     "Unsealed Power": 1373.2,
+     "Fortune": 1214.0,
+     "Supremacy": 1214.0,
+     "Arc Striking": 1214.0,
+     "Battle Frenzy": 1036.0,
+     "Hellfire": 1303.1,
+     "Thunder": 1394.6,
+     "Blood Violence": 1232.1,
+     "Animosity": 1231.2,
+     "Glass Cannon": 1394.6,
+     "Mindhaste": 1143.0
+    }
+   },
+   {
+    "farm_dps": 1365.3,
+    "dps": 1365.3,
+    "total": 40959,
+    "manaLeft": 96.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Dinokeeper's Axe",
+      "code": "I04Q",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 10,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 118625985,
+    "sources": [
+     [
+      "Sulfuras",
+      367.5
+     ],
+     [
+      "Smite",
+      264.6
+     ],
+     [
+      "Thunder",
+      259.7
+     ],
+     [
+      "Mind Spike",
+      230.8
+     ],
+     [
+      "Автоатака",
+      122.7
+     ],
+     [
+      "Empyreal Blaze",
+      110.4
+     ],
+     [
+      "Sulfuras (удар)",
+      9.7
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "6.03",
+      "Renew"
+     ],
+     [
+      "7.20",
+      "Radiance"
+     ],
+     [
+      "7.65",
+      "Mind Spike"
+     ],
+     [
+      "11.88",
+      "Renew"
+     ],
+     [
+      "14.22",
+      "Radiance"
+     ],
+     [
+      "14.67",
+      "Mind Spike"
+     ],
+     [
+      "17.72",
+      "Renew"
+     ],
+     [
+      "21.23",
+      "Radiance"
+     ],
+     [
+      "21.68",
+      "Mind Spike"
+     ],
+     [
+      "23.57",
+      "Renew"
+     ],
+     [
+      "28.25",
+      "Radiance"
+     ],
+     [
+      "28.70",
+      "Mind Spike"
+     ],
+     [
+      "29.15",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "197"
+     ],
+     [
+      "Сила",
+      "49"
+     ],
+     [
+      "Ловкость",
+      "50"
+     ],
+     [
+      "Сила атаки",
+      "185.8"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "8.0%"
+     ],
+     [
+      "Скорость атаки",
+      "71.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1554"
+     ],
+     [
+      "Реген маны",
+      "17.36/с"
+     ],
+     [
+      "Мана в конце",
+      "97%"
+     ],
+     [
+      "Интервал атаки",
+      "1.17 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1365.3,
+     "Empyreal Blaze": 1365.3,
+     "Catharsis": 1312.2,
+     "Insanity": 1365.3,
+     "Clairvoyance": 1214.3
+    },
+    "glyphDps": {
+     "Fortitude": 1365.3,
+     "Unsealed Power": 1343.6,
+     "Fortune": 1188.5,
+     "Supremacy": 1188.5,
+     "Arc Striking": 1188.5,
+     "Battle Frenzy": 1027.0,
+     "Hellfire": 1277.9,
+     "Thunder": 1365.3,
+     "Blood Violence": 1206.1,
+     "Animosity": 1203.2,
+     "Glass Cannon": 1365.3,
+     "Mindhaste": 1128.4
+    }
+   },
+   {
+    "farm_dps": 1363.7,
+    "dps": 1363.7,
+    "total": 40911,
+    "manaLeft": 97.9,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Eredar's Grasp",
+      "code": "I072",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 10,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 115728467,
+    "sources": [
+     [
+      "Sulfuras",
+      340.6
+     ],
+     [
+      "Smite",
+      270.4
+     ],
+     [
+      "Thunder",
+      268.0
+     ],
+     [
+      "Mind Spike",
+      234.9
+     ],
+     [
+      "Автоатака",
+      121.4
+     ],
+     [
+      "Empyreal Blaze",
+      118.9
+     ],
+     [
+      "Sulfuras (удар)",
+      9.5
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "6.06",
+      "Renew"
+     ],
+     [
+      "6.51",
+      "Radiance"
+     ],
+     [
+      "6.96",
+      "Mind Spike"
+     ],
+     [
+      "10.94",
+      "Renew"
+     ],
+     [
+      "13.29",
+      "Radiance"
+     ],
+     [
+      "13.74",
+      "Mind Spike"
+     ],
+     [
+      "16.82",
+      "Renew"
+     ],
+     [
+      "20.35",
+      "Radiance"
+     ],
+     [
+      "20.80",
+      "Mind Spike"
+     ],
+     [
+      "22.70",
+      "Renew"
+     ],
+     [
+      "27.41",
+      "Radiance"
+     ],
+     [
+      "27.86",
+      "Mind Spike"
+     ],
+     [
+      "28.31",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "204"
+     ],
+     [
+      "Сила",
+      "49"
+     ],
+     [
+      "Ловкость",
+      "50"
+     ],
+     [
+      "Сила атаки",
+      "183.0"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "15.0%"
+     ],
+     [
+      "Скорость атаки",
+      "70.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1603"
+     ],
+     [
+      "Реген маны",
+      "17.92/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.18 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1363.7,
+     "Empyreal Blaze": 1363.7,
+     "Catharsis": 1313.2,
+     "Insanity": 1363.7,
+     "Clairvoyance": 1212.6
+    },
+    "glyphDps": {
+     "Fortitude": 1363.7,
+     "Unsealed Power": 1342.0,
+     "Fortune": 1187.1,
+     "Supremacy": 1187.1,
+     "Arc Striking": 1187.1,
+     "Battle Frenzy": 1236.7,
+     "Hellfire": 1276.2,
+     "Thunder": 1363.7,
+     "Blood Violence": 1205.3,
+     "Animosity": 1201.6,
+     "Glass Cannon": 1363.7,
+     "Mindhaste": 1034.0
+    }
+   },
+   {
+    "farm_dps": 1298.2,
+    "dps": 1298.2,
+    "total": 38947,
+    "manaLeft": 99.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "Robes of Sinful Halo",
+      "code": "I0SI",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 9,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 7168052,
+    "sources": [
+     [
+      "Sulfuras",
+      355.5
+     ],
+     [
+      "Thunder",
+      251.2
+     ],
+     [
+      "Smite",
+      234.8
+     ],
+     [
+      "Mind Spike",
+      228.3
+     ],
+     [
+      "Empyreal Blaze",
+      113.6
+     ],
+     [
+      "Автоатака",
+      106.4
+     ],
+     [
+      "Sulfuras (удар)",
+      8.4
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "5.46",
+      "Renew"
+     ],
+     [
+      "6.83",
+      "Radiance"
+     ],
+     [
+      "7.28",
+      "Mind Spike"
+     ],
+     [
+      "10.94",
+      "Renew"
+     ],
+     [
+      "13.68",
+      "Radiance"
+     ],
+     [
+      "14.13",
+      "Mind Spike"
+     ],
+     [
+      "16.42",
+      "Renew"
+     ],
+     [
+      "20.53",
+      "Radiance"
+     ],
+     [
+      "20.98",
+      "Mind Spike"
+     ],
+     [
+      "21.43",
+      "Renew"
+     ],
+     [
+      "26.01",
+      "Renew"
+     ],
+     [
+      "27.38",
+      "Radiance"
+     ],
+     [
+      "27.83",
+      "Mind Spike"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "193"
+     ],
+     [
+      "Сила",
+      "24"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "192.8"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "22.0%"
+     ],
+     [
+      "Скорость атаки",
+      "46.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1526"
+     ],
+     [
+      "Реген маны",
+      "17.04/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.37 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1298.2,
+     "Empyreal Blaze": 1298.2,
+     "Catharsis": 1252.5,
+     "Insanity": 1298.2,
+     "Clairvoyance": 1152.4
+    },
+    "glyphDps": {
+     "Fortitude": 1298.2,
+     "Unsealed Power": 1277.1,
+     "Fortune": 1130.0,
+     "Supremacy": 1130.0,
+     "Arc Striking": 1130.0,
+     "Battle Frenzy": 971.6,
+     "Hellfire": 1218.2,
+     "Thunder": 1298.2,
+     "Blood Violence": 1146.4,
+     "Animosity": 1142.8,
+     "Glass Cannon": 1298.2,
+     "Mindhaste": 1102.9
+    }
+   },
+   {
+    "farm_dps": 1293.1,
+    "dps": 1293.1,
+    "total": 38792,
+    "manaLeft": 97.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sinister Deathblade",
+      "code": "ram1",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuron Hammer",
+      "code": "sor8",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 20,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 114940337,
+    "sources": [
+     [
+      "Sulfuras",
+      334.7
+     ],
+     [
+      "Smite",
+      244.7
+     ],
+     [
+      "Thunder",
+      233.9
+     ],
+     [
+      "Mind Spike",
+      225.1
+     ],
+     [
+      "Автоатака",
+      138.5
+     ],
+     [
+      "Empyreal Blaze",
+      89.6
+     ],
+     [
+      "Удар тьмы",
+      15.5
+     ],
+     [
+      "Sulfuras (удар)",
+      11.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "5.84",
+      "Renew"
+     ],
+     [
+      "6.97",
+      "Radiance"
+     ],
+     [
+      "7.42",
+      "Mind Spike"
+     ],
+     [
+      "11.46",
+      "Renew"
+     ],
+     [
+      "13.71",
+      "Radiance"
+     ],
+     [
+      "14.16",
+      "Mind Spike"
+     ],
+     [
+      "17.08",
+      "Renew"
+     ],
+     [
+      "20.45",
+      "Radiance"
+     ],
+     [
+      "20.90",
+      "Mind Spike"
+     ],
+     [
+      "22.70",
+      "Renew"
+     ],
+     [
+      "27.19",
+      "Radiance"
+     ],
+     [
+      "27.64",
+      "Mind Spike"
+     ],
+     [
+      "28.09",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "195"
+     ],
+     [
+      "Сила",
+      "59"
+     ],
+     [
+      "Ловкость",
+      "50"
+     ],
+     [
+      "Сила атаки",
+      "206.2"
+     ],
+     [
+      "Potency",
+      "5.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "13.0%"
+     ],
+     [
+      "Скорость атаки",
+      "78.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1540"
+     ],
+     [
+      "Реген маны",
+      "16.56/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.12 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1293.1,
+     "Empyreal Blaze": 1293.1,
+     "Catharsis": 1257.0,
+     "Insanity": 1293.1,
+     "Clairvoyance": 1158.3
+    },
+    "glyphDps": {
+     "Fortitude": 1293.1,
+     "Unsealed Power": 1285.8,
+     "Fortune": 1125.9,
+     "Supremacy": 1125.9,
+     "Arc Striking": 1125.9,
+     "Battle Frenzy": 971.9,
+     "Hellfire": 1202.5,
+     "Thunder": 1293.1,
+     "Blood Violence": 1143.6,
+     "Animosity": 1144.3,
+     "Glass Cannon": 1293.1,
+     "Mindhaste": 1063.9
+    }
+   },
+   {
+    "farm_dps": 1288.0,
+    "dps": 1288.0,
+    "total": 38640,
+    "manaLeft": 97.6,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Tidebringer",
+      "code": "I03O",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sinister Deathblade",
+      "code": "ram1",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 2,
+     "damage": 20,
+     "crit": 0,
+     "potency": 8,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 120715650,
+    "sources": [
+     [
+      "Sulfuras",
+      333.0
+     ],
+     [
+      "Smite",
+      235.1
+     ],
+     [
+      "Thunder",
+      232.4
+     ],
+     [
+      "Mind Spike",
+      230.6
+     ],
+     [
+      "Автоатака",
+      143.8
+     ],
+     [
+      "Empyreal Blaze",
+      85.4
+     ],
+     [
+      "Удар тьмы",
+      16.1
+     ],
+     [
+      "Sulfuras (удар)",
+      11.7
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "5.90",
+      "Renew"
+     ],
+     [
+      "7.03",
+      "Radiance"
+     ],
+     [
+      "7.48",
+      "Mind Spike"
+     ],
+     [
+      "11.58",
+      "Renew"
+     ],
+     [
+      "13.85",
+      "Radiance"
+     ],
+     [
+      "14.30",
+      "Mind Spike"
+     ],
+     [
+      "17.26",
+      "Renew"
+     ],
+     [
+      "20.67",
+      "Radiance"
+     ],
+     [
+      "21.12",
+      "Mind Spike"
+     ],
+     [
+      "22.94",
+      "Renew"
+     ],
+     [
+      "27.49",
+      "Radiance"
+     ],
+     [
+      "27.94",
+      "Mind Spike"
+     ],
+     [
+      "28.39",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "195"
+     ],
+     [
+      "Сила",
+      "49"
+     ],
+     [
+      "Ловкость",
+      "60"
+     ],
+     [
+      "Сила атаки",
+      "216.2"
+     ],
+     [
+      "Potency",
+      "4.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "13.0%"
+     ],
+     [
+      "Скорость атаки",
+      "76.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1540"
+     ],
+     [
+      "Реген маны",
+      "17.36/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.14 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1288.0,
+     "Empyreal Blaze": 1288.0,
+     "Catharsis": 1251.4,
+     "Insanity": 1288.0,
+     "Clairvoyance": 1155.2
+    },
+    "glyphDps": {
+     "Fortitude": 1288.0,
+     "Unsealed Power": 1281.0,
+     "Fortune": 1121.5,
+     "Supremacy": 1121.5,
+     "Arc Striking": 1121.5,
+     "Battle Frenzy": 961.2,
+     "Hellfire": 1194.9,
+     "Thunder": 1288.0,
+     "Blood Violence": 1139.1,
+     "Animosity": 1140.7,
+     "Glass Cannon": 1288.0,
+     "Mindhaste": 1055.3
+    }
+   },
+   {
+    "farm_dps": 1278.6,
+    "dps": 1278.6,
+    "total": 38357,
+    "manaLeft": 97.3,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sinister Deathblade",
+      "code": "ram1",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuron Hammer",
+      "code": "sor8",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 10,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 7150214,
+    "sources": [
+     [
+      "Sulfuras",
+      336.9
+     ],
+     [
+      "Thunder",
+      240.4
+     ],
+     [
+      "Smite",
+      238.2
+     ],
+     [
+      "Mind Spike",
+      207.8
+     ],
+     [
+      "Автоатака",
+      121.0
+     ],
+     [
+      "Empyreal Blaze",
+      111.3
+     ],
+     [
+      "Удар тьмы",
+      13.4
+     ],
+     [
+      "Sulfuras (удар)",
+      9.6
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "5.90",
+      "Renew"
+     ],
+     [
+      "7.03",
+      "Radiance"
+     ],
+     [
+      "7.48",
+      "Mind Spike"
+     ],
+     [
+      "11.58",
+      "Renew"
+     ],
+     [
+      "13.85",
+      "Radiance"
+     ],
+     [
+      "14.30",
+      "Mind Spike"
+     ],
+     [
+      "17.26",
+      "Renew"
+     ],
+     [
+      "20.67",
+      "Radiance"
+     ],
+     [
+      "21.12",
+      "Mind Spike"
+     ],
+     [
+      "22.94",
+      "Renew"
+     ],
+     [
+      "27.49",
+      "Radiance"
+     ],
+     [
+      "27.94",
+      "Mind Spike"
+     ],
+     [
+      "28.39",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "182"
+     ],
+     [
+      "Сила",
+      "34"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "176.5"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "13.0%"
+     ],
+     [
+      "Скорость атаки",
+      "76.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1449"
+     ],
+     [
+      "Реген маны",
+      "16.16/с"
+     ],
+     [
+      "Мана в конце",
+      "97%"
+     ],
+     [
+      "Интервал атаки",
+      "1.14 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1278.6,
+     "Empyreal Blaze": 1278.6,
+     "Catharsis": 1232.0,
+     "Insanity": 1278.6,
+     "Clairvoyance": 1141.3
+    },
+    "glyphDps": {
+     "Fortitude": 1278.6,
+     "Unsealed Power": 1259.1,
+     "Fortune": 1113.0,
+     "Supremacy": 1113.0,
+     "Arc Striking": 1113.0,
+     "Battle Frenzy": 949.1,
+     "Hellfire": 1201.6,
+     "Thunder": 1278.6,
+     "Blood Violence": 1129.8,
+     "Animosity": 1129.2,
+     "Glass Cannon": 1278.6,
+     "Mindhaste": 1048.1
+    }
+   },
+   {
+    "farm_dps": 1271.2,
+    "dps": 1271.2,
+    "total": 38137,
+    "manaLeft": 96.4,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "Robes of Sinful Halo",
+      "code": "I0SI",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Goblin Hand Cannon",
+      "code": "sbok",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 10,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 7150292,
+    "sources": [
+     [
+      "Sulfuras",
+      339.6
+     ],
+     [
+      "Thunder",
+      242.2
+     ],
+     [
+      "Smite",
+      234.3
+     ],
+     [
+      "Mind Spike",
+      217.2
+     ],
+     [
+      "Автоатака",
+      123.1
+     ],
+     [
+      "Empyreal Blaze",
+      105.1
+     ],
+     [
+      "Sulfuras (удар)",
+      9.8
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "6.04",
+      "Renew"
+     ],
+     [
+      "7.21",
+      "Radiance"
+     ],
+     [
+      "7.66",
+      "Mind Spike"
+     ],
+     [
+      "11.90",
+      "Renew"
+     ],
+     [
+      "14.25",
+      "Radiance"
+     ],
+     [
+      "14.70",
+      "Mind Spike"
+     ],
+     [
+      "17.76",
+      "Renew"
+     ],
+     [
+      "21.28",
+      "Radiance"
+     ],
+     [
+      "21.73",
+      "Mind Spike"
+     ],
+     [
+      "23.62",
+      "Renew"
+     ],
+     [
+      "28.31",
+      "Radiance"
+     ],
+     [
+      "28.76",
+      "Mind Spike"
+     ],
+     [
+      "29.21",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "184"
+     ],
+     [
+      "Сила",
+      "28"
+     ],
+     [
+      "Ловкость",
+      "29"
+     ],
+     [
+      "Сила атаки",
+      "188.0"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "8.0%"
+     ],
+     [
+      "Скорость атаки",
+      "70.6%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1463"
+     ],
+     [
+      "Реген маны",
+      "16.32/с"
+     ],
+     [
+      "Мана в конце",
+      "96%"
+     ],
+     [
+      "Интервал атаки",
+      "1.17 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1271.2,
+     "Empyreal Blaze": 1271.2,
+     "Catharsis": 1222.3,
+     "Insanity": 1271.2,
+     "Clairvoyance": 1132.6
+    },
+    "glyphDps": {
+     "Fortitude": 1271.2,
+     "Unsealed Power": 1251.5,
+     "Fortune": 1106.7,
+     "Supremacy": 1106.7,
+     "Arc Striking": 1106.7,
+     "Battle Frenzy": 947.4,
+     "Hellfire": 1195.3,
+     "Thunder": 1271.2,
+     "Blood Violence": 1123.1,
+     "Animosity": 1121.5,
+     "Glass Cannon": 1271.2,
+     "Mindhaste": 1046.9
+    }
+   },
+   {
+    "farm_dps": 1268.1,
+    "dps": 1268.1,
+    "total": 38043,
+    "manaLeft": 96.5,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Seal of Anubisath",
+      "code": "pomn",
+      "source": "drop"
+     },
+     {
+      "name": "Sinister Deathblade",
+      "code": "ram1",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 10,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 7150221,
+    "sources": [
+     [
+      "Sulfuras",
+      336.9
+     ],
+     [
+      "Thunder",
+      240.4
+     ],
+     [
+      "Smite",
+      238.2
+     ],
+     [
+      "Mind Spike",
+      207.8
+     ],
+     [
+      "Автоатака",
+      116.2
+     ],
+     [
+      "Empyreal Blaze",
+      106.5
+     ],
+     [
+      "Удар тьмы",
+      12.8
+     ],
+     [
+      "Sulfuras (удар)",
+      9.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "6.06",
+      "Renew"
+     ],
+     [
+      "7.23",
+      "Radiance"
+     ],
+     [
+      "7.68",
+      "Mind Spike"
+     ],
+     [
+      "11.94",
+      "Renew"
+     ],
+     [
+      "14.29",
+      "Radiance"
+     ],
+     [
+      "14.74",
+      "Mind Spike"
+     ],
+     [
+      "17.82",
+      "Renew"
+     ],
+     [
+      "21.35",
+      "Radiance"
+     ],
+     [
+      "21.80",
+      "Mind Spike"
+     ],
+     [
+      "23.70",
+      "Renew"
+     ],
+     [
+      "28.41",
+      "Radiance"
+     ],
+     [
+      "28.86",
+      "Mind Spike"
+     ],
+     [
+      "29.31",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "182"
+     ],
+     [
+      "Сила",
+      "34"
+     ],
+     [
+      "Ловкость",
+      "35"
+     ],
+     [
+      "Сила атаки",
+      "176.5"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "13.0%"
+     ],
+     [
+      "Скорость атаки",
+      "70.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1549"
+     ],
+     [
+      "Реген маны",
+      "16.16/с"
+     ],
+     [
+      "Мана в конце",
+      "96%"
+     ],
+     [
+      "Интервал атаки",
+      "1.18 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1268.1,
+     "Empyreal Blaze": 1268.1,
+     "Catharsis": 1219.0,
+     "Insanity": 1268.1,
+     "Clairvoyance": 1131.1
+    },
+    "glyphDps": {
+     "Fortitude": 1268.1,
+     "Unsealed Power": 1248.6,
+     "Fortune": 1103.9,
+     "Supremacy": 1103.9,
+     "Arc Striking": 1103.9,
+     "Battle Frenzy": 940.0,
+     "Hellfire": 1192.7,
+     "Thunder": 1268.1,
+     "Blood Violence": 1120.2,
+     "Animosity": 1119.4,
+     "Glass Cannon": 1268.1,
+     "Mindhaste": 941.9
+    }
+   },
+   {
+    "farm_dps": 1266.7,
+    "dps": 1266.7,
+    "total": 38000,
+    "manaLeft": 96.3,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sinister Deathblade",
+      "code": "ram1",
+      "source": "drop"
+     },
+     {
+      "name": "Progenitor Orb",
+      "code": "tmsc",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 10,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 7150213,
+    "sources": [
+     [
+      "Sulfuras",
+      336.9
+     ],
+     [
+      "Thunder",
+      240.4
+     ],
+     [
+      "Smite",
+      238.2
+     ],
+     [
+      "Mind Spike",
+      207.8
+     ],
+     [
+      "Автоатака",
+      116.2
+     ],
+     [
+      "Empyreal Blaze",
+      105.1
+     ],
+     [
+      "Удар тьмы",
+      12.8
+     ],
+     [
+      "Sulfuras (удар)",
+      9.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Radiance"
+     ],
+     [
+      "0.45",
+      "Mind Spike"
+     ],
+     [
+      "0.90",
+      "Renew"
+     ],
+     [
+      "6.06",
+      "Renew"
+     ],
+     [
+      "7.23",
+      "Radiance"
+     ],
+     [
+      "7.68",
+      "Mind Spike"
+     ],
+     [
+      "11.94",
+      "Renew"
+     ],
+     [
+      "14.29",
+      "Radiance"
+     ],
+     [
+      "14.74",
+      "Mind Spike"
+     ],
+     [
+      "17.82",
+      "Renew"
+     ],
+     [
+      "21.35",
+      "Radiance"
+     ],
+     [
+      "21.80",
+      "Mind Spike"
+     ],
+     [
+      "23.70",
+      "Renew"
+     ],
+     [
+      "28.41",
+      "Radiance"
+     ],
+     [
+      "28.86",
+      "Mind Spike"
+     ],
+     [
+      "29.31",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "182"
+     ],
+     [
+      "Сила",
+      "34"
+     ],
+     [
+      "Ловкость",
+      "35"
+     ],
+     [
+      "Сила атаки",
+      "176.5"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "13.0%"
+     ],
+     [
+      "Скорость атаки",
+      "70.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1449"
+     ],
+     [
+      "Реген маны",
+      "16.16/с"
+     ],
+     [
+      "Мана в конце",
+      "96%"
+     ],
+     [
+      "Интервал атаки",
+      "1.18 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Smite": 1266.7,
+     "Empyreal Blaze": 1266.7,
+     "Catharsis": 1217.6,
+     "Insanity": 1266.7,
+     "Clairvoyance": 1129.8
+    },
+    "glyphDps": {
+     "Fortitude": 1266.7,
+     "Unsealed Power": 1247.2,
+     "Fortune": 1102.7,
+     "Supremacy": 1102.7,
+     "Arc Striking": 1102.7,
+     "Battle Frenzy": 938.7,
+     "Hellfire": 1191.5,
+     "Thunder": 1266.7,
+     "Blood Violence": 1118.9,
+     "Animosity": 1118.1,
+     "Glass Cannon": 1266.7,
+     "Mindhaste": 940.4
+    }
+   }
+  ]
+ }
+}

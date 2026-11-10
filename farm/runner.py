@@ -677,10 +677,10 @@ def _record_fire_execution(job, payload):
         worker['cpu_compile_rows']+=int(e.get('cpu_compile_rows',0))
     paths[e['actual']]=paths.get(e['actual'],0)+1
     has_cpu=bool(paths.get('cpu-fallback') or paths.get('mixed'))
-    has_gpu=bool(paths.get('hybrid') or paths.get('mixed'))
+    has_gpu=bool(paths.get('hybrid') or paths.get('mixed') or paths.get('opencl'))
     if has_cpu:
         meta.setdefault('attempted_device',dict(device=meta.get('device'),name=meta.get('name')))
-        meta.update(status='hybrid-with-cpu-fallback' if has_gpu else 'cpu-fallback',device='mixed' if has_gpu else 'cpu',name=meta['attempted_device'].get('name','cpu') if has_gpu else 'cpu',gpu_fights=has_gpu)
+        meta.update(status=('opencl' if paths.get('opencl') else 'hybrid')+'-with-cpu-fallback' if has_gpu else 'cpu-fallback',device='mixed' if has_gpu else 'cpu',name=meta['attempted_device'].get('name','cpu') if has_gpu else 'cpu',gpu_fights=has_gpu)
         meta['actual_planner']='hybrid-with-cpu-fallback' if has_gpu else 'cpu-oracle-fallback'
         if 'selection' in meta:meta['selection']=dict(meta['selection'],actual='mixed' if has_gpu else 'cpu')
         meta['worker_fallbacks']=list(dict.fromkeys(meta.get('worker_fallbacks',[])+e.get('reasons',[])+(['CPU compile fallback'] if e.get('cpu_compile_rows') else [])))
@@ -794,7 +794,7 @@ def run_job(job: dict, box: dict, tick, eval_fn=None, *, _fire_cpu_fallback=Fals
     sources = source_map(items)
     release()
     span = end_ex - done_up_to
-    pool_size = max(1, min(worker_count(), span))
+    pool_size = max(1, min(int(job.get("pool_workers") or worker_count()), span))
     next_index = done_up_to
     pending: dict = {}
     shown = 0
@@ -808,7 +808,7 @@ def run_job(job: dict, box: dict, tick, eval_fn=None, *, _fire_cpu_fallback=Fals
                 next_index = max(stop for begin, stop in ahead if begin <= next_index < stop)
             if next_index >= end_ex:
                 break
-            stop_at = min(end_ex, next_index + BATCH)
+            stop_at = min(end_ex, next_index + int(job.get("span_rows") or BATCH))
             for begin, stop in ahead:
                 if next_index < begin < stop_at:
                     stop_at = begin

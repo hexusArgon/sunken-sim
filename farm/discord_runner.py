@@ -15,7 +15,12 @@ def run_job(job: dict, box: dict, tick) -> dict:
         nonlocal backend
         if isinstance(value, dict):
             info = value.get("hybrid", {})
-            if info.get("gpu_fights"):
+            if info.get("device") == "opencl":
+                backend = (
+                    f"Backend: OpenCL · {info.get('name')}"
+                    " · все бои на GPU: голый скан, таланты, глифы, ESC (float64, бит в бит с CPU)"
+                )
+            elif info.get("gpu_fights"):
                 backend = (
                     f"Backend: hybrid · {info.get('device')} · {info.get('name')}"
                     " · CPU scheduling + GPU scoring; exact CPU fallback возможен"

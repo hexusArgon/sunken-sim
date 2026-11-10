@@ -28,13 +28,10 @@ def add(cls, spec, page, level, runs_by_pool):
                         sources=[(n, float(v)) for n, v in r.get("sources", [])])
     specs.append(dict(cls=cls, spec=spec, page=page, level=level, pools=pools))
 
-# Mage: Fire + Arcane (partial lvl15) from mage.tsx; Frost lvl6 from mage-legacy.tsx
-mf = const("mage.tsx", "DATA")
-add("Mage", "Fire", "mage.html", mf["level"], {p: max(mf["runs"][p], key=lambda r: float(r["dps"])) for p, _ in POOLS if p in mf["runs"]})
-ma = const("mage.tsx", "ARCANE_DATA")
-add("Mage", "Arcane", "mage.html", ma["level"], {p: max(ma["runs"][p], key=lambda r: float(r["dps"])) for p, _ in POOLS if p in ma["runs"]})
-md = const("mage-legacy.tsx", "DATA")
-add("Mage", "Frost", "mage.html", 6, {p: max(md["frost"]["runs"][p], key=lambda r: float(r["dps"])) for p, _ in POOLS})
+# Mage: Fire, Frost, Arcane (full Top-80 GPU runs, level 15) from mage.tsx
+for name, spec in (("DATA", "Fire"), ("FROST_DATA", "Frost"), ("ARCANE_DATA", "Arcane")):
+    md = const("mage.tsx", name)
+    add("Mage", spec, "mage.html", md["level"], {p: max(md["runs"][p], key=lambda r: float(r["dps"])) for p, _ in POOLS if p in md["runs"]})
 # Paladin / Shaman (level 6), keys spec|pool|place
 for f, cls, page, names in [("paladin.tsx", "Paladin", "paladin.html", {"retribution": "Retribution", "protection": "Protection"}),
                             ("shaman.tsx", "Shaman", "shaman.html", {"enhancement": "Enhancement", "elemental": "Elemental"})]:
@@ -45,9 +42,12 @@ for f, cls, page, names in [("paladin.tsx", "Paladin", "paladin.html", {"retribu
             s_, p, _ = k.split("|")
             if s_ == sp and (p not in byp or float(r["dps"]) > float(byp[p]["dps"])): byp[p] = r
         add(cls, t, page, 6, byp)
-# Druid / Priest (level from DATA)
-for f, cls, spec, page in [("druid.tsx", "Druid", "Balance", "druid.html"), ("priest.tsx", "Priest", "Shadow", "priest.html")]:
-    d = const(f, "DATA")
+# Druid / Priest (level from DATA); Priest: Shadow, Discipline, Holy (full Top-80 GPU runs)
+for f, name, cls, spec, page in [("druid.tsx", "DATA", "Druid", "Balance", "druid.html"),
+                                 ("priest.tsx", "DATA", "Priest", "Shadow", "priest.html"),
+                                 ("priest.tsx", "DISCIPLINE_DATA", "Priest", "Discipline", "priest.html"),
+                                 ("priest.tsx", "HOLY_DATA", "Priest", "Holy", "priest.html")]:
+    d = const(f, name)
     add(cls, spec, page, d["level"], {p: max(d["runs"][p], key=lambda r: float(r["dps"])) for p, _ in POOLS if p in d["runs"]})
 
 SRC_COLORS = ["#58a6ff", "#3fb950", "#d29922", "#f85149", "#a371f7", "#39c5cf", "#db61a2", "#e3b341", "#8b949e", "#56d364", "#ff9a5c", "#79c0ff"]

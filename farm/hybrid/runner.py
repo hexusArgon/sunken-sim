@@ -118,8 +118,16 @@ def run_job(job: dict, box: dict, tick) -> dict:
             return cpu_runner.run_job(dict(job,hybrid=dict(meta)),box,tick,_fire_cpu_fallback=True)
         return cpu_runner.run_job(dict(job, hybrid=dict(meta)), box, tick)
 
+    from farm.hybrid.opencl_route import wanted as opencl_wanted
+    if opencl_wanted(job):
+        # Exact float64 OpenCL for every fight (Mage Fire/Frost/Arcane, Priest); opt-in only.
+        from farm.hybrid.mage_cl import run_job as opencl_job
+        return opencl_job(job, box, tick)
     from farm.hybrid.fire_route import select
     selection = select(job)
+    if selection is not None and selection.get('selected') == 'opencl':
+        from farm.hybrid.mage_cl import run_job as opencl_job
+        return opencl_job(job, box, tick)
     if selection is not None:
         meta['selection'] = selection
         import os
