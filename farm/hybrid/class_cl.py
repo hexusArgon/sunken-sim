@@ -309,14 +309,16 @@ class ExactCL:
         """simulate(build).dps with an empty timeline cache; with build_tl, after simulate(build_tl)
         filled it (the replayed cache of the ESC search)."""
         mod = self.module()
-        old = mod._TIMELINE
-        mod._TIMELINE = {}
+        old = getattr(mod, "_TIMELINE", None)  # berserker has no fight cache
+        if old is not None:
+            mod._TIMELINE = {}
         try:
-            if build_tl is not None:
+            if build_tl is not None and old is not None:
                 mod.simulate(build_tl, self.targets, self.spec)
             return mod.simulate(build, self.targets, self.spec).dps
         finally:
-            mod._TIMELINE = old
+            if old is not None:
+                mod._TIMELINE = old
 
     def talent_mask(self, codes) -> int:
         return mask_of(codes, self.TALENT_BITS, self.NO_EFFECT)
@@ -399,13 +401,15 @@ def oracle(engine: ExactCL, index: int) -> float:
     from farm.score import item_dps
 
     mod = engine.module()
-    old = mod._TIMELINE
-    mod._TIMELINE = {}
+    old = getattr(mod, "_TIMELINE", None)
+    if old is not None:
+        mod._TIMELINE = {}
     try:
         codes = engine.space.decode(index)[0]
         return item_dps(engine.hero, engine.spec, engine.targets, tuple(engine.items[c] for c in codes))
     finally:
-        mod._TIMELINE = old
+        if old is not None:
+            mod._TIMELINE = old
 
 
 def parity(engine: ExactCL, space, items: dict, sources: dict, targets: int, indices) -> dict:
@@ -484,10 +488,12 @@ def finish_reference(hero: str, spec: str, targets: int, equipped: tuple, space)
     from farm.score import finish_sextuple
 
     mod = importlib.import_module(f"sunken_sim.{hero}")
-    old = mod._TIMELINE
-    mod._TIMELINE = {}
+    old = getattr(mod, "_TIMELINE", None)
+    if old is not None:
+        mod._TIMELINE = {}
     try:
         return finish_sextuple(hero, spec, targets, equipped, space.talents, space.glyphs, space.picks_without,
                                space.picks_with, space.glyph_picks)
     finally:
-        mod._TIMELINE = old
+        if old is not None:
+            mod._TIMELINE = old

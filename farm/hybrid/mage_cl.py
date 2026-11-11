@@ -1675,7 +1675,8 @@ def self_check(engine: "MageCL", space, items: dict, sources: dict, targets: int
 OPENCL_SPECS = ({("mage", spec) for spec in SPECS} | {("priest", spec) for spec in ("shadow", "discipline", "holy")}
                 | {("shaman", spec) for spec in ("restoration", "enhancement", "elemental")}
                 | {("paladin", spec) for spec in ("retribution", "protection", "holy")}
-                | {("druid", spec) for spec in ("restoration", "balance")})
+                | {("druid", spec) for spec in ("restoration", "balance")}
+                | {("berserker", spec) for spec in ("headhunter", "poison", "fury")})
 
 
 def make_engine(hero: str, space, items: dict, sources: dict, targets: int, spec: str, device=None):
@@ -1698,6 +1699,10 @@ def make_engine(hero: str, space, items: dict, sources: dict, targets: int, spec
         from farm.hybrid.druid_cl import DruidCL
 
         return DruidCL(space, items, sources, targets, device=device, spec=spec)
+    if hero == "berserker":
+        from farm.hybrid.berserker_cl import BerserkerCL
+
+        return BerserkerCL(space, items, sources, targets, device=device, spec=spec)
     raise ValueError(f"no OpenCL engine for {hero}/{spec}")
 
 
@@ -1719,6 +1724,10 @@ def engine_module(engine):
         from farm.hybrid import druid_cl
 
         return druid_cl
+    if hero == "berserker":
+        from farm.hybrid import berserker_cl
+
+        return berserker_cl
     return sys.modules[__name__]
 
 
@@ -1950,7 +1959,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
 
     hero, spec = job.get("hero"), job.get("spec")
     if (hero, spec) not in OPENCL_SPECS:
-        raise ValueError("OpenCL backend: mage, priest, shaman, paladin (three specs each) or druid (restoration, balance)")
+        raise ValueError("OpenCL backend: mage, priest, shaman, paladin, berserker (three specs each) or druid (restoration, balance)")
     job = dict(job, admission_policy=A.policy(job))
     meta = {"worker": job.get("worker", "local-hybrid"), "status": "opencl", "device": "opencl",
             "name": "", "gpu_fights": True, "backend": f"{hero}-opencl-exact-v3",

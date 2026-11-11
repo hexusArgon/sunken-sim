@@ -1,9 +1,10 @@
-"""Opt-in exact OpenCL backend: Mage, Priest, Shaman, Paladin (three specs each) and Druid (Restoration, Balance).
+"""Opt-in exact OpenCL backend: Mage, Priest, Shaman, Paladin, Berserker (three specs each) and Druid (Restoration, Balance).
 
 Every fight of such a job (bare scan, talents, glyphs, greedy ESC) runs on the
 GPU in float64, bit for bit equal to the CPU oracle (farm.hybrid.mage_cl,
 farm.hybrid.priest_cl,
-farm.hybrid.shaman_cl, farm.hybrid.paladin_cl, farm.hybrid.druid_cl).  Nothing changes unless it is asked for:
+farm.hybrid.shaman_cl, farm.hybrid.paladin_cl, farm.hybrid.druid_cl,
+farm.hybrid.berserker_cl).  Nothing changes unless it is asked for:
 
 * job field ``"backend": "opencl"`` or ``"opencl": true``
   (Fire also keeps ``"fire_backend": "opencl"`` / ``FARM_FIRE_BACKEND=opencl``);
@@ -23,6 +24,7 @@ SPECS = frozenset({
     ("shaman", "restoration"), ("shaman", "enhancement"), ("shaman", "elemental"),
     ("paladin", "retribution"), ("paladin", "protection"), ("paladin", "holy"),
     ("druid", "restoration"), ("druid", "balance"),  # caster Druid only; feral_druid is another class
+    ("berserker", "headhunter"), ("berserker", "poison"), ("berserker", "fury"),
 })
 _OFF = ("", "0", "off", "no", "false", "none")
 _ALL = ("1", "all", "on", "yes", "true")
