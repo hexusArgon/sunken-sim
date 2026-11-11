@@ -2,9 +2,9 @@
  "level": 15,
  "targets": 5,
  "spec": "discipline",
- "farm_file": "../sunken-sim-runs/priest-discipline-opencl-top80-gpu/results/local-hybrid-priest-discipline-mixed-top80-5-0-306701279-admission-v2-bare-top10-f45ff8893890b9f0.json",
- "done": 306701280,
- "end": 306701279,
+ "farm_file": "../sunken-sim-runs/priest-discipline-opencl-top150-gpu/results/local-hybrid-priest-discipline-mixed-top150-5-0-14679841799-admission-v2-bare-top10-7d1f1929b4ae2c65.json",
+ "done": 14679841800,
+ "end": 14679841799,
  "errors": 0,
  "stopped": false,
  "spec_talents": [
@@ -95,7 +95,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 2612651,
+    "chunk": 197302628,
     "sources": [
      [
       "Sulfuras",
@@ -405,7 +405,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 11706689,
+    "chunk": 531463132,
     "sources": [
      [
       "Sulfuras",
@@ -735,7 +735,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 2608844,
+    "chunk": 197256539,
     "sources": [
      [
       "Sulfuras",
@@ -1045,7 +1045,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 2623501,
+    "chunk": 197728994,
     "sources": [
      [
       "Sulfuras",
@@ -1355,7 +1355,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 2559652,
+    "chunk": 192022504,
     "sources": [
      [
       "Sulfuras",
@@ -1669,7 +1669,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 2622722,
+    "chunk": 197724911,
     "sources": [
      [
       "Sulfuras",
@@ -1918,6 +1918,316 @@
     }
    },
    {
+    "farm_dps": 2529.2,
+    "dps": 2529.2,
+    "total": 75875,
+    "manaLeft": 99.8,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Hood of Dark Deeds",
+      "code": "tgrh",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 2,
+     "damage": 7,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 197302266,
+    "sources": [
+     [
+      "Sulfuras",
+      626.2
+     ],
+     [
+      "Thunder",
+      448.1
+     ],
+     [
+      "Smite",
+      302.0
+     ],
+     [
+      "Mind Spike",
+      275.8
+     ],
+     [
+      "Shadow Word: Pain",
+      274.0
+     ],
+     [
+      "Empyreal Blaze",
+      217.1
+     ],
+     [
+      "Radiance",
+      141.2
+     ],
+     [
+      "Автоатака",
+      125.9
+     ],
+     [
+      "Naaru",
+      110.3
+     ],
+     [
+      "Sulfuras (удар)",
+      8.3
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Shadow Word: Pain"
+     ],
+     [
+      "0.45",
+      "Divine Image"
+     ],
+     [
+      "0.90",
+      "Radiance"
+     ],
+     [
+      "1.35",
+      "Mind Spike"
+     ],
+     [
+      "1.80",
+      "Renew"
+     ],
+     [
+      "6.77",
+      "Shadow Word: Pain"
+     ],
+     [
+      "8.27",
+      "Renew"
+     ],
+     [
+      "8.72",
+      "Radiance"
+     ],
+     [
+      "9.17",
+      "Mind Spike"
+     ],
+     [
+      "12.79",
+      "Shadow Word: Pain"
+     ],
+     [
+      "14.30",
+      "Renew"
+     ],
+     [
+      "15.80",
+      "Divine Image"
+     ],
+     [
+      "17.31",
+      "Radiance"
+     ],
+     [
+      "17.76",
+      "Mind Spike"
+     ],
+     [
+      "18.81",
+      "Shadow Word: Pain"
+     ],
+     [
+      "20.32",
+      "Renew"
+     ],
+     [
+      "24.83",
+      "Shadow Word: Pain"
+     ],
+     [
+      "25.28",
+      "Radiance"
+     ],
+     [
+      "25.73",
+      "Mind Spike"
+     ],
+     [
+      "26.18",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "207"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "31"
+     ],
+     [
+      "Сила атаки",
+      "179.2"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "19.0%"
+     ],
+     [
+      "Скорость атаки",
+      "59.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1824"
+     ],
+     [
+      "Реген маны",
+      "17.52/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки",
+      "1.51 с"
+     ],
+     [
+      "Тик Shadow Word: Pain",
+      "0.84 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Psychic Link": 2377.0,
+     "Dark Torment": 2441.6,
+     "Smite": 2529.2,
+     "Empyreal Blaze": 2529.2,
+     "Catharsis": 2388.9,
+     "Insanity": 2529.2,
+     "Clairvoyance": 2237.0,
+     "Answered Prayers": 2225.2
+    },
+    "glyphDps": {
+     "Fortitude": 2529.2,
+     "Unsealed Power": 2425.0,
+     "Fortune": 2200.4,
+     "Supremacy": 2233.1,
+     "Arc Striking": 2200.4,
+     "Battle Frenzy": 2124.4,
+     "Hellfire": 2304.7,
+     "Thunder": 2529.2,
+     "Blood Violence": 2236.3,
+     "Animosity": 2215.5,
+     "Glass Cannon": 2529.2,
+     "Mindhaste": 2092.9
+    }
+   },
+   {
     "farm_dps": 2528.4,
     "dps": 2528.4,
     "total": 75853,
@@ -1979,7 +2289,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 2608935,
+    "chunk": 197257309,
     "sources": [
      [
       "Sulfuras",
@@ -2228,10 +2538,10 @@
     }
    },
    {
-    "farm_dps": 2496.5,
-    "dps": 2496.5,
-    "total": 74895,
-    "manaLeft": 98.8,
+    "farm_dps": 2501.5,
+    "dps": 2501.5,
+    "total": 75046,
+    "manaLeft": 87.9,
     "bound_spell": null,
     "orb_mode": "Shadow",
     "items": [
@@ -2239,16 +2549,6 @@
       "name": "Sulfuras, Hand of Ragnaros",
       "code": "I0BR",
       "source": "legendary"
-     },
-     {
-      "name": "Celestial Crown",
-      "code": "I0C2",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
      },
      {
       "name": "Staff of Galactic Fury",
@@ -2261,314 +2561,14 @@
       "source": "shop"
      },
      {
-      "name": "Sulfuron Gloves",
-      "code": "I0QT",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Empyreal Blaze",
-     "Insanity",
-     "Smite"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Thunder"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 10,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 2902725,
-    "sources": [
-     [
-      "Sulfuras",
-      693.4
-     ],
-     [
-      "Thunder",
-      417.9
-     ],
-     [
-      "Mind Spike",
-      281.7
-     ],
-     [
-      "Smite",
-      279.5
-     ],
-     [
-      "Shadow Word: Pain",
-      258.3
-     ],
-     [
-      "Empyreal Blaze",
-      169.3
-     ],
-     [
-      "Автоатака",
-      150.3
-     ],
-     [
-      "Radiance",
-      135.7
-     ],
-     [
-      "Naaru",
-      100.8
-     ],
-     [
-      "Sulfuras (удар)",
-      9.6
-     ]
-    ],
-    "actions": [
-     [
-      "до боя",
-      "Elemental Orb → Shadow"
-     ],
-     [
-      "0.00",
-      "Shadow Word: Pain"
-     ],
-     [
-      "0.45",
-      "Divine Image"
-     ],
-     [
-      "0.90",
-      "Radiance"
-     ],
-     [
-      "1.35",
-      "Mind Spike"
-     ],
-     [
-      "1.80",
-      "Renew"
-     ],
-     [
-      "6.78",
-      "Shadow Word: Pain"
-     ],
-     [
-      "8.29",
-      "Renew"
-     ],
-     [
-      "9.80",
-      "Radiance"
-     ],
-     [
-      "10.25",
-      "Mind Spike"
-     ],
-     [
-      "12.82",
-      "Shadow Word: Pain"
-     ],
-     [
-      "14.33",
-      "Renew"
-     ],
-     [
-      "17.34",
-      "Divine Image"
-     ],
-     [
-      "18.85",
-      "Shadow Word: Pain"
-     ],
-     [
-      "19.30",
-      "Radiance"
-     ],
-     [
-      "19.75",
-      "Mind Spike"
-     ],
-     [
-      "20.36",
-      "Renew"
-     ],
-     [
-      "24.89",
-      "Shadow Word: Pain"
-     ],
-     [
-      "26.40",
-      "Renew"
-     ],
-     [
-      "27.91",
-      "Radiance"
-     ],
-     [
-      "28.36",
-      "Mind Spike"
-     ]
-    ],
-    "stats": [
-     [
-      "Интеллект",
-      "224"
-     ],
-     [
-      "Сила",
-      "45"
-     ],
-     [
-      "Ловкость",
-      "40"
-     ],
-     [
-      "Сила атаки",
-      "207.0"
-     ],
-     [
-      "Potency",
-      "10.0"
-     ],
-     [
-      "Mastery",
-      "35"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "22.0%"
-     ],
-     [
-      "Скорость атаки",
-      "59.0%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Healing Power",
-      "0"
-     ],
-     [
-      "Pet Damage",
-      "0.0%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "1743"
-     ],
-     [
-      "Реген маны",
-      "18.88/с"
-     ],
-     [
-      "Мана в конце",
-      "99%"
-     ],
-     [
-      "Интервал атаки",
-      "1.51 с"
-     ],
-     [
-      "Тик Shadow Word: Pain",
-      "0.82 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.220"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "6"
-     ],
-     [
-      "Elemental Orb",
-      "Shadow"
-     ]
-    ],
-    "talentDps": {
-     "Psychic Link": 2374.6,
-     "Dark Torment": 2436.6,
-     "Smite": 2496.5,
-     "Empyreal Blaze": 2496.5,
-     "Catharsis": 2407.7,
-     "Insanity": 2496.5,
-     "Clairvoyance": 2255.0,
-     "Answered Prayers": 2303.2
-    },
-    "glyphDps": {
-     "Fortitude": 2496.5,
-     "Unsealed Power": 2427.3,
-     "Fortune": 2172.1,
-     "Supremacy": 2198.3,
-     "Arc Striking": 2172.1,
-     "Battle Frenzy": 1985.9,
-     "Hellfire": 2283.4,
-     "Thunder": 2496.5,
-     "Blood Violence": 2210.8,
-     "Animosity": 2190.2,
-     "Glass Cannon": 2496.5,
-     "Mindhaste": 2084.5
-    }
-   },
-   {
-    "farm_dps": 2493.8,
-    "dps": 2493.8,
-    "total": 74815,
-    "manaLeft": 98.2,
-    "bound_spell": null,
-    "orb_mode": "Shadow",
-    "items": [
-     {
-      "name": "Signet of the Swarm",
-      "code": "I07W",
-      "source": "shop"
+      "name": "Mantle of Sacred Water",
+      "code": "I0SD",
+      "source": "drop"
      },
      {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuron Gloves",
-      "code": "I0QT",
-      "source": "shop"
+      "name": "Beacon of the Naaru",
+      "code": "I0SG",
+      "source": "drop"
      },
      {
       "name": "The Darkglaive",
@@ -2599,357 +2599,47 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 7787217,
+    "chunk": 192004011,
     "sources": [
      [
       "Sulfuras",
-      680.5
+      619.2
      ],
      [
       "Thunder",
-      415.3
-     ],
-     [
-      "Smite",
-      272.0
-     ],
-     [
-      "Mind Spike",
-      268.5
+      439.6
      ],
      [
       "Shadow Word: Pain",
-      259.6
-     ],
-     [
-      "Автоатака",
-      180.1
-     ],
-     [
-      "Empyreal Blaze",
-      179.7
-     ],
-     [
-      "Radiance",
-      122.0
-     ],
-     [
-      "Naaru",
-      104.9
-     ],
-     [
-      "Sulfuras (удар)",
-      11.2
-     ]
-    ],
-    "actions": [
-     [
-      "до боя",
-      "Elemental Orb → Shadow"
-     ],
-     [
-      "0.00",
-      "Shadow Word: Pain"
-     ],
-     [
-      "0.45",
-      "Divine Image"
-     ],
-     [
-      "0.90",
-      "Radiance"
-     ],
-     [
-      "1.35",
-      "Mind Spike"
-     ],
-     [
-      "1.80",
-      "Renew"
-     ],
-     [
-      "7.27",
-      "Shadow Word: Pain"
-     ],
-     [
-      "8.52",
-      "Renew"
-     ],
-     [
-      "9.78",
-      "Radiance"
-     ],
-     [
-      "10.23",
-      "Mind Spike"
-     ],
-     [
-      "13.54",
-      "Shadow Word: Pain"
-     ],
-     [
-      "14.80",
-      "Renew"
-     ],
-     [
-      "17.31",
-      "Divine Image"
-     ],
-     [
-      "18.56",
-      "Radiance"
-     ],
-     [
-      "19.01",
-      "Mind Spike"
-     ],
-     [
-      "19.82",
-      "Shadow Word: Pain"
-     ],
-     [
-      "21.07",
-      "Renew"
-     ],
-     [
-      "26.09",
-      "Shadow Word: Pain"
-     ],
-     [
-      "27.34",
-      "Radiance"
-     ],
-     [
-      "27.79",
-      "Mind Spike"
-     ],
-     [
-      "28.24",
-      "Renew"
-     ]
-    ],
-    "stats": [
-     [
-      "Интеллект",
-      "219"
-     ],
-     [
-      "Сила",
-      "30"
-     ],
-     [
-      "Ловкость",
-      "31"
-     ],
-     [
-      "Сила атаки",
-      "199.2"
-     ],
-     [
-      "Potency",
-      "16.0"
-     ],
-     [
-      "Mastery",
-      "10"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "18.0%"
-     ],
-     [
-      "Скорость атаки",
-      "59.4%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Healing Power",
-      "0"
-     ],
-     [
-      "Pet Damage",
-      "0.0%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "1708"
-     ],
-     [
-      "Реген маны",
-      "18.48/с"
-     ],
-     [
-      "Мана в конце",
-      "98%"
-     ],
-     [
-      "Интервал атаки",
-      "1.25 с"
-     ],
-     [
-      "Тик Shadow Word: Pain",
-      "0.85 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.220"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "6"
-     ],
-     [
-      "Elemental Orb",
-      "Shadow"
-     ]
-    ],
-    "talentDps": {
-     "Psychic Link": 2363.8,
-     "Dark Torment": 2427.8,
-     "Smite": 2493.8,
-     "Empyreal Blaze": 2493.8,
-     "Catharsis": 2390.5,
-     "Insanity": 2493.8,
-     "Clairvoyance": 2243.2,
-     "Answered Prayers": 2286.9
-    },
-    "glyphDps": {
-     "Fortitude": 2493.8,
-     "Unsealed Power": 2425.5,
-     "Fortune": 2170.0,
-     "Supremacy": 2196.5,
-     "Arc Striking": 2170.0,
-     "Battle Frenzy": 1981.1,
-     "Hellfire": 2303.8,
-     "Thunder": 2493.8,
-     "Blood Violence": 2209.6,
-     "Animosity": 2191.6,
-     "Glass Cannon": 2493.8,
-     "Mindhaste": 2111.5
-    }
-   },
-   {
-    "farm_dps": 2493.7,
-    "dps": 2493.7,
-    "total": 74811,
-    "manaLeft": 85.2,
-    "bound_spell": null,
-    "orb_mode": "Shadow",
-    "items": [
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Black Raven",
-      "code": "I0HR",
-      "source": "shop"
-     },
-     {
-      "name": "Staff of Galactic Fury",
-      "code": "I0JO",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     },
-     {
-      "name": "Raging Core Pendant",
-      "code": "I0T0",
-      "source": "shop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Empyreal Blaze",
-     "Insanity",
-     "Smite"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Thunder"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 3,
-     "attack_speed": 1,
-     "damage": 6,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 2589244,
-    "sources": [
-     [
-      "Sulfuras",
-      579.2
-     ],
-     [
-      "Thunder",
-      423.4
-     ],
-     [
-      "Shadow Word: Pain",
-      338.7
+      319.7
      ],
      [
       "Smite",
-      307.3
-     ],
-     [
-      "Empyreal Blaze",
-      257.6
+      312.1
      ],
      [
       "Mind Spike",
-      226.6
+      247.9
+     ],
+     [
+      "Empyreal Blaze",
+      214.7
      ],
      [
       "Radiance",
-      144.7
+      135.3
      ],
      [
       "Naaru",
-      118.0
+      111.7
      ],
      [
       "Автоатака",
-      91.5
+      94.1
      ],
      [
       "Sulfuras (удар)",
-      6.7
+      7.3
      ]
     ],
     "actions": [
@@ -3065,27 +2755,27 @@
     "stats": [
      [
       "Интеллект",
-      "163"
+      "174"
      ],
      [
       "Сила",
-      "35"
+      "38"
      ],
      [
       "Ловкость",
-      "36"
+      "31"
      ],
      [
       "Сила атаки",
-      "144.2"
+      "156.5"
      ],
      [
       "Potency",
-      "18.0"
+      "10.0"
      ],
      [
       "Mastery",
-      "26"
+      "20"
      ],
      [
       "Шанс крита",
@@ -3121,15 +2811,15 @@
      ],
      [
       "Мана макс.",
-      "1316"
+      "1393"
      ],
      [
       "Реген маны",
-      "14.00/с"
+      "14.88/с"
      ],
      [
       "Мана в конце",
-      "85%"
+      "88%"
      ],
      [
       "Интервал атаки",
@@ -3157,28 +2847,338 @@
      ]
     ],
     "talentDps": {
-     "Psychic Link": 2344.4,
-     "Dark Torment": 2363.9,
-     "Smite": 2493.7,
-     "Empyreal Blaze": 2493.7,
-     "Catharsis": 2371.2,
-     "Insanity": 2493.7,
-     "Clairvoyance": 2188.6,
-     "Answered Prayers": 2264.1
+     "Psychic Link": 2345.0,
+     "Dark Torment": 2370.4,
+     "Smite": 2501.5,
+     "Empyreal Blaze": 2501.5,
+     "Catharsis": 2378.9,
+     "Insanity": 2501.5,
+     "Clairvoyance": 2196.0,
+     "Answered Prayers": 2301.7
     },
     "glyphDps": {
-     "Fortitude": 2493.7,
-     "Unsealed Power": 2418.0,
-     "Fortune": 2169.3,
-     "Supremacy": 2198.9,
-     "Arc Striking": 2169.3,
-     "Battle Frenzy": 1938.9,
-     "Hellfire": 2299.7,
-     "Thunder": 2493.7,
-     "Blood Violence": 2205.0,
-     "Animosity": 2180.3,
-     "Glass Cannon": 2493.7,
-     "Mindhaste": 1870.5
+     "Fortitude": 2501.5,
+     "Unsealed Power": 2425.7,
+     "Fortune": 2176.2,
+     "Supremacy": 2207.2,
+     "Arc Striking": 2176.2,
+     "Battle Frenzy": 1940.6,
+     "Hellfire": 2281.9,
+     "Thunder": 2501.5,
+     "Blood Violence": 2213.1,
+     "Animosity": 2187.5,
+     "Glass Cannon": 2501.5,
+     "Mindhaste": 1859.6
+    }
+   },
+   {
+    "farm_dps": 2496.5,
+    "dps": 2496.5,
+    "total": 74895,
+    "manaLeft": 98.8,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 10,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 205999951,
+    "sources": [
+     [
+      "Sulfuras",
+      693.4
+     ],
+     [
+      "Thunder",
+      417.9
+     ],
+     [
+      "Mind Spike",
+      281.7
+     ],
+     [
+      "Smite",
+      279.5
+     ],
+     [
+      "Shadow Word: Pain",
+      258.3
+     ],
+     [
+      "Empyreal Blaze",
+      169.3
+     ],
+     [
+      "Автоатака",
+      150.3
+     ],
+     [
+      "Radiance",
+      135.7
+     ],
+     [
+      "Naaru",
+      100.8
+     ],
+     [
+      "Sulfuras (удар)",
+      9.6
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Shadow Word: Pain"
+     ],
+     [
+      "0.45",
+      "Divine Image"
+     ],
+     [
+      "0.90",
+      "Radiance"
+     ],
+     [
+      "1.35",
+      "Mind Spike"
+     ],
+     [
+      "1.80",
+      "Renew"
+     ],
+     [
+      "6.78",
+      "Shadow Word: Pain"
+     ],
+     [
+      "8.29",
+      "Renew"
+     ],
+     [
+      "9.80",
+      "Radiance"
+     ],
+     [
+      "10.25",
+      "Mind Spike"
+     ],
+     [
+      "12.82",
+      "Shadow Word: Pain"
+     ],
+     [
+      "14.33",
+      "Renew"
+     ],
+     [
+      "17.34",
+      "Divine Image"
+     ],
+     [
+      "18.85",
+      "Shadow Word: Pain"
+     ],
+     [
+      "19.30",
+      "Radiance"
+     ],
+     [
+      "19.75",
+      "Mind Spike"
+     ],
+     [
+      "20.36",
+      "Renew"
+     ],
+     [
+      "24.89",
+      "Shadow Word: Pain"
+     ],
+     [
+      "26.40",
+      "Renew"
+     ],
+     [
+      "27.91",
+      "Radiance"
+     ],
+     [
+      "28.36",
+      "Mind Spike"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "224"
+     ],
+     [
+      "Сила",
+      "45"
+     ],
+     [
+      "Ловкость",
+      "40"
+     ],
+     [
+      "Сила атаки",
+      "207.0"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "35"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "22.0%"
+     ],
+     [
+      "Скорость атаки",
+      "59.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1743"
+     ],
+     [
+      "Реген маны",
+      "18.88/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.51 с"
+     ],
+     [
+      "Тик Shadow Word: Pain",
+      "0.82 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Psychic Link": 2374.6,
+     "Dark Torment": 2436.6,
+     "Smite": 2496.5,
+     "Empyreal Blaze": 2496.5,
+     "Catharsis": 2407.7,
+     "Insanity": 2496.5,
+     "Clairvoyance": 2255.0,
+     "Answered Prayers": 2303.2
+    },
+    "glyphDps": {
+     "Fortitude": 2496.5,
+     "Unsealed Power": 2427.3,
+     "Fortune": 2172.1,
+     "Supremacy": 2198.3,
+     "Arc Striking": 2172.1,
+     "Battle Frenzy": 1985.9,
+     "Hellfire": 2283.4,
+     "Thunder": 2496.5,
+     "Blood Violence": 2210.8,
+     "Animosity": 2190.2,
+     "Glass Cannon": 2496.5,
+     "Mindhaste": 2084.5
     }
    }
   ],
@@ -3245,7 +3245,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 2902725,
+    "chunk": 205999951,
     "sources": [
      [
       "Sulfuras",
@@ -3494,6 +3494,626 @@
     }
    },
    {
+    "farm_dps": 2378.9,
+    "dps": 2378.9,
+    "total": 71368,
+    "manaLeft": 98.6,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Witchwood Sword",
+      "code": "I0ST",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 1,
+     "damage": 8,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 197302639,
+    "sources": [
+     [
+      "Sulfuras",
+      666.5
+     ],
+     [
+      "Thunder",
+      403.2
+     ],
+     [
+      "Smite",
+      265.9
+     ],
+     [
+      "Mind Spike",
+      263.1
+     ],
+     [
+      "Shadow Word: Pain",
+      255.2
+     ],
+     [
+      "Empyreal Blaze",
+      153.4
+     ],
+     [
+      "Автоатака",
+      142.9
+     ],
+     [
+      "Radiance",
+      121.6
+     ],
+     [
+      "Naaru",
+      97.9
+     ],
+     [
+      "Sulfuras (удар)",
+      9.2
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Shadow Word: Pain"
+     ],
+     [
+      "0.45",
+      "Divine Image"
+     ],
+     [
+      "0.90",
+      "Radiance"
+     ],
+     [
+      "1.35",
+      "Mind Spike"
+     ],
+     [
+      "1.80",
+      "Renew"
+     ],
+     [
+      "6.81",
+      "Shadow Word: Pain"
+     ],
+     [
+      "8.33",
+      "Renew"
+     ],
+     [
+      "9.85",
+      "Radiance"
+     ],
+     [
+      "10.30",
+      "Mind Spike"
+     ],
+     [
+      "12.90",
+      "Shadow Word: Pain"
+     ],
+     [
+      "14.42",
+      "Renew"
+     ],
+     [
+      "17.46",
+      "Divine Image"
+     ],
+     [
+      "18.98",
+      "Shadow Word: Pain"
+     ],
+     [
+      "19.43",
+      "Radiance"
+     ],
+     [
+      "19.88",
+      "Mind Spike"
+     ],
+     [
+      "20.50",
+      "Renew"
+     ],
+     [
+      "25.06",
+      "Shadow Word: Pain"
+     ],
+     [
+      "26.58",
+      "Renew"
+     ],
+     [
+      "28.11",
+      "Radiance"
+     ],
+     [
+      "28.56",
+      "Mind Spike"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "216"
+     ],
+     [
+      "Сила",
+      "37"
+     ],
+     [
+      "Ловкость",
+      "32"
+     ],
+     [
+      "Сила атаки",
+      "197.0"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "21.0%"
+     ],
+     [
+      "Скорость атаки",
+      "57.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1687"
+     ],
+     [
+      "Реген маны",
+      "19.36/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.52 с"
+     ],
+     [
+      "Тик Shadow Word: Pain",
+      "0.83 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Psychic Link": 2280.8,
+     "Dark Torment": 2339.0,
+     "Smite": 2378.9,
+     "Empyreal Blaze": 2378.9,
+     "Catharsis": 2307.6,
+     "Insanity": 2378.9,
+     "Clairvoyance": 2162.2,
+     "Answered Prayers": 2209.5
+    },
+    "glyphDps": {
+     "Fortitude": 2378.9,
+     "Unsealed Power": 2313.1,
+     "Fortune": 2069.8,
+     "Supremacy": 2095.2,
+     "Arc Striking": 2069.8,
+     "Battle Frenzy": 1885.5,
+     "Hellfire": 2173.5,
+     "Thunder": 2378.9,
+     "Blood Violence": 2107.1,
+     "Animosity": 2087.0,
+     "Glass Cannon": 2378.9,
+     "Mindhaste": 1980.1
+    }
+   },
+   {
+    "farm_dps": 2378.9,
+    "dps": 2378.9,
+    "total": 71368,
+    "manaLeft": 98.6,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Witchwood Sword",
+      "code": "I0ID",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 1,
+     "damage": 8,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 197522596,
+    "sources": [
+     [
+      "Sulfuras",
+      666.5
+     ],
+     [
+      "Thunder",
+      403.2
+     ],
+     [
+      "Smite",
+      265.9
+     ],
+     [
+      "Mind Spike",
+      263.1
+     ],
+     [
+      "Shadow Word: Pain",
+      255.2
+     ],
+     [
+      "Empyreal Blaze",
+      153.4
+     ],
+     [
+      "Автоатака",
+      142.9
+     ],
+     [
+      "Radiance",
+      121.6
+     ],
+     [
+      "Naaru",
+      97.9
+     ],
+     [
+      "Sulfuras (удар)",
+      9.2
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Shadow Word: Pain"
+     ],
+     [
+      "0.45",
+      "Divine Image"
+     ],
+     [
+      "0.90",
+      "Radiance"
+     ],
+     [
+      "1.35",
+      "Mind Spike"
+     ],
+     [
+      "1.80",
+      "Renew"
+     ],
+     [
+      "6.81",
+      "Shadow Word: Pain"
+     ],
+     [
+      "8.33",
+      "Renew"
+     ],
+     [
+      "9.85",
+      "Radiance"
+     ],
+     [
+      "10.30",
+      "Mind Spike"
+     ],
+     [
+      "12.90",
+      "Shadow Word: Pain"
+     ],
+     [
+      "14.42",
+      "Renew"
+     ],
+     [
+      "17.46",
+      "Divine Image"
+     ],
+     [
+      "18.98",
+      "Shadow Word: Pain"
+     ],
+     [
+      "19.43",
+      "Radiance"
+     ],
+     [
+      "19.88",
+      "Mind Spike"
+     ],
+     [
+      "20.50",
+      "Renew"
+     ],
+     [
+      "25.06",
+      "Shadow Word: Pain"
+     ],
+     [
+      "26.58",
+      "Renew"
+     ],
+     [
+      "28.11",
+      "Radiance"
+     ],
+     [
+      "28.56",
+      "Mind Spike"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "216"
+     ],
+     [
+      "Сила",
+      "37"
+     ],
+     [
+      "Ловкость",
+      "32"
+     ],
+     [
+      "Сила атаки",
+      "197.0"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "21.0%"
+     ],
+     [
+      "Скорость атаки",
+      "57.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1687"
+     ],
+     [
+      "Реген маны",
+      "19.36/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.52 с"
+     ],
+     [
+      "Тик Shadow Word: Pain",
+      "0.83 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Psychic Link": 2280.8,
+     "Dark Torment": 2339.0,
+     "Smite": 2378.9,
+     "Empyreal Blaze": 2378.9,
+     "Catharsis": 2307.6,
+     "Insanity": 2378.9,
+     "Clairvoyance": 2162.2,
+     "Answered Prayers": 2209.5
+    },
+    "glyphDps": {
+     "Fortitude": 2378.9,
+     "Unsealed Power": 2313.1,
+     "Fortune": 2069.8,
+     "Supremacy": 2095.2,
+     "Arc Striking": 2069.8,
+     "Battle Frenzy": 1885.5,
+     "Hellfire": 2173.5,
+     "Thunder": 2378.9,
+     "Blood Violence": 2107.1,
+     "Animosity": 2087.0,
+     "Glass Cannon": 2378.9,
+     "Mindhaste": 1980.1
+    }
+   },
+   {
     "farm_dps": 2369.7,
     "dps": 2369.7,
     "total": 71091,
@@ -3555,7 +4175,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 69542285,
+    "chunk": 3342839969,
     "sources": [
      [
       "Sulfuras",
@@ -3808,6 +4428,316 @@
     }
    },
    {
+    "farm_dps": 2354.8,
+    "dps": 2354.8,
+    "total": 70645,
+    "manaLeft": 98.2,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Echo of the Night Forest",
+      "code": "I0T1",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 4,
+     "attack_speed": 6,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 197302635,
+    "sources": [
+     [
+      "Sulfuras",
+      671.9
+     ],
+     [
+      "Thunder",
+      405.6
+     ],
+     [
+      "Smite",
+      263.1
+     ],
+     [
+      "Mind Spike",
+      249.2
+     ],
+     [
+      "Shadow Word: Pain",
+      222.5
+     ],
+     [
+      "Empyreal Blaze",
+      156.4
+     ],
+     [
+      "Автоатака",
+      153.2
+     ],
+     [
+      "Radiance",
+      125.2
+     ],
+     [
+      "Naaru",
+      97.9
+     ],
+     [
+      "Sulfuras (удар)",
+      9.8
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Shadow Word: Pain"
+     ],
+     [
+      "0.45",
+      "Divine Image"
+     ],
+     [
+      "0.90",
+      "Radiance"
+     ],
+     [
+      "1.35",
+      "Mind Spike"
+     ],
+     [
+      "1.80",
+      "Renew"
+     ],
+     [
+      "7.50",
+      "Shadow Word: Pain"
+     ],
+     [
+      "8.81",
+      "Renew"
+     ],
+     [
+      "10.12",
+      "Radiance"
+     ],
+     [
+      "10.57",
+      "Mind Spike"
+     ],
+     [
+      "14.05",
+      "Shadow Word: Pain"
+     ],
+     [
+      "15.36",
+      "Renew"
+     ],
+     [
+      "17.99",
+      "Divine Image"
+     ],
+     [
+      "19.30",
+      "Radiance"
+     ],
+     [
+      "19.75",
+      "Mind Spike"
+     ],
+     [
+      "20.61",
+      "Shadow Word: Pain"
+     ],
+     [
+      "21.92",
+      "Renew"
+     ],
+     [
+      "27.17",
+      "Shadow Word: Pain"
+     ],
+     [
+      "28.48",
+      "Radiance"
+     ],
+     [
+      "28.93",
+      "Mind Spike"
+     ],
+     [
+      "29.38",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "217"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "181.8"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "14.0%"
+     ],
+     [
+      "Скорость атаки",
+      "83.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1854"
+     ],
+     [
+      "Реген маны",
+      "18.32/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.31 с"
+     ],
+     [
+      "Тик Shadow Word: Pain",
+      "0.88 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Psychic Link": 2230.8,
+     "Dark Torment": 2303.2,
+     "Smite": 2354.8,
+     "Empyreal Blaze": 2354.8,
+     "Catharsis": 2268.3,
+     "Insanity": 2354.8,
+     "Clairvoyance": 2131.0,
+     "Answered Prayers": 2168.1
+    },
+    "glyphDps": {
+     "Fortitude": 2354.8,
+     "Unsealed Power": 2290.5,
+     "Fortune": 2049.0,
+     "Supremacy": 2075.0,
+     "Arc Striking": 2049.0,
+     "Battle Frenzy": 1851.4,
+     "Hellfire": 2152.4,
+     "Thunder": 2354.8,
+     "Blood Violence": 2086.7,
+     "Animosity": 2067.4,
+     "Glass Cannon": 2354.8,
+     "Mindhaste": 1807.2
+    }
+   },
+   {
     "farm_dps": 2353.1,
     "dps": 2353.1,
     "total": 70592,
@@ -3869,7 +4799,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 2612653,
+    "chunk": 197302636,
     "sources": [
      [
       "Sulfuras",
@@ -4179,7 +5109,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 2612654,
+    "chunk": 197302637,
     "sources": [
      [
       "Sulfuras",
@@ -4489,7 +5419,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 38518787,
+    "chunk": 1861299653,
     "sources": [
      [
       "Sulfuras",
@@ -4803,7 +5733,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 2612692,
+    "chunk": 197302801,
     "sources": [
      [
       "Sulfuras",
@@ -5113,7 +6043,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 2612680,
+    "chunk": 197302705,
     "sources": [
      [
       "Sulfuras",
@@ -5359,940 +6289,6 @@
      "Animosity": 2056.0,
      "Glass Cannon": 2344.0,
      "Mindhaste": 1824.4
-    }
-   },
-   {
-    "farm_dps": 2344.0,
-    "dps": 2344.0,
-    "total": 70320,
-    "manaLeft": 98.2,
-    "bound_spell": null,
-    "orb_mode": "Shadow",
-    "items": [
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Amplifying Bracers",
-      "code": "I0IK",
-      "source": "shop"
-     },
-     {
-      "name": "Staff of Galactic Fury",
-      "code": "I0JO",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuron Gloves",
-      "code": "I0QT",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Empyreal Blaze",
-     "Insanity",
-     "Smite"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Thunder"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 1,
-     "attack_speed": 0,
-     "damage": 9,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 2615866,
-    "sources": [
-     [
-      "Sulfuras",
-      622.0
-     ],
-     [
-      "Thunder",
-      410.3
-     ],
-     [
-      "Mind Spike",
-      268.9
-     ],
-     [
-      "Smite",
-      265.8
-     ],
-     [
-      "Shadow Word: Pain",
-      243.4
-     ],
-     [
-      "Empyreal Blaze",
-      164.9
-     ],
-     [
-      "Автоатака",
-      137.9
-     ],
-     [
-      "Radiance",
-      123.0
-     ],
-     [
-      "Naaru",
-      98.8
-     ],
-     [
-      "Sulfuras (удар)",
-      8.9
-     ]
-    ],
-    "actions": [
-     [
-      "до боя",
-      "Elemental Orb → Shadow"
-     ],
-     [
-      "0.00",
-      "Shadow Word: Pain"
-     ],
-     [
-      "0.45",
-      "Divine Image"
-     ],
-     [
-      "0.90",
-      "Radiance"
-     ],
-     [
-      "1.35",
-      "Mind Spike"
-     ],
-     [
-      "1.80",
-      "Renew"
-     ],
-     [
-      "6.96",
-      "Shadow Word: Pain"
-     ],
-     [
-      "8.52",
-      "Renew"
-     ],
-     [
-      "10.09",
-      "Radiance"
-     ],
-     [
-      "10.54",
-      "Mind Spike"
-     ],
-     [
-      "13.23",
-      "Shadow Word: Pain"
-     ],
-     [
-      "14.80",
-      "Renew"
-     ],
-     [
-      "17.94",
-      "Divine Image"
-     ],
-     [
-      "18.39",
-      "Radiance"
-     ],
-     [
-      "18.84",
-      "Mind Spike"
-     ],
-     [
-      "19.50",
-      "Shadow Word: Pain"
-     ],
-     [
-      "21.07",
-      "Renew"
-     ],
-     [
-      "25.78",
-      "Shadow Word: Pain"
-     ],
-     [
-      "27.35",
-      "Radiance"
-     ],
-     [
-      "27.80",
-      "Mind Spike"
-     ],
-     [
-      "28.25",
-      "Renew"
-     ]
-    ],
-    "stats": [
-     [
-      "Интеллект",
-      "219"
-     ],
-     [
-      "Сила",
-      "30"
-     ],
-     [
-      "Ловкость",
-      "25"
-     ],
-     [
-      "Сила атаки",
-      "201.2"
-     ],
-     [
-      "Potency",
-      "10.0"
-     ],
-     [
-      "Mastery",
-      "20"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "19.0%"
-     ],
-     [
-      "Скорость атаки",
-      "53.0%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Healing Power",
-      "0"
-     ],
-     [
-      "Pet Damage",
-      "0.0%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "1708"
-     ],
-     [
-      "Реген маны",
-      "18.48/с"
-     ],
-     [
-      "Мана в конце",
-      "98%"
-     ],
-     [
-      "Интервал атаки",
-      "1.57 с"
-     ],
-     [
-      "Тик Shadow Word: Pain",
-      "0.84 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.220"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "6"
-     ],
-     [
-      "Elemental Orb",
-      "Shadow"
-     ]
-    ],
-    "talentDps": {
-     "Psychic Link": 2227.8,
-     "Dark Torment": 2291.8,
-     "Smite": 2344.0,
-     "Empyreal Blaze": 2344.0,
-     "Catharsis": 2256.4,
-     "Insanity": 2344.0,
-     "Clairvoyance": 2112.2,
-     "Answered Prayers": 2153.6
-    },
-    "glyphDps": {
-     "Fortitude": 2344.0,
-     "Unsealed Power": 2278.9,
-     "Fortune": 2039.4,
-     "Supremacy": 2065.9,
-     "Arc Striking": 2039.4,
-     "Battle Frenzy": 1892.9,
-     "Hellfire": 2144.5,
-     "Thunder": 2344.0,
-     "Blood Violence": 2076.6,
-     "Animosity": 2056.0,
-     "Glass Cannon": 2344.0,
-     "Mindhaste": 1824.4
-    }
-   },
-   {
-    "farm_dps": 2329.4,
-    "dps": 2329.4,
-    "total": 69882,
-    "manaLeft": 98.9,
-    "bound_spell": null,
-    "orb_mode": "Shadow",
-    "items": [
-     {
-      "name": "Thunder God's Vigor",
-      "code": "I08T",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Staff of Galactic Fury",
-      "code": "I0JO",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Empyreal Blaze",
-     "Insanity",
-     "Smite"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Thunder"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 2,
-     "damage": 8,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 5936352,
-    "sources": [
-     [
-      "Sulfuras",
-      677.6
-     ],
-     [
-      "Thunder",
-      396.8
-     ],
-     [
-      "Mind Spike",
-      274.9
-     ],
-     [
-      "Smite",
-      250.6
-     ],
-     [
-      "Shadow Word: Pain",
-      241.1
-     ],
-     [
-      "Empyreal Blaze",
-      141.8
-     ],
-     [
-      "Автоатака",
-      127.6
-     ],
-     [
-      "Radiance",
-      115.7
-     ],
-     [
-      "Naaru",
-      93.0
-     ],
-     [
-      "Sulfuras (удар)",
-      10.3
-     ]
-    ],
-    "actions": [
-     [
-      "до боя",
-      "Elemental Orb → Shadow"
-     ],
-     [
-      "0.00",
-      "Shadow Word: Pain"
-     ],
-     [
-      "0.45",
-      "Divine Image"
-     ],
-     [
-      "0.90",
-      "Radiance"
-     ],
-     [
-      "1.35",
-      "Mind Spike"
-     ],
-     [
-      "1.80",
-      "Renew"
-     ],
-     [
-      "6.84",
-      "Shadow Word: Pain"
-     ],
-     [
-      "8.36",
-      "Renew"
-     ],
-     [
-      "9.89",
-      "Radiance"
-     ],
-     [
-      "10.34",
-      "Mind Spike"
-     ],
-     [
-      "12.95",
-      "Shadow Word: Pain"
-     ],
-     [
-      "14.48",
-      "Renew"
-     ],
-     [
-      "17.54",
-      "Divine Image"
-     ],
-     [
-      "19.07",
-      "Shadow Word: Pain"
-     ],
-     [
-      "19.52",
-      "Radiance"
-     ],
-     [
-      "19.97",
-      "Mind Spike"
-     ],
-     [
-      "20.59",
-      "Renew"
-     ],
-     [
-      "25.18",
-      "Shadow Word: Pain"
-     ],
-     [
-      "26.71",
-      "Renew"
-     ],
-     [
-      "28.24",
-      "Radiance"
-     ],
-     [
-      "28.69",
-      "Mind Spike"
-     ]
-    ],
-    "stats": [
-     [
-      "Интеллект",
-      "260"
-     ],
-     [
-      "Сила",
-      "30"
-     ],
-     [
-      "Ловкость",
-      "25"
-     ],
-     [
-      "Сила атаки",
-      "221.0"
-     ],
-     [
-      "Potency",
-      "10.0"
-     ],
-     [
-      "Mastery",
-      "20"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "22.0%"
-     ],
-     [
-      "Скорость атаки",
-      "57.0%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Healing Power",
-      "0"
-     ],
-     [
-      "Pet Damage",
-      "0.0%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "1995"
-     ],
-     [
-      "Реген маны",
-      "21.76/с"
-     ],
-     [
-      "Мана в конце",
-      "99%"
-     ],
-     [
-      "Интервал атаки",
-      "1.53 с"
-     ],
-     [
-      "Тик Shadow Word: Pain",
-      "0.82 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.240"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "6"
-     ],
-     [
-      "Elemental Orb",
-      "Shadow"
-     ]
-    ],
-    "talentDps": {
-     "Psychic Link": 2243.8,
-     "Dark Torment": 2303.4,
-     "Smite": 2329.4,
-     "Empyreal Blaze": 2329.4,
-     "Catharsis": 2303.0,
-     "Insanity": 2329.4,
-     "Clairvoyance": 2129.1,
-     "Answered Prayers": 2173.2
-    },
-    "glyphDps": {
-     "Fortitude": 2329.4,
-     "Unsealed Power": 2337.6,
-     "Fortune": 2050.2,
-     "Supremacy": 2075.3,
-     "Arc Striking": 2050.2,
-     "Battle Frenzy": 1860.1,
-     "Hellfire": 2169.1,
-     "Thunder": 2337.6,
-     "Blood Violence": 2094.8,
-     "Animosity": 2065.9,
-     "Glass Cannon": 2337.6,
-     "Mindhaste": 1946.1
-    }
-   },
-   {
-    "farm_dps": 2323.8,
-    "dps": 2323.8,
-    "total": 69715,
-    "manaLeft": 98.8,
-    "bound_spell": null,
-    "orb_mode": "Fire",
-    "items": [
-     {
-      "name": "Elemental Orb",
-      "code": "I07O",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Celestial Crown",
-      "code": "I0C2",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Staff of Galactic Fury",
-      "code": "I0JO",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuron Gloves",
-      "code": "I0QT",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Empyreal Blaze",
-     "Insanity",
-     "Smite"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Thunder"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 10,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 13213178,
-    "sources": [
-     [
-      "Sulfuras",
-      589.4
-     ],
-     [
-      "Thunder",
-      355.2
-     ],
-     [
-      "Mind Spike",
-      239.4
-     ],
-     [
-      "Smite",
-      237.6
-     ],
-     [
-      "Shadow Word: Pain",
-      219.6
-     ],
-     [
-      "Всплеск огня",
-      201.8
-     ],
-     [
-      "Empyreal Blaze",
-      143.9
-     ],
-     [
-      "Автоатака",
-      127.8
-     ],
-     [
-      "Radiance",
-      115.3
-     ],
-     [
-      "Naaru",
-      85.7
-     ],
-     [
-      "Sulfuras (удар)",
-      8.2
-     ]
-    ],
-    "actions": [
-     [
-      "до боя",
-      "Elemental Orb → Fire"
-     ],
-     [
-      "0.00",
-      "Shadow Word: Pain"
-     ],
-     [
-      "0.45",
-      "Divine Image"
-     ],
-     [
-      "0.90",
-      "Radiance"
-     ],
-     [
-      "1.35",
-      "Mind Spike"
-     ],
-     [
-      "1.80",
-      "Renew"
-     ],
-     [
-      "6.78",
-      "Shadow Word: Pain"
-     ],
-     [
-      "8.29",
-      "Renew"
-     ],
-     [
-      "9.80",
-      "Radiance"
-     ],
-     [
-      "10.25",
-      "Mind Spike"
-     ],
-     [
-      "12.82",
-      "Shadow Word: Pain"
-     ],
-     [
-      "14.33",
-      "Renew"
-     ],
-     [
-      "17.34",
-      "Divine Image"
-     ],
-     [
-      "18.85",
-      "Shadow Word: Pain"
-     ],
-     [
-      "19.30",
-      "Radiance"
-     ],
-     [
-      "19.75",
-      "Mind Spike"
-     ],
-     [
-      "20.36",
-      "Renew"
-     ],
-     [
-      "24.89",
-      "Shadow Word: Pain"
-     ],
-     [
-      "26.40",
-      "Renew"
-     ],
-     [
-      "27.91",
-      "Radiance"
-     ],
-     [
-      "28.36",
-      "Mind Spike"
-     ]
-    ],
-    "stats": [
-     [
-      "Интеллект",
-      "224"
-     ],
-     [
-      "Сила",
-      "45"
-     ],
-     [
-      "Ловкость",
-      "40"
-     ],
-     [
-      "Сила атаки",
-      "207.0"
-     ],
-     [
-      "Potency",
-      "10.0"
-     ],
-     [
-      "Mastery",
-      "35"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "22.0%"
-     ],
-     [
-      "Скорость атаки",
-      "59.0%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Healing Power",
-      "0"
-     ],
-     [
-      "Pet Damage",
-      "0.0%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "1743"
-     ],
-     [
-      "Реген маны",
-      "18.88/с"
-     ],
-     [
-      "Мана в конце",
-      "99%"
-     ],
-     [
-      "Интервал атаки",
-      "1.51 с"
-     ],
-     [
-      "Тик Shadow Word: Pain",
-      "0.82 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.220"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ],
-     [
-      "Elemental Orb",
-      "Fire"
-     ]
-    ],
-    "talentDps": {
-     "Psychic Link": 2213.1,
-     "Dark Torment": 2265.9,
-     "Smite": 2323.8,
-     "Empyreal Blaze": 2323.8,
-     "Catharsis": 2241.3,
-     "Insanity": 2323.8,
-     "Clairvoyance": 2111.5,
-     "Answered Prayers": 2152.5
-    },
-    "glyphDps": {
-     "Fortitude": 2323.8,
-     "Unsealed Power": 2265.0,
-     "Fortune": 2048.1,
-     "Supremacy": 2070.3,
-     "Arc Striking": 2048.1,
-     "Battle Frenzy": 1900.1,
-     "Hellfire": 2136.8,
-     "Thunder": 2323.8,
-     "Blood Violence": 2081.0,
-     "Animosity": 2063.4,
-     "Glass Cannon": 2323.8,
-     "Mindhaste": 1975.4
     }
    }
   ],
@@ -6359,7 +6355,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 11731218,
+    "chunk": 532107705,
     "sources": [
      [
       "Sulfuras",
@@ -6689,7 +6685,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 173946508,
+    "chunk": 7750994392,
     "sources": [
      [
       "Sulfuras",
@@ -7019,7 +7015,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 11747683,
+    "chunk": 532273380,
     "sources": [
      [
       "Sulfuras",
@@ -7349,7 +7345,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 2870329,
+    "chunk": 205252001,
     "sources": [
      [
       "Sulfuras",
@@ -7679,7 +7675,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 11731870,
+    "chunk": 532116337,
     "sources": [
      [
       "Sulfuras",
@@ -7940,348 +7936,10 @@
     }
    },
    {
-    "farm_dps": 2035.6,
-    "dps": 2035.6,
-    "total": 61067,
-    "manaLeft": 84.2,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "The Zircon Star",
-      "code": "I0DF",
-      "source": "drop"
-     },
-     {
-      "name": "The Zircon Star",
-      "code": "I0DF",
-      "source": "drop"
-     },
-     {
-      "name": "The Zircon Star",
-      "code": "I0DF",
-      "source": "drop"
-     },
-     {
-      "name": "The Zircon Star",
-      "code": "I0DF",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Empyreal Blaze",
-     "Insanity",
-     "Smite"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Thunder"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 1,
-     "attack_speed": 2,
-     "damage": 7,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 2720706,
-    "sources": [
-     [
-      "Sulfuras",
-      474.4
-     ],
-     [
-      "Thunder",
-      356.5
-     ],
-     [
-      "Shadow Word: Pain",
-      296.9
-     ],
-     [
-      "Smite",
-      255.5
-     ],
-     [
-      "Mind Spike",
-      213.6
-     ],
-     [
-      "Empyreal Blaze",
-      150.3
-     ],
-     [
-      "Radiance",
-      108.8
-     ],
-     [
-      "Naaru",
-      87.9
-     ],
-     [
-      "Автоатака",
-      85.1
-     ],
-     [
-      "Sulfuras (удар)",
-      6.7
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Shadow Word: Pain"
-     ],
-     [
-      "0.45",
-      "Divine Image"
-     ],
-     [
-      "0.90",
-      "Radiance"
-     ],
-     [
-      "1.35",
-      "Mind Spike"
-     ],
-     [
-      "1.80",
-      "Renew"
-     ],
-     [
-      "5.07",
-      "Shadow Word: Pain"
-     ],
-     [
-      "6.48",
-      "Radiance"
-     ],
-     [
-      "6.93",
-      "Mind Spike"
-     ],
-     [
-      "7.38",
-      "Renew"
-     ],
-     [
-      "9.29",
-      "Shadow Word: Pain"
-     ],
-     [
-      "10.70",
-      "Divine Image"
-     ],
-     [
-      "11.15",
-      "Renew"
-     ],
-     [
-      "11.60",
-      "Radiance"
-     ],
-     [
-      "12.05",
-      "Mind Spike"
-     ],
-     [
-      "13.91",
-      "Shadow Word: Pain"
-     ],
-     [
-      "15.32",
-      "Renew"
-     ],
-     [
-      "16.73",
-      "Radiance"
-     ],
-     [
-      "17.18",
-      "Mind Spike"
-     ],
-     [
-      "18.13",
-      "Shadow Word: Pain"
-     ],
-     [
-      "19.54",
-      "Renew"
-     ],
-     [
-      "20.95",
-      "Divine Image"
-     ],
-     [
-      "22.36",
-      "Shadow Word: Pain"
-     ],
-     [
-      "22.81",
-      "Radiance"
-     ],
-     [
-      "23.26",
-      "Mind Spike"
-     ],
-     [
-      "23.71",
-      "Renew"
-     ],
-     [
-      "26.98",
-      "Shadow Word: Pain"
-     ],
-     [
-      "28.39",
-      "Radiance"
-     ],
-     [
-      "28.84",
-      "Mind Spike"
-     ],
-     [
-      "29.29",
-      "Renew"
-     ]
-    ],
-    "stats": [
-     [
-      "Интеллект",
-      "182"
-     ],
-     [
-      "Сила",
-      "24"
-     ],
-     [
-      "Ловкость",
-      "25"
-     ],
-     [
-      "Сила атаки",
-      "160.5"
-     ],
-     [
-      "Potency",
-      "10.0"
-     ],
-     [
-      "Mastery",
-      "10"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "61.0%"
-     ],
-     [
-      "Скорость атаки",
-      "42.0%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Healing Power",
-      "0"
-     ],
-     [
-      "Pet Damage",
-      "0.0%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "1449"
-     ],
-     [
-      "Реген маны",
-      "15.52/с"
-     ],
-     [
-      "Мана в конце",
-      "84%"
-     ],
-     [
-      "Интервал атаки",
-      "1.41 с"
-     ],
-     [
-      "Тик Shadow Word: Pain",
-      "0.62 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.000"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Psychic Link": 1979.9,
-     "Dark Torment": 1971.6,
-     "Smite": 2035.6,
-     "Empyreal Blaze": 2035.6,
-     "Catharsis": 1963.2,
-     "Insanity": 2035.6,
-     "Clairvoyance": 1810.0,
-     "Answered Prayers": 1878.1
-    },
-    "glyphDps": {
-     "Fortitude": 2035.6,
-     "Unsealed Power": 2018.3,
-     "Fortune": 1770.9,
-     "Supremacy": 1795.5,
-     "Arc Striking": 1770.9,
-     "Battle Frenzy": 1536.8,
-     "Hellfire": 1860.1,
-     "Thunder": 2035.6,
-     "Blood Violence": 1807.8,
-     "Animosity": 1781.1,
-     "Glass Cannon": 2035.6,
-     "Mindhaste": 1567.2
-    }
-   },
-   {
-    "farm_dps": 1985.8,
-    "dps": 1985.8,
-    "total": 59575,
-    "manaLeft": 90.8,
+    "farm_dps": 1934.7,
+    "dps": 1934.7,
+    "total": 58041,
+    "manaLeft": 92.1,
     "bound_spell": null,
     "orb_mode": null,
     "items": [
@@ -8296,668 +7954,13 @@
       "source": "legendary"
      },
      {
-      "name": "The Zircon Star",
-      "code": "I0DF",
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
       "source": "drop"
      },
      {
-      "name": "Staff of the Magister",
-      "code": "I0HK",
-      "source": "drop"
-     },
-     {
-      "name": "Motion-powered Enhancer Cape",
-      "code": "I0HZ",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Empyreal Blaze",
-     "Insanity",
-     "Smite"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Thunder"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 1,
-     "damage": 9,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 11731472,
-    "sources": [
-     [
-      "Sulfuras",
-      466.0
-     ],
-     [
-      "Thunder",
-      347.7
-     ],
-     [
-      "Smite",
-      266.4
-     ],
-     [
-      "Shadow Word: Pain",
-      254.9
-     ],
-     [
-      "Mind Spike",
-      193.2
-     ],
-     [
-      "Empyreal Blaze",
-      168.2
-     ],
-     [
-      "Radiance",
-      99.7
-     ],
-     [
-      "Автоатака",
-      93.3
-     ],
-     [
-      "Naaru",
-      89.3
-     ],
-     [
-      "Sulfuras (удар)",
-      7.1
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Shadow Word: Pain"
-     ],
-     [
-      "0.45",
-      "Divine Image"
-     ],
-     [
-      "0.90",
-      "Radiance"
-     ],
-     [
-      "1.35",
-      "Mind Spike"
-     ],
-     [
-      "1.80",
-      "Renew"
-     ],
-     [
-      "5.11",
-      "Shadow Word: Pain"
-     ],
-     [
-      "6.54",
-      "Renew"
-     ],
-     [
-      "6.99",
-      "Radiance"
-     ],
-     [
-      "7.44",
-      "Mind Spike"
-     ],
-     [
-      "9.39",
-      "Shadow Word: Pain"
-     ],
-     [
-      "10.82",
-      "Renew"
-     ],
-     [
-      "12.25",
-      "Divine Image"
-     ],
-     [
-      "12.70",
-      "Radiance"
-     ],
-     [
-      "13.15",
-      "Mind Spike"
-     ],
-     [
-      "13.68",
-      "Shadow Word: Pain"
-     ],
-     [
-      "15.11",
-      "Renew"
-     ],
-     [
-      "17.96",
-      "Shadow Word: Pain"
-     ],
-     [
-      "18.41",
-      "Radiance"
-     ],
-     [
-      "18.86",
-      "Mind Spike"
-     ],
-     [
-      "19.39",
-      "Renew"
-     ],
-     [
-      "22.25",
-      "Shadow Word: Pain"
-     ],
-     [
-      "23.68",
-      "Divine Image"
-     ],
-     [
-      "24.13",
-      "Radiance"
-     ],
-     [
-      "24.58",
-      "Mind Spike"
-     ],
-     [
-      "25.03",
-      "Renew"
-     ],
-     [
-      "26.91",
-      "Shadow Word: Pain"
-     ],
-     [
-      "29.76",
-      "Renew"
-     ]
-    ],
-    "stats": [
-     [
-      "Интеллект",
-      "191"
-     ],
-     [
-      "Сила",
-      "24"
-     ],
-     [
-      "Ловкость",
-      "25"
-     ],
-     [
-      "Сила атаки",
-      "171.2"
-     ],
-     [
-      "Potency",
-      "15.0"
-     ],
-     [
-      "Mastery",
-      "10"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "29.0%"
-     ],
-     [
-      "Скорость атаки",
-      "40.0%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Healing Power",
-      "0"
-     ],
-     [
-      "Pet Damage",
-      "0.0%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "1612"
-     ],
-     [
-      "Реген маны",
-      "16.24/с"
-     ],
-     [
-      "Мана в конце",
-      "91%"
-     ],
-     [
-      "Интервал атаки",
-      "1.43 с"
-     ],
-     [
-      "Тик Shadow Word: Pain",
-      "0.78 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×0.920"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Psychic Link": 1897.1,
-     "Dark Torment": 1887.8,
-     "Smite": 1985.8,
-     "Empyreal Blaze": 1985.8,
-     "Catharsis": 1924.5,
-     "Insanity": 1985.8,
-     "Clairvoyance": 1747.4,
-     "Answered Prayers": 1810.8
-    },
-    "glyphDps": {
-     "Fortitude": 1985.8,
-     "Unsealed Power": 1969.4,
-     "Fortune": 1727.8,
-     "Supremacy": 1751.0,
-     "Arc Striking": 1727.8,
-     "Battle Frenzy": 1475.9,
-     "Hellfire": 1830.0,
-     "Thunder": 1985.8,
-     "Blood Violence": 1762.8,
-     "Animosity": 1738.9,
-     "Glass Cannon": 1985.8,
-     "Mindhaste": 1515.8
-    }
-   },
-   {
-    "farm_dps": 1954.5,
-    "dps": 1954.5,
-    "total": 58635,
-    "manaLeft": 90.8,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Harness of Beyond",
-      "code": "I07P",
-      "source": "drop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "The Zircon Star",
-      "code": "I0DF",
-      "source": "drop"
-     },
-     {
-      "name": "Staff of the Magister",
-      "code": "I0HK",
-      "source": "drop"
-     },
-     {
-      "name": "Robes of Sinful Halo",
-      "code": "I0SI",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Empyreal Blaze",
-     "Insanity",
-     "Smite"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Thunder"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 1,
-     "damage": 9,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 11731247,
-    "sources": [
-     [
-      "Sulfuras",
-      466.0
-     ],
-     [
-      "Thunder",
-      343.7
-     ],
-     [
-      "Smite",
-      260.8
-     ],
-     [
-      "Shadow Word: Pain",
-      240.3
-     ],
-     [
-      "Mind Spike",
-      206.3
-     ],
-     [
-      "Empyreal Blaze",
-      149.0
-     ],
-     [
-      "Автоатака",
-      100.8
-     ],
-     [
-      "Radiance",
-      95.2
-     ],
-     [
-      "Naaru",
-      84.4
-     ],
-     [
-      "Sulfuras (удар)",
-      8.0
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Shadow Word: Pain"
-     ],
-     [
-      "0.45",
-      "Divine Image"
-     ],
-     [
-      "0.90",
-      "Radiance"
-     ],
-     [
-      "1.35",
-      "Mind Spike"
-     ],
-     [
-      "1.80",
-      "Renew"
-     ],
-     [
-      "5.11",
-      "Shadow Word: Pain"
-     ],
-     [
-      "6.54",
-      "Renew"
-     ],
-     [
-      "6.99",
-      "Radiance"
-     ],
-     [
-      "7.44",
-      "Mind Spike"
-     ],
-     [
-      "9.39",
-      "Shadow Word: Pain"
-     ],
-     [
-      "10.82",
-      "Renew"
-     ],
-     [
-      "12.25",
-      "Divine Image"
-     ],
-     [
-      "12.70",
-      "Radiance"
-     ],
-     [
-      "13.15",
-      "Mind Spike"
-     ],
-     [
-      "13.68",
-      "Shadow Word: Pain"
-     ],
-     [
-      "15.11",
-      "Renew"
-     ],
-     [
-      "17.96",
-      "Shadow Word: Pain"
-     ],
-     [
-      "18.41",
-      "Radiance"
-     ],
-     [
-      "18.86",
-      "Mind Spike"
-     ],
-     [
-      "19.39",
-      "Renew"
-     ],
-     [
-      "22.25",
-      "Shadow Word: Pain"
-     ],
-     [
-      "23.68",
-      "Divine Image"
-     ],
-     [
-      "24.13",
-      "Radiance"
-     ],
-     [
-      "24.58",
-      "Mind Spike"
-     ],
-     [
-      "25.03",
-      "Renew"
-     ],
-     [
-      "26.91",
-      "Shadow Word: Pain"
-     ],
-     [
-      "29.76",
-      "Renew"
-     ]
-    ],
-    "stats": [
-     [
-      "Интеллект",
-      "191"
-     ],
-     [
-      "Сила",
-      "24"
-     ],
-     [
-      "Ловкость",
-      "25"
-     ],
-     [
-      "Сила атаки",
-      "191.2"
-     ],
-     [
-      "Potency",
-      "10.0"
-     ],
-     [
-      "Mastery",
-      "10"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "29.0%"
-     ],
-     [
-      "Скорость атаки",
-      "40.0%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Healing Power",
-      "0"
-     ],
-     [
-      "Pet Damage",
-      "0.0%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "1612"
-     ],
-     [
-      "Реген маны",
-      "16.24/с"
-     ],
-     [
-      "Мана в конце",
-      "91%"
-     ],
-     [
-      "Интервал атаки",
-      "1.43 с"
-     ],
-     [
-      "Тик Shadow Word: Pain",
-      "0.78 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×0.920"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Psychic Link": 1876.0,
-     "Dark Torment": 1870.2,
-     "Smite": 1954.5,
-     "Empyreal Blaze": 1954.5,
-     "Catharsis": 1894.7,
-     "Insanity": 1954.5,
-     "Clairvoyance": 1734.7,
-     "Answered Prayers": 1794.8
-    },
-    "glyphDps": {
-     "Fortitude": 1954.5,
-     "Unsealed Power": 1938.6,
-     "Fortune": 1700.6,
-     "Supremacy": 1723.8,
-     "Arc Striking": 1700.6,
-     "Battle Frenzy": 1452.2,
-     "Hellfire": 1789.8,
-     "Thunder": 1954.5,
-     "Blood Violence": 1735.1,
-     "Animosity": 1712.7,
-     "Glass Cannon": 1954.5,
-     "Mindhaste": 1489.0
-    }
-   },
-   {
-    "farm_dps": 1936.9,
-    "dps": 1936.9,
-    "total": 58106,
-    "manaLeft": 88.3,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "The Zircon Star",
-      "code": "I0DF",
-      "source": "drop"
-     },
-     {
-      "name": "Staff of the Magister",
-      "code": "I0HK",
+      "name": "Mantle of Sacred Water",
+      "code": "I0SD",
       "source": "drop"
      },
      {
@@ -8969,11 +7972,6 @@
       "name": "The Darkglaive",
       "code": "fgrd",
       "source": "drop"
-     },
-     {
-      "name": "Hood of Dark Deeds",
-      "code": "tgrh",
-      "source": "drop"
      }
     ],
     "talents": [
@@ -8983,7 +7981,7 @@
     ],
     "glyphs": [
      "Fortitude",
-     "Glass Cannon",
+     "Mindhaste",
      "Thunder"
     ],
     "points": {
@@ -8999,47 +7997,47 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 2701060,
+    "chunk": 531918297,
     "sources": [
      [
       "Sulfuras",
-      464.5
+      520.0
      ],
      [
       "Thunder",
-      334.3
-     ],
-     [
-      "Shadow Word: Pain",
-      268.1
+      331.2
      ],
      [
       "Smite",
-      230.3
+      258.2
+     ],
+     [
+      "Shadow Word: Pain",
+      238.2
      ],
      [
       "Mind Spike",
-      185.8
+      188.8
      ],
      [
       "Empyreal Blaze",
-      164.6
+      134.4
      ],
      [
       "Radiance",
-      104.2
+      89.8
      ],
      [
       "Автоатака",
-      93.7
+      85.5
      ],
      [
       "Naaru",
-      85.3
+      80.9
      ],
      [
       "Sulfuras (удар)",
-      6.1
+      7.7
      ]
     ],
     "actions": [
@@ -9064,98 +8062,102 @@
       "Renew"
      ],
      [
-      "5.15",
+      "4.99",
       "Shadow Word: Pain"
      ],
      [
-      "6.60",
+      "6.36",
       "Renew"
      ],
      [
-      "7.05",
+      "6.81",
       "Radiance"
      ],
      [
-      "7.50",
+      "7.26",
       "Mind Spike"
      ],
      [
-      "9.50",
+      "9.10",
       "Shadow Word: Pain"
      ],
      [
-      "10.95",
+      "10.47",
       "Renew"
      ],
      [
-      "12.39",
+      "11.84",
       "Divine Image"
      ],
      [
-      "12.84",
+      "13.21",
+      "Shadow Word: Pain"
+     ],
+     [
+      "13.66",
       "Radiance"
      ],
      [
-      "13.29",
+      "14.11",
       "Mind Spike"
      ],
      [
-      "13.84",
-      "Shadow Word: Pain"
-     ],
-     [
-      "15.29",
+      "14.58",
       "Renew"
      ],
      [
-      "18.19",
+      "17.32",
       "Shadow Word: Pain"
      ],
      [
-      "18.64",
+      "18.69",
+      "Renew"
+     ],
+     [
+      "20.06",
       "Radiance"
      ],
      [
-      "19.09",
+      "20.51",
       "Mind Spike"
      ],
      [
-      "19.64",
-      "Renew"
-     ],
-     [
-      "22.54",
+      "21.43",
       "Shadow Word: Pain"
      ],
      [
-      "23.99",
+      "22.80",
+      "Renew"
+     ],
+     [
+      "23.25",
       "Divine Image"
      ],
      [
-      "24.44",
+      "25.54",
+      "Shadow Word: Pain"
+     ],
+     [
+      "25.99",
       "Radiance"
      ],
      [
-      "24.89",
+      "26.44",
       "Mind Spike"
      ],
      [
-      "25.34",
+      "26.91",
       "Renew"
-     ],
-     [
-      "27.24",
-      "Shadow Word: Pain"
      ]
     ],
     "stats": [
      [
       "Интеллект",
-      "165"
+      "194"
      ],
      [
       "Сила",
-      "24"
+      "32"
      ],
      [
       "Ловкость",
@@ -9163,7 +8165,7 @@
      ],
      [
       "Сила атаки",
-      "153.8"
+      "175.5"
      ],
      [
       "Potency",
@@ -9183,11 +8185,11 @@
      ],
      [
       "Спешка",
-      "39.0%"
+      "30.0%"
      ],
      [
       "Скорость атаки",
-      "38.0%"
+      "46.0%"
      ],
      [
       "Удача",
@@ -9207,31 +8209,31 @@
      ],
      [
       "Мана макс.",
-      "1630"
+      "1533"
      ],
      [
       "Реген маны",
-      "14.16/с"
+      "17.12/с"
      ],
      [
       "Мана в конце",
-      "88%"
+      "92%"
      ],
      [
       "Интервал атаки",
-      "1.45 с"
+      "1.37 с"
      ],
      [
       "Тик Shadow Word: Pain",
-      "0.72 с"
+      "0.77 с"
      ],
      [
       "Множитель КД (предметы)",
-      "×1.000"
+      "×0.920"
      ],
      [
       "Плоское снижение КД",
-      "0.00 с"
+      "0.20 с"
      ],
      [
       "Пробитие брони",
@@ -9239,28 +8241,28 @@
      ]
     ],
     "talentDps": {
-     "Psychic Link": 1842.7,
-     "Dark Torment": 1847.1,
-     "Smite": 1936.9,
-     "Empyreal Blaze": 1936.9,
-     "Catharsis": 1856.3,
-     "Insanity": 1936.9,
-     "Clairvoyance": 1704.7,
-     "Answered Prayers": 1825.9
+     "Psychic Link": 1867.9,
+     "Dark Torment": 1854.0,
+     "Smite": 1934.7,
+     "Empyreal Blaze": 1934.7,
+     "Catharsis": 1860.8,
+     "Insanity": 1934.7,
+     "Clairvoyance": 1723.0,
+     "Answered Prayers": 1748.6
     },
     "glyphDps": {
-     "Fortitude": 1936.9,
-     "Unsealed Power": 1888.9,
-     "Fortune": 1685.0,
-     "Supremacy": 1710.3,
-     "Arc Striking": 1685.0,
-     "Battle Frenzy": 1484.8,
-     "Hellfire": 1773.9,
-     "Thunder": 1936.9,
-     "Blood Violence": 1715.1,
-     "Animosity": 1696.3,
-     "Glass Cannon": 1936.9,
-     "Mindhaste": 1489.1
+     "Fortitude": 1934.7,
+     "Unsealed Power": 1859.0,
+     "Fortune": 1647.1,
+     "Supremacy": 1668.5,
+     "Arc Striking": 1647.1,
+     "Battle Frenzy": 1699.4,
+     "Hellfire": 1736.4,
+     "Thunder": 1934.7,
+     "Blood Violence": 1677.0,
+     "Animosity": 1657.3,
+     "Glass Cannon": 1893.2,
+     "Mindhaste": 1934.7
     }
    },
    {
@@ -9325,7 +8327,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 2719131,
+    "chunk": 201011235,
     "sources": [
      [
       "Sulfuras",
@@ -9583,6 +8585,980 @@
      "Animosity": 1689.9,
      "Glass Cannon": 1929.0,
      "Mindhaste": 1644.9
+    }
+   },
+   {
+    "farm_dps": 1927.3,
+    "dps": 1927.3,
+    "total": 57818,
+    "manaLeft": 95.4,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Manual of Dark Arts",
+      "code": "I09J",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 9,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 537628164,
+    "sources": [
+     [
+      "Sulfuras",
+      410.3
+     ],
+     [
+      "Thunder",
+      358.7
+     ],
+     [
+      "Smite",
+      257.7
+     ],
+     [
+      "Shadow Word: Pain",
+      230.3
+     ],
+     [
+      "Mind Spike",
+      225.5
+     ],
+     [
+      "Empyreal Blaze",
+      149.7
+     ],
+     [
+      "Radiance",
+      105.3
+     ],
+     [
+      "Автоатака",
+      94.5
+     ],
+     [
+      "Naaru",
+      87.8
+     ],
+     [
+      "Sulfuras (удар)",
+      7.4
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Shadow Word: Pain"
+     ],
+     [
+      "0.45",
+      "Divine Image"
+     ],
+     [
+      "0.90",
+      "Radiance"
+     ],
+     [
+      "1.35",
+      "Mind Spike"
+     ],
+     [
+      "1.80",
+      "Renew"
+     ],
+     [
+      "4.99",
+      "Shadow Word: Pain"
+     ],
+     [
+      "6.36",
+      "Renew"
+     ],
+     [
+      "7.73",
+      "Radiance"
+     ],
+     [
+      "8.18",
+      "Mind Spike"
+     ],
+     [
+      "10.47",
+      "Shadow Word: Pain"
+     ],
+     [
+      "10.92",
+      "Renew"
+     ],
+     [
+      "13.21",
+      "Divine Image"
+     ],
+     [
+      "14.58",
+      "Radiance"
+     ],
+     [
+      "15.03",
+      "Shadow Word: Pain"
+     ],
+     [
+      "15.48",
+      "Mind Spike"
+     ],
+     [
+      "15.93",
+      "Renew"
+     ],
+     [
+      "20.49",
+      "Shadow Word: Pain"
+     ],
+     [
+      "20.94",
+      "Radiance"
+     ],
+     [
+      "21.39",
+      "Renew"
+     ],
+     [
+      "21.84",
+      "Mind Spike"
+     ],
+     [
+      "25.03",
+      "Shadow Word: Pain"
+     ],
+     [
+      "25.48",
+      "Divine Image"
+     ],
+     [
+      "25.93",
+      "Renew"
+     ],
+     [
+      "27.77",
+      "Radiance"
+     ],
+     [
+      "28.22",
+      "Mind Spike"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "200"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "178.0"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "22.0%"
+     ],
+     [
+      "Скорость атаки",
+      "46.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1575"
+     ],
+     [
+      "Реген маны",
+      "17.60/с"
+     ],
+     [
+      "Мана в конце",
+      "95%"
+     ],
+     [
+      "Интервал атаки",
+      "1.37 с"
+     ],
+     [
+      "Тик Shadow Word: Pain",
+      "0.82 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Psychic Link": 1820.1,
+     "Dark Torment": 1851.1,
+     "Smite": 1927.3,
+     "Empyreal Blaze": 1927.3,
+     "Catharsis": 1855.5,
+     "Insanity": 1927.3,
+     "Clairvoyance": 1703.1,
+     "Answered Prayers": 1847.1
+    },
+    "glyphDps": {
+     "Fortitude": 1927.3,
+     "Unsealed Power": 1892.8,
+     "Fortune": 1676.8,
+     "Supremacy": 1701.3,
+     "Arc Striking": 1676.8,
+     "Battle Frenzy": 1665.8,
+     "Hellfire": 1766.2,
+     "Thunder": 1927.3,
+     "Blood Violence": 1710.2,
+     "Animosity": 1688.2,
+     "Glass Cannon": 1927.3,
+     "Mindhaste": 1698.3
+    }
+   },
+   {
+    "farm_dps": 1911.1,
+    "dps": 1911.1,
+    "total": 57334,
+    "manaLeft": 87.5,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Queen's Scepter",
+      "code": "I080",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Qiraji Talisman",
+      "code": "I0C9",
+      "source": "drop"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 10,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 373723055,
+    "sources": [
+     [
+      "Sulfuras",
+      430.5
+     ],
+     [
+      "Thunder",
+      322.7
+     ],
+     [
+      "Shadow Word: Pain",
+      261.2
+     ],
+     [
+      "Smite",
+      255.8
+     ],
+     [
+      "Mind Spike",
+      183.7
+     ],
+     [
+      "Empyreal Blaze",
+      169.0
+     ],
+     [
+      "Radiance",
+      104.0
+     ],
+     [
+      "Автоатака",
+      93.9
+     ],
+     [
+      "Naaru",
+      83.2
+     ],
+     [
+      "Sulfuras (удар)",
+      7.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Shadow Word: Pain"
+     ],
+     [
+      "0.45",
+      "Divine Image"
+     ],
+     [
+      "0.90",
+      "Radiance"
+     ],
+     [
+      "1.35",
+      "Mind Spike"
+     ],
+     [
+      "1.80",
+      "Renew"
+     ],
+     [
+      "5.11",
+      "Shadow Word: Pain"
+     ],
+     [
+      "6.54",
+      "Renew"
+     ],
+     [
+      "6.99",
+      "Radiance"
+     ],
+     [
+      "7.44",
+      "Mind Spike"
+     ],
+     [
+      "9.39",
+      "Shadow Word: Pain"
+     ],
+     [
+      "10.82",
+      "Renew"
+     ],
+     [
+      "12.25",
+      "Divine Image"
+     ],
+     [
+      "12.70",
+      "Radiance"
+     ],
+     [
+      "13.15",
+      "Mind Spike"
+     ],
+     [
+      "13.68",
+      "Shadow Word: Pain"
+     ],
+     [
+      "15.11",
+      "Renew"
+     ],
+     [
+      "17.96",
+      "Shadow Word: Pain"
+     ],
+     [
+      "18.41",
+      "Radiance"
+     ],
+     [
+      "18.86",
+      "Mind Spike"
+     ],
+     [
+      "19.39",
+      "Renew"
+     ],
+     [
+      "22.25",
+      "Shadow Word: Pain"
+     ],
+     [
+      "23.68",
+      "Divine Image"
+     ],
+     [
+      "24.13",
+      "Radiance"
+     ],
+     [
+      "24.58",
+      "Mind Spike"
+     ],
+     [
+      "25.03",
+      "Renew"
+     ],
+     [
+      "26.91",
+      "Shadow Word: Pain"
+     ],
+     [
+      "29.76",
+      "Renew"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "176"
+     ],
+     [
+      "Сила",
+      "29"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Сила атаки",
+      "174.0"
+     ],
+     [
+      "Potency",
+      "13.0"
+     ],
+     [
+      "Mastery",
+      "31"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "41.0%"
+     ],
+     [
+      "Скорость атаки",
+      "40.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1472"
+     ],
+     [
+      "Реген маны",
+      "15.04/с"
+     ],
+     [
+      "Мана в конце",
+      "88%"
+     ],
+     [
+      "Интервал атаки",
+      "1.43 с"
+     ],
+     [
+      "Тик Shadow Word: Pain",
+      "0.71 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Psychic Link": 1822.5,
+     "Dark Torment": 1807.7,
+     "Smite": 1911.1,
+     "Empyreal Blaze": 1911.1,
+     "Catharsis": 1852.0,
+     "Insanity": 1911.1,
+     "Clairvoyance": 1682.6,
+     "Answered Prayers": 1729.4
+    },
+    "glyphDps": {
+     "Fortitude": 1911.1,
+     "Unsealed Power": 1895.4,
+     "Fortune": 1662.8,
+     "Supremacy": 1684.6,
+     "Arc Striking": 1662.8,
+     "Battle Frenzy": 1427.6,
+     "Hellfire": 1760.1,
+     "Thunder": 1911.1,
+     "Blood Violence": 1696.1,
+     "Animosity": 1674.1,
+     "Glass Cannon": 1911.1,
+     "Mindhaste": 1456.8
+    }
+   },
+   {
+    "farm_dps": 1894.7,
+    "dps": 1894.7,
+    "total": 56842,
+    "manaLeft": 90.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "Beacon of the Naaru",
+      "code": "I0SG",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Hood of Dark Deeds",
+      "code": "tgrh",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Empyreal Blaze",
+     "Insanity",
+     "Smite"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 2,
+     "attack_speed": 0,
+     "damage": 8,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 200812234,
+    "sources": [
+     [
+      "Sulfuras",
+      388.2
+     ],
+     [
+      "Thunder",
+      346.5
+     ],
+     [
+      "Shadow Word: Pain",
+      251.3
+     ],
+     [
+      "Smite",
+      247.3
+     ],
+     [
+      "Mind Spike",
+      200.5
+     ],
+     [
+      "Empyreal Blaze",
+      158.5
+     ],
+     [
+      "Radiance",
+      111.2
+     ],
+     [
+      "Автоатака",
+      96.6
+     ],
+     [
+      "Naaru",
+      88.4
+     ],
+     [
+      "Sulfuras (удар)",
+      6.3
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Shadow Word: Pain"
+     ],
+     [
+      "0.45",
+      "Divine Image"
+     ],
+     [
+      "0.90",
+      "Radiance"
+     ],
+     [
+      "1.35",
+      "Mind Spike"
+     ],
+     [
+      "1.80",
+      "Renew"
+     ],
+     [
+      "4.99",
+      "Shadow Word: Pain"
+     ],
+     [
+      "6.36",
+      "Renew"
+     ],
+     [
+      "7.73",
+      "Radiance"
+     ],
+     [
+      "8.18",
+      "Mind Spike"
+     ],
+     [
+      "10.47",
+      "Shadow Word: Pain"
+     ],
+     [
+      "10.92",
+      "Renew"
+     ],
+     [
+      "13.21",
+      "Divine Image"
+     ],
+     [
+      "14.58",
+      "Radiance"
+     ],
+     [
+      "15.03",
+      "Shadow Word: Pain"
+     ],
+     [
+      "15.48",
+      "Mind Spike"
+     ],
+     [
+      "15.93",
+      "Renew"
+     ],
+     [
+      "20.49",
+      "Shadow Word: Pain"
+     ],
+     [
+      "20.94",
+      "Radiance"
+     ],
+     [
+      "21.39",
+      "Renew"
+     ],
+     [
+      "21.84",
+      "Mind Spike"
+     ],
+     [
+      "25.03",
+      "Shadow Word: Pain"
+     ],
+     [
+      "25.48",
+      "Divine Image"
+     ],
+     [
+      "25.93",
+      "Renew"
+     ],
+     [
+      "27.77",
+      "Radiance"
+     ],
+     [
+      "28.22",
+      "Mind Spike"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "167"
+     ],
+     [
+      "Сила",
+      "24"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "151.2"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "33.0%"
+     ],
+     [
+      "Скорость атаки",
+      "46.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1544"
+     ],
+     [
+      "Реген маны",
+      "14.96/с"
+     ],
+     [
+      "Мана в конце",
+      "90%"
+     ],
+     [
+      "Интервал атаки",
+      "1.37 с"
+     ],
+     [
+      "Тик Shadow Word: Pain",
+      "0.75 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Psychic Link": 1800.9,
+     "Dark Torment": 1830.7,
+     "Smite": 1894.7,
+     "Empyreal Blaze": 1894.7,
+     "Catharsis": 1804.2,
+     "Insanity": 1894.7,
+     "Clairvoyance": 1676.1,
+     "Answered Prayers": 1817.1
+    },
+    "glyphDps": {
+     "Fortitude": 1894.7,
+     "Unsealed Power": 1834.2,
+     "Fortune": 1648.4,
+     "Supremacy": 1673.8,
+     "Arc Striking": 1648.4,
+     "Battle Frenzy": 1508.8,
+     "Hellfire": 1737.1,
+     "Thunder": 1894.7,
+     "Blood Violence": 1677.1,
+     "Animosity": 1660.0,
+     "Glass Cannon": 1894.7,
+     "Mindhaste": 1670.2
     }
    }
   ]

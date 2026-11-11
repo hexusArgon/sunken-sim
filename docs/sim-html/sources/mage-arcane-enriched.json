@@ -2,9 +2,9 @@
  "level": 15,
  "targets": 5,
  "spec": "arcane",
- "farm_file": "../sunken-sim-runs/mage-arcane-opencl-top80-gpu/results/local-hybrid-mage-arcane-mixed-top80-5-0-308787178-admission-v2-bare-top10-3d1bfa366c0102f5.json",
- "done": 308787179,
- "end": 308787178,
+ "farm_file": "../sunken-sim-runs/mage-arcane-opencl-top150-gpu/results/local-hybrid-mage-arcane-mixed-top150-5-0-14617829908-admission-v2-bare-top10-a60c37c96bab83fa.json",
+ "done": 14617829909,
+ "end": 14617829908,
  "errors": 0,
  "stopped": false,
  "spec_talents": [
@@ -111,7 +111,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 265708578,
+    "chunk": 12990344351,
     "sources": [
      [
       "Arcane Blast",
@@ -428,7 +428,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 265705634,
+    "chunk": 12990317849,
     "sources": [
      [
       "Arcane Blast",
@@ -753,7 +753,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 264637376,
+    "chunk": 12951366617,
     "sources": [
      [
       "Arcane Blast",
@@ -1074,7 +1074,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 271137416,
+    "chunk": 13162453151,
     "sources": [
      [
       "Arcane Blast",
@@ -1375,7 +1375,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 265982051,
+    "chunk": 12995379206,
     "sources": [
      [
       "Arcane Blast",
@@ -1692,7 +1692,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 266426307,
+    "chunk": 13015022391,
     "sources": [
      [
       "Arcane Blast",
@@ -2009,7 +2009,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 281721876,
+    "chunk": 13351654462,
     "sources": [
      [
       "Arcane Blast",
@@ -2257,6 +2257,327 @@
     }
    },
    {
+    "farm_dps": 3532.8,
+    "dps": 3532.8,
+    "total": 105985,
+    "manaLeft": 80.7,
+    "bound_spell": "Arcane Blast",
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Amplification",
+     "Arcane Surge",
+     "Archmage"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 0,
+     "potency": 9,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 12993693500,
+    "sources": [
+     [
+      "Arcane Blast",
+      1296.5
+     ],
+     [
+      "Sulfuras",
+      797.9
+     ],
+     [
+      "Ring of Frost",
+      481.3
+     ],
+     [
+      "Thunder",
+      398.4
+     ],
+     [
+      "Всплеск огня",
+      246.9
+     ],
+     [
+      "Living Bomb",
+      122.3
+     ],
+     [
+      "Автоатака",
+      105.9
+     ],
+     [
+      "Взрыв Living Bomb",
+      74.7
+     ],
+     [
+      "Sulfuras (удар)",
+      9.0
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Arcane Blast"
+     ],
+     [
+      "0.00",
+      "Living Bomb"
+     ],
+     [
+      "0.45",
+      "Arcane Blast"
+     ],
+     [
+      "0.90",
+      "Ring of Frost"
+     ],
+     [
+      "3.76",
+      "Arcane Blast"
+     ],
+     [
+      "4.96",
+      "Living Bomb"
+     ],
+     [
+      "6.16",
+      "Arcane Blast"
+     ],
+     [
+      "8.57",
+      "Arcane Blast"
+     ],
+     [
+      "9.02",
+      "Ring of Frost"
+     ],
+     [
+      "9.77",
+      "Living Bomb"
+     ],
+     [
+      "10.98",
+      "Arcane Blast"
+     ],
+     [
+      "13.38",
+      "Arcane Blast"
+     ],
+     [
+      "14.59",
+      "Living Bomb"
+     ],
+     [
+      "15.79",
+      "Arcane Blast"
+     ],
+     [
+      "16.99",
+      "Ring of Frost"
+     ],
+     [
+      "18.20",
+      "Arcane Blast"
+     ],
+     [
+      "19.40",
+      "Living Bomb"
+     ],
+     [
+      "20.60",
+      "Arcane Blast"
+     ],
+     [
+      "23.01",
+      "Arcane Blast"
+     ],
+     [
+      "24.21",
+      "Living Bomb"
+     ],
+     [
+      "25.42",
+      "Arcane Blast"
+     ],
+     [
+      "25.87",
+      "Ring of Frost"
+     ],
+     [
+      "27.82",
+      "Arcane Blast"
+     ],
+     [
+      "29.03",
+      "Living Bomb"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "225"
+     ],
+     [
+      "Сила",
+      "52"
+     ],
+     [
+      "Ловкость",
+      "53"
+     ],
+     [
+      "Сила атаки",
+      "179.8"
+     ],
+     [
+      "Potency",
+      "4.5"
+     ],
+     [
+      "Mastery",
+      "33"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Скорость (Haste)",
+      "38.0%"
+     ],
+     [
+      "Скорость атаки",
+      "66.2%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2150"
+     ],
+     [
+      "Реген маны",
+      "18.96/с"
+     ],
+     [
+      "Мана в конце",
+      "81%"
+     ],
+     [
+      "Интервал атаки",
+      "1.20 с"
+     ],
+     [
+      "Тик Living Bomb",
+      "0.75 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Arcane Blast"
+     ]
+    ],
+    "talentDps": {
+     "Supernova": 3397.6,
+     "Pyromaniac": 3192.5,
+     "Blazing Soul": 3214.6,
+     "Frostbite": 3163.4,
+     "Archmage": 3532.8,
+     "Arcane Surge": 3532.8,
+     "Amplification": 3532.8,
+     "Freezeburn": 3146.0,
+     "Ice Lance": 3218.8,
+     "Frostfire Bolt": 3277.5,
+     "Lava Spawn": 3238.9
+    },
+    "glyphDps": {
+     "Fortitude": 3532.8,
+     "Unsealed Power": 3457.9,
+     "Fortune": 3134.5,
+     "Supremacy": 2923.0,
+     "Arc Striking": 3134.5,
+     "Battle Frenzy": 2573.9,
+     "Hellfire": 3218.4,
+     "Thunder": 3532.8,
+     "Blood Violence": 3195.3,
+     "Animosity": 3149.1,
+     "Glass Cannon": 3532.8,
+     "Mindhaste": 2882.1
+    }
+   },
+   {
     "farm_dps": 3488.8,
     "dps": 3488.8,
     "total": 104664,
@@ -2318,7 +2639,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 264585507,
+    "chunk": 12950458118,
     "sources": [
      [
       "Arcane Blast",
@@ -2631,7 +2952,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 264586395,
+    "chunk": 12950462643,
     "sources": [
      [
       "Arcane Blast",
@@ -2877,327 +3198,6 @@
      "Glass Cannon": 3472.2,
      "Mindhaste": 3076.6
     }
-   },
-   {
-    "farm_dps": 3467.8,
-    "dps": 3467.8,
-    "total": 104033,
-    "manaLeft": 77.8,
-    "bound_spell": "Arcane Blast",
-    "orb_mode": "Shadow",
-    "items": [
-     {
-      "name": "Diamond Ring",
-      "code": "I00D",
-      "source": "shop"
-     },
-     {
-      "name": "Lightning Rod",
-      "code": "I07F",
-      "source": "shop"
-     },
-     {
-      "name": "Harness of Beyond",
-      "code": "I07P",
-      "source": "drop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Amplification",
-     "Arcane Surge",
-     "Supernova"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Thunder"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 20,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 0,
-     "crit": 0,
-     "potency": 10,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 266195528,
-    "sources": [
-     [
-      "Arcane Blast",
-      1098.8
-     ],
-     [
-      "Sulfuras",
-      718.8
-     ],
-     [
-      "Supernova",
-      478.1
-     ],
-     [
-      "Thunder",
-      423.3
-     ],
-     [
-      "Ring of Frost",
-      412.8
-     ],
-     [
-      "Living Bomb",
-      125.7
-     ],
-     [
-      "Автоатака",
-      108.4
-     ],
-     [
-      "Взрыв Living Bomb",
-      94.3
-     ],
-     [
-      "Sulfuras (удар)",
-      7.5
-     ]
-    ],
-    "actions": [
-     [
-      "до боя",
-      "Elemental Orb → Shadow"
-     ],
-     [
-      "до боя",
-      "Diamond Ring → привязка Arcane Blast"
-     ],
-     [
-      "0.00",
-      "Living Bomb"
-     ],
-     [
-      "0.45",
-      "Arcane Blast"
-     ],
-     [
-      "0.90",
-      "Ring of Frost"
-     ],
-     [
-      "2.61",
-      "Arcane Blast"
-     ],
-     [
-      "5.14",
-      "Living Bomb"
-     ],
-     [
-      "5.59",
-      "Arcane Blast"
-     ],
-     [
-      "7.67",
-      "Arcane Blast"
-     ],
-     [
-      "8.94",
-      "Ring of Frost"
-     ],
-     [
-      "10.20",
-      "Living Bomb"
-     ],
-     [
-      "10.65",
-      "Arcane Blast"
-     ],
-     [
-      "12.73",
-      "Arcane Blast"
-     ],
-     [
-      "15.26",
-      "Living Bomb"
-     ],
-     [
-      "15.71",
-      "Arcane Blast"
-     ],
-     [
-      "16.52",
-      "Ring of Frost"
-     ],
-     [
-      "17.78",
-      "Arcane Blast"
-     ],
-     [
-      "20.31",
-      "Living Bomb"
-     ],
-     [
-      "20.76",
-      "Arcane Blast"
-     ],
-     [
-      "22.84",
-      "Arcane Blast"
-     ],
-     [
-      "24.11",
-      "Ring of Frost"
-     ],
-     [
-      "25.37",
-      "Living Bomb"
-     ],
-     [
-      "25.82",
-      "Arcane Blast"
-     ],
-     [
-      "27.90",
-      "Arcane Blast"
-     ]
-    ],
-    "stats": [
-     [
-      "Интеллект",
-      "195"
-     ],
-     [
-      "Сила",
-      "37"
-     ],
-     [
-      "Ловкость",
-      "38"
-     ],
-     [
-      "Сила атаки",
-      "157.2"
-     ],
-     [
-      "Potency",
-      "10.0"
-     ],
-     [
-      "Mastery",
-      "18"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Скорость (Haste)",
-      "26.0%"
-     ],
-     [
-      "Скорость атаки",
-      "58.2%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Healing Power",
-      "0"
-     ],
-     [
-      "Pet Damage",
-      "0.0%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "1940"
-     ],
-     [
-      "Реген маны",
-      "18.00/с"
-     ],
-     [
-      "Мана в конце",
-      "78%"
-     ],
-     [
-      "Интервал атаки",
-      "1.26 с"
-     ],
-     [
-      "Тик Living Bomb",
-      "0.75 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×0.920"
-     ],
-     [
-      "Пробитие брони",
-      "6"
-     ],
-     [
-      "Elemental Orb",
-      "Shadow"
-     ],
-     [
-      "Diamond Ring привязан к",
-      "Arcane Blast"
-     ]
-    ],
-    "talentDps": {
-     "Supernova": 3467.8,
-     "Pyromaniac": 3095.0,
-     "Blazing Soul": 3160.0,
-     "Frostbite": 3081.5,
-     "Archmage": 3462.5,
-     "Arcane Surge": 3467.8,
-     "Amplification": 3467.8,
-     "Freezeburn": 3030.4,
-     "Ice Lance": 3127.6,
-     "Frostfire Bolt": 3193.1,
-     "Lava Spawn": 3080.2
-    },
-    "glyphDps": {
-     "Fortitude": 3467.8,
-     "Unsealed Power": 3366.7,
-     "Fortune": 3044.4,
-     "Supremacy": 2906.1,
-     "Arc Striking": 3044.4,
-     "Battle Frenzy": 2952.4,
-     "Hellfire": 3174.9,
-     "Thunder": 3467.8,
-     "Blood Violence": 3102.3,
-     "Animosity": 3059.4,
-     "Glass Cannon": 3467.8,
-     "Mindhaste": 2906.1
-    }
    }
   ],
   "shop": [
@@ -3263,7 +3263,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 281721876,
+    "chunk": 13351654462,
     "sources": [
      [
       "Arcane Blast",
@@ -3511,319 +3511,6 @@
     }
    },
    {
-    "farm_dps": 3456.6,
-    "dps": 3456.6,
-    "total": 103697,
-    "manaLeft": 86.7,
-    "bound_spell": "Arcane Blast",
-    "orb_mode": "Shadow",
-    "items": [
-     {
-      "name": "Diamond Ring",
-      "code": "I00D",
-      "source": "shop"
-     },
-     {
-      "name": "Apocalypse",
-      "code": "I07U",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Staff of Galactic Fury",
-      "code": "I0JO",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Amplification",
-     "Arcane Surge",
-     "Archmage"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Thunder"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 20,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 3,
-     "damage": 0,
-     "crit": 0,
-     "potency": 7,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 265528000,
-    "sources": [
-     [
-      "Arcane Blast",
-      1337.9
-     ],
-     [
-      "Sulfuras",
-      819.0
-     ],
-     [
-      "Ring of Frost",
-      556.0
-     ],
-     [
-      "Thunder",
-      421.4
-     ],
-     [
-      "Living Bomb",
-      128.3
-     ],
-     [
-      "Автоатака",
-      107.4
-     ],
-     [
-      "Взрыв Living Bomb",
-      78.8
-     ],
-     [
-      "Sulfuras (удар)",
-      7.7
-     ]
-    ],
-    "actions": [
-     [
-      "до боя",
-      "Elemental Orb → Shadow"
-     ],
-     [
-      "до боя",
-      "Diamond Ring → привязка Arcane Blast"
-     ],
-     [
-      "0.00",
-      "Living Bomb"
-     ],
-     [
-      "0.45",
-      "Arcane Blast"
-     ],
-     [
-      "0.90",
-      "Ring of Frost"
-     ],
-     [
-      "4.11",
-      "Arcane Blast"
-     ],
-     [
-      "5.49",
-      "Living Bomb"
-     ],
-     [
-      "6.87",
-      "Arcane Blast"
-     ],
-     [
-      "9.64",
-      "Arcane Blast"
-     ],
-     [
-      "10.09",
-      "Ring of Frost"
-     ],
-     [
-      "11.02",
-      "Living Bomb"
-     ],
-     [
-      "12.40",
-      "Arcane Blast"
-     ],
-     [
-      "15.16",
-      "Arcane Blast"
-     ],
-     [
-      "16.54",
-      "Living Bomb"
-     ],
-     [
-      "17.92",
-      "Arcane Blast"
-     ],
-     [
-      "19.30",
-      "Ring of Frost"
-     ],
-     [
-      "20.68",
-      "Arcane Blast"
-     ],
-     [
-      "22.06",
-      "Living Bomb"
-     ],
-     [
-      "23.44",
-      "Arcane Blast"
-     ],
-     [
-      "26.21",
-      "Arcane Blast"
-     ],
-     [
-      "27.59",
-      "Living Bomb"
-     ],
-     [
-      "28.04",
-      "Ring of Frost"
-     ],
-     [
-      "28.97",
-      "Arcane Blast"
-     ]
-    ],
-    "stats": [
-     [
-      "Интеллект",
-      "220"
-     ],
-     [
-      "Сила",
-      "37"
-     ],
-     [
-      "Ловкость",
-      "32"
-     ],
-     [
-      "Сила атаки",
-      "176.0"
-     ],
-     [
-      "Potency",
-      "5.5"
-     ],
-     [
-      "Mastery",
-      "34"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Скорость (Haste)",
-      "23.0%"
-     ],
-     [
-      "Скорость атаки",
-      "73.8%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Healing Power",
-      "0"
-     ],
-     [
-      "Pet Damage",
-      "0.0%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "2115"
-     ],
-     [
-      "Реген маны",
-      "19.84/с"
-     ],
-     [
-      "Мана в конце",
-      "87%"
-     ],
-     [
-      "Интервал атаки",
-      "1.38 с"
-     ],
-     [
-      "Тик Living Bomb",
-      "0.75 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.120"
-     ],
-     [
-      "Пробитие брони",
-      "6"
-     ],
-     [
-      "Elemental Orb",
-      "Shadow"
-     ],
-     [
-      "Diamond Ring привязан к",
-      "Arcane Blast"
-     ]
-    ],
-    "talentDps": {
-     "Supernova": 3325.3,
-     "Pyromaniac": 3094.7,
-     "Blazing Soul": 3126.5,
-     "Frostbite": 3047.1,
-     "Archmage": 3456.6,
-     "Arcane Surge": 3456.6,
-     "Amplification": 3456.6,
-     "Freezeburn": 2699.9,
-     "Ice Lance": 3124.6,
-     "Frostfire Bolt": 3195.1,
-     "Lava Spawn": 3081.1
-    },
-    "glyphDps": {
-     "Fortitude": 3456.6,
-     "Unsealed Power": 3373.9,
-     "Fortune": 3035.1,
-     "Supremacy": 2684.1,
-     "Arc Striking": 3035.1,
-     "Battle Frenzy": 2601.1,
-     "Hellfire": 3139.8,
-     "Thunder": 3456.6,
-     "Blood Violence": 3091.3,
-     "Animosity": 3050.0,
-     "Glass Cannon": 3456.6,
-     "Mindhaste": 2798.2
-    }
-   },
-   {
     "farm_dps": 3454.5,
     "dps": 3454.5,
     "total": 103636,
@@ -3885,7 +3572,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 270980108,
+    "chunk": 13159700911,
     "sources": [
      [
       "Arcane Blast",
@@ -4206,7 +3893,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 266087442,
+    "chunk": 13004844922,
     "sources": [
      [
       "Arcane Blast",
@@ -4450,10 +4137,10 @@
     }
    },
    {
-    "farm_dps": 3311.1,
-    "dps": 3311.1,
-    "total": 99333,
-    "manaLeft": 92.2,
+    "farm_dps": 3349.9,
+    "dps": 3349.9,
+    "total": 100497,
+    "manaLeft": 83.9,
     "bound_spell": "Arcane Blast",
     "orb_mode": "Shadow",
     "items": [
@@ -4483,8 +4170,8 @@
       "source": "shop"
      },
      {
-      "name": "Arcpower Stone",
-      "code": "I0O5",
+      "name": "Stormpike",
+      "code": "I0P0",
       "source": "shop"
      }
     ],
@@ -4503,47 +4190,47 @@
      "mana": 20,
      "healing_power": 0,
      "haste": 0,
-     "attack_speed": 4,
+     "attack_speed": 0,
      "damage": 0,
      "crit": 0,
-     "potency": 6,
+     "potency": 10,
      "mastery": 0,
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 264586406,
+    "chunk": 12950462667,
     "sources": [
      [
       "Arcane Blast",
-      1281.1
+      1297.6
      ],
      [
       "Sulfuras",
-      844.8
+      792.6
      ],
      [
       "Ring of Frost",
-      454.5
+      539.1
      ],
      [
       "Thunder",
-      414.7
+      408.4
      ],
      [
       "Living Bomb",
-      124.1
+      124.0
      ],
      [
       "Автоатака",
-      108.9
+      104.5
      ],
      [
       "Взрыв Living Bomb",
-      75.0
+      76.2
      ],
      [
       "Sulfuras (удар)",
-      7.9
+      7.5
      ]
     ],
     "actions": [
@@ -4568,74 +4255,82 @@
       "Ring of Frost"
      ],
      [
-      "4.28",
+      "4.11",
       "Arcane Blast"
      ],
      [
-      "5.75",
+      "5.49",
       "Living Bomb"
      ],
      [
-      "7.21",
+      "6.87",
       "Arcane Blast"
      ],
      [
-      "10.14",
+      "9.64",
       "Arcane Blast"
      ],
      [
-      "10.59",
+      "10.09",
       "Ring of Frost"
      ],
      [
-      "11.61",
+      "11.02",
       "Living Bomb"
      ],
      [
-      "13.07",
+      "12.40",
       "Arcane Blast"
      ],
      [
-      "16.00",
+      "15.16",
       "Arcane Blast"
      ],
      [
-      "17.47",
+      "16.54",
       "Living Bomb"
      ],
      [
-      "18.93",
+      "17.92",
       "Arcane Blast"
      ],
      [
-      "20.40",
+      "19.30",
       "Ring of Frost"
      ],
      [
-      "21.86",
+      "20.68",
       "Arcane Blast"
      ],
      [
-      "23.33",
+      "22.06",
       "Living Bomb"
      ],
      [
-      "24.79",
+      "23.44",
       "Arcane Blast"
      ],
      [
-      "27.72",
+      "26.21",
       "Arcane Blast"
      ],
      [
-      "29.19",
+      "27.59",
       "Living Bomb"
+     ],
+     [
+      "28.04",
+      "Ring of Frost"
+     ],
+     [
+      "28.97",
+      "Arcane Blast"
      ]
     ],
     "stats": [
      [
       "Интеллект",
-      "239"
+      "214"
      ],
      [
       "Сила",
@@ -4647,11 +4342,11 @@
      ],
      [
       "Сила атаки",
-      "190.2"
+      "171.5"
      ],
      [
       "Potency",
-      "3.0"
+      "5.0"
      ],
      [
       "Mastery",
@@ -4667,11 +4362,11 @@
      ],
      [
       "Скорость (Haste)",
-      "18.0%"
+      "30.0%"
      ],
      [
       "Скорость атаки",
-      "63.8%"
+      "73.8%"
      ],
      [
       "Удача",
@@ -4691,19 +4386,19 @@
      ],
      [
       "Мана макс.",
-      "2248"
+      "2073"
      ],
      [
       "Реген маны",
-      "20.08/с"
+      "18.08/с"
      ],
      [
       "Мана в конце",
-      "92%"
+      "84%"
      ],
      [
       "Интервал атаки",
-      "1.47 с"
+      "1.38 с"
      ],
      [
       "Тик Living Bomb",
@@ -4727,31 +4422,31 @@
      ]
     ],
     "talentDps": {
-     "Supernova": 3223.1,
-     "Pyromaniac": 2979.7,
-     "Blazing Soul": 3021.3,
-     "Frostbite": 2925.4,
-     "Archmage": 3311.1,
-     "Arcane Surge": 3311.1,
-     "Amplification": 3311.1,
-     "Freezeburn": 2682.8,
-     "Ice Lance": 3006.1,
-     "Frostfire Bolt": 3086.7,
-     "Lava Spawn": 2965.9
+     "Supernova": 3223.7,
+     "Pyromaniac": 3000.4,
+     "Blazing Soul": 3030.6,
+     "Frostbite": 2953.9,
+     "Archmage": 3349.9,
+     "Arcane Surge": 3349.9,
+     "Amplification": 3349.9,
+     "Freezeburn": 2620.1,
+     "Ice Lance": 3029.0,
+     "Frostfire Bolt": 3097.9,
+     "Lava Spawn": 2987.2
     },
     "glyphDps": {
-     "Fortitude": 3311.1,
-     "Unsealed Power": 3216.0,
-     "Fortune": 2896.4,
-     "Supremacy": 2991.2,
-     "Arc Striking": 2896.4,
-     "Battle Frenzy": 2479.1,
-     "Hellfire": 2991.2,
-     "Thunder": 3311.1,
-     "Blood Violence": 2951.9,
-     "Animosity": 2911.4,
-     "Glass Cannon": 3311.1,
-     "Mindhaste": 2719.2
+     "Fortitude": 3349.9,
+     "Unsealed Power": 3271.5,
+     "Fortune": 2941.5,
+     "Supremacy": 2603.3,
+     "Arc Striking": 2941.5,
+     "Battle Frenzy": 2567.8,
+     "Hellfire": 3046.1,
+     "Thunder": 3349.9,
+     "Blood Violence": 2996.1,
+     "Animosity": 2955.9,
+     "Glass Cannon": 3349.9,
+     "Mindhaste": 2702.4
     }
    },
    {
@@ -4773,6 +4468,11 @@
       "source": "legendary"
      },
      {
+      "name": "Arcpower Stone",
+      "code": "I0E2",
+      "source": "shop"
+     },
+     {
       "name": "Unbound Power Core",
       "code": "I0FW",
       "source": "shop"
@@ -4780,11 +4480,6 @@
      {
       "name": "Staff of Galactic Fury",
       "code": "I0JO",
-      "source": "shop"
-     },
-     {
-      "name": "Arcpower Stone",
-      "code": "I0MT",
       "source": "shop"
      },
      {
@@ -4816,312 +4511,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 264586484,
-    "sources": [
-     [
-      "Arcane Blast",
-      1281.1
-     ],
-     [
-      "Sulfuras",
-      844.8
-     ],
-     [
-      "Ring of Frost",
-      454.5
-     ],
-     [
-      "Thunder",
-      414.7
-     ],
-     [
-      "Living Bomb",
-      124.1
-     ],
-     [
-      "Автоатака",
-      108.9
-     ],
-     [
-      "Взрыв Living Bomb",
-      75.0
-     ],
-     [
-      "Sulfuras (удар)",
-      7.9
-     ]
-    ],
-    "actions": [
-     [
-      "до боя",
-      "Elemental Orb → Shadow"
-     ],
-     [
-      "до боя",
-      "Diamond Ring → привязка Arcane Blast"
-     ],
-     [
-      "0.00",
-      "Living Bomb"
-     ],
-     [
-      "0.45",
-      "Arcane Blast"
-     ],
-     [
-      "0.90",
-      "Ring of Frost"
-     ],
-     [
-      "4.28",
-      "Arcane Blast"
-     ],
-     [
-      "5.75",
-      "Living Bomb"
-     ],
-     [
-      "7.21",
-      "Arcane Blast"
-     ],
-     [
-      "10.14",
-      "Arcane Blast"
-     ],
-     [
-      "10.59",
-      "Ring of Frost"
-     ],
-     [
-      "11.61",
-      "Living Bomb"
-     ],
-     [
-      "13.07",
-      "Arcane Blast"
-     ],
-     [
-      "16.00",
-      "Arcane Blast"
-     ],
-     [
-      "17.47",
-      "Living Bomb"
-     ],
-     [
-      "18.93",
-      "Arcane Blast"
-     ],
-     [
-      "20.40",
-      "Ring of Frost"
-     ],
-     [
-      "21.86",
-      "Arcane Blast"
-     ],
-     [
-      "23.33",
-      "Living Bomb"
-     ],
-     [
-      "24.79",
-      "Arcane Blast"
-     ],
-     [
-      "27.72",
-      "Arcane Blast"
-     ],
-     [
-      "29.19",
-      "Living Bomb"
-     ]
-    ],
-    "stats": [
-     [
-      "Интеллект",
-      "239"
-     ],
-     [
-      "Сила",
-      "37"
-     ],
-     [
-      "Ловкость",
-      "32"
-     ],
-     [
-      "Сила атаки",
-      "190.2"
-     ],
-     [
-      "Potency",
-      "3.0"
-     ],
-     [
-      "Mastery",
-      "28"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Скорость (Haste)",
-      "18.0%"
-     ],
-     [
-      "Скорость атаки",
-      "63.8%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Healing Power",
-      "0"
-     ],
-     [
-      "Pet Damage",
-      "0.0%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "2248"
-     ],
-     [
-      "Реген маны",
-      "20.08/с"
-     ],
-     [
-      "Мана в конце",
-      "92%"
-     ],
-     [
-      "Интервал атаки",
-      "1.47 с"
-     ],
-     [
-      "Тик Living Bomb",
-      "0.75 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.120"
-     ],
-     [
-      "Пробитие брони",
-      "6"
-     ],
-     [
-      "Elemental Orb",
-      "Shadow"
-     ],
-     [
-      "Diamond Ring привязан к",
-      "Arcane Blast"
-     ]
-    ],
-    "talentDps": {
-     "Supernova": 3223.1,
-     "Pyromaniac": 2979.7,
-     "Blazing Soul": 3021.3,
-     "Frostbite": 2925.4,
-     "Archmage": 3311.1,
-     "Arcane Surge": 3311.1,
-     "Amplification": 3311.1,
-     "Freezeburn": 2682.8,
-     "Ice Lance": 3006.1,
-     "Frostfire Bolt": 3086.7,
-     "Lava Spawn": 2965.9
-    },
-    "glyphDps": {
-     "Fortitude": 3311.1,
-     "Unsealed Power": 3216.0,
-     "Fortune": 2896.4,
-     "Supremacy": 2991.2,
-     "Arc Striking": 2896.4,
-     "Battle Frenzy": 2479.1,
-     "Hellfire": 2991.2,
-     "Thunder": 3311.1,
-     "Blood Violence": 2951.9,
-     "Animosity": 2911.4,
-     "Glass Cannon": 3311.1,
-     "Mindhaste": 2719.2
-    }
-   },
-   {
-    "farm_dps": 3311.1,
-    "dps": 3311.1,
-    "total": 99333,
-    "manaLeft": 92.2,
-    "bound_spell": "Arcane Blast",
-    "orb_mode": "Shadow",
-    "items": [
-     {
-      "name": "Diamond Ring",
-      "code": "I00D",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Staff of Galactic Fury",
-      "code": "I0JO",
-      "source": "shop"
-     },
-     {
-      "name": "Arcpower Stone",
-      "code": "I0MM",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Amplification",
-     "Arcane Surge",
-     "Archmage"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Thunder"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 20,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 4,
-     "damage": 0,
-     "crit": 0,
-     "potency": 6,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 264586506,
+    "chunk": 12950671062,
     "sources": [
      [
       "Arcane Blast",
@@ -5426,7 +4816,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 281846242,
+    "chunk": 13353638948,
     "sources": [
      [
       "Arcane Blast",
@@ -5674,303 +5064,6 @@
     }
    },
    {
-    "farm_dps": 3249.4,
-    "dps": 3249.4,
-    "total": 97481,
-    "manaLeft": 95.6,
-    "bound_spell": "Arcane Blast",
-    "orb_mode": "Shadow",
-    "items": [
-     {
-      "name": "Diamond Ring",
-      "code": "I00D",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Staff of Galactic Fury",
-      "code": "I0JO",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuron Gloves",
-      "code": "I0QT",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Amplification",
-     "Arcane Surge",
-     "Archmage"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Thunder"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 20,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 0,
-     "crit": 0,
-     "potency": 10,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 264586404,
-    "sources": [
-     [
-      "Arcane Blast",
-      1197.1
-     ],
-     [
-      "Sulfuras",
-      791.1
-     ],
-     [
-      "Ring of Frost",
-      503.6
-     ],
-     [
-      "Thunder",
-      411.4
-     ],
-     [
-      "Автоатака",
-      131.5
-     ],
-     [
-      "Living Bomb",
-      128.4
-     ],
-     [
-      "Взрыв Living Bomb",
-      78.6
-     ],
-     [
-      "Sulfuras (удар)",
-      7.6
-     ]
-    ],
-    "actions": [
-     [
-      "до боя",
-      "Elemental Orb → Shadow"
-     ],
-     [
-      "до боя",
-      "Diamond Ring → привязка Arcane Blast"
-     ],
-     [
-      "0.00",
-      "Living Bomb"
-     ],
-     [
-      "0.45",
-      "Arcane Blast"
-     ],
-     [
-      "0.90",
-      "Ring of Frost"
-     ],
-     [
-      "4.43",
-      "Arcane Blast"
-     ],
-     [
-      "7.51",
-      "Living Bomb"
-     ],
-     [
-      "7.96",
-      "Arcane Blast"
-     ],
-     [
-      "12.13",
-      "Arcane Blast"
-     ],
-     [
-      "12.58",
-      "Ring of Frost"
-     ],
-     [
-      "13.67",
-      "Living Bomb"
-     ],
-     [
-      "15.21",
-      "Arcane Blast"
-     ],
-     [
-      "18.29",
-      "Arcane Blast"
-     ],
-     [
-      "19.84",
-      "Living Bomb"
-     ],
-     [
-      "21.38",
-      "Arcane Blast"
-     ],
-     [
-      "22.92",
-      "Ring of Frost"
-     ],
-     [
-      "24.46",
-      "Arcane Blast"
-     ],
-     [
-      "26.00",
-      "Living Bomb"
-     ],
-     [
-      "27.54",
-      "Arcane Blast"
-     ]
-    ],
-    "stats": [
-     [
-      "Интеллект",
-      "228"
-     ],
-     [
-      "Сила",
-      "37"
-     ],
-     [
-      "Ловкость",
-      "32"
-     ],
-     [
-      "Сила атаки",
-      "191.0"
-     ],
-     [
-      "Potency",
-      "5.0"
-     ],
-     [
-      "Mastery",
-      "28"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Скорость (Haste)",
-      "18.0%"
-     ],
-     [
-      "Скорость атаки",
-      "55.8%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Healing Power",
-      "0"
-     ],
-     [
-      "Pet Damage",
-      "0.0%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "2171"
-     ],
-     [
-      "Реген маны",
-      "19.20/с"
-     ],
-     [
-      "Мана в конце",
-      "96%"
-     ],
-     [
-      "Интервал атаки",
-      "1.54 с"
-     ],
-     [
-      "Тик Living Bomb",
-      "0.75 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.220"
-     ],
-     [
-      "Пробитие брони",
-      "6"
-     ],
-     [
-      "Elemental Orb",
-      "Shadow"
-     ],
-     [
-      "Diamond Ring привязан к",
-      "Arcane Blast"
-     ]
-    ],
-    "talentDps": {
-     "Supernova": 3198.8,
-     "Pyromaniac": 2930.9,
-     "Blazing Soul": 2956.7,
-     "Frostbite": 2878.3,
-     "Archmage": 3249.4,
-     "Arcane Surge": 3249.4,
-     "Amplification": 3249.4,
-     "Freezeburn": 2988.7,
-     "Ice Lance": 2956.3,
-     "Frostfire Bolt": 3016.6,
-     "Lava Spawn": 2900.3
-    },
-    "glyphDps": {
-     "Fortitude": 3249.4,
-     "Unsealed Power": 3113.0,
-     "Fortune": 2838.0,
-     "Supremacy": 3113.7,
-     "Arc Striking": 2838.0,
-     "Battle Frenzy": 2543.9,
-     "Hellfire": 2938.4,
-     "Thunder": 3249.4,
-     "Blood Violence": 2886.8,
-     "Animosity": 2856.2,
-     "Glass Cannon": 3249.4,
-     "Mindhaste": 3113.7
-    }
-   },
-   {
     "farm_dps": 3225.6,
     "dps": 3225.6,
     "total": 96769,
@@ -6032,7 +5125,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 264589473,
+    "chunk": 12950489503,
     "sources": [
      [
       "Arcane Blast",
@@ -6262,6 +5355,953 @@
      "Glass Cannon": 3225.6,
      "Mindhaste": 2804.8
     }
+   },
+   {
+    "farm_dps": 3213.2,
+    "dps": 3213.2,
+    "total": 96397,
+    "manaLeft": 89.8,
+    "bound_spell": "Arcane Blast",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Void Hunter",
+      "code": "I02N",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Amplification",
+     "Arcane Surge",
+     "Archmage"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 0,
+     "potency": 9,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 13293054017,
+    "sources": [
+     [
+      "Arcane Blast",
+      1196.0
+     ],
+     [
+      "Sulfuras",
+      731.3
+     ],
+     [
+      "Ring of Frost",
+      566.6
+     ],
+     [
+      "Thunder",
+      408.0
+     ],
+     [
+      "Living Bomb",
+      120.7
+     ],
+     [
+      "Автоатака",
+      109.1
+     ],
+     [
+      "Взрыв Living Bomb",
+      73.7
+     ],
+     [
+      "Sulfuras (удар)",
+      7.9
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Arcane Blast"
+     ],
+     [
+      "0.00",
+      "Living Bomb"
+     ],
+     [
+      "0.45",
+      "Arcane Blast"
+     ],
+     [
+      "0.90",
+      "Ring of Frost"
+     ],
+     [
+      "4.25",
+      "Arcane Blast"
+     ],
+     [
+      "5.69",
+      "Living Bomb"
+     ],
+     [
+      "7.14",
+      "Arcane Blast"
+     ],
+     [
+      "10.04",
+      "Arcane Blast"
+     ],
+     [
+      "10.49",
+      "Ring of Frost"
+     ],
+     [
+      "11.48",
+      "Living Bomb"
+     ],
+     [
+      "12.93",
+      "Arcane Blast"
+     ],
+     [
+      "15.83",
+      "Arcane Blast"
+     ],
+     [
+      "17.27",
+      "Living Bomb"
+     ],
+     [
+      "18.72",
+      "Arcane Blast"
+     ],
+     [
+      "19.17",
+      "Ring of Frost"
+     ],
+     [
+      "21.62",
+      "Arcane Blast"
+     ],
+     [
+      "23.06",
+      "Living Bomb"
+     ],
+     [
+      "24.51",
+      "Arcane Blast"
+     ],
+     [
+      "27.41",
+      "Arcane Blast"
+     ],
+     [
+      "27.86",
+      "Ring of Frost"
+     ],
+     [
+      "28.85",
+      "Living Bomb"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "224"
+     ],
+     [
+      "Сила",
+      "37"
+     ],
+     [
+      "Ловкость",
+      "32"
+     ],
+     [
+      "Сила атаки",
+      "189.0"
+     ],
+     [
+      "Potency",
+      "4.5"
+     ],
+     [
+      "Mastery",
+      "28"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Скорость (Haste)",
+      "26.0%"
+     ],
+     [
+      "Скорость атаки",
+      "65.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2143"
+     ],
+     [
+      "Реген маны",
+      "18.88/с"
+     ],
+     [
+      "Мана в конце",
+      "90%"
+     ],
+     [
+      "Интервал атаки",
+      "1.45 с"
+     ],
+     [
+      "Тик Living Bomb",
+      "0.75 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Arcane Blast"
+     ]
+    ],
+    "talentDps": {
+     "Supernova": 3101.4,
+     "Pyromaniac": 2878.4,
+     "Blazing Soul": 2904.1,
+     "Frostbite": 2828.9,
+     "Archmage": 3213.2,
+     "Arcane Surge": 3213.2,
+     "Amplification": 3213.2,
+     "Freezeburn": 2833.4,
+     "Ice Lance": 2906.6,
+     "Frostfire Bolt": 2962.8,
+     "Lava Spawn": 2864.1
+    },
+    "glyphDps": {
+     "Fortitude": 3213.2,
+     "Unsealed Power": 3118.0,
+     "Fortune": 2805.2,
+     "Supremacy": 2558.7,
+     "Arc Striking": 2805.2,
+     "Battle Frenzy": 2613.4,
+     "Hellfire": 2907.7,
+     "Thunder": 3213.2,
+     "Blood Violence": 2858.9,
+     "Animosity": 2820.2,
+     "Glass Cannon": 3213.2,
+     "Mindhaste": 2777.7
+    }
+   },
+   {
+    "farm_dps": 3194.9,
+    "dps": 3194.9,
+    "total": 95847,
+    "manaLeft": 81.3,
+    "bound_spell": "Arcane Blast",
+    "orb_mode": "Fire",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Amplification",
+     "Arcane Surge",
+     "Archmage"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 3,
+     "damage": 0,
+     "crit": 0,
+     "potency": 7,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 13161647805,
+    "sources": [
+     [
+      "Arcane Blast",
+      1137.1
+     ],
+     [
+      "Sulfuras",
+      738.8
+     ],
+     [
+      "Ring of Frost",
+      421.6
+     ],
+     [
+      "Thunder",
+      349.2
+     ],
+     [
+      "Всплеск огня",
+      257.2
+     ],
+     [
+      "Автоатака",
+      109.8
+     ],
+     [
+      "Living Bomb",
+      107.0
+     ],
+     [
+      "Взрыв Living Bomb",
+      65.0
+     ],
+     [
+      "Sulfuras (удар)",
+      9.4
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Fire"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Arcane Blast"
+     ],
+     [
+      "0.00",
+      "Living Bomb"
+     ],
+     [
+      "0.45",
+      "Arcane Blast"
+     ],
+     [
+      "0.90",
+      "Ring of Frost"
+     ],
+     [
+      "3.73",
+      "Arcane Blast"
+     ],
+     [
+      "4.93",
+      "Living Bomb"
+     ],
+     [
+      "6.12",
+      "Arcane Blast"
+     ],
+     [
+      "8.50",
+      "Arcane Blast"
+     ],
+     [
+      "8.95",
+      "Ring of Frost"
+     ],
+     [
+      "9.69",
+      "Living Bomb"
+     ],
+     [
+      "10.89",
+      "Arcane Blast"
+     ],
+     [
+      "13.27",
+      "Arcane Blast"
+     ],
+     [
+      "14.46",
+      "Living Bomb"
+     ],
+     [
+      "15.65",
+      "Arcane Blast"
+     ],
+     [
+      "16.84",
+      "Ring of Frost"
+     ],
+     [
+      "18.04",
+      "Arcane Blast"
+     ],
+     [
+      "19.23",
+      "Living Bomb"
+     ],
+     [
+      "20.42",
+      "Arcane Blast"
+     ],
+     [
+      "22.80",
+      "Arcane Blast"
+     ],
+     [
+      "24.00",
+      "Living Bomb"
+     ],
+     [
+      "24.45",
+      "Ring of Frost"
+     ],
+     [
+      "25.19",
+      "Arcane Blast"
+     ],
+     [
+      "27.57",
+      "Arcane Blast"
+     ],
+     [
+      "28.76",
+      "Living Bomb"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "225"
+     ],
+     [
+      "Сила",
+      "52"
+     ],
+     [
+      "Ловкость",
+      "47"
+     ],
+     [
+      "Сила атаки",
+      "179.8"
+     ],
+     [
+      "Potency",
+      "3.5"
+     ],
+     [
+      "Mastery",
+      "33"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Скорость (Haste)",
+      "45.0%"
+     ],
+     [
+      "Скорость атаки",
+      "67.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2150"
+     ],
+     [
+      "Реген маны",
+      "18.96/с"
+     ],
+     [
+      "Мана в конце",
+      "81%"
+     ],
+     [
+      "Интервал атаки",
+      "1.19 с"
+     ],
+     [
+      "Тик Living Bomb",
+      "0.75 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Elemental Orb",
+      "Fire"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Arcane Blast"
+     ]
+    ],
+    "talentDps": {
+     "Supernova": 3075.9,
+     "Pyromaniac": 2898.2,
+     "Blazing Soul": 2913.6,
+     "Frostbite": 2872.2,
+     "Archmage": 3194.9,
+     "Arcane Surge": 3194.9,
+     "Amplification": 3194.9,
+     "Freezeburn": 2871.2,
+     "Ice Lance": 2918.4,
+     "Frostfire Bolt": 2979.3,
+     "Lava Spawn": 2954.8
+    },
+    "glyphDps": {
+     "Fortitude": 3194.9,
+     "Unsealed Power": 3174.5,
+     "Fortune": 2845.7,
+     "Supremacy": 2571.3,
+     "Arc Striking": 2845.7,
+     "Battle Frenzy": 2620.4,
+     "Hellfire": 2929.5,
+     "Thunder": 3194.9,
+     "Blood Violence": 2907.8,
+     "Animosity": 2860.9,
+     "Glass Cannon": 3194.9,
+     "Mindhaste": 2571.3
+    }
+   },
+   {
+    "farm_dps": 3168.2,
+    "dps": 3168.2,
+    "total": 95046,
+    "manaLeft": 81.1,
+    "bound_spell": "Arcane Blast",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Infinity Breaker",
+      "code": "I0NI",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Arcpower Stone",
+      "code": "I0O5",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Amplification",
+     "Arcane Surge",
+     "Supernova"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 12949984936,
+    "sources": [
+     [
+      "Arcane Blast",
+      968.6
+     ],
+     [
+      "Sulfuras",
+      664.7
+     ],
+     [
+      "Supernova",
+      454.3
+     ],
+     [
+      "Ring of Frost",
+      405.3
+     ],
+     [
+      "Thunder",
+      395.8
+     ],
+     [
+      "Living Bomb",
+      101.2
+     ],
+     [
+      "Автоатака",
+      95.6
+     ],
+     [
+      "Взрыв Living Bomb",
+      75.9
+     ],
+     [
+      "Sulfuras (удар)",
+      6.8
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Arcane Blast"
+     ],
+     [
+      "0.00",
+      "Living Bomb"
+     ],
+     [
+      "0.45",
+      "Arcane Blast"
+     ],
+     [
+      "0.90",
+      "Ring of Frost"
+     ],
+     [
+      "2.75",
+      "Arcane Blast"
+     ],
+     [
+      "5.54",
+      "Living Bomb"
+     ],
+     [
+      "5.99",
+      "Arcane Blast"
+     ],
+     [
+      "8.33",
+      "Arcane Blast"
+     ],
+     [
+      "9.73",
+      "Ring of Frost"
+     ],
+     [
+      "11.13",
+      "Living Bomb"
+     ],
+     [
+      "11.58",
+      "Arcane Blast"
+     ],
+     [
+      "13.92",
+      "Arcane Blast"
+     ],
+     [
+      "16.72",
+      "Living Bomb"
+     ],
+     [
+      "17.17",
+      "Arcane Blast"
+     ],
+     [
+      "18.11",
+      "Ring of Frost"
+     ],
+     [
+      "19.51",
+      "Arcane Blast"
+     ],
+     [
+      "22.30",
+      "Living Bomb"
+     ],
+     [
+      "22.75",
+      "Arcane Blast"
+     ],
+     [
+      "25.10",
+      "Arcane Blast"
+     ],
+     [
+      "26.50",
+      "Ring of Frost"
+     ],
+     [
+      "27.89",
+      "Living Bomb"
+     ],
+     [
+      "28.34",
+      "Arcane Blast"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "194"
+     ],
+     [
+      "Сила",
+      "37"
+     ],
+     [
+      "Ловкость",
+      "32"
+     ],
+     [
+      "Сила атаки",
+      "156.5"
+     ],
+     [
+      "Potency",
+      "5.0"
+     ],
+     [
+      "Mastery",
+      "36"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Скорость (Haste)",
+      "18.0%"
+     ],
+     [
+      "Скорость атаки",
+      "71.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1933"
+     ],
+     [
+      "Реген маны",
+      "16.48/с"
+     ],
+     [
+      "Мана в конце",
+      "81%"
+     ],
+     [
+      "Интервал атаки",
+      "1.40 с"
+     ],
+     [
+      "Тик Living Bomb",
+      "0.75 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Arcane Blast"
+     ]
+    ],
+    "talentDps": {
+     "Supernova": 3168.2,
+     "Pyromaniac": 2811.2,
+     "Blazing Soul": 2839.4,
+     "Frostbite": 2790.8,
+     "Archmage": 3145.3,
+     "Arcane Surge": 3168.2,
+     "Amplification": 3168.2,
+     "Freezeburn": 2741.2,
+     "Ice Lance": 2839.3,
+     "Frostfire Bolt": 2921.4,
+     "Lava Spawn": 2793.4
+    },
+    "glyphDps": {
+     "Fortitude": 3168.2,
+     "Unsealed Power": 3066.6,
+     "Fortune": 2772.4,
+     "Supremacy": 2636.5,
+     "Arc Striking": 2772.4,
+     "Battle Frenzy": 2690.1,
+     "Hellfire": 2879.7,
+     "Thunder": 3168.2,
+     "Blood Violence": 2824.9,
+     "Animosity": 2785.6,
+     "Glass Cannon": 3168.2,
+     "Mindhaste": 2636.5
+    }
    }
   ],
   "drop": [
@@ -6327,7 +6367,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 20046456,
+    "chunk": 1499012672,
     "sources": [
      [
       "Arcane Blast",
@@ -6547,6 +6587,568 @@
     }
    },
    {
+    "farm_dps": 2825.7,
+    "dps": 2825.7,
+    "total": 84770,
+    "manaLeft": 94.4,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "The Furnace",
+      "code": "I079",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "Girdle of the Elemental Triad",
+      "code": "I0UX",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Amplification",
+     "Arcane Surge",
+     "Archmage"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 9,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 1498997209,
+    "sources": [
+     [
+      "Arcane Blast",
+      836.8
+     ],
+     [
+      "Sulfuras",
+      743.4
+     ],
+     [
+      "Ring of Frost",
+      544.1
+     ],
+     [
+      "Thunder",
+      351.0
+     ],
+     [
+      "Living Bomb",
+      144.2
+     ],
+     [
+      "Автоатака",
+      106.8
+     ],
+     [
+      "Взрыв Living Bomb",
+      90.6
+     ],
+     [
+      "Sulfuras (удар)",
+      8.8
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Living Bomb"
+     ],
+     [
+      "0.45",
+      "Arcane Blast"
+     ],
+     [
+      "0.90",
+      "Ring of Frost"
+     ],
+     [
+      "4.05",
+      "Arcane Blast"
+     ],
+     [
+      "5.40",
+      "Living Bomb"
+     ],
+     [
+      "8.11",
+      "Arcane Blast"
+     ],
+     [
+      "9.46",
+      "Ring of Frost"
+     ],
+     [
+      "10.81",
+      "Living Bomb"
+     ],
+     [
+      "12.16",
+      "Arcane Blast"
+     ],
+     [
+      "16.21",
+      "Living Bomb"
+     ],
+     [
+      "16.66",
+      "Arcane Blast"
+     ],
+     [
+      "17.57",
+      "Ring of Frost"
+     ],
+     [
+      "20.27",
+      "Arcane Blast"
+     ],
+     [
+      "21.62",
+      "Living Bomb"
+     ],
+     [
+      "24.32",
+      "Arcane Blast"
+     ],
+     [
+      "25.67",
+      "Ring of Frost"
+     ],
+     [
+      "27.03",
+      "Living Bomb"
+     ],
+     [
+      "28.38",
+      "Arcane Blast"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "205"
+     ],
+     [
+      "Сила",
+      "24"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "164.8"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Скорость (Haste)",
+      "19.0%"
+     ],
+     [
+      "Скорость атаки",
+      "48.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1790"
+     ],
+     [
+      "Реген маны",
+      "18.00/с"
+     ],
+     [
+      "Мана в конце",
+      "94%"
+     ],
+     [
+      "Интервал атаки",
+      "1.35 с"
+     ],
+     [
+      "Тик Living Bomb",
+      "0.75 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ]
+    ],
+    "talentDps": {
+     "Supernova": 2815.2,
+     "Pyromaniac": 2608.2,
+     "Blazing Soul": 2640.8,
+     "Frostbite": 2553.3,
+     "Archmage": 2825.7,
+     "Arcane Surge": 2825.7,
+     "Amplification": 2825.7,
+     "Freezeburn": 2562.6,
+     "Ice Lance": 2607.6,
+     "Frostfire Bolt": 2670.2,
+     "Lava Spawn": 2575.9
+    },
+    "glyphDps": {
+     "Fortitude": 2825.7,
+     "Unsealed Power": 2739.2,
+     "Fortune": 2474.6,
+     "Supremacy": 2334.3,
+     "Arc Striking": 2474.6,
+     "Battle Frenzy": 2323.7,
+     "Hellfire": 2587.9,
+     "Thunder": 2825.7,
+     "Blood Violence": 2530.0,
+     "Animosity": 2489.4,
+     "Glass Cannon": 2825.7,
+     "Mindhaste": 2260.9
+    }
+   },
+   {
+    "farm_dps": 2775.1,
+    "dps": 2775.1,
+    "total": 83253,
+    "manaLeft": 94.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "The Furnace",
+      "code": "I079",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "Staff of the Magister",
+      "code": "I0HK",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Amplification",
+     "Arcane Surge",
+     "Archmage"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 1498998815,
+    "sources": [
+     [
+      "Arcane Blast",
+      845.4
+     ],
+     [
+      "Sulfuras",
+      702.8
+     ],
+     [
+      "Ring of Frost",
+      557.7
+     ],
+     [
+      "Thunder",
+      351.2
+     ],
+     [
+      "Living Bomb",
+      130.8
+     ],
+     [
+      "Автоатака",
+      98.3
+     ],
+     [
+      "Взрыв Living Bomb",
+      80.6
+     ],
+     [
+      "Sulfuras (удар)",
+      8.3
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Living Bomb"
+     ],
+     [
+      "0.45",
+      "Arcane Blast"
+     ],
+     [
+      "0.90",
+      "Ring of Frost"
+     ],
+     [
+      "4.09",
+      "Arcane Blast"
+     ],
+     [
+      "5.46",
+      "Living Bomb"
+     ],
+     [
+      "8.20",
+      "Arcane Blast"
+     ],
+     [
+      "9.57",
+      "Ring of Frost"
+     ],
+     [
+      "10.94",
+      "Living Bomb"
+     ],
+     [
+      "12.31",
+      "Arcane Blast"
+     ],
+     [
+      "16.42",
+      "Living Bomb"
+     ],
+     [
+      "16.87",
+      "Arcane Blast"
+     ],
+     [
+      "17.79",
+      "Ring of Frost"
+     ],
+     [
+      "20.53",
+      "Arcane Blast"
+     ],
+     [
+      "21.90",
+      "Living Bomb"
+     ],
+     [
+      "24.64",
+      "Arcane Blast"
+     ],
+     [
+      "26.01",
+      "Ring of Frost"
+     ],
+     [
+      "27.38",
+      "Living Bomb"
+     ],
+     [
+      "28.75",
+      "Arcane Blast"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "204"
+     ],
+     [
+      "Сила",
+      "24"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "164.0"
+     ],
+     [
+      "Potency",
+      "5.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Скорость (Haste)",
+      "16.0%"
+     ],
+     [
+      "Скорость атаки",
+      "46.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2103"
+     ],
+     [
+      "Реген маны",
+      "17.92/с"
+     ],
+     [
+      "Мана в конце",
+      "94%"
+     ],
+     [
+      "Интервал атаки",
+      "1.37 с"
+     ],
+     [
+      "Тик Living Bomb",
+      "0.75 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ]
+    ],
+    "talentDps": {
+     "Supernova": 2758.8,
+     "Pyromaniac": 2527.5,
+     "Blazing Soul": 2560.6,
+     "Frostbite": 2493.2,
+     "Archmage": 2775.1,
+     "Arcane Surge": 2775.1,
+     "Amplification": 2775.1,
+     "Freezeburn": 2493.7,
+     "Ice Lance": 2543.1,
+     "Frostfire Bolt": 2621.1,
+     "Lava Spawn": 2503.5
+    },
+    "glyphDps": {
+     "Fortitude": 2775.1,
+     "Unsealed Power": 2677.0,
+     "Fortune": 2423.9,
+     "Supremacy": 2282.6,
+     "Arc Striking": 2423.9,
+     "Battle Frenzy": 2310.8,
+     "Hellfire": 2520.6,
+     "Thunder": 2775.1,
+     "Blood Violence": 2474.8,
+     "Animosity": 2437.5,
+     "Glass Cannon": 2775.1,
+     "Mindhaste": 2204.3
+    }
+   },
+   {
     "farm_dps": 2764.7,
     "dps": 2764.7,
     "total": 82941,
@@ -6608,7 +7210,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 20047794,
+    "chunk": 1499031763,
     "sources": [
      [
       "Arcane Blast",
@@ -6828,10 +7430,10 @@
     }
    },
    {
-    "farm_dps": 2747.1,
-    "dps": 2747.1,
-    "total": 82414,
-    "manaLeft": 98.7,
+    "farm_dps": 2726.5,
+    "dps": 2726.5,
+    "total": 81794,
+    "manaLeft": 93.3,
     "bound_spell": null,
     "orb_mode": null,
     "items": [
@@ -6851,588 +7453,18 @@
       "source": "legendary"
      },
      {
-      "name": "Qiraji Talisman",
-      "code": "I0C9",
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "Gaze of Anubisath",
+      "code": "I0TO",
       "source": "drop"
      },
      {
       "name": "The Darkglaive",
       "code": "fgrd",
-      "source": "drop"
-     },
-     {
-      "name": "Hood of Dark Deeds",
-      "code": "tgrh",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Amplification",
-     "Archmage",
-     "Supernova"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Thunder"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 6,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 4,
-     "damage": 0,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 20047275,
-    "sources": [
-     [
-      "Sulfuras",
-      711.1
-     ],
-     [
-      "Ring of Frost",
-      526.1
-     ],
-     [
-      "Arcane Blast",
-      444.2
-     ],
-     [
-      "Thunder",
-      341.3
-     ],
-     [
-      "Supernova",
-      338.9
-     ],
-     [
-      "Living Bomb",
-      151.5
-     ],
-     [
-      "Автоатака",
-      128.6
-     ],
-     [
-      "Взрыв Living Bomb",
-      96.9
-     ],
-     [
-      "Sulfuras (удар)",
-      8.6
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Living Bomb"
-     ],
-     [
-      "0.45",
-      "Arcane Blast"
-     ],
-     [
-      "0.90",
-      "Ring of Frost"
-     ],
-     [
-      "4.05",
-      "Arcane Blast"
-     ],
-     [
-      "5.40",
-      "Living Bomb"
-     ],
-     [
-      "8.11",
-      "Arcane Blast"
-     ],
-     [
-      "9.46",
-      "Ring of Frost"
-     ],
-     [
-      "10.81",
-      "Living Bomb"
-     ],
-     [
-      "12.16",
-      "Arcane Blast"
-     ],
-     [
-      "16.21",
-      "Living Bomb"
-     ],
-     [
-      "16.66",
-      "Arcane Blast"
-     ],
-     [
-      "17.57",
-      "Ring of Frost"
-     ],
-     [
-      "20.27",
-      "Arcane Blast"
-     ],
-     [
-      "21.62",
-      "Living Bomb"
-     ],
-     [
-      "24.32",
-      "Arcane Blast"
-     ],
-     [
-      "25.67",
-      "Ring of Frost"
-     ],
-     [
-      "27.03",
-      "Living Bomb"
-     ],
-     [
-      "28.38",
-      "Arcane Blast"
-     ]
-    ],
-    "stats": [
-     [
-      "Интеллект",
-      "187"
-     ],
-     [
-      "Сила",
-      "29"
-     ],
-     [
-      "Ловкость",
-      "30"
-     ],
-     [
-      "Сила атаки",
-      "163.2"
-     ],
-     [
-      "Potency",
-      "13.0"
-     ],
-     [
-      "Mastery",
-      "16"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Скорость (Haste)",
-      "15.0%"
-     ],
-     [
-      "Скорость атаки",
-      "48.0%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Healing Power",
-      "0"
-     ],
-     [
-      "Pet Damage",
-      "0.0%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "1869"
-     ],
-     [
-      "Реген маны",
-      "15.92/с"
-     ],
-     [
-      "Мана в конце",
-      "99%"
-     ],
-     [
-      "Интервал атаки",
-      "1.35 с"
-     ],
-     [
-      "Тик Living Bomb",
-      "0.75 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×0.920"
-     ]
-    ],
-    "talentDps": {
-     "Supernova": 2747.1,
-     "Pyromaniac": 2532.0,
-     "Blazing Soul": 2598.2,
-     "Frostbite": 2499.4,
-     "Archmage": 2756.2,
-     "Arcane Surge": 2756.2,
-     "Amplification": 2756.2,
-     "Freezeburn": 2518.7,
-     "Ice Lance": 2551.3,
-     "Frostfire Bolt": 2610.6,
-     "Lava Spawn": 2511.5
-    },
-    "glyphDps": {
-     "Fortitude": 2747.1,
-     "Unsealed Power": 2648.9,
-     "Fortune": 2405.9,
-     "Supremacy": 2271.6,
-     "Arc Striking": 2405.9,
-     "Battle Frenzy": 2263.2,
-     "Hellfire": 2527.7,
-     "Thunder": 2747.1,
-     "Blood Violence": 2456.9,
-     "Animosity": 2423.6,
-     "Glass Cannon": 2747.1,
-     "Mindhaste": 2271.6
-    }
-   },
-   {
-    "farm_dps": 2741.2,
-    "dps": 2741.2,
-    "total": 82235,
-    "manaLeft": 98.8,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Crown of the Scourgelord",
-      "code": "I041",
-      "source": "drop"
-     },
-     {
-      "name": "The Furnace",
-      "code": "I079",
-      "source": "drop"
-     },
-     {
-      "name": "Harness of Beyond",
-      "code": "I07P",
-      "source": "drop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     },
-     {
-      "name": "Hood of Dark Deeds",
-      "code": "tgrh",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Amplification",
-     "Archmage",
-     "Supernova"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Thunder"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 7,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 3,
-     "damage": 0,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 114735065,
-    "sources": [
-     [
-      "Sulfuras",
-      716.3
-     ],
-     [
-      "Ring of Frost",
-      532.1
-     ],
-     [
-      "Arcane Blast",
-      448.3
-     ],
-     [
-      "Thunder",
-      342.4
-     ],
-     [
-      "Supernova",
-      341.0
-     ],
-     [
-      "Living Bomb",
-      143.6
-     ],
-     [
-      "Автоатака",
-      118.6
-     ],
-     [
-      "Взрыв Living Bomb",
-      90.8
-     ],
-     [
-      "Sulfuras (удар)",
-      8.1
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Living Bomb"
-     ],
-     [
-      "0.45",
-      "Arcane Blast"
-     ],
-     [
-      "0.90",
-      "Ring of Frost"
-     ],
-     [
-      "4.07",
-      "Arcane Blast"
-     ],
-     [
-      "5.43",
-      "Living Bomb"
-     ],
-     [
-      "8.14",
-      "Arcane Blast"
-     ],
-     [
-      "9.50",
-      "Ring of Frost"
-     ],
-     [
-      "10.86",
-      "Living Bomb"
-     ],
-     [
-      "12.22",
-      "Arcane Blast"
-     ],
-     [
-      "16.30",
-      "Living Bomb"
-     ],
-     [
-      "16.75",
-      "Arcane Blast"
-     ],
-     [
-      "17.65",
-      "Ring of Frost"
-     ],
-     [
-      "20.37",
-      "Arcane Blast"
-     ],
-     [
-      "21.73",
-      "Living Bomb"
-     ],
-     [
-      "24.45",
-      "Arcane Blast"
-     ],
-     [
-      "25.81",
-      "Ring of Frost"
-     ],
-     [
-      "27.17",
-      "Living Bomb"
-     ],
-     [
-      "28.52",
-      "Arcane Blast"
-     ]
-    ],
-    "stats": [
-     [
-      "Интеллект",
-      "190"
-     ],
-     [
-      "Сила",
-      "32"
-     ],
-     [
-      "Ловкость",
-      "33"
-     ],
-     [
-      "Сила атаки",
-      "153.5"
-     ],
-     [
-      "Potency",
-      "10.0"
-     ],
-     [
-      "Mastery",
-      "10"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Скорость (Haste)",
-      "16.0%"
-     ],
-     [
-      "Скорость атаки",
-      "47.2%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Healing Power",
-      "0"
-     ],
-     [
-      "Pet Damage",
-      "0.0%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "1845"
-     ],
-     [
-      "Реген маны",
-      "16.16/с"
-     ],
-     [
-      "Мана в конце",
-      "99%"
-     ],
-     [
-      "Интервал атаки",
-      "1.36 с"
-     ],
-     [
-      "Тик Living Bomb",
-      "0.75 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×0.920"
-     ]
-    ],
-    "talentDps": {
-     "Supernova": 2741.2,
-     "Pyromaniac": 2524.8,
-     "Blazing Soul": 2574.5,
-     "Frostbite": 2490.6,
-     "Archmage": 2753.0,
-     "Arcane Surge": 2753.0,
-     "Amplification": 2753.0,
-     "Freezeburn": 2501.8,
-     "Ice Lance": 2541.8,
-     "Frostfire Bolt": 2604.1,
-     "Lava Spawn": 2504.2
-    },
-    "glyphDps": {
-     "Fortitude": 2741.2,
-     "Unsealed Power": 2641.1,
-     "Fortune": 2398.8,
-     "Supremacy": 2264.0,
-     "Arc Striking": 2398.8,
-     "Battle Frenzy": 2248.1,
-     "Hellfire": 2510.1,
-     "Thunder": 2741.2,
-     "Blood Violence": 2450.0,
-     "Animosity": 2415.2,
-     "Glass Cannon": 2741.2,
-     "Mindhaste": 2264.0
-    }
-   },
-   {
-    "farm_dps": 2657.8,
-    "dps": 2657.8,
-    "total": 79735,
-    "manaLeft": 95.3,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Cursed Skull",
-      "code": "I02K",
-      "source": "drop"
-     },
-     {
-      "name": "Harness of Beyond",
-      "code": "I07P",
-      "source": "drop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "The Zircon Star",
-      "code": "I0DF",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     },
-     {
-      "name": "Hood of Dark Deeds",
-      "code": "tgrh",
       "source": "drop"
      }
     ],
@@ -7459,39 +7491,39 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 192013648,
+    "chunk": 1498997380,
     "sources": [
      [
       "Arcane Blast",
-      784.4
+      805.3
      ],
      [
       "Sulfuras",
-      706.9
+      731.6
      ],
      [
       "Ring of Frost",
-      516.3
+      527.7
      ],
      [
       "Thunder",
-      333.9
+      339.8
      ],
      [
       "Living Bomb",
-      123.2
+      131.6
      ],
      [
       "Автоатака",
-      109.7
+      100.8
      ],
      [
       "Взрыв Living Bomb",
-      75.7
+      81.2
      ],
      [
       "Sulfuras (удар)",
-      7.7
+      8.5
      ]
     ],
     "actions": [
@@ -7512,78 +7544,78 @@
       "Arcane Blast"
      ],
      [
-      "5.40",
+      "5.39",
       "Living Bomb"
      ],
      [
-      "8.11",
+      "8.09",
       "Arcane Blast"
      ],
      [
-      "9.46",
+      "9.44",
       "Ring of Frost"
      ],
      [
-      "10.81",
+      "10.78",
       "Living Bomb"
      ],
      [
-      "12.16",
+      "12.13",
       "Arcane Blast"
      ],
      [
-      "16.21",
+      "16.17",
       "Living Bomb"
      ],
      [
-      "16.66",
+      "16.62",
       "Arcane Blast"
      ],
      [
-      "17.57",
+      "17.52",
       "Ring of Frost"
      ],
      [
-      "20.27",
+      "20.22",
       "Arcane Blast"
      ],
      [
-      "21.62",
+      "21.57",
       "Living Bomb"
      ],
      [
-      "24.32",
+      "24.26",
       "Arcane Blast"
      ],
      [
-      "25.67",
+      "25.61",
       "Ring of Frost"
      ],
      [
-      "27.03",
+      "26.96",
       "Living Bomb"
      ],
      [
-      "28.38",
+      "28.30",
       "Arcane Blast"
      ]
     ],
     "stats": [
      [
       "Интеллект",
-      "210"
+      "200"
      ],
      [
       "Сила",
-      "49"
+      "30"
      ],
      [
       "Ловкость",
-      "50"
+      "31"
      ],
      [
       "Сила атаки",
-      "168.5"
+      "161.0"
      ],
      [
       "Potency",
@@ -7603,11 +7635,11 @@
      ],
      [
       "Скорость (Haste)",
-      "21.0%"
+      "18.0%"
      ],
      [
       "Скорость атаки",
-      "48.0%"
+      "48.4%"
      ],
      [
       "Удача",
@@ -7627,15 +7659,15 @@
      ],
      [
       "Мана макс.",
-      "2245"
+      "1975"
      ],
      [
       "Реген маны",
-      "17.76/с"
+      "17.60/с"
      ],
      [
       "Мана в конце",
-      "95%"
+      "93%"
      ],
      [
       "Интервал атаки",
@@ -7651,31 +7683,593 @@
      ]
     ],
     "talentDps": {
-     "Supernova": 2658.7,
-     "Pyromaniac": 2433.9,
-     "Blazing Soul": 2454.3,
-     "Frostbite": 2395.6,
-     "Archmage": 2658.7,
-     "Arcane Surge": 2657.8,
-     "Amplification": 2658.7,
-     "Freezeburn": 2400.2,
-     "Ice Lance": 2448.0,
-     "Frostfire Bolt": 2513.9,
-     "Lava Spawn": 2413.6
+     "Supernova": 2715.4,
+     "Pyromaniac": 2498.0,
+     "Blazing Soul": 2519.3,
+     "Frostbite": 2460.1,
+     "Archmage": 2726.5,
+     "Arcane Surge": 2726.5,
+     "Amplification": 2726.5,
+     "Freezeburn": 2554.1,
+     "Ice Lance": 2510.4,
+     "Frostfire Bolt": 2573.1,
+     "Lava Spawn": 2472.1
     },
     "glyphDps": {
-     "Fortitude": 2657.8,
-     "Unsealed Power": 2552.6,
-     "Fortune": 2323.9,
-     "Supremacy": 2128.6,
-     "Arc Striking": 2323.9,
-     "Battle Frenzy": 2194.0,
-     "Hellfire": 2408.6,
-     "Thunder": 2657.8,
-     "Blood Violence": 2369.8,
-     "Animosity": 2339.0,
-     "Glass Cannon": 2657.8,
-     "Mindhaste": 2134.8
+     "Fortitude": 2726.5,
+     "Unsealed Power": 2638.6,
+     "Fortune": 2386.7,
+     "Supremacy": 2247.5,
+     "Arc Striking": 2386.7,
+     "Battle Frenzy": 2311.8,
+     "Hellfire": 2483.9,
+     "Thunder": 2726.5,
+     "Blood Violence": 2437.9,
+     "Animosity": 2400.6,
+     "Glass Cannon": 2726.5,
+     "Mindhaste": 2194.3
+    }
+   },
+   {
+    "farm_dps": 2714.1,
+    "dps": 2714.1,
+    "total": 81424,
+    "manaLeft": 98.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "The Furnace",
+      "code": "I079",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Queen's Scepter",
+      "code": "I080",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Hood of Dark Deeds",
+      "code": "tgrh",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Amplification",
+     "Archmage",
+     "Supernova"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 9,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 1500291317,
+    "sources": [
+     [
+      "Sulfuras",
+      702.2
+     ],
+     [
+      "Ring of Frost",
+      568.0
+     ],
+     [
+      "Arcane Blast",
+      409.4
+     ],
+     [
+      "Supernova",
+      339.4
+     ],
+     [
+      "Thunder",
+      339.2
+     ],
+     [
+      "Living Bomb",
+      140.8
+     ],
+     [
+      "Автоатака",
+      118.2
+     ],
+     [
+      "Взрыв Living Bomb",
+      88.8
+     ],
+     [
+      "Sulfuras (удар)",
+      8.1
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Living Bomb"
+     ],
+     [
+      "0.45",
+      "Arcane Blast"
+     ],
+     [
+      "0.90",
+      "Ring of Frost"
+     ],
+     [
+      "4.21",
+      "Arcane Blast"
+     ],
+     [
+      "5.64",
+      "Living Bomb"
+     ],
+     [
+      "8.49",
+      "Arcane Blast"
+     ],
+     [
+      "9.92",
+      "Ring of Frost"
+     ],
+     [
+      "11.35",
+      "Living Bomb"
+     ],
+     [
+      "12.78",
+      "Arcane Blast"
+     ],
+     [
+      "17.06",
+      "Living Bomb"
+     ],
+     [
+      "17.51",
+      "Arcane Blast"
+     ],
+     [
+      "18.49",
+      "Ring of Frost"
+     ],
+     [
+      "21.35",
+      "Arcane Blast"
+     ],
+     [
+      "22.78",
+      "Living Bomb"
+     ],
+     [
+      "25.64",
+      "Arcane Blast"
+     ],
+     [
+      "27.06",
+      "Ring of Frost"
+     ],
+     [
+      "28.49",
+      "Living Bomb"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "197"
+     ],
+     [
+      "Сила",
+      "24"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "158.8"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "25"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Скорость (Haste)",
+      "8.0%"
+     ],
+     [
+      "Скорость атаки",
+      "40.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1934"
+     ],
+     [
+      "Реген маны",
+      "16.72/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.43 с"
+     ],
+     [
+      "Тик Living Bomb",
+      "0.75 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ]
+    ],
+    "talentDps": {
+     "Supernova": 2714.1,
+     "Pyromaniac": 2498.9,
+     "Blazing Soul": 2525.0,
+     "Frostbite": 2430.9,
+     "Archmage": 2714.1,
+     "Arcane Surge": 2654.1,
+     "Amplification": 2714.1,
+     "Freezeburn": 2456.2,
+     "Ice Lance": 2514.6,
+     "Frostfire Bolt": 2543.5,
+     "Lava Spawn": 2468.1
+    },
+    "glyphDps": {
+     "Fortitude": 2714.1,
+     "Unsealed Power": 2613.4,
+     "Fortune": 2374.9,
+     "Supremacy": 2234.1,
+     "Arc Striking": 2374.9,
+     "Battle Frenzy": 2225.9,
+     "Hellfire": 2487.3,
+     "Thunder": 2714.1,
+     "Blood Violence": 2425.6,
+     "Animosity": 2391.3,
+     "Glass Cannon": 2714.1,
+     "Mindhaste": 2156.7
+    }
+   },
+   {
+    "farm_dps": 2670.4,
+    "dps": 2670.4,
+    "total": 80111,
+    "manaLeft": 92.6,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Arcane Ring",
+      "code": "I029",
+      "source": "drop"
+     },
+     {
+      "name": "The Furnace",
+      "code": "I079",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Amplification",
+     "Arcane Surge",
+     "Archmage"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Thunder"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 8865915524,
+    "sources": [
+     [
+      "Arcane Blast",
+      800.3
+     ],
+     [
+      "Sulfuras",
+      659.5
+     ],
+     [
+      "Ring of Frost",
+      533.3
+     ],
+     [
+      "Thunder",
+      336.5
+     ],
+     [
+      "Living Bomb",
+      143.6
+     ],
+     [
+      "Автоатака",
+      98.0
+     ],
+     [
+      "Взрыв Living Bomb",
+      91.3
+     ],
+     [
+      "Sulfuras (удар)",
+      7.9
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Living Bomb"
+     ],
+     [
+      "0.45",
+      "Arcane Blast"
+     ],
+     [
+      "0.90",
+      "Ring of Frost"
+     ],
+     [
+      "4.09",
+      "Arcane Blast"
+     ],
+     [
+      "5.46",
+      "Living Bomb"
+     ],
+     [
+      "8.20",
+      "Arcane Blast"
+     ],
+     [
+      "9.57",
+      "Ring of Frost"
+     ],
+     [
+      "10.94",
+      "Living Bomb"
+     ],
+     [
+      "12.31",
+      "Arcane Blast"
+     ],
+     [
+      "16.42",
+      "Living Bomb"
+     ],
+     [
+      "16.87",
+      "Arcane Blast"
+     ],
+     [
+      "17.79",
+      "Ring of Frost"
+     ],
+     [
+      "20.53",
+      "Arcane Blast"
+     ],
+     [
+      "21.90",
+      "Living Bomb"
+     ],
+     [
+      "24.64",
+      "Arcane Blast"
+     ],
+     [
+      "26.01",
+      "Ring of Frost"
+     ],
+     [
+      "27.38",
+      "Living Bomb"
+     ],
+     [
+      "28.75",
+      "Arcane Blast"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "194"
+     ],
+     [
+      "Сила",
+      "24"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "156.5"
+     ],
+     [
+      "Potency",
+      "12.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Скорость (Haste)",
+      "16.0%"
+     ],
+     [
+      "Скорость атаки",
+      "46.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1933"
+     ],
+     [
+      "Реген маны",
+      "17.12/с"
+     ],
+     [
+      "Мана в конце",
+      "93%"
+     ],
+     [
+      "Интервал атаки",
+      "1.37 с"
+     ],
+     [
+      "Тик Living Bomb",
+      "0.75 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ]
+    ],
+    "talentDps": {
+     "Supernova": 2658.0,
+     "Pyromaniac": 2439.0,
+     "Blazing Soul": 2506.7,
+     "Frostbite": 2408.4,
+     "Archmage": 2670.4,
+     "Arcane Surge": 2670.4,
+     "Amplification": 2670.4,
+     "Freezeburn": 2419.2,
+     "Ice Lance": 2458.7,
+     "Frostfire Bolt": 2528.8,
+     "Lava Spawn": 2423.2
+    },
+    "glyphDps": {
+     "Fortitude": 2670.4,
+     "Unsealed Power": 2580.9,
+     "Fortune": 2333.9,
+     "Supremacy": 2200.0,
+     "Arc Striking": 2333.9,
+     "Battle Frenzy": 2226.3,
+     "Hellfire": 2454.1,
+     "Thunder": 2670.4,
+     "Blood Violence": 2383.4,
+     "Animosity": 2347.4,
+     "Glass Cannon": 2670.4,
+     "Mindhaste": 2128.3
     }
    },
    {
@@ -7740,7 +8334,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 13482530,
+    "chunk": 1023490253,
     "sources": [
      [
       "Arcane Blast",
@@ -8021,7 +8615,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 20044247,
+    "chunk": 1498997149,
     "sources": [
      [
       "Sulfuras",
@@ -8233,18 +8827,13 @@
     }
    },
    {
-    "farm_dps": 2616.1,
-    "dps": 2616.1,
-    "total": 78484,
-    "manaLeft": 97.1,
+    "farm_dps": 2629.6,
+    "dps": 2629.6,
+    "total": 78889,
+    "manaLeft": 93.8,
     "bound_spell": null,
     "orb_mode": null,
     "items": [
-     {
-      "name": "The Furnace",
-      "code": "I079",
-      "source": "drop"
-     },
      {
       "name": "Harness of Beyond",
       "code": "I07P",
@@ -8256,8 +8845,13 @@
       "source": "legendary"
      },
      {
-      "name": "Iceflow Gloves",
-      "code": "I0UT",
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "Girdle of the Elemental Triad",
+      "code": "I0UX",
       "source": "drop"
      },
      {
@@ -8272,286 +8866,9 @@
      }
     ],
     "talents": [
-     "Archmage",
-     "Freezeburn",
-     "Supernova"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Thunder"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 10,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 0,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 20038853,
-    "sources": [
-     [
-      "Ring of Frost",
-      636.5
-     ],
-     [
-      "Sulfuras",
-      486.1
-     ],
-     [
-      "Arcane Blast",
-      334.4
-     ],
-     [
-      "Supernova",
-      310.8
-     ],
-     [
-      "Thunder",
-      292.0
-     ],
-     [
-      "Living Bomb",
-      171.5
-     ],
-     [
-      "Fire Bomb",
-      159.1
-     ],
-     [
-      "Автоатака",
-      110.0
-     ],
-     [
-      "Взрыв Living Bomb",
-      108.3
-     ],
-     [
-      "Sulfuras (удар)",
-      7.5
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Living Bomb"
-     ],
-     [
-      "0.45",
-      "Arcane Blast"
-     ],
-     [
-      "0.90",
-      "Ring of Frost"
-     ],
-     [
-      "5.70",
-      "Arcane Blast"
-     ],
-     [
-      "8.60",
-      "Living Bomb"
-     ],
-     [
-      "10.05",
-      "Ring of Frost"
-     ],
-     [
-      "11.49",
-      "Arcane Blast"
-     ],
-     [
-      "15.84",
-      "Living Bomb"
-     ],
-     [
-      "17.29",
-      "Arcane Blast"
-     ],
-     [
-      "18.74",
-      "Ring of Frost"
-     ],
-     [
-      "23.09",
-      "Living Bomb"
-     ],
-     [
-      "23.54",
-      "Arcane Blast"
-     ],
-     [
-      "27.44",
-      "Ring of Frost"
-     ],
-     [
-      "28.89",
-      "Living Bomb"
-     ],
-     [
-      "29.34",
-      "Arcane Blast"
-     ]
-    ],
-    "stats": [
-     [
-      "Интеллект",
-      "192"
-     ],
-     [
-      "Сила",
-      "24"
-     ],
-     [
-      "Ловкость",
-      "25"
-     ],
-     [
-      "Сила атаки",
-      "155.0"
-     ],
-     [
-      "Potency",
-      "10.0"
-     ],
-     [
-      "Mastery",
-      "16"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Скорость (Haste)",
-      "8.0%"
-     ],
-     [
-      "Скорость атаки",
-      "38.0%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Healing Power",
-      "0"
-     ],
-     [
-      "Pet Damage",
-      "0.0%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "1999"
-     ],
-     [
-      "Реген маны",
-      "16.32/с"
-     ],
-     [
-      "Мана в конце",
-      "97%"
-     ],
-     [
-      "Интервал атаки",
-      "1.45 с"
-     ],
-     [
-      "Тик Living Bomb",
-      "0.75 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×0.920"
-     ]
-    ],
-    "talentDps": {
-     "Supernova": 2616.1,
-     "Pyromaniac": 2450.3,
-     "Blazing Soul": 2487.0,
-     "Frostbite": 2372.1,
-     "Archmage": 2616.1,
-     "Arcane Surge": 2488.5,
-     "Amplification": 2428.9,
-     "Freezeburn": 2616.1,
-     "Ice Lance": 2440.5,
-     "Frostfire Bolt": 2487.7,
-     "Lava Spawn": 2402.5
-    },
-    "glyphDps": {
-     "Fortitude": 2616.1,
-     "Unsealed Power": 2556.2,
-     "Fortune": 2324.2,
-     "Supremacy": 2233.9,
-     "Arc Striking": 2324.2,
-     "Battle Frenzy": 2239.2,
-     "Hellfire": 2436.4,
-     "Thunder": 2616.1,
-     "Blood Violence": 2438.3,
-     "Animosity": 2339.3,
-     "Glass Cannon": 2616.1,
-     "Mindhaste": 2272.3
-    }
-   },
-   {
-    "farm_dps": 2609.7,
-    "dps": 2609.7,
-    "total": 78292,
-    "manaLeft": 100.0,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Eredar's Grasp",
-      "code": "I072",
-      "source": "drop"
-     },
-     {
-      "name": "The Furnace",
-      "code": "I079",
-      "source": "drop"
-     },
-     {
-      "name": "Harness of Beyond",
-      "code": "I07P",
-      "source": "drop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     },
-     {
-      "name": "Hood of Dark Deeds",
-      "code": "tgrh",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Archmage",
-     "Freezeburn",
-     "Supernova"
+     "Amplification",
+     "Arcane Surge",
+     "Archmage"
     ],
     "glyphs": [
      "Fortitude",
@@ -8571,312 +8888,39 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 28615827,
-    "sources": [
-     [
-      "Ring of Frost",
-      543.3
-     ],
-     [
-      "Sulfuras",
-      523.6
-     ],
-     [
-      "Arcane Blast",
-      320.5
-     ],
-     [
-      "Supernova",
-      301.5
-     ],
-     [
-      "Thunder",
-      264.3
-     ],
-     [
-      "Fire Bomb",
-      237.3
-     ],
-     [
-      "Living Bomb",
-      175.2
-     ],
-     [
-      "Автоатака",
-      124.8
-     ],
-     [
-      "Взрыв Living Bomb",
-      110.8
-     ],
-     [
-      "Sulfuras (удар)",
-      8.5
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Living Bomb"
-     ],
-     [
-      "0.45",
-      "Arcane Blast"
-     ],
-     [
-      "0.90",
-      "Ring of Frost"
-     ],
-     [
-      "6.54",
-      "Arcane Blast"
-     ],
-     [
-      "7.84",
-      "Living Bomb"
-     ],
-     [
-      "9.14",
-      "Ring of Frost"
-     ],
-     [
-      "11.74",
-      "Arcane Blast"
-     ],
-     [
-      "15.64",
-      "Living Bomb"
-     ],
-     [
-      "16.93",
-      "Arcane Blast"
-     ],
-     [
-      "17.38",
-      "Ring of Frost"
-     ],
-     [
-      "22.13",
-      "Arcane Blast"
-     ],
-     [
-      "23.43",
-      "Living Bomb"
-     ],
-     [
-      "26.03",
-      "Ring of Frost"
-     ],
-     [
-      "27.32",
-      "Arcane Blast"
-     ]
-    ],
-    "stats": [
-     [
-      "Интеллект",
-      "189"
-     ],
-     [
-      "Сила",
-      "24"
-     ],
-     [
-      "Ловкость",
-      "25"
-     ],
-     [
-      "Сила атаки",
-      "152.8"
-     ],
-     [
-      "Potency",
-      "10.0"
-     ],
-     [
-      "Mastery",
-      "10"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Скорость (Haste)",
-      "15.0%"
-     ],
-     [
-      "Скорость атаки",
-      "54.0%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Healing Power",
-      "0"
-     ],
-     [
-      "Pet Damage",
-      "0.0%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "1878"
-     ],
-     [
-      "Реген маны",
-      "16.08/с"
-     ],
-     [
-      "Мана в конце",
-      "100%"
-     ],
-     [
-      "Интервал атаки",
-      "1.30 с"
-     ],
-     [
-      "Тик Living Bomb",
-      "0.75 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×0.920"
-     ]
-    ],
-    "talentDps": {
-     "Supernova": 2609.7,
-     "Pyromaniac": 2458.8,
-     "Blazing Soul": 2485.8,
-     "Frostbite": 2361.2,
-     "Archmage": 2609.7,
-     "Arcane Surge": 2535.6,
-     "Amplification": 2561.0,
-     "Freezeburn": 2609.7,
-     "Ice Lance": 2391.4,
-     "Frostfire Bolt": 2450.8,
-     "Lava Spawn": 2413.2
-    },
-    "glyphDps": {
-     "Fortitude": 2609.7,
-     "Unsealed Power": 2582.2,
-     "Fortune": 2345.4,
-     "Supremacy": 2218.7,
-     "Arc Striking": 2345.4,
-     "Battle Frenzy": 2088.9,
-     "Hellfire": 2457.6,
-     "Thunder": 2609.7,
-     "Blood Violence": 2466.6,
-     "Animosity": 2362.7,
-     "Glass Cannon": 2609.7,
-     "Mindhaste": 2218.7
-    }
-   },
-   {
-    "farm_dps": 2602.7,
-    "dps": 2602.7,
-    "total": 78081,
-    "manaLeft": 94.3,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "The Furnace",
-      "code": "I079",
-      "source": "drop"
-     },
-     {
-      "name": "Harness of Beyond",
-      "code": "I07P",
-      "source": "drop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "The Zircon Star",
-      "code": "I0DF",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     },
-     {
-      "name": "Sulfuron Hammer",
-      "code": "sor8",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Amplification",
-     "Arcane Surge",
-     "Archmage"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Thunder"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 20,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 0,
-     "crit": 0,
-     "potency": 10,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 20045938,
+    "chunk": 1023151494,
     "sources": [
      [
       "Arcane Blast",
-      771.4
+      777.1
      ],
      [
       "Sulfuras",
-      697.3
+      683.1
      ],
      [
       "Ring of Frost",
-      500.1
+      507.9
      ],
      [
       "Thunder",
-      325.0
+      328.7
      ],
      [
       "Living Bomb",
-      122.5
+      134.9
      ],
      [
       "Автоатака",
-      102.5
+      105.8
      ],
      [
       "Взрыв Living Bomb",
-      75.5
+      85.1
      ],
      [
       "Sulfuras (удар)",
-      8.7
+      7.2
      ]
     ],
     "actions": [
@@ -8956,11 +9000,11 @@
     "stats": [
      [
       "Интеллект",
-      "205"
+      "195"
      ],
      [
       "Сила",
-      "34"
+      "24"
      ],
      [
       "Ловкость",
@@ -8968,11 +9012,11 @@
      ],
      [
       "Сила атаки",
-      "164.8"
+      "157.2"
      ],
      [
       "Potency",
-      "5.0"
+      "10.0"
      ],
      [
       "Mastery",
@@ -8988,7 +9032,7 @@
      ],
      [
       "Скорость (Haste)",
-      "21.0%"
+      "19.0%"
      ],
      [
       "Скорость атаки",
@@ -9012,11 +9056,11 @@
      ],
      [
       "Мана макс.",
-      "2010"
+      "1920"
      ],
      [
       "Реген маны",
-      "17.36/с"
+      "17.20/с"
      ],
      [
       "Мана в конце",
@@ -9036,31 +9080,31 @@
      ]
     ],
     "talentDps": {
-     "Supernova": 2590.2,
-     "Pyromaniac": 2381.8,
-     "Blazing Soul": 2404.6,
-     "Frostbite": 2346.8,
-     "Archmage": 2602.7,
-     "Arcane Surge": 2602.7,
-     "Amplification": 2602.7,
-     "Freezeburn": 2352.0,
-     "Ice Lance": 2394.7,
-     "Frostfire Bolt": 2456.6,
-     "Lava Spawn": 2364.0
+     "Supernova": 2631.9,
+     "Pyromaniac": 2430.3,
+     "Blazing Soul": 2463.7,
+     "Frostbite": 2378.8,
+     "Archmage": 2631.9,
+     "Arcane Surge": 2629.6,
+     "Amplification": 2631.9,
+     "Freezeburn": 2391.7,
+     "Ice Lance": 2430.4,
+     "Frostfire Bolt": 2492.3,
+     "Lava Spawn": 2402.6
     },
     "glyphDps": {
-     "Fortitude": 2602.7,
-     "Unsealed Power": 2534.1,
-     "Fortune": 2277.8,
-     "Supremacy": 2078.9,
-     "Arc Striking": 2277.8,
-     "Battle Frenzy": 2141.1,
-     "Hellfire": 2373.7,
-     "Thunder": 2602.7,
-     "Blood Violence": 2329.4,
-     "Animosity": 2291.9,
-     "Glass Cannon": 2602.7,
-     "Mindhaste": 2068.8
+     "Fortitude": 2629.6,
+     "Unsealed Power": 2519.1,
+     "Fortune": 2301.0,
+     "Supremacy": 2168.8,
+     "Arc Striking": 2301.0,
+     "Battle Frenzy": 2173.6,
+     "Hellfire": 2400.4,
+     "Thunder": 2629.6,
+     "Blood Violence": 2346.4,
+     "Animosity": 2315.6,
+     "Glass Cannon": 2629.6,
+     "Mindhaste": 2111.8
     }
    }
   ]

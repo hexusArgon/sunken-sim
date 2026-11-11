@@ -122,7 +122,7 @@ def check_spec(hero, spec, args, device):
         parts = {"simulate": priest_cl.parity_full(engine, space, items, 5, builds, 0),
                  "esc_score": priest_cl.parity_full(engine, space, items, 5, builds, 1),
                  "timeline_replay": priest_cl.parity_timeline(engine, space, items, 5, builds, 2029)}
-    elif hero in ("shaman", "paladin"):
+    elif hero in ("shaman", "paladin", "druid"):
         parts = {"simulate": mod.parity_full(engine, space, items, 5, builds),
                  "timeline_replay": mod.parity_full(engine, space, items, 5, builds, 2029)}
     else:
@@ -153,7 +153,7 @@ def check_spec(hero, spec, args, device):
         t1 = time.perf_counter()
         if hero == "priest":
             want = priest_cl.finish_reference(spec, 5, equipped, space)
-        elif hero in ("shaman", "paladin"):
+        elif hero in ("shaman", "paladin", "druid"):
             from farm.hybrid import class_cl
 
             want = class_cl.finish_reference(hero, spec, 5, equipped, space)

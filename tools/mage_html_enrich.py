@@ -2,6 +2,7 @@
 
     MAGE_SPEC=frost python tools/mage_html_enrich.py
     MAGE_SPEC=fire MAGE_FARM=<results json> python tools/mage_html_enrich.py 10
+    MAGE_SPEC=frost MAGE_TOP=150 python tools/mage_html_enrich.py   # sunken-sim-runs/mage-frost-opencl-top150-gpu
 
 Reads a finished top-80 farm result (level 15, ESC 30 greedy; by default the
 GPU run in sunken-sim-runs/fire-opencl-top80-gpu or mage-<spec>-opencl-top80-gpu),
@@ -33,7 +34,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 SPEC = os.environ.get("MAGE_SPEC", "fire")
-RUN_DIR = ROOT.parent / "sunken-sim-runs" / ("fire-opencl-top80-gpu" if SPEC == "fire" else f"mage-{SPEC}-opencl-top80-gpu")
+TOP = int(os.environ.get("MAGE_TOP", "80"))
+RUN_DIR = ROOT.parent / "sunken-sim-runs" / ("fire-opencl-top80-gpu" if (SPEC, TOP) == ("fire", 80) else f"mage-{SPEC}-opencl-top{TOP}-gpu")
 os.environ.setdefault("FARM_DATA", str(RUN_DIR))
 
 from farm.catalog import load  # noqa: E402
@@ -56,7 +58,7 @@ OUT = ROOT / "docs" / "sim-html" / "sources" / f"mage-{SPEC}-enriched.json"
 TARGETS = 5
 GROUPS = {"mixed": "top", "shop": "top_shop", "drop": "top_random"}
 
-SPACE, _ = load(hero="mage", spec=SPEC, pool="mixed", top=80)
+SPACE, _ = load(hero="mage", spec=SPEC, pool="mixed", top=TOP)
 FARM_TALENTS = list(SPACE.talents)
 FARM_GLYPHS = list(SPACE.glyphs)
 TALENT_NAME = dict(SPACE.talent_names)
@@ -78,7 +80,7 @@ def _engine():
             try:
                 from farm.hybrid.mage_cl import MageCL
                 from farm.runner import source_map
-                space, items = load(hero="mage", spec=SPEC, pool="mixed", top=80)
+                space, items = load(hero="mage", spec=SPEC, pool="mixed", top=TOP)
                 _CL = MageCL(space, items, source_map(items), TARGETS, spec=SPEC)
                 print("talent/glyph scans on", _CL.name, flush=True)
             except Exception as exc:

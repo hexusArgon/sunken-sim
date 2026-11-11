@@ -1674,7 +1674,8 @@ def self_check(engine: "MageCL", space, items: dict, sources: dict, targets: int
 
 OPENCL_SPECS = ({("mage", spec) for spec in SPECS} | {("priest", spec) for spec in ("shadow", "discipline", "holy")}
                 | {("shaman", spec) for spec in ("restoration", "enhancement", "elemental")}
-                | {("paladin", spec) for spec in ("retribution", "protection", "holy")})
+                | {("paladin", spec) for spec in ("retribution", "protection", "holy")}
+                | {("druid", spec) for spec in ("restoration", "balance")})
 
 
 def make_engine(hero: str, space, items: dict, sources: dict, targets: int, spec: str, device=None):
@@ -1693,6 +1694,10 @@ def make_engine(hero: str, space, items: dict, sources: dict, targets: int, spec
         from farm.hybrid.paladin_cl import PaladinCL
 
         return PaladinCL(space, items, sources, targets, device=device, spec=spec)
+    if hero == "druid":  # the caster Druid (sunken_sim.druid); Feral Druid is a separate class, not modelled
+        from farm.hybrid.druid_cl import DruidCL
+
+        return DruidCL(space, items, sources, targets, device=device, spec=spec)
     raise ValueError(f"no OpenCL engine for {hero}/{spec}")
 
 
@@ -1710,6 +1715,10 @@ def engine_module(engine):
         from farm.hybrid import paladin_cl
 
         return paladin_cl
+    if hero == "druid":
+        from farm.hybrid import druid_cl
+
+        return druid_cl
     return sys.modules[__name__]
 
 
@@ -1941,7 +1950,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
 
     hero, spec = job.get("hero"), job.get("spec")
     if (hero, spec) not in OPENCL_SPECS:
-        raise ValueError("OpenCL backend: mage, priest, shaman or paladin (all three specs each)")
+        raise ValueError("OpenCL backend: mage, priest, shaman, paladin (three specs each) or druid (restoration, balance)")
     job = dict(job, admission_policy=A.policy(job))
     meta = {"worker": job.get("worker", "local-hybrid"), "status": "opencl", "device": "opencl",
             "name": "", "gpu_fights": True, "backend": f"{hero}-opencl-exact-v3",

@@ -2,6 +2,7 @@
 
     PRIEST_SPEC=discipline python tools/priest_html_enrich.py
     PRIEST_SPEC=shadow PRIEST_FARM=<results json> python tools/priest_html_enrich.py 10
+    PRIEST_SPEC=holy PRIEST_TOP=150 python tools/priest_html_enrich.py   # sunken-sim-runs/priest-holy-opencl-top150-gpu
 
 Reads a finished top-80 farm result (level 15, ESC 30 greedy; by default the
 GPU run in sunken-sim-runs/priest-<spec>-opencl-top80-gpu), re-sims every
@@ -33,7 +34,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 SPEC = os.environ.get("PRIEST_SPEC", "shadow")
-os.environ.setdefault("FARM_DATA", str(ROOT.parent / "sunken-sim-runs" / f"priest-{SPEC}-opencl-top80-gpu"))
+TOP = int(os.environ.get("PRIEST_TOP", "80"))
+os.environ.setdefault("FARM_DATA", str(ROOT.parent / "sunken-sim-runs" / f"priest-{SPEC}-opencl-top{TOP}-gpu"))
 
 from farm.catalog import load  # noqa: E402
 from sunken_sim.esc import ESC_ATTRS, apply_points  # noqa: E402
@@ -42,7 +44,7 @@ from sunken_sim.shadow import FIGHT, LEVEL, MIND_AMPLIFIER, Build, simulate  # n
 
 
 def _default_farm() -> Path:
-    found = sorted(glob.glob(str(ROOT.parent / "sunken-sim-runs" / f"priest-{SPEC}-opencl-top80-gpu" / "results" / "*.json")))
+    found = sorted(glob.glob(str(ROOT.parent / "sunken-sim-runs" / f"priest-{SPEC}-opencl-top{TOP}-gpu" / "results" / "*.json")))
     if not found:
         raise SystemExit(f"no farm result for priest {SPEC}; set PRIEST_FARM")
     return Path(found[-1])
@@ -53,7 +55,7 @@ OUT = ROOT / "docs" / "sim-html" / "sources" / f"priest-{SPEC}-enriched.json"
 TARGETS = 5
 GROUPS = {"mixed": "top", "shop": "top_shop", "drop": "top_random"}
 
-SPACE, _ = load(hero="priest", spec=SPEC, pool="mixed", top=80)
+SPACE, _ = load(hero="priest", spec=SPEC, pool="mixed", top=TOP)
 FARM_TALENTS = list(SPACE.talents)
 FARM_GLYPHS = list(SPACE.glyphs)
 TALENT_NAME = dict(SPACE.talent_names)
@@ -75,7 +77,7 @@ def _engine():
                 from farm.hybrid.priest_cl import PriestCL
                 from farm.runner import source_map
 
-                space, items = load(hero="priest", spec=SPEC, pool="mixed", top=80)
+                space, items = load(hero="priest", spec=SPEC, pool="mixed", top=TOP)
                 _CL = PriestCL(space, items, source_map(items), TARGETS, spec=SPEC)
                 print("talent/glyph scans on", _CL.name, flush=True)
             except Exception as exc:

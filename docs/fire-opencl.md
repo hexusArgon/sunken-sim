@@ -1,6 +1,6 @@
-# Mage, Priest, Shaman, Paladin: все бои на GPU (OpenCL, float64, бит в бит с CPU)
+# Mage, Priest, Shaman, Paladin, Druid: все бои на GPU (OpenCL, float64, бит в бит с CPU)
 
-На видеокарте считаются двенадцать спеков:
+На видеокарте считаются четырнадцать спеков:
 
 | Герой | Спеки | Модуль | Повторяет |
 |---|---|---|---|
@@ -8,6 +8,9 @@
 | Priest | Shadow, Discipline, Holy | `farm/hybrid/priest_cl.py` | `shadow.character`, `shadow._fight_events`, `score_events`, `compile_events` / `score_compiled` |
 | Shaman | Restoration, Enhancement, Elemental | `farm/hybrid/shaman_cl.py` (общий хост `class_cl.py`) | `shaman.sheet` (`shadow.character` без запечённых баффов), цикл `shaman.simulate`, `score_events` |
 | Paladin | Retribution, Protection, Holy | `farm/hybrid/paladin_cl.py` (общий хост `class_cl.py`) | `paladin.stats_of`, `_fight_events` (орбиты молотов из `_ORBIT`), `score_events` |
+| Druid (заклинатель, `sunken_sim/druid.py`) | Restoration, Balance | `farm/hybrid/druid_cl.py` (лист и ядра общие с шаманом) | `druid.sheet`, `_simulate_druid` (куча событий по (время, порядок)), `score_events` |
+
+Feral Druid (`sunken_sim/feral_druid.py`) — отдельный класс, на GPU не переносился.
 
 Маршрут включается только по запросу (см. «Запуск»). Без этого всё работает как раньше.
 
@@ -105,6 +108,8 @@ Shaman и Paladin, PoCL на CPU (виртуальная машина, Python 3.
 - подбор совпадает с `finish_sextuple` (DPS, таланты, глифы, очки, число боёв) на случайной шестёрке и на шестёрках с Diamond Ring / Sulfuras (шаман) и Sulfuras / колоколом (паладин);
 - выдача `eval_span` и топ-10 совпадают со старым CPU-раннером (Enhancement, Retribution).
 
+Druid (Restoration, Balance), PoCL, 2026-11-11: Top-150, по 1700 чанков (каждый предмет ≥5 раз) и 1500 боёв с талантами/глифами/ESC вкл. воспроизведённый кэш — 0 расхождений; подбор совпадает с `finish_sextuple`, в т.ч. на шестёрках с Diamond Ring, Sulfuras и Treant-предметом.
+
 ## Фильтр топ-10 не меняется
 
 Логика допуска прежняя: `bare-top10`, `claim_item_bars`, те же категории. Ядро считает голый DPS пакета. Python отбрасывает строки, которые не выше снимка 10-го места каждой своей категории: пороги только растут, поэтому такая строка и при честной заявке получила бы отказ. Остальные строки заявляются в `claim_item_bars` по порядку номеров. Допущенная шестёрка проходит подбор `refine`. Если воркер при старте не прошёл сверку подбора, подбор идёт CPU-оракулом.
@@ -127,7 +132,7 @@ Shaman и Paladin, PoCL на CPU (виртуальная машина, Python 3.
    Данные пишутся в `sunken-sim-runs\<герой>-<спек>-opencl-top<N>\`. Пауза: создать там файл `request-stop`. Повторный запуск той же командой продолжит с чекпойнта. Для Fire остаётся и `tools\run_fire_opencl.py`.
 3. Через Discord или `farm.hybrid.runner` (маршрут `farm/hybrid/opencl_route.py`) — любой из способов:
    - в job: `"backend": "opencl"` или `"opencl": true`; для Fire по-прежнему `"fire_backend": "opencl"`;
-   - в окружении бота: `FARM_OPENCL=all` для всех двенадцати спеков, или список, например `FARM_OPENCL=priest,mage:frost`; для Fire по-прежнему `FARM_FIRE_BACKEND=opencl`;
+   - в окружении бота: `FARM_OPENCL=all` для всех четырнадцати спеков, или список, например `FARM_OPENCL=priest,mage:frost`; для Fire по-прежнему `FARM_FIRE_BACKEND=opencl`;
    - `"opencl": false` в job всегда выключает маршрут.
 
    По умолчанию маршрут выключен. Работающий бот изменения кода и переменных не подхватывает, нужен перезапуск.
@@ -144,10 +149,10 @@ Shaman и Paladin, PoCL на CPU (виртуальная машина, Python 3.
 
 ## Ограничения
 
-- Механика ядер повторяет `sunken_sim/mage.py`, `sunken_sim/shadow.py`, `sunken_sim/shaman.py`, `sunken_sim/paladin.py` и правила предметов на 2026-11-10. После правки этих файлов ядро нужно обновить. Тесты `test_fire_cl` / `test_priest_cl` / `test_class_cl` и сверка при старте поймают расхождение, и задание откатится на гибрид.
+- Механика ядер повторяет `sunken_sim/mage.py`, `sunken_sim/shadow.py`, `sunken_sim/shaman.py`, `sunken_sim/paladin.py`, `sunken_sim/druid.py` и правила предметов на 2026-11-10. После правки этих файлов ядро нужно обновить. Тесты `test_fire_cl` / `test_priest_cl` / `test_class_cl` и сверка при старте поймают расхождение, и задание откатится на гибрид.
 - Таланты и глифы, которых ядро не знает, останавливают сборку таблиц, и задание идёт гибридом. Пустые выборы: `I0EJ`, `I0EN` (и `I0Q8` у мага) никто не читает.
 - Python 3.12+ суммирует `sum()` с компенсацией, и некоторые суммы оракула изменились бы. Фарм работает на 3.11, ядро повторяет её обычное сложение.
-- Остальные классы (друид, охотник, разбойник, воин, чернокнижник) идут прежним гибридом.
+- Остальные классы (Feral Druid, охотник, разбойник, воин, чернокнижник и др.) идут прежним гибридом.
 
 ---
 

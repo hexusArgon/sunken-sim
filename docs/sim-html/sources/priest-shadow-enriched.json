@@ -2,9 +2,9 @@
  "level": 15,
  "targets": 5,
  "spec": "shadow",
- "farm_file": "../sunken-sim-runs/priest-shadow-opencl-top80-gpu/results/local-hybrid-priest-shadow-mixed-top80-5-0-306241501-admission-v2-bare-top10-4bdfcfbec40b64fc.json",
- "done": 306241502,
- "end": 306241501,
+ "farm_file": "../sunken-sim-runs/priest-shadow-opencl-top150-gpu/results/local-hybrid-priest-shadow-mixed-top150-5-0-14659159857-admission-v2-bare-top10-d861445c772a4784.json",
+ "done": 14659159858,
+ "end": 14659159857,
  "errors": 0,
  "stopped": false,
  "spec_talents": [
@@ -95,7 +95,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 251682213,
+    "chunk": 12677390701,
     "sources": [
      [
       "Void Rift",
@@ -373,7 +373,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 76604443,
+    "chunk": 3878457871,
     "sources": [
      [
       "Void Rift",
@@ -675,7 +675,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 242867310,
+    "chunk": 12470075442,
     "sources": [
      [
       "Void Rift",
@@ -989,7 +989,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 76606235,
+    "chunk": 3878480519,
     "sources": [
      [
       "Void Rift",
@@ -1283,7 +1283,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 10152263,
+    "chunk": 489928715,
     "sources": [
      [
       "Void Rift",
@@ -1581,7 +1581,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 1886689,
+    "chunk": 140420585,
     "sources": [
      [
       "Void Rift",
@@ -1802,308 +1802,6 @@
     }
    },
    {
-    "farm_dps": 3328.9,
-    "dps": 3328.9,
-    "total": 99867,
-    "manaLeft": 98.9,
-    "bound_spell": null,
-    "orb_mode": "Shadow",
-    "items": [
-     {
-      "name": "Harness of Beyond",
-      "code": "I07P",
-      "source": "drop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "The Zircon Star",
-      "code": "I0DF",
-      "source": "drop"
-     },
-     {
-      "name": "Staff of Galactic Fury",
-      "code": "I0JO",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Dark Torment",
-     "Insanity",
-     "Psychic Link"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Thunder"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 20,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 1,
-     "damage": 0,
-     "crit": 0,
-     "potency": 9,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 10175968,
-    "sources": [
-     [
-      "Void Rift",
-      927.0
-     ],
-     [
-      "Shadow Word: Pain",
-      824.9
-     ],
-     [
-      "Sulfuras",
-      657.4
-     ],
-     [
-      "Thunder",
-      320.8
-     ],
-     [
-      "Mind Spike",
-      248.7
-     ],
-     [
-      "Naaru",
-      139.4
-     ],
-     [
-      "Shadow Word: Pain (удар при обновлении)",
-      117.4
-     ],
-     [
-      "Автоатака",
-      86.1
-     ],
-     [
-      "Sulfuras (удар)",
-      7.3
-     ]
-    ],
-    "actions": [
-     [
-      "до боя",
-      "Elemental Orb → Shadow"
-     ],
-     [
-      "0.00",
-      "Shadow Word: Pain"
-     ],
-     [
-      "0.45",
-      "Divine Image"
-     ],
-     [
-      "0.90",
-      "Mind Spike"
-     ],
-     [
-      "1.35",
-      "Void Rift"
-     ],
-     [
-      "4.85",
-      "Shadow Word: Pain"
-     ],
-     [
-      "7.90",
-      "Mind Spike"
-     ],
-     [
-      "9.42",
-      "Shadow Word: Pain"
-     ],
-     [
-      "9.87",
-      "Void Rift"
-     ],
-     [
-      "12.47",
-      "Divine Image"
-     ],
-     [
-      "14.00",
-      "Shadow Word: Pain"
-     ],
-     [
-      "14.45",
-      "Mind Spike"
-     ],
-     [
-      "17.05",
-      "Void Rift"
-     ],
-     [
-      "18.57",
-      "Shadow Word: Pain"
-     ],
-     [
-      "20.10",
-      "Mind Spike"
-     ],
-     [
-      "23.15",
-      "Shadow Word: Pain"
-     ],
-     [
-      "24.67",
-      "Divine Image"
-     ],
-     [
-      "25.12",
-      "Void Rift"
-     ],
-     [
-      "26.20",
-      "Mind Spike"
-     ],
-     [
-      "27.72",
-      "Shadow Word: Pain"
-     ]
-    ],
-    "stats": [
-     [
-      "Интеллект",
-      "195"
-     ],
-     [
-      "Сила",
-      "30"
-     ],
-     [
-      "Ловкость",
-      "31"
-     ],
-     [
-      "Сила атаки",
-      "156.2"
-     ],
-     [
-      "Potency",
-      "4.5"
-     ],
-     [
-      "Mastery",
-      "20"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "31.0%"
-     ],
-     [
-      "Скорость атаки",
-      "57.4%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Healing Power",
-      "0"
-     ],
-     [
-      "Pet Damage",
-      "0.0%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "1940"
-     ],
-     [
-      "Реген маны",
-      "16.56/с"
-     ],
-     [
-      "Мана в конце",
-      "99%"
-     ],
-     [
-      "Интервал атаки",
-      "1.52 с"
-     ],
-     [
-      "Тик Shadow Word: Pain",
-      "0.76 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×0.920"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "6"
-     ],
-     [
-      "Elemental Orb",
-      "Shadow"
-     ]
-    ],
-    "talentDps": {
-     "Psychic Link": 3328.9,
-     "Cosmic Horrors": 2850.6,
-     "Dark Torment": 3328.9,
-     "Catharsis": 3230.0,
-     "Insanity": 3328.9,
-     "Clairvoyance": 3014.0,
-     "Answered Prayers": 3090.7,
-     "Touch of the Naaru": 3148.6
-    },
-    "glyphDps": {
-     "Fortitude": 3351.6,
-     "Unsealed Power": 3351.6,
-     "Fortune": 3008.2,
-     "Supremacy": 3096.9,
-     "Arc Striking": 3008.2,
-     "Battle Frenzy": 2952.7,
-     "Hellfire": 3104.6,
-     "Thunder": 3328.9,
-     "Blood Violence": 3039.5,
-     "Animosity": 3020.0,
-     "Glass Cannon": 3351.6,
-     "Mindhaste": 2905.5
-    }
-   },
-   {
     "farm_dps": 3254.9,
     "dps": 3254.9,
     "total": 97648,
@@ -2165,7 +1863,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 1873173,
+    "chunk": 140051826,
     "sources": [
      [
       "Void Rift",
@@ -2447,7 +2145,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 1886039,
+    "chunk": 140416531,
     "sources": [
      [
       "Void Rift",
@@ -2717,7 +2415,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 1885986,
+    "chunk": 140416189,
     "sources": [
      [
       "Void Rift",
@@ -2932,9 +2630,549 @@
      "Glass Cannon": 3143.7,
      "Mindhaste": 2712.7
     }
+   },
+   {
+    "farm_dps": 3123.0,
+    "dps": 3123.0,
+    "total": 93691,
+    "manaLeft": 100.0,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Apocalypse",
+      "code": "I07U",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Cosmic Horrors",
+     "Insanity",
+     "Psychic Link"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 394803614,
+    "sources": [
+     [
+      "Shadow Word: Pain",
+      1071.9
+     ],
+     [
+      "Void Rift",
+      889.1
+     ],
+     [
+      "Sulfuras",
+      552.6
+     ],
+     [
+      "Mind Spike",
+      270.2
+     ],
+     [
+      "Автоатака",
+      139.0
+     ],
+     [
+      "Naaru",
+      129.0
+     ],
+     [
+      "Shadow Word: Pain (удар при обновлении)",
+      61.2
+     ],
+     [
+      "Sulfuras (удар)",
+      9.9
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Shadow Word: Pain"
+     ],
+     [
+      "0.45",
+      "Divine Image"
+     ],
+     [
+      "0.90",
+      "Mind Spike"
+     ],
+     [
+      "1.35",
+      "Void Rift"
+     ],
+     [
+      "10.53",
+      "Mind Spike"
+     ],
+     [
+      "13.44",
+      "Void Rift"
+     ],
+     [
+      "14.89",
+      "Shadow Word: Pain"
+     ],
+     [
+      "17.80",
+      "Divine Image"
+     ],
+     [
+      "19.25",
+      "Mind Spike"
+     ],
+     [
+      "25.07",
+      "Void Rift"
+     ],
+     [
+      "26.53",
+      "Shadow Word: Pain"
+     ],
+     [
+      "27.98",
+      "Mind Spike"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "256"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "202.0"
+     ],
+     [
+      "Potency",
+      "7.0"
+     ],
+     [
+      "Mastery",
+      "26"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "15.0%"
+     ],
+     [
+      "Скорость атаки",
+      "65.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2367"
+     ],
+     [
+      "Реген маны",
+      "22.72/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки",
+      "1.45 с"
+     ],
+     [
+      "Тик Shadow Word: Pain",
+      "0.87 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.240"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Psychic Link": 3123.0,
+     "Cosmic Horrors": 3123.0,
+     "Dark Torment": 2752.9,
+     "Catharsis": 2952.6,
+     "Insanity": 3123.0,
+     "Clairvoyance": 2746.2,
+     "Answered Prayers": 2763.1,
+     "Touch of the Naaru": 2681.7
+    },
+    "glyphDps": {
+     "Fortitude": 3123.0,
+     "Unsealed Power": 3123.0,
+     "Fortune": 2740.1,
+     "Supremacy": 2830.0,
+     "Arc Striking": 2740.1,
+     "Battle Frenzy": 2219.0,
+     "Hellfire": 2845.0,
+     "Thunder": 2950.2,
+     "Blood Violence": 2782.6,
+     "Animosity": 2756.4,
+     "Glass Cannon": 3123.0,
+     "Mindhaste": 2263.2
+    }
    }
   ],
   "shop": [
+   {
+    "farm_dps": 3123.0,
+    "dps": 3123.0,
+    "total": 93691,
+    "manaLeft": 100.0,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Apocalypse",
+      "code": "I07U",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Cosmic Horrors",
+     "Insanity",
+     "Psychic Link"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 394803614,
+    "sources": [
+     [
+      "Shadow Word: Pain",
+      1071.9
+     ],
+     [
+      "Void Rift",
+      889.1
+     ],
+     [
+      "Sulfuras",
+      552.6
+     ],
+     [
+      "Mind Spike",
+      270.2
+     ],
+     [
+      "Автоатака",
+      139.0
+     ],
+     [
+      "Naaru",
+      129.0
+     ],
+     [
+      "Shadow Word: Pain (удар при обновлении)",
+      61.2
+     ],
+     [
+      "Sulfuras (удар)",
+      9.9
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Shadow Word: Pain"
+     ],
+     [
+      "0.45",
+      "Divine Image"
+     ],
+     [
+      "0.90",
+      "Mind Spike"
+     ],
+     [
+      "1.35",
+      "Void Rift"
+     ],
+     [
+      "10.53",
+      "Mind Spike"
+     ],
+     [
+      "13.44",
+      "Void Rift"
+     ],
+     [
+      "14.89",
+      "Shadow Word: Pain"
+     ],
+     [
+      "17.80",
+      "Divine Image"
+     ],
+     [
+      "19.25",
+      "Mind Spike"
+     ],
+     [
+      "25.07",
+      "Void Rift"
+     ],
+     [
+      "26.53",
+      "Shadow Word: Pain"
+     ],
+     [
+      "27.98",
+      "Mind Spike"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "256"
+     ],
+     [
+      "Сила",
+      "30"
+     ],
+     [
+      "Ловкость",
+      "25"
+     ],
+     [
+      "Сила атаки",
+      "202.0"
+     ],
+     [
+      "Potency",
+      "7.0"
+     ],
+     [
+      "Mastery",
+      "26"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "15.0%"
+     ],
+     [
+      "Скорость атаки",
+      "65.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2367"
+     ],
+     [
+      "Реген маны",
+      "22.72/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки",
+      "1.45 с"
+     ],
+     [
+      "Тик Shadow Word: Pain",
+      "0.87 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.240"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Psychic Link": 3123.0,
+     "Cosmic Horrors": 3123.0,
+     "Dark Torment": 2752.9,
+     "Catharsis": 2952.6,
+     "Insanity": 3123.0,
+     "Clairvoyance": 2746.2,
+     "Answered Prayers": 2763.1,
+     "Touch of the Naaru": 2681.7
+    },
+    "glyphDps": {
+     "Fortitude": 3123.0,
+     "Unsealed Power": 3123.0,
+     "Fortune": 2740.1,
+     "Supremacy": 2830.0,
+     "Arc Striking": 2740.1,
+     "Battle Frenzy": 2219.0,
+     "Hellfire": 2845.0,
+     "Thunder": 2950.2,
+     "Blood Violence": 2782.6,
+     "Animosity": 2756.4,
+     "Glass Cannon": 3123.0,
+     "Mindhaste": 2263.2
+    }
+   },
    {
     "farm_dps": 3072.3,
     "dps": 3072.3,
@@ -2997,7 +3235,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 75505777,
+    "chunk": 3855169654,
     "sources": [
      [
       "Void Rift",
@@ -3275,7 +3513,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 1888563,
+    "chunk": 140443475,
     "sources": [
      [
       "Void Rift",
@@ -3545,7 +3783,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 75505702,
+    "chunk": 3855169430,
     "sources": [
      [
       "Void Rift",
@@ -3823,7 +4061,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 1886696,
+    "chunk": 140420603,
     "sources": [
      [
       "Void Rift",
@@ -4093,7 +4331,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 75503910,
+    "chunk": 3855146782,
     "sources": [
      [
       "Void Rift",
@@ -4375,7 +4613,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 33451148,
+    "chunk": 1934807144,
     "sources": [
      [
       "Void Rift",
@@ -4653,7 +4891,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 1873367,
+    "chunk": 140053154,
     "sources": [
      [
       "Void Rift",
@@ -4935,7 +5173,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 2056916,
+    "chunk": 146008034,
     "sources": [
      [
       "Void Rift",
@@ -5213,7 +5451,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 2058783,
+    "chunk": 146030906,
     "sources": [
      [
       "Void Rift",
@@ -5428,276 +5666,6 @@
      "Glass Cannon": 2879.0,
      "Mindhaste": 2610.0
     }
-   },
-   {
-    "farm_dps": 2843.2,
-    "dps": 2843.2,
-    "total": 85295,
-    "manaLeft": 100.0,
-    "bound_spell": null,
-    "orb_mode": "Shadow",
-    "items": [
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Staff of Galactic Fury",
-      "code": "I0JO",
-      "source": "shop"
-     },
-     {
-      "name": "Infinity Breaker",
-      "code": "I0NI",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Cosmic Horrors",
-     "Insanity",
-     "Psychic Link"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 20,
-     "healing_power": 0,
-     "haste": 1,
-     "attack_speed": 0,
-     "damage": 0,
-     "crit": 0,
-     "potency": 9,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 1886717,
-    "sources": [
-     [
-      "Void Rift",
-      978.1
-     ],
-     [
-      "Shadow Word: Pain",
-      701.0
-     ],
-     [
-      "Sulfuras",
-      472.0
-     ],
-     [
-      "Mind Spike",
-      298.3
-     ],
-     [
-      "Автоатака",
-      139.4
-     ],
-     [
-      "Naaru",
-      138.5
-     ],
-     [
-      "Shadow Word: Pain (удар при обновлении)",
-      105.9
-     ],
-     [
-      "Sulfuras (удар)",
-      10.0
-     ]
-    ],
-    "actions": [
-     [
-      "до боя",
-      "Elemental Orb → Shadow"
-     ],
-     [
-      "0.00",
-      "Shadow Word: Pain"
-     ],
-     [
-      "0.45",
-      "Divine Image"
-     ],
-     [
-      "0.90",
-      "Mind Spike"
-     ],
-     [
-      "1.35",
-      "Void Rift"
-     ],
-     [
-      "10.32",
-      "Mind Spike"
-     ],
-     [
-      "13.16",
-      "Void Rift"
-     ],
-     [
-      "14.58",
-      "Shadow Word: Pain"
-     ],
-     [
-      "18.84",
-      "Divine Image"
-     ],
-     [
-      "19.29",
-      "Mind Spike"
-     ],
-     [
-      "24.52",
-      "Void Rift"
-     ],
-     [
-      "25.94",
-      "Shadow Word: Pain"
-     ],
-     [
-      "28.78",
-      "Mind Spike"
-     ]
-    ],
-    "stats": [
-     [
-      "Интеллект",
-      "260"
-     ],
-     [
-      "Сила",
-      "30"
-     ],
-     [
-      "Ловкость",
-      "25"
-     ],
-     [
-      "Сила атаки",
-      "205.0"
-     ],
-     [
-      "Potency",
-      "4.5"
-     ],
-     [
-      "Mastery",
-      "28"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "11.0%"
-     ],
-     [
-      "Скорость атаки",
-      "69.0%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Healing Power",
-      "0"
-     ],
-     [
-      "Pet Damage",
-      "0.0%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "2395"
-     ],
-     [
-      "Реген маны",
-      "21.76/с"
-     ],
-     [
-      "Мана в конце",
-      "100%"
-     ],
-     [
-      "Интервал атаки",
-      "1.42 с"
-     ],
-     [
-      "Тик Shadow Word: Pain",
-      "0.90 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.240"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "6"
-     ],
-     [
-      "Elemental Orb",
-      "Shadow"
-     ]
-    ],
-    "talentDps": {
-     "Psychic Link": 2844.7,
-     "Cosmic Horrors": 2843.2,
-     "Dark Torment": 2844.7,
-     "Catharsis": 2841.3,
-     "Insanity": 2844.7,
-     "Clairvoyance": 2657.1,
-     "Answered Prayers": 2761.9,
-     "Touch of the Naaru": 2713.4
-    },
-    "glyphDps": {
-     "Fortitude": 2843.2,
-     "Unsealed Power": 2843.2,
-     "Fortune": 2518.9,
-     "Supremacy": 2584.4,
-     "Arc Striking": 2518.9,
-     "Battle Frenzy": 2513.7,
-     "Hellfire": 2615.3,
-     "Thunder": 2750.6,
-     "Blood Violence": 2556.1,
-     "Animosity": 2535.2,
-     "Glass Cannon": 2843.2,
-     "Mindhaste": 2608.0
-    }
    }
   ],
   "drop": [
@@ -5763,7 +5731,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 10178021,
+    "chunk": 490462802,
     "sources": [
      [
       "Void Rift",
@@ -6049,7 +6017,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 10178809,
+    "chunk": 490468299,
     "sources": [
      [
       "Void Rift",
@@ -6339,7 +6307,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 174535850,
+    "chunk": 8089807158,
     "sources": [
      [
       "Void Rift",
@@ -6625,7 +6593,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 174533978,
+    "chunk": 8089790444,
     "sources": [
      [
       "Void Rift",
@@ -6911,7 +6879,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 174535472,
+    "chunk": 8089805423,
     "sources": [
      [
       "Void Rift",
@@ -7197,7 +7165,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 10174773,
+    "chunk": 490430508,
     "sources": [
      [
       "Void Rift",
@@ -7426,6 +7394,292 @@
     }
    },
    {
+    "farm_dps": 2544.4,
+    "dps": 2544.4,
+    "total": 76332,
+    "manaLeft": 98.7,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Sorceress Power Staff",
+      "code": "I05B",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Hood of Dark Deeds",
+      "code": "tgrh",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Dark Torment",
+     "Insanity",
+     "Psychic Link"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 20,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 8196791054,
+    "sources": [
+     [
+      "Void Rift",
+      876.8
+     ],
+     [
+      "Sulfuras",
+      599.4
+     ],
+     [
+      "Shadow Word: Pain",
+      531.8
+     ],
+     [
+      "Mind Spike",
+      207.0
+     ],
+     [
+      "Naaru",
+      120.3
+     ],
+     [
+      "Автоатака",
+      106.8
+     ],
+     [
+      "Shadow Word: Pain (удар при обновлении)",
+      95.8
+     ],
+     [
+      "Sulfuras (удар)",
+      6.5
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Shadow Word: Pain"
+     ],
+     [
+      "0.45",
+      "Divine Image"
+     ],
+     [
+      "0.90",
+      "Mind Spike"
+     ],
+     [
+      "1.35",
+      "Void Rift"
+     ],
+     [
+      "5.85",
+      "Shadow Word: Pain"
+     ],
+     [
+      "7.21",
+      "Mind Spike"
+     ],
+     [
+      "9.91",
+      "Void Rift"
+     ],
+     [
+      "11.26",
+      "Shadow Word: Pain"
+     ],
+     [
+      "12.61",
+      "Divine Image"
+     ],
+     [
+      "13.96",
+      "Mind Spike"
+     ],
+     [
+      "16.66",
+      "Shadow Word: Pain"
+     ],
+     [
+      "18.02",
+      "Void Rift"
+     ],
+     [
+      "20.72",
+      "Mind Spike"
+     ],
+     [
+      "22.07",
+      "Shadow Word: Pain"
+     ],
+     [
+      "24.77",
+      "Divine Image"
+     ],
+     [
+      "26.12",
+      "Void Rift"
+     ],
+     [
+      "27.48",
+      "Shadow Word: Pain"
+     ],
+     [
+      "27.93",
+      "Mind Spike"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "185"
+     ],
+     [
+      "Сила",
+      "49"
+     ],
+     [
+      "Ловкость",
+      "50"
+     ],
+     [
+      "Сила атаки",
+      "148.8"
+     ],
+     [
+      "Potency",
+      "5.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "22.0%"
+     ],
+     [
+      "Скорость атаки",
+      "48.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "2170"
+     ],
+     [
+      "Реген маны",
+      "15.76/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.35 с"
+     ],
+     [
+      "Тик Shadow Word: Pain",
+      "0.82 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Psychic Link": 2544.4,
+     "Cosmic Horrors": 2335.5,
+     "Dark Torment": 2544.4,
+     "Catharsis": 2514.1,
+     "Insanity": 2544.4,
+     "Clairvoyance": 2362.5,
+     "Answered Prayers": 2416.6,
+     "Touch of the Naaru": 2166.7
+    },
+    "glyphDps": {
+     "Fortitude": 2544.4,
+     "Unsealed Power": 2544.4,
+     "Fortune": 2270.0,
+     "Supremacy": 2325.0,
+     "Arc Striking": 2270.0,
+     "Battle Frenzy": 2232.1,
+     "Hellfire": 2353.4,
+     "Thunder": 2498.7,
+     "Blood Violence": 2295.4,
+     "Animosity": 2282.8,
+     "Glass Cannon": 2544.4,
+     "Mindhaste": 2217.0
+    }
+   },
+   {
     "farm_dps": 2541.2,
     "dps": 2541.2,
     "total": 76237,
@@ -7487,7 +7741,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 10728961,
+    "chunk": 504292983,
     "sources": [
      [
       "Void Rift",
@@ -7773,7 +8027,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 10177315,
+    "chunk": 490453320,
     "sources": [
      [
       "Void Rift",
@@ -8002,10 +8256,10 @@
     }
    },
    {
-    "farm_dps": 2528.2,
-    "dps": 2528.2,
-    "total": 75846,
-    "manaLeft": 99.0,
+    "farm_dps": 2534.4,
+    "dps": 2534.4,
+    "total": 76033,
+    "manaLeft": 98.3,
     "bound_spell": null,
     "orb_mode": null,
     "items": [
@@ -8023,301 +8277,15 @@
       "name": "Sulfuras, Hand of Ragnaros",
       "code": "I0BR",
       "source": "legendary"
-     },
-     {
-      "name": "Beacon of the Naaru",
-      "code": "I0SG",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     },
-     {
-      "name": "Hood of Dark Deeds",
-      "code": "tgrh",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Answered Prayers",
-     "Dark Torment",
-     "Insanity"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 20,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 0,
-     "crit": 0,
-     "potency": 10,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 174531436,
-    "sources": [
-     [
-      "Void Rift",
-      903.4
-     ],
-     [
-      "Sulfuras",
-      638.3
-     ],
-     [
-      "Shadow Word: Pain",
-      349.4
-     ],
-     [
-      "Mind Spike",
-      225.2
-     ],
-     [
-      "Naaru",
-      191.4
-     ],
-     [
-      "Автоатака",
-      113.0
-     ],
-     [
-      "Shadow Word: Pain (удар при обновлении)",
-      100.6
-     ],
-     [
-      "Sulfuras (удар)",
-      6.9
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Shadow Word: Pain"
-     ],
-     [
-      "0.45",
-      "Divine Image"
-     ],
-     [
-      "0.90",
-      "Mind Spike"
-     ],
-     [
-      "1.35",
-      "Void Rift"
-     ],
-     [
-      "5.85",
-      "Shadow Word: Pain"
-     ],
-     [
-      "7.21",
-      "Mind Spike"
-     ],
-     [
-      "9.91",
-      "Void Rift"
-     ],
-     [
-      "11.26",
-      "Shadow Word: Pain"
-     ],
-     [
-      "12.61",
-      "Divine Image"
-     ],
-     [
-      "13.96",
-      "Mind Spike"
-     ],
-     [
-      "16.66",
-      "Shadow Word: Pain"
-     ],
-     [
-      "18.02",
-      "Void Rift"
-     ],
-     [
-      "20.72",
-      "Mind Spike"
-     ],
-     [
-      "22.07",
-      "Shadow Word: Pain"
-     ],
-     [
-      "24.77",
-      "Divine Image"
-     ],
-     [
-      "26.12",
-      "Void Rift"
-     ],
-     [
-      "27.48",
-      "Shadow Word: Pain"
-     ],
-     [
-      "27.93",
-      "Mind Spike"
-     ]
-    ],
-    "stats": [
-     [
-      "Интеллект",
-      "197"
-     ],
-     [
-      "Сила",
-      "49"
-     ],
-     [
-      "Ловкость",
-      "50"
-     ],
-     [
-      "Сила атаки",
-      "157.8"
-     ],
-     [
-      "Potency",
-      "5.0"
-     ],
-     [
-      "Mastery",
-      "10"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "18.0%"
-     ],
-     [
-      "Скорость атаки",
-      "48.0%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Healing Power",
-      "0"
-     ],
-     [
-      "Pet Damage",
-      "0.0%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "2154"
-     ],
-     [
-      "Реген маны",
-      "16.72/с"
-     ],
-     [
-      "Мана в конце",
-      "99%"
-     ],
-     [
-      "Интервал атаки",
-      "1.35 с"
-     ],
-     [
-      "Тик Shadow Word: Pain",
-      "0.85 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×0.920"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Psychic Link": 2519.4,
-     "Cosmic Horrors": 2351.8,
-     "Dark Torment": 2528.2,
-     "Catharsis": 2485.6,
-     "Insanity": 2528.2,
-     "Clairvoyance": 2335.6,
-     "Answered Prayers": 2528.2,
-     "Touch of the Naaru": 2351.8
-    },
-    "glyphDps": {
-     "Fortitude": 2528.2,
-     "Unsealed Power": 2528.2,
-     "Fortune": 2255.4,
-     "Supremacy": 2295.1,
-     "Arc Striking": 2255.4,
-     "Battle Frenzy": 2144.9,
-     "Hellfire": 2338.8,
-     "Thunder": 2497.6,
-     "Blood Violence": 2285.3,
-     "Animosity": 2269.0,
-     "Glass Cannon": 2528.2,
-     "Mindhaste": 2149.7
-    }
-   },
-   {
-    "farm_dps": 2517.9,
-    "dps": 2517.9,
-    "total": 75538,
-    "manaLeft": 98.2,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Cursed Skull",
-      "code": "I02K",
-      "source": "drop"
-     },
-     {
-      "name": "Harness of Beyond",
-      "code": "I07P",
-      "source": "drop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Qiraji Talisman",
-      "code": "I0C9",
-      "source": "drop"
      },
      {
       "name": "Nightborne Scepter",
       "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "Beacon of the Naaru",
+      "code": "I0SG",
       "source": "drop"
      },
      {
@@ -8341,47 +8309,47 @@
      "mana": 20,
      "healing_power": 0,
      "haste": 0,
-     "attack_speed": 0,
+     "attack_speed": 1,
      "damage": 0,
      "crit": 0,
-     "potency": 10,
+     "potency": 9,
      "mastery": 0,
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 174536786,
+    "chunk": 8089800166,
     "sources": [
      [
       "Void Rift",
-      843.7
+      852.4
      ],
      [
       "Shadow Word: Pain",
-      574.2
+      562.6
      ],
      [
       "Sulfuras",
-      534.3
+      552.8
      ],
      [
       "Mind Spike",
-      232.7
-     ],
-     [
-      "Автоатака",
-      118.0
+      232.4
      ],
      [
       "Naaru",
-      105.4
+      114.7
+     ],
+     [
+      "Автоатака",
+      111.4
      ],
      [
       "Shadow Word: Pain (удар при обновлении)",
-      101.4
+      100.3
      ],
      [
       "Sulfuras (удар)",
-      8.3
+      8.0
      ]
     ],
     "actions": [
@@ -8418,11 +8386,11 @@
       "Shadow Word: Pain"
      ],
      [
-      "14.46",
+      "13.19",
       "Divine Image"
      ],
      [
-      "14.91",
+      "14.46",
       "Mind Spike"
      ],
      [
@@ -8438,7 +8406,7 @@
       "Shadow Word: Pain"
      ],
      [
-      "22.05",
+      "21.24",
       "Mind Spike"
      ],
      [
@@ -8447,41 +8415,41 @@
      ],
      [
       "26.30",
-      "Void Rift"
-     ],
-     [
-      "28.38",
       "Divine Image"
      ],
      [
-      "28.83",
+      "26.75",
+      "Void Rift"
+     ],
+     [
+      "28.47",
       "Mind Spike"
      ]
     ],
     "stats": [
      [
       "Интеллект",
-      "202"
+      "209"
      ],
      [
       "Сила",
-      "54"
+      "49"
      ],
      [
       "Ловкость",
-      "55"
+      "50"
      ],
      [
       "Сила атаки",
-      "173.5"
+      "166.8"
      ],
      [
       "Potency",
-      "8.0"
+      "4.5"
      ],
      [
       "Mastery",
-      "16"
+      "10"
      ],
      [
       "Шанс крита",
@@ -8493,7 +8461,7 @@
      ],
      [
       "Спешка",
-      "15.0%"
+      "18.0%"
      ],
      [
       "Скорость атаки",
@@ -8517,11 +8485,11 @@
      ],
      [
       "Мана макс.",
-      "2054"
+      "2038"
      ],
      [
       "Реген маны",
-      "17.76/с"
+      "18.32/с"
      ],
      [
       "Мана в конце",
@@ -8533,7 +8501,7 @@
      ],
      [
       "Тик Shadow Word: Pain",
-      "0.87 с"
+      "0.85 с"
      ],
      [
       "Множитель КД (предметы)",
@@ -8549,28 +8517,28 @@
      ]
     ],
     "talentDps": {
-     "Psychic Link": 2517.9,
-     "Cosmic Horrors": 2224.6,
-     "Dark Torment": 2517.9,
-     "Catharsis": 2468.5,
-     "Insanity": 2517.9,
-     "Clairvoyance": 2313.3,
-     "Answered Prayers": 2252.7,
-     "Touch of the Naaru": 2336.2
+     "Psychic Link": 2534.4,
+     "Cosmic Horrors": 2331.1,
+     "Dark Torment": 2534.4,
+     "Catharsis": 2504.4,
+     "Insanity": 2534.4,
+     "Clairvoyance": 2343.7,
+     "Answered Prayers": 2394.7,
+     "Touch of the Naaru": 2355.3
     },
     "glyphDps": {
-     "Fortitude": 2517.9,
-     "Unsealed Power": 2517.9,
-     "Fortune": 2230.9,
-     "Supremacy": 2286.7,
-     "Arc Striking": 2230.9,
-     "Battle Frenzy": 2143.3,
-     "Hellfire": 2322.9,
-     "Thunder": 2467.0,
-     "Blood Violence": 2257.1,
-     "Animosity": 2244.7,
-     "Glass Cannon": 2517.9,
-     "Mindhaste": 2259.8
+     "Fortitude": 2534.4,
+     "Unsealed Power": 2534.4,
+     "Fortune": 2245.8,
+     "Supremacy": 2304.1,
+     "Arc Striking": 2245.8,
+     "Battle Frenzy": 2120.7,
+     "Hellfire": 2327.7,
+     "Thunder": 2487.4,
+     "Blood Violence": 2273.4,
+     "Animosity": 2258.8,
+     "Glass Cannon": 2534.4,
+     "Mindhaste": 2139.6
     }
    }
   ],

@@ -1,4 +1,4 @@
-"""Exact OpenCL Shaman and Paladin fights: parity with the Python sims and the farm span.
+"""Exact OpenCL Shaman, Paladin and Druid (caster, not Feral) fights: parity with the Python sims and the farm span.
 
 Runs on any OpenCL device with float64 (PoCL on CPU is fine); skips without one.
     python -m unittest farm.hybrid.test_class_cl
@@ -15,7 +15,8 @@ from farm.hybrid import class_cl as C
 from farm.hybrid import mage_cl
 
 CASES = (("shaman", "restoration"), ("shaman", "enhancement"), ("shaman", "elemental"),
-         ("paladin", "retribution"), ("paladin", "protection"), ("paladin", "holy"))
+         ("paladin", "retribution"), ("paladin", "protection"), ("paladin", "holy"),
+         ("druid", "restoration"), ("druid", "balance"))
 _ENGINES = {}
 
 
@@ -91,7 +92,7 @@ class ClassCLTest(unittest.TestCase):
             self.assertTrue(check["ok"], (hero, spec, "timeline", check))
 
     def test_refine_matches_finish_sextuple(self):
-        specials = {"shaman": ("I00D", "I0BR"), "paladin": ("I0BR", "I0R0")}
+        specials = {"shaman": ("I00D", "I0BR"), "paladin": ("I0BR", "I0R0"), "druid": ("I00D", "I0BR", "I0R4")}
         for hero, spec in CASES:
             engine, space, items, _sources = _engine(hero, spec)
             chunks = [mage_cl.sample(space, 1, 5)[0]]
@@ -108,7 +109,7 @@ class ClassCLTest(unittest.TestCase):
                 self.assertEqual(got[4], want[4])
 
     def test_span_payload_and_gate_match_cpu_runner(self):
-        for hero, spec in (("shaman", "enhancement"), ("paladin", "retribution")):
+        for hero, spec in (("shaman", "enhancement"), ("paladin", "retribution"), ("druid", "balance")):
             _engine(hero, spec)
             from farm.catalog import load
             space, items = load(hero, spec, "mixed", None, 80)
@@ -140,6 +141,7 @@ class ClassCLTest(unittest.TestCase):
             self.assertIn(case, mage_cl.OPENCL_SPECS)
         self.assertTrue(wanted(dict(hero="paladin", spec="holy", backend="opencl")))
         self.assertFalse(wanted(dict(hero="shaman", spec="elemental", backend="opencl", opencl=False)))
+        self.assertFalse(wanted(dict(hero="feral_druid", spec="feral", backend="opencl")))
 
 
 if __name__ == "__main__":

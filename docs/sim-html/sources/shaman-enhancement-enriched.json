@@ -1,0 +1,8829 @@
+{
+ "level": 15,
+ "targets": 5,
+ "hero": "shaman",
+ "spec": "enhancement",
+ "top": 150,
+ "farm_file": "../sunken-sim-runs/shaman-enhancement-opencl-top150-gpu/results/local-hybrid-shaman-enhancement-mixed-top150-5-0-14679841799-admission-v2-bare-top10-339780f7b382d620.json",
+ "done": 14679841800,
+ "end": 14679841799,
+ "errors": 0,
+ "stopped": false,
+ "spec_talents": [
+  "Storm Ward",
+  "Thunderstorm",
+  "Stormstrike",
+  "Totem Mastery",
+  "Totemic Wrath",
+  "Overcharge",
+  "Storm Infusion",
+  "Bloodlust",
+  "Spirit Call",
+  "Flash of Lightning",
+  "Elemental Fusion"
+ ],
+ "glyphs": [
+  "Fortitude",
+  "Unsealed Power",
+  "Fortune",
+  "Supremacy",
+  "Arc Striking",
+  "Battle Frenzy",
+  "Hellfire",
+  "Thunder",
+  "Blood Violence",
+  "Animosity",
+  "Glass Cannon",
+  "Mindhaste"
+ ],
+ "runs": {
+  "mixed": [
+   {
+    "farm_dps": 4500.3,
+    "dps": 4500.3,
+    "total": 135010,
+    "manaLeft": 97.8,
+    "bound_spell": "Chain Lightning",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 10,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 12500789979,
+    "sources": [
+     [
+      "Chain Lightning",
+      1224.3
+     ],
+     [
+      "Lesser Chain Lightning",
+      882.3
+     ],
+     [
+      "Sulfuras",
+      823.8
+     ],
+     [
+      "Thunderstorm",
+      724.9
+     ],
+     [
+      "Stormfury",
+      400.7
+     ],
+     [
+      "Автоатака",
+      211.3
+     ],
+     [
+      "Lightning Shield",
+      115.5
+     ],
+     [
+      "Feral Spirit",
+      106.8
+     ],
+     [
+      "Sulfuras (удар)",
+      10.7
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Chain Lightning"
+     ],
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "3.58",
+      "Chain Lightning"
+     ],
+     [
+      "7.16",
+      "Chain Lightning"
+     ],
+     [
+      "9.94",
+      "Lightning Shield"
+     ],
+     [
+      "10.73",
+      "Chain Lightning"
+     ],
+     [
+      "11.85",
+      "Feral Spirit"
+     ],
+     [
+      "13.50",
+      "Totemic Call"
+     ],
+     [
+      "14.31",
+      "Chain Lightning"
+     ],
+     [
+      "17.89",
+      "Chain Lightning"
+     ],
+     [
+      "19.43",
+      "Lightning Shield"
+     ],
+     [
+      "21.47",
+      "Chain Lightning"
+     ],
+     [
+      "22.80",
+      "Feral Spirit"
+     ],
+     [
+      "25.04",
+      "Chain Lightning"
+     ],
+     [
+      "25.65",
+      "Totemic Call"
+     ],
+     [
+      "28.62",
+      "Chain Lightning"
+     ],
+     [
+      "29.07",
+      "Lightning Shield"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "185"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "52"
+     ],
+     [
+      "Сила атаки",
+      "151.8"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "38"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "26.0%"
+     ],
+     [
+      "Скорость атаки",
+      "63.8%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1470"
+     ],
+     [
+      "Реген маны",
+      "15.76/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.36 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Chain Lightning"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 4062.8,
+     "Thunderstorm": 4500.3,
+     "Stormstrike": 4100.7,
+     "Totem Mastery": 3983.1,
+     "Totemic Wrath": 4070.2,
+     "Overcharge": 4216.2,
+     "Storm Infusion": 4114.6,
+     "Bloodlust": 4320.4,
+     "Spirit Call": 4500.3,
+     "Flash of Lightning": 4142.1,
+     "Elemental Fusion": 4500.3
+    },
+    "glyphDps": {
+     "Fortitude": 4500.3,
+     "Unsealed Power": 4500.3,
+     "Fortune": 4057.1,
+     "Supremacy": 4234.6,
+     "Arc Striking": 4057.1,
+     "Battle Frenzy": 4057.1,
+     "Hellfire": 4057.1,
+     "Thunder": 4057.1,
+     "Blood Violence": 4057.1,
+     "Animosity": 4083.3,
+     "Glass Cannon": 4500.3,
+     "Mindhaste": 4291.1
+    }
+   },
+   {
+    "farm_dps": 4397.2,
+    "dps": 4397.2,
+    "total": 131916,
+    "manaLeft": 96.3,
+    "bound_spell": "Chain Lightning",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 10,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 12500834184,
+    "sources": [
+     [
+      "Chain Lightning",
+      1181.1
+     ],
+     [
+      "Lesser Chain Lightning",
+      914.0
+     ],
+     [
+      "Thunderstorm",
+      720.9
+     ],
+     [
+      "Sulfuras",
+      681.2
+     ],
+     [
+      "Stormfury",
+      422.8
+     ],
+     [
+      "Автоатака",
+      222.0
+     ],
+     [
+      "Feral Spirit",
+      122.5
+     ],
+     [
+      "Lightning Shield",
+      119.2
+     ],
+     [
+      "Sulfuras (удар)",
+      13.3
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Chain Lightning"
+     ],
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "3.27",
+      "Chain Lightning"
+     ],
+     [
+      "6.53",
+      "Chain Lightning"
+     ],
+     [
+      "9.12",
+      "Lightning Shield"
+     ],
+     [
+      "9.80",
+      "Chain Lightning"
+     ],
+     [
+      "10.90",
+      "Feral Spirit"
+     ],
+     [
+      "13.07",
+      "Chain Lightning"
+     ],
+     [
+      "13.52",
+      "Totemic Call"
+     ],
+     [
+      "16.33",
+      "Chain Lightning"
+     ],
+     [
+      "17.78",
+      "Lightning Shield"
+     ],
+     [
+      "19.60",
+      "Chain Lightning"
+     ],
+     [
+      "20.90",
+      "Feral Spirit"
+     ],
+     [
+      "22.87",
+      "Chain Lightning"
+     ],
+     [
+      "25.67",
+      "Totemic Call"
+     ],
+     [
+      "26.13",
+      "Chain Lightning"
+     ],
+     [
+      "26.58",
+      "Lightning Shield"
+     ],
+     [
+      "29.40",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "184"
+     ],
+     [
+      "Сила",
+      "54"
+     ],
+     [
+      "Ловкость",
+      "67"
+     ],
+     [
+      "Сила атаки",
+      "151.0"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "43"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "38.0%"
+     ],
+     [
+      "Скорость атаки",
+      "69.8%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1463"
+     ],
+     [
+      "Реген маны",
+      "15.68/с"
+     ],
+     [
+      "Мана в конце",
+      "96%"
+     ],
+     [
+      "Интервал атаки",
+      "1.09 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Chain Lightning"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3799.8,
+     "Thunderstorm": 4397.2,
+     "Stormstrike": 3855.5,
+     "Totem Mastery": 3731.3,
+     "Totemic Wrath": 3815.5,
+     "Overcharge": 3959.5,
+     "Storm Infusion": 3948.7,
+     "Bloodlust": 4128.3,
+     "Spirit Call": 4397.2,
+     "Flash of Lightning": 3868.5,
+     "Elemental Fusion": 4397.2
+    },
+    "glyphDps": {
+     "Fortitude": 4397.2,
+     "Unsealed Power": 4397.2,
+     "Fortune": 3878.9,
+     "Supremacy": 4049.7,
+     "Arc Striking": 3878.9,
+     "Battle Frenzy": 3878.9,
+     "Hellfire": 3878.9,
+     "Thunder": 3878.9,
+     "Blood Violence": 3878.9,
+     "Animosity": 3905.9,
+     "Glass Cannon": 4397.2,
+     "Mindhaste": 3940.3
+    }
+   },
+   {
+    "farm_dps": 4351.3,
+    "dps": 4351.3,
+    "total": 130539,
+    "manaLeft": 99.0,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 4,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 6,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 3907627560,
+    "sources": [
+     [
+      "Chain Lightning",
+      989.2
+     ],
+     [
+      "Lesser Chain Lightning",
+      938.7
+     ],
+     [
+      "Thunderstorm",
+      776.8
+     ],
+     [
+      "Sulfuras",
+      767.7
+     ],
+     [
+      "Stormfury",
+      363.9
+     ],
+     [
+      "Автоатака",
+      239.0
+     ],
+     [
+      "Lightning Shield",
+      149.9
+     ],
+     [
+      "Feral Spirit",
+      114.7
+     ],
+     [
+      "Sulfuras (удар)",
+      11.4
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "4.70",
+      "Chain Lightning"
+     ],
+     [
+      "9.18",
+      "Lightning Shield"
+     ],
+     [
+      "9.63",
+      "Chain Lightning"
+     ],
+     [
+      "10.97",
+      "Feral Spirit"
+     ],
+     [
+      "13.50",
+      "Totemic Call"
+     ],
+     [
+      "14.33",
+      "Chain Lightning"
+     ],
+     [
+      "17.91",
+      "Lightning Shield"
+     ],
+     [
+      "19.03",
+      "Chain Lightning"
+     ],
+     [
+      "21.05",
+      "Feral Spirit"
+     ],
+     [
+      "23.73",
+      "Chain Lightning"
+     ],
+     [
+      "25.65",
+      "Totemic Call"
+     ],
+     [
+      "26.64",
+      "Lightning Shield"
+     ],
+     [
+      "28.43",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "190"
+     ],
+     [
+      "Сила",
+      "32"
+     ],
+     [
+      "Ловкость",
+      "45"
+     ],
+     [
+      "Сила атаки",
+      "155.5"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "26"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "37.0%"
+     ],
+     [
+      "Скорость атаки",
+      "61.0%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1505"
+     ],
+     [
+      "Реген маны",
+      "16.16/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.38 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3877.1,
+     "Thunderstorm": 4351.3,
+     "Stormstrike": 3904.6,
+     "Totem Mastery": 3790.6,
+     "Totemic Wrath": 3878.1,
+     "Overcharge": 4001.1,
+     "Storm Infusion": 3902.5,
+     "Bloodlust": 4223.2,
+     "Spirit Call": 4351.3,
+     "Flash of Lightning": 3934.5,
+     "Elemental Fusion": 4351.3
+    },
+    "glyphDps": {
+     "Fortitude": 4351.3,
+     "Unsealed Power": 4351.3,
+     "Fortune": 3946.8,
+     "Supremacy": 4118.0,
+     "Arc Striking": 3946.8,
+     "Battle Frenzy": 3946.8,
+     "Hellfire": 3946.8,
+     "Thunder": 3946.8,
+     "Blood Violence": 3946.8,
+     "Animosity": 3976.6,
+     "Glass Cannon": 4351.3,
+     "Mindhaste": 3831.0
+    }
+   },
+   {
+    "farm_dps": 4350.6,
+    "dps": 4350.6,
+    "total": 130517,
+    "manaLeft": 95.0,
+    "bound_spell": "Chain Lightning",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Bloodlust",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 10,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 12468920029,
+    "sources": [
+     [
+      "Lesser Chain Lightning",
+      1080.9
+     ],
+     [
+      "Chain Lightning",
+      1038.5
+     ],
+     [
+      "Thunderstorm",
+      736.3
+     ],
+     [
+      "Sulfuras",
+      639.7
+     ],
+     [
+      "Stormfury",
+      403.7
+     ],
+     [
+      "Автоатака",
+      218.5
+     ],
+     [
+      "Feral Spirit",
+      127.5
+     ],
+     [
+      "Lightning Shield",
+      92.6
+     ],
+     [
+      "Sulfuras (удар)",
+      12.8
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Chain Lightning"
+     ],
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "3.55",
+      "Chain Lightning"
+     ],
+     [
+      "7.10",
+      "Chain Lightning"
+     ],
+     [
+      "9.87",
+      "Lightning Shield"
+     ],
+     [
+      "10.65",
+      "Chain Lightning"
+     ],
+     [
+      "11.77",
+      "Feral Spirit"
+     ],
+     [
+      "13.50",
+      "Totemic Call"
+     ],
+     [
+      "14.20",
+      "Chain Lightning"
+     ],
+     [
+      "17.75",
+      "Chain Lightning"
+     ],
+     [
+      "19.29",
+      "Lightning Shield"
+     ],
+     [
+      "21.30",
+      "Chain Lightning"
+     ],
+     [
+      "22.64",
+      "Feral Spirit"
+     ],
+     [
+      "24.86",
+      "Chain Lightning"
+     ],
+     [
+      "25.65",
+      "Totemic Call"
+     ],
+     [
+      "28.41",
+      "Chain Lightning"
+     ],
+     [
+      "28.86",
+      "Lightning Shield"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "170"
+     ],
+     [
+      "Сила",
+      "54"
+     ],
+     [
+      "Ловкость",
+      "67"
+     ],
+     [
+      "Сила атаки",
+      "140.5"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "53"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "38.0%"
+     ],
+     [
+      "Скорость атаки",
+      "69.8%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1365"
+     ],
+     [
+      "Реген маны",
+      "14.56/с"
+     ],
+     [
+      "Мана в конце",
+      "95%"
+     ],
+     [
+      "Интервал атаки",
+      "1.31 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Chain Lightning"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3997.3,
+     "Thunderstorm": 4350.6,
+     "Stormstrike": 4047.6,
+     "Totem Mastery": 3922.6,
+     "Totemic Wrath": 4006.8,
+     "Overcharge": 4158.8,
+     "Storm Infusion": 4061.0,
+     "Bloodlust": 4350.6,
+     "Spirit Call": 4350.6,
+     "Flash of Lightning": 4075.6,
+     "Elemental Fusion": 4265.6
+    },
+    "glyphDps": {
+     "Fortitude": 4350.6,
+     "Unsealed Power": 4350.6,
+     "Fortune": 3924.8,
+     "Supremacy": 4093.4,
+     "Arc Striking": 3924.8,
+     "Battle Frenzy": 3924.8,
+     "Hellfire": 3924.8,
+     "Thunder": 3924.8,
+     "Blood Violence": 3924.8,
+     "Animosity": 3951.9,
+     "Glass Cannon": 4350.6,
+     "Mindhaste": 3810.3
+    }
+   },
+   {
+    "farm_dps": 4345.9,
+    "dps": 4345.9,
+    "total": 130378,
+    "manaLeft": 94.4,
+    "bound_spell": "Chain Lightning",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 10,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 12652912405,
+    "sources": [
+     [
+      "Chain Lightning",
+      1191.4
+     ],
+     [
+      "Lesser Chain Lightning",
+      871.8
+     ],
+     [
+      "Sulfuras",
+      730.1
+     ],
+     [
+      "Thunderstorm",
+      710.1
+     ],
+     [
+      "Stormfury",
+      397.8
+     ],
+     [
+      "Автоатака",
+      212.5
+     ],
+     [
+      "Lightning Shield",
+      122.6
+     ],
+     [
+      "Feral Spirit",
+      99.6
+     ],
+     [
+      "Sulfuras (удар)",
+      10.2
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Chain Lightning"
+     ],
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "3.48",
+      "Chain Lightning"
+     ],
+     [
+      "6.95",
+      "Chain Lightning"
+     ],
+     [
+      "9.67",
+      "Lightning Shield"
+     ],
+     [
+      "10.43",
+      "Chain Lightning"
+     ],
+     [
+      "11.54",
+      "Feral Spirit"
+     ],
+     [
+      "13.50",
+      "Totemic Call"
+     ],
+     [
+      "13.95",
+      "Chain Lightning"
+     ],
+     [
+      "17.43",
+      "Chain Lightning"
+     ],
+     [
+      "18.89",
+      "Lightning Shield"
+     ],
+     [
+      "20.90",
+      "Chain Lightning"
+     ],
+     [
+      "22.18",
+      "Feral Spirit"
+     ],
+     [
+      "24.38",
+      "Chain Lightning"
+     ],
+     [
+      "25.65",
+      "Totemic Call"
+     ],
+     [
+      "27.85",
+      "Chain Lightning"
+     ],
+     [
+      "28.30",
+      "Lightning Shield"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "167"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "52"
+     ],
+     [
+      "Сила атаки",
+      "138.2"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "38"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "41.0%"
+     ],
+     [
+      "Скорость атаки",
+      "63.8%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1344"
+     ],
+     [
+      "Реген маны",
+      "14.32/с"
+     ],
+     [
+      "Мана в конце",
+      "94%"
+     ],
+     [
+      "Интервал атаки",
+      "1.36 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Chain Lightning"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3887.7,
+     "Thunderstorm": 4345.9,
+     "Stormstrike": 3918.4,
+     "Totem Mastery": 3809.3,
+     "Totemic Wrath": 3893.9,
+     "Overcharge": 4033.4,
+     "Storm Infusion": 3953.4,
+     "Bloodlust": 4118.1,
+     "Spirit Call": 4345.9,
+     "Flash of Lightning": 3961.8,
+     "Elemental Fusion": 4345.9
+    },
+    "glyphDps": {
+     "Fortitude": 4345.9,
+     "Unsealed Power": 4345.9,
+     "Fortune": 3940.3,
+     "Supremacy": 4115.6,
+     "Arc Striking": 3940.3,
+     "Battle Frenzy": 3940.3,
+     "Hellfire": 3940.3,
+     "Thunder": 3940.3,
+     "Blood Violence": 3940.3,
+     "Animosity": 3966.8,
+     "Glass Cannon": 4345.9,
+     "Mindhaste": 4194.1
+    }
+   },
+   {
+    "farm_dps": 4302.2,
+    "dps": 4302.2,
+    "total": 129067,
+    "manaLeft": 98.3,
+    "bound_spell": "Chain Lightning",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Bloodlust",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 2,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 8,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 12468496969,
+    "sources": [
+     [
+      "Lesser Chain Lightning",
+      1077.9
+     ],
+     [
+      "Chain Lightning",
+      898.3
+     ],
+     [
+      "Thunderstorm",
+      781.3
+     ],
+     [
+      "Sulfuras",
+      684.8
+     ],
+     [
+      "Stormfury",
+      354.8
+     ],
+     [
+      "Автоатака",
+      256.6
+     ],
+     [
+      "Feral Spirit",
+      133.5
+     ],
+     [
+      "Lightning Shield",
+      99.9
+     ],
+     [
+      "Sulfuras (удар)",
+      15.0
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Chain Lightning"
+     ],
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "4.29",
+      "Chain Lightning"
+     ],
+     [
+      "8.58",
+      "Chain Lightning"
+     ],
+     [
+      "11.83",
+      "Lightning Shield"
+     ],
+     [
+      "12.86",
+      "Chain Lightning"
+     ],
+     [
+      "14.03",
+      "Feral Spirit"
+     ],
+     [
+      "15.35",
+      "Totemic Call"
+     ],
+     [
+      "17.15",
+      "Chain Lightning"
+     ],
+     [
+      "21.44",
+      "Chain Lightning"
+     ],
+     [
+      "23.20",
+      "Lightning Shield"
+     ],
+     [
+      "25.73",
+      "Chain Lightning"
+     ],
+     [
+      "27.15",
+      "Feral Spirit"
+     ],
+     [
+      "29.35",
+      "Totemic Call"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "210"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "52"
+     ],
+     [
+      "Сила атаки",
+      "170.5"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "36"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "28.0%"
+     ],
+     [
+      "Скорость атаки",
+      "63.8%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1645"
+     ],
+     [
+      "Реген маны",
+      "17.76/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.36 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Chain Lightning"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3785.7,
+     "Thunderstorm": 4302.2,
+     "Stormstrike": 3823.0,
+     "Totem Mastery": 3675.2,
+     "Totemic Wrath": 3794.4,
+     "Overcharge": 3929.4,
+     "Storm Infusion": 3868.4,
+     "Bloodlust": 4302.2,
+     "Spirit Call": 4302.2,
+     "Flash of Lightning": 3872.4,
+     "Elemental Fusion": 4160.0
+    },
+    "glyphDps": {
+     "Fortitude": 4302.2,
+     "Unsealed Power": 4302.2,
+     "Fortune": 3882.2,
+     "Supremacy": 4048.5,
+     "Arc Striking": 3882.2,
+     "Battle Frenzy": 3882.2,
+     "Hellfire": 3882.2,
+     "Thunder": 3882.2,
+     "Blood Violence": 3882.2,
+     "Animosity": 3914.0,
+     "Glass Cannon": 4302.2,
+     "Mindhaste": 3958.5
+    }
+   },
+   {
+    "farm_dps": 4284.6,
+    "dps": 4284.6,
+    "total": 128539,
+    "manaLeft": 98.3,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Bloodlust",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 3,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 7,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 190880920,
+    "sources": [
+     [
+      "Lesser Chain Lightning",
+      1171.3
+     ],
+     [
+      "Chain Lightning",
+      813.2
+     ],
+     [
+      "Thunderstorm",
+      805.3
+     ],
+     [
+      "Sulfuras",
+      601.6
+     ],
+     [
+      "Stormfury",
+      367.7
+     ],
+     [
+      "Автоатака",
+      265.7
+     ],
+     [
+      "Feral Spirit",
+      141.6
+     ],
+     [
+      "Lightning Shield",
+      102.8
+     ],
+     [
+      "Sulfuras (удар)",
+      15.6
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "5.89",
+      "Chain Lightning"
+     ],
+     [
+      "11.40",
+      "Lightning Shield"
+     ],
+     [
+      "11.85",
+      "Chain Lightning"
+     ],
+     [
+      "13.53",
+      "Feral Spirit"
+     ],
+     [
+      "14.82",
+      "Totemic Call"
+     ],
+     [
+      "17.74",
+      "Chain Lightning"
+     ],
+     [
+      "22.34",
+      "Lightning Shield"
+     ],
+     [
+      "23.64",
+      "Chain Lightning"
+     ],
+     [
+      "26.16",
+      "Feral Spirit"
+     ],
+     [
+      "28.30",
+      "Totemic Call"
+     ],
+     [
+      "29.53",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "218"
+     ],
+     [
+      "Сила",
+      "47"
+     ],
+     [
+      "Ловкость",
+      "60"
+     ],
+     [
+      "Сила атаки",
+      "176.5"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "42"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "33.0%"
+     ],
+     [
+      "Скорость атаки",
+      "67.0%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1701"
+     ],
+     [
+      "Реген маны",
+      "18.40/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.33 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3778.4,
+     "Thunderstorm": 4284.6,
+     "Stormstrike": 3828.7,
+     "Totem Mastery": 3681.9,
+     "Totemic Wrath": 3794.0,
+     "Overcharge": 3928.3,
+     "Storm Infusion": 3826.0,
+     "Bloodlust": 4284.6,
+     "Spirit Call": 4284.6,
+     "Flash of Lightning": 3863.2,
+     "Elemental Fusion": 4242.3
+    },
+    "glyphDps": {
+     "Fortitude": 4284.6,
+     "Unsealed Power": 4284.6,
+     "Fortune": 3867.2,
+     "Supremacy": 4031.1,
+     "Arc Striking": 3867.2,
+     "Battle Frenzy": 3867.2,
+     "Hellfire": 3867.2,
+     "Thunder": 3867.2,
+     "Blood Violence": 3867.2,
+     "Animosity": 3900.2,
+     "Glass Cannon": 4284.6,
+     "Mindhaste": 3943.8
+    }
+   },
+   {
+    "farm_dps": 4283.8,
+    "dps": 4283.8,
+    "total": 128515,
+    "manaLeft": 99.2,
+    "bound_spell": "Chain Lightning",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 2,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 8,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 12468944659,
+    "sources": [
+     [
+      "Chain Lightning",
+      1002.6
+     ],
+     [
+      "Lesser Chain Lightning",
+      963.8
+     ],
+     [
+      "Sulfuras",
+      719.3
+     ],
+     [
+      "Thunderstorm",
+      717.8
+     ],
+     [
+      "Stormfury",
+      393.9
+     ],
+     [
+      "Автоатака",
+      247.8
+     ],
+     [
+      "Feral Spirit",
+      127.4
+     ],
+     [
+      "Lightning Shield",
+      95.7
+     ],
+     [
+      "Sulfuras (удар)",
+      15.5
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Chain Lightning"
+     ],
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "3.98",
+      "Chain Lightning"
+     ],
+     [
+      "7.95",
+      "Chain Lightning"
+     ],
+     [
+      "11.00",
+      "Lightning Shield"
+     ],
+     [
+      "11.93",
+      "Chain Lightning"
+     ],
+     [
+      "13.07",
+      "Feral Spirit"
+     ],
+     [
+      "14.34",
+      "Totemic Call"
+     ],
+     [
+      "15.91",
+      "Chain Lightning"
+     ],
+     [
+      "19.88",
+      "Chain Lightning"
+     ],
+     [
+      "21.55",
+      "Lightning Shield"
+     ],
+     [
+      "23.86",
+      "Chain Lightning"
+     ],
+     [
+      "25.25",
+      "Feral Spirit"
+     ],
+     [
+      "27.32",
+      "Totemic Call"
+     ],
+     [
+      "27.84",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "209"
+     ],
+     [
+      "Сила",
+      "54"
+     ],
+     [
+      "Ловкость",
+      "67"
+     ],
+     [
+      "Сила атаки",
+      "169.8"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "41"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "38.0%"
+     ],
+     [
+      "Скорость атаки",
+      "73.8%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1638"
+     ],
+     [
+      "Реген маны",
+      "17.68/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.06 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Chain Lightning"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3804.0,
+     "Thunderstorm": 4283.8,
+     "Stormstrike": 3873.9,
+     "Totem Mastery": 3642.1,
+     "Totemic Wrath": 3836.4,
+     "Overcharge": 3973.0,
+     "Storm Infusion": 3955.0,
+     "Bloodlust": 4167.7,
+     "Spirit Call": 4283.8,
+     "Flash of Lightning": 3911.1,
+     "Elemental Fusion": 4283.8
+    },
+    "glyphDps": {
+     "Fortitude": 4283.8,
+     "Unsealed Power": 4283.8,
+     "Fortune": 3780.2,
+     "Supremacy": 3941.5,
+     "Arc Striking": 3780.2,
+     "Battle Frenzy": 3780.2,
+     "Hellfire": 3780.2,
+     "Thunder": 3780.2,
+     "Blood Violence": 3780.2,
+     "Animosity": 3810.2,
+     "Glass Cannon": 4283.8,
+     "Mindhaste": 3865.2
+    }
+   },
+   {
+    "farm_dps": 4275.4,
+    "dps": 4275.4,
+    "total": 128262,
+    "manaLeft": 98.6,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 2,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 8,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 3875757610,
+    "sources": [
+     [
+      "Chain Lightning",
+      990.7
+     ],
+     [
+      "Lesser Chain Lightning",
+      974.7
+     ],
+     [
+      "Thunderstorm",
+      734.0
+     ],
+     [
+      "Sulfuras",
+      707.1
+     ],
+     [
+      "Stormfury",
+      383.2
+     ],
+     [
+      "Автоатака",
+      223.6
+     ],
+     [
+      "Lightning Shield",
+      141.2
+     ],
+     [
+      "Feral Spirit",
+      110.3
+     ],
+     [
+      "Sulfuras (удар)",
+      10.6
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "4.76",
+      "Chain Lightning"
+     ],
+     [
+      "9.29",
+      "Lightning Shield"
+     ],
+     [
+      "9.74",
+      "Chain Lightning"
+     ],
+     [
+      "11.10",
+      "Feral Spirit"
+     ],
+     [
+      "13.50",
+      "Totemic Call"
+     ],
+     [
+      "14.51",
+      "Chain Lightning"
+     ],
+     [
+      "18.14",
+      "Lightning Shield"
+     ],
+     [
+      "19.27",
+      "Chain Lightning"
+     ],
+     [
+      "21.31",
+      "Feral Spirit"
+     ],
+     [
+      "24.03",
+      "Chain Lightning"
+     ],
+     [
+      "25.65",
+      "Totemic Call"
+     ],
+     [
+      "26.98",
+      "Lightning Shield"
+     ],
+     [
+      "28.79",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "175"
+     ],
+     [
+      "Сила",
+      "47"
+     ],
+     [
+      "Ловкость",
+      "60"
+     ],
+     [
+      "Сила атаки",
+      "144.2"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "43"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "47.0%"
+     ],
+     [
+      "Скорость атаки",
+      "67.0%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1400"
+     ],
+     [
+      "Реген маны",
+      "14.96/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.33 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3835.3,
+     "Thunderstorm": 4275.4,
+     "Stormstrike": 3882.3,
+     "Totem Mastery": 3753.8,
+     "Totemic Wrath": 3837.4,
+     "Overcharge": 3972.9,
+     "Storm Infusion": 3862.5,
+     "Bloodlust": 4090.9,
+     "Spirit Call": 4275.4,
+     "Flash of Lightning": 3891.7,
+     "Elemental Fusion": 4275.4
+    },
+    "glyphDps": {
+     "Fortitude": 4275.4,
+     "Unsealed Power": 4275.4,
+     "Fortune": 3877.6,
+     "Supremacy": 4041.6,
+     "Arc Striking": 3877.6,
+     "Battle Frenzy": 3877.6,
+     "Hellfire": 3877.6,
+     "Thunder": 3877.6,
+     "Blood Violence": 3877.6,
+     "Animosity": 3905.5,
+     "Glass Cannon": 4275.4,
+     "Mindhaste": 3797.2
+    }
+   },
+   {
+    "farm_dps": 4267.9,
+    "dps": 4267.9,
+    "total": 128038,
+    "manaLeft": 99.8,
+    "bound_spell": "Chain Lightning",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Bloodlust",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 10,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 12652937035,
+    "sources": [
+     [
+      "Lesser Chain Lightning",
+      1070.8
+     ],
+     [
+      "Chain Lightning",
+      868.4
+     ],
+     [
+      "Thunderstorm",
+      792.8
+     ],
+     [
+      "Sulfuras",
+      642.2
+     ],
+     [
+      "Stormfury",
+      368.1
+     ],
+     [
+      "Автоатака",
+      268.5
+     ],
+     [
+      "Feral Spirit",
+      151.9
+     ],
+     [
+      "Lightning Shield",
+      87.4
+     ],
+     [
+      "Sulfuras (удар)",
+      17.7
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Chain Lightning"
+     ],
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "3.89",
+      "Chain Lightning"
+     ],
+     [
+      "7.78",
+      "Chain Lightning"
+     ],
+     [
+      "10.78",
+      "Lightning Shield"
+     ],
+     [
+      "11.68",
+      "Chain Lightning"
+     ],
+     [
+      "12.81",
+      "Feral Spirit"
+     ],
+     [
+      "14.06",
+      "Totemic Call"
+     ],
+     [
+      "15.57",
+      "Chain Lightning"
+     ],
+     [
+      "19.46",
+      "Chain Lightning"
+     ],
+     [
+      "21.10",
+      "Lightning Shield"
+     ],
+     [
+      "23.35",
+      "Chain Lightning"
+     ],
+     [
+      "24.73",
+      "Feral Spirit"
+     ],
+     [
+      "26.77",
+      "Totemic Call"
+     ],
+     [
+      "27.25",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "206"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "52"
+     ],
+     [
+      "Сила атаки",
+      "167.5"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "28"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "41.0%"
+     ],
+     [
+      "Скорость атаки",
+      "63.8%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1617"
+     ],
+     [
+      "Реген маны",
+      "17.44/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки",
+      "1.13 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Chain Lightning"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3747.5,
+     "Thunderstorm": 4267.9,
+     "Stormstrike": 3802.4,
+     "Totem Mastery": 3691.4,
+     "Totemic Wrath": 3779.0,
+     "Overcharge": 3904.7,
+     "Storm Infusion": 3878.7,
+     "Bloodlust": 4267.9,
+     "Spirit Call": 4267.9,
+     "Flash of Lightning": 3854.3,
+     "Elemental Fusion": 4209.6
+    },
+    "glyphDps": {
+     "Fortitude": 4267.9,
+     "Unsealed Power": 4267.9,
+     "Fortune": 3801.1,
+     "Supremacy": 3968.6,
+     "Arc Striking": 3801.1,
+     "Battle Frenzy": 3801.1,
+     "Hellfire": 3801.1,
+     "Thunder": 3801.1,
+     "Blood Violence": 3801.1,
+     "Animosity": 3833.9,
+     "Glass Cannon": 4267.9,
+     "Mindhaste": 3955.8
+    }
+   }
+  ],
+  "shop": [
+   {
+    "farm_dps": 4099.8,
+    "dps": 4099.8,
+    "total": 122994,
+    "manaLeft": 98.2,
+    "bound_spell": "Chain Lightning",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 10,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 12652937302,
+    "sources": [
+     [
+      "Chain Lightning",
+      1062.0
+     ],
+     [
+      "Lesser Chain Lightning",
+      812.5
+     ],
+     [
+      "Sulfuras",
+      771.6
+     ],
+     [
+      "Thunderstorm",
+      663.0
+     ],
+     [
+      "Stormfury",
+      351.7
+     ],
+     [
+      "Автоатака",
+      216.4
+     ],
+     [
+      "Feral Spirit",
+      107.5
+     ],
+     [
+      "Lightning Shield",
+      102.6
+     ],
+     [
+      "Sulfuras (удар)",
+      12.5
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Chain Lightning"
+     ],
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "4.13",
+      "Chain Lightning"
+     ],
+     [
+      "8.25",
+      "Chain Lightning"
+     ],
+     [
+      "11.40",
+      "Lightning Shield"
+     ],
+     [
+      "12.38",
+      "Chain Lightning"
+     ],
+     [
+      "13.53",
+      "Feral Spirit"
+     ],
+     [
+      "14.82",
+      "Totemic Call"
+     ],
+     [
+      "16.51",
+      "Chain Lightning"
+     ],
+     [
+      "20.63",
+      "Chain Lightning"
+     ],
+     [
+      "22.34",
+      "Lightning Shield"
+     ],
+     [
+      "24.76",
+      "Chain Lightning"
+     ],
+     [
+      "26.16",
+      "Feral Spirit"
+     ],
+     [
+      "28.30",
+      "Totemic Call"
+     ],
+     [
+      "28.88",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "210"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "46"
+     ],
+     [
+      "Сила атаки",
+      "170.5"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "38"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "33.0%"
+     ],
+     [
+      "Скорость атаки",
+      "61.4%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1645"
+     ],
+     [
+      "Реген маны",
+      "17.76/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.38 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Chain Lightning"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3652.7,
+     "Thunderstorm": 4099.8,
+     "Stormstrike": 3677.2,
+     "Totem Mastery": 3485.9,
+     "Totemic Wrath": 3654.1,
+     "Overcharge": 3780.0,
+     "Storm Infusion": 3743.9,
+     "Bloodlust": 3996.6,
+     "Spirit Call": 4099.8,
+     "Flash of Lightning": 3719.1,
+     "Elemental Fusion": 4099.8
+    },
+    "glyphDps": {
+     "Fortitude": 4099.8,
+     "Unsealed Power": 4099.8,
+     "Fortune": 3646.4,
+     "Supremacy": 3801.7,
+     "Arc Striking": 3646.4,
+     "Battle Frenzy": 3646.4,
+     "Hellfire": 3646.4,
+     "Thunder": 3646.4,
+     "Blood Violence": 3646.4,
+     "Animosity": 3672.9,
+     "Glass Cannon": 4099.8,
+     "Mindhaste": 3525.6
+    }
+   },
+   {
+    "farm_dps": 4021.8,
+    "dps": 4021.8,
+    "total": 120653,
+    "manaLeft": 93.5,
+    "bound_spell": "Chain Lightning",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 2,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 8,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 12652956877,
+    "sources": [
+     [
+      "Chain Lightning",
+      1092.9
+     ],
+     [
+      "Lesser Chain Lightning",
+      849.2
+     ],
+     [
+      "Thunderstorm",
+      648.8
+     ],
+     [
+      "Sulfuras",
+      624.6
+     ],
+     [
+      "Stormfury",
+      378.6
+     ],
+     [
+      "Автоатака",
+      190.8
+     ],
+     [
+      "Lightning Shield",
+      116.2
+     ],
+     [
+      "Feral Spirit",
+      109.8
+     ],
+     [
+      "Sulfuras (удар)",
+      10.7
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Chain Lightning"
+     ],
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "3.33",
+      "Chain Lightning"
+     ],
+     [
+      "6.67",
+      "Chain Lightning"
+     ],
+     [
+      "9.29",
+      "Lightning Shield"
+     ],
+     [
+      "10.00",
+      "Chain Lightning"
+     ],
+     [
+      "11.10",
+      "Feral Spirit"
+     ],
+     [
+      "13.33",
+      "Chain Lightning"
+     ],
+     [
+      "13.78",
+      "Totemic Call"
+     ],
+     [
+      "16.67",
+      "Chain Lightning"
+     ],
+     [
+      "18.14",
+      "Lightning Shield"
+     ],
+     [
+      "20.00",
+      "Chain Lightning"
+     ],
+     [
+      "21.31",
+      "Feral Spirit"
+     ],
+     [
+      "23.33",
+      "Chain Lightning"
+     ],
+     [
+      "25.93",
+      "Totemic Call"
+     ],
+     [
+      "26.67",
+      "Chain Lightning"
+     ],
+     [
+      "27.12",
+      "Lightning Shield"
+     ],
+     [
+      "30.00",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "170"
+     ],
+     [
+      "Сила",
+      "54"
+     ],
+     [
+      "Ловкость",
+      "61"
+     ],
+     [
+      "Сила атаки",
+      "140.5"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "51"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "47.0%"
+     ],
+     [
+      "Скорость атаки",
+      "67.4%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1365"
+     ],
+     [
+      "Реген маны",
+      "14.56/с"
+     ],
+     [
+      "Мана в конце",
+      "94%"
+     ],
+     [
+      "Интервал атаки",
+      "1.33 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Chain Lightning"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3554.1,
+     "Thunderstorm": 4021.8,
+     "Stormstrike": 3596.7,
+     "Totem Mastery": 3487.1,
+     "Totemic Wrath": 3564.6,
+     "Overcharge": 3699.8,
+     "Storm Infusion": 3636.3,
+     "Bloodlust": 3790.2,
+     "Spirit Call": 4021.8,
+     "Flash of Lightning": 3617.7,
+     "Elemental Fusion": 4021.8
+    },
+    "glyphDps": {
+     "Fortitude": 4021.8,
+     "Unsealed Power": 4021.8,
+     "Fortune": 3577.3,
+     "Supremacy": 3731.4,
+     "Arc Striking": 3577.3,
+     "Battle Frenzy": 3577.3,
+     "Hellfire": 3577.3,
+     "Thunder": 3577.3,
+     "Blood Violence": 3577.3,
+     "Animosity": 3600.7,
+     "Glass Cannon": 4021.8,
+     "Mindhaste": 3681.6
+    }
+   },
+   {
+    "farm_dps": 3947.4,
+    "dps": 3947.4,
+    "total": 118422,
+    "manaLeft": 99.0,
+    "bound_spell": "Chain Lightning",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 2,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 8,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 12582587131,
+    "sources": [
+     [
+      "Chain Lightning",
+      955.7
+     ],
+     [
+      "Lesser Chain Lightning",
+      841.0
+     ],
+     [
+      "Sulfuras",
+      681.4
+     ],
+     [
+      "Thunderstorm",
+      653.9
+     ],
+     [
+      "Stormfury",
+      353.0
+     ],
+     [
+      "Автоатака",
+      231.6
+     ],
+     [
+      "Feral Spirit",
+      115.8
+     ],
+     [
+      "Lightning Shield",
+      101.2
+     ],
+     [
+      "Sulfuras (удар)",
+      13.8
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Chain Lightning"
+     ],
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "3.98",
+      "Chain Lightning"
+     ],
+     [
+      "7.95",
+      "Chain Lightning"
+     ],
+     [
+      "11.00",
+      "Lightning Shield"
+     ],
+     [
+      "11.93",
+      "Chain Lightning"
+     ],
+     [
+      "13.07",
+      "Feral Spirit"
+     ],
+     [
+      "14.34",
+      "Totemic Call"
+     ],
+     [
+      "15.91",
+      "Chain Lightning"
+     ],
+     [
+      "19.88",
+      "Chain Lightning"
+     ],
+     [
+      "21.55",
+      "Lightning Shield"
+     ],
+     [
+      "23.86",
+      "Chain Lightning"
+     ],
+     [
+      "25.25",
+      "Feral Spirit"
+     ],
+     [
+      "27.32",
+      "Totemic Call"
+     ],
+     [
+      "27.84",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "198"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "46"
+     ],
+     [
+      "Сила атаки",
+      "161.5"
+     ],
+     [
+      "Potency",
+      "8.0"
+     ],
+     [
+      "Mastery",
+      "36"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "38.0%"
+     ],
+     [
+      "Скорость атаки",
+      "93.4%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1561"
+     ],
+     [
+      "Реген маны",
+      "16.80/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.15 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Chain Lightning"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3513.0,
+     "Thunderstorm": 3954.6,
+     "Stormstrike": 3557.0,
+     "Totem Mastery": 3306.8,
+     "Totemic Wrath": 3536.9,
+     "Overcharge": 3652.5,
+     "Storm Infusion": 3624.8,
+     "Bloodlust": 3954.6,
+     "Spirit Call": 3954.6,
+     "Flash of Lightning": 3611.2,
+     "Elemental Fusion": 3947.4
+    },
+    "glyphDps": {
+     "Fortitude": 3947.4,
+     "Unsealed Power": 3947.4,
+     "Fortune": 3483.1,
+     "Supremacy": 3628.7,
+     "Arc Striking": 3483.1,
+     "Battle Frenzy": 3483.1,
+     "Hellfire": 3483.1,
+     "Thunder": 3483.1,
+     "Blood Violence": 3483.1,
+     "Animosity": 3511.2,
+     "Glass Cannon": 3947.4,
+     "Mindhaste": 3547.4
+    }
+   },
+   {
+    "farm_dps": 3891.8,
+    "dps": 3891.8,
+    "total": 116755,
+    "manaLeft": 97.1,
+    "bound_spell": "Chain Lightning",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Bloodlust",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 10,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 12468920044,
+    "sources": [
+     [
+      "Lesser Chain Lightning",
+      966.1
+     ],
+     [
+      "Chain Lightning",
+      907.2
+     ],
+     [
+      "Thunderstorm",
+      653.8
+     ],
+     [
+      "Sulfuras",
+      582.2
+     ],
+     [
+      "Stormfury",
+      342.8
+     ],
+     [
+      "Автоатака",
+      220.4
+     ],
+     [
+      "Feral Spirit",
+      121.3
+     ],
+     [
+      "Lightning Shield",
+      84.7
+     ],
+     [
+      "Sulfuras (удар)",
+      13.3
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Chain Lightning"
+     ],
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "4.15",
+      "Chain Lightning"
+     ],
+     [
+      "8.29",
+      "Chain Lightning"
+     ],
+     [
+      "11.45",
+      "Lightning Shield"
+     ],
+     [
+      "12.44",
+      "Chain Lightning"
+     ],
+     [
+      "13.59",
+      "Feral Spirit"
+     ],
+     [
+      "14.89",
+      "Totemic Call"
+     ],
+     [
+      "16.58",
+      "Chain Lightning"
+     ],
+     [
+      "20.73",
+      "Chain Lightning"
+     ],
+     [
+      "22.45",
+      "Lightning Shield"
+     ],
+     [
+      "24.88",
+      "Chain Lightning"
+     ],
+     [
+      "26.28",
+      "Feral Spirit"
+     ],
+     [
+      "28.43",
+      "Totemic Call"
+     ],
+     [
+      "29.02",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "172"
+     ],
+     [
+      "Сила",
+      "54"
+     ],
+     [
+      "Ловкость",
+      "61"
+     ],
+     [
+      "Сила атаки",
+      "151.0"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "53"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "30.0%"
+     ],
+     [
+      "Скорость атаки",
+      "67.4%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1379"
+     ],
+     [
+      "Реген маны",
+      "14.72/с"
+     ],
+     [
+      "Мана в конце",
+      "97%"
+     ],
+     [
+      "Интервал атаки",
+      "1.33 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Chain Lightning"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3474.5,
+     "Thunderstorm": 3891.8,
+     "Stormstrike": 3510.4,
+     "Totem Mastery": 3365.5,
+     "Totemic Wrath": 3472.9,
+     "Overcharge": 3605.0,
+     "Storm Infusion": 3543.4,
+     "Bloodlust": 3891.8,
+     "Spirit Call": 3891.8,
+     "Flash of Lightning": 3543.8,
+     "Elemental Fusion": 3850.9
+    },
+    "glyphDps": {
+     "Fortitude": 3891.8,
+     "Unsealed Power": 3891.8,
+     "Fortune": 3499.6,
+     "Supremacy": 3647.1,
+     "Arc Striking": 3499.6,
+     "Battle Frenzy": 3499.6,
+     "Hellfire": 3499.6,
+     "Thunder": 3499.6,
+     "Blood Violence": 3499.6,
+     "Animosity": 3526.8,
+     "Glass Cannon": 3891.8,
+     "Mindhaste": 3492.4
+    }
+   },
+   {
+    "farm_dps": 3885.8,
+    "dps": 3885.8,
+    "total": 116573,
+    "manaLeft": 98.8,
+    "bound_spell": "Chain Lightning",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Infinity Breaker",
+      "code": "I0NI",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Bloodlust",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 8,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 12468497070,
+    "sources": [
+     [
+      "Lesser Chain Lightning",
+      1005.4
+     ],
+     [
+      "Chain Lightning",
+      826.5
+     ],
+     [
+      "Thunderstorm",
+      696.5
+     ],
+     [
+      "Sulfuras",
+      562.8
+     ],
+     [
+      "Stormfury",
+      305.3
+     ],
+     [
+      "Автоатака",
+      251.5
+     ],
+     [
+      "Feral Spirit",
+      132.1
+     ],
+     [
+      "Lightning Shield",
+      89.2
+     ],
+     [
+      "Sulfuras (удар)",
+      16.4
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Chain Lightning"
+     ],
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "4.61",
+      "Chain Lightning"
+     ],
+     [
+      "9.22",
+      "Chain Lightning"
+     ],
+     [
+      "12.69",
+      "Lightning Shield"
+     ],
+     [
+      "13.84",
+      "Chain Lightning"
+     ],
+     [
+      "15.02",
+      "Feral Spirit"
+     ],
+     [
+      "16.41",
+      "Totemic Call"
+     ],
+     [
+      "18.45",
+      "Chain Lightning"
+     ],
+     [
+      "23.06",
+      "Chain Lightning"
+     ],
+     [
+      "24.92",
+      "Lightning Shield"
+     ],
+     [
+      "27.67",
+      "Chain Lightning"
+     ],
+     [
+      "29.14",
+      "Feral Spirit"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "208"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "46"
+     ],
+     [
+      "Сила атаки",
+      "169.0"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "44"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "19.0%"
+     ],
+     [
+      "Скорость атаки",
+      "79.4%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1631"
+     ],
+     [
+      "Реген маны",
+      "17.60/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.24 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Chain Lightning"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3416.9,
+     "Thunderstorm": 3885.8,
+     "Stormstrike": 3455.0,
+     "Totem Mastery": 3458.4,
+     "Totemic Wrath": 3427.5,
+     "Overcharge": 3552.4,
+     "Storm Infusion": 3502.3,
+     "Bloodlust": 3885.8,
+     "Spirit Call": 3885.8,
+     "Flash of Lightning": 3490.1,
+     "Elemental Fusion": 3713.4
+    },
+    "glyphDps": {
+     "Fortitude": 3885.8,
+     "Unsealed Power": 3885.8,
+     "Fortune": 3465.3,
+     "Supremacy": 3611.2,
+     "Arc Striking": 3465.3,
+     "Battle Frenzy": 3465.3,
+     "Hellfire": 3465.3,
+     "Thunder": 3465.3,
+     "Blood Violence": 3465.3,
+     "Animosity": 3496.1,
+     "Glass Cannon": 3885.8,
+     "Mindhaste": 3503.6
+    }
+   },
+   {
+    "farm_dps": 3872.4,
+    "dps": 3872.4,
+    "total": 116173,
+    "manaLeft": 97.6,
+    "bound_spell": "Chain Lightning",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 10,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 12652912420,
+    "sources": [
+     [
+      "Chain Lightning",
+      1035.3
+     ],
+     [
+      "Lesser Chain Lightning",
+      780.3
+     ],
+     [
+      "Sulfuras",
+      663.6
+     ],
+     [
+      "Thunderstorm",
+      625.9
+     ],
+     [
+      "Stormfury",
+      340.8
+     ],
+     [
+      "Автоатака",
+      216.4
+     ],
+     [
+      "Lightning Shield",
+      102.6
+     ],
+     [
+      "Feral Spirit",
+      96.5
+     ],
+     [
+      "Sulfuras (удар)",
+      10.9
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Chain Lightning"
+     ],
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "4.05",
+      "Chain Lightning"
+     ],
+     [
+      "8.11",
+      "Chain Lightning"
+     ],
+     [
+      "11.20",
+      "Lightning Shield"
+     ],
+     [
+      "12.16",
+      "Chain Lightning"
+     ],
+     [
+      "13.31",
+      "Feral Spirit"
+     ],
+     [
+      "14.58",
+      "Totemic Call"
+     ],
+     [
+      "16.21",
+      "Chain Lightning"
+     ],
+     [
+      "20.26",
+      "Chain Lightning"
+     ],
+     [
+      "21.95",
+      "Lightning Shield"
+     ],
+     [
+      "24.32",
+      "Chain Lightning"
+     ],
+     [
+      "25.71",
+      "Feral Spirit"
+     ],
+     [
+      "27.82",
+      "Totemic Call"
+     ],
+     [
+      "28.37",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "169"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "46"
+     ],
+     [
+      "Сила атаки",
+      "148.8"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "38"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "33.0%"
+     ],
+     [
+      "Скорость атаки",
+      "61.4%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1358"
+     ],
+     [
+      "Реген маны",
+      "14.48/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.38 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Chain Lightning"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3445.2,
+     "Thunderstorm": 3872.4,
+     "Stormstrike": 3476.9,
+     "Totem Mastery": 3286.2,
+     "Totemic Wrath": 3463.6,
+     "Overcharge": 3585.7,
+     "Storm Infusion": 3555.4,
+     "Bloodlust": 3802.1,
+     "Spirit Call": 3872.4,
+     "Flash of Lightning": 3531.1,
+     "Elemental Fusion": 3872.4
+    },
+    "glyphDps": {
+     "Fortitude": 3872.4,
+     "Unsealed Power": 3872.4,
+     "Fortune": 3502.0,
+     "Supremacy": 3655.1,
+     "Arc Striking": 3502.0,
+     "Battle Frenzy": 3502.0,
+     "Hellfire": 3502.0,
+     "Thunder": 3502.0,
+     "Blood Violence": 3502.0,
+     "Animosity": 3528.9,
+     "Glass Cannon": 3872.4,
+     "Mindhaste": 3454.7
+    }
+   },
+   {
+    "farm_dps": 3830.4,
+    "dps": 3830.4,
+    "total": 114913,
+    "manaLeft": 99.2,
+    "bound_spell": null,
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 9,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 3875782507,
+    "sources": [
+     [
+      "Lesser Chain Lightning",
+      899.2
+     ],
+     [
+      "Chain Lightning",
+      848.6
+     ],
+     [
+      "Thunderstorm",
+      664.5
+     ],
+     [
+      "Sulfuras",
+      631.1
+     ],
+     [
+      "Stormfury",
+      328.7
+     ],
+     [
+      "Автоатака",
+      222.1
+     ],
+     [
+      "Feral Spirit",
+      117.8
+     ],
+     [
+      "Lightning Shield",
+      105.5
+     ],
+     [
+      "Sulfuras (удар)",
+      13.0
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "5.72",
+      "Chain Lightning"
+     ],
+     [
+      "11.08",
+      "Lightning Shield"
+     ],
+     [
+      "11.53",
+      "Chain Lightning"
+     ],
+     [
+      "13.16",
+      "Feral Spirit"
+     ],
+     [
+      "14.43",
+      "Totemic Call"
+     ],
+     [
+      "17.25",
+      "Chain Lightning"
+     ],
+     [
+      "21.71",
+      "Lightning Shield"
+     ],
+     [
+      "22.97",
+      "Chain Lightning"
+     ],
+     [
+      "25.43",
+      "Feral Spirit"
+     ],
+     [
+      "27.51",
+      "Totemic Call"
+     ],
+     [
+      "28.70",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "218"
+     ],
+     [
+      "Сила",
+      "47"
+     ],
+     [
+      "Ловкость",
+      "54"
+     ],
+     [
+      "Сила атаки",
+      "176.5"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "44"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "37.0%"
+     ],
+     [
+      "Скорость атаки",
+      "66.6%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1701"
+     ],
+     [
+      "Реген маны",
+      "18.40/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.33 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3408.9,
+     "Thunderstorm": 3830.4,
+     "Stormstrike": 3450.5,
+     "Totem Mastery": 3262.6,
+     "Totemic Wrath": 3425.5,
+     "Overcharge": 3545.1,
+     "Storm Infusion": 3476.3,
+     "Bloodlust": 3757.7,
+     "Spirit Call": 3830.4,
+     "Flash of Lightning": 3489.1,
+     "Elemental Fusion": 3830.4
+    },
+    "glyphDps": {
+     "Fortitude": 3830.4,
+     "Unsealed Power": 3830.4,
+     "Fortune": 3408.9,
+     "Supremacy": 3550.5,
+     "Arc Striking": 3408.9,
+     "Battle Frenzy": 3408.9,
+     "Hellfire": 3408.9,
+     "Thunder": 3408.9,
+     "Blood Violence": 3408.9,
+     "Animosity": 3436.1,
+     "Glass Cannon": 3830.4,
+     "Mindhaste": 3464.2
+    }
+   },
+   {
+    "farm_dps": 3821.1,
+    "dps": 3821.1,
+    "total": 114633,
+    "manaLeft": 97.6,
+    "bound_spell": "Chain Lightning",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Bloodlust",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 10,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 12468944926,
+    "sources": [
+     [
+      "Lesser Chain Lightning",
+      984.8
+     ],
+     [
+      "Chain Lightning",
+      806.7
+     ],
+     [
+      "Thunderstorm",
+      666.0
+     ],
+     [
+      "Sulfuras",
+      577.6
+     ],
+     [
+      "Stormfury",
+      334.4
+     ],
+     [
+      "Автоатака",
+      216.2
+     ],
+     [
+      "Feral Spirit",
+      136.1
+     ],
+     [
+      "Lightning Shield",
+      84.0
+     ],
+     [
+      "Sulfuras (удар)",
+      15.2
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Chain Lightning"
+     ],
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "4.22",
+      "Chain Lightning"
+     ],
+     [
+      "8.44",
+      "Chain Lightning"
+     ],
+     [
+      "11.65",
+      "Lightning Shield"
+     ],
+     [
+      "12.66",
+      "Chain Lightning"
+     ],
+     [
+      "13.82",
+      "Feral Spirit"
+     ],
+     [
+      "15.13",
+      "Totemic Call"
+     ],
+     [
+      "16.89",
+      "Chain Lightning"
+     ],
+     [
+      "21.11",
+      "Chain Lightning"
+     ],
+     [
+      "22.85",
+      "Lightning Shield"
+     ],
+     [
+      "25.33",
+      "Chain Lightning"
+     ],
+     [
+      "26.75",
+      "Feral Spirit"
+     ],
+     [
+      "28.92",
+      "Totemic Call"
+     ],
+     [
+      "29.55",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "213"
+     ],
+     [
+      "Сила",
+      "54"
+     ],
+     [
+      "Ловкость",
+      "61"
+     ],
+     [
+      "Сила атаки",
+      "172.8"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "53"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "30.0%"
+     ],
+     [
+      "Скорость атаки",
+      "67.4%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1666"
+     ],
+     [
+      "Реген маны",
+      "18.00/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.33 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Chain Lightning"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3433.5,
+     "Thunderstorm": 3821.1,
+     "Stormstrike": 3478.7,
+     "Totem Mastery": 3268.7,
+     "Totemic Wrath": 3451.0,
+     "Overcharge": 3577.6,
+     "Storm Infusion": 3522.2,
+     "Bloodlust": 3821.1,
+     "Spirit Call": 3821.1,
+     "Flash of Lightning": 3514.8,
+     "Elemental Fusion": 3788.3
+    },
+    "glyphDps": {
+     "Fortitude": 3821.1,
+     "Unsealed Power": 3821.1,
+     "Fortune": 3374.8,
+     "Supremacy": 3513.6,
+     "Arc Striking": 3374.8,
+     "Battle Frenzy": 3374.8,
+     "Hellfire": 3374.8,
+     "Thunder": 3374.8,
+     "Blood Violence": 3374.8,
+     "Animosity": 3401.0,
+     "Glass Cannon": 3821.1,
+     "Mindhaste": 3508.4
+    }
+   },
+   {
+    "farm_dps": 3817.3,
+    "dps": 3817.3,
+    "total": 114519,
+    "manaLeft": 95.7,
+    "bound_spell": "Chain Lightning",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 10,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 12582562249,
+    "sources": [
+     [
+      "Chain Lightning",
+      942.8
+     ],
+     [
+      "Lesser Chain Lightning",
+      822.9
+     ],
+     [
+      "Sulfuras",
+      628.6
+     ],
+     [
+      "Thunderstorm",
+      620.5
+     ],
+     [
+      "Stormfury",
+      350.0
+     ],
+     [
+      "Автоатака",
+      236.0
+     ],
+     [
+      "Lightning Shield",
+      103.3
+     ],
+     [
+      "Feral Spirit",
+      101.3
+     ],
+     [
+      "Sulfuras (удар)",
+      11.9
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Chain Lightning"
+     ],
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "3.96",
+      "Chain Lightning"
+     ],
+     [
+      "7.93",
+      "Chain Lightning"
+     ],
+     [
+      "10.96",
+      "Lightning Shield"
+     ],
+     [
+      "11.89",
+      "Chain Lightning"
+     ],
+     [
+      "13.03",
+      "Feral Spirit"
+     ],
+     [
+      "14.29",
+      "Totemic Call"
+     ],
+     [
+      "15.85",
+      "Chain Lightning"
+     ],
+     [
+      "19.82",
+      "Chain Lightning"
+     ],
+     [
+      "21.48",
+      "Lightning Shield"
+     ],
+     [
+      "23.78",
+      "Chain Lightning"
+     ],
+     [
+      "25.16",
+      "Feral Spirit"
+     ],
+     [
+      "27.23",
+      "Totemic Call"
+     ],
+     [
+      "27.74",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "157"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "46"
+     ],
+     [
+      "Сила атаки",
+      "139.8"
+     ],
+     [
+      "Potency",
+      "8.0"
+     ],
+     [
+      "Mastery",
+      "38"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "36.0%"
+     ],
+     [
+      "Скорость атаки",
+      "93.4%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1274"
+     ],
+     [
+      "Реген маны",
+      "13.52/с"
+     ],
+     [
+      "Мана в конце",
+      "96%"
+     ],
+     [
+      "Интервал атаки",
+      "1.15 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Chain Lightning"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3396.5,
+     "Thunderstorm": 3817.3,
+     "Stormstrike": 3439.0,
+     "Totem Mastery": 3275.2,
+     "Totemic Wrath": 3418.7,
+     "Overcharge": 3532.0,
+     "Storm Infusion": 3496.1,
+     "Bloodlust": 3791.0,
+     "Spirit Call": 3817.3,
+     "Flash of Lightning": 3493.2,
+     "Elemental Fusion": 3817.3
+    },
+    "glyphDps": {
+     "Fortitude": 3817.3,
+     "Unsealed Power": 3817.3,
+     "Fortune": 3431.8,
+     "Supremacy": 3576.1,
+     "Arc Striking": 3431.8,
+     "Battle Frenzy": 3431.8,
+     "Hellfire": 3431.8,
+     "Thunder": 3431.8,
+     "Blood Violence": 3431.8,
+     "Animosity": 3461.0,
+     "Glass Cannon": 3817.3,
+     "Mindhaste": 3499.4
+    }
+   },
+   {
+    "farm_dps": 3795.3,
+    "dps": 3795.3,
+    "total": 113859,
+    "manaLeft": 97.1,
+    "bound_spell": "Chain Lightning",
+    "orb_mode": "Shadow",
+    "items": [
+     {
+      "name": "Diamond Ring",
+      "code": "I00D",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Infinity Breaker",
+      "code": "I0NI",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 9,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 12468916668,
+    "sources": [
+     [
+      "Chain Lightning",
+      905.2
+     ],
+     [
+      "Lesser Chain Lightning",
+      875.7
+     ],
+     [
+      "Thunderstorm",
+      614.6
+     ],
+     [
+      "Sulfuras",
+      593.4
+     ],
+     [
+      "Stormfury",
+      354.8
+     ],
+     [
+      "Автоатака",
+      238.4
+     ],
+     [
+      "Feral Spirit",
+      113.0
+     ],
+     [
+      "Lightning Shield",
+      86.0
+     ],
+     [
+      "Sulfuras (удар)",
+      14.2
+     ]
+    ],
+    "actions": [
+     [
+      "до боя",
+      "Elemental Orb → Shadow"
+     ],
+     [
+      "до боя",
+      "Diamond Ring → привязка Chain Lightning"
+     ],
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "4.11",
+      "Chain Lightning"
+     ],
+     [
+      "8.23",
+      "Chain Lightning"
+     ],
+     [
+      "11.37",
+      "Lightning Shield"
+     ],
+     [
+      "12.34",
+      "Chain Lightning"
+     ],
+     [
+      "13.50",
+      "Feral Spirit"
+     ],
+     [
+      "14.79",
+      "Totemic Call"
+     ],
+     [
+      "16.46",
+      "Chain Lightning"
+     ],
+     [
+      "20.57",
+      "Chain Lightning"
+     ],
+     [
+      "22.28",
+      "Lightning Shield"
+     ],
+     [
+      "24.69",
+      "Chain Lightning"
+     ],
+     [
+      "26.09",
+      "Feral Spirit"
+     ],
+     [
+      "28.22",
+      "Totemic Call"
+     ],
+     [
+      "28.80",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "166"
+     ],
+     [
+      "Сила",
+      "54"
+     ],
+     [
+      "Ловкость",
+      "61"
+     ],
+     [
+      "Сила атаки",
+      "146.5"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "50"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "31.0%"
+     ],
+     [
+      "Скорость атаки",
+      "83.4%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1337"
+     ],
+     [
+      "Реген маны",
+      "14.24/с"
+     ],
+     [
+      "Мана в конце",
+      "97%"
+     ],
+     [
+      "Интервал атаки",
+      "1.01 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ],
+     [
+      "Elemental Orb",
+      "Shadow"
+     ],
+     [
+      "Diamond Ring привязан к",
+      "Chain Lightning"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3372.9,
+     "Thunderstorm": 3795.3,
+     "Stormstrike": 3438.3,
+     "Totem Mastery": 3261.9,
+     "Totemic Wrath": 3401.7,
+     "Overcharge": 3527.9,
+     "Storm Infusion": 3483.1,
+     "Bloodlust": 3700.7,
+     "Spirit Call": 3795.3,
+     "Flash of Lightning": 3468.0,
+     "Elemental Fusion": 3795.3
+    },
+    "glyphDps": {
+     "Fortitude": 3795.3,
+     "Unsealed Power": 3795.3,
+     "Fortune": 3368.6,
+     "Supremacy": 3510.5,
+     "Arc Striking": 3368.6,
+     "Battle Frenzy": 3368.6,
+     "Hellfire": 3368.6,
+     "Thunder": 3368.6,
+     "Blood Violence": 3368.6,
+     "Animosity": 3397.6,
+     "Glass Cannon": 3795.3,
+     "Mindhaste": 3307.7
+    }
+   }
+  ],
+  "drop": [
+   {
+    "farm_dps": 3677.2,
+    "dps": 3677.2,
+    "total": 110315,
+    "manaLeft": 99.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "Gloves of Tribal Fury",
+      "code": "I0O8",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 9,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 7774201311,
+    "sources": [
+     [
+      "Lesser Chain Lightning",
+      1029.3
+     ],
+     [
+      "Thunderstorm",
+      738.5
+     ],
+     [
+      "Chain Lightning",
+      597.2
+     ],
+     [
+      "Sulfuras",
+      480.9
+     ],
+     [
+      "Stormfury",
+      319.8
+     ],
+     [
+      "Автоатака",
+      267.6
+     ],
+     [
+      "Feral Spirit",
+      145.7
+     ],
+     [
+      "Lightning Shield",
+      82.9
+     ],
+     [
+      "Sulfuras (удар)",
+      15.4
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "5.65",
+      "Chain Lightning"
+     ],
+     [
+      "10.94",
+      "Lightning Shield"
+     ],
+     [
+      "11.39",
+      "Chain Lightning"
+     ],
+     [
+      "13.01",
+      "Feral Spirit"
+     ],
+     [
+      "14.26",
+      "Totemic Call"
+     ],
+     [
+      "17.04",
+      "Chain Lightning"
+     ],
+     [
+      "21.43",
+      "Lightning Shield"
+     ],
+     [
+      "22.69",
+      "Chain Lightning"
+     ],
+     [
+      "25.11",
+      "Feral Spirit"
+     ],
+     [
+      "27.17",
+      "Totemic Call"
+     ],
+     [
+      "28.34",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "193"
+     ],
+     [
+      "Сила",
+      "51"
+     ],
+     [
+      "Ловкость",
+      "64"
+     ],
+     [
+      "Сила атаки",
+      "157.8"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "19"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "14.0%"
+     ],
+     [
+      "Скорость атаки",
+      "81.6%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1526"
+     ],
+     [
+      "Реген маны",
+      "17.04/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.02 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3264.8,
+     "Thunderstorm": 3677.2,
+     "Stormstrike": 3342.4,
+     "Totem Mastery": 3226.1,
+     "Totemic Wrath": 3307.0,
+     "Overcharge": 3412.3,
+     "Storm Infusion": 3378.4,
+     "Bloodlust": 3212.5,
+     "Spirit Call": 3677.2,
+     "Flash of Lightning": 3372.4,
+     "Elemental Fusion": 3677.2
+    },
+    "glyphDps": {
+     "Fortitude": 3677.2,
+     "Unsealed Power": 3677.2,
+     "Fortune": 3281.6,
+     "Supremacy": 3428.6,
+     "Arc Striking": 3281.6,
+     "Battle Frenzy": 3281.6,
+     "Hellfire": 3281.6,
+     "Thunder": 3281.6,
+     "Blood Violence": 3281.6,
+     "Animosity": 3314.4,
+     "Glass Cannon": 3677.2,
+     "Mindhaste": 3214.5
+    }
+   },
+   {
+    "farm_dps": 3612.2,
+    "dps": 3612.2,
+    "total": 108365,
+    "manaLeft": 98.6,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Gloves of Tribal Fury",
+      "code": "I0O8",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Spellbinder's Vest",
+      "code": "tlum",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 8,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 7774167466,
+    "sources": [
+     [
+      "Lesser Chain Lightning",
+      1025.8
+     ],
+     [
+      "Thunderstorm",
+      713.8
+     ],
+     [
+      "Chain Lightning",
+      601.4
+     ],
+     [
+      "Sulfuras",
+      466.5
+     ],
+     [
+      "Stormfury",
+      315.7
+     ],
+     [
+      "Автоатака",
+      253.6
+     ],
+     [
+      "Feral Spirit",
+      139.5
+     ],
+     [
+      "Lightning Shield",
+      81.8
+     ],
+     [
+      "Sulfuras (удар)",
+      14.1
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "5.65",
+      "Chain Lightning"
+     ],
+     [
+      "10.94",
+      "Lightning Shield"
+     ],
+     [
+      "11.39",
+      "Chain Lightning"
+     ],
+     [
+      "13.01",
+      "Feral Spirit"
+     ],
+     [
+      "14.26",
+      "Totemic Call"
+     ],
+     [
+      "17.04",
+      "Chain Lightning"
+     ],
+     [
+      "21.43",
+      "Lightning Shield"
+     ],
+     [
+      "22.69",
+      "Chain Lightning"
+     ],
+     [
+      "25.11",
+      "Feral Spirit"
+     ],
+     [
+      "27.17",
+      "Totemic Call"
+     ],
+     [
+      "28.34",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "181"
+     ],
+     [
+      "Сила",
+      "51"
+     ],
+     [
+      "Ловкость",
+      "64"
+     ],
+     [
+      "Сила атаки",
+      "148.8"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "25"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "14.0%"
+     ],
+     [
+      "Скорость атаки",
+      "75.6%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1442"
+     ],
+     [
+      "Реген маны",
+      "15.44/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.05 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3209.4,
+     "Thunderstorm": 3612.2,
+     "Stormstrike": 3284.6,
+     "Totem Mastery": 3163.0,
+     "Totemic Wrath": 3303.3,
+     "Overcharge": 3357.3,
+     "Storm Infusion": 3324.1,
+     "Bloodlust": 3158.0,
+     "Spirit Call": 3612.2,
+     "Flash of Lightning": 3313.9,
+     "Elemental Fusion": 3612.2
+    },
+    "glyphDps": {
+     "Fortitude": 3612.2,
+     "Unsealed Power": 3612.2,
+     "Fortune": 3236.0,
+     "Supremacy": 3598.4,
+     "Arc Striking": 3236.0,
+     "Battle Frenzy": 3236.0,
+     "Hellfire": 3236.0,
+     "Thunder": 3236.0,
+     "Blood Violence": 3236.0,
+     "Animosity": 3267.2,
+     "Glass Cannon": 3612.2,
+     "Mindhaste": 3197.9
+    }
+   },
+   {
+    "farm_dps": 3607.1,
+    "dps": 3607.1,
+    "total": 108214,
+    "manaLeft": 98.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Gloves of Tribal Fury",
+      "code": "I0O8",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Hood of Dark Deeds",
+      "code": "tgrh",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 8,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 7774167467,
+    "sources": [
+     [
+      "Lesser Chain Lightning",
+      1011.1
+     ],
+     [
+      "Thunderstorm",
+      724.6
+     ],
+     [
+      "Chain Lightning",
+      592.7
+     ],
+     [
+      "Sulfuras",
+      473.5
+     ],
+     [
+      "Stormfury",
+      311.1
+     ],
+     [
+      "Автоатака",
+      257.4
+     ],
+     [
+      "Feral Spirit",
+      139.5
+     ],
+     [
+      "Lightning Shield",
+      83.0
+     ],
+     [
+      "Sulfuras (удар)",
+      14.1
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "5.65",
+      "Chain Lightning"
+     ],
+     [
+      "10.94",
+      "Lightning Shield"
+     ],
+     [
+      "11.39",
+      "Chain Lightning"
+     ],
+     [
+      "13.01",
+      "Feral Spirit"
+     ],
+     [
+      "14.26",
+      "Totemic Call"
+     ],
+     [
+      "17.04",
+      "Chain Lightning"
+     ],
+     [
+      "21.43",
+      "Lightning Shield"
+     ],
+     [
+      "22.69",
+      "Chain Lightning"
+     ],
+     [
+      "25.11",
+      "Feral Spirit"
+     ],
+     [
+      "27.17",
+      "Totemic Call"
+     ],
+     [
+      "28.34",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "181"
+     ],
+     [
+      "Сила",
+      "51"
+     ],
+     [
+      "Ловкость",
+      "64"
+     ],
+     [
+      "Сила атаки",
+      "148.8"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "18"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "14.0%"
+     ],
+     [
+      "Скорость атаки",
+      "75.6%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1642"
+     ],
+     [
+      "Реген маны",
+      "15.44/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.05 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3205.7,
+     "Thunderstorm": 3607.1,
+     "Stormstrike": 3279.0,
+     "Totem Mastery": 3158.4,
+     "Totemic Wrath": 3245.4,
+     "Overcharge": 3349.9,
+     "Storm Infusion": 3318.0,
+     "Bloodlust": 3153.4,
+     "Spirit Call": 3607.1,
+     "Flash of Lightning": 3311.7,
+     "Elemental Fusion": 3607.1
+    },
+    "glyphDps": {
+     "Fortitude": 3607.1,
+     "Unsealed Power": 3607.1,
+     "Fortune": 3237.1,
+     "Supremacy": 3383.2,
+     "Arc Striking": 3237.1,
+     "Battle Frenzy": 3237.1,
+     "Hellfire": 3237.1,
+     "Thunder": 3237.1,
+     "Blood Violence": 3237.1,
+     "Animosity": 3268.8,
+     "Glass Cannon": 3607.1,
+     "Mindhaste": 3198.3
+    }
+   },
+   {
+    "farm_dps": 3567.5,
+    "dps": 3567.5,
+    "total": 107025,
+    "manaLeft": 98.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Gloves of Tribal Fury",
+      "code": "I0O8",
+      "source": "drop"
+     },
+     {
+      "name": "Epaulets of Ten Storms",
+      "code": "I0O9",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 9,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 7774167962,
+    "sources": [
+     [
+      "Lesser Chain Lightning",
+      1053.7
+     ],
+     [
+      "Thunderstorm",
+      715.3
+     ],
+     [
+      "Chain Lightning",
+      536.0
+     ],
+     [
+      "Sulfuras",
+      428.7
+     ],
+     [
+      "Stormfury",
+      353.5
+     ],
+     [
+      "Автоатака",
+      244.7
+     ],
+     [
+      "Feral Spirit",
+      145.7
+     ],
+     [
+      "Lightning Shield",
+      74.6
+     ],
+     [
+      "Sulfuras (удар)",
+      15.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "5.65",
+      "Chain Lightning"
+     ],
+     [
+      "10.94",
+      "Lightning Shield"
+     ],
+     [
+      "11.39",
+      "Chain Lightning"
+     ],
+     [
+      "13.01",
+      "Feral Spirit"
+     ],
+     [
+      "14.26",
+      "Totemic Call"
+     ],
+     [
+      "17.04",
+      "Chain Lightning"
+     ],
+     [
+      "21.43",
+      "Lightning Shield"
+     ],
+     [
+      "22.69",
+      "Chain Lightning"
+     ],
+     [
+      "25.11",
+      "Feral Spirit"
+     ],
+     [
+      "27.17",
+      "Totemic Call"
+     ],
+     [
+      "28.34",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "186"
+     ],
+     [
+      "Сила",
+      "51"
+     ],
+     [
+      "Ловкость",
+      "69"
+     ],
+     [
+      "Сила атаки",
+      "152.5"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "19"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "14.0%"
+     ],
+     [
+      "Скорость атаки",
+      "90.6%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1477"
+     ],
+     [
+      "Реген маны",
+      "15.84/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "0.97 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3172.5,
+     "Thunderstorm": 3567.5,
+     "Stormstrike": 3283.0,
+     "Totem Mastery": 3133.7,
+     "Totemic Wrath": 3216.6,
+     "Overcharge": 3328.4,
+     "Storm Infusion": 3276.9,
+     "Bloodlust": 3125.5,
+     "Spirit Call": 3567.5,
+     "Flash of Lightning": 3291.5,
+     "Elemental Fusion": 3567.5
+    },
+    "glyphDps": {
+     "Fortitude": 3567.5,
+     "Unsealed Power": 3567.5,
+     "Fortune": 3153.2,
+     "Supremacy": 3298.5,
+     "Arc Striking": 3153.2,
+     "Battle Frenzy": 3153.2,
+     "Hellfire": 3153.2,
+     "Thunder": 3153.2,
+     "Blood Violence": 3153.2,
+     "Animosity": 3182.9,
+     "Glass Cannon": 3567.5,
+     "Mindhaste": 3064.1
+    }
+   },
+   {
+    "farm_dps": 3538.9,
+    "dps": 3538.9,
+    "total": 106167,
+    "manaLeft": 99.1,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Queen's Scepter",
+      "code": "I080",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Gloves of Tribal Fury",
+      "code": "I0O8",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 8,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 7775159524,
+    "sources": [
+     [
+      "Lesser Chain Lightning",
+      1011.1
+     ],
+     [
+      "Thunderstorm",
+      686.8
+     ],
+     [
+      "Chain Lightning",
+      592.7
+     ],
+     [
+      "Sulfuras",
+      451.7
+     ],
+     [
+      "Stormfury",
+      311.1
+     ],
+     [
+      "Автоатака",
+      244.0
+     ],
+     [
+      "Feral Spirit",
+      148.8
+     ],
+     [
+      "Lightning Shield",
+      77.5
+     ],
+     [
+      "Sulfuras (удар)",
+      15.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "5.65",
+      "Chain Lightning"
+     ],
+     [
+      "10.94",
+      "Lightning Shield"
+     ],
+     [
+      "11.39",
+      "Chain Lightning"
+     ],
+     [
+      "13.01",
+      "Feral Spirit"
+     ],
+     [
+      "14.26",
+      "Totemic Call"
+     ],
+     [
+      "17.04",
+      "Chain Lightning"
+     ],
+     [
+      "21.43",
+      "Lightning Shield"
+     ],
+     [
+      "22.69",
+      "Chain Lightning"
+     ],
+     [
+      "25.11",
+      "Feral Spirit"
+     ],
+     [
+      "27.17",
+      "Totemic Call"
+     ],
+     [
+      "28.34",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "196"
+     ],
+     [
+      "Сила",
+      "51"
+     ],
+     [
+      "Ловкость",
+      "64"
+     ],
+     [
+      "Сила атаки",
+      "160.0"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "33"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "14.0%"
+     ],
+     [
+      "Скорость атаки",
+      "75.6%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1547"
+     ],
+     [
+      "Реген маны",
+      "16.64/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.05 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3143.3,
+     "Thunderstorm": 3538.9,
+     "Stormstrike": 3218.5,
+     "Totem Mastery": 3099.2,
+     "Totemic Wrath": 3183.2,
+     "Overcharge": 3290.8,
+     "Storm Infusion": 3257.4,
+     "Bloodlust": 3094.3,
+     "Spirit Call": 3538.9,
+     "Flash of Lightning": 3242.9,
+     "Elemental Fusion": 3538.9
+    },
+    "glyphDps": {
+     "Fortitude": 3538.9,
+     "Unsealed Power": 3538.9,
+     "Fortune": 3128.4,
+     "Supremacy": 3263.5,
+     "Arc Striking": 3128.4,
+     "Battle Frenzy": 3128.4,
+     "Hellfire": 3128.4,
+     "Thunder": 3128.4,
+     "Blood Violence": 3128.4,
+     "Animosity": 3158.0,
+     "Glass Cannon": 3538.9,
+     "Mindhaste": 3092.1
+    }
+   },
+   {
+    "farm_dps": 3509.8,
+    "dps": 3509.8,
+    "total": 105293,
+    "manaLeft": 98.6,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "Gloves of Tribal Fury",
+      "code": "I0O8",
+      "source": "drop"
+     },
+     {
+      "name": "Epaulets of Ten Storms",
+      "code": "I0O9",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 8,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 697137777,
+    "sources": [
+     [
+      "Lesser Chain Lightning",
+      1022.6
+     ],
+     [
+      "Thunderstorm",
+      705.0
+     ],
+     [
+      "Chain Lightning",
+      544.4
+     ],
+     [
+      "Sulfuras",
+      431.1
+     ],
+     [
+      "Stormfury",
+      332.1
+     ],
+     [
+      "Автоатака",
+      247.6
+     ],
+     [
+      "Feral Spirit",
+      136.2
+     ],
+     [
+      "Lightning Shield",
+      76.5
+     ],
+     [
+      "Sulfuras (удар)",
+      14.3
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "5.65",
+      "Chain Lightning"
+     ],
+     [
+      "10.94",
+      "Lightning Shield"
+     ],
+     [
+      "11.39",
+      "Chain Lightning"
+     ],
+     [
+      "13.01",
+      "Feral Spirit"
+     ],
+     [
+      "14.26",
+      "Totemic Call"
+     ],
+     [
+      "17.04",
+      "Chain Lightning"
+     ],
+     [
+      "21.43",
+      "Lightning Shield"
+     ],
+     [
+      "22.69",
+      "Chain Lightning"
+     ],
+     [
+      "25.11",
+      "Feral Spirit"
+     ],
+     [
+      "27.17",
+      "Totemic Call"
+     ],
+     [
+      "28.34",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "173"
+     ],
+     [
+      "Сила",
+      "26"
+     ],
+     [
+      "Ловкость",
+      "44"
+     ],
+     [
+      "Сила атаки",
+      "142.8"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "18"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "14.0%"
+     ],
+     [
+      "Скорость атаки",
+      "90.6%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1386"
+     ],
+     [
+      "Реген маны",
+      "15.44/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "0.97 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3121.8,
+     "Thunderstorm": 3509.8,
+     "Stormstrike": 3217.1,
+     "Totem Mastery": 3080.5,
+     "Totemic Wrath": 3164.1,
+     "Overcharge": 3271.0,
+     "Storm Infusion": 3227.5,
+     "Bloodlust": 3073.8,
+     "Spirit Call": 3509.8,
+     "Flash of Lightning": 3235.0,
+     "Elemental Fusion": 3509.8
+    },
+    "glyphDps": {
+     "Fortitude": 3509.8,
+     "Unsealed Power": 3509.8,
+     "Fortune": 3131.8,
+     "Supremacy": 3275.9,
+     "Arc Striking": 3131.8,
+     "Battle Frenzy": 3131.8,
+     "Hellfire": 3131.8,
+     "Thunder": 3131.8,
+     "Blood Violence": 3131.8,
+     "Animosity": 3162.2,
+     "Glass Cannon": 3509.8,
+     "Mindhaste": 3043.6
+    }
+   },
+   {
+    "farm_dps": 3500.5,
+    "dps": 3500.5,
+    "total": 105014,
+    "manaLeft": 99.3,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "Gloves of Tribal Fury",
+      "code": "I0O8",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 2,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 7,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 7774209521,
+    "sources": [
+     [
+      "Lesser Chain Lightning",
+      974.4
+     ],
+     [
+      "Thunderstorm",
+      713.5
+     ],
+     [
+      "Chain Lightning",
+      550.0
+     ],
+     [
+      "Sulfuras",
+      447.1
+     ],
+     [
+      "Stormfury",
+      307.4
+     ],
+     [
+      "Автоатака",
+      250.1
+     ],
+     [
+      "Feral Spirit",
+      151.6
+     ],
+     [
+      "Lightning Shield",
+      90.8
+     ],
+     [
+      "Sulfuras (удар)",
+      15.5
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "5.07",
+      "Chain Lightning"
+     ],
+     [
+      "9.87",
+      "Lightning Shield"
+     ],
+     [
+      "10.32",
+      "Chain Lightning"
+     ],
+     [
+      "11.77",
+      "Feral Spirit"
+     ],
+     [
+      "13.50",
+      "Totemic Call"
+     ],
+     [
+      "15.39",
+      "Chain Lightning"
+     ],
+     [
+      "19.28",
+      "Lightning Shield"
+     ],
+     [
+      "20.46",
+      "Chain Lightning"
+     ],
+     [
+      "22.63",
+      "Feral Spirit"
+     ],
+     [
+      "25.53",
+      "Chain Lightning"
+     ],
+     [
+      "25.98",
+      "Totemic Call"
+     ],
+     [
+      "28.70",
+      "Lightning Shield"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "194"
+     ],
+     [
+      "Сила",
+      "51"
+     ],
+     [
+      "Ловкость",
+      "64"
+     ],
+     [
+      "Сила атаки",
+      "158.5"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "17"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "27.0%"
+     ],
+     [
+      "Скорость атаки",
+      "77.6%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1533"
+     ],
+     [
+      "Реген маны",
+      "16.48/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.04 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3085.8,
+     "Thunderstorm": 3500.5,
+     "Stormstrike": 3158.5,
+     "Totem Mastery": 3036.0,
+     "Totemic Wrath": 3129.1,
+     "Overcharge": 3223.1,
+     "Storm Infusion": 3213.3,
+     "Bloodlust": 3036.0,
+     "Spirit Call": 3500.5,
+     "Flash of Lightning": 3184.4,
+     "Elemental Fusion": 3500.5
+    },
+    "glyphDps": {
+     "Fortitude": 3500.5,
+     "Unsealed Power": 3500.5,
+     "Fortune": 3095.1,
+     "Supremacy": 3233.2,
+     "Arc Striking": 3095.1,
+     "Battle Frenzy": 3095.1,
+     "Hellfire": 3095.1,
+     "Thunder": 3095.1,
+     "Blood Violence": 3095.1,
+     "Animosity": 3125.4,
+     "Glass Cannon": 3500.5,
+     "Mindhaste": 3250.3
+    }
+   },
+   {
+    "farm_dps": 3495.4,
+    "dps": 3495.4,
+    "total": 104862,
+    "manaLeft": 98.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "Gloves of Tribal Fury",
+      "code": "I0O8",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Spellbinder's Vest",
+      "code": "tlum",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 9,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 697137281,
+    "sources": [
+     [
+      "Lesser Chain Lightning",
+      971.4
+     ],
+     [
+      "Thunderstorm",
+      684.4
+     ],
+     [
+      "Chain Lightning",
+      611.9
+     ],
+     [
+      "Sulfuras",
+      465.7
+     ],
+     [
+      "Stormfury",
+      285.8
+     ],
+     [
+      "Автоатака",
+      253.4
+     ],
+     [
+      "Feral Spirit",
+      126.3
+     ],
+     [
+      "Lightning Shield",
+      83.3
+     ],
+     [
+      "Sulfuras (удар)",
+      13.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "5.70",
+      "Chain Lightning"
+     ],
+     [
+      "11.03",
+      "Lightning Shield"
+     ],
+     [
+      "11.48",
+      "Chain Lightning"
+     ],
+     [
+      "13.11",
+      "Feral Spirit"
+     ],
+     [
+      "14.38",
+      "Totemic Call"
+     ],
+     [
+      "17.18",
+      "Chain Lightning"
+     ],
+     [
+      "21.62",
+      "Lightning Shield"
+     ],
+     [
+      "22.88",
+      "Chain Lightning"
+     ],
+     [
+      "25.32",
+      "Feral Spirit"
+     ],
+     [
+      "27.40",
+      "Totemic Call"
+     ],
+     [
+      "28.58",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "168"
+     ],
+     [
+      "Сила",
+      "26"
+     ],
+     [
+      "Ловкость",
+      "39"
+     ],
+     [
+      "Сила атаки",
+      "139.0"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "26"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "13.0%"
+     ],
+     [
+      "Скорость атаки",
+      "73.6%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1351"
+     ],
+     [
+      "Реген маны",
+      "15.04/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.07 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3108.0,
+     "Thunderstorm": 3495.4,
+     "Stormstrike": 3165.7,
+     "Totem Mastery": 2953.4,
+     "Totemic Wrath": 3190.1,
+     "Overcharge": 3246.0,
+     "Storm Infusion": 3206.8,
+     "Bloodlust": 3055.8,
+     "Spirit Call": 3495.4,
+     "Flash of Lightning": 3204.7,
+     "Elemental Fusion": 3495.4
+    },
+    "glyphDps": {
+     "Fortitude": 3495.4,
+     "Unsealed Power": 3495.4,
+     "Fortune": 3156.0,
+     "Supremacy": 3492.1,
+     "Arc Striking": 3156.0,
+     "Battle Frenzy": 3156.0,
+     "Hellfire": 3156.0,
+     "Thunder": 3156.0,
+     "Blood Violence": 3156.0,
+     "Animosity": 3187.5,
+     "Glass Cannon": 3495.4,
+     "Mindhaste": 3204.7
+    }
+   },
+   {
+    "farm_dps": 3478.4,
+    "dps": 3478.4,
+    "total": 104353,
+    "manaLeft": 98.4,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "Gloves of Tribal Fury",
+      "code": "I0O8",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Hood of Dark Deeds",
+      "code": "tgrh",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 9,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 697137282,
+    "sources": [
+     [
+      "Lesser Chain Lightning",
+      953.9
+     ],
+     [
+      "Thunderstorm",
+      692.1
+     ],
+     [
+      "Chain Lightning",
+      600.9
+     ],
+     [
+      "Sulfuras",
+      470.9
+     ],
+     [
+      "Stormfury",
+      280.6
+     ],
+     [
+      "Автоатака",
+      256.3
+     ],
+     [
+      "Feral Spirit",
+      126.3
+     ],
+     [
+      "Lightning Shield",
+      84.2
+     ],
+     [
+      "Sulfuras (удар)",
+      13.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "5.70",
+      "Chain Lightning"
+     ],
+     [
+      "11.03",
+      "Lightning Shield"
+     ],
+     [
+      "11.48",
+      "Chain Lightning"
+     ],
+     [
+      "13.11",
+      "Feral Spirit"
+     ],
+     [
+      "14.38",
+      "Totemic Call"
+     ],
+     [
+      "17.18",
+      "Chain Lightning"
+     ],
+     [
+      "21.62",
+      "Lightning Shield"
+     ],
+     [
+      "22.88",
+      "Chain Lightning"
+     ],
+     [
+      "25.32",
+      "Feral Spirit"
+     ],
+     [
+      "27.40",
+      "Totemic Call"
+     ],
+     [
+      "28.58",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "168"
+     ],
+     [
+      "Сила",
+      "26"
+     ],
+     [
+      "Ловкость",
+      "39"
+     ],
+     [
+      "Сила атаки",
+      "139.0"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "19"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "13.0%"
+     ],
+     [
+      "Скорость атаки",
+      "73.6%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1551"
+     ],
+     [
+      "Реген маны",
+      "15.04/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.07 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3093.7,
+     "Thunderstorm": 3478.4,
+     "Stormstrike": 3149.4,
+     "Totem Mastery": 2937.7,
+     "Totemic Wrath": 3127.9,
+     "Overcharge": 3227.7,
+     "Storm Infusion": 3189.8,
+     "Bloodlust": 3040.8,
+     "Spirit Call": 3478.4,
+     "Flash of Lightning": 3191.4,
+     "Elemental Fusion": 3478.4
+    },
+    "glyphDps": {
+     "Fortitude": 3478.4,
+     "Unsealed Power": 3478.4,
+     "Fortune": 3144.6,
+     "Supremacy": 3285.1,
+     "Arc Striking": 3144.6,
+     "Battle Frenzy": 3144.6,
+     "Hellfire": 3144.6,
+     "Thunder": 3144.6,
+     "Blood Violence": 3144.6,
+     "Animosity": 3176.4,
+     "Glass Cannon": 3478.4,
+     "Mindhaste": 3192.8
+    }
+   },
+   {
+    "farm_dps": 3474.5,
+    "dps": 3474.5,
+    "total": 104235,
+    "manaLeft": 98.3,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Queen's Scepter",
+      "code": "I080",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Gloves of Tribal Fury",
+      "code": "I0O8",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Spellbinder's Vest",
+      "code": "tlum",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Elemental Fusion",
+     "Spirit Call",
+     "Thunderstorm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 0,
+     "mastery": 9,
+     "luck": 20,
+     "pet_damage": 0
+    },
+    "chunk": 715469391,
+    "sources": [
+     [
+      "Lesser Chain Lightning",
+      973.3
+     ],
+     [
+      "Thunderstorm",
+      654.3
+     ],
+     [
+      "Chain Lightning",
+      642.4
+     ],
+     [
+      "Sulfuras",
+      462.0
+     ],
+     [
+      "Stormfury",
+      290.5
+     ],
+     [
+      "Автоатака",
+      231.9
+     ],
+     [
+      "Feral Spirit",
+      125.4
+     ],
+     [
+      "Lightning Shield",
+      82.2
+     ],
+     [
+      "Sulfuras (удар)",
+      12.4
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Chain Lightning"
+     ],
+     [
+      "0.45",
+      "Lightning Shield"
+     ],
+     [
+      "0.90",
+      "Feral Spirit"
+     ],
+     [
+      "1.35",
+      "Totemic Call"
+     ],
+     [
+      "5.65",
+      "Chain Lightning"
+     ],
+     [
+      "10.94",
+      "Lightning Shield"
+     ],
+     [
+      "11.39",
+      "Chain Lightning"
+     ],
+     [
+      "13.01",
+      "Feral Spirit"
+     ],
+     [
+      "14.26",
+      "Totemic Call"
+     ],
+     [
+      "17.04",
+      "Chain Lightning"
+     ],
+     [
+      "21.43",
+      "Lightning Shield"
+     ],
+     [
+      "22.69",
+      "Chain Lightning"
+     ],
+     [
+      "25.11",
+      "Feral Spirit"
+     ],
+     [
+      "27.17",
+      "Totemic Call"
+     ],
+     [
+      "28.34",
+      "Chain Lightning"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "171"
+     ],
+     [
+      "Сила",
+      "26"
+     ],
+     [
+      "Ловкость",
+      "39"
+     ],
+     [
+      "Сила атаки",
+      "141.2"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "41"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "14.0%"
+     ],
+     [
+      "Скорость атаки",
+      "63.6%"
+     ],
+     [
+      "Удача",
+      "20%"
+     ],
+     [
+      "Healing Power",
+      "0"
+     ],
+     [
+      "Pet Damage",
+      "0.0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "1372"
+     ],
+     [
+      "Реген маны",
+      "14.64/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.13 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Storm Ward": 3089.4,
+     "Thunderstorm": 3474.5,
+     "Stormstrike": 3143.8,
+     "Totem Mastery": 3050.1,
+     "Totemic Wrath": 3174.4,
+     "Overcharge": 3231.0,
+     "Storm Infusion": 3197.9,
+     "Bloodlust": 3037.8,
+     "Spirit Call": 3474.5,
+     "Flash of Lightning": 3179.4,
+     "Elemental Fusion": 3474.5
+    },
+    "glyphDps": {
+     "Fortitude": 3474.5,
+     "Unsealed Power": 3474.5,
+     "Fortune": 3128.3,
+     "Supremacy": 3462.2,
+     "Arc Striking": 3128.3,
+     "Battle Frenzy": 3128.3,
+     "Hellfire": 3128.3,
+     "Thunder": 3128.3,
+     "Blood Violence": 3128.3,
+     "Animosity": 3157.0,
+     "Glass Cannon": 3474.5,
+     "Mindhaste": 3125.6
+    }
+   }
+  ]
+ }
+}

@@ -4,7 +4,8 @@
     .venv-dml\\Scripts\\python.exe tools\\run_opencl.py --hero mage --spec frost --top 100 --workers 4
 
 Specs: mage fire/frost/arcane, priest shadow/discipline/holy,
-shaman restoration/enhancement/elemental, paladin retribution/protection/holy.  Data (checkpoints,
+shaman restoration/enhancement/elemental, paladin retribution/protection/holy,
+druid restoration/balance (the caster Druid; feral_druid is a separate class).  Data (checkpoints,
 results, runtime.json) go to sunken-sim-runs/<hero>-<spec>-opencl-top<N>/.  Running the same command again resumes
 from the checkpoint.  To pause: create a file named request-stop in that
 folder (or press Ctrl+C); the checkpoint is kept.
@@ -26,7 +27,7 @@ sys.path.insert(0, str(REPO))
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--hero", required=True, choices=("mage", "priest", "shaman", "paladin"))
+    ap.add_argument("--hero", required=True, choices=("mage", "priest", "shaman", "paladin", "druid"))
     ap.add_argument("--spec", required=True)
     ap.add_argument("--top", type=int, default=80)
     ap.add_argument("--workers", type=int, default=4, help="worker processes, each with its own OpenCL context")

@@ -28,22 +28,19 @@ def add(cls, spec, page, level, runs_by_pool):
                         sources=[(n, float(v)) for n, v in r.get("sources", [])])
     specs.append(dict(cls=cls, spec=spec, page=page, level=level, pools=pools))
 
-# Mage: Fire, Frost, Arcane (full Top-80 GPU runs, level 15) from mage.tsx
+# Mage: Fire, Frost, Arcane (full Top-150 GPU runs, level 15) from mage.tsx
 for name, spec in (("DATA", "Fire"), ("FROST_DATA", "Frost"), ("ARCANE_DATA", "Arcane")):
     md = const("mage.tsx", name)
     add("Mage", spec, "mage.html", md["level"], {p: max(md["runs"][p], key=lambda r: float(r["dps"])) for p, _ in POOLS if p in md["runs"]})
-# Paladin / Shaman (level 6), keys spec|pool|place
-for f, cls, page, names in [("paladin.tsx", "Paladin", "paladin.html", {"retribution": "Retribution", "protection": "Protection"}),
-                            ("shaman.tsx", "Shaman", "shaman.html", {"enhancement": "Enhancement", "elemental": "Elemental"})]:
-    R = const(f, "RUNS")
-    for sp, t in names.items():
-        byp = {}
-        for k, r in R.items():
-            s_, p, _ = k.split("|")
-            if s_ == sp and (p not in byp or float(r["dps"]) > float(byp[p]["dps"])): byp[p] = r
-        add(cls, t, page, 6, byp)
-# Druid / Priest (level from DATA); Priest: Shadow, Discipline, Holy (full Top-80 GPU runs)
-for f, name, cls, spec, page in [("druid.tsx", "DATA", "Druid", "Balance", "druid.html"),
+# Paladin / Shaman: three specs each (full Top-150 GPU runs, level 15) from paladin.tsx / shaman.tsx
+for f, cls, page, names in [("paladin.tsx", "Paladin", "paladin.html", ("retribution", "protection", "holy")),
+                            ("shaman.tsx", "Shaman", "shaman.html", ("restoration", "enhancement", "elemental"))]:
+    for sp in names:
+        d = const(f, sp.upper() + "_DATA")
+        add(cls, sp.capitalize(), page, d["level"], {p: max(d["runs"][p], key=lambda r: float(r["dps"])) for p, _ in POOLS if p in d["runs"]})
+# Druid: Restoration, Balance; Priest: Shadow, Discipline, Holy (full Top-150 GPU runs, level from the data)
+for f, name, cls, spec, page in [("druid.tsx", "RESTORATION_DATA", "Druid", "Restoration", "druid.html"),
+                                 ("druid.tsx", "BALANCE_DATA", "Druid", "Balance", "druid.html"),
                                  ("priest.tsx", "DATA", "Priest", "Shadow", "priest.html"),
                                  ("priest.tsx", "DISCIPLINE_DATA", "Priest", "Discipline", "priest.html"),
                                  ("priest.tsx", "HOLY_DATA", "Priest", "Holy", "priest.html")]:
