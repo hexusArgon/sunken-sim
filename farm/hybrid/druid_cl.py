@@ -602,7 +602,7 @@ class DruidCL(C.ExactCL):
     TALENT_BITS = TALENT_BITS
     GLYPH_BITS = GLYPH_BITS
     NO_EFFECT = NO_EFFECT
-    KEY_FREE = ("crit", "potency", "health", "healing_power")
+    KEY_FREE = ("health", "healing_power")  # ESC points left out of the timeline key
     TABLE_KEYS = _S.ShamanCL.TABLE_KEYS
     SCALARS = _S.ShamanCL.SCALARS
 

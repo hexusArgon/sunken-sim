@@ -536,7 +536,8 @@ def _timeline_key(build: Build, stats: dict, spec: str, targets: int, bound_spel
     """Schedule identity. Haste, attack speed, cooldowns and mana change when casts happen.
 
     Potency, crit and luck are applied in score_events (and compile/score_compiled),
-    so they are omitted here. Mastery also rescores damage, but cast_refund_mastery
+    but their ESC points are part of the key since 2026-11-12: luck (Cosmic Horrors) and crit (Magic Shiv,
+    crit-doubled attack mana) change the fight itself. Mastery also rescores damage, but cast_refund_mastery
     stays in the key because it changes mana during the fight. Crit can still change
     swing via baked crit_as uptime in character().
     """
@@ -576,6 +577,9 @@ def _timeline_key(build: Build, stats: dict, spec: str, targets: int, bound_spel
         _wears(build, "I07O"),
         _wears(build, SULFURAS),
         cooldowns,
+        # ESC crit, potency and luck points: luck drives Cosmic Horrors (I0HP) in the fight, crit drives
+        # Magic Shiv (I0NP) and the crit-doubled attack mana. A replayed fight must never come from other points.
+        (build.crit_points, build.potency_points, build.luck_points),
     )
 
 

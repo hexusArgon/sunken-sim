@@ -44,7 +44,11 @@ def main() -> int:
 
     if (args.hero, args.spec) not in SPECS:
         ap.error(f"no OpenCL engine for {args.hero}/{args.spec}")
-    name = args.name or f"{args.hero}-{args.spec}-opencl-top{args.top}"
+    from farm import admission as A
+
+    gate = A.policy({"hero": args.hero})
+    # bare-top50 runs get their own folder: an old bare-top10 job.json in the same folder would be resumed as is
+    name = args.name or f"{args.hero}-{args.spec}-opencl-top{args.top}" + ("-gate50" if gate == A.BARE50 else "")
     data = Path(args.data) if args.data else REPO.parent / "sunken-sim-runs" / name
     data.mkdir(parents=True, exist_ok=True)
     os.environ["FARM_DATA"] = str(data)
@@ -60,7 +64,7 @@ def main() -> int:
         job = json.loads(job_path.read_text(encoding="utf-8"))
     else:
         job = dict(id=data.name, worker="local-hybrid", hero=args.hero, spec=args.spec, pool="mixed", top=args.top,
-                   targets=args.targets, start=0, end=space.total - 1, admission_policy="bare-top10",
+                   targets=args.targets, start=0, end=space.total - 1, admission_policy=gate,
                    backend="opencl")
         job_path.write_text(json.dumps(job, ensure_ascii=False, indent=2), encoding="utf-8")
     job.update(fire_cl_workers=args.workers, fire_cl_span=args.span)

@@ -4,7 +4,7 @@
  "hero": "paladin",
  "spec": "retribution",
  "top": 150,
- "farm_file": "../sunken-sim-runs/paladin-retribution-opencl-top150-gpu/results/local-hybrid-paladin-retribution-mixed-top150-5-0-14700535054-admission-v2-bare-top10-2fea85d9c6d90b85.json",
+ "farm_file": "../sunken-sim-runs/paladin-retribution-opencl-top150-gpu/results/rescored-local-hybrid-paladin-retribution-mixed-top150-5-0-14700535054-admission-v2-bare-top10-2fea85d9c6d90b85.json",
  "done": 14700535055,
  "end": 14700535054,
  "errors": 0,

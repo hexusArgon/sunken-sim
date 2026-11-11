@@ -4,7 +4,7 @@
  "hero": "druid",
  "spec": "restoration",
  "top": 150,
- "farm_file": "../sunken-sim-runs/druid-restoration-opencl-top150-gpu/results/local-hybrid-druid-restoration-mixed-top150-5-0-14721239623-admission-v2-bare-top10-f7eee7c0e795e784.json",
+ "farm_file": "../sunken-sim-runs/druid-restoration-opencl-top150-gpu/results/rescored-local-hybrid-druid-restoration-mixed-top150-5-0-14721239623-admission-v2-bare-top10-f7eee7c0e795e784.json",
  "done": 14721239624,
  "end": 14721239623,
  "errors": 0,

@@ -4,7 +4,7 @@
  "hero": "paladin",
  "spec": "protection",
  "top": 150,
- "farm_file": "../sunken-sim-runs/paladin-protection-opencl-top150-gpu/results/local-hybrid-paladin-protection-mixed-top150-5-0-14700535054-admission-v2-bare-top10-86f9b4e2699bce59.json",
+ "farm_file": "../sunken-sim-runs/paladin-protection-opencl-top150-gpu/results/rescored-local-hybrid-paladin-protection-mixed-top150-5-0-14700535054-admission-v2-bare-top10-86f9b4e2699bce59.json",
  "done": 14700535055,
  "end": 14700535054,
  "errors": 0,

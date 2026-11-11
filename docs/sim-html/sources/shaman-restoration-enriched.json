@@ -4,7 +4,7 @@
  "hero": "shaman",
  "spec": "restoration",
  "top": 150,
- "farm_file": "../sunken-sim-runs/shaman-restoration-opencl-top150-gpu/results/local-hybrid-shaman-restoration-mixed-top150-5-0-14679841799-admission-v2-bare-top10-92dbcec407b1043c.json",
+ "farm_file": "../sunken-sim-runs/shaman-restoration-opencl-top150-gpu/results/rescored-local-hybrid-shaman-restoration-mixed-top150-5-0-14679841799-admission-v2-bare-top10-92dbcec407b1043c.json",
  "done": 14679841800,
  "end": 14679841799,
  "errors": 0,

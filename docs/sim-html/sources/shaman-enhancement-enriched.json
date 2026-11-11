@@ -4,7 +4,7 @@
  "hero": "shaman",
  "spec": "enhancement",
  "top": 150,
- "farm_file": "../sunken-sim-runs/shaman-enhancement-opencl-top150-gpu/results/local-hybrid-shaman-enhancement-mixed-top150-5-0-14679841799-admission-v2-bare-top10-339780f7b382d620.json",
+ "farm_file": "../sunken-sim-runs/shaman-enhancement-opencl-top150-gpu/results/rescored-local-hybrid-shaman-enhancement-mixed-top150-5-0-14679841799-admission-v2-bare-top10-339780f7b382d620.json",
  "done": 14679841800,
  "end": 14679841799,
  "errors": 0,

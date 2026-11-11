@@ -199,7 +199,11 @@ class Board:
         stored.pop("place", None)
         self.by_chunk[int(stored["chunk"])] = stored
         ranked = sorted(self.by_chunk.values(), key=lambda item: (-item["dps"], item["chunk"]))
-        self.by_chunk = {item["chunk"]: item for item in ranked[:10]}
+        self.by_chunk = {item["chunk"]: item for item in ranked[:A.LIMIT]}
+
+    def trim(self, keep: int) -> None:
+        ranked = self.rows()
+        self.by_chunk = {item["chunk"]: item for item in ranked[:keep]}
 
     def rows(self) -> list[dict]:
         return sorted(self.by_chunk.values(), key=lambda item: (-item["dps"], item["chunk"]))
@@ -240,6 +244,12 @@ class Boards:
 
     def best(self) -> float | None:
         return self.overall.best()
+
+    def trim(self, keep: int) -> None:
+        """Finished run: keep only the best ``keep`` builds of every list (bare-top50 writes the top-20)."""
+        self.overall.trim(keep)
+        for board in self.by_group.values():
+            board.trim(keep)
 
     def ranked(self, board: Board) -> list[dict]:
         top = []
@@ -326,6 +336,8 @@ def init_worker(space: Space, items: dict, sources: dict, hero: str, spec: str, 
     _TARGETS = targets
     _BAR = bar
     _STOP = stop
+    if bar is not None:
+        A.activate(bar[0].get('__policy__'))
     from farm.hybrid.mage_priest_resources import scoped
     global _SCOPED_DML_ALLOWED
     _SCOPED_DML_ALLOWED = (not scoped(hero, spec) or fire_dml_budget is None or fire_dml_budget.acquire(False))
@@ -696,6 +708,7 @@ def run_job(job: dict, box: dict, tick, eval_fn=None, *, _fire_cpu_fallback=Fals
     from farm.catalog import load
 
     job = dict(job, admission_policy=A.policy(job))  # reject removed all before I/O/work
+    A.activate(job['admission_policy'])
     space, items = load(job["hero"], job["spec"], job["pool"], job.get("preset") or None, job.get("top") or None)
     job = A.configure(job, space, items)
     print('search admission: ' + A.description(job), flush=True)
@@ -709,8 +722,8 @@ def run_job(job: dict, box: dict, tick, eval_fn=None, *, _fire_cpu_fallback=Fals
     lock = ctx.Lock()
     slots = {'__policy__': job['admission_policy']}
     for key, rows in A.Observations(remembered).snapshot().items():
-        scores = ctx.Array('d', TOP_BARE)
-        identities = ctx.Array('q', TOP_BARE)
+        scores = ctx.Array('d', A.LIMIT)
+        identities = ctx.Array('q', A.LIMIT)
         count = ctx.Value('i', len(rows))
         for i, row in enumerate(rows):
             scores[i], identities[i] = row['dps'], row['chunk']
@@ -787,6 +800,7 @@ def run_job(job: dict, box: dict, tick, eval_fn=None, *, _fire_cpu_fallback=Fals
         emit(final=True)
         return {"path": path, "done": done, "left": total - done, "stopped": True, "errors": errors}
     if done_up_to >= end_ex:
+        boards.trim(A.final_keep(job["admission_policy"]))
         path = _write_result(job, boards, finished(), False, errors)
         emit(final=True)
         return {"path": path, "done": finished(), "left": 0, "stopped": False, "errors": errors}
@@ -889,6 +903,8 @@ def run_job(job: dict, box: dict, tick, eval_fn=None, *, _fire_cpu_fallback=Fals
 
     done = finished()
     stopped = bool(box.get("stop")) and done < total
+    if not stopped and done >= total:
+        boards.trim(A.final_keep(job["admission_policy"]))
     path = _write_result(job, boards, done, stopped, errors)
     emit(final=True)
     _save_checkpoint(job, done_up_to, ahead, boards, errors, item_bar_snapshot(slots, lock))

@@ -1,6 +1,7 @@
 // Shared page UI for the class sim pages (mage, priest, shaman, paladin, druid).
 // Each <class>.tsx keeps only its data (TALENTS, GLYPHS, <SPEC>_DATA, ITEM_TIPS, NAME_TIPS) and renders <ClassPage>.
 // Run selection: spec → pool ("Shop + drop" = top, "Только Shop Item" = top_shop, "Только Random drop" = top_random;
+// no other tabs (the Shadow "С Soul Lantern" tab was removed 2026-11-12);
 // top_shop_random is never shown, .cursor/rules/sim-canvas.mdc) → place 1..10. No all-runs summary table.
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useCanvasState } from "cursor/canvas";
@@ -32,7 +33,6 @@ const POOLS: Array<[string, string, string]> = [
   ["mixed", "Shop + drop", "Общий топ: Shop, Random drop и связки"],
   ["shop", "Только Shop Item", "Все шесть предметов из магазина"],
   ["drop", "Только Random drop", "Все шесть предметов из дропа"],
-  ["lantern", "С Soul Lantern", "Отдельный прогон с обязательным Soul Lantern"],
 ];
 const SOURCE_LABEL: Record<string, string> = { shop: "Shop", drop: "Drop", legendary: "Legendary" };
 const SOURCE_TITLE: Record<string, string> = { shop: "Shop Item", drop: "Random drop", legendary: "Mysterious Wanderer" };
@@ -307,7 +307,6 @@ function SpecView({ cfg, spec, specTabs, initial }: { cfg: PageConfig; spec: Spe
         </div>
         <div className="hero-meta">
           Полный перебор Top-{top || "?"} + Mind Amplifier на GPU (OpenCL, бит в бит с CPU): {fmtInt(data.done)} шестёрок · ESC {pointsTotal(run.points)} очков
-          {mode === "lantern" ? <> · Soul Lantern: отдельный прогон ({fmtInt(data.lantern_done ?? 0)} шестёрок), бои пересчитаны текущим симом</> : null}
         </div>
       </header>
 

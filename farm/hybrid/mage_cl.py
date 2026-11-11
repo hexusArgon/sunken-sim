@@ -1775,9 +1775,9 @@ def _floors(snapshot: dict) -> tuple[float, float, float]:
 
 
 def candidates(dps: np.ndarray, group: np.ndarray, snapshot: dict) -> np.ndarray:
-    """Rows that can still enter a bare top-10.
+    """Rows that can still enter the bare item-only top (10 or 50 per category, farm.admission.LIMIT).
 
-    Category floors only rise (a full top-10 replaces its lowest score), so a
+    Category floors only rise (a full top replaces its lowest score), so a
     row at or below a floor taken before its claim is rejected by the claim
     too.  Skipping those claims leaves the gate state identical.
     """

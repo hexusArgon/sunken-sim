@@ -238,9 +238,12 @@ def _timeline_key(build: Build, stats: dict, spec: str, targets: int, bound_key:
     items = tuple(sorted(item.rawcode for item in build.items))
     talents = tuple(sorted(build.talents))
     glyphs = tuple(sorted(build.glyphs))
-    # crit/potency applied at score. Luck stays: proc() scales wisp spread,
-    # entanglement doubles and wisp-item extra hits inside the fight.
+    # Luck: proc() scales wisp spread, entanglement doubles and wisp-item extra hits inside the fight.
+    # Crit: crit-doubled attack mana. Potency is score-time only but kept too, so a replay never comes
+    # from other points.
     esc = (
+        build.crit_points,
+        build.potency_points,
         build.mastery_points,
         build.luck_points,
         getattr(build, "haste_points", 0),

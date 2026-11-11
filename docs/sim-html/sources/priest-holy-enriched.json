@@ -2,7 +2,7 @@
  "level": 15,
  "targets": 5,
  "spec": "holy",
- "farm_file": "../sunken-sim-runs/priest-holy-opencl-top150-gpu/results/local-hybrid-priest-holy-mixed-top150-5-0-14659159857-admission-v2-bare-top10-e3eafb9e4cf8f059.json",
+ "farm_file": "../sunken-sim-runs/priest-holy-opencl-top150-gpu/results/rescored-local-hybrid-priest-holy-mixed-top150-5-0-14659159857-admission-v2-bare-top10-e3eafb9e4cf8f059.json",
  "done": 14659159858,
  "end": 14659159857,
  "errors": 0,

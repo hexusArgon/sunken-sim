@@ -2,7 +2,7 @@
  "level": 15,
  "targets": 5,
  "spec": "arcane",
- "farm_file": "../sunken-sim-runs/mage-arcane-opencl-top150-gpu/results/local-hybrid-mage-arcane-mixed-top150-5-0-14617829908-admission-v2-bare-top10-a60c37c96bab83fa.json",
+ "farm_file": "../sunken-sim-runs/mage-arcane-opencl-top150-gpu/results/rescored-local-hybrid-mage-arcane-mixed-top150-5-0-14617829908-admission-v2-bare-top10-a60c37c96bab83fa.json",
  "done": 14617829909,
  "end": 14617829908,
  "errors": 0,

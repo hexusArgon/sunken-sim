@@ -4,7 +4,7 @@
  "hero": "shaman",
  "spec": "elemental",
  "top": 150,
- "farm_file": "../sunken-sim-runs/shaman-elemental-opencl-top150-gpu/results/local-hybrid-shaman-elemental-mixed-top150-5-0-14679841799-admission-v2-bare-top10-c2cc8c8aa24190ae.json",
+ "farm_file": "../sunken-sim-runs/shaman-elemental-opencl-top150-gpu/results/rescored-local-hybrid-shaman-elemental-mixed-top150-5-0-14679841799-admission-v2-bare-top10-c2cc8c8aa24190ae.json",
  "done": 14679841800,
  "end": 14679841799,
  "errors": 0,

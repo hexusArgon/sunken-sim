@@ -902,7 +902,7 @@ class ShamanCL(C.ExactCL):
     TALENT_BITS = TALENT_BITS
     GLYPH_BITS = GLYPH_BITS
     NO_EFFECT = NO_EFFECT
-    KEY_FREE = ("crit", "potency", "health", "healing_power")
+    KEY_FREE = ("health", "healing_power")  # ESC points left out of the timeline key
     TABLE_KEYS = ("dp0", "dp1", "count_without", "total", "npieces", "pkind", "pamp", "fold", "uniq", "pmask", "psrc",
                   "nmag", "mag_kind", "mag_id", "mag_amt", "base")
     SCALARS = {"count_without": np.int64, "total": np.int64, "npieces": np.int32, "nmag": np.int32}

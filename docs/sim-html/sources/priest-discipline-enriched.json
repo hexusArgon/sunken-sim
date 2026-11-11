@@ -2,7 +2,7 @@
  "level": 15,
  "targets": 5,
  "spec": "discipline",
- "farm_file": "../sunken-sim-runs/priest-discipline-opencl-top150-gpu/results/local-hybrid-priest-discipline-mixed-top150-5-0-14679841799-admission-v2-bare-top10-7d1f1929b4ae2c65.json",
+ "farm_file": "../sunken-sim-runs/priest-discipline-opencl-top150-gpu/results/rescored-local-hybrid-priest-discipline-mixed-top150-5-0-14679841799-admission-v2-bare-top10-7d1f1929b4ae2c65.json",
  "done": 14679841800,
  "end": 14679841799,
  "errors": 0,

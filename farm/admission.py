@@ -1,4 +1,12 @@
-"""Versioned, identity-aware item admission. Bare top-10 by default.
+"""Versioned, identity-aware item admission.
+
+Two policies:
+* ``bare-top10`` (default): talents/glyphs/ESC are refined when the item-only DPS enters the current
+  top-10 of a category; the boards and the result keep 10 builds per list.
+* ``bare-top50`` (default for Priest, Paladin, Shaman, Mage, Druid): the gate remembers the top-50
+  item-only sextuples of each category and refines a sextuple that enters them; the run keeps the 50 best
+  finished builds per list while it runs and, once the whole span is done, writes only the top-20
+  (the other 30 are dropped from the result and the checkpoint).
 
 The production gate is a search heuristic, never an admissible upper bound.
 Anonymous legacy float snapshots cannot identify observations and are ignored.
@@ -12,10 +20,25 @@ from pathlib import Path
 
 SCHEMA = 2
 BARE = 'bare-top10'
+BARE50 = 'bare-top50'
 LEGACY_ALL = 'all'
 UNSAFE = 'unsafe-bare-top10'
 KEYS = ('overall', 'shop', 'drop')
-LIMIT = 10
+LIMITS = {BARE: 10, BARE50: 50}      # item-only gate size and finished builds kept while running
+FINAL_KEEP = {BARE: 10, BARE50: 20}  # finished builds per list written when the run is complete
+TOP50_HEROES = frozenset({'priest', 'paladin', 'shaman', 'mage', 'druid'})
+LIMIT = LIMITS[BARE]  # active gate size of this process; set by activate()
+
+
+def activate(name):
+    """Make ``name`` the active policy of this process (gate size, board size)."""
+    global LIMIT
+    LIMIT = LIMITS[policy({'admission_policy': name})]
+    return LIMIT
+
+
+def final_keep(name):
+    return FINAL_KEEP[policy({'admission_policy': name})]
 
 
 def policy(job=None):
@@ -25,11 +48,16 @@ def policy(job=None):
     Stored checkpoint metadata is never normalized when validating resumes.
     """
     value = (job or {}).get('admission_policy')
-    if value is None or value in (BARE, UNSAFE):
+    if value is None:
+        hero = str((job or {}).get('hero') or '').strip().lower()
+        return BARE50 if hero in TOP50_HEROES else BARE
+    if value in (BARE, UNSAFE):
         return BARE
+    if value == BARE50:
+        return BARE50
     if value == LEGACY_ALL:
-        raise ValueError("admission_policy='all' has been removed; use 'bare-top10'")
-    raise ValueError(f'Unknown admission_policy: {value!r}; use {BARE!r}')
+        raise ValueError("admission_policy='all' has been removed; use 'bare-top10' or 'bare-top50'")
+    raise ValueError(f'Unknown admission_policy: {value!r}; use {BARE!r} or {BARE50!r}')
 
 
 def groups(group):
@@ -111,6 +139,13 @@ def suffix(job):
 
 
 def description(job):
+    if job.get('admission_policy') == BARE50:
+        return ('Bare top-50: talents/glyphs/ESC are refined only when item-only DPS enters the current top-50 of a relevant category. '
+                'While running, the 50 best finished builds of each list are kept; when the whole span is done, only the top-20 '
+                'of each list is written and the other 30 are dropped. '
+                'Heuristic: item-only DPS is not an upper bound on finished DPS; synergistic builds may be lost. No global optimum guarantee. '
+                'Talent selection, then glyph selection, then greedy ESC are staged as before. '
+                'top=overall; top_shop_random=mixed sources; top_shop=shop; top_random=drop; legendaries belong to any source category.')
     return ('Bare top-10: talents/glyphs/ESC are refined only when item-only DPS enters the current top-10 of a relevant category. '
             'Heuristic: item-only DPS is not an upper bound on finished DPS; synergistic builds may be lost. No global optimum guarantee. '
             'Talent selection, then glyph selection, then greedy ESC are staged as before. '

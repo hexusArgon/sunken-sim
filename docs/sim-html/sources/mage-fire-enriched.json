@@ -2,7 +2,7 @@
  "level": 15,
  "targets": 5,
  "spec": "fire",
- "farm_file": "../sunken-sim-runs/mage-fire-opencl-top150-gpu/results/local-hybrid-mage-fire-mixed-top150-5-0-14679841799-admission-v2-bare-top10-f6cb9ea94235fbe6.json",
+ "farm_file": "../sunken-sim-runs/mage-fire-opencl-top150-gpu/results/rescored-local-hybrid-mage-fire-mixed-top150-5-0-14679841799-admission-v2-bare-top10-f6cb9ea94235fbe6.json",
  "done": 14679841800,
  "end": 14679841799,
  "errors": 0,

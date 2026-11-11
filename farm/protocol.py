@@ -367,11 +367,13 @@ def status_text(
         lines.append(f"бои/с {rate_text(rate)} · макс {rate_text(rate_max)} · мин {rate_text(rate_min)}")
         lines.append(f"ЦП {rate_text(cpu)}%")
     if admission_policy is not None:
-        lines.append('Bare top-10 heuristic; no global optimum guarantee' if admission_policy in ('bare-top10', 'unsafe-bare-top10') else 'Legacy admission policy: ' + str(admission_policy) + ' (not a production mode)')
+        lines.append('Bare top-10 heuristic; no global optimum guarantee' if admission_policy in ('bare-top10', 'unsafe-bare-top10')
+                     else 'Bare top-50 gate, top-20 written; no global optimum guarantee' if admission_policy == 'bare-top50'
+                     else 'Legacy admission policy: ' + str(admission_policy) + ' (not a production mode)')
     if errors:
         lines.append(f"ошибок {grouped(errors)}")
     if final and done:
-        lines.append("файл с топ-10 ниже")
+        lines.append("файл с топ-20 ниже" if admission_policy == "bare-top50" else "файл с топ-10 ниже")
     return "\n".join(lines)
 
 
