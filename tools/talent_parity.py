@@ -10,14 +10,17 @@ from farm.hybrid.mage_cl import random_builds
 
 def main():
     hero, spec = sys.argv[1], sys.argv[2]
-    per = int(sys.argv[3]) if len(sys.argv) > 3 else 4
+    per = int(sys.argv[3]) if len(sys.argv) > 3 and sys.argv[3].isdigit() else 4
     space, items = load(hero, spec, "mixed", None, 80)
     engine = mage_cl.make_engine(hero, space, items, R.source_map(items), 5, spec)
     mod = mage_cl.engine_module(engine)
     rng = random.Random(5)
     base = random_builds(space, 400, 9)
     builds = []
-    for code in space.talents:
+    codes = list(space.talents)
+    if "--all" in sys.argv:  # every talent the kernel knows, also those outside this catalog's talent pool
+        codes = [c for c, bit in getattr(mod, "TALENT_BITS", {}).items() if bit < 20]
+    for code in codes:
         pool = [b for b in base if b[1]]
         for chunk, talents, glyphs, points in rng.sample(pool, per):
             others = [c for c in talents if c != code]

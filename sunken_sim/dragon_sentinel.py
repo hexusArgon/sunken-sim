@@ -38,6 +38,8 @@ from __future__ import annotations
 import heapq
 import re
 
+from sunken_sim.attack_procs import from_stats as attack_procs
+from sunken_sim.death_knight import _Buff
 from sunken_sim.pressure import AGI_ARMOR, max_hp
 from sunken_sim.shadow import (
     CAST_BACKSWING,
@@ -60,6 +62,7 @@ from sunken_sim.shadow import (
     armor_taken,
     attack_mana_gain,
     cast_mana_back,
+    item_luck,
     sulfuras_echo_chance,
     target_hp,
 )
@@ -268,8 +271,7 @@ def stats_of(build: Build) -> dict[str, float]:
                 attack_potency = 2.0
             damage_pct += item.damage_pct / 100.0
             mana_flat += item.mana
-            for raw in re.findall(r"\+(\d+)% Luck\b", item.tip):
-                luck += int(raw) / 100.0
+            luck += item_luck(item)  # stat lines only (before 2026-11-12: any "+N% Luck" in the tooltip)
             for raw in re.findall(r"\+(\d+) Health\b", item.tip):
                 health_flat += int(raw)
             for raw in re.findall(r"\+(\d+)% Pet Damage\b", item.tip):
@@ -284,8 +286,7 @@ def stats_of(build: Build) -> dict[str, float]:
         rating += 0.15
     if _has(build, GLYPH_MINDHASTE):
         haste += 0.07
-    if _has(build, GLYPH_BATTLE_FRENZY):
-        attack_speed += 0.10
+    # Battle Frenzy: fight-time proc in attack_procs (before 2026-11-12: a flat +0.10 here).
     if _has(build, GLYPH_UNSEALED) and GLYPH_UNSEALED not in codes:
         magic_add += 0.18
         phys_add += 0.18
@@ -376,18 +377,55 @@ def _cooldown(base: float, haste: float, stats: dict, flat: float = 0.0) -> floa
     return max(0.5, (base * stats["cd_temp"] - stats["flat_cdr"] - flat) / (1.0 + haste))
 
 
-class _Dither:
-    """Deterministic chance: fires once the accumulated probability reaches 1."""
+def _chance(value: float) -> float:
+    return max(0.0, min(1.0, value))
+
+
+BRAND_SLOTS = 8
+
+
+class _Brand:
+    """Obsidian Branded on one target: (expiry, chance, armor value) entries, on while now < expiry.
+
+    A hit brands the target only where it is unbranded: chance w adds w x P(unbranded) at now + 3.
+    """
+
+    __slots__ = ("e", "m", "v")
 
     def __init__(self) -> None:
-        self.acc = 0.0
+        self.e: list[float] = []
+        self.m: list[float] = []
+        self.v: list[int] = []
 
-    def roll(self, chance: float) -> bool:
-        self.acc += max(0.0, min(1.0, chance))
-        if self.acc >= 1.0 - 1e-9:
-            self.acc -= 1.0
-            return True
-        return False
+    def mass(self, now: float) -> float:
+        total = 0.0
+        for expiry, share in zip(self.e, self.m):
+            if now < expiry:
+                total += share
+        return total
+
+    def apply(self, now: float, weight: float, value: int) -> None:
+        keep = [i for i, expiry in enumerate(self.e) if expiry > now]
+        if len(keep) != len(self.e):
+            self.e = [self.e[i] for i in keep]
+            self.m = [self.m[i] for i in keep]
+            self.v = [self.v[i] for i in keep]
+        added = weight * (1.0 - self.mass(now))
+        if added <= 0.0:
+            return
+        self.e.append(now + BRANDED_DUR)
+        self.m.append(added)
+        self.v.append(value)
+        if len(self.e) > BRAND_SLOTS:
+            j = 0
+            for i in range(1, len(self.m)):
+                if self.m[i] < self.m[j]:
+                    j = i
+            k = j + 1 if j + 1 < len(self.m) else j - 1
+            self.m[k] += self.m[j]
+            del self.e[j]
+            del self.m[j]
+            del self.v[j]
 
 
 # (Lifebinder on self cast / skipped, Dragon Form used / not used)
@@ -440,10 +478,9 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
         seq[0] += 1
         heapq.heappush(events, (at, seq[0], kind, data))
 
-    fire_until = [-1.0] * targets  # Dragonfire B02B
-    claw_until = [-1.0] * targets  # Dragon Claw B06C
-    brand_until = [-1.0] * targets
-    brand_value = [0] * targets
+    fire = [_Buff() for _ in range(targets)]  # Dragonfire B02B
+    claw = [_Buff() for _ in range(targets)]  # Dragon Claw B06C
+    brand = [_Brand() for _ in range(targets)]
     cleanse_until = [-1.0] * targets
     molten_until = -1.0
     life_until = -1.0
@@ -451,11 +488,12 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
     form_until = -1.0
     heated = False
     burnout_bonus = 0.0
-    burnout_triggers = 0  # udg_Burnout_Triggers starts at 0
+    # udg_Burnout_Triggers (starts at 0) as chances of its values 0 / 2 / 3
+    trig = {0: 1.0, 2: 0.0, 3: 0.0}
     fury = 0.0
     fury_max = 85.0 if has(TALENT_WAKING) else 100.0
     bolt_target = [0]
-    rolls = {k: _Dither() for k in ("burnout", "crit_burnout", "drake", "fury", "cf_dmg", "cf_heal")}
+    procs = attack_procs(build, stats, stats["luck"])
 
     def luck_mult() -> float:
         return 1.0 + stats["luck"]
@@ -522,38 +560,48 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
         return WHITE_BASE + 0.75 * strength + stats["damage"]
 
     def taken(t: int, now: float) -> float:
-        reduce = brand_value[t] if brand_until[t] > now else 0
-        return armor_taken(DUMMY_ARMOR - pen - reduce)
+        b = brand[t]
+        off = 1.0
+        total = 0.0
+        for expiry, share, value in zip(b.e, b.m, b.v):
+            if now < expiry:
+                total += share * armor_taken(DUMMY_ARMOR - pen - value)
+                off -= share
+        return total + off * armor_taken(DUMMY_ARMOR - pen)
 
     def melting(t: int, now: float) -> float:
         """Melting Flames I0B0: flat bonus per damage instance on Dragonfire / Dragon Claw targets."""
         if not has(TALENT_MELTING):
             return 0.0
         flat = 0.0
-        if fire_until[t] > now:
-            flat += 5.0 + (0.004 * max_life if ruby else 0.0)
-        if claw_until[t] > now:
-            flat += 5.0 + (0.005 * max_life if ruby else 0.0)
+        on = fire[t].mass(now)
+        if on > 0.0:
+            flat += on * (5.0 + (0.004 * max_life if ruby else 0.0))
+        on = claw[t].mass(now)
+        if on > 0.0:
+            flat += on * (5.0 + (0.005 * max_life if ruby else 0.0))
         return flat
 
-    def legacy_cdr(now: float) -> None:
-        """Legacy of the Aspects: the longest remaining cooldown among the hero spells -0.75 s."""
-        if not has(TALENT_LEGACY):
+    def legacy_cdr(now: float, weight: float = 1.0) -> None:
+        """Legacy of the Aspects: the longest remaining cooldown among the hero spells -0.75 s (chance `weight`)."""
+        if not has(TALENT_LEGACY) or weight <= 0.0:
             return
         keys = [k for k in order if k != "form"]
         if not keys:
             return
         key = max(keys, key=lambda k: nxt[k])
         if nxt[key] > now:
-            counters["legacy"] += 1
-            nxt[key] = max(now, nxt[key] - LEGACY_CDR)
+            counters["legacy"] += weight
+            nxt[key] = max(now, nxt[key] - LEGACY_CDR * weight)
 
     def add_fury(amount: float) -> None:
         nonlocal fury
         fury = min(fury_max, fury + amount)
 
     def hero_hit(name: str, raw: float, now: float, tgts: list[int], *, kind: str | None, attack: bool,
-                 potency_scale: float = 1.0, mult: float = 1.0, procs: bool = True, crit: bool = True) -> float:
+                 potency_scale: float = 1.0, mult: float = 1.0, procs: bool = True, crit: bool = True,
+                 weight: float = 1.0) -> float:
+        """Damage that happens with chance `weight`; its procs are chances too (no dithers since 2026-11-12)."""
         nonlocal burnout_bonus
         chance = stats["crit"]
         execute = _execute_factor(stats, now)
@@ -569,29 +617,29 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
             elif stats["spell_crit"] and crit:
                 amount *= _crit_factor(chance, stats["spell_mult"] + stats["rating"])
             amount += melting(t, now)
-            total += amount * taken(t, now) * execute
-            if obsidian and brand_until[t] <= now:
-                counters["branded"] += 1
-                brand_until[t] = now + BRANDED_DUR
-                brand_value[t] = min(BRANDED_CAP, int(1.0 + 0.08 * armor(now)))
+            total += amount * taken(t, now) * execute * weight
+            if obsidian:
+                brand[t].apply(now, weight, min(BRANDED_CAP, int(1.0 + 0.08 * armor(now))))
+                counters["branded"] += weight
             if not procs:
                 continue
-            if rolls["fury"].roll(0.02 * luck_mult()):  # Dragonwrath A0B4
-                counters["fury_luck"] += 1
-                add_fury(1.0)
+            p = _chance(0.02 * luck_mult()) * weight  # Dragonwrath A0B4
+            counters["fury_luck"] += p
+            add_fury(p)
             if has_burnout:
                 proc = (1.0 + burnout_bonus) * (LEGACY if has(TALENT_LEGACY) else 1.0)
-                if rolls["burnout"].roll(proc * luck_mult() / 100.0):
-                    counters["burnout_passive"] += 1
-                    burnout_bonus = 0.0
-                    push(now + BURNOUT_DELAY, "burnout", ("passive", t))
-                    legacy_cdr(now)
+                p = _chance(proc * luck_mult() / 100.0) * weight
+                if p > 0.0:
+                    counters["burnout_passive"] += p
+                    burnout_bonus = burnout_bonus * (1.0 - p)
+                    push(now + BURNOUT_DELAY, "burnout", ("passive", t, p))
+                    legacy_cdr(now, p)
             if emerald:
                 proc = 3.0 * (LEGACY if has(TALENT_LEGACY) else 1.0)
-                if rolls["cf_dmg"].roll(proc * luck_mult() / 100.0):
-                    legacy_cdr(now)  # the heal itself has PreventOnHeal: no heal -> damage proc
+                # the heal itself has PreventOnHeal: no heal -> damage proc
+                legacy_cdr(now, _chance(proc * luck_mult() / 100.0) * weight)
         sources.add_exec(name, total, now, execute)
-        note_damage_mana(len(tgts))
+        note_damage_mana(len(tgts) * weight)
         return total
 
     def cleansing_damage() -> float:
@@ -602,16 +650,16 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
         if not emerald:
             return
         proc = 8.0 * (LEGACY if has(TALENT_LEGACY) else 1.0)
-        if rolls["cf_heal"].roll(proc * luck_mult() / 100.0):
-            counters["heal_proc"] += 1
-            t = counters["heal_proc"] % targets
-            hero_hit("Cleansing Fire (от лечения)", 4.0 * cleansing_damage(), now, [t], kind=None, attack=False,
-                     potency_scale=0.0, crit=False)
-            legacy_cdr(now)
+        p = _chance(proc * luck_mult() / 100.0)
+        if p > 0.0:
+            counters["heal_proc"] += p
+            # a random enemy: each target with p / targets
+            hero_hit("Cleansing Fire (от лечения)", 4.0 * cleansing_damage(), now, all_t, kind=None, attack=False,
+                     potency_scale=0.0, crit=False, weight=p / targets)
+            legacy_cdr(now, p)
 
-    def burnout_impact(now: float, source: str) -> None:
-        """Burnout_B: 25 + 1.2 STR per hit, Burnout_Triggers hits per enemy in 200."""
-        nonlocal burnout_triggers
+    def burnout_impact(now: float, source: str, weight: float = 1.0) -> None:
+        """Burnout_B: 25 + 1.2 STR per hit, Burnout_Triggers hits per enemy in 200 (with chance `weight`)."""
         dmg = 25.0 * RANK + 1.20 * strength
         if source == "passive":
             dmg *= 0.40
@@ -623,19 +671,30 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
             dmg *= 1.25
         if has(TALENT_WORLDBREAKER) and source == "hero":
             if not obsidian:
-                burnout_triggers = 3
-            # Obsidian: stun, Burnout_Triggers keeps its previous value (0 before any proc).
+                value = 3
+            else:
+                value = None  # Obsidian: stun, Burnout_Triggers keeps its previous value (0 before any proc).
         else:
-            burnout_triggers = 2
+            value = 2
+        if value is not None:
+            for key in trig:
+                trig[key] = trig[key] * (1.0 - weight)
+            trig[value] = trig[value] + weight
+            w12, w3 = weight, (weight if value == 3 else 0.0)
+        else:
+            w12, w3 = weight * (trig[2] + trig[3]), weight * trig[3]
         label = {"hero": "Burnout", "passive": "Burnout (пассив)", "crit": "Burnout (крит, Blazing Strikes)"}[source]
-        for hit in range(1, burnout_triggers + 1):
+        for hit in range(1, 4):
+            w = w3 if hit == 3 else w12
             if hit == 3:
                 dmg *= 0.60
+            if w <= 0.0:
+                continue
             # ASSUMPTION: the whole pack is inside the 200 impact.
             hero_hit(label, dmg, now, all_t, kind="magical", attack=False, potency_scale=1.0,
-                     procs=(source != "passive"))
+                     procs=(source != "passive"), weight=w)
 
-    def dragon_strike(now: float, label: str) -> None:
+    def dragon_strike(now: float, label: str, weight: float = 1.0) -> None:
         dmg = 60.0 * RANK + 0.03 * max_life
         form = in_form(now)
         if form:
@@ -643,11 +702,17 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
         if ruby and form:
             dmg *= 1.0 + ruby_bonus()
         # ASSUMPTION: all enemies stand in the line.
-        hero_hit(label, dmg, now, all_t, kind="magical", attack=False)
+        hero_hit(label, dmg, now, all_t, kind="magical", attack=False, weight=weight)
         for t in all_t:
-            fire_until[t] = now + DRAGONFIRE_DUR
+            if weight >= 1.0:
+                fire[t].sure(now, DRAGONFIRE_DUR)
+            else:
+                fire[t].maybe(now, DRAGONFIRE_DUR, weight, weight)
             if form:
-                claw_until[t] = now + DRAGONFIRE_DUR
+                if weight >= 1.0:
+                    claw[t].sure(now, DRAGONFIRE_DUR)
+                else:
+                    claw[t].maybe(now, DRAGONFIRE_DUR, weight, weight)
 
     def tick_rate() -> float:
         rate = 1.0
@@ -659,7 +724,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
 
     def attack_interval(now: float) -> float:
         swing = SWING * (1.20 if stats["galactic"] else 1.0)
-        speed = min(4.0, max(-0.8, stats["attack_speed"]))
+        speed = min(4.0, max(-0.8, stats["attack_speed"] + procs.bonus(now)))
         return swing / (1.0 + speed)
 
     gen = 1.0 / (1.0 + stats["haste"])
@@ -717,7 +782,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
                 add_fury(1.0)
                 push(moment + gen, "fury")
             elif kind == "burnout":
-                burnout_impact(moment, data[0])
+                burnout_impact(moment, data[0], data[2])
             elif kind == "engulf":
                 # Engulfing Flames: 5 x level + 0.5 x armor to every enemy in 400.
                 hero_hit("Engulfing Flames", 5.0 * RANK + 0.5 * armor(moment), moment, all_t, kind="magical",
@@ -783,7 +848,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
                     life_ticking = True
                     push(hit_at + 1.0, "life_tick")  # Lifebinder_Timer first tick at 1.00
             elif key == "burnout":
-                push(hit_at + BURNOUT_DELAY, "burnout", ("hero", 0))
+                push(hit_at + BURNOUT_DELAY, "burnout", ("hero", 0, 1.0))
                 heated = has(TALENT_HEATED)
                 if in_form(hit_at):
                     flat = BURNOUT_FORM_CDR
@@ -825,14 +890,17 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
         if stats["auto_pct"] != 1.0:
             sources["Автоатака"] = before + (sources["Автоатака"] - before) * stats["auto_pct"]
         p_crit = max(0.0, min(100.0, stats["crit"])) / 100.0
-        if has_burnout and rolls["crit_burnout"].roll(p_crit * 0.33 * luck_mult()):
-            counters["burnout_crit"] += 1
-            push(moment + BURNOUT_DELAY, "burnout", ("crit", 0))
+        if has_burnout:
+            p = _chance(p_crit * 0.33 * luck_mult())
+            if p > 0.0:
+                counters["burnout_crit"] += p
+                push(moment + BURNOUT_DELAY, "burnout", ("crit", 0, p))
         if wears(ITEM_DRAKE_SWORD):
             chance = (p_crit * 30.0 + (1.0 - p_crit) * 15.0) / 100.0
-            if rolls["drake"].roll(chance * luck_mult()):
-                counters["drake"] += 1
-                dragon_strike(moment, "Dragon Strike (Drake Sword)")
+            p = _chance(chance * luck_mult())
+            if p > 0.0:
+                counters["drake"] += p
+                dragon_strike(moment, "Dragon Strike (Drake Sword)", p)
         gain_mana(attack_mana_gain(stats))
         if stats["fire_orb"]:
             splash = (20.0 + 0.35 * strength) * targets * taken(0, moment) * _execute_factor(stats, moment)
@@ -847,6 +915,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
                 note_damage_mana(targets)
             echo = power * taken(0, moment) * execute * sulfuras_echo_chance(stats["luck"])
             sources.add_exec("Sulfuras (удар)", echo, moment, execute)
+        procs.on_attack(moment, stats["crit"])
         next_attack = moment + attack_interval(moment)
 
     total = sum(sources.values())

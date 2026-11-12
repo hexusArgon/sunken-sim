@@ -19,7 +19,8 @@ CASES = (("shaman", "restoration"), ("shaman", "enhancement"), ("shaman", "eleme
          ("druid", "restoration"), ("druid", "balance"),
          ("berserker", "headhunter"), ("berserker", "poison"), ("berserker", "fury"),
          ("death_knight", "frost"), ("death_knight", "blood"), ("death_knight", "unholy"),
-         ("demon_hunter", "havoc"), ("demon_hunter", "vengeance"), ("demon_hunter", "devourer"))
+         ("demon_hunter", "havoc"), ("demon_hunter", "vengeance"), ("demon_hunter", "devourer"),
+         ("dragon_sentinel", "ruby"), ("dragon_sentinel", "obsidian"), ("dragon_sentinel", "emerald"))
 _ENGINES = {}
 
 
@@ -97,7 +98,8 @@ class ClassCLTest(unittest.TestCase):
     def test_refine_matches_finish_sextuple(self):
         specials = {"shaman": ("I00D", "I0BR"), "paladin": ("I0BR", "I0R0"), "druid": ("I00D", "I0BR", "I0R4"),
                     "berserker": ("I0BR", "I0U2", "I0U5"), "death_knight": ("I0BR", "I0RZ", "I07T", "I0NK"),
-                    "demon_hunter": ("I0BR", "I0V4", "I0V5", "I0V6", "I0V7")}
+                    "demon_hunter": ("I0BR", "I0V4", "I0V5", "I0V6", "I0V7"),
+                    "dragon_sentinel": ("I0BR", "I0TK", "I0TL", "I0TI", "I0TH")}
         for hero, spec in CASES:
             engine, space, items, _sources = _engine(hero, spec)
             chunks = [mage_cl.sample(space, 1, 5)[0]]
@@ -116,7 +118,7 @@ class ClassCLTest(unittest.TestCase):
     def test_span_payload_and_gate_match_cpu_runner(self):
         for hero, spec in (("shaman", "enhancement"), ("paladin", "retribution"), ("druid", "balance"),
                            ("berserker", "poison"), ("death_knight", "unholy"),
-                           ("demon_hunter", "havoc")):
+                           ("demon_hunter", "havoc"), ("dragon_sentinel", "ruby")):
             _engine(hero, spec)
             from farm.catalog import load
             space, items = load(hero, spec, "mixed", None, 80)
