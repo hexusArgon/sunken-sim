@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
 
-MAP_PATH = Path(__file__).resolve().parents[1] / "maps" / "Sunken City v2.5.2b.w3x"
+MAP_PATH = Path(__file__).resolve().parents[1] / "maps" / "Sunken City v2.5.2c.w3x"
 
 OTHER_HEROES = (
     "Death Knight",

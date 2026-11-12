@@ -67,8 +67,8 @@ constant boolean LIBRARY_Table=true
 integer Table___less=0
 integer Table___more=8190
 hashtable Table___ht=InitHashtable()
-constant integer Table___sizeK=5
-constant integer Table___listK=7
+constant integer Table___sizeK=11
+constant integer Table___listK=13
 constant boolean LIBRARY_TasItemCost=true
 unit TasItemCost___shop
 real TasItemCost___shopRectSize=1000
@@ -2083,7 +2083,7 @@ integer udg_SharedUnits_Loop=0
 string array udg_PlayerName_NoTag
 real udg_RandomItemChance_Legendary=0
 boolean udg_Tarecgosa_Dropped=false
-integer udg_ItemsRequired=0
+integer udg_Seeds_Rare=0
 integer udg_Enchantress_InventoryLoop=0
 integer udg_Enchantress_RarityLoop=0
 real udg_Saberclaws_Chance=0
@@ -2872,6 +2872,10 @@ boolean array udg_ResStone_Boo
 group udg_JadeForestMantle_Group=null
 unit array udg_Taunt_Taunter
 group udg_Hydra_Group=null
+integer udg_Seeds_Epic=0
+timer udg_Reminder_Customization=null
+real udg_Reminder_Customization_Time=0
+integer array udg_Consumables_TreasureBags
 rect gg_rct_Agi_Leg=null
 rect gg_rct_AgilityHeroGo=null
 rect gg_rct_AgilityHeroGo_Copy=null
@@ -3985,6 +3989,7 @@ trigger gg_trg_Initialization_Units=null
 trigger gg_trg_Initialization_Destruct=null
 trigger gg_trg_Register_Unique_Epics=null
 trigger gg_trg_Consumables_Tooltip=null
+trigger gg_trg_Consumables_Use=null
 trigger gg_trg_Consumables_Purchase=null
 trigger gg_trg_Runes=null
 trigger gg_trg_Blood_Globe=null
@@ -4086,7 +4091,8 @@ trigger gg_trg_Trigger_Challenges_Tutorial=null
 trigger gg_trg_Trigger_Illyana_Tutorial=null
 trigger gg_trg_Secret_Area=null
 trigger gg_trg_Reminders_Start=null
-trigger gg_trg_Reminders=null
+trigger gg_trg_Reminder_Glyph=null
+trigger gg_trg_Reminder_Talent=null
 trigger gg_trg_Notice_Explosive=null
 trigger gg_trg_Warning_Dungeon_Level=null
 trigger gg_trg_Warning_No_Stat_Points=null
@@ -14821,7 +14827,7 @@ set i=i+1
 endloop
 set udg_RandomItemChance_Legendary=0
 set udg_Tarecgosa_Dropped=false
-set udg_ItemsRequired=0
+set udg_Seeds_Rare=0
 set udg_Enchantress_InventoryLoop=0
 set udg_Enchantress_RarityLoop=0
 set udg_Saberclaws_Chance=0
@@ -16017,6 +16023,15 @@ set i=i+1
 endloop
 set udg_JadeForestMantle_Group=CreateGroup()
 set udg_Hydra_Group=CreateGroup()
+set udg_Seeds_Epic=0
+set udg_Reminder_Customization=CreateTimer()
+set udg_Reminder_Customization_Time=0
+set i=0
+loop
+exitwhen(i>1)
+set udg_Consumables_TreasureBags[i]=0
+set i=i+1
+endloop
 endfunction
 function AbilitiesInit___RegisterSingleAbility takes integer abilCode,trigger whichTriggerToExecute returns nothing
 call SaveTriggerHandle(AbilityToTriggerHT,abilCode,0,whichTriggerToExecute)
@@ -16225,6 +16240,9 @@ endif
 if udg_Consumables_TomesDemonic[playerNumber]>0 then
 set consumablesTtp=consumablesTtp+"- |c001e53c9Tomes of Demonic Knowledge|r: |cffffda00"+I2S(udg_Consumables_TomesDemonic[playerNumber])+"|r"
 endif
+if udg_Consumables_TreasureBags[playerNumber]>0 then
+set consumablesTtp=consumablesTtp+"- |c001e53c9Treasure Bags Used|r: |cffffda00"+I2S(udg_Consumables_TreasureBags[playerNumber])+"|r"
+endif
 call BlzSetAbilityExtendedTooltip(consumablesAbility[playerNumber],consumablesTtp,0)
 endfunction
 function ApocalypseBase takes unit target returns nothing
@@ -16326,7 +16344,7 @@ if udg_PoG_Evasion_Sum[playerNumber]>0 then
 set potTtp=potTtp+"- Evasion: |cffffda00"+I2S(udg_PoG_Evasion_Sum[playerNumber])+"%|r|n"
 endif
 if udg_PoG_SDR_Sum[playerNumber]>0 then
-set potTtp=potTtp+"- Reduced Damage from Spells: |cffffda00"+I2S(udg_PoG_SDR_Sum[playerNumber])+"%|r|n"
+set potTtp=potTtp+"- Spell Damage Reduction: |cffffda00"+I2S(udg_PoG_SDR_Sum[playerNumber])+"%|r|n"
 endif
 if udg_PoG_Agi_Sum[playerNumber]>0 then
 set potTtp=potTtp+"- Agility: |cffffda00"+I2S(udg_PoG_Agi_Sum[playerNumber])+"|r|n"
@@ -16380,7 +16398,7 @@ if udg_PoG_Physical_Sum[playerNumber]>0 then
 set potTtp=potTtp+"- Physical Damage: |cffffda00"+I2S(udg_PoG_Physical_Sum[playerNumber])+"%|r|n"
 endif
 if udg_PoG_Healing_Sum[playerNumber]>0 then
-set potTtp=potTtp+"- Healing Effectiveness: |cffffda00"+I2S(udg_PoG_Healing_Sum[playerNumber])+"%|r|n"
+set potTtp=potTtp+"- Healing Power: |cffffda00"+I2S(udg_PoG_Healing_Sum[playerNumber])+"%|r|n"
 endif
 if udg_PoG_MagicFind_Sum[playerNumber]>0 then
 set potTtp=potTtp+"- Magic Find: |cffffda00"+I2S(udg_PoG_MagicFind_Sum[playerNumber])+"%|r|n"
@@ -16620,7 +16638,7 @@ set udg_CustomResource_MaxValue[HP_PidOf(udg_Hero_Monk)]=1
 endif
 endfunction
 function GetPowerStrikeDamage takes nothing returns nothing
-local real baseAmount=60.00*I2R(GetUnitAbilityLevelSwapped('A0JS',udg_Hero_Monk))+10.00
+local real baseAmount=60.00*I2R(GetUnitAbilityLevelSwapped('A0JS',udg_Hero_Monk))
 local real strScaling=1.00*I2R(GetHeroStatBJ(bj_HEROSTAT_STR,udg_Hero_Monk,true))
 local real masteryModifier=1.05+(0.008*I2R(udg_Mastery_Stat[GetConvertedPlayerId(GetOwningPlayer(udg_Hero_Monk))]))
 local real agilityModifier=1.00+(0.005*I2R(GetHeroStatBJ(bj_HEROSTAT_AGI,udg_Hero_Monk,true)))
@@ -60679,7 +60697,7 @@ set udg_Heal_Amount=(udg_Heal_Amount*0.25)
 else
 endif
 set udg_Heal_Target=udg_Agi_Str_Int[udg_GeneralWarhelm_Loop]
-set udg_Heal_Healer=udg_DamageEventSource
+set udg_Heal_Healer=udg_PlayerHero[GetConvertedPlayerId(GetOwningPlayer(udg_DamageEventSource))]
 call ConditionalTriggerExecute(gg_trg_Healing)
 else
 endif
@@ -65993,7 +66011,7 @@ set udg_MagicalType_Bonus=(udg_MagicalType_Bonus+(0.08+((GetUnitStateSwap(UNIT_S
 else
 endif
 if(Trig_PreDamage_Increase_Func001Func020Func004Func012C())then
-set udg_MagicalType_Bonus=(udg_MagicalType_Bonus+(0.10+((0.30*I2R(GetHeroStatBJ(bj_HEROSTAT_INT,udg_Hero_DemonHunter,true)))/ 100.00)))
+set udg_MagicalType_Bonus=(udg_MagicalType_Bonus+(0.10+((0.25*I2R(GetHeroStatBJ(bj_HEROSTAT_INT,udg_Hero_DemonHunter,true)))/ 100.00)))
 else
 endif
 if(Trig_PreDamage_Increase_Func001Func020Func004Func014C())then
@@ -67264,7 +67282,7 @@ endif
 return true
 endfunction
 function Trig_PreDamage_Reduce_Func001Func004Func015Func010Func002C takes nothing returns boolean
-if(not(GetUnitAbilityLevelSwapped('A040',udg_Glyphs_Unit[HP_SlotOf(udg_Hero_Monk)])==1))then
+if(not(GetUnitAbilityLevelSwapped('A040',udg_Glyphs_Unit[HP_SlotOf(udg_Hero_Monk)])==2))then
 return false
 endif
 return true
@@ -86445,6 +86463,7 @@ set udg_ItemTag_Reforged=200
 set udg_ESC_Points_Cap=20
 set udg_OrbUnstable_StacksRequired=3
 set udg_Earthshaper_Period=4.00
+set udg_Reminder_Customization_Time=60.00
 set udg_Glyph[1]='I0HC'
 set udg_Glyph_Ability[1]='A06V'
 set udg_Glyph[2]='I0EN'
@@ -87743,6 +87762,23 @@ set gg_trg_Consumables_Tooltip=CreateTrigger()
 call TriggerRegisterAnyUnitEventBJ(gg_trg_Consumables_Tooltip,EVENT_PLAYER_UNIT_PICKUP_ITEM)
 call TriggerAddCondition(gg_trg_Consumables_Tooltip,Condition(function Trig_Consumables_Tooltip_Conditions))
 call TriggerAddAction(gg_trg_Consumables_Tooltip,function Trig_Consumables_Tooltip_Actions)
+endfunction
+function Trig_Consumables_Use_Conditions takes nothing returns boolean
+if(not(GetSpellAbilityId()=='A0CT'))then
+return false
+endif
+return true
+endfunction
+function Trig_Consumables_Use_Actions takes nothing returns nothing
+set udg_PlayerNumber=GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))
+set udg_Consumables_TreasureBags[udg_PlayerNumber]=(udg_Consumables_TreasureBags[udg_PlayerNumber]+1)
+call ConsumablesTtp(udg_PlayerNumber)
+endfunction
+function InitTrig_Consumables_Use takes nothing returns nothing
+set gg_trg_Consumables_Use=CreateTrigger()
+call TriggerRegisterAnyUnitEventBJ(gg_trg_Consumables_Use,EVENT_PLAYER_UNIT_SPELL_EFFECT)
+call TriggerAddCondition(gg_trg_Consumables_Use,Condition(function Trig_Consumables_Use_Conditions))
+call TriggerAddAction(gg_trg_Consumables_Use,function Trig_Consumables_Use_Actions)
 endfunction
 function Trig_Consumables_Purchase_Func002C takes nothing returns boolean
 if((GetItemTypeId(GetSoldItem())=='tdex'))then
@@ -90544,7 +90580,6 @@ call RemoveItem(GetManipulatedItem())
 call UnitAddItemByIdSwapped('I0AA',GetTriggerUnit())
 else
 if(Trig_Item_Use_Func002Func002Func001Func001C())then
-call RemoveItem(GetManipulatedItem())
 call UnitAddItemByIdSwapped('I0A9',GetTriggerUnit())
 else
 endif
@@ -94587,31 +94622,43 @@ return false
 endif
 return true
 endfunction
-function Trig_Hero_Death_Func006Func005Func001C takes nothing returns boolean
+function Trig_Hero_Death_Func006Func006Func001C takes nothing returns boolean
 if(not(UnitHasItemOfTypeBJ(udg_Agi_Str_Int[udg_Attribute_Index],'I0IH')==true))then
 return false
 endif
 return true
 endfunction
-function Trig_Hero_Death_Func006Func006Func001Func004C takes nothing returns boolean
+function Trig_Hero_Death_Func006Func007Func001Func001Func003C takes nothing returns boolean
+if(not(udg_Drop_Chance>udg_RandomItemChance_Uncommon))then
+return false
+endif
+return true
+endfunction
+function Trig_Hero_Death_Func006Func007Func001Func001C takes nothing returns boolean
+if(not(udg_Drop_Chance<=(udg_RandomItemChance_Uncommon*udg_MagicFind_Multiplier)))then
+return false
+endif
+return true
+endfunction
+function Trig_Hero_Death_Func006Func007Func001Func003C takes nothing returns boolean
 if(not(udg_Drop_Chance>udg_RandomItemChance_Rare))then
 return false
 endif
 return true
 endfunction
-function Trig_Hero_Death_Func006Func006Func001C takes nothing returns boolean
+function Trig_Hero_Death_Func006Func007Func001C takes nothing returns boolean
 if(not(udg_Drop_Chance<=(udg_RandomItemChance_Rare*udg_MagicFind_Multiplier)))then
 return false
 endif
 return true
 endfunction
-function Trig_Hero_Death_Func006Func006Func004C takes nothing returns boolean
+function Trig_Hero_Death_Func006Func007Func003C takes nothing returns boolean
 if(not(udg_Drop_Chance>udg_RandomItemChance_Epic))then
 return false
 endif
 return true
 endfunction
-function Trig_Hero_Death_Func006Func006C takes nothing returns boolean
+function Trig_Hero_Death_Func006Func007C takes nothing returns boolean
 if(not(udg_Drop_Chance<=(udg_RandomItemChance_Epic*udg_MagicFind_Multiplier)))then
 return false
 endif
@@ -94650,45 +94697,44 @@ set udg_Generic_Point=GetUnitLoc(GetTriggerUnit())
 set udg_Drop_Chance=GetRandomReal(0,100.00)
 set udg_RandomItemChance_Epic=5.00
 set udg_RandomItemChance_Rare=15.00
+set udg_RandomItemChance_Uncommon=30.00
 set udg_Attribute_Index=1
 loop
 exitwhen udg_Attribute_Index>3
-if(Trig_Hero_Death_Func006Func005Func001C())then
+if(Trig_Hero_Death_Func006Func006Func001C())then
 set udg_RandomItemChance_Epic=(udg_RandomItemChance_Epic*udg_Luck_Multiplier[GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_Attribute_Index]))])
 set udg_RandomItemChance_Rare=(udg_RandomItemChance_Rare*udg_Luck_Multiplier[GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_Attribute_Index]))])
+set udg_RandomItemChance_Uncommon=(udg_RandomItemChance_Uncommon*udg_Luck_Multiplier[GetConvertedPlayerId(GetOwningPlayer(udg_Agi_Str_Int[udg_Attribute_Index]))])
 else
 endif
 set udg_Attribute_Index=udg_Attribute_Index+1
 endloop
-if(Trig_Hero_Death_Func006Func006C())then
+if(Trig_Hero_Death_Func006Func007C())then
 call CreateItemLoc(udg_Drops_Epic[GetRandomInt(1,udg_Drops_EpicCount)],udg_Generic_Point)
+if(Trig_Hero_Death_Func006Func007Func003C())then
 set udg_Dropped_Item=GetLastCreatedItem()
-if(Trig_Hero_Death_Func006Func006Func004C())then
-call CreateTextTagUnitBJ(("|c00eccf11Bonus Drop:|r "+GetItemName(udg_Dropped_Item)),GetTriggerUnit(),0,9.10,100,100,100.00,0)
-call SetTextTagPermanentBJ(GetLastCreatedTextTag(),false)
-call SetTextTagLifespanBJ(GetLastCreatedTextTag(),4.00)
-set udg_Dropped_Item_Point=GetItemLoc(udg_Dropped_Item)
-call AddSpecialEffectLocBJ(udg_Dropped_Item_Point,"Abilities\\Spells\\Other\\Transmute\\PileofGold.mdl")
-call DestroyEffectBJ(GetLastCreatedEffectBJ())
-call RemoveLocation(udg_Dropped_Item_Point)
+call TriggerExecute(gg_trg_Bonus_Drop)
 else
 endif
 else
-if(Trig_Hero_Death_Func006Func006Func001C())then
+if(Trig_Hero_Death_Func006Func007Func001C())then
 call CreateItemLoc(udg_Drops_Rare[GetRandomInt(1,udg_Drops_RareCount)],udg_Generic_Point)
+if(Trig_Hero_Death_Func006Func007Func001Func003C())then
 set udg_Dropped_Item=GetLastCreatedItem()
-if(Trig_Hero_Death_Func006Func006Func001Func004C())then
-call CreateTextTagUnitBJ(("|c00eccf11Bonus Drop:|r "+GetItemName(udg_Dropped_Item)),GetTriggerUnit(),0,9.10,100,100,100.00,0)
-call SetTextTagPermanentBJ(GetLastCreatedTextTag(),false)
-call SetTextTagLifespanBJ(GetLastCreatedTextTag(),4.00)
-set udg_Dropped_Item_Point=GetItemLoc(udg_Dropped_Item)
-call AddSpecialEffectLocBJ(udg_Dropped_Item_Point,"Abilities\\Spells\\Other\\Transmute\\PileofGold.mdl")
-call DestroyEffectBJ(GetLastCreatedEffectBJ())
-call RemoveLocation(udg_Dropped_Item_Point)
+call TriggerExecute(gg_trg_Bonus_Drop)
 else
 endif
 else
+if(Trig_Hero_Death_Func006Func007Func001Func001C())then
 call CreateItemLoc(udg_Drops_Uncommon[GetRandomInt(1,udg_Drops_UncommonCount)],udg_Generic_Point)
+if(Trig_Hero_Death_Func006Func007Func001Func001Func003C())then
+set udg_Dropped_Item=GetLastCreatedItem()
+call TriggerExecute(gg_trg_Bonus_Drop)
+else
+endif
+else
+call CreateItemLoc(udg_Drops_Common[GetRandomInt(1,udg_Drops_CommonCount)],udg_Generic_Point)
+endif
 endif
 endif
 call RemoveLocation(udg_Generic_Point)
@@ -103243,7 +103289,7 @@ endfunction
 function Trig_Trigger_Illyana_Tutorial_Actions takes nothing returns nothing
 call DisableTrigger(GetTriggeringTrigger())
 call QueuedTriggerAddBJ(gg_trg_Tutorial_Illyana,true)
-call PolledWait(600.00)
+call PolledWait(1200.00)
 call EnableTrigger(GetTriggeringTrigger())
 endfunction
 function InitTrig_Trigger_Illyana_Tutorial takes nothing returns nothing
@@ -103310,10 +103356,10 @@ endfunction
 function Trig_Reminders_Start_Actions takes nothing returns nothing
 call DisableTrigger(GetTriggeringTrigger())
 if(Trig_Reminders_Start_Func002C())then
-call TriggerExecute(gg_trg_Reminders)
+call TriggerExecute(gg_trg_Reminder_Glyph)
 else
 endif
-call TriggerRegisterTimerEventPeriodic(gg_trg_Reminders,60.00)
+call StartTimerBJ(udg_Reminder_Customization,false,udg_Reminder_Customization_Time)
 endfunction
 function InitTrig_Reminders_Start takes nothing returns nothing
 set gg_trg_Reminders_Start=CreateTrigger()
@@ -103321,7 +103367,7 @@ call TriggerRegisterEnterRectSimple(gg_trg_Reminders_Start,gg_rct_Start_Reminder
 call TriggerAddCondition(gg_trg_Reminders_Start,Condition(function Trig_Reminders_Start_Conditions))
 call TriggerAddAction(gg_trg_Reminders_Start,function Trig_Reminders_Start_Actions)
 endfunction
-function Trig_Reminders_Func001Func002Func001C takes nothing returns boolean
+function Trig_Reminder_Glyph_Func002Func003Func001C takes nothing returns boolean
 if(not(UnitInventoryCount(udg_Glyphs_Unit[1])<(GetUnitAbilityLevelSwapped('A0NO',udg_Glyphs_Unit[1])+1)))then
 return false
 endif
@@ -103330,7 +103376,7 @@ return false
 endif
 return true
 endfunction
-function Trig_Reminders_Func001Func002Func002C takes nothing returns boolean
+function Trig_Reminder_Glyph_Func002Func003Func002C takes nothing returns boolean
 if(not(UnitInventoryCount(udg_Glyphs_Unit[2])<(GetUnitAbilityLevelSwapped('A0NO',udg_Glyphs_Unit[2])+1)))then
 return false
 endif
@@ -103339,7 +103385,7 @@ return false
 endif
 return true
 endfunction
-function Trig_Reminders_Func001Func002Func003C takes nothing returns boolean
+function Trig_Reminder_Glyph_Func002Func003Func003C takes nothing returns boolean
 if(not(UnitInventoryCount(udg_Glyphs_Unit[3])<(GetUnitAbilityLevelSwapped('A0NO',udg_Glyphs_Unit[3])+1)))then
 return false
 endif
@@ -103348,25 +103394,37 @@ return false
 endif
 return true
 endfunction
-function Trig_Reminders_Func001Func002C takes nothing returns boolean
-if(Trig_Reminders_Func001Func002Func001C())then
+function Trig_Reminder_Glyph_Func002Func003C takes nothing returns boolean
+if(Trig_Reminder_Glyph_Func002Func003Func001C())then
 return true
 endif
-if(Trig_Reminders_Func001Func002Func002C())then
+if(Trig_Reminder_Glyph_Func002Func003Func002C())then
 return true
 endif
-if(Trig_Reminders_Func001Func002Func003C())then
+if(Trig_Reminder_Glyph_Func002Func003Func003C())then
 return true
 endif
 return false
 endfunction
-function Trig_Reminders_Func001C takes nothing returns boolean
-if(not Trig_Reminders_Func001Func002C())then
+function Trig_Reminder_Glyph_Func002C takes nothing returns boolean
+if(not Trig_Reminder_Glyph_Func002Func003C())then
 return false
 endif
 return true
 endfunction
-function Trig_Reminders_Func002Func002Func001C takes nothing returns boolean
+function Trig_Reminder_Glyph_Actions takes nothing returns nothing
+if(Trig_Reminder_Glyph_Func002C())then
+call StartTimerBJ(udg_Reminder_Customization,false,udg_Reminder_Customization_Time)
+call QueuedTriggerAddBJ(gg_trg_Customization_Glyph,true)
+else
+endif
+endfunction
+function InitTrig_Reminder_Glyph takes nothing returns nothing
+set gg_trg_Reminder_Glyph=CreateTrigger()
+call TriggerRegisterTimerExpireEventBJ(gg_trg_Reminder_Glyph,udg_Reminder_Customization)
+call TriggerAddAction(gg_trg_Reminder_Glyph,function Trig_Reminder_Glyph_Actions)
+endfunction
+function Trig_Reminder_Talent_Func002Func003Func001C takes nothing returns boolean
 if(not(UnitInventoryCount(udg_Talents_Unit[1])<GetUnitAbilityLevelSwapped('A0BE',udg_Talents_Unit[1])))then
 return false
 endif
@@ -103375,7 +103433,7 @@ return false
 endif
 return true
 endfunction
-function Trig_Reminders_Func002Func002Func002C takes nothing returns boolean
+function Trig_Reminder_Talent_Func002Func003Func002C takes nothing returns boolean
 if(not(UnitInventoryCount(udg_Talents_Unit[2])<GetUnitAbilityLevelSwapped('A0BE',udg_Talents_Unit[2])))then
 return false
 endif
@@ -103384,7 +103442,7 @@ return false
 endif
 return true
 endfunction
-function Trig_Reminders_Func002Func002Func003C takes nothing returns boolean
+function Trig_Reminder_Talent_Func002Func003Func003C takes nothing returns boolean
 if(not(UnitInventoryCount(udg_Talents_Unit[3])<GetUnitAbilityLevelSwapped('A0BE',udg_Talents_Unit[3])))then
 return false
 endif
@@ -103393,37 +103451,35 @@ return false
 endif
 return true
 endfunction
-function Trig_Reminders_Func002Func002C takes nothing returns boolean
-if(Trig_Reminders_Func002Func002Func001C())then
+function Trig_Reminder_Talent_Func002Func003C takes nothing returns boolean
+if(Trig_Reminder_Talent_Func002Func003Func001C())then
 return true
 endif
-if(Trig_Reminders_Func002Func002Func002C())then
+if(Trig_Reminder_Talent_Func002Func003Func002C())then
 return true
 endif
-if(Trig_Reminders_Func002Func002Func003C())then
+if(Trig_Reminder_Talent_Func002Func003Func003C())then
 return true
 endif
 return false
 endfunction
-function Trig_Reminders_Func002C takes nothing returns boolean
-if(not Trig_Reminders_Func002Func002C())then
+function Trig_Reminder_Talent_Func002C takes nothing returns boolean
+if(not Trig_Reminder_Talent_Func002Func003C())then
 return false
 endif
 return true
 endfunction
-function Trig_Reminders_Actions takes nothing returns nothing
-if(Trig_Reminders_Func001C())then
-call QueuedTriggerAddBJ(gg_trg_Customization_Glyph,true)
-else
-endif
-if(Trig_Reminders_Func002C())then
+function Trig_Reminder_Talent_Actions takes nothing returns nothing
+if(Trig_Reminder_Talent_Func002C())then
+call StartTimerBJ(udg_Reminder_Customization,false,udg_Reminder_Customization_Time)
 call QueuedTriggerAddBJ(gg_trg_Customization_Talent,true)
 else
 endif
 endfunction
-function InitTrig_Reminders takes nothing returns nothing
-set gg_trg_Reminders=CreateTrigger()
-call TriggerAddAction(gg_trg_Reminders,function Trig_Reminders_Actions)
+function InitTrig_Reminder_Talent takes nothing returns nothing
+set gg_trg_Reminder_Talent=CreateTrigger()
+call TriggerRegisterTimerExpireEventBJ(gg_trg_Reminder_Talent,udg_Reminder_Customization)
+call TriggerAddAction(gg_trg_Reminder_Talent,function Trig_Reminder_Talent_Actions)
 endfunction
 function Trig_Notice_Explosive_Actions takes nothing returns nothing
 call QuestMessageBJ(udg_Player_Group,bj_QUESTMESSAGE_HINT,"TRIGSTR_4044")
@@ -103520,7 +103576,7 @@ return true
 endfunction
 function Trig_Hint_Hearthstone_Actions takes nothing returns nothing
 call DisableTrigger(GetTriggeringTrigger())
-call QuestMessageBJ(udg_Player_Group,bj_QUESTMESSAGE_ALWAYSHINT,"TRIGSTR_2607")
+call QuestMessageBJ(udg_Player_Group,bj_QUESTMESSAGE_ALWAYSHINT,"TRIGSTR_8508")
 call PolledWait(10.00)
 call EnableTrigger(GetTriggeringTrigger())
 call QueuedTriggerRemoveBJ(GetTriggeringTrigger())
@@ -103632,7 +103688,7 @@ endif
 return true
 endfunction
 function Trig_Tutorial_Illyana_Actions takes nothing returns nothing
-call QuestMessageBJ(udg_Player_Group_Tutorials,bj_QUESTMESSAGE_ALWAYSHINT,"TRIGSTR_7167")
+call QuestMessageBJ(udg_Player_Group_Tutorials,bj_QUESTMESSAGE_ALWAYSHINT,"TRIGSTR_1491")
 call PolledWait(10.00)
 call QueuedTriggerRemoveBJ(GetTriggeringTrigger())
 endfunction
@@ -103682,7 +103738,7 @@ endif
 return true
 endfunction
 function Trig_Customization_Glyph_Actions takes nothing returns nothing
-call QuestMessageBJ(udg_Player_Group,bj_QUESTMESSAGE_UNITAVAILABLE,"TRIGSTR_12581")
+call QuestMessageBJ(udg_Player_Group,bj_QUESTMESSAGE_UNITAVAILABLE,"TRIGSTR_821")
 call PolledWait(10.00)
 call QueuedTriggerRemoveBJ(GetTriggeringTrigger())
 endfunction
@@ -110143,7 +110199,7 @@ endif
 return true
 endfunction
 function Trig_System_Transmute_Func003Func001Func001Func002C takes nothing returns boolean
-if(not(udg_ItemsRequired==3))then
+if(not(udg_Seeds_Rare==3))then
 return false
 endif
 return true
@@ -110173,7 +110229,7 @@ endif
 return true
 endfunction
 function Trig_System_Transmute_Func006Func002Func001Func003C takes nothing returns boolean
-if(not(udg_ItemsRequired==2))then
+if(not(udg_Seeds_Rare==2))then
 return false
 endif
 return true
@@ -110227,7 +110283,7 @@ endif
 return true
 endfunction
 function Trig_System_Transmute_Func009Func002Func001Func003C takes nothing returns boolean
-if(not(udg_ItemsRequired==3))then
+if(not(udg_Seeds_Rare==3))then
 return false
 endif
 return true
@@ -110239,7 +110295,7 @@ endif
 return true
 endfunction
 function Trig_System_Transmute_Actions takes nothing returns nothing
-set udg_ItemsRequired=0
+set udg_Seeds_Rare=0
 set udg_Enchantress_InventoryLoop=1
 loop
 exitwhen udg_Enchantress_InventoryLoop>3
@@ -110247,7 +110303,7 @@ set udg_Enchantress_RarityLoop=1
 loop
 exitwhen udg_Enchantress_RarityLoop>udg_Drops_CommonCount
 if(Trig_System_Transmute_Func003Func001Func001C())then
-set udg_ItemsRequired=(udg_ItemsRequired+1)
+set udg_Seeds_Rare=(udg_Seeds_Rare+1)
 if(Trig_System_Transmute_Func003Func001Func001Func002C())then
 call CreateItemLoc(udg_Drops_Uncommon[GetRandomInt(1,udg_Drops_UncommonCount)],GetUnitLoc(udg_CraftingUnit))
 call RemoveItem(UnitItemInSlotBJ(udg_CraftingUnit,1))
@@ -110264,7 +110320,7 @@ set udg_Enchantress_RarityLoop=udg_Enchantress_RarityLoop+1
 endloop
 set udg_Enchantress_InventoryLoop=udg_Enchantress_InventoryLoop+1
 endloop
-set udg_ItemsRequired=0
+set udg_Seeds_Rare=0
 set udg_Materialized_Value=0
 set udg_Enchantress_InventoryLoop=1
 loop
@@ -110274,7 +110330,7 @@ set udg_Enchantress_RarityLoop=1
 loop
 exitwhen udg_Enchantress_RarityLoop>udg_Drops_UncommonUnique
 if(Trig_System_Transmute_Func006Func002Func001C())then
-set udg_ItemsRequired=(udg_ItemsRequired+1)
+set udg_Seeds_Rare=(udg_Seeds_Rare+1)
 if(Trig_System_Transmute_Func006Func002Func001Func002C())then
 set udg_Materialized_Value=(udg_Materialized_Value+GetItemUserData(udg_Enchantress_LoopedItem))
 else
@@ -110307,7 +110363,7 @@ set udg_Enchantress_RarityLoop=udg_Enchantress_RarityLoop+1
 endloop
 set udg_Enchantress_InventoryLoop=udg_Enchantress_InventoryLoop+1
 endloop
-set udg_ItemsRequired=0
+set udg_Seeds_Rare=0
 set udg_Materialized_Value=0
 set udg_Enchantress_InventoryLoop=1
 loop
@@ -110317,7 +110373,7 @@ set udg_Enchantress_RarityLoop=1
 loop
 exitwhen udg_Enchantress_RarityLoop>udg_Drops_RareUnique
 if(Trig_System_Transmute_Func009Func002Func001C())then
-set udg_ItemsRequired=(udg_ItemsRequired+1)
+set udg_Seeds_Rare=(udg_Seeds_Rare+1)
 if(Trig_System_Transmute_Func009Func002Func001Func002C())then
 set udg_Materialized_Value=(udg_Materialized_Value+GetItemUserData(udg_Enchantress_LoopedItem))
 else
@@ -110391,83 +110447,114 @@ return false
 endif
 return true
 endfunction
-function Trig_System_Materialize_Func003Func001C takes nothing returns boolean
+function Trig_System_Materialize_Func003Func001Func001C takes nothing returns boolean
 if(not(GetItemTypeId(UnitItemInSlotBJ(udg_CraftingUnit,GetForLoopIndexA()))=='I0DG'))then
 return false
 endif
 return true
 endfunction
-function Trig_System_Materialize_Func004C takes nothing returns boolean
-if(not(udg_ItemsRequired==1))then
+function Trig_System_Materialize_Func003C takes nothing returns boolean
+if(not(GetItemTypeId(UnitItemInSlotBJ(udg_CraftingUnit,1))=='I0O7'))then
 return false
 endif
 return true
 endfunction
 function Trig_System_Materialize_Func005C takes nothing returns boolean
-if(not(udg_ItemsRequired==2))then
+if(not(udg_Seeds_Rare==1))then
 return false
 endif
 return true
 endfunction
 function Trig_System_Materialize_Func006C takes nothing returns boolean
-if(not(udg_ItemsRequired==3))then
+if(not(udg_Seeds_Rare==2))then
+return false
+endif
+return true
+endfunction
+function Trig_System_Materialize_Func007Func001C takes nothing returns boolean
+if(not(udg_Seeds_Epic==1))then
+return false
+endif
+return true
+endfunction
+function Trig_System_Materialize_Func007Func002C takes nothing returns boolean
+if((udg_Seeds_Epic==1))then
+return true
+endif
+if((udg_Seeds_Rare==3))then
+return true
+endif
+return false
+endfunction
+function Trig_System_Materialize_Func007C takes nothing returns boolean
+if(not Trig_System_Materialize_Func007Func002C())then
 return false
 endif
 return true
 endfunction
 function Trig_System_Materialize_Actions takes nothing returns nothing
-set udg_ItemsRequired=0
+set udg_Seeds_Epic=0
+set udg_Seeds_Rare=0
+if(Trig_System_Materialize_Func003C())then
+set udg_Seeds_Epic=1
+else
 set bj_forLoopAIndex=1
 set bj_forLoopAIndexEnd=3
 loop
 exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-if(Trig_System_Materialize_Func003Func001C())then
-set udg_ItemsRequired=(udg_ItemsRequired+1)
+if(Trig_System_Materialize_Func003Func001Func001C())then
+set udg_Seeds_Rare=(udg_Seeds_Rare+1)
 else
 endif
 set bj_forLoopAIndex=bj_forLoopAIndex+1
 endloop
-if(Trig_System_Materialize_Func004C())then
-call RemoveItem(GetItemOfTypeFromUnitBJ(udg_CraftingUnit,'I0DG'))
-call CreateItemLoc(udg_Drops_Uncommon[GetRandomInt(1,udg_Drops_UncommonCount)],GetUnitLoc(udg_CraftingUnit))
-call SetItemUserData(GetLastCreatedItem(),udg_ItemTag_Materialized_100)
-call BlzSetItemDescription(GetLastCreatedItem(),("|cffabd473Materialized|r|n"+BlzGetItemDescription(GetLastCreatedItem())))
-call BlzSetItemExtendedTooltip(GetLastCreatedItem(),("|cffabd473Materialized|r|n"+BlzGetItemExtendedTooltip(GetLastCreatedItem())))
-call UnitAddItemSwapped(GetLastCreatedItem(),udg_CraftingUnit)
-call CreateItemLoc(udg_Drops_Uncommon[GetRandomInt(1,udg_Drops_UncommonCount)],GetUnitLoc(udg_CraftingUnit))
-call SetItemUserData(GetLastCreatedItem(),udg_ItemTag_Materialized_100)
-call BlzSetItemDescription(GetLastCreatedItem(),("|cffabd473Materialized|r|n"+BlzGetItemDescription(GetLastCreatedItem())))
-call BlzSetItemExtendedTooltip(GetLastCreatedItem(),("|cffabd473Materialized|r|n"+BlzGetItemExtendedTooltip(GetLastCreatedItem())))
-call UnitAddItemSwapped(GetLastCreatedItem(),udg_CraftingUnit)
-set udg_ItemsRequired=0
-else
 endif
 if(Trig_System_Materialize_Func005C())then
 call RemoveItem(GetItemOfTypeFromUnitBJ(udg_CraftingUnit,'I0DG'))
-call RemoveItem(GetItemOfTypeFromUnitBJ(udg_CraftingUnit,'I0DG'))
-call CreateItemLoc(udg_Drops_Rare[GetRandomInt(1,udg_Drops_RareCount)],GetUnitLoc(udg_CraftingUnit))
+set udg_Seeds_Rare=0
+call CreateItemLoc(udg_Drops_Uncommon[GetRandomInt(1,udg_Drops_UncommonCount)],GetUnitLoc(udg_CraftingUnit))
 call SetItemUserData(GetLastCreatedItem(),udg_ItemTag_Materialized_100)
 call BlzSetItemDescription(GetLastCreatedItem(),("|cffabd473Materialized|r|n"+BlzGetItemDescription(GetLastCreatedItem())))
 call BlzSetItemExtendedTooltip(GetLastCreatedItem(),("|cffabd473Materialized|r|n"+BlzGetItemExtendedTooltip(GetLastCreatedItem())))
 call UnitAddItemSwapped(GetLastCreatedItem(),udg_CraftingUnit)
-call CreateItemLoc(udg_Drops_Rare[GetRandomInt(1,udg_Drops_RareCount)],GetUnitLoc(udg_CraftingUnit))
+call CreateItemLoc(udg_Drops_Uncommon[GetRandomInt(1,udg_Drops_UncommonCount)],GetUnitLoc(udg_CraftingUnit))
 call SetItemUserData(GetLastCreatedItem(),udg_ItemTag_Materialized_100)
 call BlzSetItemDescription(GetLastCreatedItem(),("|cffabd473Materialized|r|n"+BlzGetItemDescription(GetLastCreatedItem())))
 call BlzSetItemExtendedTooltip(GetLastCreatedItem(),("|cffabd473Materialized|r|n"+BlzGetItemExtendedTooltip(GetLastCreatedItem())))
 call UnitAddItemSwapped(GetLastCreatedItem(),udg_CraftingUnit)
-set udg_ItemsRequired=0
 else
 endif
 if(Trig_System_Materialize_Func006C())then
 call RemoveItem(GetItemOfTypeFromUnitBJ(udg_CraftingUnit,'I0DG'))
 call RemoveItem(GetItemOfTypeFromUnitBJ(udg_CraftingUnit,'I0DG'))
+set udg_Seeds_Rare=0
+call CreateItemLoc(udg_Drops_Rare[GetRandomInt(1,udg_Drops_RareCount)],GetUnitLoc(udg_CraftingUnit))
+call SetItemUserData(GetLastCreatedItem(),udg_ItemTag_Materialized_100)
+call BlzSetItemDescription(GetLastCreatedItem(),("|cffabd473Materialized|r|n"+BlzGetItemDescription(GetLastCreatedItem())))
+call BlzSetItemExtendedTooltip(GetLastCreatedItem(),("|cffabd473Materialized|r|n"+BlzGetItemExtendedTooltip(GetLastCreatedItem())))
+call UnitAddItemSwapped(GetLastCreatedItem(),udg_CraftingUnit)
+call CreateItemLoc(udg_Drops_Rare[GetRandomInt(1,udg_Drops_RareCount)],GetUnitLoc(udg_CraftingUnit))
+call SetItemUserData(GetLastCreatedItem(),udg_ItemTag_Materialized_100)
+call BlzSetItemDescription(GetLastCreatedItem(),("|cffabd473Materialized|r|n"+BlzGetItemDescription(GetLastCreatedItem())))
+call BlzSetItemExtendedTooltip(GetLastCreatedItem(),("|cffabd473Materialized|r|n"+BlzGetItemExtendedTooltip(GetLastCreatedItem())))
+call UnitAddItemSwapped(GetLastCreatedItem(),udg_CraftingUnit)
+else
+endif
+if(Trig_System_Materialize_Func007C())then
+if(Trig_System_Materialize_Func007Func001C())then
+call RemoveItem(GetItemOfTypeFromUnitBJ(udg_CraftingUnit,'I0O7'))
+set udg_Seeds_Epic=0
+else
 call RemoveItem(GetItemOfTypeFromUnitBJ(udg_CraftingUnit,'I0DG'))
+call RemoveItem(GetItemOfTypeFromUnitBJ(udg_CraftingUnit,'I0DG'))
+call RemoveItem(GetItemOfTypeFromUnitBJ(udg_CraftingUnit,'I0DG'))
+set udg_Seeds_Rare=0
+endif
 call CreateItemLoc(udg_Drops_Epic[GetRandomInt(1,udg_Drops_EpicCount)],GetUnitLoc(udg_CraftingUnit))
 call SetItemUserData(GetLastCreatedItem(),udg_ItemTag_Materialized_100)
 call BlzSetItemDescription(GetLastCreatedItem(),("|cffabd473Materialized|r|n"+BlzGetItemDescription(GetLastCreatedItem())))
 call BlzSetItemExtendedTooltip(GetLastCreatedItem(),("|cffabd473Materialized|r|n"+BlzGetItemExtendedTooltip(GetLastCreatedItem())))
 call UnitAddItemSwapped(GetLastCreatedItem(),udg_CraftingUnit)
-set udg_ItemsRequired=0
 else
 endif
 endfunction
@@ -121446,68 +121533,44 @@ function InitTrig_Healing takes nothing returns nothing
 set gg_trg_Healing=CreateTrigger()
 call TriggerAddAction(gg_trg_Healing,function Trig_Healing_Actions)
 endfunction
-function Trig_Level_Ups_Func010C takes nothing returns boolean
+function Trig_Level_Ups_Func011C takes nothing returns boolean
 if(not(udg_Statistic_HighestLevel<GetHeroLevel(GetTriggerUnit())))then
 return false
 endif
 return true
 endfunction
-function Trig_Level_Ups_Func011C takes nothing returns boolean
+function Trig_Level_Ups_Func012C takes nothing returns boolean
 if(not(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I027')==true))then
 return false
 endif
 return true
 endfunction
-function Trig_Level_Ups_Func013C takes nothing returns boolean
+function Trig_Level_Ups_Func014C takes nothing returns boolean
 if(not(GetUnitTypeId(GetTriggerUnit())=='O01B'))then
 return false
 endif
 return true
 endfunction
-function Trig_Level_Ups_Func014Func002Func002Func002C takes nothing returns boolean
+function Trig_Level_Ups_Func015Func002Func002Func002C takes nothing returns boolean
 if(not(GetUnitLevel(GetTriggerUnit())==12))then
 return false
 endif
 return true
 endfunction
-function Trig_Level_Ups_Func014Func002Func002C takes nothing returns boolean
+function Trig_Level_Ups_Func015Func002Func002C takes nothing returns boolean
 if(not(GetUnitLevel(GetTriggerUnit())==9))then
 return false
 endif
 return true
 endfunction
-function Trig_Level_Ups_Func014Func002C takes nothing returns boolean
-if(not(GetUnitLevel(GetTriggerUnit())==6))then
-return false
-endif
-return true
-endfunction
-function Trig_Level_Ups_Func014C takes nothing returns boolean
-if(not(GetTriggerUnit()==udg_Hero_Druid))then
-return false
-endif
-return true
-endfunction
-function Trig_Level_Ups_Func015Func001Func001Func001C takes nothing returns boolean
-if(not(GetUnitLevel(GetTriggerUnit())==12))then
-return false
-endif
-return true
-endfunction
-function Trig_Level_Ups_Func015Func001Func001C takes nothing returns boolean
-if(not(GetUnitLevel(GetTriggerUnit())==9))then
-return false
-endif
-return true
-endfunction
-function Trig_Level_Ups_Func015Func001C takes nothing returns boolean
+function Trig_Level_Ups_Func015Func002C takes nothing returns boolean
 if(not(GetUnitLevel(GetTriggerUnit())==6))then
 return false
 endif
 return true
 endfunction
 function Trig_Level_Ups_Func015C takes nothing returns boolean
-if(not(GetTriggerUnit()==udg_Hero_Shaman))then
+if(not(GetTriggerUnit()==udg_Hero_Druid))then
 return false
 endif
 return true
@@ -121531,61 +121594,97 @@ endif
 return true
 endfunction
 function Trig_Level_Ups_Func016C takes nothing returns boolean
+if(not(GetTriggerUnit()==udg_Hero_Shaman))then
+return false
+endif
+return true
+endfunction
+function Trig_Level_Ups_Func017Func001Func001Func001C takes nothing returns boolean
+if(not(GetUnitLevel(GetTriggerUnit())==12))then
+return false
+endif
+return true
+endfunction
+function Trig_Level_Ups_Func017Func001Func001C takes nothing returns boolean
+if(not(GetUnitLevel(GetTriggerUnit())==9))then
+return false
+endif
+return true
+endfunction
+function Trig_Level_Ups_Func017Func001C takes nothing returns boolean
+if(not(GetUnitLevel(GetTriggerUnit())==6))then
+return false
+endif
+return true
+endfunction
+function Trig_Level_Ups_Func017C takes nothing returns boolean
 if(not(GetTriggerUnit()==udg_Hero_Mage))then
 return false
 endif
 return true
 endfunction
-function Trig_Level_Ups_Func018C takes nothing returns boolean
+function Trig_Level_Ups_Func019C takes nothing returns boolean
 if(not(UnitHasItemOfTypeBJ(GetTriggerUnit(),'I003')==true))then
 return false
 endif
 return true
 endfunction
-function Trig_Level_Ups_Func023Func001Func001C takes nothing returns boolean
-if(not(GetTriggerUnit()==udg_Agi_Str_Int[GetForLoopIndexA()]))then
-return false
-endif
-return true
-endfunction
-function Trig_Level_Ups_Func023Func001Func002Func001C takes nothing returns boolean
-if(not(GetTriggerUnit()==udg_Agi_Str_Int[GetForLoopIndexA()]))then
-return false
-endif
-return true
-endfunction
-function Trig_Level_Ups_Func023Func001Func002C takes nothing returns boolean
-if(not(GetUnitLevel(GetTriggerUnit())==6))then
-return false
-endif
-return true
-endfunction
-function Trig_Level_Ups_Func023Func001C takes nothing returns boolean
-if(not(GetUnitLevel(GetTriggerUnit())==3))then
-return false
-endif
-return true
-endfunction
-function Trig_Level_Ups_Func024Func001Func001C takes nothing returns boolean
-if(not(GetTriggerUnit()==udg_Agi_Str_Int[GetForLoopIndexA()]))then
-return false
-endif
-return true
-endfunction
-function Trig_Level_Ups_Func024Func001Func002Func001C takes nothing returns boolean
-if(not(GetTriggerUnit()==udg_Agi_Str_Int[GetForLoopIndexA()]))then
-return false
-endif
-return true
-endfunction
-function Trig_Level_Ups_Func024Func001Func002C takes nothing returns boolean
-if(not(GetUnitLevel(GetTriggerUnit())==6))then
-return false
-endif
-return true
-endfunction
 function Trig_Level_Ups_Func024Func001C takes nothing returns boolean
-if(not(GetUnitLevel(GetTriggerUnit())==4))then
+if(not(TimerGetRemaining(udg_Reminder_Customization)==0.00))then
+return false
+endif
+return true
+endfunction
+function Trig_Level_Ups_Func024Func002C takes nothing returns boolean
+if((GetUnitLevel(GetTriggerUnit())==3))then
+return true
+endif
+if((GetUnitLevel(GetTriggerUnit())==4))then
+return true
+endif
+if((GetUnitLevel(GetTriggerUnit())==6))then
+return true
+endif
+return false
+endfunction
+function Trig_Level_Ups_Func024Func003Func001Func001Func001C takes nothing returns boolean
+if((GetUnitLevel(GetTriggerUnit())==3))then
+return true
+endif
+if((GetUnitLevel(GetTriggerUnit())==6))then
+return true
+endif
+return false
+endfunction
+function Trig_Level_Ups_Func024Func003Func001Func001C takes nothing returns boolean
+if(not Trig_Level_Ups_Func024Func003Func001Func001Func001C())then
+return false
+endif
+return true
+endfunction
+function Trig_Level_Ups_Func024Func003Func001Func002Func001C takes nothing returns boolean
+if((GetUnitLevel(GetTriggerUnit())==4))then
+return true
+endif
+if((GetUnitLevel(GetTriggerUnit())==6))then
+return true
+endif
+return false
+endfunction
+function Trig_Level_Ups_Func024Func003Func001Func002C takes nothing returns boolean
+if(not Trig_Level_Ups_Func024Func003Func001Func002Func001C())then
+return false
+endif
+return true
+endfunction
+function Trig_Level_Ups_Func024Func003Func001C takes nothing returns boolean
+if(not(GetTriggerUnit()==udg_Agi_Str_Int[udg_Attribute_Index]))then
+return false
+endif
+return true
+endfunction
+function Trig_Level_Ups_Func024C takes nothing returns boolean
+if(not Trig_Level_Ups_Func024Func002C())then
 return false
 endif
 return true
@@ -121647,43 +121746,28 @@ call SetPlayerTechResearchedSwap('R00B',(GetPlayerTechCountSimple('R00B',GetOwni
 call SetPlayerTechResearchedSwap('R00C',(GetPlayerTechCountSimple('R00C',GetOwningPlayer(GetTriggerUnit()))+1),GetOwningPlayer(GetTriggerUnit()))
 call SetPlayerTechResearchedSwap('R00G',(GetPlayerTechCountSimple('R00G',GetOwningPlayer(GetTriggerUnit()))+1),GetOwningPlayer(GetTriggerUnit()))
 call SetPlayerTechResearchedSwap('R00D',(GetPlayerTechCountSimple('R00D',GetOwningPlayer(GetTriggerUnit()))+1),GetOwningPlayer(GetTriggerUnit()))
-if(Trig_Level_Ups_Func010C())then
+if(Trig_Level_Ups_Func011C())then
 set udg_Statistic_HighestLevel=GetHeroLevel(GetTriggerUnit())
 call takeSnapshot("Level "+I2S(udg_Statistic_HighestLevel))
 else
 endif
-if(Trig_Level_Ups_Func011C())then
+if(Trig_Level_Ups_Func012C())then
 call SetPlayerTechResearchedSwap('R00K',(GetPlayerTechCountSimple('R00K',GetOwningPlayer(GetTriggerUnit()))+1),GetOwningPlayer(GetTriggerUnit()))
 else
 endif
-if(Trig_Level_Ups_Func013C())then
+if(Trig_Level_Ups_Func014C())then
 call BlzSetUnitMaxHP(udg_Hero_FeralDruid,(BlzGetUnitMaxHP(udg_Hero_FeralDruid)+20))
 else
 endif
-if(Trig_Level_Ups_Func014C())then
-if(Trig_Level_Ups_Func014Func002C())then
+if(Trig_Level_Ups_Func015C())then
+if(Trig_Level_Ups_Func015Func002C())then
 call SetUnitAbilityLevelSwapped('A06O',GetTriggerUnit(),2)
 else
-if(Trig_Level_Ups_Func014Func002Func002C())then
+if(Trig_Level_Ups_Func015Func002Func002C())then
 call SetUnitAbilityLevelSwapped('A06O',GetTriggerUnit(),3)
 else
-if(Trig_Level_Ups_Func014Func002Func002Func002C())then
+if(Trig_Level_Ups_Func015Func002Func002Func002C())then
 call SetUnitAbilityLevelSwapped('A06O',GetTriggerUnit(),4)
-else
-endif
-endif
-endif
-else
-endif
-if(Trig_Level_Ups_Func015C())then
-if(Trig_Level_Ups_Func015Func001C())then
-call SetUnitAbilityLevelSwapped('A0AX',GetTriggerUnit(),2)
-else
-if(Trig_Level_Ups_Func015Func001Func001C())then
-call SetUnitAbilityLevelSwapped('A0AX',GetTriggerUnit(),3)
-else
-if(Trig_Level_Ups_Func015Func001Func001Func001C())then
-call SetUnitAbilityLevelSwapped('A0AX',GetTriggerUnit(),4)
 else
 endif
 endif
@@ -121692,12 +121776,27 @@ else
 endif
 if(Trig_Level_Ups_Func016C())then
 if(Trig_Level_Ups_Func016Func001C())then
-call SetUnitAbilityLevelSwapped('A0CX',GetTriggerUnit(),2)
+call SetUnitAbilityLevelSwapped('A0AX',GetTriggerUnit(),2)
 else
 if(Trig_Level_Ups_Func016Func001Func001C())then
-call SetUnitAbilityLevelSwapped('A0CX',GetTriggerUnit(),3)
+call SetUnitAbilityLevelSwapped('A0AX',GetTriggerUnit(),3)
 else
 if(Trig_Level_Ups_Func016Func001Func001Func001C())then
+call SetUnitAbilityLevelSwapped('A0AX',GetTriggerUnit(),4)
+else
+endif
+endif
+endif
+else
+endif
+if(Trig_Level_Ups_Func017C())then
+if(Trig_Level_Ups_Func017Func001C())then
+call SetUnitAbilityLevelSwapped('A0CX',GetTriggerUnit(),2)
+else
+if(Trig_Level_Ups_Func017Func001Func001C())then
+call SetUnitAbilityLevelSwapped('A0CX',GetTriggerUnit(),3)
+else
+if(Trig_Level_Ups_Func017Func001Func001Func001C())then
 call SetUnitAbilityLevelSwapped('A0CX',GetTriggerUnit(),4)
 else
 endif
@@ -121705,7 +121804,7 @@ endif
 endif
 else
 endif
-if(Trig_Level_Ups_Func018C())then
+if(Trig_Level_Ups_Func019C())then
 set udg_Mastery_Stat[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=(udg_Mastery_Stat[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]-udg_Nightborne_Value[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])
 set udg_Nightborne_Value[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=(2*GetHeroLevel(GetTriggerUnit()))
 set udg_Mastery_Stat[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]=(udg_Mastery_Stat[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))]+udg_Nightborne_Value[GetConvertedPlayerId(GetOwningPlayer(GetTriggerUnit()))])
@@ -121714,50 +121813,31 @@ else
 endif
 set udg_ESC_Points[GetConvertedPlayerId(GetTriggerPlayer())]=(udg_ESC_Points[GetConvertedPlayerId(GetTriggerPlayer())]+1)
 call DisplayTextToForce(GetForceOfPlayer(GetTriggerPlayer()),"TRIGSTR_7378")
-set bj_forLoopAIndex=1
-set bj_forLoopAIndexEnd=3
-loop
-exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
-if(Trig_Level_Ups_Func023Func001C())then
-if(Trig_Level_Ups_Func023Func001Func001C())then
-call SetUnitAbilityLevelSwapped('A0NO',udg_Glyphs_Unit[GetForLoopIndexA()],2)
-call DisplayTextToForce(GetForceOfPlayer(GetOwningPlayer(udg_Agi_Str_Int[GetForLoopIndexA()])),"TRIGSTR_7376")
-else
-endif
-else
-if(Trig_Level_Ups_Func023Func001Func002C())then
-if(Trig_Level_Ups_Func023Func001Func002Func001C())then
-call SetUnitAbilityLevelSwapped('A0NO',udg_Glyphs_Unit[GetForLoopIndexA()],3)
-call DisplayTextToForce(GetForceOfPlayer(GetOwningPlayer(udg_Agi_Str_Int[GetForLoopIndexA()])),"TRIGSTR_7376")
-else
-endif
-else
-endif
-endif
-set bj_forLoopAIndex=bj_forLoopAIndex+1
-endloop
-set bj_forLoopAIndex=1
-set bj_forLoopAIndexEnd=3
-loop
-exitwhen bj_forLoopAIndex>bj_forLoopAIndexEnd
+if(Trig_Level_Ups_Func024C())then
 if(Trig_Level_Ups_Func024Func001C())then
-if(Trig_Level_Ups_Func024Func001Func001C())then
-call SetUnitAbilityLevelSwapped('A0BE',udg_Talents_Unit[GetForLoopIndexA()],(GetUnitAbilityLevelSwapped('A0BE',udg_Talents_Unit[GetForLoopIndexA()])+1))
-call DisplayTextToForce(GetForceOfPlayer(GetOwningPlayer(udg_Agi_Str_Int[GetForLoopIndexA()])),"TRIGSTR_7400")
+call StartTimerBJ(udg_Reminder_Customization,false,udg_Reminder_Customization_Time)
+else
+endif
+set udg_Attribute_Index=1
+loop
+exitwhen udg_Attribute_Index>3
+if(Trig_Level_Ups_Func024Func003Func001C())then
+if(Trig_Level_Ups_Func024Func003Func001Func001C())then
+call SetUnitAbilityLevelSwapped('A0NO',udg_Glyphs_Unit[udg_Attribute_Index],(GetUnitAbilityLevelSwapped('A0NO',udg_Glyphs_Unit[udg_Attribute_Index])+1))
+call DisplayTextToForce(GetForceOfPlayer(GetOwningPlayer(udg_Agi_Str_Int[udg_Attribute_Index])),"TRIGSTR_8015")
+else
+endif
+if(Trig_Level_Ups_Func024Func003Func001Func002C())then
+call SetUnitAbilityLevelSwapped('A0BE',udg_Talents_Unit[udg_Attribute_Index],(GetUnitAbilityLevelSwapped('A0BE',udg_Talents_Unit[udg_Attribute_Index])+1))
+call DisplayTextToForce(GetForceOfPlayer(GetOwningPlayer(udg_Agi_Str_Int[udg_Attribute_Index])),"TRIGSTR_8089")
 else
 endif
 else
-if(Trig_Level_Ups_Func024Func001Func002C())then
-if(Trig_Level_Ups_Func024Func001Func002Func001C())then
-call SetUnitAbilityLevelSwapped('A0BE',udg_Talents_Unit[GetForLoopIndexA()],(GetUnitAbilityLevelSwapped('A0BE',udg_Talents_Unit[GetForLoopIndexA()])+1))
-call DisplayTextToForce(GetForceOfPlayer(GetOwningPlayer(udg_Agi_Str_Int[GetForLoopIndexA()])),"TRIGSTR_7400")
-else
 endif
-else
-endif
-endif
-set bj_forLoopAIndex=bj_forLoopAIndex+1
+set udg_Attribute_Index=udg_Attribute_Index+1
 endloop
+else
+endif
 if(Trig_Level_Ups_Func025C())then
 call ModifyHeroStat(bj_HEROSTAT_AGI,udg_Agi_Str_Int[1],bj_MODIFYMETHOD_SUB,udg_GlyphFortitude_Amount[1])
 set udg_GlyphFortitude_Amount[1]=(4+(2*GetHeroLevel(udg_Agi_Str_Int[1])))
@@ -125282,7 +125362,7 @@ return true
 endfunction
 function Trig_Collapsing_Star_Group_Actions_Actions takes nothing returns nothing
 set udg_CollapsingStar_Damage=(125.00+(2.00*I2R(GetHeroStatBJ(bj_HEROSTAT_AGI,udg_Hero_DemonHunter,true))))
-set udg_CollapsingStar_Damage=(udg_CollapsingStar_Damage*(1.00+((0.03/ 10.00)*I2R((GetHeroStatBJ(bj_HEROSTAT_AGI,udg_Hero_DemonHunter,true)+GetHeroStatBJ(bj_HEROSTAT_INT,udg_Hero_DemonHunter,true))))))
+set udg_CollapsingStar_Damage=(udg_CollapsingStar_Damage*(1.00+((0.02/ 10.00)*I2R((GetHeroStatBJ(bj_HEROSTAT_AGI,udg_Hero_DemonHunter,true)+GetHeroStatBJ(bj_HEROSTAT_INT,udg_Hero_DemonHunter,true))))))
 set udg_NextDamageType=udg_DamageTypeMagical
 call UnitDamageTargetBJ(udg_Hero_DemonHunter,GetEnumUnit(),udg_CollapsingStar_Damage,ATTACK_TYPE_NORMAL,DAMAGE_TYPE_NORMAL)
 if(Trig_Collapsing_Star_Group_Actions_Func005C())then
@@ -144341,6 +144421,7 @@ call InitTrig_Initialization_Units()
 call InitTrig_Initialization_Destruct()
 call InitTrig_Register_Unique_Epics()
 call InitTrig_Consumables_Tooltip()
+call InitTrig_Consumables_Use()
 call InitTrig_Consumables_Purchase()
 call InitTrig_Runes()
 call InitTrig_Blood_Globe()
@@ -144440,7 +144521,8 @@ call InitTrig_Trigger_Challenges_Tutorial()
 call InitTrig_Trigger_Illyana_Tutorial()
 call InitTrig_Secret_Area()
 call InitTrig_Reminders_Start()
-call InitTrig_Reminders()
+call InitTrig_Reminder_Glyph()
+call InitTrig_Reminder_Talent()
 call InitTrig_Notice_Explosive()
 call InitTrig_Warning_Dungeon_Level()
 call InitTrig_Warning_No_Stat_Points()
@@ -145128,7 +145210,7 @@ call CreateAllDestructables()
 call CreateAllItems()
 call CreateAllUnits()
 call InitBlizzard()
-call ExecuteFunc("jasshelper__initstructs95528734")
+call ExecuteFunc("jasshelper__initstructs1504203890")
 call ExecuteFunc("CustomTooltip___Init")
 call ExecuteFunc("FrameLoader___init_function")
 call ExecuteFunc("RaceSounds___init_function")
@@ -145335,7 +145417,7 @@ function sa___prototype5_DamageEngine_RegisterFromHook takes nothing returns boo
 call DamageEngine_RegisterFromHook(f__arg_trigger1,f__arg_string1,f__arg_limitop1,f__arg_real1)
 return true
 endfunction
-function jasshelper__initstructs95528734 takes nothing returns nothing
+function jasshelper__initstructs1504203890 takes nothing returns nothing
 set st__StatisticRow_calculatePercRealTime=CreateTrigger()
 call TriggerAddCondition(st__StatisticRow_calculatePercRealTime,Condition(function sa__StatisticRow_calculatePercRealTime))
 set st__StatisticRow_updateUi=CreateTrigger()
