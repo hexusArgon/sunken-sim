@@ -256,9 +256,9 @@ def stats_of(build: Build) -> dict[str, float]:
         phys_add += 0.18
     if _has(build, GLYPH_FORTUNE):
         luck += 0.15
-    # Incubus (I0PC): MagicalType_Bonus += 0.10 + 0.003 x INT.
+    # Incubus (I0PC): MagicalType_Bonus += 0.10 + 0.25% x INT (v2.5.2c; 0.30% before).
     if _has(build, TALENT_INCUBUS):
-        magic_add += 0.10 + 0.003 * intel
+        magic_add += 0.10 + (0.25 * intel) / 100.0
     hp = max_hp(BASE_HP, strength) + health_flat
     attack_speed += min(1.0, 0.004 * agility)
     flat_cdr = 0.20 if _has(build, GLYPH_MINDHASTE) else 0.0
@@ -667,7 +667,8 @@ def simulate(build: Build, targets: int = 5, spec: str = "havoc") -> Report:
             chaos_recent.append((now, tick_chaos))
 
     def star_land(now: float) -> None:
-        raw = (125.0 + 2.0 * agi) * (1.0 + (0.03 / 10.0) * (agi + intel))
+        # v2.5.2c: x (1 + 0.02 per 10 AGI + INT) (0.03 before)
+        raw = (125.0 + 2.0 * agi) * (1.0 + (0.02 / 10.0) * (agi + intel))
         for t in range(targets):
             deal("Collapsing Star", raw, t, now, "magic")
             if has(TALENT_SINGULARITY) and not sing_done[t]:

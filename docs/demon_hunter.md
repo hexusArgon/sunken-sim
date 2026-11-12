@@ -31,7 +31,7 @@ Metamorphosis A0RD: 10 с, 0 маны, жмётся, как только гот�
 | Metamorphosis | A0RD | 10 / 0 | — |
 | Eye Beam (Havoc) | A0RF | 10 / 25 | 2,5 с канал. Тик каждые `0,5 / (1 + 0,5 × AttackSpeed)`: каждая цель по разу (одна цель — дважды) `7 + 0,15 × DCS` без типа. 25% × удача на удар — Chaos-атака (`× 1,25`, крит, on-attack), общий ICD 0,2 с |
 | Demon Spikes (Vengeance) | A0RH | 10 / 25 | только отражение; кастуется лишь ради Chaos Nova |
-| Collapsing Star (Devourer) | A0RK | 10 / 25 | через 0,75 с, радиус 275, все цели: `(125 + 2 × AGI) × (1 + 0,003 × (AGI + INT))`, магия |
+| Collapsing Star (Devourer) | A0RK | 10 / 25 | через 0,75 с, радиус 275, все цели: `(125 + 2 × AGI) × (1 + 0,002 × (AGI + INT))` (2.5.2c; было 0,003), магия |
 | The Hunt | A076 | 10 / 15 | `100 + 1,8 × AGI`, магия, одна цель. Thrill: +25% скорости атаки 6 с |
 | Immolation Aura | A06F | 10 / 20 | 6 с (9 с Enduring Torment). Тик `1,3 / (1 + Felfire)`; основной бафф и стак-бафф бьют все цели `15 + 0,3 × AGI`, магия. Пассив: каждая атака DH прожигает свою цель той же формулой |
 | Inner Demon | A0E4 | 12 / 20 | защитный; кастуется лишь ради Chaos Nova |
@@ -43,7 +43,7 @@ Metamorphosis A0RD: 10 с, 0 маны, жмётся, как только гот�
 | Талант | Код | Эффект в симе |
 |---|---|---|
 | Enduring Torment | I0DA | Immolation 9 с |
-| Incubus | I0PC | магический урон `+0,10 + 0,003 × INT` |
+| Incubus | I0PC | магический урон `+0,10 + 0,0025 × INT` (2.5.2c; было 0,003) |
 | Chaos Blade | I07E | на атаке стак B06M (4 с, не обновляется): `стаки` ударов `10 + 0,1 × DCS` без типа |
 | Cosmic Force | I0FL | DamageIncrease `+0,003 × Fury` |
 | Consume | I04P | Collapsing Star роняет ещё 3 фрагмента |

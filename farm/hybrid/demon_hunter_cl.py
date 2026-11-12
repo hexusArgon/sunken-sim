@@ -487,7 +487,7 @@ void beam_tick(const Row* r, St* s, double now, double per_hit) {
 }
 
 void star_land(const Row* r, St* s, double now) {
-  double raw = (125.0 + 2.0 * r->agi) * (1.0 + (0.03 / 10.0) * (r->agi + r->intel));
+  double raw = (125.0 + 2.0 * r->agi) * (1.0 + (0.02 / 10.0) * (r->agi + r->intel));
   for (int t = 0; t < s->targets; t++) {
     deal(r, s, N_F, raw, t, now, 2, 0, 1.0, 1.0);
     if (TM(r, T_SING) && !s->sing_done[t]) {
@@ -782,7 +782,7 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   if (GM(r, G_MIND)) haste += 0.07;
   if (GM(r, G_UNSL) && !(mask & S_UNSI)) { magic_add += 0.18; phys_add += 0.18; }
   if (GM(r, G_FORTUNE)) luck += 0.15;
-  if (TM(r, T_INCUB)) magic_add += 0.10 + 0.003 * intel;
+  if (TM(r, T_INCUB)) magic_add += 0.10 + (0.25 * intel) / 100.0;
   double hp = (T->base[3] + 15.0 * strength) + health_flat;
   double agility_speed = 0.004 * agility;
   agility_speed = (1.0 <= agility_speed) ? 1.0 : agility_speed;
