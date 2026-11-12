@@ -48,9 +48,10 @@ BASE_AGI = int(28 + (LEVEL - 1) * 2.8)
 BASE_INT = int(8 + (LEVEL - 1) * 0.8)
 # Trophy Skull / Trophies (udg_Trophies_Total, A0L0) long-term stacks farmed
 # before the fight: 13.333… per hero level, rounded to nearest (lvl 15 → 200).
-# Map: every 10th enemy death drops a trophy (Trophies_Drop), +1 when the
+# Map: every 10th enemy death drops a trophy (Trophies_Drop) and so does every
+# 4th Skull Split kill (Skull_Split_Execute, SkullSplit_Count); +1 when the
 # Berserker picks it up; DCS_Damage += Trophies_Total (DCS_Other_Damage_Sources).
-# 200 trophies ≈ 2000 kills; about 38 % of the top builds' DPS (kept by decision, 2026-11-12).
+# 200 trophies ≈ 2000 kills (fewer with Skull Split kills); about 38 % of the top builds' DPS (kept by decision, 2026-11-12).
 TROPHIES = int(math.floor(13.33333333333333333 * LEVEL + 0.5))
 WHITE_BASE = 30.0
 SWING = 1.6

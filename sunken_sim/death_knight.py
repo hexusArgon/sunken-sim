@@ -1,4 +1,4 @@
-"""Death Knight fight for Sunken City v2.5.2a, level 6.
+"""Death Knight fight for Sunken City v2.5.2c, level 15.
 
 Numbers are the map's. Hero U002 (parent Udea): strength 28 + 2.8 per level,
 agility 9 + 0.9, intellect 13 + 1.3, attack cooldown 2.0, white damage 11 + 1 die
@@ -128,6 +128,8 @@ GHOUL_SWING = 1.65  # u007/u00O ua1c
 WORM_TIME = 7.0
 WORM_SWING = 1.5  # o01U ua1c
 BLOOD_TAP = 1.35
+PRESENCE_STEP = 0.25  # Presence: periodic 0.25 s
+BUFF_SLOTS = 8  # expiry points kept per debuff and target (see _Buff)
 
 GLYPH_UNSEALED = "I0AV"
 GLYPH_GLASS = "I0JA"
@@ -327,18 +329,61 @@ def _cooldown(base: float, haste: float, stats: dict, flat: float = 0.0) -> floa
     return max(0.5, (base * stats["cd_temp"] - stats["flat_cdr"] - flat) / (1.0 + haste))
 
 
-class _Dither:
-    """Deterministic chance: fires once the accumulated probability reaches 1."""
+class _Buff:
+    """A debuff on one target as a distribution of expiry times: (expiry, probability).
+
+    Active at ``now`` when ``now <= expiry``. A sure application collapses it to one point;
+    a chance application moves a share of the probability to ``now + duration``.
+    """
+
+    __slots__ = ("e", "m")
 
     def __init__(self) -> None:
-        self.acc = 0.0
+        self.e: list[float] = []
+        self.m: list[float] = []
 
-    def roll(self, chance: float) -> bool:
-        self.acc += max(0.0, min(1.0, chance))
-        if self.acc >= 1.0 - 1e-9:
-            self.acc -= 1.0
-            return True
-        return False
+    def mass(self, now: float) -> float:
+        total = 0.0
+        for expiry, share in zip(self.e, self.m):
+            if now <= expiry:
+                total += share
+        return total
+
+    def sure(self, now: float, duration: float) -> None:
+        self.e = [now + duration]
+        self.m = [1.0]
+
+    def maybe(self, now: float, duration: float, p_on: float, p_off: float) -> None:
+        """Apply with chance ``p_on`` where the debuff is on, ``p_off`` where it is off."""
+        active = self.mass(now)
+        new_e: list[float] = []
+        new_m: list[float] = []
+        for expiry, share in zip(self.e, self.m):
+            if now <= expiry:
+                new_e.append(expiry)
+                new_m.append(share * (1.0 - p_on))
+        added = p_on * active + p_off * (1.0 - active)
+        until = now + duration
+        if new_e and new_e[-1] == until:
+            new_m[-1] = new_m[-1] + added
+        else:
+            new_e.append(until)
+            new_m.append(added)
+        while len(new_e) > BUFF_SLOTS:
+            # Fold the lightest point into the next (later) one: a small, deterministic overestimate.
+            k = 0
+            for j in range(1, len(new_e) - 1):
+                if new_m[j] < new_m[k]:
+                    k = j
+            new_m[k + 1] = new_m[k + 1] + new_m[k]
+            del new_e[k]
+            del new_m[k]
+        self.e = new_e
+        self.m = new_m
+
+
+def _chance(value: float) -> float:
+    return max(0.0, min(1.0, value))
 
 
 def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
@@ -356,7 +401,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
     has_erw = spec != "unholy"
     plaguebearer = spec == "unholy"
     bone_shield = BONE_SHIELD_ARMOR if _has(build, TALENT_MARROWREND) else 0.0
-    drain = 1.5 + 2.0 * LEVEL  # mana per second while in combat
+    drain = 1.5 + 2.0 * LEVEL  # Presence: drain / 4 every 0.25 s while mana >= drain (in combat)
 
     sources: dict[str, float] = Ledger({
         "Автоатака": 0.0,
@@ -376,18 +421,18 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
     hp_bonus = 0.0
     mana = stats["mana_max"]
     mana_time = 0.0
-    outbreak = [-1.0] * targets
-    plague = [-1.0] * targets
-    chill = [-1.0] * targets
-    frozen = -1.0
+    outbreak = [_Buff() for _ in range(targets)]  # B06E
+    plague = [_Buff() for _ in range(targets)]  # B08P
+    chill = [_Buff() for _ in range(targets)]  # B011
+    frozen = -1.0  # Bfro on the main target (Frost Strike), always sure
     marrow = -1.0
     sulfuras = Sulfuras() if _wears(build, "I0BR") else None
-    pb_dither = [_Dither() for _ in range(targets)]
-    decomp_dither = [_Dither() for _ in range(targets)]
-    worm_dither = _Dither()
-    ghoul_dither = _Dither()
-    razor_dither = _Dither()
     army_count = 0
+    pb_chance = 0.05 * (1.25 if _has(build, TALENT_PESTILENCE) else 1.0) * luck_mult
+    ghoul_chance = _chance(0.10 * luck_mult)
+    worm_chance = _chance(0.20 * luck_mult)
+    razor_chance = _chance(0.15 * luck_mult)
+    decomp_chance = _chance(0.20 * luck_mult)
 
     def max_life() -> float:
         return stats["hp"] + hp_bonus
@@ -396,12 +441,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
         nonlocal mana, mana_time
         dt = now - mana_time
         if dt > 0:
-            # Presence: every 0.25 s, only while mana >= the quarter drain.
-            net = stats["mana_regen"] - drain
-            value = mana + net * dt
-            if net < 0 and value < drain / 4.0:
-                value = min(mana, drain / 4.0)
-            mana = max(0.0, min(stats["mana_max"], value))
+            mana = min(stats["mana_max"], mana + stats["mana_regen"] * dt)
         mana_time = now
 
     def mastery() -> float:
@@ -418,16 +458,18 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
         return value
 
     def increase(t: int, now: float) -> float:
-        """DamageIncrease (Func029): Frost Strike passive and Grim Reaper."""
+        """DamageIncrease (Func029): Frost Strike passive and Grim Reaper (expected over the debuffs)."""
         bonus = 1.0
         is_frozen = t == 0 and frozen >= now
+        chilled = chill[t].mass(now)
         if is_frozen:
             bonus += 0.15
-        elif chill[t] >= now:
-            bonus += 0.08
+        else:
+            bonus += 0.08 * chilled
         if _has(build, TALENT_GRIM_REAPER):
-            count = (plague[t] >= now) + (outbreak[t] >= now) + is_frozen + (chill[t] >= now)
-            count += t == 0 and marrow >= now
+            count = plague[t].mass(now) + outbreak[t].mass(now) + (1.0 if is_frozen else 0.0) + chilled
+            if t == 0 and marrow >= now:
+                count += 1.0
             bonus += 0.06 * count
         return bonus
 
@@ -454,55 +496,82 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
         return armor_taken(armor)
 
     def plague_flat(t: int, now: float) -> float:
-        if plague[t] < now:
+        on = plague[t].mass(now)
+        if on <= 0.0:
             return 0.0
         value = 2.0 + RANK
         if _has(build, TALENT_DECOMPOSITION):
             value += 3.0 + 0.08 * dcs()
-        return value
+        return value * on
 
-    def apply_outbreak(t: int, now: float) -> None:
-        """Outbreak_Apply: A04I on a target already carrying B06E bursts for Unholy."""
-        if plaguebearer and outbreak[t] >= now:
-            raw = 20.0 + 0.015 * max_life() * bt
-            # DAMAGE_TYPE_DISEASE without NextDamageType: no magical branch, no Plaguebearer.
-            amount = raw * increase(t, now) * taken(t, now) * _execute_factor(stats, now)
-            sources.add_exec("Plaguebearer", amount, now, _execute_factor(stats, now))
-        outbreak[t] = now + OUTBREAK_TIME
-
-    def after_hit(t: int, now: float) -> None:
+    def outbreak_on(t: int, now: float, p_on: float, p_off: float) -> None:
+        """Outbreak_Apply (A04I) with chance p_on / p_off: on a target already carrying B06E,
+        Unholy (Plaguebearer A038) bursts for 20 + 1.5% max health, DAMAGE_TYPE_DISEASE."""
         if plaguebearer:
-            chance = 0.05 * (1.25 if _has(build, TALENT_PESTILENCE) else 1.0) * luck_mult
-            if outbreak[t] < now:
-                chance *= 0.5
-            if pb_dither[t].roll(chance):
-                apply_outbreak(t, now)
+            burst = outbreak[t].mass(now) * p_on
+            if burst > 0.0:
+                raw = 20.0 + 0.015 * max_life() * bt
+                execute = _execute_factor(stats, now)
+                amount = raw * increase(t, now) * taken(t, now) * execute
+                sources.add_exec("Plaguebearer", amount * burst, now, execute)
+        outbreak[t].maybe(now, OUTBREAK_TIME, p_on, p_off)
 
-    def deal(name: str, raw: float, t: int, now: float, magical: bool = True, potency_scale: float = 1.0) -> float:
-        amount = raw + potency(now) * potency_scale + plague_flat(t, now)
-        amount *= typed(magical, now) * increase(t, now)
-        amount *= spell_crit if magical else attack_crit
-        amount *= taken(t, now) * _execute_factor(stats, now)
-        sources.add_exec(name, amount, now, _execute_factor(stats, now))
-        note_damage_mana(1)
-        after_hit(t, now)
-        return amount
+    def after_hit(t: int, now: float, procs: float, on_only: bool) -> None:
+        """Plaguebearer (Unholy): a non-disease hit has 5% (x1.25 Pestilence) x Luck to apply
+        Outbreak, half as much on a target without it. ``procs`` hits are expected;
+        ``on_only``: the hit happens only while Outbreak is on (an Outbreak tick)."""
+        if plaguebearer and procs > 0.0:
+            p_on = _chance(pb_chance * procs)
+            p_off = 0.0 if on_only else _chance(0.5 * pb_chance * procs)
+            outbreak_on(t, now, p_on, p_off)
 
-    def summon_hit(name: str, raw: float, t: int, now: float) -> float:
-        amount = (raw + plague_flat(t, now)) * increase(t, now) * taken(t, now) * _execute_factor(stats, now)
-        sources.add_exec(name, amount, now, _execute_factor(stats, now))
-        after_hit(t, now)
-        return amount
-
-    def note_damage_mana(count: int) -> None:
+    def note_damage_mana(count: float) -> None:
         nonlocal mana
         if stats["damage_mana_pct"]:
             mana = min(stats["mana_max"], mana + stats["damage_mana_pct"] * stats["mana_max"] * count)
+
+    def deal(name: str, raw: float, t: int, now: float, magical: bool = True, potency_scale: float = 1.0,
+             weight: float = 1.0, procs: float | None = None, on_only: bool = False) -> float:
+        """One hit; ``weight`` scales the damage (probability or expected count),
+        ``procs`` the expected number of hits for on-hit chances (default ``weight``)."""
+        amount = raw + potency(now) * potency_scale + plague_flat(t, now)
+        amount *= typed(magical, now) * increase(t, now)
+        amount *= spell_crit if magical else attack_crit
+        execute = _execute_factor(stats, now)
+        amount *= taken(t, now) * execute
+        sources.add_exec(name, amount * weight, now, execute)
+        hits = weight if procs is None else procs
+        note_damage_mana(hits)
+        after_hit(t, now, hits, on_only)
+        return amount
+
+    def summon_hit(name: str, raw: float, t: int, now: float, weight: float = 1.0) -> float:
+        execute = _execute_factor(stats, now)
+        amount = (raw + plague_flat(t, now)) * increase(t, now) * taken(t, now) * execute
+        sources.add_exec(name, amount * weight, now, execute)
+        after_hit(t, now, weight, False)
+        return amount
 
     def unholy_strikes(now: float) -> None:
         if _has(build, TALENT_UNHOLY_STRIKES):
             for _ in range(2):
                 deal("Unholy Strikes", 15.0 + 0.40 * stats["str"], 0, now)
+
+    def razorice(now: float, chance: float) -> None:
+        # Dynamic_CDR: Frost Strike's remaining cooldown -0.30 s (expected over the chance).
+        if _has(build, TALENT_RAZORICE):
+            ready["fs"] = max(now, ready["fs"] - 0.30 * chance)
+
+    def ghoul_proc(now: float) -> None:
+        """u00O hits (not Blood) 10% x Luck: on Outbreak + Freeze -> Outbreak; Outbreak only -> Chill 4 s;
+        Freeze only -> Outbreak; neither -> 50% Outbreak, 50% Chill (PreDamage_Heroes Func020Func009)."""
+        on = outbreak[0].mass(now)
+        if frozen >= now:
+            outbreak_on(0, now, ghoul_chance, ghoul_chance)
+        else:
+            p_chill = ghoul_chance * on + 0.5 * ghoul_chance * (1.0 - on)
+            outbreak_on(0, now, 0.0, 0.5 * ghoul_chance)
+            chill[0].maybe(now, GHOUL_CHILL, p_chill, p_chill)
 
     # cooldown state
     ready = {"uf": 0.0, "fs": 0.0, "bs": 0.0, "dg": 0.0, "erw": 0.0 if has_erw else FIGHT + 1}
@@ -520,11 +589,16 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
     summons: list[dict] = []  # {"kind", "end", "next", "raw"}
     tick_rate = 1.0 + (0.10 + 0.005 * mastery() if spec == "unholy" else 0.0) + (0.25 if stats["belt"] else 0.0)
     next_tick = 1.0 * (1.0 - (0.10 + 0.005 * mastery()))  # Select_Str_Hero first timer
-    virulent = (0.12 + 0.005 * stats["potency"]) * luck_mult if _has(build, TALENT_VIRULENT) else 0.0
+    next_presence = PRESENCE_STEP
+    virulent = _chance((0.12 + 0.005 * stats["potency"]) * luck_mult) if _has(build, TALENT_VIRULENT) else 0.0
+    # Decomposition: one 20% roll per Outbreak_Damage pass; Virulent Plague makes it two passes.
+    decomp = (1.0 - virulent) * decomp_chance + virulent * (1.0 - (1.0 - decomp_chance) * (1.0 - decomp_chance))
 
     def cast_spell(key: str, now: float) -> None:
         nonlocal frozen, marrow, hp_bonus, last_cast, rested, army_count, mana
         actions.append((now, names[key]))
+        if sulfuras is not None:
+            sulfuras.cast()  # every spellcast ignites the weapon (was missing before 2026-11-12)
         hit = now + CAST_POINT
         life = max_life()
         if key == "dg":
@@ -540,13 +614,13 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
             if _has(build, TALENT_OBLITERATE):
                 raw += 0.75 * dcs()
             if stats["maw"]:
-                healing = (70.0 * RANK - 10.0 - 40.0) + 0.10 * life * bt
+                healing = (60.0 * RANK - 40.0) + 0.10 * life * bt
                 if stats["siphon"]:
                     healing *= 2.0
                 raw += 0.35 * healing
             deal("Blood Strike", raw, 0, hit)
             if not stats["maw"]:
-                plague[0] = hit + BLOOD_PLAGUE_TIME
+                plague[0].sure(hit, BLOOD_PLAGUE_TIME)
             if _has(build, TALENT_MARROWREND):
                 marrow = hit + MARROW_TIME
             if not rested:
@@ -557,7 +631,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
                 raw += 0.50 * dcs()
             for t in range(targets):
                 deal("Unholy Fury", raw, t, hit)
-                apply_outbreak(t, hit)
+                outbreak_on(t, hit, 1.0, 1.0)
         elif key == "fs":
             raw = 70.0 + 0.05 * life * bt + 0.15 * stats["mana_max"]
             if _has(build, TALENT_LICH_KING):
@@ -576,7 +650,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
                         deal("Breath of Sindragosa", wyrm * 1.5, t, hit)
                     else:
                         deal("Breath of Sindragosa", wyrm, t, hit)
-                        chill[t] = max(chill[t], hit + CHILL_TIME)
+                        chill[t].sure(hit, CHILL_TIME)
         elif key == "erw":
             if last_cast is not None:
                 ready[last_cast] = now
@@ -596,6 +670,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
                 summons.append({"kind": "ghoul", "end": hit + GHOUL_TIME, "next": hit, "raw": float(raw)})
 
     order = ("uf", "fs", "bs", "dg")
+    share = 1.0 / targets  # a Bloodworm attacks a random enemy
     next_attack = 0.0
     busy = 0.0
     guard = 0
@@ -608,20 +683,26 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
         if has_erw and last_cast is not None and ready["erw"] < FIGHT and ready[last_cast] - max(busy, ready["erw"]) > 2.0:
             erw_at = max(busy, ready["erw"])
         summon_at = min((s["next"] for s in summons if s["next"] < s["end"]), default=FIGHT)
-        moment = min(next_attack, spell_at, erw_at, summon_at, next_tick)
+        moment = min(next_attack, spell_at, erw_at, summon_at, next_tick, next_presence)
         if moment >= FIGHT:
             break
         summons = [s for s in summons if s["next"] < s["end"]]
+        if moment == next_presence:
+            recover(moment)
+            if mana >= drain:
+                mana = mana - drain / 4.0
+            next_presence = moment + PRESENCE_STEP
+            continue
         if moment == next_tick:
             for t in range(targets):
-                if outbreak[t] >= moment:
+                on = outbreak[t].mass(moment)
+                if on > 0.0:
                     raw = 5.0 * RANK + 0.008 * max_life() * bt
                     times = 1.0 + virulent
-                    before = sources["Outbreak"]
-                    deal("Outbreak", raw, t, moment)
-                    sources["Outbreak"] = before + (sources["Outbreak"] - before) * times
-                    if _has(build, TALENT_DECOMPOSITION) and decomp_dither[t].roll(0.20 * luck_mult):
-                        plague[t] = moment + BLOOD_PLAGUE_TIME
+                    deal("Outbreak", raw, t, moment, weight=on * times, procs=times, on_only=True)
+                    if _has(build, TALENT_DECOMPOSITION):
+                        p = on * decomp
+                        plague[t].maybe(moment, BLOOD_PLAGUE_TIME, p, p)
             next_tick = moment + 1.25 / tick_rate
             continue
         if moment == summon_at:
@@ -630,22 +711,15 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
                     continue
                 if s["kind"] == "ghoul":
                     summon_hit("Army of the Dead", s["raw"], 0, moment)
-                    if spec != "blood" and ghoul_dither.roll(0.10 * luck_mult):
-                        if outbreak[0] < moment:
-                            apply_outbreak(0, moment)
-                        elif chill[0] < moment:
-                            chill[0] = moment + GHOUL_CHILL
-                        else:
-                            apply_outbreak(0, moment)
-                    if _has(build, TALENT_RAZORICE) and razor_dither.roll(0.15 * luck_mult):
-                        ready["fs"] = max(moment, ready["fs"] - 0.30)
+                    if spec != "blood":
+                        ghoul_proc(moment)
+                    razorice(moment, razor_chance)
                     s["next"] = moment + GHOUL_SWING
                 else:
-                    dealt = summon_hit("Bloodworms", s["raw"], 0, moment)
-                    if worm_dither.roll(0.20 * luck_mult):
-                        deal("Bloodworms", 2.0 * dealt, 0, moment, potency_scale=0.0)
-                    if _has(build, TALENT_RAZORICE) and razor_dither.roll(0.15 * luck_mult):
-                        ready["fs"] = max(moment, ready["fs"] - 0.30)
+                    for t in range(targets):
+                        dealt = summon_hit("Bloodworms", s["raw"], t, moment, share)
+                        deal("Bloodworms", 2.0 * dealt, t, moment, potency_scale=0.0, weight=share * worm_chance)
+                    razorice(moment, razor_chance)
                     s["next"] = moment + WORM_SWING
             continue
         if moment == erw_at and erw_at <= next_attack:
@@ -669,13 +743,10 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
             recover(moment)
             swing = SWING * (1.20 if stats["galactic"] else 1.0)
             interval = swing / (1.0 + stats["attack_speed"])
-            before = sources["Автоатака"]
-            deal("Автоатака", dcs(), 0, moment, magical=False, potency_scale=stats["attack_potency"])
-            if stats["auto_pct"] != 1.0:
-                sources["Автоатака"] = before + (sources["Автоатака"] - before) * stats["auto_pct"]
+            deal("Автоатака", dcs(), 0, moment, magical=False, potency_scale=stats["attack_potency"],
+                 weight=stats["auto_pct"], procs=1.0)
             mana = min(stats["mana_max"], mana + attack_mana_gain(stats))
-            if _has(build, TALENT_RAZORICE):
-                ready["fs"] = max(moment, ready["fs"] - 0.30)
+            razorice(moment, 1.0)
             if stats["fire_orb"]:
                 splash = (20.0 + 0.35 * stats["str"]) * targets * taken(1 % targets, moment) * _execute_factor(stats, moment)
                 sources.add_exec("Всплеск огня", splash, moment, _execute_factor(stats, moment))

@@ -1,4 +1,4 @@
-# Mage, Priest, Shaman, Paladin, Druid, Berserker: все бои на GPU (OpenCL, float64, бит в бит с CPU)
+# Mage, Priest, Shaman, Paladin, Druid, Berserker, Death Knight: все бои на GPU (OpenCL, float64, бит в бит с CPU)
 
 На видеокарте считаются семнадцать спеков:
 
@@ -11,10 +11,13 @@
 | Druid (заклинатель, `sunken_sim/druid.py`) | Restoration, Balance | `farm/hybrid/druid_cl.py` (лист и ядра общие с шаманом) | `druid.sheet`, `_simulate_druid` (куча событий по (время, порядок)), `score_events` |
 
 | Berserker | Headhunter, Poison, Fury | `farm/hybrid/berserker_cl.py` (общий хост `class_cl.py`) | `berserker.stats_of` (ловкость основная, Blood Fury от здоровья, Gift, Hemotoxin), `berserker.simulate` с суммами Ledger, таблица здоровья героя `pressure.hero_hp_ratio` |
+| Death Knight | Frost, Blood, Unholy | `farm/hybrid/death_knight_cl.py` (общий хост `class_cl.py`) | `death_knight.stats_of` (сила основная, броня предметов, спелл-крит, стаки Blood Strike), `death_knight.simulate` с суммами Ledger и распределениями дебаффов `_Buff` |
 
 Feral Druid (`sunken_sim/feral_druid.py`) — отдельный класс, на GPU не переносился.
 
 Berserker: у сима нет кэша боёв, каждая проба ESC — свой бой. `x ** y` (шансы Surge of Toxins) на устройстве не считается: ядро ищет точную пару (основание, степень) в таблице, которую заполняет `**` хоста; промах — статус 7, хост досчитывает и перезапускает строки (как `math.exp` у жреца). Здоровье героя (91 урона каждые 0,2 с, +50 % каждую секунду, шаг таблицы 0,01 с) ядро проигрывает точно так же, вплоть до последней ячейки таблицы, которая всегда 1.0. Отбор у Berserker — `bare-top50` (как у Priest, Paladin, Shaman, Mage, Druid), в итоге пишется топ-20.
+
+Death Knight: кэша боёв нет, каждая проба ESC — свой бой. Outbreak, Blood Plague и Chill на каждой цели — распределения времени окончания (до 8 точек; лишняя самая лёгкая точка сливается со следующей), ядро повторяет их запись за записью. Переполнение призывов (24) или отрицательная броня — статус ≠ 0, строку досчитывает Python. Отбор — `bare-top10`.
 
 Маршрут включается только по запросу (см. «Запуск»). Без этого всё работает как раньше.
 
@@ -98,6 +101,8 @@ Shaman и Paladin, PoCL на CPU (виртуальная машина, Python 3.
 - выдача `eval_span` и топ-10 совпадают со старым CPU-раннером (Enhancement, Retribution).
 
 Druid (Restoration, Balance), PoCL, 2026-11-11: Top-150, по 1700 чанков (каждый предмет ≥5 раз) и 1500 боёв с талантами/глифами/ESC вкл. воспроизведённый кэш — 0 расхождений; подбор совпадает с `finish_sextuple`, в т.ч. на шестёрках с Diamond Ring, Sulfuras и Treant-предметом.
+
+Death Knight (Frost, Blood, Unholy), PoCL, 2026-11-12: Top-150, по 120–150 случайных чанков и боёв с талантами/глифами/ESC на спек, тесты `test_class_cl` (каждый предмет ≥5 раз, 400 боёв ×2, подбор = `finish_sextuple` с Sulfuras, Maw, Plaguebearer Belt, Coldbringer) — 0 расхождений.
 
 Berserker (Headhunter, Poison, Fury), PoCL, 2026-11-12: Top-150, по 400 случайных чанков и ~800 чанков, где каждый предмет ≥5 раз, по 400–600 боёв с талантами/глифами/ESC — 0 расхождений; подбор совпадает с `finish_sextuple` на 12 шестёрках, в т.ч. с Sulfuras.
 

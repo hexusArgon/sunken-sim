@@ -17,7 +17,8 @@ from farm.hybrid import mage_cl
 CASES = (("shaman", "restoration"), ("shaman", "enhancement"), ("shaman", "elemental"),
          ("paladin", "retribution"), ("paladin", "protection"), ("paladin", "holy"),
          ("druid", "restoration"), ("druid", "balance"),
-         ("berserker", "headhunter"), ("berserker", "poison"), ("berserker", "fury"))
+         ("berserker", "headhunter"), ("berserker", "poison"), ("berserker", "fury"),
+         ("death_knight", "frost"), ("death_knight", "blood"), ("death_knight", "unholy"))
 _ENGINES = {}
 
 
@@ -94,7 +95,7 @@ class ClassCLTest(unittest.TestCase):
 
     def test_refine_matches_finish_sextuple(self):
         specials = {"shaman": ("I00D", "I0BR"), "paladin": ("I0BR", "I0R0"), "druid": ("I00D", "I0BR", "I0R4"),
-                    "berserker": ("I0BR", "I0U2", "I0U5")}
+                    "berserker": ("I0BR", "I0U2", "I0U5"), "death_knight": ("I0BR", "I0RZ", "I07T", "I0NK")}
         for hero, spec in CASES:
             engine, space, items, _sources = _engine(hero, spec)
             chunks = [mage_cl.sample(space, 1, 5)[0]]
@@ -112,7 +113,7 @@ class ClassCLTest(unittest.TestCase):
 
     def test_span_payload_and_gate_match_cpu_runner(self):
         for hero, spec in (("shaman", "enhancement"), ("paladin", "retribution"), ("druid", "balance"),
-                           ("berserker", "poison")):
+                           ("berserker", "poison"), ("death_knight", "unholy")):
             _engine(hero, spec)
             from farm.catalog import load
             space, items = load(hero, spec, "mixed", None, 80)
