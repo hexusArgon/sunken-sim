@@ -47,8 +47,10 @@ BASE_STR = int(14 + (LEVEL - 1) * 1.4)
 BASE_AGI = int(28 + (LEVEL - 1) * 2.8)
 BASE_INT = int(8 + (LEVEL - 1) * 0.8)
 # Trophy Skull / Trophies (udg_Trophies_Total, A0L0) long-term stacks farmed
-# by Skull Split kills before the fight: 13.333… per hero level, rounded to
-# nearest (lvl 15 → 200). Map: DCS_Damage += Trophies_Total (war3map.j ~75661).
+# before the fight: 13.333… per hero level, rounded to nearest (lvl 15 → 200).
+# Map: every 10th enemy death drops a trophy (Trophies_Drop), +1 when the
+# Berserker picks it up; DCS_Damage += Trophies_Total (DCS_Other_Damage_Sources).
+# 200 trophies ≈ 2000 kills; about 38 % of the top builds' DPS (kept by decision, 2026-11-12).
 TROPHIES = int(math.floor(13.33333333333333333 * LEVEL + 0.5))
 WHITE_BASE = 30.0
 SWING = 1.6
@@ -117,6 +119,7 @@ SACK_DELAY = 0.75
 SKULL_CD = 20.0
 SKULL_MANA = 25.0
 VA_DUR = 4.0
+VA_SLOTS = 8  # expiry points kept per target (at most one per tick of the last 4 s, plus the last sure apply)
 SURGE_DUR = 5.0
 BERSERK_DUR = 6.0
 PRESSURE_STEP = 0.2
@@ -367,8 +370,11 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
         "Всплеск огня": 0.0,
     })
     haste = stats["haste"]
-    va_until = [-1.0] * targets
-    dambala_acc = [0.0] * targets
+    # Venomous Axes buff B05J per target as a distribution of expiry times: (expiry, probability).
+    # An attack or a Toxic Sack applies it for sure (one point, now + 4 s); Might of Dambala
+    # re-applies it on a tick only with chance q, so that share moves to tick + 4 s.
+    va_e: list[list[float]] = [[] for _ in range(targets)]
+    va_m: list[list[float]] = [[] for _ in range(targets)]
     surge_p = [0.0] * targets
     surge_at = [-1.0] * targets
     actions: list[tuple[float, str]] = []
@@ -390,13 +396,26 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
         per = 0.02 if spec == "fury" else 0.03
         return 0.12 + per * stacks
 
-    def va_on(index: int, now: float) -> bool:
-        return now < va_until[index]
+    def va_mass(index: int, now: float) -> float:
+        """Probability that Venomous Axes is on the target at ``now``."""
+        total = 0.0
+        for expiry, mass in zip(va_e[index], va_m[index]):
+            if now < expiry:
+                total += mass
+        return total
+
+    def va_apply(index: int, now: float) -> None:
+        va_e[index] = [now + VA_DUR]
+        va_m[index] = [1.0]
 
     def taken_for(index: int, now: float) -> float:
         armor = DUMMY_ARMOR - stats["armor_pen"]
-        if has(TALENT_WOUND_POISON) and va_on(index, now):
-            armor -= 3.0
+        if has(TALENT_WOUND_POISON):
+            p = va_mass(index, now)
+            if p > 0.0:
+                base = armor_taken(armor)
+                low = armor_taken(armor - 3.0)
+                return (1.0 - p) * base + p * low
         return armor_taken(armor)
 
     def generic(when: float) -> float:
@@ -474,8 +493,9 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
             value += BLOOD_CRAZE_DCS
         return value
 
-    def va_tick(index: int, now: float) -> None:
-        """One Venomous_Axes_Tick on a target (global timer or Poisoned Blades)."""
+    def va_tick(index: int, now: float, weight: float, refresh: bool) -> None:
+        """One Venomous_Axes_Tick on a target (global timer or Poisoned Blades), taken with
+        probability ``weight`` (the buff is on). ``refresh``: Might of Dambala may re-apply the buff."""
         calls = 1.0
         for code in (TALENT_DEADLY_POISON, TALENT_WOUND_POISON, TALENT_LEECHING_POISON):
             if has(code):
@@ -492,16 +512,32 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
         if spec == "poison":
             ticks += _chance((5.0 + 0.5 * mastery) / 100.0)
         typed_mult = physical(now) if has(TALENT_HEMOTOXIN) else generic(now)
-        finish("Venomous Axes", raw * typed_mult, index, now, calls * ticks, coeff * typed_mult)
+        finish("Venomous Axes", raw * typed_mult, index, now, calls * ticks * weight, coeff * typed_mult)
         if spec != "poison":
-            surge_proc(index, now, 1.0 - (1.0 - _chance(0.02 * luck_mult)) ** calls)
+            surge_proc(index, now, (1.0 - (1.0 - _chance(0.02 * luck_mult)) ** calls) * weight)
         else:
-            poison_spec_proc(index, now, calls * ticks)
-        if has(TALENT_MIGHT_OF_DAMBALA):
-            dambala_acc[index] += _chance(0.20 * luck_mult) * calls * ticks
-            while dambala_acc[index] >= 1.0:
-                dambala_acc[index] -= 1.0
-                va_until[index] = max(va_until[index], now + VA_DUR)
+            poison_spec_proc(index, now, calls * ticks * weight)
+        if refresh and has(TALENT_MIGHT_OF_DAMBALA):
+            # Map: one 20% roll per Venomous_Axes_Damage call (not per poison-spec double tick).
+            dambala = _chance(0.20 * luck_mult)
+            keep = 1.0 - dambala
+            for code in (TALENT_DEADLY_POISON, TALENT_WOUND_POISON, TALENT_LEECHING_POISON):
+                if has(code):
+                    keep *= 1.0 - _chance(0.30 * luck_mult) * dambala
+            q = 1.0 - keep
+            alive = now - 1e-9
+            new_e: list[float] = []
+            new_m: list[float] = []
+            for expiry, mass in zip(va_e[index], va_m[index]):
+                if alive < expiry:
+                    new_e.append(expiry)
+                    new_m.append(mass * (1.0 - q))
+            new_e.append(now + VA_DUR)
+            new_m.append(q * weight)
+            if len(new_e) > VA_SLOTS:
+                raise RuntimeError("Venomous Axes distribution overflow")
+            va_e[index] = new_e
+            va_m[index] = new_m
 
     def recover(now: float) -> None:
         nonlocal mana, mana_time
@@ -565,17 +601,19 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
             for index in range(targets):
                 coeff = 1.0
                 if has(TALENT_POISON_BOMB):
-                    coeff = 1.6 if va_on(index, moment) else 1.3
+                    p = va_mass(index, moment)
+                    coeff = 1.6 * p + 1.3 * (1.0 - p)
                 finish("Toxic Sack", raw * coeff * physical(moment), index, moment,
                        pot_coeff=coeff * physical(moment))
                 poison_spec_proc(index, moment)
-                va_until[index] = max(va_until[index], moment + VA_DUR)
+                va_apply(index, moment)
             note_damage_mana(targets)
             continue
         if moment == next_tick:
             for index in range(targets):
-                if va_on(index, moment - 1e-9):
-                    va_tick(index, moment)
+                weight = va_mass(index, moment - 1e-9)
+                if weight > 0.0:
+                    va_tick(index, moment, weight, True)
             next_tick += 1.0
             continue
         if moment == next_pressure:
@@ -620,15 +658,16 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
         if moment == next_attack:
             recover(moment)
             power = dcs(moment)
-            had_va = va_on(0, moment)
+            had_va = va_mass(0, moment)
             surge_consume(0, moment)
             attack_hit("Автоатака", power, moment, stats["attack_potency"], count=stats["auto_pct"])
             poison_spec_proc(0, moment)
             mana = min(stats["mana_max"], mana + attack_mana_gain(stats))
             note_damage_mana(1)
-            va_until[0] = max(va_until[0], moment + VA_DUR)
-            if blades and had_va:
-                va_tick(0, moment)
+            va_apply(0, moment)
+            if blades and had_va > 0.0:
+                # The attack has just re-applied the buff, so a Dambala roll here changes nothing.
+                va_tick(0, moment, had_va, False)
             if has(TALENT_WAY_OF_THE_SNAKE):
                 chance = _chance(0.20 * luck_mult)
                 raw = 2.0 * (10.0 * RANK + 0.5 * agi)

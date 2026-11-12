@@ -52,6 +52,7 @@ KERNEL = r"""
 #define NPAL 13
 #define MAXT 8
 #define MAXP 16
+#define VK 8
 #define NSRC 10
 #define LEVEL 15.0
 #define TROPHIES 200.0
@@ -131,7 +132,8 @@ typedef struct {
 
 typedef struct {
   double src[NSRC]; int ord[NSRC]; int nord; uint seen;
-  double va_until[MAXT], dambala[MAXT], surge_p[MAXT], surge_at[MAXT];
+  double va_e[MAXT][VK], va_m[MAXT][VK]; int va_n[MAXT];
+  double surge_p[MAXT], surge_at[MAXT];
   double pend[MAXP]; int npend;
   double mana, mana_time, lm;
   double hp_max, hp_health, hp_next_hit, hp_next_heal; long hp_idx; int hp_flat;
@@ -223,14 +225,35 @@ double hero_ratio(St* s, double t) {
   return s->hp_health / s->hp_max;
 }
 
-int va_on(const St* s, int i, double now) { return now < s->va_until[i]; }
+/* Venomous Axes buff per target: expiry points with probabilities (see sunken_sim/berserker.py). */
+double va_mass(const St* s, int i, double now) {
+  double total = 0.0;
+  for (int k = 0; k < s->va_n[i]; k++)
+    if (now < s->va_e[i][k]) total += s->va_m[i][k];
+  return total;
+}
 
-double taken_for(const Row* r, St* s, int i, double now) {
-  double armor = 15.0 - r->armor_pen;
-  if (TM(r, T_WOUND) && va_on(s, i, now)) armor -= 3.0;
+void va_apply(St* s, int i, double now) {
+  s->va_e[i][0] = now + 4.0; s->va_m[i][0] = 1.0; s->va_n[i] = 1;
+}
+
+double armor_mult(St* s, double armor) {
   if (armor > 0.0) return 1.0 - (armor * 0.04) / (1.0 + 0.04 * armor);
   if (armor < 0.0) { if (!s->status) s->status = 4; return 1.0; }
   return 1.0;
+}
+
+double taken_for(const Row* r, St* s, int i, double now) {
+  double armor = 15.0 - r->armor_pen;
+  if (TM(r, T_WOUND)) {
+    double p = va_mass(s, i, now);
+    if (p > 0.0) {
+      double base = armor_mult(s, armor);
+      double low = armor_mult(s, armor - 3.0);
+      return (1.0 - p) * base + p * low;
+    }
+  }
+  return armor_mult(s, armor);
 }
 
 double gen_mult(const Row* r, double when) {
@@ -307,7 +330,7 @@ double attack_hit(const Row* r, St* s, int name, double raw, double when, double
   return 0.0;
 }
 
-void va_tick(const Row* r, const PowT* P, St* s, int index, double now) {
+void va_tick(const Row* r, const PowT* P, St* s, int index, double now, double w, int refresh) {
   double calls = 1.0;
   if (TM(r, T_DEADLY)) calls += chance01(0.30 * s->lm);
   if (TM(r, T_WOUND)) calls += chance01(0.30 * s->lm);
@@ -324,16 +347,29 @@ void va_tick(const Row* r, const PowT* P, St* s, int index, double now) {
   double ticks = 1.0;
   if (SP_POISON) ticks += chance01((5.0 + 0.5 * r->mastery) / 100.0);
   double typed = TM(r, T_HEMO) ? physical(r, now) : gen_mult(r, now);
-  finish(r, s, N_VA, raw * typed, index, now, calls * ticks, coeff * typed);
-  if (!SP_POISON) surge_proc(s, index, now, 1.0 - pow_lookup(P, s, 1.0 - chance01(0.02 * s->lm), calls));
-  else poison_spec_proc(P, s, index, now, calls * ticks);
-  if (TM(r, T_DAMBALA)) {
-    s->dambala[index] += chance01(0.20 * s->lm) * calls * ticks;
-    while (s->dambala[index] >= 1.0) {
-      s->dambala[index] -= 1.0;
-      double v = now + 4.0;
-      s->va_until[index] = (s->va_until[index] >= v) ? s->va_until[index] : v;
+  finish(r, s, N_VA, raw * typed, index, now, calls * ticks * w, coeff * typed);
+  if (!SP_POISON) surge_proc(s, index, now, (1.0 - pow_lookup(P, s, 1.0 - chance01(0.02 * s->lm), calls)) * w);
+  else poison_spec_proc(P, s, index, now, calls * ticks * w);
+  if (refresh && TM(r, T_DAMBALA)) {
+    double d = chance01(0.20 * s->lm);
+    double keep = 1.0 - d;
+    if (TM(r, T_DEADLY)) keep *= 1.0 - chance01(0.30 * s->lm) * d;
+    if (TM(r, T_WOUND)) keep *= 1.0 - chance01(0.30 * s->lm) * d;
+    if (TM(r, T_LEECH)) keep *= 1.0 - chance01(0.30 * s->lm) * d;
+    double q = 1.0 - keep;
+    double alive = now - 1e-9;
+    int n = 0;
+    for (int k = 0; k < s->va_n[index]; k++) {
+      if (alive < s->va_e[index][k]) {
+        s->va_e[index][n] = s->va_e[index][k];
+        s->va_m[index][n] = s->va_m[index][k] * (1.0 - q);
+        n++;
+      }
     }
+    if (n >= VK) { if (!s->status) s->status = 8; return; }
+    s->va_e[index][n] = now + 4.0;
+    s->va_m[index][n] = q * w;
+    s->va_n[index] = n + 1;
   }
 }
 
@@ -387,7 +423,7 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
   s.status = 0; s.miss_b = 0; s.miss_e = 0;
   s.lm = 1.0 + r->luck;
   const int targets = r->targets;
-  for (int i = 0; i < MAXT; i++) { s.va_until[i] = -1.0; s.dambala[i] = 0.0; s.surge_p[i] = 0.0; s.surge_at[i] = -1.0; }
+  for (int i = 0; i < MAXT; i++) { s.va_n[i] = 0; s.surge_p[i] = 0.0; s.surge_at[i] = -1.0; }
   s.npend = 0;
   s.mana = r->mana_max; s.mana_time = 0.0; s.armed = 0;
   s.hp_flat = 0;
@@ -418,19 +454,20 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
       double raw = 80.0 * 1.0 - 20.0 + 2.2 * agi;
       for (int i = 0; i < targets; i++) {
         double coeff = 1.0;
-        if (TM(r, T_BOMB)) coeff = va_on(&s, i, moment) ? 1.6 : 1.3;
+        if (TM(r, T_BOMB)) { double p = va_mass(&s, i, moment); coeff = 1.6 * p + 1.3 * (1.0 - p); }
         double ph = physical(r, moment);
         finish(r, &s, N_SACK, raw * coeff * ph, i, moment, 1.0, coeff * ph);
         poison_spec_proc(P, &s, i, moment, 1.0);
-        double v = moment + 4.0;
-        s.va_until[i] = (s.va_until[i] >= v) ? s.va_until[i] : v;
+        va_apply(&s, i, moment);
       }
       damage_mana(r, &s, (double)targets);
       continue;
     }
     if (moment == next_tick) {
-      for (int i = 0; i < targets; i++)
-        if (va_on(&s, i, moment - 1e-9)) va_tick(r, P, &s, i, moment);
+      for (int i = 0; i < targets; i++) {
+        double w = va_mass(&s, i, moment - 1e-9);
+        if (w > 0.0) va_tick(r, P, &s, i, moment, w, 1);
+      }
       next_tick += 1.0;
       continue;
     }
@@ -476,7 +513,7 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
     if (moment == next_attack) {
       recover(r, &s, moment);
       double power = dcs(r);
-      int had_va = va_on(&s, 0, moment);
+      double had_va = va_mass(&s, 0, moment);
       surge_consume(r, &s, 0, moment);
       attack_hit(r, &s, N_AUTO, power, moment, r->attack_potency, 0, r->auto_pct);
       poison_spec_proc(P, &s, 0, moment, 1.0);
@@ -488,9 +525,8 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
       double mv = s.mana + gain;
       s.mana = (mv < r->mana_max) ? mv : r->mana_max;
       damage_mana(r, &s, 1.0);
-      double v = moment + 4.0;
-      s.va_until[0] = (s.va_until[0] >= v) ? s.va_until[0] : v;
-      if (blades && had_va) va_tick(r, P, &s, 0, moment);
+      va_apply(&s, 0, moment);
+      if (blades && had_va > 0.0) va_tick(r, P, &s, 0, moment, had_va, 0);
       if (TM(r, T_SNAKE)) {
         double chance = chance01(0.20 * s.lm);
         double raw = 2.0 * (10.0 * 1.0 + 0.5 * agi);
