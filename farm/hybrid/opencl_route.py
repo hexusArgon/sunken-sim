@@ -26,6 +26,7 @@ SPECS = frozenset({
     ("druid", "restoration"), ("druid", "balance"),  # caster Druid only; feral_druid is another class
     ("berserker", "headhunter"), ("berserker", "poison"), ("berserker", "fury"),
     ("death_knight", "frost"), ("death_knight", "blood"), ("death_knight", "unholy"),
+    ("demon_hunter", "havoc"), ("demon_hunter", "vengeance"), ("demon_hunter", "devourer"),
 })
 _OFF = ("", "0", "off", "no", "false", "none")
 _ALL = ("1", "all", "on", "yes", "true")

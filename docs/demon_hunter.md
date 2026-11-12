@@ -116,3 +116,16 @@ Death Knight was checked first but not changed: Virulent Plague multiplies
 Outbreak by `(1 + (0.12 + 0.005 * potency) * luck_mult)`, while the hit itself
 also contains potency. That is quadratic, not the affine coefficient format
 used here; it must not be blindly clustered under the same optimization.
+
+## Шансы как вероятности и GPU (2026-11-13)
+
+Детерминированные «копилки» шансов (`_Dither`) убраны: каждый шанс теперь вес удара.
+- Удар с шансом `w` даёт `w ×` урон, ману, Fury и проки. Fury — ожидаемое значение (дробное); Meta кончается, когда ожидаемая Fury после тика ≤ 0.
+- Fallout на каждой цели — распределение времени окончания (`death_knight._Buff`), броня цели — смесь `−3` и без.
+- Chaos-удар Eye Beam: хит `k` тика — Chaos с шансом `clear × q`, где `q = 25% × удача`, а `clear` — шанс, что таймер 0,2 с не идёт (сумма шансов Chaos за последние 0,2 с вычитается из 1) и что предыдущие хиты тика не сработали.
+- Chaos Blade: стаки — ожидаемые; Throw Glaive от крита и от Chaos-удара — веса.
+- Soul Immolation: −0,1 с к F один раз на Immolation_Aura_Deal_Damage (двойной удар Havoc не даёт второй раз).
+- Battle Frenzy и Silent Messenger — в бою (`sunken_sim/attack_procs.py`), вместо плоских +10%; они же ускоряют тики Eye Beam (AttackSpeed_Stat).
+- Удача с предметов — только строки характеристик (`shadow.item_luck`).
+
+GPU: `farm/hybrid/demon_hunter_cl.py` — точное ядро OpenCL float64, совпадает с `simulate` бит в бит. Отбор топ-50, в конце топ-20.

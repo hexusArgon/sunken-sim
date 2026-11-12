@@ -23,7 +23,10 @@ class DragonSentinelFights(KindFights):
         from sunken_sim.shadow import FIGHT
 
         want = os.environ.get("FARM_HYBRID_GPU_TIMELINE", "auto").strip().lower()
-        use_gpu_tl = (
+        # The torch timeline (*_gpu_timeline.py) still replays the old deterministic dithers; the sim
+        # counts chances as probabilities since 2026-11-12/13, so the timeline stays on the CPU sim.
+        # The exact GPU route for this class is farm.hybrid.dragon_sentinel_cl (OpenCL).
+        use_gpu_tl = False and (
             want not in ("0", "false", "off", "cpu")
             and (want in ("1", "true", "force") or bool(getattr(self.device, "gpu", False)))
         )

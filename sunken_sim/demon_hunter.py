@@ -19,6 +19,8 @@ from __future__ import annotations
 import heapq
 import re
 
+from sunken_sim.attack_procs import from_stats as attack_procs
+from sunken_sim.death_knight import _Buff
 from sunken_sim.pressure import max_hp
 from sunken_sim.shadow import (
     CAST_BACKSWING,
@@ -41,6 +43,7 @@ from sunken_sim.shadow import (
     armor_taken,
     attack_mana_gain,
     cast_mana_back,
+    item_luck,
     sulfuras_echo_chance,
     target_hp,
 )
@@ -158,20 +161,6 @@ def _has(build: Build, code: str) -> bool:
     return code in build.talents or code in build.glyphs
 
 
-class _Dither:
-    """Deterministic chance: fires once the accumulated probability reaches 1."""
-
-    def __init__(self) -> None:
-        self.acc = 0.0
-
-    def roll(self, chance: float) -> bool:
-        self.acc += max(0.0, min(1.0, chance))
-        if self.acc >= 1.0 - 1e-9:
-            self.acc -= 1.0
-            return True
-        return False
-
-
 def stats_of(build: Build) -> dict[str, float]:
     strength = float(BASE_STR)
     agility = float(BASE_AGI)
@@ -249,8 +238,7 @@ def stats_of(build: Build) -> dict[str, float]:
                 attack_potency = 2.0
             damage_pct += item.damage_pct / 100.0
             mana_flat += item.mana
-            for raw in re.findall(r"\+(\d+)% Luck\b", item.tip):
-                luck += int(raw) / 100.0
+            luck += item_luck(item)  # stat lines only (before 2026-11-12: any "+N% Luck" in the tooltip)
             for raw in re.findall(r"\+(\d+) Health\b", item.tip):
                 health_flat += int(raw)
     if _has(build, GLYPH_FORTITUDE):
@@ -262,8 +250,7 @@ def stats_of(build: Build) -> dict[str, float]:
         rating += 0.15
     if _has(build, GLYPH_MINDHASTE):
         haste += 0.07
-    if _has(build, GLYPH_BATTLE_FRENZY):
-        attack_speed += 0.10
+    # Battle Frenzy: fight-time proc in attack_procs (before 2026-11-12: a flat +0.10 here).
     if _has(build, GLYPH_UNSEALED) and not any(item.rawcode == GLYPH_UNSEALED for item in build.items):
         magic_add += 0.18
         phys_add += 0.18
@@ -376,6 +363,13 @@ def _timeline_key(build: Build, stats: dict, spec: str, targets: int) -> tuple:
 
 
 def simulate(build: Build, targets: int = 5, spec: str = "havoc") -> Report:
+    """Expected damage: every chance is a probability weight, no dithers (2026-11-12).
+
+    A hit carries a weight w (the chance that it happens). Its damage, mana, Fury and
+    procs scale by w; Fallout on each target is a distribution of expiry times
+    (death_knight._Buff). Fury is the expected value; Metamorphosis ends when the
+    expected Fury after a drain is <= 0 (a mean-field reading of the map's integer Fury).
+    """
     if spec not in SPECS:
         raise ValueError(spec)
     if targets < 1:
@@ -399,6 +393,12 @@ def simulate(build: Build, targets: int = 5, spec: str = "havoc") -> Report:
     # Void Glaive (I0V1) or Shard of the Dark Naaru (I0V7): base attack cooldown x0.92 (evasion 0).
     void_glaive = has(TALENT_VOID_GLAIVE) or stats["dark_naaru"]
     f_name = {"havoc": "Eye Beam", "vengeance": "Demon Spikes", "devourer": "Collapsing Star"}[spec]
+    p_power = _chance(0.25 * luck_mult) if has(TALENT_DEMONIC_POWER) else 0.0
+    p_havoc = _chance(0.08 * luck_mult) if havoc else 0.0
+    p_double = _chance((5.0 + 0.5 * mastery) / 100.0) if havoc else 0.0
+    p_glaive_crit = _chance(0.5 * luck_mult) if glaive_talent else 0.0
+    p_glaive_beam = _chance(0.20 * luck_mult) if glaive_talent else 0.0
+    q_chaos = _chance(0.25 * luck_mult)
 
     sources: dict[str, float] = Ledger({
         "Автоатака": 0.0,
@@ -416,28 +416,20 @@ def simulate(build: Build, targets: int = 5, spec: str = "havoc") -> Report:
     mana_time = 0.0
     sulfuras = Sulfuras() if _wears(build, "I0BR") else None
     cast_time = CAST_POINT + CAST_BACKSWING
+    procs = attack_procs(build, stats, stats["luck"])
 
     meta = False
-    fury = 0
+    fury = 0.0
     drain_stacks = 0
     thrill_until = -1.0
     main_until = -1.0
     stack_until = -1.0
     immo_next = FIGHT * 10
     blade_until = -1.0
-    blade_stacks = 0
-    last_chaos = -10.0
-    chaos_turn = 0
-    fallout_until = [-1.0] * targets
+    blade_stacks = 0.0
+    chaos_recent: list[tuple[float, float]] = []  # (time, chance of a Chaos strike in that beam tick)
+    fallout = [_Buff() for _ in range(targets)]
     sing_done = [False] * targets
-    fury_dither = _Dither()
-    power_dither = _Dither()
-    cleave_dither = _Dither()
-    glaive_dither = _Dither()
-    beam_glaive_dither = _Dither()
-    chaos_dither = _Dither()
-    fall_dither = [_Dither() for _ in range(targets)]
-    double_dither = [_Dither() for _ in range(targets)]
     pending: list[tuple[float, int, str, float]] = []
     seq = 0
 
@@ -469,12 +461,14 @@ def simulate(build: Build, targets: int = 5, spec: str = "havoc") -> Report:
         if stats["damage_mana_pct"]:
             gain_mana(stats["damage_mana_pct"] * stats["mana_max"] * count)
 
-    def gen(amount: int) -> None:
-        """GenerateFury: Demonic Power (I0V3) doubles it at 25% x Luck."""
+    def gen(amount: float, weight: float = 1.0) -> None:
+        """GenerateFury with chance `weight`: Demonic Power (I0V3) doubles it at 25% x Luck."""
         nonlocal fury
-        if has(TALENT_DEMONIC_POWER) and power_dither.roll(0.25 * luck_mult):
-            fury = min(FURY_MAX, fury + amount)
-        fury = min(FURY_MAX, fury + amount)
+        if weight <= 0.0:
+            return
+        if p_power > 0.0:
+            fury = min(FURY_MAX, fury + amount * weight * p_power)
+        fury = min(FURY_MAX, fury + amount * weight)
 
     def potency_bonus(now: float) -> float:
         # Only the form/spec bonus is baked; ESC/item potency is scored later.
@@ -513,15 +507,16 @@ def simulate(build: Build, targets: int = 5, spec: str = "havoc") -> Report:
             bonus *= 1.25 + 0.01 * drain_stacks
         return bonus
 
-    def taken(t: int, now: float, *, execute: bool = True) -> float:
+    def taken(t: int, now: float) -> float:
         armor = DUMMY_ARMOR - stats["armor_pen"]
-        if fallout_until[t] > now:
-            armor -= FALLOUT_ARMOR
-        return armor_taken(armor) * (_execute_factor(stats, now) if execute else 1.0)
+        if not has(TALENT_FALLOUT):
+            return armor_taken(armor)
+        on = fallout[t].mass(now)
+        return on * armor_taken(armor - FALLOUT_ARMOR) + (1.0 - on) * armor_taken(armor)
 
     def deal(name: str, raw: float, t: int, now: float, kind: str, chaos: bool = False,
-             *, count: float = 1.0) -> tuple[float, float]:
-        """Emit affine potency weights; proc/mana counts remain per hit, not count."""
+             *, count: float = 1.0, weight: float = 1.0) -> float:
+        """Emit affine potency weights for a hit that happens with chance `weight`; returns its crit share."""
         attack = kind == "attack"
         scale = (stats["attack_potency"] if attack else 1.0) + (0.35 if havoc else 0.0)
         raw = raw + potency_bonus(now) * scale
@@ -538,54 +533,60 @@ def simulate(build: Build, targets: int = 5, spec: str = "havoc") -> Report:
                 chance = crit_chance()
                 share = max(0.0, min(100.0, chance)) / 100.0
                 factor *= _crit_factor(chance, stats["spell_mult"] + stats["rating"])
-        factor *= taken(t, now, execute=False)
-        weight, coeff = raw * factor, scale * factor
+        factor *= taken(t, now)
+        factor *= weight
+        weight_raw, coeff = raw * factor, scale * factor
         execute = _execute_factor(stats, now)
-        amount = (weight + stats["potency"] * coeff) * execute
+        amount = (weight_raw + stats["potency"] * coeff) * execute
         sources.add_exec(name, amount * count, now, execute,
-                         raw_weight=weight * count, pot_coeff=coeff * count)
-        note_damage_mana(1)
-        if havoc and fury_dither.roll(0.08 * luck_mult):
-            gen(1)
-        if share > 0 and has(TALENT_FALLOUT) and fall_dither[t].roll(share):
-            fallout_until[t] = now + FALLOUT_DUR
-        return amount, share
+                         raw_weight=weight_raw * count, pot_coeff=coeff * count)
+        note_damage_mana(weight)
+        if p_havoc > 0.0:
+            gen(1.0, weight * p_havoc)
+        if share > 0.0 and has(TALENT_FALLOUT):
+            p = share * weight
+            fallout[t].maybe(now, FALLOUT_DUR, p, p)
+        return share
 
-    def immo_hit(t: int, now: float, name: str = "Immolation Aura") -> None:
+    def immo_hit(t: int, now: float, weight: float = 1.0) -> None:
         """Immolation_Aura_Deal_Damage."""
         raw = 5.0 + 10.0 * RANK + 0.30 * agi
-        deal(name, raw, t, now, "magic")
-        if havoc and double_dither[t].roll((5.0 + 0.5 * mastery) / 100.0):
-            deal(name, raw, t, now, "magic")
+        deal("Immolation Aura", raw, t, now, "magic", weight=weight)
+        if p_double > 0.0:
+            deal("Immolation Aura", raw, t, now, "magic", weight=weight * p_double)
         if has(TALENT_SOUL_IMMOLATION):
-            nxt["F"] -= 0.10
+            nxt["F"] -= 0.10 * weight  # once per Immolation_Aura_Deal_Damage, double hit or not
 
     def dcs() -> float:
         return WHITE_BASE + 0.75 * agi + stats["damage"]
 
-    def on_attack(t: int, now: float, share: float, code: bool) -> None:
+    def on_attack(t: int, now: float, share: float, code: bool, weight: float = 1.0) -> None:
         nonlocal blade_until, blade_stacks
-        immo_hit(t, now)  # A06F learned: every attack burns its target
+        immo_hit(t, now, weight)  # A06F learned: every attack burns its target
         if has(TALENT_CHAOS_BLADE):
+            # B06M is not refreshed: the stacks grow until 4 s after the attack that started them.
             if blade_until > now:
-                blade_stacks += 1
+                blade_stacks += weight
+                hits = blade_stacks
             else:
-                blade_stacks = 1
+                blade_stacks = weight
                 blade_until = now + BLADE_DUR
-            for _ in range(blade_stacks):
-                deal("Chaos Blade", 10.0 + 0.10 * dcs(), t, now, "plain")
+                hits = 1.0
+            deal("Chaos Blade", 10.0 + 0.10 * dcs(), t, now, "plain", count=hits, weight=weight)
         if has(TALENT_SOUL_CLEAVE):
-            gen(3 if cleave_dither.roll(share) else 1)
-        if not code and glaive_talent and glaive_dither.roll(share * 0.5 * luck_mult):
-            glaive(t, now)
+            gen(1.0 + 2.0 * share, weight)
+        if not code and p_glaive_crit > 0.0:
+            glaive(t, now, weight * share * p_glaive_crit)
 
-    def glaive(t: int, now: float) -> None:
+    def glaive(t: int, now: float, weight: float) -> None:
+        if weight <= 0.0:
+            return
         raw = 15.0 + 0.40 * dcs()
-        _d, share = deal("Throw Glaive", raw, t, now, "attack", chaos=True)
-        on_attack(t, now, share, True)
+        share = deal("Throw Glaive", raw, t, now, "attack", chaos=True, weight=weight)
+        on_attack(t, now, share, True, weight)
         other = (t + 1) % targets
-        _d, share = deal("Throw Glaive", 0.5 * raw, other, now, "attack", chaos=True)
-        on_attack(other, now, share, True)
+        share = deal("Throw Glaive", 0.5 * raw, other, now, "attack", chaos=True, weight=weight)
+        on_attack(other, now, share, True, weight)
 
     def apply_immolation(now: float) -> None:
         nonlocal main_until, stack_until, immo_next
@@ -610,9 +611,11 @@ def simulate(build: Build, targets: int = 5, spec: str = "havoc") -> Report:
         return now + cast_time + extra + stats["cast_stun_lock"]
 
     def speed_stat(now: float) -> float:
+        # udg_AttackSpeed_Stat = udg_AttackSpeed: items + buffs (Thrill, Battle Frenzy, Silent Messenger)
         speed = stats["attack_speed"]
         if now < thrill_until:
             speed += THRILL_SPEED
+        speed += procs.bonus(now)
         return min(4.0, max(-0.8, speed))
 
     def attack_interval(now: float) -> float:
@@ -624,10 +627,10 @@ def simulate(build: Build, targets: int = 5, spec: str = "havoc") -> Report:
     def fury_tick(now: float) -> None:
         nonlocal fury, drain_stacks, meta
         if meta:
-            if fury > 0:
+            if fury > 0.0:
                 fury -= 5 + drain_stacks
-                if fury <= 0:
-                    fury = 0
+                if fury <= 0.0:
+                    fury = 0.0
                     drain_stacks = 0
                     meta = False
                     actions.append((now, "Meta ends"))
@@ -635,28 +638,33 @@ def simulate(build: Build, targets: int = 5, spec: str = "havoc") -> Report:
                     drain_stacks += 1
                 if stats["cosmic_helm"] and devourer:
                     nxt["F"] -= 1.0
-        elif fury < 25:
-            gen(1)
+        elif fury < 25.0:
+            gen(1.0)
 
     def beam_tick(now: float, per_hit: float) -> None:
-        nonlocal last_chaos, chaos_turn
+        nonlocal chaos_recent
         hits = 2 if targets == 1 else targets
-        chaos_at = -1
-        if now - last_chaos >= CHAOS_ICD - 1e-9:
-            p = 1.0 - (1.0 - _chance(0.25 * luck_mult)) ** hits
-            if chaos_dither.roll(p):
-                last_chaos = now
-                chaos_at = chaos_turn % hits
-                chaos_turn += 1
+        # EyBe_ChaosCD (0.20 s, one timer for the hero): at most one Chaos strike in any 0.2 s,
+        # so the chances of the recent ticks add up to the chance that the timer still runs.
+        chaos_recent = [(when, c) for when, c in chaos_recent if now - when < CHAOS_ICD - 1e-9]
+        blocked = 0.0
+        for _when, c in chaos_recent:
+            blocked += c
+        clear = max(0.0, 1.0 - blocked)
+        tick_chaos = 0.0
         for k in range(hits):
             t = 0 if targets == 1 else k
-            if k == chaos_at:
-                _d, share = deal("Eye Beam", per_hit, t, now, "attack", chaos=True)
-                on_attack(t, now, share, True)
-                if glaive_talent and beam_glaive_dither.roll(0.20 * luck_mult):
-                    glaive(t, now)
-            else:
-                deal("Eye Beam", per_hit, t, now, "plain")
+            p = clear * q_chaos  # this hit rolls the 25% and finds the timer stopped
+            clear -= p
+            tick_chaos += p
+            if p > 0.0:
+                share = deal("Eye Beam", per_hit, t, now, "attack", chaos=True, weight=p)
+                on_attack(t, now, share, True, p)
+                if p_glaive_beam > 0.0:
+                    glaive(t, now, p * p_glaive_beam)
+            deal("Eye Beam", per_hit, t, now, "plain", weight=1.0 - p)
+        if tick_chaos > 0.0:
+            chaos_recent.append((now, tick_chaos))
 
     def star_land(now: float) -> None:
         raw = (125.0 + 2.0 * agi) * (1.0 + (0.03 / 10.0) * (agi + intel))
@@ -801,12 +809,11 @@ def simulate(build: Build, targets: int = 5, spec: str = "havoc") -> Report:
         recover(moment)
         power = dcs()
         # Scale both raw and coefficient, without a potency-baked FLAT delta.
-        _dealt, share = deal("Автоатака", power, 0, moment, "attack", chaos=meta,
-                             count=stats["auto_pct"])
+        share = deal("Автоатака", power, 0, moment, "attack", chaos=meta, count=stats["auto_pct"])
         on_attack(0, moment, share, False)
         gain_mana(attack_mana_gain(stats))
         if stats["fire_orb"]:
-            splash = (20.0 + 0.35 * agi) * targets * taken(1 % targets, moment)
+            splash = (20.0 + 0.35 * agi) * targets * taken(1 % targets, moment) * _execute_factor(stats, moment)
             sources.add_exec("Всплеск огня", splash, moment, _execute_factor(stats, moment))
             note_damage_mana(targets)
         if sulfuras is not None:
@@ -818,6 +825,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "havoc") -> Report:
                 note_damage_mana(targets)
             echo = power * armor * execute * sulfuras_echo_chance(stats["luck"])
             sources.add_exec("Sulfuras (удар)", echo, moment, execute)
+        procs.on_attack(moment, crit_chance())
         next_attack = moment + attack_interval(moment)
 
     total = sum(sources.values())

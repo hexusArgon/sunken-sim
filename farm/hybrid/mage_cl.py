@@ -1670,7 +1670,8 @@ OPENCL_SPECS = ({("mage", spec) for spec in SPECS} | {("priest", spec) for spec 
                 | {("paladin", spec) for spec in ("retribution", "protection", "holy")}
                 | {("druid", spec) for spec in ("restoration", "balance")}
                 | {("berserker", spec) for spec in ("headhunter", "poison", "fury")}
-                | {("death_knight", spec) for spec in ("frost", "blood", "unholy")})
+                | {("death_knight", spec) for spec in ("frost", "blood", "unholy")}
+                | {("demon_hunter", spec) for spec in ("havoc", "vengeance", "devourer")})
 
 
 def make_engine(hero: str, space, items: dict, sources: dict, targets: int, spec: str, device=None):
@@ -1701,6 +1702,10 @@ def make_engine(hero: str, space, items: dict, sources: dict, targets: int, spec
         from farm.hybrid.death_knight_cl import DeathKnightCL
 
         return DeathKnightCL(space, items, sources, targets, device=device, spec=spec)
+    if hero == "demon_hunter":
+        from farm.hybrid.demon_hunter_cl import DemonHunterCL
+
+        return DemonHunterCL(space, items, sources, targets, device=device, spec=spec)
     raise ValueError(f"no OpenCL engine for {hero}/{spec}")
 
 
@@ -1730,6 +1735,10 @@ def engine_module(engine):
         from farm.hybrid import death_knight_cl
 
         return death_knight_cl
+    if hero == "demon_hunter":
+        from farm.hybrid import demon_hunter_cl
+
+        return demon_hunter_cl
     return sys.modules[__name__]
 
 
@@ -1961,7 +1970,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
 
     hero, spec = job.get("hero"), job.get("spec")
     if (hero, spec) not in OPENCL_SPECS:
-        raise ValueError("OpenCL backend: mage, priest, shaman, paladin, berserker, death_knight (three specs each) or druid (restoration, balance)")
+        raise ValueError("OpenCL backend: mage, priest, shaman, paladin, berserker, death_knight, demon_hunter (three specs each) or druid (restoration, balance)")
     job = dict(job, admission_policy=A.policy(job))
     meta = {"worker": job.get("worker", "local-hybrid"), "status": "opencl", "device": "opencl",
             "name": "", "gpu_fights": True, "backend": f"{hero}-opencl-exact-v3",

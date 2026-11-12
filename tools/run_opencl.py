@@ -28,7 +28,7 @@ sys.path.insert(0, str(REPO))
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--hero", required=True, choices=("mage", "priest", "shaman", "paladin", "druid", "berserker", "death_knight"))
+    ap.add_argument("--hero", required=True, choices=("mage", "priest", "shaman", "paladin", "druid", "berserker", "death_knight", "demon_hunter", "dragon_sentinel"))
     ap.add_argument("--spec", required=True)
     ap.add_argument("--top", type=int, default=80)
     ap.add_argument("--workers", type=int, default=4, help="worker processes, each with its own OpenCL context")
