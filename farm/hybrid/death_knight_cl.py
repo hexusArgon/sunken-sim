@@ -44,7 +44,7 @@ KERNEL = r"""
 #define NP 11
 #define NPAL 16
 #define NSRC 14
-#define MAXT 8
+#define MAXT 5  /* the farm runs 5 targets; more -> status 3, the host re-scores the row */
 #define BS 8
 #define MAXS 24
 #define LEVEL 15.0
@@ -137,6 +137,8 @@ typedef struct {
   double ob_e[MAXT][BS + 1], ob_m[MAXT][BS + 1]; int ob_n[MAXT];
   double pl_e[MAXT][BS + 1], pl_m[MAXT][BS + 1]; int pl_n[MAXT];
   double ch_e[MAXT][BS + 1], ch_m[MAXT][BS + 1]; int ch_n[MAXT];
+  /* cache per debuff: in-order sum of all shares and the earliest expiry */
+  double ob_t[MAXT], ob_lo[MAXT], pl_t[MAXT], pl_lo[MAXT], ch_t[MAXT], ch_lo[MAXT];
   double ready[5];
   int sk[MAXS]; double se[MAXS], sn[MAXS], sr[MAXS]; int ns;
   double mana, mana_time, hp_bonus, frozen, marrow, lm, bt, attack_crit, spell_critf, pb_chance;
@@ -174,20 +176,30 @@ void add_src(St* s, int id, double amount) {
   else { s->seen |= bit; s->ord[s->nord++] = id; s->src[id] = 0.0 + amount; }
 }
 
-/* ---- death_knight._Buff ---- */
-double bmass(const double* e, const double* m, int n, double now) {
+/* ---- death_knight._Buff ----
+   _Buff.mass(now) sums the shares of the points with now <= expiry, in order. While now is not past the
+   earliest expiry every point is on, so the sum is the cached in-order sum of all shares: the same bits. */
+double bmass(const double* e, const double* m, int n, double tot, double lo, double now) {
+  if (now <= lo) return tot;
   double total = 0.0;
   for (int k = 0; k < n; k++)
     if (now <= e[k]) total += m[k];
   return total;
 }
 
-void bsure(double* e, double* m, int* n, double now, double dur) {
-  e[0] = now + dur; m[0] = 1.0; *n = 1;
+void bcache(const double* e, const double* m, int n, double* tot, double* lo) {
+  double t = 0.0, l = INFINITY;
+  for (int k = 0; k < n; k++) { t += m[k]; if (e[k] < l) l = e[k]; }
+  *tot = t; *lo = l;
 }
 
-void bmaybe(double* e, double* m, int* n, double now, double dur, double p_on, double p_off) {
-  double active = bmass(e, m, *n, now);
+void bsure(double* e, double* m, int* n, double* tot, double* lo, double now, double dur) {
+  e[0] = now + dur; m[0] = 1.0; *n = 1;
+  *tot = 0.0 + 1.0; *lo = e[0];
+}
+
+void bmaybe(double* e, double* m, int* n, double* tot, double* lo, double now, double dur, double p_on, double p_off) {
+  double active = bmass(e, m, *n, *tot, *lo, now);
   int c = 0;
   for (int k = 0; k < *n; k++) {
     if (now <= e[k]) { e[c] = e[k]; m[c] = m[k] * (1.0 - p_on); c++; }
@@ -204,11 +216,15 @@ void bmaybe(double* e, double* m, int* n, double now, double dur, double p_on, d
     c--;
   }
   *n = c;
+  bcache(e, m, c, tot, lo);
 }
 
-#define OB_MASS(s, t, now) bmass((s)->ob_e[t], (s)->ob_m[t], (s)->ob_n[t], now)
-#define PL_MASS(s, t, now) bmass((s)->pl_e[t], (s)->pl_m[t], (s)->pl_n[t], now)
-#define CH_MASS(s, t, now) bmass((s)->ch_e[t], (s)->ch_m[t], (s)->ch_n[t], now)
+#define OB_MASS(s, t, now) bmass((s)->ob_e[t], (s)->ob_m[t], (s)->ob_n[t], (s)->ob_t[t], (s)->ob_lo[t], now)
+#define PL_MASS(s, t, now) bmass((s)->pl_e[t], (s)->pl_m[t], (s)->pl_n[t], (s)->pl_t[t], (s)->pl_lo[t], now)
+#define CH_MASS(s, t, now) bmass((s)->ch_e[t], (s)->ch_m[t], (s)->ch_n[t], (s)->ch_t[t], (s)->ch_lo[t], now)
+#define OB_ARGS(s, t) (s)->ob_e[t], (s)->ob_m[t], &(s)->ob_n[t], &(s)->ob_t[t], &(s)->ob_lo[t]
+#define PL_ARGS(s, t) (s)->pl_e[t], (s)->pl_m[t], &(s)->pl_n[t], &(s)->pl_t[t], &(s)->pl_lo[t]
+#define CH_ARGS(s, t) (s)->ch_e[t], (s)->ch_m[t], &(s)->ch_n[t], &(s)->ch_t[t], &(s)->ch_lo[t]
 
 double armor_mult(St* s, double armor) {
   if (armor > 0.0) return 1.0 - (armor * 0.04) / (1.0 + 0.04 * armor);
@@ -294,7 +310,7 @@ void outbreak_on(const Row* r, St* s, int t, double now, double p_on, double p_o
       add_src(s, N_PLAGB, amount * burst);
     }
   }
-  bmaybe(s->ob_e[t], s->ob_m[t], &s->ob_n[t], now, 8.0, p_on, p_off);
+  bmaybe(OB_ARGS(s, t), now, 8.0, p_on, p_off);
 }
 
 void after_hit(const Row* r, St* s, int t, double now, double procs, int on_only) {
@@ -356,7 +372,7 @@ void ghoul_proc(const Row* r, St* s, double now, double g) {
   } else {
     double p_chill = g * on + 0.5 * g * (1.0 - on);
     outbreak_on(r, s, 0, now, 0.0, 0.5 * g);
-    bmaybe(s->ch_e[0], s->ch_m[0], &s->ch_n[0], now, 4.0, p_chill, p_chill);
+    bmaybe(CH_ARGS(s, 0), now, 4.0, p_chill, p_chill);
   }
 }
 
@@ -392,7 +408,7 @@ void cast_spell(const Row* r, St* s, int key, double now) {
       raw += 0.35 * healing;
     }
     deal(r, s, N_BS, raw, 0, hit, 1, 1.0, 1.0, 1.0, 0);
-    if (!(r->mask & S_MAW)) bsure(s->pl_e[0], s->pl_m[0], &s->pl_n[0], hit, 4.0);
+    if (!(r->mask & S_MAW)) bsure(PL_ARGS(s, 0), hit, 4.0);
     if (TM(r, T_MARROW)) s->marrow = hit + 5.0;
     if (!s->rested) s->hp_bonus += 1.0;
   } else if (key == K_UF) {
@@ -417,7 +433,7 @@ void cast_spell(const Row* r, St* s, int key, double now) {
           deal(r, s, N_BREATH, wyrm * 1.5, t, hit, 1, 1.0, 1.0, 1.0, 0);
         } else {
           deal(r, s, N_BREATH, wyrm, t, hit, 1, 1.0, 1.0, 1.0, 0);
-          bsure(s->ch_e[t], s->ch_m[t], &s->ch_n[t], hit, 5.0);
+          bsure(CH_ARGS(s, t), hit, 5.0);
         }
       }
     }
@@ -447,6 +463,7 @@ double fight(const Row* r, int* status) {
   s.nord = 0; s.seen = 0u;
   for (int id = 0; id < 12; id++) { s.seen |= 1u << id; s.ord[s.nord++] = id; s.src[id] = 0.0; }
   s.status = 0;
+  if (r->targets > MAXT) { *status = 3; return 0.0; }
   s.lm = 1.0 + r->luck;
   s.bt = TM(r, T_BTAP) ? 1.35 : 1.0;
   s.attack_crit = crit_factor(r->crit, 2.0 + r->rating);
@@ -454,7 +471,10 @@ double fight(const Row* r, int* status) {
   const int has_erw = !SP_UNHOLY;
   const double drain = 1.5 + 2.0 * LEVEL;
   const int targets = r->targets;
-  for (int i = 0; i < MAXT; i++) { s.ob_n[i] = 0; s.pl_n[i] = 0; s.ch_n[i] = 0; }
+  for (int i = 0; i < MAXT; i++) {
+    s.ob_n[i] = 0; s.pl_n[i] = 0; s.ch_n[i] = 0;
+    s.ob_t[i] = 0.0; s.pl_t[i] = 0.0; s.ch_t[i] = 0.0; s.ob_lo[i] = INFINITY; s.pl_lo[i] = INFINITY; s.ch_lo[i] = INFINITY;
+  }
   s.hp_bonus = 0.0;
   s.mana = r->mana_max; s.mana_time = 0.0;
   s.frozen = -1.0; s.marrow = -1.0;
@@ -525,7 +545,7 @@ double fight(const Row* r, int* status) {
           deal(r, &s, N_OUTB, raw, t, moment, 1, 1.0, on * times, times, 1);
           if (TM(r, T_DECOMP)) {
             double p = on * decomp;
-            bmaybe(s.pl_e[t], s.pl_m[t], &s.pl_n[t], moment, 4.0, p, p);
+            bmaybe(PL_ARGS(&s, t), moment, 4.0, p, p);
           }
         }
       }
