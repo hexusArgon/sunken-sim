@@ -10,6 +10,7 @@ farm-data/
 farm-data-*/
 
 .venv-dml/
+.venv-sheets/
 
 # OpenCL runtime for the Fire GPU scan (vendored wheels, see docs/fire-opencl.md)
 .gpu-deps/
