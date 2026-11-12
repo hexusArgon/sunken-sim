@@ -23,6 +23,7 @@ PAGES = {
     "shaman": {"restoration": "RESTORATION_DATA", "enhancement": "ENHANCEMENT_DATA", "elemental": "ELEMENTAL_DATA"},
     "paladin": {"retribution": "RETRIBUTION_DATA", "protection": "PROTECTION_DATA", "holy": "HOLY_DATA"},
     "druid": {"restoration": "RESTORATION_DATA", "balance": "BALANCE_DATA"},
+    "berserker": {"headhunter": "HEADHUNTER_DATA", "poison": "POISON_DATA", "fury": "FURY_DATA"},
 }
 
 

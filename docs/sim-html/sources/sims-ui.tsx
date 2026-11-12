@@ -300,7 +300,7 @@ function SpecView({ cfg, spec, specTabs, initial }: { cfg: PageConfig; spec: Spe
       <header className="hero">
         <div className="hero-row">
           <div>
-            <div className="eyebrow">Sunken City v2.5.2b · уровень {data.level} · {data.targets} целей · 30 секунд · ожидаемый урон</div>
+            <div className="eyebrow">Sunken City v2.5.2c · уровень {data.level} · {data.targets} целей · 30 секунд · ожидаемый урон</div>
             <h1 className="hero-title">{spec.title}</h1>
           </div>
           {specTabs}

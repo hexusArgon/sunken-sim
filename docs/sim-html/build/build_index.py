@@ -16,7 +16,7 @@ def pct(v):
     return float(v)
 
 POOLS = [("mixed", "Shop + drop"), ("shop", "Shop"), ("drop", "Drop")]
-COL = {"Paladin": "#F48CBA", "Priest": "#FFFFFF", "Shaman": "#0070DD", "Mage": "#3FC7EB", "Druid": "#FF7C0A"}
+COL = {"Paladin": "#F48CBA", "Priest": "#FFFFFF", "Shaman": "#0070DD", "Mage": "#3FC7EB", "Druid": "#FF7C0A", "Berserker": "#C41E3A"}
 specs = []  # dict(cls, spec, page, level, pools{pool:{dps,total,mana,sources}})
 
 def add(cls, spec, page, level, runs_by_pool):
@@ -32,9 +32,10 @@ def add(cls, spec, page, level, runs_by_pool):
 for name, spec in (("DATA", "Fire"), ("FROST_DATA", "Frost"), ("ARCANE_DATA", "Arcane")):
     md = const("mage.tsx", name)
     add("Mage", spec, "mage.html", md["level"], {p: max(md["runs"][p], key=lambda r: float(r["dps"])) for p, _ in POOLS if p in md["runs"]})
-# Paladin / Shaman: three specs each (full Top-150 GPU runs, level 15) from paladin.tsx / shaman.tsx
+# Paladin / Shaman / Berserker: three specs each (full Top-150 GPU runs, level 15) from paladin.tsx / shaman.tsx
 for f, cls, page, names in [("paladin.tsx", "Paladin", "paladin.html", ("retribution", "protection", "holy")),
-                            ("shaman.tsx", "Shaman", "shaman.html", ("restoration", "enhancement", "elemental"))]:
+                            ("shaman.tsx", "Shaman", "shaman.html", ("restoration", "enhancement", "elemental")),
+                            ("berserker.tsx", "Berserker", "berserker.html", ("headhunter", "poison", "fury"))]:
     for sp in names:
         d = const(f, sp.upper() + "_DATA")
         add(cls, sp.capitalize(), page, d["level"], {p: max(d["runs"][p], key=lambda r: float(r["dps"])) for p, _ in POOLS if p in d["runs"]})
@@ -91,14 +92,14 @@ css += """
 @media(max-width:800px){.rrow,.srow{grid-template-columns:150px 1fr 64px}.lv{display:none}}
 """
 
-pages = [("paladin", "Paladin"), ("priest", "Priest"), ("shaman", "Shaman"), ("mage", "Mage"), ("druid", "Druid")]
+pages = [("paladin", "Paladin"), ("priest", "Priest"), ("shaman", "Shaman"), ("mage", "Mage"), ("druid", "Druid"), ("berserker", "Berserker")]
 nav = '<nav class="topnav"><a href="index.html" class="cur">← Sunken City sims</a>' + "".join(f'<a href="{f}.html">{t}</a>' for f, t in pages) + "</nav>"
 
 lv = sorted({s["level"] for s in specs})
 shown = ", ".join(f'{s["spec"]} {s["cls"]} (ур. {s["level"]})' for s in sorted(specs, key=lambda s: -s["pools"]["mixed"]["dps"]))
 pills = "".join(f'<button class="pill {"active" if p=="mixed" else ""}" data-pool="{p}">{t}</button>' for p, t in POOLS)
 body = f"""{nav}<main class="page">
-<h1 class="h1">Sunken City v2.5.2a — симы классов</h1>
+<h1 class="h1">Sunken City v2.5.2c — симы классов</h1>
 <div class="note" style="margin-top:4px">30 секунд · 5 целей · лучший билд (место 1) каждой специализации из фарма. Цифры — из данных страниц классов (sources/*.tsx), ничего не досчитано.</div>
 <div class="sec"><h2 class="h2">Raid Summary</h2><div class="pills">{pills}</div>
 

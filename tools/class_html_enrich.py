@@ -1,4 +1,4 @@
-"""Re-sim Shaman / Paladin farm top runs for docs/sim-html/shaman.html and paladin.html.
+"""Re-sim Shaman / Paladin / Druid / Berserker farm top runs for docs/sim-html/<hero>.html.
 
     HERO=shaman SPEC=elemental TOP=150 python tools/class_html_enrich.py
     HERO=paladin SPEC=holy FARM=<results json> python tools/class_html_enrich.py 10
@@ -95,6 +95,8 @@ def build_of(items, talents, glyphs, points) -> Build:
 
 def fresh_sim(build):
     """simulate() on an empty timeline cache (the value the farm and the kernel report)."""
+    if not hasattr(MOD, "_TIMELINE"):  # berserker: no fight cache
+        return MOD.simulate(build, TARGETS, SPEC)
     old = MOD._TIMELINE
     MOD._TIMELINE = {}
     try:
@@ -114,7 +116,29 @@ def scan(entry, items, combos) -> list[float]:
 
 def stats_rows(report, points) -> list[list[str]]:
     s = report.stats
-    if HERO == "paladin":
+    if HERO == "berserker":
+        swing = 1.6 * (1.20 if s["galactic"] else 1.0) / (1.0 + s["attack_speed"])
+        rows = [
+            ["Ловкость", f"{s['agi']:.0f}"],
+            ["Сила", f"{s['str']:.0f}"],
+            ["Интеллект", f"{s['int']:.0f}"],
+            ["Урон автоатаки", f"{30.0 + 0.75 * s['agi'] + s['damage']:.1f}"],
+            ["Potency", f"{s['potency']:.1f}"],
+            ["Mastery", f"{s['mastery']:.0f}"],
+            ["Шанс крита", f"{min(100.0, s['crit']):.0f}%"],
+            ["Рейтинг крита", f"{s['rating']:.2f}"],
+            ["Спешка", f"{s['haste'] * 100:.1f}%"],
+            ["Скорость атаки", f"{s['attack_speed'] * 100:.1f}%"],
+            ["Удача", f"{s['luck'] * 100:.0f}%"],
+            ["Магический бонус", f"+{s['magic_add'] * 100:.0f}%"],
+            ["Физический бонус", f"+{s['phys_add'] * 100:.0f}%"],
+            ["Здоровье", f"{s['hp']:.0f}"],
+            ["Мана макс.", f"{s['mana_max']:.0f}"],
+            ["Реген маны", f"{s['mana_regen']:.2f}/с"],
+            ["Мана в конце", f"{report.mana_left:.0f}%"],
+            ["Интервал атаки (без Berserk)", f"{swing:.2f} с"],
+        ]
+    elif HERO == "paladin":
         swing = 1.85 * (1.20 if s["galactic"] else 1.0) / (1.0 + s["attack_speed"])
         rows = [
             ["Сила", f"{s['str']:.0f}"],
