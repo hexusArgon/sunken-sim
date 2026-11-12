@@ -139,24 +139,24 @@ typedef struct {
   ulong miss_b, miss_e;
 } St;
 
-inline double target_hp(double t) {
+double target_hp(double t) {
   double v = 1.0 - t / FIGHT;
   return (0.0 >= v) ? 0.0 : v;
 }
 
-inline double crit_factor(double chance, double mult) {
+double crit_factor(double chance, double mult) {
   double c = (100.0 <= chance) ? 100.0 : chance;
   c = (0.0 >= c) ? 0.0 : c;
   c = c / 100.0;
   return 1.0 + c * (mult - 1.0);
 }
 
-inline double chance01(double v) {
+double chance01(double v) {
   double m = (1.0 <= v) ? 1.0 : v;
   return (0.0 >= m) ? 0.0 : m;
 }
 
-inline double exec_factor(const Row* r, double t) {
+double exec_factor(const Row* r, double t) {
   double hp = target_hp(t);
   double f = 1.0;
   for (int i = 0; i < r->nexec; i++)
@@ -164,7 +164,7 @@ inline double exec_factor(const Row* r, double t) {
   return f;
 }
 
-inline void add_src(St* s, int id, double amount) {
+void add_src(St* s, int id, double amount) {
   uint bit = 1u << id;
   if (s->seen & bit) s->src[id] = s->src[id] + amount;
   else { s->seen |= bit; s->ord[s->nord++] = id; s->src[id] = 0.0 + amount; }
@@ -223,7 +223,7 @@ double hero_ratio(St* s, double t) {
   return s->hp_health / s->hp_max;
 }
 
-inline int va_on(const St* s, int i, double now) { return now < s->va_until[i]; }
+int va_on(const St* s, int i, double now) { return now < s->va_until[i]; }
 
 double taken_for(const Row* r, St* s, int i, double now) {
   double armor = 15.0 - r->armor_pen;
@@ -233,14 +233,14 @@ double taken_for(const Row* r, St* s, int i, double now) {
   return 1.0;
 }
 
-inline double gen_mult(const Row* r, double when) {
+double gen_mult(const Row* r, double when) {
   double bonus = 1.0;
   if (r->mask & S_SULG) bonus += 0.13 + 0.25 * target_hp(when);
   if (r->glass) bonus *= 1.15;
   return bonus;
 }
 
-inline double physical(const Row* r, double when) {
+double physical(const Row* r, double when) {
   double bonus = 1.0 + r->phys_add + r->hemo;
   if (r->mask & S_SULG) bonus += 0.13 + 0.25 * target_hp(when);
   if (r->glass) bonus *= 1.15;
@@ -277,7 +277,7 @@ void surge_consume(const Row* r, St* s, int i, double when) {
   s->surge_p[i] = 0.0;
 }
 
-inline double dcs(const Row* r) {
+double dcs(const Row* r) {
   double value = 30.0 + 0.75 * r->agi + r->damage;
   value += TROPHIES;
   if (TM(r, T_CRAZE)) value += 30.0;
@@ -337,7 +337,7 @@ void va_tick(const Row* r, const PowT* P, St* s, int index, double now) {
   }
 }
 
-inline void recover(const Row* r, St* s, double now) {
+void recover(const Row* r, St* s, double now) {
   if (now > s->mana_time && s->mana < r->mana_max) {
     double v = s->mana + r->mana_regen * (now - s->mana_time);
     s->mana = (v < r->mana_max) ? v : r->mana_max;
@@ -355,14 +355,14 @@ int pay(const Row* r, St* s, double cost, double now) {
   return 1;
 }
 
-inline void damage_mana(const Row* r, St* s, double count) {
+void damage_mana(const Row* r, St* s, double count) {
   if (r->damage_mana_pct != 0.0) {
     double v = s->mana + r->damage_mana_pct * r->mana_max * count;
     s->mana = (v < r->mana_max) ? v : r->mana_max;
   }
 }
 
-inline double cooldown_of(double base, const Row* r) {
+double cooldown_of(double base, const Row* r) {
   double v = (base * r->cd_temp - r->flat_cdr) / (1.0 + r->haste);
   return (v > 0.5) ? v : 0.5;
 }
@@ -376,7 +376,7 @@ double berserk_speed(const Row* r, double now) {
   return 0.12 + per * (double)stacks;
 }
 
-inline void axe_hit(const Row* r, St* s, double now, double count) {
+void axe_hit(const Row* r, St* s, double now, double count) {
   attack_hit(r, s, N_AXE, 20.0 + 1.25 * dcs(r), now, r->attack_potency, 0, count);
 }
 
