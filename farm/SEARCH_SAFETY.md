@@ -55,7 +55,7 @@ this restoration.
 
 ## bare-top50 (2026-11-12)
 
-Default for Priest, Paladin, Shaman, Mage and Druid (`farm.admission.TOP50_HEROES`); every other hero keeps
+Default for Priest, Paladin, Shaman, Mage, Druid and Berserker (`farm.admission.TOP50_HEROES`); every other hero keeps
 `bare-top10`. The gate remembers the item-only top-50 sextuples of each category (Shop + drop, Shop only,
 Random drop) and refines talents, glyphs and greedy ESC for a sextuple that enters them. While the run goes,
 the 50 best finished builds of each list are kept (checkpoints too); when the whole span is done, only the
