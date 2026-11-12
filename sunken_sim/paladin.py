@@ -17,6 +17,7 @@ import math
 import re
 
 from sunken_sim.shadow import (
+    item_luck,
     MAGICAL_ADDS,
     PHYSICAL_ADDS,
     Build,
@@ -230,8 +231,7 @@ def stats_of(build: Build) -> dict[str, float]:
                 attack_potency = 2.0
             damage_pct += item.damage_pct / 100.0
             mana_flat += item.mana
-            for raw in re.findall(r"\+(\d+)% Luck\b", item.tip):
-                luck += int(raw) / 100.0
+            luck += item_luck(item)  # stat-line luck only (shadow.item_luck)
     if _has(build, GLYPH_FORTITUDE):
         strength += 4 + 2 * LEVEL
     if _has(build, GLYPH_SUPREMACY):

@@ -101,6 +101,7 @@ KERNEL = r"""
 #define G_GLASS (1u<<8)
 #define G_MIND  (1u<<9)
 #define G_REPL  (1u<<10)
+#define G_FORTUNE (1u<<11)
 
 #define TM(r, x) (TALENTS && ((r)->tmask & (x)))
 #define GM(r, x) (TALENTS && ((r)->gmask & (x)))
@@ -591,7 +592,7 @@ TALENT_BITS = {
     "I0K5": 16, "I0K2": 17, "I02F": 18, "I0K3": 19, "I0ML": 20, "I0P4": 21, "I08Q": 22, "I08S": 23,
 }
 GLYPH_BITS = _S.GLYPH_BITS
-NO_EFFECT = {"I0EJ", "I0EN"}
+NO_EFFECT = {"I0EN"}
 SPECS = {"restoration": 0, "balance": 1}
 
 

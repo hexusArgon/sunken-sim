@@ -115,11 +115,11 @@ class PriestCLTest(unittest.TestCase):
 
     def test_refine_matches_finish_sextuple(self):
         cases = [
-            # Top-1 sextuple of the Shadow ESC farm run, Cosmic Horrors: 3525.208859618254 (luck 6) since the
-            # timeline key holds luck with I0HP (was 3523.828806953591 when luck trials replayed a luck-free fight).
+            # Top-1 sextuple of the Shadow ESC farm run, Cosmic Horrors: 3739.780235469132 since 2026-11-12 (Cosmic
+            # Horrors refreshes SW:P with its chance only, item luck and Fortune count; was 3525.208859618254).
             # Its luck trials
             # reuse earlier timelines in farm.score._priest, which the device refinement replays.
-            ("shadow", ["I00D", "I048", "I0FW", "I0JO", "I0NT", "fgrd"], 3525.208859618254),
+            ("shadow", ["I00D", "I048", "I0FW", "I0JO", "I0NT", "fgrd"], 3739.780235469132),
             ("discipline", None, None),
             ("holy", None, None),
         ]

@@ -56,6 +56,7 @@ KERNEL = r"""
 #define CAST_POINT 0.15
 #define CAST_BACKSWING 0.30
 #define MAXT 8
+#define SWK 8  /* shadow.SWP_SLOTS */
 #define MAXQ 64
 #define MAXW 80
 #define MAXE 6
@@ -108,6 +109,7 @@ KERNEL = r"""
 #define G_GLASS (1u<<8)
 #define G_MIND  (1u<<9)
 #define G_REPL  (1u<<10)
+#define G_FORTUNE (1u<<11)
 
 #ifdef NOINLINE
 #define NI __attribute__((noinline))
@@ -212,7 +214,7 @@ typedef struct {
 typedef struct {
   double hq_w[MAXQ]; uint hq_s[MAXQ]; int hq_k[MAXQ];
   double ready[NS], spell_cd[NS];
-  double swp_exp[MAXT], swp_w[MAXT];
+  double swp_e[MAXT][SWK + 1], swp_m[MAXT][SWK + 1]; int swp_n[MAXT];
   double ws[MAXW], we[MAXW];
   double mana, mana_time, naaru_until, blaze_until, renew_until, hero_ready, busy_until, duration;
   double eb_w[EB], eb_h[EB]; int eb_k[EB];
@@ -519,13 +521,67 @@ inline void recover_mana(St* s, const Row* tl, double now) {
   s->mana_time = now;
 }
 
+/* SW:P per target: expiry points with probabilities (shadow.simulate swp_e / swp_m) */
+double swp_on(const St* s, int i, double now) {
+  double total = 0.0;
+  for (int k = 0; k < s->swp_n[i]; k++) if (now < s->swp_e[i][k]) total += s->swp_m[i][k];
+  return total;
+}
+
+double swp_kept(const St* s, int i, double at) {
+  double total = 0.0;
+  for (int k = 0; k < s->swp_n[i]; k++) if (s->swp_e[i][k] >= at) total += s->swp_m[i][k];
+  return total;
+}
+
+double swp_last(const St* s, int i) {
+  if (s->swp_n[i] == 0) return 0.0;
+  double v = s->swp_e[i][0];
+  for (int k = 1; k < s->swp_n[i]; k++) if (s->swp_e[i][k] > v) v = s->swp_e[i][k];
+  return v;
+}
+
+int swp_any(const St* s, int targets, double now) {
+  for (int i = 0; i < targets; i++)
+    for (int k = 0; k < s->swp_n[i]; k++) if (now < s->swp_e[i][k]) return 1;
+  return 0;
+}
+
+int weakest_swp(const St* s, int targets, double now) {
+  int best = 0;
+  double bk = swp_kept(s, 0, now + 1.0), bl = swp_last(s, 0);
+  for (int i = 1; i < targets; i++) {
+    double k = swp_kept(s, i, now + 1.0), l = swp_last(s, i);
+    if (k < bk || (k == bk && l < bl)) { best = i; bk = k; bl = l; }
+  }
+  return best;
+}
+
+void swp_maybe(St* s, int i, double now, double p) {
+  int c = 0;
+  for (int k = 0; k < s->swp_n[i]; k++) {
+    if (now < s->swp_e[i][k]) { s->swp_e[i][c] = s->swp_e[i][k]; s->swp_m[i][c] = s->swp_m[i][k] * (1.0 - p); c++; }
+  }
+  double until = now + s->duration;
+  if (c > 0 && s->swp_e[i][c - 1] == until) s->swp_m[i][c - 1] = s->swp_m[i][c - 1] + p;
+  else { s->swp_e[i][c] = until; s->swp_m[i][c] = p; c++; }
+  while (c > SWK) {
+    int k = 0;
+    for (int j = 1; j < c - 1; j++) if (s->swp_m[i][j] < s->swp_m[i][k]) k = j;
+    s->swp_m[i][k + 1] = s->swp_m[i][k + 1] + s->swp_m[i][k];
+    for (int j = k; j < c - 1; j++) { s->swp_e[i][j] = s->swp_e[i][j + 1]; s->swp_m[i][j] = s->swp_m[i][j + 1]; }
+    c--;
+  }
+  s->swp_n[i] = c;
+}
+
 void swp_apply(St* s, const Row* tl, const Row* sc, Sco* q, Comp* c, int comp, double now, int index) {
-  if (s->swp_exp[index] > now) record(s, tl, sc, q, c, comp, now, K_SWPI, 1.0);
-  int any = 0;
-  for (int i = 0; i < tl->targets; i++) if (s->swp_exp[i] > now) { any = 1; break; }
-  if (!any) push(s, now + tl->swp_period, E_SWP);
-  s->swp_exp[index] = now + s->duration;
-  s->swp_w[index] = 1.0;
+  double on = swp_on(s, index, now);
+  if (on > 0.0) record(s, tl, sc, q, c, comp, now, K_SWPI, on);
+  if (!swp_any(s, tl->targets, now)) push(s, now + tl->swp_period, E_SWP);
+  s->swp_e[index][0] = now + s->duration;
+  s->swp_m[index][0] = 1.0;
+  s->swp_n[index] = 1;
 }
 
 void naaru_hit(St* s, const Row* tl, const Row* sc, Sco* q, Comp* c, int comp, double now) {
@@ -546,8 +602,7 @@ NI void resolve(St* s, const Row* tl, const Row* sc, Sco* q, Comp* c, int comp, 
     push(s, now + (TM(tl, T_COSM) ? 1.5 : 2.0), E_VOID);
     if (GM(tl, G_THUN)) record(s, tl, sc, q, c, comp, now, K_THUNDER, thunder);
   } else if (name == SW_SWP) {
-    int w = 0;
-    for (int i = 1; i < tl->targets; i++) if (s->swp_exp[i] < s->swp_exp[w]) w = i;
+    int w = weakest_swp(s, tl->targets, now);
     swp_apply(s, tl, sc, q, c, comp, now, w);
     if (GM(tl, G_THUN)) record(s, tl, sc, q, c, comp, now, K_THUNDER, thunder);
   } else if (name == SW_DI) {
@@ -576,7 +631,7 @@ int choose(St* s, const Row* tl, double now) {
   int n = 0;
   int any = 0;
   if (s->has[SW_SWP]) {
-    for (int i = 0; i < tl->targets; i++) if (s->swp_exp[i] < now + 1.0) { any = 1; break; }
+    for (int i = 0; i < tl->targets; i++) if (swp_kept(s, i, now + 1.0) < 0.5) { any = 1; break; }
   }
   if (any) order[n++] = SW_SWP;
   if (SP_SHADOW) { order[n++] = SW_DI; order[n++] = SW_MS; order[n++] = SW_VR; }
@@ -639,7 +694,7 @@ NI double fight(const Row* tl, const Row* sc, int bound, Comp* c, int comp, int*
   }
   s.mana = tl->mana_max;
   s.mana_time = 0.0;
-  for (int i = 0; i < MAXT; i++) { s.swp_exp[i] = 0.0; s.swp_w[i] = 0.0; }
+  for (int i = 0; i < MAXT; i++) s.swp_n[i] = 0;
   s.naaru_until = 0.0; s.blaze_until = 0.0; s.renew_until = 0.0;
   s.hero_ready = 0.0; s.busy_until = 0.0;
   s.duration = TM(tl, T_LINK) ? 12.0 : 10.0;
@@ -689,25 +744,22 @@ NI double fight(const Row* tl, const Row* sc, int bound, Comp* c, int comp, int*
     } else if (kind >= E_FIN0 && kind < E_FIN0 + NS) {
       resolve(&s, tl, sc, &q, c, comp, kind - E_FIN0, when);
     } else if (kind == E_SWP) {
-      for (int i = 0; i < targets; i++) if (s.swp_exp[i] <= when) s.swp_w[i] = 0.0;
       double active = 0.0;
-      int any = 0;
-      for (int i = 0; i < targets; i++) if (s.swp_exp[i] > when) { active = active + s.swp_w[i]; any = 1; }
-      if (any && active > 1e-9) {
+      for (int i = 0; i < targets; i++) active = active + swp_on(&s, i, when);
+      if (active > 1e-9) {
         record(&s, tl, sc, &q, c, comp, when, K_SWP, active);
         push(&s, when + tl->swp_period, E_SWP);
       }
     } else if (kind == E_VOID) {
       record(&s, tl, sc, &q, c, comp, when, K_VOID, (double)targets);
       if (TM(tl, T_COSM)) {
-        double p = 0.25 * (1.0 + tl->luck);
+        double pv = 0.25 * (1.0 + tl->luck);
+        double p = (pv < 1.0) ? pv : 1.0;
         for (int i = 0; i < targets; i++) {
-          if (s.swp_exp[i] > when) record(&s, tl, sc, &q, c, comp, when, K_SWPI, p * s.swp_w[i]);
-          int act = 0;
-          for (int j = 0; j < targets; j++) if (s.swp_exp[j] > when) { act = 1; break; }
-          if (!act && p > 0.0) push(&s, when + tl->swp_period, E_SWP);
-          s.swp_w[i] = s.swp_w[i] + p * (1.0 - s.swp_w[i]);
-          if (s.swp_w[i] > 0.0) s.swp_exp[i] = when + s.duration;
+          double on = swp_on(&s, i, when);
+          if (on > 0.0) record(&s, tl, sc, &q, c, comp, when, K_SWPI, p * on);
+          if (!swp_any(&s, targets, when) && p > 0.0) push(&s, when + tl->swp_period, E_SWP);
+          swp_maybe(&s, i, when, p);
         }
       }
     } else if (kind == E_NAARU) {
@@ -870,9 +922,14 @@ NI int sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const in
   asum = (4.0 <= asum) ? 4.0 : asum;
   aspd = (-0.8 >= asum) ? -0.8 : asum;
   double attack_base = 2.0 * ((mask & S_GALA) ? 1.20 : 1.0);
+  double luck = 0.01 * (double)pts[9];
+  for (int si = 0; si < 6; si++) if (first[si]) luck += T->uniq[(long)chosen[si] * NU + 13];
+  if (GM(r, G_FORTUNE)) luck += 0.15;
   if (GM(r, G_FREN)) {
     double unbuffed = attack_base / (1.0 + aspd);
-    double uptime = 5.0 / (5.0 + unbuffed / 0.18);
+    double fc = 0.18 * (1.0 + luck);
+    fc = (fc < 1.0) ? fc : 1.0;
+    double uptime = 5.0 / (5.0 + unbuffed / fc);
     double a = aspd + 0.32 * uptime;
     a = (4.0 <= a) ? 4.0 : a;
     aspd = (-0.8 >= a) ? -0.8 : a;
@@ -950,7 +1007,7 @@ NI int sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const in
   r->flat_cdr = flat_cdr; r->cd_temp = cd_temp; r->stun_ps = stun_ps; r->cast_lock = cast_lock;
   r->attack_potency = dap ? 2.0 : 1.0; r->auto_pct = auto_pct; r->armor_pen = armor_pen;
   r->soul_rate = (mask & S_SOUL) ? 0.003 : 0.0; r->stab_chance = stab_ch; r->stab_ratio = stab_ra;
-  r->luck = 0.01 * (double)pts[9];
+  r->luck = luck;
   r->attack_base = attack_base;
   r->swing = attack_base / (1.0 + aspd);
   r->swp_period = 1.0 / (1.0 + haste);
@@ -1064,10 +1121,10 @@ TALENT_BITS = {
 }
 GLYPH_BITS = {
     "I07B": 0, "I0AV": 1, "I0EK": 2, "I0GZ": 3, "I0H3": 4, "I0H5": 5, "I0H6": 6, "I0HC": 7,
-    "I0JA": 8, "I0OF": 9, "I0H0": 10,
+    "I0JA": 8, "I0OF": 9, "I0H0": 10, "I0EJ": 11,
 }
 # Codes the priest oracle never reads: picking them changes nothing in the fight.
-NO_EFFECT = {"I0EJ", "I0EN"}
+NO_EFFECT = {"I0EN"}
 SPECS = {"shadow": 0, "discipline": 1, "holy": 2}
 NF = 15
 NU = 48
@@ -1176,7 +1233,7 @@ def tables(space, items: dict, sources: dict) -> dict:
             item.execute_pct if item.execute_pct > 0 else 0.0,
             1.0 if item.spell_crit else 0.0,
             1.0 if (item.spell_crit and "65%" in tip) else 0.0,
-            0.0,
+            shadow.item_luck(item),
             shadow._MANA_REGEN_RATE.get(code, 0.0),
         ]
         row += _pad([float(m.replace(",", ".")) for m in shadow._MP5.findall(tip)], 0.0, "mp5", code)

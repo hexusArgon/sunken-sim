@@ -10,7 +10,7 @@ Changes nothing in farm data.  For every spec:
 2. bit-exact parity of talent/glyph/ESC fights (Priest: simulate().dps, the
    ESC score of farm.score._priest, and fights on a replayed timeline);
 3. device refinement against farm.score.finish_sextuple on random chunks (and
-   the Shadow ESC winner sextuple, 3525.208859618254 with luck in the Cosmic Horrors key);
+   the Shadow ESC winner sextuple, 3739.780235469132 since the 2026-11-12 Cosmic Horrors / luck fixes);
 4. launch sizes, rows/s of 1 and N worker processes, refinement seconds, and
    an estimate for the whole Top-N space.
 
@@ -33,7 +33,7 @@ sys.path.insert(0, str(REPO))
 os.environ.setdefault("FARM_DATA", str(OUT / "check-data"))
 
 DEFAULT_SPECS = "mage:frost,mage:arcane,priest:shadow,priest:discipline,priest:holy"
-SHADOW_WINNER = (["I00D", "I048", "I0FW", "I0JO", "I0NT", "fgrd"], 3525.208859618254)
+SHADOW_WINNER = (["I00D", "I048", "I0FW", "I0JO", "I0NT", "fgrd"], 3739.780235469132)
 
 
 def _load(hero, spec, top):

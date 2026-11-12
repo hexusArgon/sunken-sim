@@ -22,6 +22,7 @@ CAST_BACKSWING = 0.30
 LEVEL = 15
 DUMMY_ARMOR = 15.0
 ARMOR_FACTOR = 0.04
+SWP_SLOTS = 8  # SW:P expiry points kept per target (Cosmic Horrors); see simulate
 CHAOS_UNARMORED = 1.25
 # Median max health of custom monsters that have explicit armor and an attack,
 # excluding locusts, invulnerable units, and hero inventories.
@@ -359,8 +360,10 @@ def character(
     attack_speed = max(-0.8, min(4.0, attack_speed + agility_speed))
     attack_base = 2.0 * (1.20 if any(item.rawcode == "I0JO" for item in build.items) else 1.0)
     if bake_timed_buffs and _has(build, "I0GZ"):
+        # Battle Frenzy: 18% x Luck per attack while it is off, 5 s (renewal uptime on the unbuffed swing).
         unbuffed_swing = attack_base / (1 + attack_speed)
-        uptime = 5.0 / (5.0 + unbuffed_swing / 0.18)
+        frenzy_chance = min(1.0, 0.18 * (1.0 + sheet_luck(build)))
+        uptime = 5.0 / (5.0 + unbuffed_swing / frenzy_chance)
         attack_speed = max(-0.8, min(4.0, attack_speed + 0.32 * uptime))
     spell_crit = any(item.spell_crit for item in build.items)
     spell_mult = 1.65 if any(item.spell_crit and "65%" in item.tip for item in build.items) else 1.50
@@ -420,7 +423,7 @@ def character(
             rate = min(crit, 100.0) / 100.0 / swing
             uptime = 1.0 - math.exp(-rate * crit_as_duration)
             attack_speed = max(-0.8, min(4.0, base_speed + crit_as * uptime))
-    luck = 0.01 * build.luck_points
+    luck = sheet_luck(build)  # before 2026-11-12: ESC points only (no item luck, no Fortune)
     pet_damage = 0.015 * getattr(build, "pet_damage_points", 0)
     healing_power = float(getattr(build, "healing_power_points", 0) or 0)
     return {
@@ -615,8 +618,12 @@ def _fight_events(
     ready = {name: 0.0 for name in spell_cd}
     mana = stats["mana_max"]
     mana_time = 0.0
-    swp_exp = [0.0] * targets
-    swp_w = [0.0] * targets  # expected SWP uptime weight per target (Cosmic EV)
+    # Shadow Word: Pain per target as a distribution of expiry times (expiry, probability): a cast applies
+    # it for sure (one point); Cosmic Horrors applies it with chance p, which moves p of the probability to
+    # now + duration (the map refreshes the duration on every apply). Before 2026-11-12 a Cosmic proc
+    # refreshed the whole target.
+    swp_e: list[list[float]] = [[] for _ in range(targets)]
+    swp_m: list[list[float]] = [[] for _ in range(targets)]
     naaru_until = 0.0
     blaze_until = 0.0
     renew_until = 0.0
@@ -642,16 +649,70 @@ def _fight_events(
     if _has(build, "I0H3"):
         push(0.0, "hellfire")
 
+    def swp_on(index: int, now: float) -> float:
+        """Probability that SW:P is on the target at ``now``."""
+        total = 0.0
+        for expiry, share in zip(swp_e[index], swp_m[index]):
+            if now < expiry:
+                total += share
+        return total
+
+    def swp_kept(index: int, at: float) -> float:
+        """Probability that SW:P is still on at ``at`` (expiry >= at): the recast rule looks 1 s ahead."""
+        total = 0.0
+        for expiry, share in zip(swp_e[index], swp_m[index]):
+            if expiry >= at:
+                total += share
+        return total
+
+    def swp_last(index: int) -> float:
+        return max(swp_e[index]) if swp_e[index] else 0.0
+
+    def swp_any(now: float) -> bool:
+        return any(now < expiry for index in range(targets) for expiry in swp_e[index])
+
     def weakest_swp(now: float) -> int:
-        return min(range(targets), key=lambda index: swp_exp[index])
+        # The target where SW:P most likely falls off within 1 s (ties: the earliest expiry, then the index).
+        best = 0
+        best_key = (swp_kept(0, now + 1.0), swp_last(0))
+        for index in range(1, targets):
+            key = (swp_kept(index, now + 1.0), swp_last(index))
+            if key < best_key:
+                best, best_key = index, key
+        return best
 
     def swp_apply(now: float, index: int) -> None:
-        if swp_exp[index] > now:
-            record(now, "swp_i")
-        if not any(expiry > now for expiry in swp_exp):
+        on = swp_on(index, now)
+        if on > 0.0:
+            record(now, "swp_i", on)
+        if not swp_any(now):
             push(now + stats["swp_period"], "swp")
-        swp_exp[index] = now + duration
-        swp_w[index] = 1.0
+        swp_e[index] = [now + duration]
+        swp_m[index] = [1.0]
+
+    def swp_maybe(now: float, index: int, p: float) -> None:
+        new_e: list[float] = []
+        new_m: list[float] = []
+        for expiry, share in zip(swp_e[index], swp_m[index]):
+            if now < expiry:
+                new_e.append(expiry)
+                new_m.append(share * (1.0 - p))
+        until = now + duration
+        if new_e and new_e[-1] == until:
+            new_m[-1] = new_m[-1] + p
+        else:
+            new_e.append(until)
+            new_m.append(p)
+        while len(new_e) > SWP_SLOTS:
+            k = 0
+            for j in range(1, len(new_e) - 1):
+                if new_m[j] < new_m[k]:
+                    k = j
+            new_m[k + 1] = new_m[k + 1] + new_m[k]
+            del new_e[k]
+            del new_m[k]
+        swp_e[index] = new_e
+        swp_m[index] = new_m
 
     def naaru_hit(now: float) -> None:
         record(now, "naaru")
@@ -722,7 +783,7 @@ def _fight_events(
             order = ["Divine Image", "Mind Spike", "Void Rift"]
         else:
             order = [name for name in ("Divine Image", "Radiance", "Mind Spike", "Renew") if name in ready]
-        if "Shadow Word: Pain" in ready and any(expiry < now + 1 for expiry in swp_exp):
+        if "Shadow Word: Pain" in ready and any(swp_kept(index, now + 1.0) < 0.5 for index in range(targets)):
             order.insert(0, "Shadow Word: Pain")
         for name in order:
             if ready[name] <= now and mana >= costs[name]:
@@ -759,27 +820,23 @@ def _fight_events(
         elif kind.startswith("finish:"):
             resolve(kind.split(":", 1)[1], when)
         elif kind == "swp":
-            for index in range(targets):
-                if swp_exp[index] <= when:
-                    swp_w[index] = 0.0
-            active = sum(swp_w[index] for index in range(targets) if swp_exp[index] > when)
+            active = sum(swp_on(index, when) for index in range(targets))
             if active > 1e-9:
                 record(when, "swp", active)
                 push(when + stats["swp_period"], "swp")
         elif kind == "void":
             record(when, "void", targets)
             if _has(build, "I0HP"):
-                # Map: 25% * Luck_Multiplier to Shadow_Word_Pain_Apply per hit enemy.
-                # Apply path: instant if buff up; DoT apply/refresh with expected weight.
-                p = 0.25 * (1.0 + stats["luck"])
+                # Map: 25% * Luck_Multiplier to Shadow_Word_Pain_Apply per hit enemy: instant damage
+                # where SW:P is on, and the debuff is (re)applied for the full duration.
+                p = min(1.0, 0.25 * (1.0 + stats["luck"]))
                 for index in range(targets):
-                    if swp_exp[index] > when:
-                        record(when, "swp_i", p * swp_w[index])
-                    if not any(expiry > when for expiry in swp_exp) and p > 0:
+                    on = swp_on(index, when)
+                    if on > 0.0:
+                        record(when, "swp_i", p * on)
+                    if not swp_any(when) and p > 0:
                         push(when + stats["swp_period"], "swp")
-                    swp_w[index] = swp_w[index] + p * (1.0 - swp_w[index])
-                    if swp_w[index] > 0:
-                        swp_exp[index] = when + duration
+                    swp_maybe(when, index, p)
         elif kind == "naaru":
             if when <= naaru_until:
                 naaru_hit(when)
@@ -862,6 +919,29 @@ class Sulfuras:
 
 def sulfuras_echo_chance(luck: float) -> float:
     return 0.10 * (1.0 + luck)
+
+
+_LUCK_LINE = re.compile(r"(?m)^\+(\d+)% Luck\b")
+
+
+def item_luck(item) -> float:
+    """Luck on an item's stat lines ("+8% Luck"), as a fraction. Conditional "Equip: ... +8% Luck" text
+    (Cenarion Helm's three-glyph bonus) is not a stat line and is not counted."""
+    return sum(int(raw) for raw in _LUCK_LINE.findall(item.tip)) / 100.0
+
+
+def sheet_luck(build: Build) -> float:
+    """ESC luck points, every distinct item's stat-line luck, Glyph of Fortune (I0EJ) +15%."""
+    luck = 0.01 * build.luck_points
+    seen: set[str] = set()
+    for item in build.items:
+        if item.rawcode in seen:
+            continue
+        seen.add(item.rawcode)
+        luck += item_luck(item)
+    if _has(build, "I0EJ"):
+        luck += 0.15
+    return luck
 
 
 def _crit_factor(chance: float, multiplier: float) -> float:

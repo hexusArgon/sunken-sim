@@ -58,7 +58,7 @@ KERNEL = r"""
 #endif
 #define MAXE 6
 #define NF 15
-#define NU 48
+#define NU 49
 #define NB 11
 #define NP 11
 
@@ -121,6 +121,7 @@ KERNEL = r"""
 #define G_GLASS (1u<<8)
 #define G_MIND  (1u<<9)
 #define G_REPL  (1u<<10)
+#define G_FORTUNE (1u<<11)
 
 #define TM(r, x) (TALENTS && ((r)->tmask & (x)))
 #define GM(r, x) (TALENTS && ((r)->gmask & (x)))
@@ -1091,7 +1092,10 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   r->flat_cdr = flat_cdr; r->cd_temp = cd_temp; r->stun_ps = stun_ps; r->cast_lock = cast_lock;
   r->attack_potency = dap ? 2.0 : 1.0; r->auto_pct = auto_pct; r->armor_pen = armor_pen;
   r->soul_rate = (mask & S_SOUL) ? 0.003 : 0.0; r->stab_chance = stab_ch; r->stab_ratio = stab_ra;
-  r->luck = 0.01 * (double)pts[9];
+  double luck = 0.01 * (double)pts[9];
+  for (int si = 0; si < 6; si++) if (first[si]) luck += T->uniq[(long)chosen[si] * NU + 48];
+  if (GM(r, G_FORTUNE)) luck += 0.15;
+  r->luck = luck;
   r->attack_base = attack_base; r->mana_regen = stat * 0.80;
   r->cast_refund = 1.0 - keep; r->cast_refund_flat = rflat; r->cast_refund_mastery = rmast;
   r->attack_mana = aflat; r->attack_mana_pct = apct; r->attack_mana_crit = acrit ? 1.0 : 0.0; r->damage_mana_pct = dpct;
@@ -1180,15 +1184,15 @@ TALENT_BITS = {
 }
 GLYPH_BITS = {
     "I07B": 0, "I0AV": 1, "I0EK": 2, "I0GZ": 3, "I0H3": 4, "I0H5": 5, "I0H6": 6, "I0HC": 7,
-    "I0JA": 8, "I0OF": 9, "I0H0": 10,
+    "I0JA": 8, "I0OF": 9, "I0H0": 10, "I0EJ": 11,
 }
 # Codes the mage oracle never reads: picking them changes nothing in the fight.
-NO_EFFECT = {"I0EJ", "I0EN", "I0Q8"}
+NO_EFFECT = {"I0EN", "I0Q8"}
 # Codes the oracle reads through _has() but the kernel does not model (other heroes' talents).
 UNSUPPORTED_CODES = {"I0SA", "I0PU", "I0PS", "I0Q9_ARCANE"}
 GROUP_NAMES = {0: None, 1: "shop", 2: "drop", 3: "shop_random"}
 NF = 15
-NU = 48
+NU = 49
 NP = 11
 MULTI = 4
 
@@ -1302,6 +1306,7 @@ def tables(space, items: dict, sources: dict) -> dict:
         row += _pad(attack_pct, 0.0, "attack mana pct", code)
         row += [1.0 if ("doubled for Critical Strikes" in tip and shadow._ATTACK_MANA.search(tip)) else 0.0]
         row += _pad([tn(raw) / 100.0 for raw in shadow._DAMAGE_MANA.findall(tip)], 0.0, "damage mana", code)
+        row += [shadow.item_luck(item)]
         if len(row) != NU:
             raise AssertionError(len(row))
         uniq[i] = row

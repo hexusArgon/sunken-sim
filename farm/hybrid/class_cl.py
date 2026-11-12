@@ -124,7 +124,7 @@ def character_tables(space, items: dict, sources: dict, special_bits: dict, tale
             item.execute_pct if item.execute_pct > 0 else 0.0,
             1.0 if item.spell_crit else 0.0,
             1.0 if (item.spell_crit and "65%" in tip) else 0.0,
-            0.0,
+            shadow.item_luck(item),
             shadow._MANA_REGEN_RATE.get(code, 0.0),
         ]
         row += pad([float(m.replace(",", ".")) for m in shadow._MP5.findall(tip)], 0.0, "mp5", code)

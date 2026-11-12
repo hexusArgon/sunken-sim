@@ -86,6 +86,7 @@ KERNEL = r"""
 #define G_GLASS (1u<<8)
 #define G_MIND  (1u<<9)
 #define G_REPL  (1u<<10)
+#define G_FORTUNE (1u<<11)
 
 #define TM(r, x) (TALENTS && ((r)->tmask & (x)))
 #define GM(r, x) (TALENTS && ((r)->gmask & (x)))
@@ -801,7 +802,10 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   r->spell_mult = sc65 ? 1.65 : 1.50;
   r->flat_cdr = flat_cdr; r->cd_temp = cd_temp; r->cast_lock = cast_lock;
   r->auto_pct = auto_pct; r->armor_pen = armor_pen;
-  r->luck = 0.01 * (double)pts[9];
+  double luck = 0.01 * (double)pts[9];
+  for (int si = 0; si < 6; si++) if (first[si]) luck += T->uniq[(long)chosen[si] * NU + 13];
+  if (GM(r, G_FORTUNE)) luck += 0.15;
+  r->luck = luck;
   r->attack_base = 1.85 * ((mask & S_GALA) ? 1.20 : 1.0);
   r->mana_regen = stat * 0.80;
   r->cast_refund = 1.0 - keep; r->cast_refund_flat = rflat; r->cast_refund_mastery = rmast;
@@ -888,9 +892,9 @@ TALENT_BITS = {
 }
 GLYPH_BITS = {
     "I07B": 0, "I0AV": 1, "I0EK": 2, "I0GZ": 3, "I0H3": 4, "I0H5": 5, "I0H6": 6, "I0HC": 7,
-    "I0JA": 8, "I0OF": 9, "I0H0": 10,
+    "I0JA": 8, "I0OF": 9, "I0H0": 10, "I0EJ": 11,
 }
-NO_EFFECT = {"I0EJ", "I0EN"}
+NO_EFFECT = {"I0EN"}
 SPECS = {"restoration": 0, "enhancement": 1, "elemental": 2}
 BOUNDS = ("chain", "shield", "spirit", "lava", "totem")
 

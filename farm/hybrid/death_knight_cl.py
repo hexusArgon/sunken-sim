@@ -902,7 +902,7 @@ def death_knight_tables(space, items, sources) -> dict:
                 prim = bonus.get("primary", 0)
             fold[i, state, 6] = prim
             fold[i, state, 13] = cv(code, "haste", item.haste, first) / 100
-        lucks = [int(raw) / 100.0 for raw in re.findall(r"\+(\d+)% Luck\b", item.tip)]
+        lucks = [shadow.item_luck(item)]
         health = [float(int(raw)) for raw in re.findall(r"\+(\d+) Health\b", item.tip)]
         pal[i] = [
             shadow.MAGICAL_ADDS.get(code, 0.0),

@@ -17,6 +17,7 @@ import re
 
 from sunken_sim.pressure import hero_hp_ratio, max_hp
 from sunken_sim.shadow import (
+    item_luck,
     CAST_BACKSWING,
     CAST_POINT,
     DUMMY_ARMOR,
@@ -219,8 +220,7 @@ def stats_of(build: Build) -> dict[str, float]:
                 attack_potency = 2.0
             damage_pct += item.damage_pct / 100.0
             mana_flat += item.mana
-            for raw in re.findall(r"\+(\d+)% Luck\b", item.tip):
-                luck += int(raw) / 100.0
+            luck += item_luck(item)  # stat-line luck only (shadow.item_luck)
             for raw in re.findall(r"\+(\d+) Health\b", item.tip):
                 health_flat += int(raw)
     if _has(build, GLYPH_FORTITUDE):
