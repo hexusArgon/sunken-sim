@@ -539,7 +539,7 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
   }
   s.molten_until = -1.0; s.life_until = -1.0; s.life_ticking = 0; s.form_until = -1.0; s.heated = 0;
   s.burnout_bonus = 0.0; s.trig0 = 1.0; s.trig2 = 0.0; s.trig3 = 0.0;
-  s.fury = 0.0; s.fury_max = TM(r, T_WAKING) ? 85.0 : 100.0; s.bolt_target = 0;
+  s.fury_max = TM(r, T_WAKING) ? 85.0 : 100.0; s.fury = s.fury_max; s.bolt_target = 0;
   int forms = 0;
   ap_init(&s.ap, GM(r, G_FREN) ? frenzy_chance(r->luck) : 0.0, (r->mask & S_SILM) ? SILENT_AS : 0.0,
           (r->mask & S_SILM) ? SILENT_DUR : 0.0);

@@ -498,8 +498,10 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
     burnout_bonus = 0.0
     # udg_Burnout_Triggers (starts at 0) as chances of its values 0 / 2 / 3
     trig = {0: 1.0, 2: 0.0, 3: 0.0}
-    fury = 0.0
     fury_max = 85.0 if has(TALENT_WAKING) else 100.0
+    # The Dragonfury timer runs from the moment the hero is bought, in and out of combat (+1 per
+    # 1 / (1 + CDR) s): the DS walks into a fight with a full bar (2026-11-13; before: 0).
+    fury = fury_max
     bolt_target = [0]
     procs = attack_procs(build, stats, stats["luck"])
 
