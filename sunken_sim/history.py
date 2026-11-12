@@ -23,9 +23,13 @@ def sim_key(engine: str, spec: str, build: Build, targets: int, bound_spell: str
     items = ",".join(sorted(item.rawcode for item in build.items))
     talents = ",".join(sorted(build.talents))
     glyphs = ",".join(sorted(build.glyphs))
-    points = f"{build.crit_points},{build.potency_points},{build.luck_points},{build.mastery_points}"
+    # Every ESC attribute (before 2026-11-12 only crit/potency/luck/mastery: builds differing in haste, attack
+    # speed, damage, health, mana, healing power or pet damage points shared one row).
+    from dataclasses import fields
+
+    points = ",".join(str(getattr(build, f.name)) for f in fields(build) if f.name.endswith("_points"))
     # Bump when a fight mechanic changes, so old rows are not reused.
-    return "|".join(("v4", engine, spec, str(targets), talents, glyphs, items, points, bound_spell or ""))
+    return "|".join(("v5", engine, spec, str(targets), talents, glyphs, items, points, bound_spell or ""))
 
 
 def _connect() -> sqlite3.Connection:

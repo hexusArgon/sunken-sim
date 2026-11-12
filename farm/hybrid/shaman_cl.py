@@ -198,12 +198,12 @@ inline double crit_bonus_of(const St* s, const Row* tl, double now) {
 }
 inline int fusion_up(const St* s, double now) { return now < s->fusion_until; }
 
+/* shaman.blood_factor: Bloodlust is on when at least one proc window covers now */
 double blood_factor(const St* s, double now) {
-  double w = 0.0;
+  double off = 1.0;
   for (int i = 0; i < s->nbl; i++)
-    if (s->bl_s[i] <= now && now < s->bl_e[i]) w += s->bl_c[i];
-  double m = (w < 1.0) ? w : 1.0;
-  return 1.0 - 0.18 * m;
+    if (s->bl_s[i] <= now && now < s->bl_e[i]) off *= 1.0 - s->bl_c[i];
+  return 1.0 - 0.18 * (1.0 - off);
 }
 
 /* score of one "deal" event, as score_events */

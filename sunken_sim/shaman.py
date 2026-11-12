@@ -329,11 +329,13 @@ def simulate(build: Build, targets: int = 5, spec: str = "restoration", bound_sp
         return now < fusion_until
 
     def blood_factor(now: float) -> float:
-        weight = 0.0
+        # Bloodlust is on when at least one proc window covers now: 1 - prod(1 - chance).
+        # (Before 2026-11-12 the chances were summed and capped at 1, which overstated overlapping procs.)
+        off = 1.0
         for start, end, chance in bloodlust:
             if start <= now < end:
-                weight += chance
-        return 1.0 - 0.18 * min(1.0, weight)
+                off *= 1.0 - chance
+        return 1.0 - 0.18 * (1.0 - off)
 
     def spirit_as(now: float) -> float:
         alive = sum(1 for spirit in spirits if now < spirit["expire"])
