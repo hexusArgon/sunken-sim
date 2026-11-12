@@ -9,6 +9,7 @@ Priest/Paladin/Mage come from extract/one-slot-classes.json; their glyphs are me
 
     python tools/upload_all_one_slot_sheets.py --html logs/sheets_html   # write HTML blocks + manifest (paste via pasteData)
     python tools/upload_all_one_slot_sheets.py                           # upload with ~/Documents/keys/google-sheets-token.json
+    python tools/upload_all_one_slot_sheets.py --tabs "Priest,Mage"      # upload only these tabs
 """
 
 from __future__ import annotations
@@ -269,6 +270,13 @@ def upload(data: dict) -> None:
 def main() -> None:
     args = sys.argv[1:]
     data = all_tabs(remeasure="--remeasure" in args)
+    if "--tabs" in args:
+        # e.g. --tabs "Priest,Mage,Paladin": upload only these tabs
+        want = [t.strip() for t in args[args.index("--tabs") + 1].split(",") if t.strip()]
+        missing = [t for t in want if t not in data]
+        if missing:
+            raise SystemExit(f"unknown tabs: {missing}")
+        data = {t: data[t] for t in want}
     if "--html" in args:
         write_html(ROOT / args[args.index("--html") + 1], data)
     else:
