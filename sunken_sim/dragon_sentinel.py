@@ -435,10 +435,18 @@ POLICIES = tuple((life, form) for life in (True, False) for form in (True, False
 def simulate(build: Build, targets: int = 5, spec: str = "ruby") -> Report:
     """Best of the policies (Lifebinder on self on / off, Dragon Form on / off)."""
     best = None
+    skip = None
     for policy in POLICIES:
+        if policy == skip:
+            continue
         report = _simulate(build, targets, spec, policy)
         if best is None or report.dps > best.dps + 1e-9:
             best = report
+        use_life, use_form = policy
+        if use_form and report.stats["n_form"] == 0:
+            # Dragon Form was never cast: the same fight without it is identical (the form key is only
+            # ever skipped), so (use_life, False) cannot beat it; skip it (2026-11-13, speed only).
+            skip = (use_life, False)
     return best
 
 

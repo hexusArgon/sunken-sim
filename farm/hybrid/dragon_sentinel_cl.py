@@ -49,7 +49,7 @@ KERNEL = r"""
 #define NSRC 16
 #define MAXT 5  /* the farm runs 5 targets; more -> status 3, the host re-scores the row */
 #define BS 8
-#define MAXQ 256
+#define MAXQ 64
 #define BK 8
 #define RANK 1.0
 #define FAR 300.0
@@ -160,6 +160,7 @@ typedef struct {
   double cleanse_until[MAXT];
   double q_w[MAXQ], q_p[MAXQ]; uint q_s[MAXQ]; int q_k[MAXQ], q_a[MAXQ], q_t[MAXQ]; int qn; uint seq;
   double nxt[6]; int order[6]; int norder;
+  double am[7]; int am_neg[7];
   double mana, mana_time, molten_until, life_until, form_until, burnout_bonus, fury, fury_max;
   double trig0, trig2, trig3, max_life, strength;
   int life_ticking, heated, bolt_target, armed, status, targets;
@@ -334,15 +335,21 @@ double typed(const Row* r, int kind, double now) {
 
 double dcs(const Row* r, const St* s) { return 14.0 + 0.75 * s->strength + r->damage; }
 
+/* armor_taken(15 - pen - v) for Branded values v = 0..6, filled once per fight; negative armour -> status 4 when used */
+double am_of(St* s, int v) {
+  if (s->am_neg[v] && !s->status) s->status = 4;
+  return s->am[v];
+}
+
 double taken(const Row* r, St* s, int t, double now) {
   double off = 1.0, total = 0.0;
   for (int k = 0; k < s->br_n[t]; k++) {
     if (now < s->br_e[t][k]) {
-      total += s->br_m[t][k] * armor_mult(s, 15.0 - r->armor_pen - s->br_v[t][k]);
+      total += s->br_m[t][k] * am_of(s, (int)s->br_v[t][k]);
       off -= s->br_m[t][k];
     }
   }
-  return total + off * armor_mult(s, 15.0 - r->armor_pen);
+  return total + off * am_of(s, 0);
 }
 
 double brand_mass(const St* s, int t, double now) {
@@ -511,12 +518,17 @@ double attack_interval(const Row* r, const St* s, double now) {
   return swing / (1.0 + speed);
 }
 
-double sim_policy(const Row* r, int use_life, int use_form, int* status_out) {
+double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int* forms_out) {
   St s;
   if (r->targets > MAXT) { *status_out = 3; return 0.0; }
   s.targets = r->targets; s.status = 0; s.armed = 0;
   s.nord = 1; s.seen = 1u; s.ord[0] = N_AUTO; s.src[N_AUTO] = 0.0;
   s.strength = (double)(int)r->str;
+  for (int v = 0; v <= 6; v++) {
+    double armor = 15.0 - r->armor_pen - (double)v;
+    s.am_neg[v] = armor < 0.0;
+    s.am[v] = (armor > 0.0) ? 1.0 - (armor * 0.04) / (1.0 + 0.04 * armor) : 1.0;
+  }
   s.max_life = r->hp;
   s.mana = r->mana_max; s.mana_time = 0.0;
   s.qn = 0; s.seq = 0u;
@@ -528,6 +540,7 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out) {
   s.molten_until = -1.0; s.life_until = -1.0; s.life_ticking = 0; s.form_until = -1.0; s.heated = 0;
   s.burnout_bonus = 0.0; s.trig0 = 1.0; s.trig2 = 0.0; s.trig3 = 0.0;
   s.fury = 0.0; s.fury_max = TM(r, T_WAKING) ? 85.0 : 100.0; s.bolt_target = 0;
+  int forms = 0;
   ap_init(&s.ap, GM(r, G_FREN) ? frenzy_chance(r->luck) : 0.0, (r->mask & S_SILM) ? SILENT_AS : 0.0,
           (r->mask & S_SILM) ? SILENT_DUR : 0.0);
   double gen = 1.0 / (1.0 + r->haste);
@@ -625,6 +638,7 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out) {
       if (SP_RUBY) s.burnout_bonus += 0.50;
       double flat = 0.0;
       if (key == K_FORM) {
+        forms += 1;
         s.fury = 0.0;
         s.form_until = hit_at + 12.0;
         heal(r, &s, hit_at);
@@ -712,6 +726,7 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out) {
     ap_attack(&s.ap, moment, r->crit);
     next_attack = moment + attack_interval(r, &s, moment);
   }
+  *forms_out = forms;
   if (s.status) { *status_out = s.status; return 0.0; }
   double total = 0.0;
   for (int i = 0; i < s.nord; i++) total += s.src[s.ord[i]];
@@ -722,12 +737,16 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out) {
 double fight(const Row* r, int* status_out) {
   double best = 0.0;
   int have = 0;
+  int skip = -1;
   for (int i = 0; i < 4; i++) {
+    if (i == skip) continue;
     int use_life = (i < 2), use_form = (i % 2 == 0);
-    int st = 0;
-    double d = sim_policy(r, use_life, use_form, &st);
+    int st = 0, forms = 0;
+    double d = sim_policy(r, use_life, use_form, &st, &forms);
     if (st) { *status_out = st; return 0.0; }
     if (!have || d > best + 1e-9) { best = d; have = 1; }
+    /* Dragon Form never cast: (use_life, no form) is the same fight */
+    if (use_form && forms == 0) skip = i + 1;
   }
   return best;
 }
