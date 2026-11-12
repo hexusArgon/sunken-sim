@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import numpy as np
 
+from farm.hybrid import attack_procs_cl as AP
 from farm.hybrid import class_cl as C
 
 KERNEL = r"""
@@ -60,6 +61,7 @@ KERNEL = r"""
 #define S_TENS (1UL<<17)
 #define S_BELT (1UL<<18)
 #define S_MULG (1UL<<19)
+#define S_SILM (1UL<<20)
 
 #define T_OVER (1u<<0)
 #define T_WARD (1u<<1)
@@ -139,6 +141,7 @@ typedef struct {
   int nbl, nsp, npd, fusion_seen, attack_count, armed, status, bound;
   int max_charges, cast_charges, spirit_pack, chain_count, lesser_count;
   double totem_life;
+  AP ap;
 } St;
 
 inline double target_hp(double t) {
@@ -514,13 +517,12 @@ void on_attack(St* s, const Row* tl, const Row* sc, Sco* q, double now) {
     s->attack_count = 0;
     summon(s, now, 1);
   }
+  ap_attack(&s->ap, now, tl->crit + crit_bonus_of(s, tl, now));
   int alive = 0;
   for (int i = 0; i < s->nsp; i++) if (now < s->sp_exp[i]) alive++;
   double sa = 0.10 * (double)alive;
   sa = (0.40 < sa) ? 0.40 : sa;
-  double sp = tl->aspd + sa;
-  sp = (-0.8 >= sp) ? -0.8 : sp;
-  sp = (4.0 <= sp) ? 4.0 : sp;
+  double sp = ap_speed(tl->aspd + sa + ap_bonus(&s->ap, now));
   s->next_attack = now + tl->attack_base * blood_factor(s, now) / (1.0 + sp);
 }
 
@@ -596,6 +598,8 @@ double fight(const Row* tl, const Row* sc, int bound, int* status_out) {
   s.totem_life = 12.0 + ((tl->mask & S_MULG) ? 4.0 : 0.0);
   s.chain_count = (tl->targets < 6) ? tl->targets : 6;
   s.lesser_count = (tl->targets < 3) ? tl->targets : 3;
+  ap_init(&s.ap, GM(tl, G_FREN) ? frenzy_chance(tl->luck) : 0.0, (tl->mask & S_SILM) ? SILENT_AS : 0.0,
+          (tl->mask & S_SILM) ? SILENT_DUR : 0.0);
 
   int guard = 0;
   while (guard < 200000) {
@@ -878,11 +882,13 @@ __kernel void cls_rows(const int n, const int targets, __global const long* chun
   out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status;
 }
 """
+KERNEL = KERNEL.replace("#pragma OPENCL FP_CONTRACT OFF\n", "#pragma OPENCL FP_CONTRACT OFF\n" + AP.C, 1)
 
 SPECIAL_BITS = {
     "I00D": 0, "I0BR": 1, "I07O": 2, "I0JO": 3, "I0QT": 4, "I096": 5, "I03C": 6, "I00L": 7,
     "I00Y": 8, "I07P": 9, "I048": 10, "I03L": 11, "tlum": 12, "I0FW": 13,
     "I0O9": 14, "I0S7": 15, "I0O8": 16, "I0S8": 17, "I0O6": 18, "I0S9": 19,
+    "I0QN": 20,
 }
 TALENT_BITS = {
     "I0F1": 0, "I03T": 1, "I0NN": 2, "I0MB": 3, "I0OA": 4, "I0EX": 5, "I03V": 6, "I0ME": 7,
@@ -920,6 +926,7 @@ class ShamanCL(C.ExactCL):
     def tables(self, space, items, sources):
         from sunken_sim import shaman
 
+        AP.check()
         if shaman.SWING != 1.85 or shaman.WHITE_BASE != 13.0 or shaman.TOTEM_LIFE != 12.0:
             raise ValueError("kernel constants assume the 2026-11-10 shaman")
         return C.character_tables(space, items, sources, SPECIAL_BITS, TALENT_BITS, GLYPH_BITS, NO_EFFECT,

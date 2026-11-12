@@ -99,7 +99,7 @@ Frostbite: Chill ×1,08, Freeze ×1,12, пока висит дебафф. Дли
 
 ## Глифы и бафы
 
-Глифы общие с жрецом. До урона доходят Unsealed Power, Glass Cannon, Animosity, Fortitude, Supremacy, Mindhaste, Thunder, Hellfire, Blood Violence. Battle Frenzy и скорость атаки от крита висят своим окном и спадают. Пока окно висит, следующий заряд того же бафа не копится.
+Глифы общие с жрецом. До урона доходят Unsealed Power, Glass Cannon, Animosity, Fortitude, Supremacy, Mindhaste, Thunder, Hellfire, Blood Violence. Battle Frenzy и Silent Messenger считаются вероятностью по времени, как в `docs/guide.md` (с 2026-11-12: с удачей; Silent Messenger продлевается каждым критом).
 
 Заклинания критуют с Nightfall (×1,65) или Netherspike (×1,50). Pyroblast без Greater Pyroblast не критует.
 

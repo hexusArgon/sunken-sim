@@ -7,6 +7,7 @@ Ability rank is 1. Spec level on A06Z: 1 Restoration, 2 Enhancement, 3 Elemental
 
 from __future__ import annotations
 
+from sunken_sim.attack_procs import from_stats as attack_procs
 from sunken_sim.pressure import ATTACK_INTERVAL
 from sunken_sim.shadow import (
     CAST_BACKSWING,
@@ -289,6 +290,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "restoration", bound_sp
     mana_time = 0.0
     hero_ready = 0.0
     next_attack = 0.0
+    procs = attack_procs(build, stats, stats["luck"])
     next_chain = 0.0
     next_shield = 0.0
     next_spirit = 0.0
@@ -342,7 +344,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "restoration", bound_sp
         return min(0.40, 0.10 * alive)
 
     def attack_interval(now: float) -> float:
-        speed = min(4.0, max(-0.8, stats["attack_speed"] + spirit_as(now)))
+        speed = min(4.0, max(-0.8, stats["attack_speed"] + spirit_as(now) + procs.bonus(now)))
         return stats["attack_base"] * blood_factor(now) / (1.0 + speed)
 
     def cooldown(base: float, key: str) -> float:
@@ -659,6 +661,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "restoration", bound_sp
         if spirit_call and attack_count >= 4:
             attack_count = 0
             summon(now, 1)
+        procs.on_attack(now, stats["crit"] + crit_bonus_of(now))
         next_attack = now + attack_interval(now)
 
     def on_incoming(now: float) -> None:

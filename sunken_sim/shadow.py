@@ -409,7 +409,10 @@ def character(
         if item.rawcode not in ("I07O", "I0NS"):
             armor_pen += item.armor_pen
         crit_as += item.crit_as
-        crit_as_duration = max(crit_as_duration, item.crit_as_duration)
+        if item.crit_as:
+            # Only crit -> attack speed items: other tooltips also say "Attack Speed for N seconds"
+            # (I02T: 8 s); before 2026-11-12 any of them set the duration.
+            crit_as_duration = max(crit_as_duration, item.crit_as_duration)
         stab_chance += item.stab_chance
         stab_ratio = max(stab_ratio, item.stab_ratio)
         auto_pct += item.auto_pct

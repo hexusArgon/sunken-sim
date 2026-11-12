@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import numpy as np
 
+from farm.hybrid import attack_procs_cl as AP
 from farm.hybrid import class_cl as C
 
 NPAL = 13
@@ -73,6 +74,7 @@ KERNEL = r"""
 #define S_UNSI (1UL<<13)
 #define S_VENOM (1UL<<14)
 #define S_FANAT (1UL<<15)
+#define S_SILM (1UL<<16)
 
 #define T_AXE (1u<<0)
 #define T_DAMBALA (1u<<1)
@@ -139,6 +141,7 @@ typedef struct {
   double hp_max, hp_health, hp_next_hit, hp_next_heal; long hp_idx; int hp_flat;
   int armed, status;
   ulong miss_b, miss_e;
+  AP ap;
 } St;
 
 double target_hp(double t) {
@@ -307,14 +310,19 @@ double dcs(const Row* r) {
   return value;
 }
 
+double attack_crit(const Row* r, St* s, double when) {
+  double chance = r->crit;
+  if (TM(r, T_BONE)) chance += 10.0 + 0.5 * (100.0 * (1.0 - hero_ratio(s, when)));
+  return chance;
+}
+
 double attack_hit(const Row* r, St* s, int name, double raw, double when, double potency_scale, int index, double count) {
   double amount = raw;
   double increase = 1.0;
   if (SP_HEAD) increase += 0.12;
   if (TM(r, T_EXEC) && target_hp(when) <= 0.40) increase += 0.35;
   amount *= increase;
-  double chance = r->crit;
-  if (TM(r, T_BONE)) chance += 10.0 + 0.5 * (100.0 * (1.0 - hero_ratio(s, when)));
+  double chance = attack_crit(r, s, when);
   double mult = 2.0 + r->rating;
   if (SP_HEAD) mult += 0.10 + 0.008 * r->mastery;
   double cf = crit_factor(chance, mult);
@@ -426,6 +434,8 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
   for (int i = 0; i < MAXT; i++) { s.va_n[i] = 0; s.surge_p[i] = 0.0; s.surge_at[i] = -1.0; }
   s.npend = 0;
   s.mana = r->mana_max; s.mana_time = 0.0; s.armed = 0;
+  ap_init(&s.ap, GM(r, G_FREN) ? frenzy_chance(r->luck) : 0.0, (r->mask & S_SILM) ? SILENT_AS : 0.0,
+          (r->mask & S_SILM) ? SILENT_DUR : 0.0);
   s.hp_flat = 0;
   if (r->hp <= 1.0) s.hp_flat = 1;
   else { s.hp_max = rint(r->hp * 1000.0) / 1000.0; if (s.hp_max <= 1.0) s.hp_flat = 1; hp_reset(&s); }
@@ -566,8 +576,9 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
         double echo = power * taken * execute * (0.10 * (1.0 + r->luck));
         add_src(&s, N_ECHO, echo * fury_mult);
       }
+      ap_attack(&s.ap, moment, attack_crit(r, &s, moment));
       double swing = 1.6 * ((r->mask & S_GALA) ? 1.20 : 1.0);
-      double speed = r->aspd + berserk_speed(r, moment);
+      double speed = r->aspd + berserk_speed(r, moment) + ap_bonus(&s.ap, moment);
       if (r->mask & S_FANAT) speed += 0.01 * 100.0 * (1.0 - hero_ratio(&s, moment));
       speed = (-0.8 >= speed) ? -0.8 : speed;
       speed = (4.0 <= speed) ? 4.0 : speed;
@@ -695,7 +706,6 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   if (GM(r, G_SUPR)) mastery += 20.0;
   if (GM(r, G_ANIM)) { crit += 12.0; rating += 0.15; }
   if (GM(r, G_MIND)) haste += 0.07;
-  if (GM(r, G_FREN)) aspd += 0.10;
   if (GM(r, G_UNSL) && !(mask & S_UNSI)) { magic_add += 0.18; phys_add += 0.18; }
   if (GM(r, G_FORTUNE)) luck += 0.15;
   double hp_before = (T->base[3] + 15.0 * strength) + health_flat;
@@ -803,10 +813,12 @@ __kernel void cls_rows(const int n, const int targets, __global const long* chun
   out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status; out_mb[gid] = mb; out_me[gid] = me;
 }
 """
+KERNEL = KERNEL.replace("#pragma OPENCL FP_CONTRACT OFF\n", "#pragma OPENCL FP_CONTRACT OFF\n" + AP.C, 1)
 
 SPECIAL_BITS = {
     "I0BR": 0, "I07O": 1, "I0JO": 2, "I0QT": 3, "tlum": 4, "I0JA": 5, "I096": 6, "I03C": 7, "I00L": 8,
     "I00Y": 9, "I07P": 10, "I048": 11, "I0FW": 12, "I0AV": 13, "I0U2": 14, "I0U5": 15,
+    "I0QN": 16,
 }
 TALENT_BITS = {
     "I0LO": 0, "I0PE": 1, "I0A2": 2, "I0LS": 3, "I09O": 4, "I0LR": 5, "I09V": 6, "I0LQ": 7, "I0PD": 8,

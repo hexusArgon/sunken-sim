@@ -15,6 +15,7 @@ from __future__ import annotations
 import math
 import re
 
+from sunken_sim.attack_procs import from_stats as attack_procs
 from sunken_sim.pressure import hero_hp_ratio, max_hp
 from sunken_sim.shadow import (
     item_luck,
@@ -232,8 +233,7 @@ def stats_of(build: Build) -> dict[str, float]:
         rating += 0.15
     if _has(build, GLYPH_MINDHASTE):
         haste += 0.07
-    if _has(build, GLYPH_BATTLE_FRENZY):
-        attack_speed += 0.10
+    # Battle Frenzy: fight-time proc in attack_procs (before 2026-11-12: a flat +0.10 here).
     if _has(build, GLYPH_UNSEALED) and not any(item.rawcode == GLYPH_UNSEALED for item in build.items):
         magic_add += 0.18
         phys_add += 0.18
@@ -464,6 +464,12 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
         finish("Surge of Toxins", raw * generic(when), index, when, surge_p[index], generic(when))
         surge_p[index] = 0.0
 
+    def attack_crit(when: float) -> float:
+        chance = stats["crit"]
+        if has(TALENT_BONESLICER):
+            chance += 10.0 + 0.5 * (100.0 * (1.0 - hero_ratio(when)))
+        return chance
+
     def attack_hit(name: str, raw: float, when: float, potency_scale: float,
                    index: int = 0, count: float = 1.0) -> float:
         amount = raw
@@ -473,9 +479,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
         if has(TALENT_EXECUTOR) and target_hp(when) <= 0.40:
             increase += 0.35
         amount *= increase
-        chance = stats["crit"]
-        if has(TALENT_BONESLICER):
-            chance += 10.0 + 0.5 * (100.0 * (1.0 - hero_ratio(when)))
+        chance = attack_crit(when)
         mult = 2.0 + stats["rating"]
         if spec == "headhunter":
             mult += 0.10 + 0.008 * mastery
@@ -567,7 +571,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
 
     def attack_interval(now: float) -> float:
         swing = SWING * (1.20 if stats["galactic"] else 1.0)
-        speed = stats["attack_speed"] + berserk_speed(now)
+        speed = stats["attack_speed"] + berserk_speed(now) + procs.bonus(now)
         if stats["blood_fanatic"]:
             speed += 0.01 * 100.0 * (1.0 - hero_ratio(now))
         speed = min(4.0, max(-0.8, speed))
@@ -580,6 +584,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
                    stats["attack_potency"], count=count)
 
     next_attack = 0.0
+    procs = attack_procs(build, stats, stats["luck"])
     next_sack = 0.0
     next_skull = 0.0
     next_tick = 1.0
@@ -697,6 +702,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
                     note_damage_mana(targets)
                 echo = power * taken * execute * sulfuras_echo_chance(stats["luck"])
                 sources.add_exec("Sulfuras (удар)", echo * fury_mult, moment, execute)
+            procs.on_attack(moment, attack_crit(moment))
             next_attack = moment + attack_interval(moment)
             continue
         break

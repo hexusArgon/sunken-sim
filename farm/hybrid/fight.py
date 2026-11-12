@@ -652,6 +652,28 @@ class GpuFights(BatchFights):
         return result
 
     def dps_many(self, builds: list) -> list[float]:
+        # Battle Frenzy / Silent Messenger are probability states since 2026-11-12
+        # (sunken_sim.attack_procs); the torch / scalar timelines still hold the old
+        # accumulators, so those builds go to the Python sim.
+        from sunken_sim import mage as mod
+
+        def procs(build) -> bool:
+            return "I0GZ" in build.glyphs or "I0GZ" in build.talents or any(item.crit_as for item in build.items)
+
+        odd = [i for i, b in enumerate(builds) if procs(b)]
+        if not odd:
+            return self._dps_many(builds)
+        rest = [b for b in builds if not procs(b)]
+        out_rest = iter(self._dps_many(rest)) if rest else iter(())
+        out = []
+        for b in builds:
+            if procs(b):
+                out.append(float(mod.simulate(b, self.targets, spec=self.spec, use_history=False).dps))
+            else:
+                out.append(next(out_rest))
+        return out
+
+    def _dps_many(self, builds: list) -> list[float]:
         import os
         from sunken_sim import mage as mod
 

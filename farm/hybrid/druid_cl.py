@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import numpy as np
 
+from farm.hybrid import attack_procs_cl as AP
 from farm.hybrid import class_cl as C
 from farm.hybrid import shaman_cl as _S
 
@@ -78,6 +79,7 @@ KERNEL = r"""
 #define S_MOON (1UL<<14)
 #define S_WISPI (1UL<<15)
 #define S_TREANTI (1UL<<16)
+#define S_SILM (1UL<<20)
 
 #define T_SURGE (1u<<0)
 #define T_WRATH (1u<<1)
@@ -148,6 +150,7 @@ typedef struct {
   uint seq;
   int qn, nf, nw, status, bound, targets, armed;
   double surge, wisp_life;
+  AP ap;
 } St;
 
 inline double target_hp(double t) {
@@ -473,6 +476,8 @@ double fight(const Row* tl, const Row* sc, int bound, int* status_out) {
   s.wisp_life = 8.0 + (TM(tl, T_WISP) ? 4.0 : 0.0);
   for (int b = 0; b < 4; b++) { s.ready[b] = 0.0; s.has[b] = 1; }
   if (!SP_BAL) s.has[B_STARFALL] = 0;
+  ap_init(&s.ap, GM(tl, G_FREN) ? frenzy_chance(tl->luck) : 0.0, (tl->mask & S_SILM) ? SILENT_AS : 0.0,
+          (tl->mask & S_SILM) ? SILENT_DUR : 0.0);
   const double cast_time = CAST_POINT + CAST_BACKSWING;
   double hero_ready = 0.0, next_attack = 0.0;
   int guard = 0;
@@ -510,7 +515,13 @@ double fight(const Row* tl, const Row* sc, int bound, int* status_out) {
     if (moment >= FIGHT) break;
     if (moment == next_attack && (s.qn == 0 || next_attack < peek(&s))) {
       on_attack(&s, tl, sc, &q, moment);
-      next_attack = moment + tl->attack_base / (1.0 + tl->aspd);
+      if (s.ap.p > 0.0 || s.ap.cas > 0.0) {
+        ap_attack(&s.ap, moment, tl->crit);
+        double sp = ap_speed(tl->aspd + ap_bonus(&s.ap, moment));
+        next_attack = moment + tl->attack_base / (1.0 + sp);
+      } else {
+        next_attack = moment + tl->attack_base / (1.0 + tl->aspd);
+      }
       continue;
     }
     double now, pd; int kind, pi;
@@ -580,11 +591,13 @@ double row_value(Tab* T, long index, uint tmask, uint gmask, const int* pts, con
 }
 
 """ + _KERNELS
+KERNEL = KERNEL.replace("#pragma OPENCL FP_CONTRACT OFF\n", "#pragma OPENCL FP_CONTRACT OFF\n" + AP.C, 1)
 
 SPECIAL_BITS = {
     "I00D": 0, "I0BR": 1, "I07O": 2, "I0JO": 3, "I0QT": 4, "I096": 5, "I03C": 6, "I00L": 7,
     "I00Y": 8, "I07P": 9, "I048": 10, "I03L": 11, "tlum": 12, "I0FW": 13,
     "I0R1": 14, "I0R3": 15, "I0R4": 16,
+    "I0QN": 20,
 }
 TALENT_BITS = {
     "I0K0": 0, "I0P8": 1, "I0JY": 2, "I0P5": 3, "I0JZ": 4, "I0P7": 5, "I08O": 6, "I0K4": 7, "I0K1": 8, "I0MS": 9,

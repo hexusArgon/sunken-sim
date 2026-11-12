@@ -1225,7 +1225,7 @@ def tables(space, items: dict, sources: dict) -> dict:
             1.0 if item.double_attack_potency else 0.0,
             0.0 if code in ("I07O", "I0NS") else item.armor_pen,
             item.crit_as,
-            item.crit_as_duration,
+            item.crit_as_duration if item.crit_as else 0.0,
             item.stab_chance,
             item.stab_ratio,
             item.auto_pct,

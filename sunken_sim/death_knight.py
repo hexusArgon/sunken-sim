@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import re
 
+from sunken_sim.attack_procs import from_stats as attack_procs
 from sunken_sim.pressure import max_hp
 from sunken_sim.shadow import (
     item_luck,
@@ -248,8 +249,7 @@ def stats_of(build: Build) -> dict[str, float]:
         rating += 0.15
     if _has(build, GLYPH_MINDHASTE):
         haste += 0.07
-    if _has(build, GLYPH_BATTLE_FRENZY):
-        attack_speed += 0.10
+    # Battle Frenzy: fight-time proc in attack_procs (before 2026-11-12: a flat +0.10 here).
     if _has(build, GLYPH_UNSEALED) and not any(item.rawcode == GLYPH_UNSEALED for item in build.items):
         magic_add += 0.18
         phys_add += 0.18
@@ -672,6 +672,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
     order = ("uf", "fs", "bs", "dg")
     share = 1.0 / targets  # a Bloodworm attacks a random enemy
     next_attack = 0.0
+    aprocs = attack_procs(build, stats, stats["luck"])
     busy = 0.0
     guard = 0
     while True:
@@ -742,7 +743,9 @@ def simulate(build: Build, targets: int = 5, spec: str = "frost") -> Report:
         if moment == next_attack:
             recover(moment)
             swing = SWING * (1.20 if stats["galactic"] else 1.0)
-            interval = swing / (1.0 + stats["attack_speed"])
+            aprocs.on_attack(moment, stats["crit"])
+            speed = min(4.0, max(-0.8, stats["attack_speed"] + aprocs.bonus(moment)))
+            interval = swing / (1.0 + speed)
             deal("Автоатака", dcs(), 0, moment, magical=False, potency_scale=stats["attack_potency"],
                  weight=stats["auto_pct"], procs=1.0)
             mana = min(stats["mana_max"], mana + attack_mana_gain(stats))

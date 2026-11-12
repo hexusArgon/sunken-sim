@@ -29,7 +29,8 @@ def sim_key(engine: str, spec: str, build: Build, targets: int, bound_spell: str
 
     points = ",".join(str(getattr(build, f.name)) for f in fields(build) if f.name.endswith("_points"))
     # Bump when a fight mechanic changes, so old rows are not reused.
-    return "|".join(("v6", engine, spec, str(targets), talents, glyphs, items, points, bound_spell or ""))
+    # v7 (2026-11-12): Battle Frenzy / Silent Messenger in the fight (sunken_sim.attack_procs).
+    return "|".join(("v7", engine, spec, str(targets), talents, glyphs, items, points, bound_spell or ""))
 
 
 def _connect() -> sqlite3.Connection:

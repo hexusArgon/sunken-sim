@@ -13,6 +13,8 @@ from __future__ import annotations
 
 import heapq
 
+from sunken_sim.attack_procs import from_stats as attack_procs
+
 from sunken_sim.shadow import (
     CAST_BACKSWING,
     CAST_POINT,
@@ -363,6 +365,7 @@ def _simulate_druid(build: Build, targets: int, spec: str, bound_key: str | None
     fire_orb = _wears(build, FIRE_ORB)
     hero_ready = 0.0
     next_attack = 0.0
+    procs = attack_procs(build, stats, stats["luck"])
 
     def luck_mult() -> float:
         return 1.0 + stats["luck"]
@@ -546,7 +549,12 @@ def _simulate_druid(build: Build, targets: int, spec: str, bound_key: str | None
             break
         if moment == next_attack and (not clock.heap or next_attack < clock.peek()):
             on_attack(moment)
-            next_attack = moment + stats["swing"]
+            if procs.active:
+                procs.on_attack(moment, stats["crit"])
+                speed = min(4.0, max(-0.8, stats["attack_speed"] + procs.bonus(moment)))
+                next_attack = moment + stats["attack_base"] / (1.0 + speed)
+            else:
+                next_attack = moment + stats["swing"]
             continue
         now, _order, kind, payload = clock.pop()
         if kind == "cast":

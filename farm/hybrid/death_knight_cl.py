@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import numpy as np
 
+from farm.hybrid import attack_procs_cl as AP
 from farm.hybrid import class_cl as C
 
 NPAL = 16
@@ -68,6 +69,7 @@ KERNEL = r"""
 #define S_SIPH (1UL<<15)
 #define S_COLD (1UL<<16)
 #define S_MAW  (1UL<<17)
+#define S_SILM (1UL<<18)
 
 #define T_ARMY (1u<<0)
 #define T_VIRUL (1u<<1)
@@ -143,6 +145,7 @@ typedef struct {
   int sk[MAXS]; double se[MAXS], sn[MAXS], sr[MAXS]; int ns;
   double mana, mana_time, hp_bonus, frozen, marrow, lm, bt, attack_crit, spell_critf, pb_chance;
   int armed, status, army_count, last_cast, rested;
+  AP ap;
 } St;
 
 double target_hp(double t) {
@@ -477,6 +480,8 @@ double fight(const Row* r, int* status) {
   }
   s.hp_bonus = 0.0;
   s.mana = r->mana_max; s.mana_time = 0.0;
+  ap_init(&s.ap, GM(r, G_FREN) ? frenzy_chance(r->luck) : 0.0, (r->mask & S_SILM) ? SILENT_AS : 0.0,
+          (r->mask & S_SILM) ? SILENT_DUR : 0.0);
   s.frozen = -1.0; s.marrow = -1.0;
   s.armed = 0; s.army_count = 0; s.last_cast = -1; s.rested = 0; s.ns = 0;
   s.pb_chance = 0.05 * (TM(r, T_PEST) ? 1.25 : 1.0) * s.lm;
@@ -597,7 +602,8 @@ double fight(const Row* r, int* status) {
     if (moment == next_attack) {
       recover(r, &s, moment);
       double swing = 2.0 * ((r->mask & S_GALA) ? 1.20 : 1.0);
-      double interval = swing / (1.0 + r->aspd);
+      ap_attack(&s.ap, moment, r->crit);
+      double interval = swing / (1.0 + ap_speed(r->aspd + ap_bonus(&s.ap, moment)));
       deal(r, &s, N_AUTO, dcs(r), 0, moment, 0, r->attack_potency, r->auto_pct, 1.0, 0);
       double gain = r->attack_mana + r->attack_mana_pct * r->mana_max;
       if (r->attack_mana_crit != 0.0) {
@@ -753,7 +759,6 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   if (GM(r, G_SUPR)) mastery += 20.0;
   if (GM(r, G_ANIM)) { crit += 12.0; rating += 0.15; }
   if (GM(r, G_MIND)) haste += 0.07;
-  if (GM(r, G_FREN)) aspd += 0.10;
   if (GM(r, G_UNSL) && !(mask & S_UNSI)) { magic_add += 0.18; phys_add += 0.18; }
   if (GM(r, G_FORTUNE)) luck += 0.15;
   health_flat += 375.0;
@@ -851,10 +856,12 @@ __kernel void cls_rows(const int n, const int targets, __global const long* chun
   out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status;
 }
 """
+KERNEL = KERNEL.replace("#pragma OPENCL FP_CONTRACT OFF\n", "#pragma OPENCL FP_CONTRACT OFF\n" + AP.C, 1)
 
 SPECIAL_BITS = {
     "I0BR": 0, "I07O": 1, "I0JO": 2, "I0QT": 3, "tlum": 4, "I0JA": 5, "I096": 6, "I03C": 7, "I00L": 8,
     "I00Y": 9, "I07P": 10, "I048": 11, "I0FW": 12, "I0AV": 13, "I07T": 14, "I0NM": 15, "I0NK": 16, "I0RZ": 17,
+    "I0QN": 18,
 }
 TALENT_BITS = {
     "I0CS": 0, "I0E3": 1, "I0CR": 2, "I09S": 3, "I0GP": 4, "I09T": 5, "I0IZ": 6, "I0EV": 7, "I03X": 8,

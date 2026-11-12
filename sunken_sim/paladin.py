@@ -16,6 +16,7 @@ from __future__ import annotations
 import math
 import re
 
+from sunken_sim.attack_procs import from_stats as attack_procs
 from sunken_sim.shadow import (
     item_luck,
     MAGICAL_ADDS,
@@ -367,6 +368,7 @@ def _fight_events(build: Build, stats: dict, spec: str, targets: int) -> tuple:
     zeal_until = -1.0
     cs_until = -1.0
     next_attack = 0.0
+    procs = attack_procs(build, stats, stats["luck"])
     next_cs = 0.0
     next_hammer = 0.0
     next_hoj = 0.0
@@ -490,7 +492,8 @@ def _fight_events(build: Build, stats: dict, spec: str, targets: int) -> tuple:
             swing = SWING * (1.20 if stats["galactic"] else 1.0)
             if spec == "retribution":
                 swing *= max(0.2, 1.0 - 0.03 * hammer_count(moment))
-            speed = stats["attack_speed"]
+            procs.on_attack(moment, stats["crit"])
+            speed = min(4.0, max(-0.8, stats["attack_speed"] + procs.bonus(moment)))
             if zeal_charges and moment <= zeal_until:
                 speed = min(4.0, speed + 0.80)
                 zeal_charges -= 1

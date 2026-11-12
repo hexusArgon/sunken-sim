@@ -10,6 +10,7 @@ from __future__ import annotations
 import heapq
 import re
 
+from sunken_sim.attack_procs import AttackProcs, frenzy_chance
 from sunken_sim.pressure import hero_hp_ratio, max_hp
 from sunken_sim.shadow import (
     CAST_BACKSWING,
@@ -288,10 +289,9 @@ def simulate(
     mana = stats["mana_max"]
     mana_time = 0.0
     splinter = 0.0
-    frenzy_until = 0.0
-    frenzy_charge = 0.0
-    crit_until = 0.0
-    crit_charge = 0.0
+    # Battle Frenzy / Silent Messenger as probabilities over time (before 2026-11-12: integer
+    # accumulators, Battle Frenzy without luck, Silent Messenger not refreshed while on).
+    procs = AttackProcs(frenzy_chance(stats["luck"]) if stats["frenzy"] else 0.0, stats["crit_as"], stats["crit_as_duration"])
     blast_cost = 30.0
     charges = 0
     cinder = 0.0
@@ -381,12 +381,7 @@ def simulate(
         splinter = min(30.0, splinter + (4.0 if froze else 2.0))
 
     def extra_as(now: float) -> float:
-        bonus = 0.0
-        if now < frenzy_until:
-            bonus += 0.32
-        if now < crit_until:
-            bonus += stats["crit_as"]
-        return bonus
+        return procs.bonus(now)
 
     def current_as(now: float) -> float:
         return max(-0.8, min(4.0, stats["attack_speed"] + extra_as(now)))
@@ -416,18 +411,9 @@ def simulate(
         return min(1.0, chance)
 
     def on_hero_auto(now: float) -> None:
-        nonlocal frenzy_charge, frenzy_until, crit_charge, crit_until, mana
+        nonlocal mana
         mana = min(stats["mana_max"], mana + attack_mana_gain(stats))
-        if stats["frenzy"] and now >= frenzy_until:
-            frenzy_charge += 0.18
-            if frenzy_charge >= 1.0:
-                frenzy_charge -= 1.0
-                frenzy_until = now + 5.0
-        if stats["crit_as"] > 0 and stats["crit_as_duration"] > 0 and now >= crit_until:
-            crit_charge += min(stats["crit"], 100.0) / 100.0
-            if crit_charge >= 1.0:
-                crit_charge -= 1.0
-                crit_until = now + stats["crit_as_duration"]
+        procs.on_attack(now, stats["crit"])
 
     def add(when: float, kind: str, hits: float, raw_w: float, pot_w: float, disease: bool = False, **extra) -> None:
         nonlocal mana

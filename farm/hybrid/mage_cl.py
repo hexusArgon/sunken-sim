@@ -30,6 +30,8 @@ import sys
 
 import numpy as np
 
+from farm.hybrid import attack_procs_cl as AP
+
 KERNEL = r"""
 #pragma OPENCL EXTENSION cl_khr_fp64 : enable
 #pragma OPENCL FP_CONTRACT OFF
@@ -201,6 +203,7 @@ typedef struct {
   double hero_ready, busy_until, reset;
   uint seq;
   int hn, nh, hydra_ticking, charges, max_charges, armed, status;
+  AP ap;
 } St;
 
 inline double target_hp(double t) {
@@ -439,10 +442,7 @@ double bite_all(St* s, Row* r, double now) {
 }
 
 double current_as(St* s, Row* r, double now) {
-  double bonus = 0.0;
-  if (now < s->frenzy_until) bonus += 0.32;
-  if (now < s->crit_until) bonus += r->crit_as;
-  double v = r->aspd + bonus;
+  double v = r->aspd + ap_bonus(&s->ap, now);
   v = (4.0 <= v) ? 4.0 : v;
   v = (-0.8 >= v) ? -0.8 : v;
   return v;
@@ -493,21 +493,7 @@ void on_auto(St* s, Row* r, double now) {
   }
   double v = s->mana + gain;
   s->mana = (r->mana_max <= v) ? r->mana_max : v;
-  if (r->frenzy && now >= s->frenzy_until) {
-    s->frenzy_charge += 0.18;
-    if (s->frenzy_charge >= 1.0) {
-      s->frenzy_charge -= 1.0;
-      s->frenzy_until = now + 5.0;
-    }
-  }
-  if (r->crit_as > 0.0 && r->crit_as_dur > 0.0 && now >= s->crit_until) {
-    double cc = (r->crit <= 100.0) ? r->crit : 100.0;
-    s->crit_charge += cc / 100.0;
-    if (s->crit_charge >= 1.0) {
-      s->crit_charge -= 1.0;
-      s->crit_until = now + r->crit_as_dur;
-    }
-  }
+  ap_attack(&s->ap, now, r->crit);
 }
 
 void spawn_hydras(St* s, Row* r, double now, double count, double duration) {
@@ -807,6 +793,7 @@ double fight(Row* r, int bound, int* status_out, __global const double* p120, __
   s.blizzard_until = 0.0;
   s.mana = r->mana_max; s.mana_time = 0.0; s.crit_until = 0.0; s.crit_charge = 0.0;
   s.frenzy_until = 0.0; s.frenzy_charge = 0.0; s.splinter = 0.0;
+  ap_init(&s.ap, r->frenzy ? frenzy_chance(r->luck) : 0.0, r->crit_as, r->crit_as_dur);
   s.blast_cost = 30.0; s.charges = 0; s.cinder = 0.0;
   for (int t = 0; t < MAXT; t++) { s.bomb_exp[t] = 0.0; s.bomb_power[t] = 0.0; s.chill_exp[t] = 0.0; s.freeze_exp[t] = 0.0; }
   s.nh = 0; s.hydra_ticking = 0; s.hero_ready = 0.0; s.busy_until = 0.0; s.armed = 0;
@@ -1170,6 +1157,7 @@ __kernel void fire_rows(const int n, const int targets, __global const long* chu
   out_status[gid] = (uchar)status;
 }
 """
+KERNEL = KERNEL.replace("#pragma OPENCL FP_CONTRACT OFF\n", "#pragma OPENCL FP_CONTRACT OFF\n" + AP.C, 1)
 
 SPECIAL_BITS = {
     "I00D": 0, "I0BR": 1, "I07O": 2, "I0UX": 3, "I0UY": 4, "I0UW": 5, "I0UU": 6, "I0UV": 7,
@@ -1286,7 +1274,7 @@ def tables(space, items: dict, sources: dict) -> dict:
             1.0 if item.double_attack_potency else 0.0,
             0.0 if code in ("I07O", "I0NS") else item.armor_pen,
             item.crit_as,
-            item.crit_as_duration,
+            item.crit_as_duration if item.crit_as else 0.0,
             item.stab_chance,
             item.stab_ratio,
             item.auto_pct,

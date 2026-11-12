@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import numpy as np
 
+from farm.hybrid import attack_procs_cl as AP
 from farm.hybrid import class_cl as C
 
 MAXO = 64
@@ -56,6 +57,7 @@ KERNEL = r"""
 #define S_ATIE (1UL<<13)
 #define S_CORE (1UL<<14)
 #define S_UNSI (1UL<<15)
+#define S_SILM (1UL<<16)
 
 #define T_TOLL (1u<<0)
 #define T_KNOW (1u<<1)
@@ -74,6 +76,7 @@ KERNEL = r"""
 #define G_MIND (1u<<5)
 #define G_FORTUNE (1u<<6)
 #define G_REPL (1u<<7)
+#define G_FREN (1u<<8)
 
 #define TM(r, x) (TALENTS && ((r)->tmask & (x)))
 #define GM(r, x) (TALENTS && ((r)->gmask & (x)))
@@ -170,6 +173,7 @@ typedef struct {
   int h_idx[MAXH]; uchar due[MAXH];
   int nh;
   double mana, mana_time;
+  AP ap;
 } St;
 
 inline void recover(St* s, const Row* tl, double now) {
@@ -240,6 +244,8 @@ double fight(const Row* tl, const Row* sc, __global const double* orbit, int ole
   s.nh = 0;
   double hammer_duration = TM(tl, T_DHAM) ? 12.0 : 9.0;
   s.mana = tl->mana_max; s.mana_time = 0.0;
+  ap_init(&s.ap, GM(tl, G_FREN) ? frenzy_chance(tl->luck) : 0.0, (tl->mask & S_SILM) ? SILENT_AS : 0.0,
+          (tl->mask & S_SILM) ? SILENT_DUR : 0.0);
   const int sulf = (tl->mask & S_SULF) != 0;
   double toll = (TM(tl, T_TOLL) || (tl->mask & S_BELL)) ? 0.25 * (1.0 + tl->luck) : 0.0;
   const int hoj = TM(tl, T_HOJ) != 0;
@@ -296,7 +302,8 @@ double fight(const Row* tl, const Row* sc, __global const double* orbit, int ole
         double f = 1.0 - 0.03 * hammer_count(&s, moment);
         swing *= (0.2 >= f) ? 0.2 : f;
       }
-      double speed = tl->aspd;
+      ap_attack(&s.ap, moment, tl->crit);
+      double speed = ap_speed(tl->aspd + ap_bonus(&s.ap, moment));
       if (zeal_charges && moment <= zeal_until) {
         double v = speed + 0.80;
         speed = (4.0 <= v) ? 4.0 : v;
@@ -632,10 +639,12 @@ __kernel void cls_rows(const int n, const int targets, __global const long* chun
   out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status;
 }
 """
+KERNEL = KERNEL.replace("#pragma OPENCL FP_CONTRACT OFF\n", "#pragma OPENCL FP_CONTRACT OFF\n" + AP.C, 1)
 
 SPECIAL_BITS = {
     "I0BR": 0, "I07O": 1, "I0JO": 2, "I0QT": 3, "tlum": 4, "I0QX": 5, "I0R0": 6, "I0JA": 7,
     "I096": 8, "I03C": 9, "I00L": 10, "I00Y": 11, "I07P": 12, "I048": 13, "I0FW": 14, "I0AV": 15,
+    "I0QN": 16,
 }
 TALENT_BITS = {
     "I09Y": 0, "I09R": 1, "I064": 2, "I04C": 3, "I01J": 4, "I0NG": 5, "I0G8": 6, "I0NC": 7,
@@ -643,9 +652,9 @@ TALENT_BITS = {
     "I0OT": 16, "I069": 17, "I09L": 18, "I0I1": 19, "I09Z": 20, "I0OR": 21, "I0OQ": 22, "I0OU": 23,
     "I0OS": 24, "I0ND": 25,
 }
-GLYPH_BITS = {"I0AV": 0, "I0JA": 1, "I07B": 2, "I0EK": 3, "I0HC": 4, "I0OF": 5, "I0EJ": 6, "I0H0": 7}
+GLYPH_BITS = {"I0AV": 0, "I0JA": 1, "I07B": 2, "I0EK": 3, "I0HC": 4, "I0OF": 5, "I0EJ": 6, "I0H0": 7, "I0GZ": 8}
 # glyphs that sunken_sim.paladin (stats_of, _mana_regen, the fight) never reads
-NO_EFFECT = {"I0GZ", "I0H3", "I0H5", "I0H6", "I0EN"}
+NO_EFFECT = {"I0H3", "I0H5", "I0H6", "I0EN"}
 SPECS = {"retribution": 0, "protection": 1, "holy": 2}
 
 
