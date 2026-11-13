@@ -429,24 +429,19 @@ class _Brand:
 
 
 # (Lifebinder on self cast / skipped, Dragon Form used / not used)
-POLICIES = tuple((life, form) for life in (True, False) for form in (True, False))
+# (Lifebinder on self cast / skipped, Dragon Form used). The fight starts with full Dragonfury, and
+# Dragon Form won on every one of 180 random builds (no-form at least 0.5% / 2.5% / 9.7% behind on
+# Emerald / Obsidian / Ruby), so since 2026-11-13 only the policies that use it are tried.
+POLICIES = ((True, True), (False, True))
 
 
 def simulate(build: Build, targets: int = 5, spec: str = "ruby") -> Report:
     """Best of the policies (Lifebinder on self on / off, Dragon Form on / off)."""
     best = None
-    skip = None
     for policy in POLICIES:
-        if policy == skip:
-            continue
         report = _simulate(build, targets, spec, policy)
         if best is None or report.dps > best.dps + 1e-9:
             best = report
-        use_life, use_form = policy
-        if use_form and report.stats["n_form"] == 0:
-            # Dragon Form was never cast: the same fight without it is identical (the form key is only
-            # ever skipped), so (use_life, False) cannot beat it; skip it (2026-11-13, speed only).
-            skip = (use_life, False)
     return best
 
 

@@ -3,7 +3,7 @@
 One work-item scores one fight: unrank the six items, fold the sheet like
 ``sunken_sim.dragon_sentinel.stats_of`` (strength primary, item armour and
 "+N Attack Damage", Dragonborn, Blazing Strikes) and run every policy of
-``dragon_sentinel.simulate`` (Lifebinder on / off x Dragon Form on / off), keeping
+``dragon_sentinel.simulate`` (Lifebinder on / off, Dragon Form used), keeping
 the best, with Ledger sums in insertion order. Dragonfire and Dragon Claw are
 distributions of expiry times per target (``death_knight._Buff``), Obsidian Branded
 is ``dragon_sentinel._Brand``; every chance is a weight, mirrored entry by entry.
@@ -756,20 +756,16 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
   return total / FIGHT;
 }
 
-/* dragon_sentinel.simulate: best of the four (Lifebinder, Dragon Form) policies */
+/* dragon_sentinel.simulate: best of the two (Lifebinder on / off, Dragon Form) policies */
 double fight(const Row* r, int* status_out) {
   double best = 0.0;
   int have = 0;
-  int skip = -1;
-  for (int i = 0; i < 4; i++) {
-    if (i == skip) continue;
-    int use_life = (i < 2), use_form = (i % 2 == 0);
+  /* dragon_sentinel.POLICIES: (Lifebinder, Dragon Form), (no Lifebinder, Dragon Form) */
+  for (int i = 0; i < 2; i++) {
     int st = 0, forms = 0;
-    double d = sim_policy(r, use_life, use_form, &st, &forms);
+    double d = sim_policy(r, i == 0, 1, &st, &forms);
     if (st) { *status_out = st; return 0.0; }
     if (!have || d > best + 1e-9) { best = d; have = 1; }
-    /* Dragon Form never cast: (use_life, no form) is the same fight */
-    if (use_form && forms == 0) skip = i + 1;
   }
   return best;
 }
@@ -1028,7 +1024,7 @@ def dragon_sentinel_tables(space, items, sources) -> dict:
             D.BRAND_SLOTS, D.POLICIES) != \
             (14.0, 2.00, 120.0, 300.0, 4.0, 0.1, 8.0, 3.0, 1, 8.0, 20.0, 2.0, 0.5, 7.0, 15.0, 8.0, 10.0, 7.0, 15.0,
              6.0, 8.0, 20.0, 4.0, 3.0, 12.0, 5.0, 3.0, 6, 5.0, 2.0, 0.5, 25.0, 1.5, 1.15, 0.75, 3,
-             ((True, True), (True, False), (False, True), (False, False))):
+             ((True, True), (False, True))):
         raise ValueError("kernel constants assume the 2026-11-13 dragon sentinel")
     if (shadow.CAST_POINT, shadow.CAST_BACKSWING, pressure.STR_HP, death_knight.BUFF_SLOTS) != (0.15, 0.30, 15.0, 8):
         raise ValueError("kernel constants assume cast 0.15 + 0.30, 15 health per strength and 8 buff slots")
