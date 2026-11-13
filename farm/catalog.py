@@ -50,6 +50,7 @@ def load(hero: str, spec: str, pool: str, preset: str | None = None, top: int | 
 
 def _from_disk(hero: str, spec: str, pool: str, preset: str | None = None, top: int | None = None) -> tuple[Space, dict]:
     pieces, talents, glyphs, talent_names, glyph_names, items, picks_with = _parts(hero, spec, pool, preset, top)
+    pieces = _scan_order(hero, pieces)
     picks_without = min(3, len(talents))
     picks_with = min(picks_with, len(talents))
     digest = _digest(pieces, talents, glyphs, picks_with, items)
@@ -232,6 +233,22 @@ def _shadow_top(shop, drop, legendaries):
     if missing:
         raise RuntimeError("топ-100 нет в пуле: " + ", ".join(missing))
     return shop, drop, legendaries
+
+
+def _scan_order(hero: str, pieces: list) -> list:
+    """Dragon Sentinel: items with their own branch in the GPU kernel come first.
+
+    The unranking changes the lowest piece indices slowest, so neighbouring chunks (one GPU wave) then share
+    these items and run the same branches. The set of builds and every build's DPS are unchanged; only the chunk
+    numbering (and with it the cache digest) is different.
+    """
+    if hero != "dragon_sentinel":
+        return pieces
+    from farm.hybrid.dragon_sentinel_cl import SPECIAL_BITS
+
+    key = [piece for piece in pieces if piece.code in SPECIAL_BITS]
+    rest = [piece for piece in pieces if piece.code not in SPECIAL_BITS]
+    return key + rest
 
 
 def _digest(pieces, talents, glyphs, picks_with, items) -> str:

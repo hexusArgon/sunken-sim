@@ -3,7 +3,7 @@
 One work-item scores one fight: unrank the six items, fold the sheet like
 ``sunken_sim.dragon_sentinel.stats_of`` (strength primary, item armour and
 "+N Attack Damage", Dragonborn, Blazing Strikes) and run every policy of
-``dragon_sentinel.simulate`` (Lifebinder on / off, Dragon Form used), keeping
+``dragon_sentinel.simulate`` (Lifebinder on / off when allowed, Dragon Form used), keeping
 the best, with Ledger sums in insertion order. Dragonfire and Dragon Claw are
 distributions of expiry times per target (``death_knight._Buff``), Obsidian Branded
 is ``dragon_sentinel._Brand``; every chance is a weight, mirrored entry by entry.
@@ -49,7 +49,12 @@ KERNEL = r"""
 #define NSRC 16
 #define MAXT 5  /* the farm runs 5 targets; more -> status 3, the host re-scores the row */
 #define BS 8
-#define MAXQ 32
+/* largest queue seen on 6000 random fights per spec: Ruby 11, Obsidian 10, Emerald 4; overflow -> status 5 */
+#if SPEC == 2
+#define MAXQ 8
+#else
+#define MAXQ 16
+#endif
 #define BK 3
 #define RANK 1.0
 #define FAR 300.0
@@ -156,12 +161,16 @@ typedef struct {
   double src[NSRC]; int ord[NSRC]; int nord; uint seen;
   double fi_e[MAXT][BS + 1], fi_m[MAXT][BS + 1]; int fi_n[MAXT]; double fi_t[MAXT], fi_lo[MAXT];
   double cl_e[MAXT][BS + 1], cl_m[MAXT][BS + 1]; int cl_n[MAXT]; double cl_t[MAXT], cl_lo[MAXT];
+#if SPEC == 1
   double br_e[MAXT][BK + 1], br_m[MAXT][BK + 1], br_v[MAXT][BK + 1]; int br_n[MAXT];
+#endif
+#if SPEC == 2
   double cleanse_until[MAXT];
-  double q_w[MAXQ], q_p[MAXQ], q_m[MAXQ]; uint q_s[MAXQ]; int q_k[MAXQ], q_a[MAXQ], q_t[MAXQ]; int qn; uint seq;
+#endif
+  double q_w[MAXQ], q_p[MAXQ], q_m[MAXQ]; uint q_s[MAXQ]; uchar q_k[MAXQ], q_a[MAXQ]; int qn; uint seq;
   uint lp_seq; double lp_at;
-  double nxt[6]; int order[6]; int norder;
-  double am[7]; int am_neg[7];
+  double nxt[6]; uchar order[6]; int norder;
+  double am[7]; uchar am_neg[7];
   double mana, mana_time, molten_until, life_until, form_until, burnout_bonus, fury, fury_max;
   double trig0, trig2, trig3, max_life, strength;
   int life_ticking, heated, bolt_target, armed, status, targets;
@@ -296,7 +305,7 @@ void push(St* s, double at, int kind, int a, int t, double p) {
   if (s->qn >= MAXQ) { if (!s->status) s->status = 5; return; }
   s->seq += 1u;
   int i = s->qn++;
-  s->q_w[i] = at; s->q_s[i] = s->seq; s->q_k[i] = kind; s->q_a[i] = a; s->q_t[i] = t; s->q_p[i] = p; s->q_m[i] = -1.0;
+  s->q_w[i] = at; s->q_s[i] = s->seq; s->q_k[i] = (uchar)kind; s->q_a[i] = (uchar)a; s->q_p[i] = p; s->q_m[i] = -1.0;
 }
 
 /* dragon_sentinel push_passive: back-to-back passive procs at one moment merge into one impact */
@@ -359,6 +368,7 @@ double am_of(St* s, int v) {
   return s->am[v];
 }
 
+#if SPEC == 1
 double taken(const Row* r, St* s, int t, double now) {
   double off = 1.0, total = 0.0;
   for (int k = 0; k < s->br_n[t]; k++) {
@@ -394,6 +404,11 @@ void brand_apply(St* s, int t, double now, double w, double value) {
   }
   s->br_n[t] = c;
 }
+#else
+/* no Branded outside Obsidian: the loop above with br_n == 0 */
+double taken(const Row* r, St* s, int t, double now) { return 0.0 + 1.0 * am_of(s, 0); }
+void brand_apply(St* s, int t, double now, double w, double value) {}
+#endif
 
 double melting(const Row* r, St* s, int t, double now) {
   if (!TM(r, T_MELT)) return 0.0;
@@ -527,6 +542,8 @@ void dragon_strike(const Row* r, St* s, double now, int name, double w) {
   if (form) dmg *= 1.25;
   if (SP_RUBY && form) dmg *= 1.0 + ruby_bonus(s);
   hero_hit(r, s, name, dmg, now, 0, s->targets, 1, 0, 1.0, 1.0, 1, 1, w);
+  /* Dragonfire / Dragon Claw are read only by Melting Flames */
+  if (!TM(r, T_MELT)) return;
   for (int t = 0; t < s->targets; t++) {
     if (w >= 1.0) bsure(FI_ARGS(s, t), now, 5.0);
     else bmaybe(FI_ARGS(s, t), now, 5.0, w, w);
@@ -567,7 +584,12 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
   for (int t = 0; t < MAXT; t++) {
     s.fi_n[t] = 0; s.fi_t[t] = 0.0; s.fi_lo[t] = INFINITY;
     s.cl_n[t] = 0; s.cl_t[t] = 0.0; s.cl_lo[t] = INFINITY;
-    s.br_n[t] = 0; s.cleanse_until[t] = -1.0;
+#if SPEC == 1
+    s.br_n[t] = 0;
+#endif
+#if SPEC == 2
+    s.cleanse_until[t] = -1.0;
+#endif
   }
   s.molten_until = -1.0; s.life_until = -1.0; s.life_ticking = 0; s.form_until = -1.0; s.heated = 0;
   s.burnout_bonus = 0.0; s.trig0 = 1.0; s.trig2 = 0.0; s.trig3 = 0.0;
@@ -618,7 +640,7 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
       int kind = s.q_k[qi], a = s.q_a[qi]; double p = s.q_p[qi], miss = s.q_m[qi];
       s.qn--;
       s.q_w[qi] = s.q_w[s.qn]; s.q_s[qi] = s.q_s[s.qn]; s.q_k[qi] = s.q_k[s.qn];
-      s.q_a[qi] = s.q_a[s.qn]; s.q_t[qi] = s.q_t[s.qn]; s.q_p[qi] = s.q_p[s.qn]; s.q_m[qi] = s.q_m[s.qn];
+      s.q_a[qi] = s.q_a[s.qn]; s.q_p[qi] = s.q_p[s.qn]; s.q_m[qi] = s.q_m[s.qn];
       if (kind == E_FURY) {
         add_fury(&s, 1.0);
         push(&s, moment + gen, E_FURY, 0, 0, 0.0);
@@ -628,6 +650,7 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
         hero_hit(r, &s, N_ENGULF, 5.0 * RANK + 0.5 * armor_now(r, &s, moment), moment, 0, s.targets, 1, 0, 1.0, 1.0, 1, 1, 1.0);
         push(&s, moment + 1.5 / (1.0 + 0.01 * r->mastery), E_ENGULF, 0, 0, 0.0);
       } else if (kind == E_CLEANSE) {
+#if SPEC == 2
         int first = -1, n = 0, contiguous = 1;
         for (int t = 0; t < s.targets; t++) {
           if (s.cleanse_until[t] > moment) {
@@ -641,6 +664,7 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
           hero_hit(r, &s, N_CLEANSE, cleansing_damage(&s), moment, first, n, 0, 0, 0.0, 1.0, 1, 0, 1.0);
         }
         push(&s, moment + 1.0, E_CLEANSE, 0, 0, 0.0);
+#endif
       } else if (kind == E_LIFE) {
         if (s.life_until > moment) {
           heal(r, &s, moment);
@@ -695,8 +719,10 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
         s.heated = TM(r, T_HEATED) ? 1 : 0;
         if (in_form(&s, hit_at)) flat = 2.0;
       } else if (key == K_CLEANSE) {
+#if SPEC == 2
         for (int t = 0; t < s.targets; t++) s.cleanse_until[t] = hit_at + 4.0;
         heal(r, &s, hit_at);
+#endif
       } else if (key == K_STRIKE) {
         dragon_strike(r, &s, hit_at, N_STRIKE, 1.0);
       } else {
@@ -769,8 +795,10 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
 double fight(const Row* r, int* status_out) {
   double best = 0.0;
   int have = 0;
-  /* dragon_sentinel.POLICIES: (Lifebinder, Dragon Form), (no Lifebinder, Dragon Form) */
-  for (int i = 0; i < 2; i++) {
+  /* dragon_sentinel.policies_for: (Lifebinder, Dragon Form) only with Burning Heart, Alexstrasza or Emerald,
+     then (no Lifebinder, Dragon Form) */
+  int life_ok = SP_EMER || TM(r, T_BHEART) || TM(r, T_ALEX);
+  for (int i = life_ok ? 0 : 1; i < 2; i++) {
     int st = 0, forms = 0;
     double d = sim_policy(r, i == 0, 1, &st, &forms);
     if (st) { *status_out = st; return 0.0; }
@@ -1030,10 +1058,10 @@ def dragon_sentinel_tables(space, items, sources) -> dict:
             D.STRIKE_MANA, D.SHIELD_CD, D.SHIELD_MANA, D.LIFE_CD, D.LIFE_MANA, D.LIFE_DUR, D.CLEANSE_CD,
             D.CLEANSE_MANA, D.CLEANSE_DUR, D.FORM_CD, D.FORM_DUR, D.DRAGONFIRE_DUR, D.BRANDED_DUR, D.BRANDED_CAP,
             D.MOLTEN_DUR, D.MOLTEN_ARMOR, D.BOLT_EVERY, D.BOLT_DAMAGE, D.ENGULF_PERIOD, D.LEGACY, D.LEGACY_CDR,
-            D.BRAND_SLOTS, D.POLICIES) != \
+            D.BRAND_SLOTS, D.POLICIES, D.TALENT_BURNING_HEART, D.TALENT_ALEXSTRASZA) != \
             (14.0, 2.00, 120.0, 300.0, 4.0, 0.1, 8.0, 3.0, 1, 8.0, 20.0, 2.0, 0.5, 7.0, 15.0, 8.0, 10.0, 7.0, 15.0,
              6.0, 8.0, 20.0, 4.0, 3.0, 12.0, 5.0, 3.0, 6, 5.0, 2.0, 0.5, 25.0, 1.5, 1.15, 0.75, 3,
-             ((True, True), (False, True))):
+             ((True, True), (False, True)), "I0LW", "I0LT"):
         raise ValueError("kernel constants assume the 2026-11-13 dragon sentinel")
     if (shadow.CAST_POINT, shadow.CAST_BACKSWING, pressure.STR_HP, death_knight.BUFF_SLOTS) != (0.15, 0.30, 15.0, 8):
         raise ValueError("kernel constants assume cast 0.15 + 0.30, 15 health per strength and 8 buff slots")

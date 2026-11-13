@@ -434,10 +434,22 @@ class _Brand:
 POLICIES = ((True, True), (False, True))
 
 
+def life_allowed(build: Build, spec: str) -> bool:
+    """Lifebinder is tried only when it can deal damage: Burning Heart, Alexstrasza or the Emerald heal procs.
+
+    Without them it is a heal that costs a GCD and 15 mana (user's rule, 2026-11-14).
+    """
+    return spec == "emerald" or _has(build, TALENT_BURNING_HEART) or _has(build, TALENT_ALEXSTRASZA)
+
+
+def policies_for(build: Build, spec: str) -> tuple[tuple[bool, bool], ...]:
+    return POLICIES if life_allowed(build, spec) else tuple(p for p in POLICIES if not p[0])
+
+
 def simulate(build: Build, targets: int = 5, spec: str = "ruby") -> Report:
-    """Best of the policies (Lifebinder on self on / off, Dragon Form on / off)."""
+    """Best of the policies (Lifebinder on self on / off when allowed, Dragon Form used)."""
     best = None
-    for policy in POLICIES:
+    for policy in policies_for(build, spec):
         report = _simulate(build, targets, spec, policy)
         if best is None or report.dps > best.dps + 1e-9:
             best = report
