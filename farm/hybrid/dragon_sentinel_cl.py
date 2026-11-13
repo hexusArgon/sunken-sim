@@ -428,39 +428,48 @@ void add_fury(St* s, double amount) {
 /* hero_hit over targets t0..t0+n-1; kind 0 none, 1 magical, 2 physical */
 double hero_hit(const Row* r, St* s, int name, double raw, double now, int t0, int n, int kind, int attack,
                 double potency_scale, double mult, int procs, int crit, double w) {
+  /* dragon_sentinel.hero_hit. Everything the Python loop recomputes per target but that does not depend on
+     the target (amount before Melting Flames, the armour factor without Branded, the proc chances, the
+     Branded value) is computed once: the same expressions, so the same bits. */
   double chance = r->crit;
   double execute = exec_factor(r, now);
   double factor = typed(r, kind, now);
   if (TM(r, T_ALEX) && s->life_until > now) factor *= 1.10;
   double pot = potency_now(r, s, now);
   double luck_mult = 1.0 + r->luck;
+  double base = (raw + pot * potency_scale) * factor * mult;
+  if (attack && crit) base *= crit_factor(chance, 2.0 + r->rating);
+  else if (r->spell_crit && crit) base *= crit_factor(chance, r->spell_mult + r->rating);
+  const int melt = TM(r, T_MELT) != 0;
+  /* without Branded every target takes the same armour factor */
+  double tk_all = SP_OBS ? 0.0 : taken(r, s, t0, now);
+  double brand_v = 0.0;
+  if (SP_OBS) {
+    double a = (double)(int)(1.0 + 0.08 * armor_now(r, s, now));
+    brand_v = (6.0 < a) ? 6.0 : a;
+  }
+  double legacy = TM(r, T_LEGACY) ? 1.15 : 1.0;
+  double p_fury = procs ? chance01(0.02 * luck_mult) * w : 0.0;
+  double p_cf = (procs && SP_EMER) ? chance01(3.0 * legacy * luck_mult / 100.0) * w : 0.0;
   double total = 0.0;
   for (int t = t0; t < t0 + n; t++) {
-    double amount = (raw + pot * potency_scale) * factor * mult;
-    if (attack && crit) amount *= crit_factor(chance, 2.0 + r->rating);
-    else if (r->spell_crit && crit) amount *= crit_factor(chance, r->spell_mult + r->rating);
-    amount += melting(r, s, t, now);
-    total += amount * taken(r, s, t, now) * execute * w;
-    if (SP_OBS) {
-      double a = (double)(int)(1.0 + 0.08 * armor_now(r, s, now));
-      brand_apply(s, t, now, w, (6.0 < a) ? 6.0 : a);
-    }
+    double amount = base;
+    if (melt) amount += melting(r, s, t, now);
+    double tk = SP_OBS ? taken(r, s, t, now) : tk_all;
+    total += amount * tk * execute * w;
+    if (SP_OBS) brand_apply(s, t, now, w, brand_v);
     if (!procs) continue;
-    double p = chance01(0.02 * luck_mult) * w;
-    add_fury(s, p);
+    add_fury(s, p_fury);
     if (!SP_EMER) {
-      double proc = (1.0 + s->burnout_bonus) * (TM(r, T_LEGACY) ? 1.15 : 1.0);
-      p = chance01(proc * luck_mult / 100.0) * w;
+      double proc = (1.0 + s->burnout_bonus) * legacy;
+      double p = chance01(proc * luck_mult / 100.0) * w;
       if (p > 0.0) {
         s->burnout_bonus = s->burnout_bonus * (1.0 - p);
         push_passive(s, now + 0.5, p);
         legacy_cdr(r, s, now, p);
       }
     }
-    if (SP_EMER) {
-      double proc = 3.0 * (TM(r, T_LEGACY) ? 1.15 : 1.0);
-      legacy_cdr(r, s, now, chance01(proc * luck_mult / 100.0) * w);
-    }
+    if (SP_EMER) legacy_cdr(r, s, now, p_cf);
   }
   add_src(s, name, total);
   note_damage_mana(r, s, (double)n * w);
