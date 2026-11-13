@@ -60,7 +60,7 @@
 
 ## Ротация и политики
 - Цикл GCD: касты раньше автоатаки. Порядок: Dragon Form (если шкала полна), Lifebinder, Burnout / Cleansing Fire, Dragon Strike, Blazing Shield.
-- Перебираются 4 политики: Lifebinder на себя да/нет × Dragon Form да/нет. В строку идёт лучшая.
+- Перебираются 2 политики (обе с Dragon Form): Lifebinder на себя да/нет. В строку идёт лучшая. Без формы не считается с 2026-11-13 (см. ниже).
 - Legacy of the Aspects: на каждом проке (пассивный Burnout, проки Cleansing Fire) самый длинный оставшийся КД −0.75 с.
 
 ## Допущения

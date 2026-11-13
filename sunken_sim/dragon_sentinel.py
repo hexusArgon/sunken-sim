@@ -428,7 +428,6 @@ class _Brand:
             del self.v[j]
 
 
-# (Lifebinder on self cast / skipped, Dragon Form used / not used)
 # (Lifebinder on self cast / skipped, Dragon Form used). The fight starts with full Dragonfury, and
 # Dragon Form won on every one of 180 random builds (no-form at least 0.5% / 2.5% / 9.7% behind on
 # Emerald / Obsidian / Ruby), so since 2026-11-13 only the policies that use it are tried.
