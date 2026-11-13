@@ -49,8 +49,8 @@ KERNEL = r"""
 #define NSRC 16
 #define MAXT 5  /* the farm runs 5 targets; more -> status 3, the host re-scores the row */
 #define BS 8
-#define MAXQ 64
-#define BK 8
+#define MAXQ 32
+#define BK 3
 #define RANK 1.0
 #define FAR 300.0
 
@@ -158,7 +158,8 @@ typedef struct {
   double cl_e[MAXT][BS + 1], cl_m[MAXT][BS + 1]; int cl_n[MAXT]; double cl_t[MAXT], cl_lo[MAXT];
   double br_e[MAXT][BK + 1], br_m[MAXT][BK + 1], br_v[MAXT][BK + 1]; int br_n[MAXT];
   double cleanse_until[MAXT];
-  double q_w[MAXQ], q_p[MAXQ]; uint q_s[MAXQ]; int q_k[MAXQ], q_a[MAXQ], q_t[MAXQ]; int qn; uint seq;
+  double q_w[MAXQ], q_p[MAXQ], q_m[MAXQ]; uint q_s[MAXQ]; int q_k[MAXQ], q_a[MAXQ], q_t[MAXQ]; int qn; uint seq;
+  uint lp_seq; double lp_at;
   double nxt[6]; int order[6]; int norder;
   double am[7]; int am_neg[7];
   double mana, mana_time, molten_until, life_until, form_until, burnout_bonus, fury, fury_max;
@@ -295,7 +296,24 @@ void push(St* s, double at, int kind, int a, int t, double p) {
   if (s->qn >= MAXQ) { if (!s->status) s->status = 5; return; }
   s->seq += 1u;
   int i = s->qn++;
-  s->q_w[i] = at; s->q_s[i] = s->seq; s->q_k[i] = kind; s->q_a[i] = a; s->q_t[i] = t; s->q_p[i] = p;
+  s->q_w[i] = at; s->q_s[i] = s->seq; s->q_k[i] = kind; s->q_a[i] = a; s->q_t[i] = t; s->q_p[i] = p; s->q_m[i] = -1.0;
+}
+
+/* dragon_sentinel push_passive: back-to-back passive procs at one moment merge into one impact */
+void push_passive(St* s, double at, double p) {
+  if (s->lp_seq != 0u && s->lp_seq == s->seq && s->lp_at == at) {
+    for (int i = 0; i < s->qn; i++) {
+      if (s->q_s[i] == s->lp_seq) {
+        s->q_p[i] = s->q_p[i] + p;
+        s->q_m[i] = s->q_m[i] * (1.0 - p);
+        return;
+      }
+    }
+  }
+  push(s, at, E_BURN, B_PASSIVE, 0, p);
+  if (s->status) return;
+  s->q_m[s->qn - 1] = 1.0 - p;
+  s->lp_seq = s->seq; s->lp_at = at;
 }
 
 int peek_idx(const St* s) {
@@ -435,7 +453,7 @@ double hero_hit(const Row* r, St* s, int name, double raw, double now, int t0, i
       p = chance01(proc * luck_mult / 100.0) * w;
       if (p > 0.0) {
         s->burnout_bonus = s->burnout_bonus * (1.0 - p);
-        push(s, now + 0.5, E_BURN, B_PASSIVE, t, p);
+        push_passive(s, now + 0.5, p);
         legacy_cdr(r, s, now, p);
       }
     }
@@ -461,7 +479,7 @@ void heal(const Row* r, St* s, double now) {
   }
 }
 
-void burnout_impact(const Row* r, St* s, double now, int source, double w) {
+void burnout_impact(const Row* r, St* s, double now, int source, double w, double miss) {
   double dmg = 25.0 * RANK + 1.20 * s->strength;
   if (source == B_PASSIVE) dmg *= 0.40;
   if (SP_RUBY) dmg *= 1.05 + 0.005 * r->mastery;
@@ -472,10 +490,15 @@ void burnout_impact(const Row* r, St* s, double now, int source, double w) {
   else value = 2;
   double w12, w3;
   if (value >= 0) {
-    s->trig0 = s->trig0 * (1.0 - w);
-    s->trig2 = s->trig2 * (1.0 - w);
-    s->trig3 = s->trig3 * (1.0 - w);
-    if (value == 3) s->trig3 = s->trig3 + w; else s->trig2 = s->trig2 + w;
+    double keep = (miss < 0.0) ? (1.0 - w) : miss;
+    s->trig0 = s->trig0 * keep;
+    if (value == 3) {
+      s->trig2 = s->trig2 * keep;
+      s->trig3 = 1.0 - (s->trig0 + s->trig2);
+    } else {
+      s->trig3 = s->trig3 * keep;
+      s->trig2 = 1.0 - (s->trig0 + s->trig3);
+    }
     w12 = w; w3 = (value == 3) ? w : 0.0;
   } else {
     w12 = w * (s->trig2 + s->trig3); w3 = w * s->trig3;
@@ -531,7 +554,7 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
   }
   s.max_life = r->hp;
   s.mana = r->mana_max; s.mana_time = 0.0;
-  s.qn = 0; s.seq = 0u;
+  s.qn = 0; s.seq = 0u; s.lp_seq = 0u; s.lp_at = 0.0;
   for (int t = 0; t < MAXT; t++) {
     s.fi_n[t] = 0; s.fi_t[t] = 0.0; s.fi_lo[t] = INFINITY;
     s.cl_n[t] = 0; s.cl_t[t] = 0.0; s.cl_lo[t] = INFINITY;
@@ -583,15 +606,15 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
     if (moment >= FIGHT) break;
     clock = moment;
     if (event_at == moment && event_at < attack_at && event_at < cast_at) {
-      int kind = s.q_k[qi], a = s.q_a[qi]; double p = s.q_p[qi];
+      int kind = s.q_k[qi], a = s.q_a[qi]; double p = s.q_p[qi], miss = s.q_m[qi];
       s.qn--;
       s.q_w[qi] = s.q_w[s.qn]; s.q_s[qi] = s.q_s[s.qn]; s.q_k[qi] = s.q_k[s.qn];
-      s.q_a[qi] = s.q_a[s.qn]; s.q_t[qi] = s.q_t[s.qn]; s.q_p[qi] = s.q_p[s.qn];
+      s.q_a[qi] = s.q_a[s.qn]; s.q_t[qi] = s.q_t[s.qn]; s.q_p[qi] = s.q_p[s.qn]; s.q_m[qi] = s.q_m[s.qn];
       if (kind == E_FURY) {
         add_fury(&s, 1.0);
         push(&s, moment + gen, E_FURY, 0, 0, 0.0);
       } else if (kind == E_BURN) {
-        burnout_impact(r, &s, moment, a, p);
+        burnout_impact(r, &s, moment, a, p, miss);
       } else if (kind == E_ENGULF) {
         hero_hit(r, &s, N_ENGULF, 5.0 * RANK + 0.5 * armor_now(r, &s, moment), moment, 0, s.targets, 1, 0, 1.0, 1.0, 1, 1, 1.0);
         push(&s, moment + 1.5 / (1.0 + 0.01 * r->mastery), E_ENGULF, 0, 0, 0.0);
@@ -1004,7 +1027,7 @@ def dragon_sentinel_tables(space, items, sources) -> dict:
             D.MOLTEN_DUR, D.MOLTEN_ARMOR, D.BOLT_EVERY, D.BOLT_DAMAGE, D.ENGULF_PERIOD, D.LEGACY, D.LEGACY_CDR,
             D.BRAND_SLOTS, D.POLICIES) != \
             (14.0, 2.00, 120.0, 300.0, 4.0, 0.1, 8.0, 3.0, 1, 8.0, 20.0, 2.0, 0.5, 7.0, 15.0, 8.0, 10.0, 7.0, 15.0,
-             6.0, 8.0, 20.0, 4.0, 3.0, 12.0, 5.0, 3.0, 6, 5.0, 2.0, 0.5, 25.0, 1.5, 1.15, 0.75, 8,
+             6.0, 8.0, 20.0, 4.0, 3.0, 12.0, 5.0, 3.0, 6, 5.0, 2.0, 0.5, 25.0, 1.5, 1.15, 0.75, 3,
              ((True, True), (True, False), (False, True), (False, False))):
         raise ValueError("kernel constants assume the 2026-11-13 dragon sentinel")
     if (shadow.CAST_POINT, shadow.CAST_BACKSWING, pressure.STR_HP, death_knight.BUFF_SLOTS) != (0.15, 0.30, 15.0, 8):

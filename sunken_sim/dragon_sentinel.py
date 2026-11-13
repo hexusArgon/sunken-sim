@@ -381,7 +381,7 @@ def _chance(value: float) -> float:
     return max(0.0, min(1.0, value))
 
 
-BRAND_SLOTS = 8
+BRAND_SLOTS = 3  # 8 before 2026-11-13: within 0.02% on random Obsidian builds, 2x faster on the GPU
 
 
 class _Brand:
@@ -482,9 +482,25 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
     events: list = []
     seq = [0]
 
+    last_passive: list = [None, 0]  # [payload of the last pushed passive Burnout, its seq]
+
     def push(at: float, kind: str, data=None) -> None:
         seq[0] += 1
         heapq.heappush(events, (at, seq[0], kind, data))
+
+    def push_passive(at: float, p: float) -> None:
+        """A passive Burnout with chance p. Back-to-back passive procs that land at the same moment
+        (nothing pushed in between) become one impact with the summed chance: its damage is the same
+        sum, and Burnout_Triggers takes the product of the misses (since 2026-11-13, speed)."""
+        last, last_seq = last_passive
+        if last is not None and last_seq == seq[0] and last[0] == at:
+            last[1] = last[1] + p
+            last[2] = last[2] * (1.0 - p)
+            return
+        data = [at, p, 1.0 - p]
+        push(at, "passive", data)
+        last_passive[0] = data
+        last_passive[1] = seq[0]
 
     fire = [_Buff() for _ in range(targets)]  # Dragonfire B02B
     claw = [_Buff() for _ in range(targets)]  # Dragon Claw B06C
@@ -642,7 +658,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
                 if p > 0.0:
                     counters["burnout_passive"] += p
                     burnout_bonus = burnout_bonus * (1.0 - p)
-                    push(now + BURNOUT_DELAY, "burnout", ("passive", t, p))
+                    push_passive(now + BURNOUT_DELAY, p)
                     legacy_cdr(now, p)
             if emerald:
                 proc = 3.0 * (LEGACY if has(TALENT_LEGACY) else 1.0)
@@ -668,7 +684,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
                      potency_scale=0.0, crit=False, weight=p / targets)
             legacy_cdr(now, p)
 
-    def burnout_impact(now: float, source: str, weight: float = 1.0) -> None:
+    def burnout_impact(now: float, source: str, weight: float = 1.0, miss: float | None = None) -> None:
         """Burnout_B: 25 + 1.2 STR per hit, Burnout_Triggers hits per enemy in 200 (with chance `weight`)."""
         dmg = 25.0 * RANK + 1.20 * strength
         if source == "passive":
@@ -687,9 +703,11 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
         else:
             value = 2
         if value is not None:
+            keep = (1.0 - weight) if miss is None else miss  # chance that no proc of this impact happened
             for key in trig:
-                trig[key] = trig[key] * (1.0 - weight)
-            trig[value] = trig[value] + weight
+                if key != value:
+                    trig[key] = trig[key] * keep
+            trig[value] = 1.0 - sum(trig[key] for key in trig if key != value)
             w12, w3 = weight, (weight if value == 3 else 0.0)
         else:
             w12, w3 = weight * (trig[2] + trig[3]), weight * trig[3]
@@ -793,6 +811,8 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
                 push(moment + gen, "fury")
             elif kind == "burnout":
                 burnout_impact(moment, data[0], data[2])
+            elif kind == "passive":
+                burnout_impact(moment, "passive", data[1], data[2])
             elif kind == "engulf":
                 # Engulfing Flames: 5 x level + 0.5 x armor to every enemy in 400.
                 hero_hit("Engulfing Flames", 5.0 * RANK + 0.5 * armor(moment), moment, all_t, kind="magical",
