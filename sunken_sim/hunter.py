@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import re
 
+from sunken_sim.attack_procs import from_stats as attack_procs
 from sunken_sim.pressure import max_hp
 from sunken_sim.shadow import (
     CAST_BACKSWING,
@@ -39,6 +40,7 @@ from sunken_sim.shadow import (
     armor_taken,
     attack_mana_gain,
     cast_mana_back,
+    item_luck,
     sulfuras_echo_chance,
     target_hp,
 )
@@ -149,18 +151,64 @@ def _has(build: Build, code: str) -> bool:
     return code in build.talents or code in build.glyphs
 
 
-class _Dither:
-    """Deterministic chance: fires once the accumulated probability reaches 1."""
+WINDOW_SLOTS = 8
+
+
+class _Window:
+    """A timed state as a distribution of end times: (end, probability), on while ``now < end``.
+
+    Since 2026-11-14 every chance in the Hunter fight is a weight (before: _Dither, a counter that fired
+    once the summed chance reached 1). A sure application collapses the window to one point; a chance
+    application refreshes it for that share of the probability. At most WINDOW_SLOTS points: the
+    lightest folds into the next (later) one, like death_knight._Buff.
+    """
+
+    __slots__ = ("e", "m")
 
     def __init__(self) -> None:
-        self.acc = 0.0
+        self.e: list[float] = []
+        self.m: list[float] = []
 
-    def roll(self, chance: float) -> bool:
-        self.acc += max(0.0, min(1.0, chance))
-        if self.acc >= 1.0 - 1e-9:
-            self.acc -= 1.0
-            return True
-        return False
+    def mass(self, now: float) -> float:
+        total = 0.0
+        for end, share in zip(self.e, self.m):
+            if now < end:
+                total += share
+        return total
+
+    def sure(self, now: float, duration: float) -> None:
+        self.e = [now + duration]
+        self.m = [1.0]
+
+    def maybe(self, now: float, duration: float, p: float) -> None:
+        """Refresh to now + duration with chance p (the same whether on or off)."""
+        if p >= 1.0:
+            self.sure(now, duration)
+            return
+        if p <= 0.0:
+            return
+        new_e: list[float] = []
+        new_m: list[float] = []
+        for end, share in zip(self.e, self.m):
+            if now < end:
+                new_e.append(end)
+                new_m.append(share * (1.0 - p))
+        until = now + duration
+        if new_e and new_e[-1] == until:
+            new_m[-1] = new_m[-1] + p
+        else:
+            new_e.append(until)
+            new_m.append(p)
+        while len(new_e) > WINDOW_SLOTS:
+            k = 0
+            for j in range(1, len(new_e) - 1):
+                if new_m[j] < new_m[k]:
+                    k = j
+            new_m[k + 1] = new_m[k + 1] + new_m[k]
+            del new_e[k]
+            del new_m[k]
+        self.e = new_e
+        self.m = new_m
 
 
 def stats_of(build: Build) -> dict[str, float]:
@@ -237,8 +285,7 @@ def stats_of(build: Build) -> dict[str, float]:
                 attack_potency = 2.0
             damage_pct += item.damage_pct / 100.0
             mana_flat += item.mana
-            for raw in re.findall(r"\+(\d+)% Luck\b", item.tip):
-                luck += int(raw) / 100.0
+            luck += item_luck(item)  # stat lines only (before 2026-11-14: any "+N% Luck" in the tooltip)
             for raw in re.findall(r"\+(\d+) Health\b", item.tip):
                 health_flat += int(raw)
             for raw in re.findall(r"\+(\d+)% Pet Damage\b", item.tip):
@@ -252,8 +299,7 @@ def stats_of(build: Build) -> dict[str, float]:
         rating += 0.15
     if _has(build, GLYPH_MINDHASTE):
         haste += 0.07
-    if _has(build, GLYPH_BATTLE_FRENZY):
-        attack_speed += 0.10
+    # Battle Frenzy: fight-time proc in attack_procs (before 2026-11-14: a flat +0.10 here).
     if _has(build, GLYPH_UNSEALED) and not any(item.rawcode == GLYPH_UNSEALED for item in build.items):
         magic_add += 0.18
         phys_add += 0.18
@@ -456,21 +502,24 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
     sulfuras = Sulfuras() if _wears(build, "I0BR") else None
     cast_time = CAST_POINT + CAST_BACKSWING
 
-    stung = [-1.0] * targets
-    wound = [-1.0] * targets
+    stung = [_Window() for _ in range(targets)]  # Serpent Sting B01C: -4 armour
+    wound = [_Window() for _ in range(targets)]  # Steel Trap wound: -3 armour
     wrath_until = -1.0
-    lock_until = -1.0
-    hunter_prowess_until = -1.0
-    pet_prowess_until = -1.0
+    lock = _Window()  # Lock and Load: hunter +40% attack speed
+    hunter_prowess = _Window()  # pet crit -> hunter +20% attack speed
+    pet_prowess = _Window()  # hunter crit -> main pet +40% attack speed
     quill_until = -1.0
     quill_count = 0
     quiver = 0.0  # probability that Windrunner's Quiver is armed
-    split_flag = False
+    split = 0.0  # probability that Split Shot is armed for the next attack
     howl_stacks = 0
-    crit_dither = {"lock": _Dither(), "prowess": _Dither(), "pet_prowess": _Dither(), "split": _Dither()}
-    maul_dither = _Dither()
-    trap_dither = _Dither()
-    shred_dither = _Dither()
+    procs = attack_procs(build, stats, stats["luck"])
+    # armour factor for (Sting, wound) on / off, hunter damage and pet damage
+    taken_table = {
+        hunter: [[armor_taken(float(DUMMY_ARMOR) - (stats["armor_pen"] if hunter else 0.0) - s * STING_PEN - w * WOUND_ARMOR)
+                  for w in (0, 1)] for s in (0, 1)]
+        for hunter in (True, False)
+    }
 
     def recover(now: float) -> None:
         nonlocal mana, mana_time
@@ -518,14 +567,14 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
         return value
 
     def taken_for(index: int, now: float, hunter: bool = True) -> float:
-        armor = float(DUMMY_ARMOR)
-        if hunter:
-            armor -= stats["armor_pen"]
-        if stung[index] > now:
-            armor -= STING_PEN
-        if wound[index] > now:
-            armor -= WOUND_ARMOR
-        return armor_taken(armor)
+        """Expected armour factor: Sting and the trap wound as independent chances."""
+        a = taken_table[hunter]
+        ps = stung[index].mass(now)
+        pw = wound[index].mass(now)
+        if ps == 0.0 and pw == 0.0:
+            return a[0][0]
+        return ((1.0 - ps) * (1.0 - pw) * a[0][0] + ps * (1.0 - pw) * a[1][0]
+                + (1.0 - ps) * pw * a[0][1] + ps * pw * a[1][1])
 
     def physical(now: float) -> float:
         bonus = 1.0 + stats["phys_add"]
@@ -586,16 +635,18 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
             attack_pre = (1.0 - armed / attack) * normal_pre + (armed / attack) * boosted_pre
             share = attack * ((1.0 - armed / attack) * _chance(chance / 100.0) + armed / attack)
             pre = (1.0 - attack) * pre_plain + attack * attack_pre
+            # count < 1: the hit itself happens with that chance (Split Shot)
             if armed:
-                quiver -= armed
-            if has(TALENT_POISONED_ARROWS) and attack >= 0.5:
-                stung[index] = max(stung[index], now + STING_DUR)
+                quiver -= armed * count
+            if has(TALENT_POISONED_ARROWS):
+                stung[index].maybe(now, STING_DUR, attack * count)
         kind = KIND_PHYS if typed else KIND_EXEC
         add_event(now, name, pre * count, kind)
         dealt = pre * phys * execute
         note_damage_mana(count)
         return dealt, share
-    def pet_hit(name: str, raw: float, now: float, kind: str, index: int = 0, attack: bool = True) -> float:
+    def pet_hit(name: str, raw: float, now: float, kind: str, index: int = 0, attack: bool = True,
+                weight: float = 1.0) -> float:
         """Pet damage: Pet Damage %, Scent of Blood, Aspect, summon crit on attacks."""
         amount = raw * (1.0 + stats["pet_damage"]) * (1.0 + ASPECT)
         increase = 1.0
@@ -616,7 +667,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
             pre = amount * inc * armor * _crit_factor(chance, rating)
         else:
             pre = amount * armor
-        add_event(now, name, pre, KIND_EXEC)
+        add_event(now, name, pre * weight, KIND_EXEC)
         return share
     def howl(now: float) -> None:
         nonlocal howl_stacks
@@ -629,8 +680,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
     def trap(index: int, now: float, count: float = 1.0) -> None:
         raw = 40.0 + 1.20 * dcs(now) + 0.50 * agi
         hit("Steel Trap", raw, now, index=index, count=count)
-        if count >= 0.5:
-            wound[index] = max(wound[index], now + WOUND_DUR)
+        wound[index].maybe(now, WOUND_DUR, count)
 
     def multishot(now: float, secondary: bool) -> None:
         nonlocal quiver
@@ -650,12 +700,12 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
         for index in range(hits):
             hit("Multi-Shot", raw, now, index=index, attack=pierce, typed=pierce < 1.0)
             if has(TALENT_TRAPLAYER):
-                chance = 0.25 * luck_mult * (0.5 if secondary else 1.0)
-                if trap_dither.roll(chance):
-                    trap(index, now)
+                chance = _chance(0.25 * luck_mult * (0.5 if secondary else 1.0))
+                if chance > 0.0:
+                    trap(index, now, chance)
 
     def apply_sting(now: float) -> None:
-        stung[0] = max(stung[0], now + STING_DUR)
+        stung[0].sure(now, STING_DUR)
 
     def cut_cooldowns(now: float, fraction: float = 0.0, seconds: float = 0.0) -> None:
         for key in ("sting", "multi", "wrath", "trap"):
@@ -677,12 +727,11 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
         if spec == "marksmanship":
             swing *= 1.0 - ASPECT
         speed = stats["attack_speed"]
-        if now < lock_until:
-            speed += 0.40
-        if now < hunter_prowess_until:
-            speed += 0.20
+        speed += 0.40 * lock.mass(now)
+        speed += 0.20 * hunter_prowess.mass(now)
         if stats["beast_helm"] and wrath_on(now):
             speed += 0.25
+        speed += procs.bonus(now)
         speed = min(4.0, max(-0.8, speed))
         return swing / (1.0 + speed)
 
@@ -693,8 +742,8 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
         speed = 0.0
         if spec == "beast_mastery":
             speed += 0.10 + 0.008 * mastery
-        if pet["kind"] == current_pet and now < pet_prowess_until:
-            speed += 0.40
+        if pet["kind"] == current_pet:
+            speed += 0.40 * pet_prowess.mass(now)
         if pet["kind"] == current_pet and stats["beast_helm"] and wrath_on(now):
             speed += 0.25
         if pet["kind"] == "huffer" and has(TALENT_DIRE_BEASTS):
@@ -705,7 +754,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
         return swing / (1.0 + speed)
 
     def pet_attack(pet: dict, now: float) -> None:
-        nonlocal howl_stacks, quill_count, quill_until, pet_prowess_until, hunter_prowess_until
+        nonlocal howl_stacks, quill_count, quill_until
         kind = pet["kind"]
         base, scale, _swing, name = PETS[kind]
         raw = base + int(scale * dcs(now)) + 1.0
@@ -732,14 +781,15 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
             while quill_count >= 15:
                 quill_count -= 15
                 quill_until = now + QUILL_DUR
-        if kind == "grylls" and maul_dither.roll(0.20 * luck_mult):
-            hit("Maul", 15.0 + 1.50 * dcs(now), now)
+        if kind == "grylls":
+            chance = _chance(0.20 * luck_mult)
+            if chance > 0.0:
+                hit("Maul", 15.0 + 1.50 * dcs(now), now, count=chance)
         if kind == "spike" and has(TALENT_DIRE_BEASTS):
-            chance = 0.20 * (1.0 + share) * luck_mult
-            if shred_dither.roll(chance):
-                pet_hit("Shred", 50.0 + 0.50 * dcs(now), now, kind, attack=False)
-        if crit_dither["pet_prowess"].roll(share):
-            hunter_prowess_until = now + PROWESS_DUR
+            chance = _chance(0.20 * (1.0 + share) * luck_mult)
+            if chance > 0.0:
+                pet_hit("Shred", 50.0 + 0.50 * dcs(now), now, kind, attack=False, weight=chance)
+        hunter_prowess.maybe(now, PROWESS_DUR, share)
         if has(TALENT_TALON_STRIKES):
             fraction = 0.06 if kind == current_pet else 0.02
             for _ in range(events):
@@ -788,14 +838,16 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
             continue
         if moment == next_tick:
             raw = 5.0 * RANK + 0.10 * dcs(moment)
-            stung_now = [i for i in range(targets) if stung[i] > moment]
-            for index in stung_now:
+            for index in range(targets):
+                on = stung[index].mass(moment)
+                if on <= 0.0:
+                    continue
                 if spec == "beast_mastery":
-                    pet_hit("Serpent Sting (тики)", raw, moment, current_pet, index=index, attack=False)
+                    pet_hit("Serpent Sting (тики)", raw, moment, current_pet, index=index, attack=False, weight=on)
                 else:
-                    hit("Serpent Sting (тики)", raw, moment, index=index)
+                    hit("Serpent Sting (тики)", raw, moment, index=index, count=on)
                 if spec == "survival":
-                    cut_cooldowns(moment, seconds=_chance((5.0 + 0.20 * mastery) / 100.0))
+                    cut_cooldowns(moment, seconds=on * _chance((5.0 + 0.20 * mastery) / 100.0))
             interval = 1.0
             if has(TALENT_POISONED_ARROWS):
                 interval /= 1.0 + 0.05 * stats["potency"]
@@ -872,15 +924,12 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
         # OnDamage_Heroes, real hunter attacks.
         if spec == "marksmanship":
             hit("Marksmanship", 40.0 + 3.0 * mastery, moment, typed=False, potency_scale=0.0, count=share)
-        if has(TALENT_LOCK_AND_LOAD) and crit_dither["lock"].roll(share * 0.35 * luck_mult):
-            lock_until = moment + LOCK_DUR
-        if crit_dither["prowess"].roll(share):
-            pet_prowess_until = moment + PROWESS_DUR
-        if split_flag:
-            split_flag = False
-            hit("Split Shot", (0.45 + 0.05 * RANK) * power, moment, attack=1.0)
-        if crit_dither["split"].roll(0.30 * (1.0 + 0.5 * share) * luck_mult):
-            split_flag = True
+        if has(TALENT_LOCK_AND_LOAD):
+            lock.maybe(moment, LOCK_DUR, _chance(share * 0.35 * luck_mult))
+        pet_prowess.maybe(moment, PROWESS_DUR, share)
+        if split > 0.0:
+            hit("Split Shot", (0.45 + 0.05 * RANK) * power, moment, attack=1.0, count=split)
+        split = _chance(0.30 * (1.0 + 0.5 * share) * luck_mult)
         gain_mana(attack_mana_gain(stats))
         if stats["fire_orb"]:
             splash_w = (20.0 + 0.35 * agi) * targets * taken_for(min(1, targets - 1), moment)
@@ -894,6 +943,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
                 note_damage_mana(targets)
             echo_w = power * taken * sulfuras_echo_chance(stats["luck"])
             add_event(moment, "Sulfuras (удар)", echo_w, KIND_EXEC)
+        procs.on_attack(moment, hero_crit(moment))
         next_attack = moment + hunter_interval(moment)
 
     recover(FIGHT)

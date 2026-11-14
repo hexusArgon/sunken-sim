@@ -1,4 +1,4 @@
-"""Exact OpenCL Shaman, Paladin, Druid (caster, not Feral) and Berserker fights: parity with the Python sims and the farm span.
+"""Exact OpenCL class fights (Shaman, Paladin, Druid, Feral Druid, Hunter, ...): parity with the Python sims and the farm span.
 
 Runs on any OpenCL device with float64 (PoCL on CPU is fine); skips without one.
     python -m unittest farm.hybrid.test_class_cl
@@ -20,7 +20,9 @@ CASES = (("shaman", "restoration"), ("shaman", "enhancement"), ("shaman", "eleme
          ("berserker", "headhunter"), ("berserker", "poison"), ("berserker", "fury"),
          ("death_knight", "frost"), ("death_knight", "blood"), ("death_knight", "unholy"),
          ("demon_hunter", "havoc"), ("demon_hunter", "vengeance"), ("demon_hunter", "devourer"),
-         ("dragon_sentinel", "ruby"), ("dragon_sentinel", "obsidian"), ("dragon_sentinel", "emerald"))
+         ("dragon_sentinel", "ruby"), ("dragon_sentinel", "obsidian"), ("dragon_sentinel", "emerald"),
+         ("feral_druid", "primal"), ("feral_druid", "guardian"), ("feral_druid", "savage"),
+         ("hunter", "marksmanship"), ("hunter", "beast_mastery"), ("hunter", "survival"))
 _ENGINES = {}
 
 
@@ -99,7 +101,9 @@ class ClassCLTest(unittest.TestCase):
         specials = {"shaman": ("I00D", "I0BR"), "paladin": ("I0BR", "I0R0"), "druid": ("I00D", "I0BR", "I0R4"),
                     "berserker": ("I0BR", "I0U2", "I0U5"), "death_knight": ("I0BR", "I0RZ", "I07T", "I0NK"),
                     "demon_hunter": ("I0BR", "I0V4", "I0V5", "I0V6", "I0V7"),
-                    "dragon_sentinel": ("I0BR", "I0TK", "I0TL", "I0TI", "I0TH")}
+                    "dragon_sentinel": ("I0BR", "I0TK", "I0TL", "I0TI", "I0TH"),
+                    "feral_druid": ("I00D", "I0BR", "I0RV", "I0RW", "I0RY", "I0QN"),
+                    "hunter": ("I0BR", "I0T6", "I0T7", "I0T8", "I0T9", "I06B", "I0QN")}
         for hero, spec in CASES:
             engine, space, items, _sources = _engine(hero, spec)
             chunks = [mage_cl.sample(space, 1, 5)[0]]
@@ -118,7 +122,8 @@ class ClassCLTest(unittest.TestCase):
     def test_span_payload_and_gate_match_cpu_runner(self):
         for hero, spec in (("shaman", "enhancement"), ("paladin", "retribution"), ("druid", "balance"),
                            ("berserker", "poison"), ("death_knight", "unholy"),
-                           ("demon_hunter", "havoc"), ("dragon_sentinel", "ruby")):
+                           ("demon_hunter", "havoc"), ("dragon_sentinel", "ruby"),
+                           ("feral_druid", "savage"), ("hunter", "survival")):
             _engine(hero, spec)
             from farm.catalog import load
             space, items = load(hero, spec, "mixed", None, 80)

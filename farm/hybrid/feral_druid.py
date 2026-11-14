@@ -224,7 +224,9 @@ class FeralDruidFights(BatchFights):
 
         gpu_bundle = None
         want = os.environ.get("FARM_HYBRID_GPU_TIMELINE", "auto").strip().lower()
-        use_gpu_tl = (
+        # The torch timeline (*_gpu_timeline.py) predates Battle Frenzy / Silent Messenger and the agility primary (2026-11-14): the timeline stays on the CPU sim.
+        # The exact GPU route for this class is farm.hybrid.feral_druid_cl (OpenCL).
+        use_gpu_tl = False and (
             want not in ("0", "false", "off", "cpu")
             and (want in ("1", "true", "force") or bool(getattr(self.device, "gpu", False)))
         )

@@ -26,7 +26,7 @@ UNSAFE = 'unsafe-bare-top10'
 KEYS = ('overall', 'shop', 'drop')
 LIMITS = {BARE: 10, BARE50: 50}      # item-only gate size and finished builds kept while running
 FINAL_KEEP = {BARE: 10, BARE50: 20}  # finished builds per list written when the run is complete
-TOP50_HEROES = frozenset({'priest', 'paladin', 'shaman', 'mage', 'druid', 'berserker', 'death_knight', 'demon_hunter', 'dragon_sentinel'})
+TOP50_HEROES = frozenset({'priest', 'paladin', 'shaman', 'mage', 'druid', 'berserker', 'death_knight', 'demon_hunter', 'dragon_sentinel', 'feral_druid', 'hunter'})
 LIMIT = LIMITS[BARE]  # active gate size of this process; set by activate()
 
 

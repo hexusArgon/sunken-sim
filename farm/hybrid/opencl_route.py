@@ -28,6 +28,8 @@ SPECS = frozenset({
     ("death_knight", "frost"), ("death_knight", "blood"), ("death_knight", "unholy"),
     ("demon_hunter", "havoc"), ("demon_hunter", "vengeance"), ("demon_hunter", "devourer"),
     ("dragon_sentinel", "ruby"), ("dragon_sentinel", "obsidian"), ("dragon_sentinel", "emerald"),
+    ("feral_druid", "primal"), ("feral_druid", "guardian"), ("feral_druid", "savage"),
+    ("hunter", "marksmanship"), ("hunter", "beast_mastery"), ("hunter", "survival"),
 })
 _OFF = ("", "0", "off", "no", "false", "none")
 _ALL = ("1", "all", "on", "yes", "true")

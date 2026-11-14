@@ -13,6 +13,7 @@ from __future__ import annotations
 import heapq
 import re
 
+from sunken_sim.attack_procs import from_stats as attack_procs
 from sunken_sim.pressure import AGI_ARMOR, max_hp
 from sunken_sim.shadow import (
     CAST_BACKSWING,
@@ -144,7 +145,8 @@ def _item_health(build: Build) -> float:
 
 def sheet(build: Build, spec: str = "primal") -> dict[str, float]:
     galactic = 1.20 if _wears(build, GALACTIC_FURY) else 1.0
-    stats = character(build, FERAL_STR, FERAL_AGI, FERAL_INT, FERAL_WHITE, bake_timed_buffs=False)
+    # Agility hero: item primary-attribute bonuses and Fortitude go to agility (before 2026-11-14: intellect).
+    stats = character(build, FERAL_STR, FERAL_AGI, FERAL_INT, FERAL_WHITE, bake_timed_buffs=False, primary="agi")
     item_damage = stats["ad"] - FERAL_WHITE - 0.75 * stats["int"]
     stats["ad"] = FERAL_WHITE + 0.75 * stats["agi"] + item_damage
     stats["mana_max"] -= 175.0 - FERAL_BASE_MANA
@@ -387,6 +389,8 @@ def _simulate_feral(build: Build, targets: int, spec: str, bound_key: str | None
     next_hit_bonus = 0.0
     sulfuras = Sulfuras() if _wears(build, SULFURAS_CODE) else None
     fire_orb = _wears(build, FIRE_ORB)
+    # Battle Frenzy / Silent Messenger (2026-11-14; before: not modelled, character() is not baked here).
+    procs = attack_procs(build, stats, stats["luck"])
     hero_ready = 0.0
     next_attack = 0.0
     rake_clock = False
@@ -570,6 +574,7 @@ def _simulate_feral(build: Build, targets: int, spec: str, bound_key: str | None
         speed = stats["attack_speed"]
         if _has(build, TALENT_SAVAGE_ROAR) and now < roar_until:
             speed += 0.28
+        speed += procs.bonus(now)
         speed = min(4.0, max(-0.8, speed))
         return stats["attack_base"] / (1.0 + speed)
 
@@ -611,6 +616,7 @@ def _simulate_feral(build: Build, targets: int, spec: str, bound_key: str | None
             echo_w = dcs(now) * taken_plain * sulfuras_echo_chance(stats["luck"])
             if echo_w:
                 events.append((now, "Sulfuras (удар)", echo_w, KIND_EXEC, 0.0))
+        procs.on_attack(now, crit_of())
 
     def on_rake(now: float) -> None:
         nonlocal rake_clock

@@ -304,7 +304,12 @@ def character(
     white_base: float = 10.0,
     bake_timed_buffs: bool = True,
     _mana_passives=None,
+    primary: str = "int",
 ) -> dict[str, float]:
+    """primary: the hero's main attribute ("int" or "agi"); item primary-attribute bonuses and the
+    Fortitude glyph go there (before 2026-11-14 always intellect, wrong for the Feral Druid)."""
+    if primary not in ("int", "agi"):
+        raise ValueError(primary)
     intel = BASE_INT if base_int is None else base_int
     strength = BASE_STR if base_str is None else base_str
     agility = BASE_AGI if base_agi is None else base_agi
@@ -327,10 +332,16 @@ def character(
         strength += _copy_value(item.rawcode, "all_stats", item.all_stats, first)
         agility += _copy_value(item.rawcode, "agility", item.agility, first)
         agility += _copy_value(item.rawcode, "all_stats", item.all_stats, first)
-        if first and bonus.get("primary") and not item.intel and not item.all_stats:
-            intel += bonus["primary"]
-        elif not first:
-            intel += bonus.get("primary", 0)
+        if primary == "int":
+            if first and bonus.get("primary") and not item.intel and not item.all_stats:
+                intel += bonus["primary"]
+            elif not first:
+                intel += bonus.get("primary", 0)
+        else:
+            if first and bonus.get("primary") and not item.agility and not item.all_stats:
+                agility += bonus["primary"]
+            elif not first:
+                agility += bonus.get("primary", 0)
         potency += _copy_value(item.rawcode, "potency", item.potency, first)
         mastery += _copy_value(item.rawcode, "mastery", item.mastery, first)
         damage += _copy_value(item.rawcode, "damage", item.damage, first)
@@ -344,7 +355,10 @@ def character(
             haste += _copy_value(item.rawcode, "haste", item.haste, first) / 100
         attack_speed += _copy_value(item.rawcode, "attack_speed", item.attack_speed, first) / 100
     if _has(build, "I07B"):
-        intel += 4 + 2 * LEVEL
+        if primary == "int":
+            intel += 4 + 2 * LEVEL
+        else:
+            agility += 4 + 2 * LEVEL
     if _has(build, "I0EK"):
         mastery += 20
     damage = white_base + 0.75 * intel + damage

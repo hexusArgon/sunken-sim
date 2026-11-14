@@ -62,3 +62,9 @@ Pipe of Deew, Sulfuras и Diamond Ring — как у остальных клас
 
 - Siege-атака Bear и тип брони целей (Shred +25% по Hero/Light/Divine) не учтены: таблица типов атаки не применяется, Shred берёт +10%.
 - Berserk через Inner Fire сим берёт как множитель ко всему DCS, включая белый удар.
+
+## Изменения 2026-11-14
+
+- Основной атрибут — ловкость: бонус «основного атрибута» с вещей (Sulfuras +20, Nightfall +13 и т.д.) и глиф Fortitude идут в ловкость (`shadow.character(..., primary="agi")`). До этого шли в интеллект. В среднем +9…+13% DPS, на сборках с такими вещами до +60%.
+- Battle Frenzy и Silent Messenger — проки боя (`sunken_sim.attack_procs`). До этого не учитывались (лист собирается без запечённых баффов).
+- GPU: точное ядро `farm/hybrid/feral_druid_cl.py` (float64, бит в бит с симом, все привязки Diamond Ring).
