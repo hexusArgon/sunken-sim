@@ -22,7 +22,9 @@ CASES = (("shaman", "restoration"), ("shaman", "enhancement"), ("shaman", "eleme
          ("demon_hunter", "havoc"), ("demon_hunter", "vengeance"), ("demon_hunter", "devourer"),
          ("dragon_sentinel", "ruby"), ("dragon_sentinel", "obsidian"), ("dragon_sentinel", "emerald"),
          ("feral_druid", "primal"), ("feral_druid", "guardian"), ("feral_druid", "savage"),
-         ("hunter", "marksmanship"), ("hunter", "beast_mastery"), ("hunter", "survival"))
+         ("hunter", "marksmanship"), ("hunter", "beast_mastery"), ("hunter", "survival"),
+         ("monk", "windwalker"), ("monk", "brewmaster"), ("monk", "mistweaver"),
+         ("necromancer", "bone"), ("necromancer", "blood"), ("necromancer", "essence"))
 _ENGINES = {}
 
 
@@ -103,7 +105,9 @@ class ClassCLTest(unittest.TestCase):
                     "demon_hunter": ("I0BR", "I0V4", "I0V5", "I0V6", "I0V7"),
                     "dragon_sentinel": ("I0BR", "I0TK", "I0TL", "I0TI", "I0TH"),
                     "feral_druid": ("I00D", "I0BR", "I0RV", "I0RW", "I0RY", "I0QN"),
-                    "hunter": ("I0BR", "I0T6", "I0T7", "I0T8", "I0T9", "I06B", "I0QN")}
+                    "hunter": ("I0BR", "I0T6", "I0T7", "I0T8", "I0T9", "I06B", "I0QN"),
+                    "monk": ("I0BR", "I0UA", "I0UC", "I0U9", "I0QN", "I04F"),
+                    "necromancer": ("I0BR", "I0R5", "I0R6", "I0R7", "I0R8", "I0UN", "I06B", "I05W", "I0QN")}
         for hero, spec in CASES:
             engine, space, items, _sources = _engine(hero, spec)
             chunks = [mage_cl.sample(space, 1, 5)[0]]
@@ -123,7 +127,8 @@ class ClassCLTest(unittest.TestCase):
         for hero, spec in (("shaman", "enhancement"), ("paladin", "retribution"), ("druid", "balance"),
                            ("berserker", "poison"), ("death_knight", "unholy"),
                            ("demon_hunter", "havoc"), ("dragon_sentinel", "ruby"),
-                           ("feral_druid", "savage"), ("hunter", "survival")):
+                           ("feral_druid", "savage"), ("hunter", "survival"), ("monk", "windwalker"),
+                           ("necromancer", "blood")):
             _engine(hero, spec)
             from farm.catalog import load
             space, items = load(hero, spec, "mixed", None, 80)

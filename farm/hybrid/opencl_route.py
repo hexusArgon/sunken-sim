@@ -30,6 +30,8 @@ SPECS = frozenset({
     ("dragon_sentinel", "ruby"), ("dragon_sentinel", "obsidian"), ("dragon_sentinel", "emerald"),
     ("feral_druid", "primal"), ("feral_druid", "guardian"), ("feral_druid", "savage"),
     ("hunter", "marksmanship"), ("hunter", "beast_mastery"), ("hunter", "survival"),
+    ("monk", "windwalker"), ("monk", "brewmaster"), ("monk", "mistweaver"),
+    ("necromancer", "bone"), ("necromancer", "blood"), ("necromancer", "essence"),
 })
 _OFF = ("", "0", "off", "no", "false", "none")
 _ALL = ("1", "all", "on", "yes", "true")

@@ -1674,7 +1674,9 @@ OPENCL_SPECS = ({("mage", spec) for spec in SPECS} | {("priest", spec) for spec 
                 | {("demon_hunter", spec) for spec in ("havoc", "vengeance", "devourer")}
                 | {("dragon_sentinel", spec) for spec in ("ruby", "obsidian", "emerald")}
                 | {("feral_druid", spec) for spec in ("primal", "guardian", "savage")}
-                | {("hunter", spec) for spec in ("marksmanship", "beast_mastery", "survival")})
+                | {("hunter", spec) for spec in ("marksmanship", "beast_mastery", "survival")}
+                | {("monk", spec) for spec in ("windwalker", "brewmaster", "mistweaver")}
+                | {("necromancer", spec) for spec in ("bone", "blood", "essence")})
 
 
 def make_engine(hero: str, space, items: dict, sources: dict, targets: int, spec: str, device=None):
@@ -1721,6 +1723,14 @@ def make_engine(hero: str, space, items: dict, sources: dict, targets: int, spec
         from farm.hybrid.hunter_cl import HunterCL
 
         return HunterCL(space, items, sources, targets, device=device, spec=spec)
+    if hero == "monk":
+        from farm.hybrid.monk_cl import MonkCL
+
+        return MonkCL(space, items, sources, targets, device=device, spec=spec)
+    if hero == "necromancer":
+        from farm.hybrid.necromancer_cl import NecromancerCL
+
+        return NecromancerCL(space, items, sources, targets, device=device, spec=spec)
     raise ValueError(f"no OpenCL engine for {hero}/{spec}")
 
 
@@ -1766,6 +1776,14 @@ def engine_module(engine):
         from farm.hybrid import hunter_cl
 
         return hunter_cl
+    if hero == "monk":
+        from farm.hybrid import monk_cl
+
+        return monk_cl
+    if hero == "necromancer":
+        from farm.hybrid import necromancer_cl
+
+        return necromancer_cl
     return sys.modules[__name__]
 
 
@@ -1997,7 +2015,7 @@ def run_job(job: dict, box: dict, tick) -> dict:
 
     hero, spec = job.get("hero"), job.get("spec")
     if (hero, spec) not in OPENCL_SPECS:
-        raise ValueError("OpenCL backend: mage, priest, shaman, paladin, berserker, death_knight, demon_hunter, dragon_sentinel, feral_druid, hunter (three specs each) or druid (restoration, balance)")
+        raise ValueError("OpenCL backend: mage, priest, shaman, paladin, berserker, death_knight, demon_hunter, dragon_sentinel, feral_druid, hunter, monk, necromancer (three specs each) or druid (restoration, balance)")
     job = dict(job, admission_policy=A.policy(job))
     meta = {"worker": job.get("worker", "local-hybrid"), "status": "opencl", "device": "opencl",
             "name": "", "gpu_fights": True, "backend": f"{hero}-opencl-exact-v3",

@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import re
 
+from sunken_sim.attack_procs import from_stats as attack_procs
 from sunken_sim.pressure import max_hp
 from sunken_sim.shadow import (
     CAST_BACKSWING,
@@ -38,6 +39,7 @@ from sunken_sim.shadow import (
     armor_taken,
     attack_mana_gain,
     cast_mana_back,
+    item_luck,
     sulfuras_echo_chance,
     target_hp,
 )
@@ -229,8 +231,7 @@ def stats_of(build: Build) -> dict[str, float]:
                 attack_potency = 2.0
             damage_pct += item.damage_pct / 100.0
             mana_flat += item.mana
-            for raw in re.findall(r"\+(\d+)% Luck\b", item.tip):
-                luck += int(raw) / 100.0
+            luck += item_luck(item)  # stat lines only (before 2026-11-14: any "+N% Luck" in the tooltip)
             for raw in re.findall(r"\+(\d+) Health\b", item.tip):
                 health_flat += int(raw)
     if _has(build, TALENT_INNER_HARMONY):
@@ -247,8 +248,7 @@ def stats_of(build: Build) -> dict[str, float]:
         rating += 0.15
     if _has(build, GLYPH_MINDHASTE):
         haste += 0.07
-    if _has(build, GLYPH_BATTLE_FRENZY):
-        attack_speed += 0.10
+    # Battle Frenzy: fight-time proc in attack_procs (before 2026-11-14: a flat +0.10 here).
     if _has(build, GLYPH_UNSEALED) and not any(item.rawcode == GLYPH_UNSEALED for item in build.items):
         magic_add += 0.18
         phys_add += 0.18
@@ -401,6 +401,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, bool, bo
     blessing_xuen_until = -1.0
     blessing_yulon_until = -1.0
     pending: list[tuple[float, float]] = []  # Windwalker Power Strike echoes (time, chance)
+    procs = attack_procs(build, stats, stats["luck"])  # Battle Frenzy / Silent Messenger
 
     def recover(now: float) -> None:
         nonlocal mana, mana_time
@@ -481,7 +482,8 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, bool, bo
         return dealt
 
     def ps_damage() -> float:
-        value = (60.0 * RANK + 10.0 + 1.0 * strength) * (1.0 + 0.005 * agility)
+        # 2.5.2c GetPowerStrikeDamage: (60 x lvl + 1.00 x STR) x (1 + 0.005 x AGI) (before 2026-11-14: +10 base).
+        value = (60.0 * RANK + 1.0 * strength) * (1.0 + 0.005 * agility)
         if ww:
             value *= 1.05 + 0.008 * mastery
         return value
@@ -553,7 +555,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, bool, bo
 
     def interval(now: float) -> float:
         swing = SWING * (1.20 if stats["galactic"] else 1.0)
-        speed = stats["attack_speed"]
+        speed = stats["attack_speed"] + procs.bonus(now)
         if stance:
             speed += STANCE_AS
         if now < blessing_xuen_until:
@@ -713,11 +715,14 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, bool, bo
             execute = _execute_factor(stats, moment)
             if sulfuras.attack():
                 splash = stats["str"] * typed(True, moment) * taken * execute * targets
-                splash *= _crit_factor(stats["crit"], 2.0 + stats["rating"])
+                # Magical hero damage: only Nightfall / Netherspike spell crit (before 2026-11-14: attack crit).
+                if stats["spell_crit"]:
+                    splash *= _crit_factor(stats["crit"], stats["spell_mult"] + stats["rating"])
                 sources.add_exec("Sulfuras", splash, moment, execute)
                 note_damage_mana(targets)
             echo = power * taken * execute * sulfuras_echo_chance(stats["luck"])
             sources.add_exec("Sulfuras (удар)", echo, moment, execute)
+        procs.on_attack(moment, 100.0 if red_crane else stats["crit"])
         next_attack = moment + interval(moment)
 
     total = sum(sources.values())

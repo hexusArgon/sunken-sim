@@ -23,7 +23,9 @@ class MonkFights(KindFights):
         from sunken_sim.shadow import FIGHT
 
         want = os.environ.get("FARM_HYBRID_GPU_TIMELINE", "auto").strip().lower()
-        use_gpu_tl = (
+        # The torch timeline (*_gpu_timeline.py) predates the 2026-11-14 sim fixes (Battle Frenzy / Silent Messenger procs, Power Strike base, Sulfuras spell crit): the timeline stays on the CPU sim.
+        # The exact GPU route for this class is farm.hybrid.monk_cl (OpenCL).
+        use_gpu_tl = False and (
             want not in ("0", "false", "off", "cpu")
             and (want in ("1", "true", "force") or bool(getattr(self.device, "gpu", False)))
         )

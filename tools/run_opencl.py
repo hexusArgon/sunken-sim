@@ -28,7 +28,7 @@ sys.path.insert(0, str(REPO))
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--hero", required=True, choices=("mage", "priest", "shaman", "paladin", "druid", "berserker", "death_knight", "demon_hunter", "dragon_sentinel", "feral_druid", "hunter"))
+    ap.add_argument("--hero", required=True, choices=("mage", "priest", "shaman", "paladin", "druid", "berserker", "death_knight", "demon_hunter", "dragon_sentinel", "feral_druid", "hunter", "monk", "necromancer"))
     ap.add_argument("--spec", required=True)
     ap.add_argument("--top", type=int, default=80)
     ap.add_argument("--preset", default="",

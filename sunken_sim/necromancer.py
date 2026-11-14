@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import re
 
+from sunken_sim.attack_procs import from_stats as attack_procs
 from sunken_sim.pressure import max_hp
 from sunken_sim.shadow import (
     CAST_BACKSWING,
@@ -39,6 +40,7 @@ from sunken_sim.shadow import (
     armor_taken,
     attack_mana_gain,
     cast_mana_back,
+    item_luck,
     sulfuras_echo_chance,
     target_hp,
 )
@@ -225,14 +227,15 @@ def stats_of(build: Build) -> dict[str, float]:
                 attack_potency = 2.0
             damage_pct += item.damage_pct / 100.0
             mana_flat += item.mana
-            for raw in re.findall(r"\+(\d+)% Luck\b", item.tip):
-                luck += int(raw) / 100.0
+            luck += item_luck(item)  # stat lines only (before 2026-11-14: any "+N% Luck" in the tooltip)
             for raw in re.findall(r"\+(\d+) Health\b", item.tip):
                 health_flat += int(raw)
             for raw in re.findall(r"\+(\d+)% Pet Damage\b", item.tip):
                 pet_damage += int(raw) / 100.0
     if _has(build, GLYPH_FORTITUDE):
-        strength += 4 + 2 * LEVEL
+        # Acquire Glyph: Fortitude adds the primary attribute; Necromancer is Agi_Str_Int[3] -> INT
+        # (before 2026-11-14: strength).
+        intel += 4 + 2 * LEVEL
     if _has(build, GLYPH_SUPREMACY):
         mastery += 20
     if _has(build, GLYPH_ANIMOSITY):
@@ -240,8 +243,7 @@ def stats_of(build: Build) -> dict[str, float]:
         rating += 0.15
     if _has(build, GLYPH_MINDHASTE):
         haste += 0.07
-    if _has(build, GLYPH_BATTLE_FRENZY):
-        attack_speed += 0.10
+    # Battle Frenzy: fight-time proc in attack_procs (before 2026-11-14: a flat +0.10 here).
     if _has(build, GLYPH_UNSEALED) and not any(item.rawcode == GLYPH_UNSEALED for item in build.items):
         magic_add += 0.18
         phys_add += 0.18
@@ -337,20 +339,6 @@ def _chance(value: float) -> float:
     return max(0.0, min(1.0, value))
 
 
-class _Dither:
-    """Deterministic chance: fires once the accumulated probability reaches 1."""
-
-    def __init__(self) -> None:
-        self.acc = 0.0
-
-    def roll(self, chance: float) -> bool:
-        self.acc += max(0.0, min(1.0, chance))
-        if self.acc >= 1.0 - 1e-9:
-            self.acc -= 1.0
-            return True
-        return False
-
-
 # (transfusion, raise_dead): cast Transfusion on self for globes; keep Raise Dead on.
 POLICIES = tuple((trans, raise_dead) for trans in (True, False) for raise_dead in (True, False))
 
@@ -400,7 +388,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
     teeth_lvl = 1  # A0AS level
     rd_ticks = 0
     guard_ce = False
-    archer_roll = _Dither()
+    procs = attack_procs(build, stats, stats["luck"])  # Battle Frenzy / Silent Messenger
     skeletons: list[dict] = []
     tombs: list[float] = []  # expiry times
     pending: list[tuple[float, int, str, float]] = []  # (time, seq, kind, arg)
@@ -546,17 +534,20 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
         life = SKELETON_LIFE + (3.0 if has(TALENT_HOUR_OF_THE_DEAD) else 0.0)
         pen = _chance((5.0 + mastery) / 100.0) if bone else 0.0
         skeletons.append({"kind": kind, "next": now, "end": now + life, "group": kind != "mage",
-                          "pen": pen, "spectral": -1.0})
-        if has(TALENT_SKELETAL_ARCHER) and archer_roll.roll(0.25 * luck_mult):
-            skeletons.append({"kind": "archer", "next": now, "end": now + life, "group": True,
-                              "pen": pen, "spectral": -1.0})
+                          "pen": pen, "spectral": -1.0, "w": 1.0})
+        if has(TALENT_SKELETAL_ARCHER):
+            # Skeletal Archer: a 25% x luck archer as a weighted unit (before 2026-11-14: a dither).
+            weight = _chance(0.25 * luck_mult)
+            if weight > 0:
+                skeletons.append({"kind": "archer", "next": now, "end": now + life, "group": True,
+                                  "pen": pen, "spectral": -1.0, "w": weight})
 
     def haste_now() -> float:
         return stats["haste"]
 
     def interval(now: float) -> float:
         swing = SWING * (1.20 if stats["galactic"] else 1.0)
-        speed = stats["attack_speed"] + 0.08 * (teeth_lvl - 1)
+        speed = stats["attack_speed"] + 0.08 * (teeth_lvl - 1) + procs.bonus(now)
         if now < swift_until:
             speed += SWIFT_AS
         if has(TALENT_SANGUINE_FURY) and now < globe_until:
@@ -659,7 +650,7 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
             magical = kind == "mage"
             label = {"warrior": "Скелеты (Raise Dead/Tombstone)", "archer": "Skeletal Archer",
                      "assassin": "Assassin (Lord)", "executor": "Executor (Lord)", "mage": "Mage (Lord)"}[kind]
-            dealt = summon_hit(label, raw, moment, magical=magical, attack=True,
+            dealt = summon_hit(label, raw, moment, magical=magical, attack=True, count=s["w"],
                                crit_bonus=50.0 if kind == "assassin" else 0.0, pen_share=s["pen"])
             if kind == "executor":
                 hero_hit("Executor (эхо)", 0.75 * dealt, moment, magical=True, attack=True)
@@ -690,9 +681,16 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
                     push(hit_at + (i + 1) * 1.2 / ticks, "ce")
                 if has(TALENT_BLOOD_BOMB):
                     group = sorted((s for s in skeletons if s["group"]), key=lambda u: u["end"])
-                    for s in group[:3]:
-                        skeletons.remove(s)
-                        explode(hit_at, UNIT[s["kind"]], 1.0, "Blood Bomb (взрыв скелета)")
+                    need = 3.0  # three skeletons; a weighted archer counts by its weight
+                    for s in group:
+                        if need <= 1e-12:
+                            break
+                        take = min(s["w"], need)
+                        need -= take
+                        s["w"] -= take
+                        if s["w"] <= 1e-12:
+                            skeletons.remove(s)
+                        explode(hit_at, UNIT[s["kind"]], take, "Blood Bomb (взрыв скелета)")
             elif key == "tomb":
                 tombs.append(hit_at + (13.0 if has(TALENT_GRAVEDIGGER) else 10.0))
                 tombs[:] = [t for t in tombs if t > hit_at]
@@ -706,6 +704,8 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
                 lose_hp(0.08 * hp)
                 raw = 20.0 + 0.80 * intel + 0.05 * hp_max
                 hero_hit("Teeth", raw, hit_at, magical=False, attack=True, count=targets)
+                for _ in range(targets):
+                    procs.on_attack(hit_at, stats["crit"])  # NextDamageIsAttack: one roll per enemy hit
                 gs_passive(float(targets), hit_at)
                 heal(0.04 * hp_max * targets)
                 teeth_lvl = min(7, teeth_lvl + targets)
@@ -745,11 +745,14 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
             execute = _execute_factor(stats, moment)
             if sulfuras.attack():
                 splash = stats["int"] * typed(True, moment) * hero_taken * execute * targets
-                splash *= _crit_factor(stats["crit"], 2.0 + stats["rating"])
+                # Magical hero damage: only Nightfall / Netherspike spell crit (before 2026-11-14: attack crit).
+                if stats["spell_crit"]:
+                    splash *= _crit_factor(stats["crit"], stats["spell_mult"] + stats["rating"])
                 sources.add_exec("Sulfuras", splash, moment, execute)
                 note_damage_mana(targets)
             echo = power * hero_taken * execute * sulfuras_echo_chance(stats["luck"])
             sources.add_exec("Sulfuras (удар)", echo, moment, execute)
+        procs.on_attack(moment, stats["crit"])
         next_attack = moment + interval(moment)
 
     total = sum(sources.values())
