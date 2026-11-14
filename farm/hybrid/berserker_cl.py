@@ -123,7 +123,8 @@ typedef struct {
   double luck, mana_max, mana_regen, cast_lock, hp;
   double cast_refund, cast_refund_flat, cast_refund_mastery, attack_mana, attack_mana_pct, attack_mana_crit, damage_mana_pct;
   double ex_thr[MAXE], ex_pct[MAXE];
-  int nexec, targets, glass;
+  double spell_mult;
+  int nexec, targets, glass, spell_crit;
   uint tmask, gmask;
   ulong mask;
 } Row;
@@ -570,6 +571,11 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
         if (s.armed) {
           s.armed = 0;
           double splash = agi * (1.0 + r->magic_add) * gen_mult(r, moment) * taken * execute * (double)targets;
+          if (r->spell_crit) {
+            double rating = r->spell_mult + r->rating;
+            if (SP_HEAD) rating += 0.10 + 0.008 * r->mastery;
+            splash *= crit_factor(attack_crit(r, &s, moment), rating);
+          }
           add_src(&s, N_SULF, splash * fury_mult);
           damage_mana(r, &s, (double)targets);
         }
@@ -649,7 +655,8 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   double damage = 0.0;
   double crit = (double)pts[6];
   double rating = 0.0, haste = 0.0, aspd = 0.0, magic_add = 0.0, phys_add = 0.0, mana_flat = 0.0, health_flat = 0.0;
-  double armor_pen = 0.0, auto_pct = 1.0, attack_potency = 1.0;
+  double armor_pen = 0.0, auto_pct = 1.0, attack_potency = 1.0, spell_mult = 1.50;
+  int spell_crit = 0;
   double luck = 0.01 * (double)pts[9];
   haste += 0.01 * (double)pts[3];
   aspd += 0.02 * (double)pts[4];
@@ -695,6 +702,8 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
       if (u[10] > 0.0) { r->ex_thr[nexec] = u[9]; r->ex_pct[nexec] = u[10]; nexec++; }
       auto_pct += u[8];
       if (u[2] != 0.0) attack_potency = 2.0;
+      if (u[11] != 0.0) spell_crit = 1;
+      if (u[12] != 0.0) spell_mult = 1.65;
       mana_flat += f[10];
       for (int j = 0; j < 4; j++) luck += a[5 + j];
       for (int j = 0; j < 4; j++) health_flat += a[9 + j];
@@ -754,6 +763,7 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   r->crit = crit; r->rating = rating; r->haste = haste; r->aspd = aspd;
   r->magic_add = magic_add; r->phys_add = phys_add; r->hemo = hemo; r->armor_pen = armor_pen;
   r->auto_pct = auto_pct; r->attack_potency = attack_potency;
+  r->spell_crit = spell_crit; r->spell_mult = spell_mult;
   r->cd_temp = cd_temp; r->flat_cdr = flat_cdr; r->luck = luck; r->mana_max = mana_max; r->mana_regen = stat * 0.80;
   r->cast_lock = cast_lock; r->hp = hp;
   r->cast_refund = 1.0 - keep; r->cast_refund_flat = rflat; r->cast_refund_mastery = rmast;

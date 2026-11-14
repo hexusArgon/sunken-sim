@@ -774,7 +774,7 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
       if (s.armed) {
         s.armed = 0;
         double splash = s.strength * typed(r, 1, moment) * taken(r, &s, 0, moment) * execute * (double)s.targets;
-        splash *= crit_factor(r->crit, 2.0 + r->rating);
+        if (r->spell_crit) splash *= crit_factor(r->crit, r->spell_mult + r->rating);
         add_src(&s, N_SULF, splash);
         note_damage_mana(r, &s, (double)s.targets);
       }

@@ -822,6 +822,9 @@ def simulate(build: Build, targets: int = 5, spec: str = "havoc") -> Report:
             armor = armor_taken(DUMMY_ARMOR - stats["armor_pen"])
             if sulfuras.attack():
                 splash = agi * (1.0 + stats["magic_add"]) * (1.15 if stats["glass"] else 1.0) * armor * execute * targets
+                # Magical hero damage: only Nightfall / Netherspike spell crit, with the crit-block chance and rating bonuses (since 2026-11-14; before: none).
+                if stats["spell_crit"]:
+                    splash *= _crit_factor(crit_chance(), stats["spell_mult"] + stats["rating"])
                 sources.add_exec("Sulfuras", splash, moment, execute)
                 note_damage_mana(targets)
             echo = power * armor * execute * sulfuras_echo_chance(stats["luck"])

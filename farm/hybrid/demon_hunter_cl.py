@@ -649,6 +649,7 @@ double fight(const Row* r, int* status_out) {
       if (s.armed) {
         s.armed = 0;
         double splash = r->agi * (1.0 + r->magic_add) * (r->glass ? 1.15 : 1.0) * armor * execute * (double)s.targets;
+        if (r->spell_crit) splash *= crit_factor(crit_chance(r, &s), r->spell_mult + r->rating);
         add_src(&s, N_SULF, splash);
         note_damage_mana(r, &s, (double)s.targets);
       }

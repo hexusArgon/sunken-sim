@@ -162,6 +162,8 @@ def stats_of(build: Build) -> dict[str, float]:
     attack_speed = 0.0
     damage_pct = 0.0
     armor_pen = 0.0
+    spell_crit = False
+    spell_mult = 1.50
     executes: list[tuple[float, float]] = []
     auto_pct = 1.0
     attack_potency = 1.0
@@ -219,6 +221,9 @@ def stats_of(build: Build) -> dict[str, float]:
             auto_pct += item.auto_pct
             if item.double_attack_potency:
                 attack_potency = 2.0
+            spell_crit = spell_crit or item.spell_crit
+            if item.spell_crit and "65%" in item.tip:
+                spell_mult = 1.65
             damage_pct += item.damage_pct / 100.0
             mana_flat += item.mana
             luck += item_luck(item)  # stat-line luck only (shadow.item_luck)
@@ -294,6 +299,8 @@ def stats_of(build: Build) -> dict[str, float]:
         "phys_add": phys_add,
         "hemotoxin_add": phys_add_hemo,
         "armor_pen": armor_pen,
+        "spell_crit": 1.0 if spell_crit else 0.0,
+        "spell_mult": spell_mult,
         "executes": executes,
         "auto_pct": auto_pct,
         "attack_potency": attack_potency,
@@ -698,6 +705,13 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
                 taken = taken_for(0, moment)
                 if sulfuras.attack():
                     splash = agi * (1.0 + stats["magic_add"]) * generic(moment) * taken * execute * targets
+                    # Magical hero damage: only Nightfall / Netherspike spell crit, with the crit-block chance and rating bonuses (since 2026-11-14; before: none).
+                    # PreDamage_Increase Func043: Boneslicer chance and the Headhunter rating apply to it too.
+                    if stats["spell_crit"]:
+                        rating = stats["spell_mult"] + stats["rating"]
+                        if spec == "headhunter":
+                            rating += 0.10 + 0.008 * mastery
+                        splash *= _crit_factor(attack_crit(moment), rating)
                     sources.add_exec("Sulfuras", splash * fury_mult, moment, execute)
                     note_damage_mana(targets)
                 echo = power * taken * execute * sulfuras_echo_chance(stats["luck"])

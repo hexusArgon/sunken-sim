@@ -946,7 +946,9 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[bool, bool]) 
             execute = _execute_factor(stats, moment)
             if sulfuras.attack():
                 splash = strength * typed("magical", moment) * taken(0, moment) * execute * targets
-                splash *= _crit_factor(stats["crit"], 2.0 + stats["rating"])
+                # Magical hero damage: only Nightfall / Netherspike spell crit, with the crit-block chance and rating bonuses (since 2026-11-14; before: attack crit).
+                if stats["spell_crit"]:
+                    splash *= _crit_factor(stats["crit"], stats["spell_mult"] + stats["rating"])
                 sources.add_exec("Sulfuras", splash, moment, execute)
                 note_damage_mana(targets)
             echo = power * taken(0, moment) * execute * sulfuras_echo_chance(stats["luck"])
