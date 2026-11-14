@@ -152,11 +152,11 @@ KERNEL = r"""
 typedef struct {
   double str, agi, intel, potency, mastery, damage, crit, rating, haste, aspd;
   double magic_add, phys_add, armor_pen, auto_pct, attack_potency, cd_temp, flat_cdr;
-  double luck, mana_max, mana_regen, cast_lock, pet_damage, summon_crit, summon_rating;
+  double luck, mana_max, mana_regen, cast_lock, pet_damage, summon_crit, summon_rating, spell_mult;
   double cast_refund, cast_refund_flat, cast_refund_mastery, attack_mana, attack_mana_pct, attack_mana_crit, damage_mana_pct;
   double ex_thr[MAXE], ex_pct[MAXE];
   __global const double* negt;
-  int nexec, targets, glass;
+  int nexec, targets, glass, spell_crit;
   uint tmask, gmask;
   ulong mask;
 } Row;
@@ -697,7 +697,12 @@ double fight(const Row* r, int* status_out) {
       double taken = taken_for(&s, 0, moment, 1);
       if (s.armed) {
         s.armed = 0;
-        double splash_w = r->agi * taken * (double)s.targets;
+        double cf = 1.0;
+        if (r->spell_crit) {
+          double extra = TM(r, T_UNMAT) ? (0.25 + 0.15 * hero_crit(r, &s, moment) / 100.0) : 0.0;
+          cf = crit_factor(hero_crit(r, &s, moment), r->spell_mult + r->rating + extra);
+        }
+        double splash_w = r->agi * cf * taken * (double)s.targets;
         if (splash_w != 0.0) emit(r, &s, N_SULF, moment, splash_w, KD_MAG);
         note_damage_mana(r, &s, (double)s.targets);
       }
@@ -769,7 +774,8 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   double damage = 0.0;
   double crit = (double)pts[6];
   double rating = 0.0, haste = 0.0, aspd = 0.0, magic_add = 0.0, phys_add = 0.0, mana_flat = 0.0, health_flat = 0.0;
-  double armor_pen = 0.0, auto_pct = 1.0, attack_potency = 1.0, pet_damage = 0.0;
+  double armor_pen = 0.0, auto_pct = 1.0, attack_potency = 1.0, pet_damage = 0.0, spell_mult = 1.50;
+  int spell_crit = 0;
   double luck = 0.01 * (double)pts[9];
   haste += 0.01 * (double)pts[3];
   aspd += 0.02 * (double)pts[4];
@@ -817,6 +823,8 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
       auto_pct += u[8];
       if (u[2] != 0.0) attack_potency = 2.0;
       mana_flat += f[10];
+      if (u[11] != 0.0) spell_crit = 1;
+      if (u[12] != 0.0) spell_mult = 1.65;
       for (int j = 0; j < 4; j++) luck += a[5 + j];
       for (int j = 0; j < 4; j++) health_flat += a[9 + j];
       for (int j = 0; j < 4; j++) pet_damage += a[13 + j];
@@ -880,6 +888,7 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   r->nexec = nexec; r->targets = targets;
   r->glass = (GM(r, G_GLASS) || (mask & S_GLAS)) ? 1 : 0;
   r->negt = T->negt;
+  r->spell_crit = spell_crit; r->spell_mult = spell_mult;
 }
 
 double row_value(Tab* T, long index, uint tmask, uint gmask, const int* pts, int targets, int* status, int* group) {

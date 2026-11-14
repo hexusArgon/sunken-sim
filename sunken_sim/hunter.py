@@ -232,6 +232,8 @@ def stats_of(build: Build) -> dict[str, float]:
     mana_flat = 0.0
     health_flat = 0.0
     pet_damage = 0.0
+    spell_crit = False
+    spell_mult = 1.50
     luck = 0.01 * build.luck_points
     # ESC menu (beyond crit/potency/luck/mastery)
     _esc_haste = 0.01 * getattr(build, "haste_points", 0)
@@ -285,6 +287,9 @@ def stats_of(build: Build) -> dict[str, float]:
                 attack_potency = 2.0
             damage_pct += item.damage_pct / 100.0
             mana_flat += item.mana
+            spell_crit = spell_crit or item.spell_crit
+            if item.spell_crit and "65%" in item.tip:
+                spell_mult = 1.65
             luck += item_luck(item)  # stat lines only (before 2026-11-14: any "+N% Luck" in the tooltip)
             for raw in re.findall(r"\+(\d+) Health\b", item.tip):
                 health_flat += int(raw)
@@ -365,6 +370,8 @@ def stats_of(build: Build) -> dict[str, float]:
         "pet_damage": pet_damage,
         "summon_crit": summon_crit,
         "summon_rating": summon_rating,
+        "spell_crit": 1.0 if spell_crit else 0.0,
+        "spell_mult": spell_mult,
         "glass": 1.0 if _has(build, GLYPH_GLASS) or GLYPH_GLASS in codes else 0.0,
         "spellbinder": 1.0 if SPELLBINDER in codes else 0.0,
         "sulfuron": 1.0 if SULFURON_GLOVES in codes else 0.0,
@@ -938,7 +945,13 @@ def simulate(build: Build, targets: int = 5, spec: str = "marksmanship") -> Repo
         if sulfuras is not None:
             taken = taken_for(0, moment)
             if sulfuras.attack():
-                splash_w = agi * taken * targets
+                # Magical-type hero damage: Nightfall / Netherspike spell crit (PreDamage_Increase; since 2026-11-14).
+                # Every Hunter ability is physical or an attack, so this splash is the only spell-crit hit.
+                cf = 1.0
+                if stats["spell_crit"]:
+                    extra = (0.25 + 0.15 * hero_crit(moment) / 100.0) if has(TALENT_UNMATCHED) else 0.0
+                    cf = _crit_factor(hero_crit(moment), stats["spell_mult"] + stats["rating"] + extra)
+                splash_w = agi * cf * taken * targets
                 add_event(moment, "Sulfuras", splash_w, KIND_MAG)
                 note_damage_mana(targets)
             echo_w = power * taken * sulfuras_echo_chance(stats["luck"])

@@ -116,5 +116,6 @@ Bestial Wrath на питомце: Inner Fire ×(1 + 0,33), вне BM — пол
 ## Изменения 2026-11-14
 
 - Battle Frenzy и Silent Messenger — проки боя (`sunken_sim.attack_procs`), как у остальных GPU-классов. До этого Battle Frenzy был плоскими +10% скорости атаки, Silent Messenger не учитывался.
+- Крит заклинаний (Nightfall ×1,65, Netherspike ×1,50, + рейтинг) на всплеске Sulfuras: это единственный магический урон героя. Все способности Hunter карта наносит физическим уроном или атакой (`PreDamage_Dummies` перенаправляет урон дамми на героя), поэтому крит заклинаний на них не действует. На сборках Sulfuras + Nightfall в среднем +1,7…+3,7% DPS, максимум +8%.
 - Удача с вещей — только строки статов (`shadow.item_luck`), как у остальных классов (Cenarion Helm: 10% вместо 18%).
 - GPU: точное ядро `farm/hybrid/hunter_cl.py` (float64, бит в бит с симом). Отрицательная броня цели (Elemental Orb + Silent Messenger под Sting и раной) берётся из таблицы значений `shadow.armor_taken`, без возврата строки в Python.
