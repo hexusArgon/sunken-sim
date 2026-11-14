@@ -181,6 +181,32 @@ def character_tables(space, items: dict, sources: dict, special_bits: dict, tale
     }
 
 
+_UNRANK_HEAD = "  int item = 0, slots = 6, leg = 0, orb = 0, amp = 0, guard = 0, k = 0;\n"
+_UNRANK_GUARD = "    if (++guard > 100000 || item >= T->npieces || k > 6) return 1;\n"
+_UNRANK_TAIL = "  return (rank != 0 || k != 6) ? 1 : 0;\n}"
+
+
+def forced_kernel(source: str, space) -> str:
+    """The kernel for farm.forced_pair.ForcedPieces: unrank the free slots from the pool (the first
+    space.n_free pieces) with the flags the forced items take, then append the forced pieces."""
+    for part in (_UNRANK_HEAD, _UNRANK_GUARD, _UNRANK_TAIL):
+        if source.count(part) != 1:
+            raise ValueError("kernel unrank does not have the shared form: no forced items for it")
+    leg, orb, amp = space.start_flags
+    forced = list(space.forced_indices)
+    pick = " ".join(f"if (f == {i}) return {p};" for i, p in enumerate(forced))
+    source = source.replace(_UNRANK_HEAD, f"  int item = 0, slots = {space.free_slots}, leg = {leg}, orb = {orb}, amp = {amp}, "
+                                          "guard = 0, k = 0;\n")
+    source = source.replace(_UNRANK_GUARD, f"    if (++guard > 100000 || item >= {space.n_free} || k > 6) return 1;\n")
+    source = source.replace(_UNRANK_TAIL, f"  if (rank != 0 || k != {space.free_slots}) return 1;\n"
+                                          f"  for (int f = 0; f < {len(forced)}; f++) chosen[k++] = forced_piece(f);\n"
+                                          "  return 0;\n}")
+    head = "int unrank(Tab* T, long index, int* chosen) {"
+    if source.count(head) != 1:
+        raise ValueError("kernel unrank signature")
+    return source.replace(head, f"int forced_piece(int f) {{ {pick} return -1; }}\n\n" + head)
+
+
 def mask_of(codes, bits: dict, no_effect: set) -> int:
     mask = 0
     for c in codes:
@@ -224,8 +250,11 @@ class ExactCL:
         opts = ["-cl-std=CL1.2", f"-DSPEC={self.SPECS[spec]}"]
         if os.environ.get("FARM_CL_NOINLINE", "").strip() == "1":
             opts.append("-DNOINLINE=1")
-        self.p_bare = cl.Program(self.ctx, self.KERNEL).build(options=opts + ["-DTALENTS=0"])
-        self.p_full = cl.Program(self.ctx, self.KERNEL).build(options=opts + ["-DTALENTS=1"])
+        source = self.KERNEL
+        if getattr(space, "forced_indices", None):
+            source = forced_kernel(source, space)
+        self.p_bare = cl.Program(self.ctx, source).build(options=opts + ["-DTALENTS=0"])
+        self.p_full = cl.Program(self.ctx, source).build(options=opts + ["-DTALENTS=1"])
         self.k_bare = cl.Kernel(self.p_bare, "cls_bare")
         self.k_rows = cl.Kernel(self.p_full, "cls_rows")
         self.targets = int(targets)

@@ -43,6 +43,21 @@ def load(hero: str, spec: str, pool: str, preset: str | None = None, top: int | 
     cached = _MEMORY.get(key)
     if cached is not None:
         return cached
+    if preset and preset.startswith("force:"):
+        # top-N pool with these items always worn (farm.forced_pair), e.g. "force:I0BR+I04F"
+        from farm.forced_pair import ForcedPieces
+
+        if not top:
+            raise RuntimeError("для force: нужен top")
+        base, items = load(hero, spec, pool, None, top)
+        forced = tuple(code for code in preset[len("force:"):].split("+") if code)
+        space = ForcedPieces(base.pieces, base.talents, base.glyphs, forced=forced,
+                             picks_without=base.picks_without, picks_with=base.picks_with,
+                             glyph_picks=base.glyph_picks, talent_names=base.talent_names,
+                             glyph_names=base.glyph_names)
+        print(f"пространство {hero} {spec} {pool} {preset}: {grouped(space.total)} чанков", flush=True)
+        _MEMORY[key] = (space, items)
+        return space, items
     space, items = _from_disk(hero, spec, pool, preset, top)
     _MEMORY[key] = (space, items)
     return space, items

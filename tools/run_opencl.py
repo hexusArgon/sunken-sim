@@ -31,6 +31,8 @@ def main() -> int:
     ap.add_argument("--hero", required=True, choices=("mage", "priest", "shaman", "paladin", "druid", "berserker", "death_knight", "demon_hunter", "dragon_sentinel", "feral_druid", "hunter"))
     ap.add_argument("--spec", required=True)
     ap.add_argument("--top", type=int, default=80)
+    ap.add_argument("--preset", default="",
+                    help="catalog preset, e.g. force:I0BR+I04F = the top-N pool with these items always worn")
     ap.add_argument("--workers", type=int, default=4, help="worker processes, each with its own OpenCL context")
     ap.add_argument("--span", type=int, default=16384,
                     help="chunks per span; admitted chunks bunch at the start, small spans share their refinement")
@@ -59,14 +61,14 @@ def main() -> int:
     from farm.catalog import load
     from farm.hybrid import runner as H
 
-    space, _items = load(args.hero, args.spec, "mixed", None, args.top)
+    space, _items = load(args.hero, args.spec, "mixed", args.preset or None, args.top)
     job_path = data / "job.json"
     if job_path.exists():
         job = json.loads(job_path.read_text(encoding="utf-8"))
     else:
         job = dict(id=data.name, worker="local-hybrid", hero=args.hero, spec=args.spec, pool="mixed", top=args.top,
                    targets=args.targets, start=0, end=space.total - 1, admission_policy=gate,
-                   backend="opencl")
+                   backend="opencl", preset=args.preset or None)
         job_path.write_text(json.dumps(job, ensure_ascii=False, indent=2), encoding="utf-8")
     job.update(fire_cl_workers=args.workers, fire_cl_span=args.span)
     total = int(job["end"]) - int(job["start"]) + 1
