@@ -4,8 +4,8 @@
  "hero": "demon_hunter",
  "spec": "vengeance",
  "top": 150,
- "farm_file": "../../sessions/rcw-01dggafd7ettcq4v2v4lcdlh/mnt/sunken-sim-runs/demon_hunter-vengeance-opencl-top150-gate50-1113/results/local-hybrid-demon_hunter-vengeance-mixed-top150-5-0-14721239623-admission-v2-bare-top50-9bfa63b65ff8cd78.json",
- "done": 14721239624,
+ "farm_file": "../../sessions/rcw-01dggafd7ettcq4v2v4lcdlh/mnt/sunken-sim-runs/demon_hunter-vengeance-merged-1114/results/merged-top150-sulfuras.json",
+ "done": 15207209416,
  "end": 14721239623,
  "errors": 0,
  "stopped": false,
@@ -45,11 +45,6 @@
     "orb_mode": null,
     "items": [
      {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
       "name": "Unbound Power Core",
       "code": "I0FW",
       "source": "shop"
@@ -73,6 +68,11 @@
       "name": "The Darkglaive",
       "code": "fgrd",
       "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
      }
     ],
     "talents": [
@@ -98,7 +98,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 230852320,
+    "chunk": 4342232,
     "sources": [
      [
       "Immolation Aura",
@@ -312,11 +312,6 @@
     "orb_mode": null,
     "items": [
      {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
       "name": "Unbound Power Core",
       "code": "I0FW",
       "source": "shop"
@@ -340,6 +335,11 @@
       "name": "The Darkglaive",
       "code": "fgrd",
       "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
      }
     ],
     "talents": [
@@ -365,7 +365,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 230803851,
+    "chunk": 4293763,
     "sources": [
      [
       "Immolation Aura",
@@ -838,11 +838,6 @@
     "orb_mode": null,
     "items": [
      {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
       "name": "Staff of Galactic Fury",
       "code": "I0JO",
       "source": "shop"
@@ -866,6 +861,11 @@
       "name": "The Darkglaive",
       "code": "fgrd",
       "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
      }
     ],
     "talents": [
@@ -891,7 +891,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 227232310,
+    "chunk": 722222,
     "sources": [
      [
       "Immolation Aura",
@@ -1098,6 +1098,277 @@
      "Animosity": 2484.7,
      "Glass Cannon": 2716.6,
      "Mindhaste": 2531.2
+    }
+   },
+   {
+    "farm_dps": 2715.5,
+    "dps": 2715.5,
+    "total": 81465,
+    "manaLeft": 54.3,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Deceiver's Warglaive",
+      "code": "I0V5",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Chaos Nova",
+     "Enduring Torment",
+     "Felfire"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 3,
+     "attack_speed": 0,
+     "damage": 6,
+     "crit": 1,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 36003133,
+    "sources": [
+     [
+      "Immolation Aura",
+      1191.7
+     ],
+     [
+      "Chaos Nova",
+      451.7
+     ],
+     [
+      "Автоатака",
+      337.5
+     ],
+     [
+      "Всплеск огня",
+      336.1
+     ],
+     [
+      "Sulfuras",
+      306.4
+     ],
+     [
+      "The Hunt",
+      76.4
+     ],
+     [
+      "Sulfuras (удар)",
+      15.8
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Metamorphosis"
+     ],
+     [
+      "0.45",
+      "Demon Spikes"
+     ],
+     [
+      "0.90",
+      "The Hunt"
+     ],
+     [
+      "1.35",
+      "Immolation Aura"
+     ],
+     [
+      "1.80",
+      "Inner Demon"
+     ],
+     [
+      "9.76",
+      "Demon Spikes"
+     ],
+     [
+      "10.21",
+      "The Hunt"
+     ],
+     [
+      "10.66",
+      "Immolation Aura"
+     ],
+     [
+      "12.98",
+      "Inner Demon"
+     ],
+     [
+      "19.08",
+      "Demon Spikes"
+     ],
+     [
+      "19.53",
+      "The Hunt"
+     ],
+     [
+      "19.98",
+      "Immolation Aura"
+     ],
+     [
+      "24.15",
+      "Inner Demon"
+     ],
+     [
+      "28.39",
+      "Demon Spikes"
+     ],
+     [
+      "28.84",
+      "The Hunt"
+     ],
+     [
+      "29.29",
+      "Immolation Aura"
+     ]
+    ],
+    "stats": [
+     [
+      "Ловкость",
+      "192"
+     ],
+     [
+      "Сила",
+      "34"
+     ],
+     [
+      "Интеллект",
+      "39"
+     ],
+     [
+      "Урон автоатаки",
+      "197.0"
+     ],
+     [
+      "Potency",
+      "14.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "1%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "31.0%"
+     ],
+     [
+      "Скорость атаки",
+      "119.8%"
+     ],
+     [
+      "Удача",
+      "4%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "760"
+     ],
+     [
+      "Мана макс.",
+      "393"
+     ],
+     [
+      "Реген маны",
+      "4.08/с"
+     ],
+     [
+      "Мана в конце",
+      "54%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "0.77 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Fallout": 2475.0,
+     "Chaos Nova": 2715.5,
+     "Chaos Blade": 2538.2,
+     "Singularity": 2467.1,
+     "Chains of Anguish": 2460.0,
+     "Enduring Torment": 2715.5,
+     "Felfire": 2715.5,
+     "Incubus": 2630.2,
+     "Void Glaive": 2492.8
+    },
+    "glyphDps": {
+     "Fortitude": 2715.5,
+     "Unsealed Power": 2715.5,
+     "Fortune": 2459.5,
+     "Supremacy": 2457.3,
+     "Arc Striking": 2457.3,
+     "Battle Frenzy": 2468.2,
+     "Hellfire": 2457.3,
+     "Thunder": 2457.3,
+     "Blood Violence": 2457.3,
+     "Animosity": 2498.0,
+     "Glass Cannon": 2715.5,
+     "Mindhaste": 2351.9
     }
    },
    {
@@ -1368,11 +1639,6 @@
     "orb_mode": null,
     "items": [
      {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
       "name": "Unbound Power Core",
       "code": "I0FW",
       "source": "shop"
@@ -1396,6 +1662,11 @@
       "name": "The Darkglaive",
       "code": "fgrd",
       "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
      }
     ],
     "talents": [
@@ -1421,7 +1692,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 230801800,
+    "chunk": 4291712,
     "sources": [
      [
       "Immolation Aura",
@@ -1635,11 +1906,6 @@
     "orb_mode": null,
     "items": [
      {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
       "name": "Unbound Power Core",
       "code": "I0FW",
       "source": "shop"
@@ -1663,6 +1929,11 @@
       "name": "Deceiver's Warglaive",
       "code": "I0V5",
       "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
      }
     ],
     "talents": [
@@ -1688,7 +1959,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 230803867,
+    "chunk": 4293779,
     "sources": [
      [
       "Immolation Aura",
@@ -1898,11 +2169,6 @@
     "orb_mode": null,
     "items": [
      {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
       "name": "Unbound Power Core",
       "code": "I0FW",
       "source": "shop"
@@ -1926,6 +2192,11 @@
       "name": "Deceiver's Warglaive",
       "code": "I0V5",
       "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
      }
     ],
     "talents": [
@@ -1951,7 +2222,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 230857592,
+    "chunk": 4347504,
     "sources": [
      [
       "Immolation Aura",
@@ -2410,2942 +2681,13 @@
      "Glass Cannon": 2656.6,
      "Mindhaste": 2461.0
     }
-   },
-   {
-    "farm_dps": 2656.3,
-    "dps": 2656.3,
-    "total": 79690,
-    "manaLeft": 59.4,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Elemental Orb",
-      "code": "I07O",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Enduring Torment",
-     "Felfire"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 3,
-     "crit": 7,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 611372963,
-    "sources": [
-     [
-      "Immolation Aura",
-      1132.7
-     ],
-     [
-      "Chaos Nova",
-      413.5
-     ],
-     [
-      "Всплеск огня",
-      402.0
-     ],
-     [
-      "Автоатака",
-      325.8
-     ],
-     [
-      "Sulfuras",
-      289.2
-     ],
-     [
-      "The Hunt",
-      75.7
-     ],
-     [
-      "Sulfuras (удар)",
-      17.5
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "10.14",
-      "Demon Spikes"
-     ],
-     [
-      "10.59",
-      "The Hunt"
-     ],
-     [
-      "11.04",
-      "Immolation Aura"
-     ],
-     [
-      "13.42",
-      "Inner Demon"
-     ],
-     [
-      "19.82",
-      "Demon Spikes"
-     ],
-     [
-      "20.27",
-      "The Hunt"
-     ],
-     [
-      "20.73",
-      "Immolation Aura"
-     ],
-     [
-      "25.05",
-      "Inner Demon"
-     ],
-     [
-      "29.51",
-      "Demon Spikes"
-     ],
-     [
-      "29.96",
-      "The Hunt"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "233"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "212.8"
-     ],
-     [
-      "Potency",
-      "14.0"
-     ],
-     [
-      "Mastery",
-      "10"
-     ],
-     [
-      "Шанс крита",
-      "7%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "28.0%"
-     ],
-     [
-      "Скорость атаки",
-      "136.2%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+48%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "393"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "59%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.72 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.240"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2397.4,
-     "Chaos Nova": 2656.3,
-     "Chaos Blade": 2472.8,
-     "Singularity": 2381.4,
-     "Chains of Anguish": 2373.3,
-     "Enduring Torment": 2656.3,
-     "Felfire": 2656.3,
-     "Incubus": 2553.6,
-     "Void Glaive": 2456.3
-    },
-    "glyphDps": {
-     "Fortitude": 2656.3,
-     "Unsealed Power": 2656.3,
-     "Fortune": 2376.8,
-     "Supremacy": 2374.2,
-     "Arc Striking": 2374.2,
-     "Battle Frenzy": 2481.2,
-     "Hellfire": 2374.2,
-     "Thunder": 2374.2,
-     "Blood Violence": 2374.2,
-     "Animosity": 2412.5,
-     "Glass Cannon": 2656.3,
-     "Mindhaste": 2569.4
-    }
-   },
-   {
-    "farm_dps": 2652.2,
-    "dps": 2652.2,
-    "total": 79566,
-    "manaLeft": 59.4,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Enduring Torment",
-     "Felfire"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 3,
-     "crit": 7,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 231162862,
-    "sources": [
-     [
-      "Immolation Aura",
-      1332.6
-     ],
-     [
-      "Chaos Nova",
-      486.5
-     ],
-     [
-      "Автоатака",
-      383.3
-     ],
-     [
-      "Sulfuras",
-      340.2
-     ],
-     [
-      "The Hunt",
-      89.0
-     ],
-     [
-      "Sulfuras (удар)",
-      20.6
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "10.14",
-      "Demon Spikes"
-     ],
-     [
-      "10.59",
-      "The Hunt"
-     ],
-     [
-      "11.04",
-      "Immolation Aura"
-     ],
-     [
-      "13.42",
-      "Inner Demon"
-     ],
-     [
-      "19.82",
-      "Demon Spikes"
-     ],
-     [
-      "20.27",
-      "The Hunt"
-     ],
-     [
-      "20.73",
-      "Immolation Aura"
-     ],
-     [
-      "25.05",
-      "Inner Demon"
-     ],
-     [
-      "29.51",
-      "Demon Spikes"
-     ],
-     [
-      "29.96",
-      "The Hunt"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "233"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "212.8"
-     ],
-     [
-      "Potency",
-      "14.0"
-     ],
-     [
-      "Mastery",
-      "10"
-     ],
-     [
-      "Шанс крита",
-      "7%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "28.0%"
-     ],
-     [
-      "Скорость атаки",
-      "136.2%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+48%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "393"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "59%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.72 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.240"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "6"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2355.0,
-     "Chaos Nova": 2652.2,
-     "Chaos Blade": 2436.3,
-     "Singularity": 2328.7,
-     "Chains of Anguish": 2319.2,
-     "Enduring Torment": 2652.2,
-     "Felfire": 2652.2,
-     "Incubus": 2531.4,
-     "Void Glaive": 2354.7
-    },
-    "glyphDps": {
-     "Fortitude": 2652.2,
-     "Unsealed Power": 2652.2,
-     "Fortune": 2323.3,
-     "Supremacy": 2320.3,
-     "Arc Striking": 2320.3,
-     "Battle Frenzy": 2383.9,
-     "Hellfire": 2320.3,
-     "Thunder": 2320.3,
-     "Blood Violence": 2320.3,
-     "Animosity": 2365.4,
-     "Glass Cannon": 2652.2,
-     "Mindhaste": 2537.5
-    }
-   },
-   {
-    "farm_dps": 2650.4,
-    "dps": 2650.4,
-    "total": 79511,
-    "manaLeft": 54.3,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Staff of Galactic Fury",
-      "code": "I0JO",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Felfire",
-     "Incubus"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 2,
-     "attack_speed": 0,
-     "damage": 8,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 230857576,
-    "sources": [
-     [
-      "Immolation Aura",
-      1171.4
-     ],
-     [
-      "Chaos Nova",
-      606.4
-     ],
-     [
-      "Sulfuras",
-      486.6
-     ],
-     [
-      "Автоатака",
-      267.4
-     ],
-     [
-      "The Hunt",
-      103.3
-     ],
-     [
-      "Sulfuras (удар)",
-      15.3
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "9.07",
-      "Demon Spikes"
-     ],
-     [
-      "9.52",
-      "The Hunt"
-     ],
-     [
-      "9.97",
-      "Immolation Aura"
-     ],
-     [
-      "12.14",
-      "Inner Demon"
-     ],
-     [
-      "17.68",
-      "Demon Spikes"
-     ],
-     [
-      "18.13",
-      "The Hunt"
-     ],
-     [
-      "18.58",
-      "Immolation Aura"
-     ],
-     [
-      "22.48",
-      "Inner Demon"
-     ],
-     [
-      "26.30",
-      "Demon Spikes"
-     ],
-     [
-      "26.75",
-      "The Hunt"
-     ],
-     [
-      "27.20",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "194"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "193.5"
-     ],
-     [
-      "Potency",
-      "14.0"
-     ],
-     [
-      "Mastery",
-      "20"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "30.0%"
-     ],
-     [
-      "Скорость атаки",
-      "120.6%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+98%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "393"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "54%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.92 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.120"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "6"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2455.1,
-     "Chaos Nova": 2650.4,
-     "Chaos Blade": 2505.3,
-     "Singularity": 2463.6,
-     "Chains of Anguish": 2440.7,
-     "Enduring Torment": 2632.7,
-     "Felfire": 2650.4,
-     "Incubus": 2650.4,
-     "Void Glaive": 2454.4
-    },
-    "glyphDps": {
-     "Fortitude": 2650.4,
-     "Unsealed Power": 2650.4,
-     "Fortune": 2396.3,
-     "Supremacy": 2394.1,
-     "Arc Striking": 2394.1,
-     "Battle Frenzy": 2430.7,
-     "Hellfire": 2394.1,
-     "Thunder": 2394.1,
-     "Blood Violence": 2394.1,
-     "Animosity": 2425.3,
-     "Glass Cannon": 2650.4,
-     "Mindhaste": 2433.3
-    }
-   },
-   {
-    "farm_dps": 2648.5,
-    "dps": 2648.5,
-    "total": 79454,
-    "manaLeft": 54.3,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Elemental Orb",
-      "code": "I07O",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Tormentor's Visage",
-      "code": "I0V4",
-      "source": "drop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Enduring Torment",
-     "Felfire"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 2,
-     "crit": 8,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 598711970,
-    "sources": [
-     [
-      "Immolation Aura",
-      1362.9
-     ],
-     [
-      "Chaos Nova",
-      512.3
-     ],
-     [
-      "Всплеск огня",
-      347.3
-     ],
-     [
-      "Автоатака",
-      338.3
-     ],
-     [
-      "The Hunt",
-      87.7
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "9.77",
-      "Demon Spikes"
-     ],
-     [
-      "10.22",
-      "The Hunt"
-     ],
-     [
-      "10.67",
-      "Immolation Aura"
-     ],
-     [
-      "12.99",
-      "Inner Demon"
-     ],
-     [
-      "19.10",
-      "Demon Spikes"
-     ],
-     [
-      "19.55",
-      "The Hunt"
-     ],
-     [
-      "20.00",
-      "Immolation Aura"
-     ],
-     [
-      "24.18",
-      "Inner Demon"
-     ],
-     [
-      "28.42",
-      "Demon Spikes"
-     ],
-     [
-      "28.87",
-      "The Hunt"
-     ],
-     [
-      "29.32",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "223"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "203.2"
-     ],
-     [
-      "Potency",
-      "14.0"
-     ],
-     [
-      "Mastery",
-      "7"
-     ],
-     [
-      "Шанс крита",
-      "8%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "33.0%"
-     ],
-     [
-      "Скорость атаки",
-      "104.2%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+48%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "393"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "54%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.83 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.240"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2361.9,
-     "Chaos Nova": 2648.5,
-     "Chaos Blade": 2422.4,
-     "Singularity": 2348.7,
-     "Chains of Anguish": 2329.8,
-     "Enduring Torment": 2648.5,
-     "Felfire": 2648.5,
-     "Incubus": 2517.3,
-     "Void Glaive": 2350.1
-    },
-    "glyphDps": {
-     "Fortitude": 2648.5,
-     "Unsealed Power": 2648.5,
-     "Fortune": 2358.1,
-     "Supremacy": 2358.1,
-     "Arc Striking": 2358.1,
-     "Battle Frenzy": 2424.8,
-     "Hellfire": 2358.1,
-     "Thunder": 2358.1,
-     "Blood Violence": 2358.1,
-     "Animosity": 2398.0,
-     "Glass Cannon": 2648.5,
-     "Mindhaste": 2254.9
-    }
-   },
-   {
-    "farm_dps": 2640.0,
-    "dps": 2640.0,
-    "total": 79200,
-    "manaLeft": 54.3,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Elemental Orb",
-      "code": "I07O",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuron Gloves",
-      "code": "I0QT",
-      "source": "shop"
-     },
-     {
-      "name": "Tormentor's Visage",
-      "code": "I0V4",
-      "source": "drop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Enduring Torment",
-     "Felfire"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 7,
-     "crit": 3,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 598353307,
-    "sources": [
-     [
-      "Immolation Aura",
-      1383.4
-     ],
-     [
-      "Chaos Nova",
-      522.4
-     ],
-     [
-      "Автоатака",
-      358.3
-     ],
-     [
-      "Всплеск огня",
-      287.7
-     ],
-     [
-      "The Hunt",
-      88.2
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "9.62",
-      "Demon Spikes"
-     ],
-     [
-      "10.07",
-      "The Hunt"
-     ],
-     [
-      "10.52",
-      "Immolation Aura"
-     ],
-     [
-      "12.81",
-      "Inner Demon"
-     ],
-     [
-      "18.80",
-      "Demon Spikes"
-     ],
-     [
-      "19.25",
-      "The Hunt"
-     ],
-     [
-      "19.70",
-      "Immolation Aura"
-     ],
-     [
-      "23.82",
-      "Inner Demon"
-     ],
-     [
-      "27.97",
-      "Demon Spikes"
-     ],
-     [
-      "28.42",
-      "The Hunt"
-     ],
-     [
-      "28.87",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "182"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "191.5"
-     ],
-     [
-      "Potency",
-      "14.0"
-     ],
-     [
-      "Mastery",
-      "7"
-     ],
-     [
-      "Шанс крита",
-      "3%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "33.0%"
-     ],
-     [
-      "Скорость атаки",
-      "87.8%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+48%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "393"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "54%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.91 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.220"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2361.0,
-     "Chaos Nova": 2640.0,
-     "Chaos Blade": 2423.2,
-     "Singularity": 2353.7,
-     "Chains of Anguish": 2336.5,
-     "Enduring Torment": 2640.0,
-     "Felfire": 2640.0,
-     "Incubus": 2495.8,
-     "Void Glaive": 2355.1
-    },
-    "glyphDps": {
-     "Fortitude": 2640.0,
-     "Unsealed Power": 2640.0,
-     "Fortune": 2387.8,
-     "Supremacy": 2387.8,
-     "Arc Striking": 2387.8,
-     "Battle Frenzy": 2432.6,
-     "Hellfire": 2387.8,
-     "Thunder": 2387.8,
-     "Blood Violence": 2387.8,
-     "Animosity": 2431.1,
-     "Glass Cannon": 2640.0,
-     "Mindhaste": 2246.2
-    }
-   },
-   {
-    "farm_dps": 2632.1,
-    "dps": 2632.1,
-    "total": 78964,
-    "manaLeft": 64.9,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Tormentor's Visage",
-      "code": "I0V4",
-      "source": "drop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     },
-     {
-      "name": "Hood of Dark Deeds",
-      "code": "tgrh",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Enduring Torment",
-     "Felfire"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 1,
-     "damage": 9,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 230759971,
-    "sources": [
-     [
-      "Immolation Aura",
-      1352.7
-     ],
-     [
-      "Chaos Nova",
-      502.3
-     ],
-     [
-      "Автоатака",
-      348.0
-     ],
-     [
-      "Sulfuras",
-      329.6
-     ],
-     [
-      "The Hunt",
-      85.3
-     ],
-     [
-      "Sulfuras (удар)",
-      14.1
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "9.56",
-      "Demon Spikes"
-     ],
-     [
-      "10.01",
-      "The Hunt"
-     ],
-     [
-      "10.46",
-      "Immolation Aura"
-     ],
-     [
-      "12.73",
-      "Inner Demon"
-     ],
-     [
-      "18.66",
-      "Demon Spikes"
-     ],
-     [
-      "19.11",
-      "The Hunt"
-     ],
-     [
-      "19.56",
-      "Immolation Aura"
-     ],
-     [
-      "23.65",
-      "Inner Demon"
-     ],
-     [
-      "27.77",
-      "Demon Spikes"
-     ],
-     [
-      "28.22",
-      "The Hunt"
-     ],
-     [
-      "28.67",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "182"
-     ],
-     [
-      "Сила",
-      "28"
-     ],
-     [
-      "Интеллект",
-      "33"
-     ],
-     [
-      "Урон автоатаки",
-      "186.5"
-     ],
-     [
-      "Potency",
-      "14.0"
-     ],
-     [
-      "Mastery",
-      "17"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "23.0%"
-     ],
-     [
-      "Скорость атаки",
-      "102.8%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+68%"
-     ],
-     [
-      "Физический бонус",
-      "+38%"
-     ],
-     [
-      "Здоровье",
-      "670"
-     ],
-     [
-      "Мана макс.",
-      "551"
-     ],
-     [
-      "Реген маны",
-      "3.60/с"
-     ],
-     [
-      "Мана в конце",
-      "65%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.84 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.120"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2357.6,
-     "Chaos Nova": 2632.1,
-     "Chaos Blade": 2424.3,
-     "Singularity": 2356.2,
-     "Chains of Anguish": 2338.1,
-     "Enduring Torment": 2632.1,
-     "Felfire": 2632.1,
-     "Incubus": 2520.6,
-     "Void Glaive": 2301.3
-    },
-    "glyphDps": {
-     "Fortitude": 2632.1,
-     "Unsealed Power": 2632.1,
-     "Fortune": 2345.6,
-     "Supremacy": 2343.5,
-     "Arc Striking": 2343.5,
-     "Battle Frenzy": 2336.1,
-     "Hellfire": 2343.5,
-     "Thunder": 2343.5,
-     "Blood Violence": 2343.5,
-     "Animosity": 2385.3,
-     "Glass Cannon": 2632.1,
-     "Mindhaste": 2145.2
-    }
-   },
-   {
-    "farm_dps": 2628.8,
-    "dps": 2628.8,
-    "total": 78864,
-    "manaLeft": 54.3,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Elemental Orb",
-      "code": "I07O",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Tormentor's Visage",
-      "code": "I0V4",
-      "source": "drop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Felfire",
-     "Incubus"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 1,
-     "attack_speed": 0,
-     "damage": 9,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 611346862,
-    "sources": [
-     [
-      "Immolation Aura",
-      1058.5
-     ],
-     [
-      "Chaos Nova",
-      513.1
-     ],
-     [
-      "Всплеск огня",
-      330.7
-     ],
-     [
-      "Автоатака",
-      321.7
-     ],
-     [
-      "Sulfuras",
-      302.2
-     ],
-     [
-      "The Hunt",
-      87.3
-     ],
-     [
-      "Sulfuras (удар)",
-      15.3
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "8.81",
-      "Demon Spikes"
-     ],
-     [
-      "9.26",
-      "The Hunt"
-     ],
-     [
-      "9.71",
-      "Immolation Aura"
-     ],
-     [
-      "11.83",
-      "Inner Demon"
-     ],
-     [
-      "17.17",
-      "Demon Spikes"
-     ],
-     [
-      "17.62",
-      "The Hunt"
-     ],
-     [
-      "18.07",
-      "Immolation Aura"
-     ],
-     [
-      "21.86",
-      "Inner Demon"
-     ],
-     [
-      "25.52",
-      "Demon Spikes"
-     ],
-     [
-      "25.97",
-      "The Hunt"
-     ],
-     [
-      "26.42",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "188"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "191.0"
-     ],
-     [
-      "Potency",
-      "14.0"
-     ],
-     [
-      "Mastery",
-      "17"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "34.0%"
-     ],
-     [
-      "Скорость атаки",
-      "118.2%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+68%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "393"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "54%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.78 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.120"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2443.5,
-     "Chaos Nova": 2628.8,
-     "Chaos Blade": 2527.2,
-     "Singularity": 2439.0,
-     "Chains of Anguish": 2424.7,
-     "Enduring Torment": 2488.8,
-     "Felfire": 2628.8,
-     "Incubus": 2628.8,
-     "Void Glaive": 2441.3
-    },
-    "glyphDps": {
-     "Fortitude": 2628.8,
-     "Unsealed Power": 2628.8,
-     "Fortune": 2371.5,
-     "Supremacy": 2369.3,
-     "Arc Striking": 2369.3,
-     "Battle Frenzy": 2410.1,
-     "Hellfire": 2369.3,
-     "Thunder": 2369.3,
-     "Blood Violence": 2369.3,
-     "Animosity": 2406.9,
-     "Glass Cannon": 2628.8,
-     "Mindhaste": 2360.2
-    }
-   },
-   {
-    "farm_dps": 2622.5,
-    "dps": 2622.5,
-    "total": 78676,
-    "manaLeft": 54.3,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Staff of Galactic Fury",
-      "code": "I0JO",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     },
-     {
-      "name": "Arcpower Stone",
-      "code": "I0O5",
-      "source": "shop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Enduring Torment",
-     "Felfire"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 1,
-     "attack_speed": 0,
-     "damage": 6,
-     "crit": 3,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 230857980,
-    "sources": [
-     [
-      "Immolation Aura",
-      1329.3
-     ],
-     [
-      "Chaos Nova",
-      485.6
-     ],
-     [
-      "Sulfuras",
-      399.8
-     ],
-     [
-      "Автоатака",
-      307.7
-     ],
-     [
-      "The Hunt",
-      83.0
-     ],
-     [
-      "Sulfuras (удар)",
-      17.1
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "9.71",
-      "Demon Spikes"
-     ],
-     [
-      "10.16",
-      "The Hunt"
-     ],
-     [
-      "10.61",
-      "Immolation Aura"
-     ],
-     [
-      "12.91",
-      "Inner Demon"
-     ],
-     [
-      "18.96",
-      "Demon Spikes"
-     ],
-     [
-      "19.41",
-      "The Hunt"
-     ],
-     [
-      "19.86",
-      "Immolation Aura"
-     ],
-     [
-      "24.01",
-      "Inner Demon"
-     ],
-     [
-      "28.22",
-      "Demon Spikes"
-     ],
-     [
-      "28.67",
-      "The Hunt"
-     ],
-     [
-      "29.12",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "213"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "203.8"
-     ],
-     [
-      "Potency",
-      "14.0"
-     ],
-     [
-      "Mastery",
-      "20"
-     ],
-     [
-      "Шанс крита",
-      "3%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "21.0%"
-     ],
-     [
-      "Скорость атаки",
-      "128.2%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+48%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "393"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "54%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.89 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.120"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "6"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2305.6,
-     "Chaos Nova": 2622.5,
-     "Chaos Blade": 2358.8,
-     "Singularity": 2298.9,
-     "Chains of Anguish": 2285.1,
-     "Enduring Torment": 2622.5,
-     "Felfire": 2622.5,
-     "Incubus": 2511.8,
-     "Void Glaive": 2281.8
-    },
-    "glyphDps": {
-     "Fortitude": 2622.5,
-     "Unsealed Power": 2622.5,
-     "Fortune": 2298.6,
-     "Supremacy": 2296.1,
-     "Arc Striking": 2296.1,
-     "Battle Frenzy": 2319.8,
-     "Hellfire": 2296.1,
-     "Thunder": 2296.1,
-     "Blood Violence": 2296.1,
-     "Animosity": 2332.2,
-     "Glass Cannon": 2622.5,
-     "Mindhaste": 2120.9
-    }
-   },
-   {
-    "farm_dps": 2622.5,
-    "dps": 2622.5,
-    "total": 78676,
-    "manaLeft": 54.3,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Staff of Galactic Fury",
-      "code": "I0JO",
-      "source": "shop"
-     },
-     {
-      "name": "Arcpower Stone",
-      "code": "I0MT",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Enduring Torment",
-     "Felfire"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 1,
-     "attack_speed": 0,
-     "damage": 6,
-     "crit": 3,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 230861003,
-    "sources": [
-     [
-      "Immolation Aura",
-      1329.3
-     ],
-     [
-      "Chaos Nova",
-      485.6
-     ],
-     [
-      "Sulfuras",
-      399.8
-     ],
-     [
-      "Автоатака",
-      307.7
-     ],
-     [
-      "The Hunt",
-      83.0
-     ],
-     [
-      "Sulfuras (удар)",
-      17.1
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "9.71",
-      "Demon Spikes"
-     ],
-     [
-      "10.16",
-      "The Hunt"
-     ],
-     [
-      "10.61",
-      "Immolation Aura"
-     ],
-     [
-      "12.91",
-      "Inner Demon"
-     ],
-     [
-      "18.96",
-      "Demon Spikes"
-     ],
-     [
-      "19.41",
-      "The Hunt"
-     ],
-     [
-      "19.86",
-      "Immolation Aura"
-     ],
-     [
-      "24.01",
-      "Inner Demon"
-     ],
-     [
-      "28.22",
-      "Demon Spikes"
-     ],
-     [
-      "28.67",
-      "The Hunt"
-     ],
-     [
-      "29.12",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "213"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "203.8"
-     ],
-     [
-      "Potency",
-      "14.0"
-     ],
-     [
-      "Mastery",
-      "20"
-     ],
-     [
-      "Шанс крита",
-      "3%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "21.0%"
-     ],
-     [
-      "Скорость атаки",
-      "128.2%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+48%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "393"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "54%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.89 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.120"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "6"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2305.6,
-     "Chaos Nova": 2622.5,
-     "Chaos Blade": 2358.8,
-     "Singularity": 2298.9,
-     "Chains of Anguish": 2285.1,
-     "Enduring Torment": 2622.5,
-     "Felfire": 2622.5,
-     "Incubus": 2511.8,
-     "Void Glaive": 2281.8
-    },
-    "glyphDps": {
-     "Fortitude": 2622.5,
-     "Unsealed Power": 2622.5,
-     "Fortune": 2298.6,
-     "Supremacy": 2296.1,
-     "Arc Striking": 2296.1,
-     "Battle Frenzy": 2319.8,
-     "Hellfire": 2296.1,
-     "Thunder": 2296.1,
-     "Blood Violence": 2296.1,
-     "Animosity": 2332.2,
-     "Glass Cannon": 2622.5,
-     "Mindhaste": 2120.9
-    }
-   },
-   {
-    "farm_dps": 2622.5,
-    "dps": 2622.5,
-    "total": 78676,
-    "manaLeft": 54.3,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Staff of Galactic Fury",
-      "code": "I0JO",
-      "source": "shop"
-     },
-     {
-      "name": "Arcpower Stone",
-      "code": "I0MM",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Enduring Torment",
-     "Felfire"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 1,
-     "attack_speed": 0,
-     "damage": 6,
-     "crit": 3,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 230861708,
-    "sources": [
-     [
-      "Immolation Aura",
-      1329.3
-     ],
-     [
-      "Chaos Nova",
-      485.6
-     ],
-     [
-      "Sulfuras",
-      399.8
-     ],
-     [
-      "Автоатака",
-      307.7
-     ],
-     [
-      "The Hunt",
-      83.0
-     ],
-     [
-      "Sulfuras (удар)",
-      17.1
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "9.71",
-      "Demon Spikes"
-     ],
-     [
-      "10.16",
-      "The Hunt"
-     ],
-     [
-      "10.61",
-      "Immolation Aura"
-     ],
-     [
-      "12.91",
-      "Inner Demon"
-     ],
-     [
-      "18.96",
-      "Demon Spikes"
-     ],
-     [
-      "19.41",
-      "The Hunt"
-     ],
-     [
-      "19.86",
-      "Immolation Aura"
-     ],
-     [
-      "24.01",
-      "Inner Demon"
-     ],
-     [
-      "28.22",
-      "Demon Spikes"
-     ],
-     [
-      "28.67",
-      "The Hunt"
-     ],
-     [
-      "29.12",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "213"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "203.8"
-     ],
-     [
-      "Potency",
-      "14.0"
-     ],
-     [
-      "Mastery",
-      "20"
-     ],
-     [
-      "Шанс крита",
-      "3%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "21.0%"
-     ],
-     [
-      "Скорость атаки",
-      "128.2%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+48%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "393"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "54%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.89 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.120"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "6"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2305.6,
-     "Chaos Nova": 2622.5,
-     "Chaos Blade": 2358.8,
-     "Singularity": 2298.9,
-     "Chains of Anguish": 2285.1,
-     "Enduring Torment": 2622.5,
-     "Felfire": 2622.5,
-     "Incubus": 2511.8,
-     "Void Glaive": 2281.8
-    },
-    "glyphDps": {
-     "Fortitude": 2622.5,
-     "Unsealed Power": 2622.5,
-     "Fortune": 2298.6,
-     "Supremacy": 2296.1,
-     "Arc Striking": 2296.1,
-     "Battle Frenzy": 2319.8,
-     "Hellfire": 2296.1,
-     "Thunder": 2296.1,
-     "Blood Violence": 2296.1,
-     "Animosity": 2332.2,
-     "Glass Cannon": 2622.5,
-     "Mindhaste": 2120.9
-    }
-   },
-   {
-    "farm_dps": 2616.1,
-    "dps": 2616.1,
-    "total": 78484,
-    "manaLeft": 44.8,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Silent Messenger",
-      "code": "I0QN",
-      "source": "shop"
-     },
-     {
-      "name": "Tormentor's Visage",
-      "code": "I0V4",
-      "source": "drop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Enduring Torment",
-     "Felfire"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 9,
-     "crit": 1,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 230774893,
-    "sources": [
-     [
-      "Immolation Aura",
-      1296.0
-     ],
-     [
-      "Chaos Nova",
-      478.4
-     ],
-     [
-      "Автоатака",
-      428.4
-     ],
-     [
-      "Sulfuras",
-      313.9
-     ],
-     [
-      "The Hunt",
-      81.3
-     ],
-     [
-      "Sulfuras (удар)",
-      18.2
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "9.56",
-      "Demon Spikes"
-     ],
-     [
-      "10.01",
-      "The Hunt"
-     ],
-     [
-      "10.46",
-      "Immolation Aura"
-     ],
-     [
-      "12.73",
-      "Inner Demon"
-     ],
-     [
-      "18.66",
-      "Demon Spikes"
-     ],
-     [
-      "19.11",
-      "The Hunt"
-     ],
-     [
-      "19.56",
-      "Immolation Aura"
-     ],
-     [
-      "23.65",
-      "Inner Demon"
-     ],
-     [
-      "27.77",
-      "Demon Spikes"
-     ],
-     [
-      "28.22",
-      "The Hunt"
-     ],
-     [
-      "28.67",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "182"
-     ],
-     [
-      "Сила",
-      "28"
-     ],
-     [
-      "Интеллект",
-      "33"
-     ],
-     [
-      "Урон автоатаки",
-      "209.5"
-     ],
-     [
-      "Potency",
-      "14.0"
-     ],
-     [
-      "Mastery",
-      "17"
-     ],
-     [
-      "Шанс крита",
-      "13%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "23.0%"
-     ],
-     [
-      "Скорость атаки",
-      "100.8%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+48%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "670"
-     ],
-     [
-      "Мана макс.",
-      "351"
-     ],
-     [
-      "Реген маны",
-      "3.60/с"
-     ],
-     [
-      "Мана в конце",
-      "45%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.85 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.120"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "3"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2355.7,
-     "Chaos Nova": 2616.1,
-     "Chaos Blade": 2457.9,
-     "Singularity": 2351.4,
-     "Chains of Anguish": 2344.2,
-     "Enduring Torment": 2616.1,
-     "Felfire": 2616.1,
-     "Incubus": 2538.1,
-     "Void Glaive": 2254.6
-    },
-    "glyphDps": {
-     "Fortitude": 2616.1,
-     "Unsealed Power": 2616.1,
-     "Fortune": 2289.5,
-     "Supremacy": 2286.9,
-     "Arc Striking": 2286.9,
-     "Battle Frenzy": 2239.3,
-     "Hellfire": 2286.9,
-     "Thunder": 2286.9,
-     "Blood Violence": 2286.9,
-     "Animosity": 2306.9,
-     "Glass Cannon": 2616.1,
-     "Mindhaste": 2056.8
-    }
    }
   ],
   "shop": [
    {
-    "farm_dps": 2514.8,
-    "dps": 2514.8,
-    "total": 75445,
+    "farm_dps": 2639.9,
+    "dps": 2639.9,
+    "total": 79198,
     "manaLeft": 75.8,
     "bound_spell": null,
     "orb_mode": null,
@@ -5361,11 +2703,6 @@
       "source": "shop"
      },
      {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
       "name": "Unbound Power Core",
       "code": "I0FW",
       "source": "shop"
@@ -5379,6 +2716,11 @@
       "name": "Silent Messenger",
       "code": "I0QN",
       "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
      }
     ],
     "talents": [
@@ -5404,7 +2746,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 3719850687,
+    "chunk": 164653642,
     "sources": [
      [
       "Автоатака",
@@ -5424,7 +2766,7 @@
      ],
      [
       "Sulfuras",
-      260.6
+      385.7
      ],
      [
       "The Hunt",
@@ -5576,29 +2918,29 @@
      ]
     ],
     "talentDps": {
-     "Fallout": 2514.8,
-     "Chaos Nova": 2514.8,
-     "Chaos Blade": 2484.2,
-     "Singularity": 2366.7,
-     "Chains of Anguish": 2394.0,
-     "Enduring Torment": 2417.9,
-     "Felfire": 2449.7,
-     "Incubus": 2514.8,
-     "Void Glaive": 2457.1
+     "Fallout": 2639.9,
+     "Chaos Nova": 2639.9,
+     "Chaos Blade": 2591.4,
+     "Singularity": 2473.8,
+     "Chains of Anguish": 2501.2,
+     "Enduring Torment": 2525.0,
+     "Felfire": 2556.9,
+     "Incubus": 2639.9,
+     "Void Glaive": 2564.3
     },
     "glyphDps": {
-     "Fortitude": 2572.2,
-     "Unsealed Power": 2572.2,
-     "Fortune": 2315.0,
-     "Supremacy": 2311.5,
-     "Arc Striking": 2311.5,
-     "Battle Frenzy": 2431.0,
-     "Hellfire": 2311.5,
-     "Thunder": 2311.5,
-     "Blood Violence": 2311.5,
-     "Animosity": 2514.8,
-     "Glass Cannon": 2572.2,
-     "Mindhaste": 2276.9
+     "Fortitude": 2665.7,
+     "Unsealed Power": 2665.7,
+     "Fortune": 2396.3,
+     "Supremacy": 2392.8,
+     "Arc Striking": 2392.8,
+     "Battle Frenzy": 2512.3,
+     "Hellfire": 2392.8,
+     "Thunder": 2392.8,
+     "Blood Violence": 2392.8,
+     "Animosity": 2639.9,
+     "Glass Cannon": 2665.7,
+     "Mindhaste": 2346.6
     }
    },
    {
@@ -5613,11 +2955,6 @@
       "name": "Elemental Orb",
       "code": "I07O",
       "source": "shop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
      },
      {
       "name": "Unbound Power Core",
@@ -5638,6 +2975,11 @@
       "name": "Silent Messenger",
       "code": "I0QN",
       "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
      }
     ],
     "talents": [
@@ -5663,7 +3005,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 611374402,
+    "chunk": 36028622,
     "sources": [
      [
       "Всплеск огня",
@@ -5861,6 +3203,536 @@
     }
    },
    {
+    "farm_dps": 2467.0,
+    "dps": 2467.0,
+    "total": 74011,
+    "manaLeft": 79.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Chaos Nova",
+     "Fallout",
+     "Incubus"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 2,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 8,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 164653671,
+    "sources": [
+     [
+      "Всплеск огня",
+      553.2
+     ],
+     [
+      "Автоатака",
+      547.8
+     ],
+     [
+      "Immolation Aura",
+      451.4
+     ],
+     [
+      "Chaos Nova",
+      449.3
+     ],
+     [
+      "Sulfuras",
+      360.4
+     ],
+     [
+      "The Hunt",
+      83.3
+     ],
+     [
+      "Sulfuras (удар)",
+      21.6
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Metamorphosis"
+     ],
+     [
+      "0.45",
+      "Demon Spikes"
+     ],
+     [
+      "0.90",
+      "The Hunt"
+     ],
+     [
+      "1.35",
+      "Immolation Aura"
+     ],
+     [
+      "1.80",
+      "Inner Demon"
+     ],
+     [
+      "12.59",
+      "Demon Spikes"
+     ],
+     [
+      "13.04",
+      "The Hunt"
+     ],
+     [
+      "13.49",
+      "Immolation Aura"
+     ],
+     [
+      "16.37",
+      "Inner Demon"
+     ],
+     [
+      "24.74",
+      "Demon Spikes"
+     ],
+     [
+      "25.19",
+      "The Hunt"
+     ],
+     [
+      "25.64",
+      "Immolation Aura"
+     ]
+    ],
+    "stats": [
+     [
+      "Ловкость",
+      "295"
+     ],
+     [
+      "Сила",
+      "34"
+     ],
+     [
+      "Интеллект",
+      "39"
+     ],
+     [
+      "Урон автоатаки",
+      "253.2"
+     ],
+     [
+      "Potency",
+      "4.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "28%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "12.0%"
+     ],
+     [
+      "Скорость атаки",
+      "143.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+38%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "760"
+     ],
+     [
+      "Мана макс.",
+      "493"
+     ],
+     [
+      "Реген маны",
+      "4.08/с"
+     ],
+     [
+      "Мана в конце",
+      "80%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "0.70 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.360"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Fallout": 2467.0,
+     "Chaos Nova": 2467.0,
+     "Chaos Blade": 2400.9,
+     "Singularity": 2313.1,
+     "Chains of Anguish": 2329.1,
+     "Enduring Torment": 2362.2,
+     "Felfire": 2378.0,
+     "Incubus": 2467.0,
+     "Void Glaive": 2368.9
+    },
+    "glyphDps": {
+     "Fortitude": 2467.0,
+     "Unsealed Power": 2467.0,
+     "Fortune": 2224.4,
+     "Supremacy": 2221.5,
+     "Arc Striking": 2221.5,
+     "Battle Frenzy": 2309.6,
+     "Hellfire": 2221.5,
+     "Thunder": 2221.5,
+     "Blood Violence": 2221.5,
+     "Animosity": 2446.2,
+     "Glass Cannon": 2467.0,
+     "Mindhaste": 2250.5
+    }
+   },
+   {
+    "farm_dps": 2456.8,
+    "dps": 2456.8,
+    "total": 73704,
+    "manaLeft": 54.3,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Chaos Blade",
+     "Chaos Nova",
+     "Incubus"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 1,
+     "damage": 8,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 154086422,
+    "sources": [
+     [
+      "Всплеск огня",
+      496.7
+     ],
+     [
+      "Chaos Nova",
+      460.2
+     ],
+     [
+      "Immolation Aura",
+      429.9
+     ],
+     [
+      "Автоатака",
+      398.7
+     ],
+     [
+      "Sulfuras",
+      380.7
+     ],
+     [
+      "Chaos Blade",
+      191.3
+     ],
+     [
+      "The Hunt",
+      77.6
+     ],
+     [
+      "Sulfuras (удар)",
+      21.8
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Metamorphosis"
+     ],
+     [
+      "0.45",
+      "Demon Spikes"
+     ],
+     [
+      "0.90",
+      "The Hunt"
+     ],
+     [
+      "1.35",
+      "Immolation Aura"
+     ],
+     [
+      "1.80",
+      "Inner Demon"
+     ],
+     [
+      "9.06",
+      "Demon Spikes"
+     ],
+     [
+      "9.51",
+      "The Hunt"
+     ],
+     [
+      "9.96",
+      "Immolation Aura"
+     ],
+     [
+      "12.13",
+      "Inner Demon"
+     ],
+     [
+      "17.67",
+      "Demon Spikes"
+     ],
+     [
+      "18.12",
+      "The Hunt"
+     ],
+     [
+      "18.57",
+      "Immolation Aura"
+     ],
+     [
+      "22.47",
+      "Inner Demon"
+     ],
+     [
+      "26.28",
+      "Demon Spikes"
+     ],
+     [
+      "26.73",
+      "The Hunt"
+     ],
+     [
+      "27.18",
+      "Immolation Aura"
+     ]
+    ],
+    "stats": [
+     [
+      "Ловкость",
+      "239"
+     ],
+     [
+      "Сила",
+      "34"
+     ],
+     [
+      "Интеллект",
+      "39"
+     ],
+     [
+      "Урон автоатаки",
+      "227.2"
+     ],
+     [
+      "Potency",
+      "18.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "44.0%"
+     ],
+     [
+      "Скорость атаки",
+      "172.6%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "760"
+     ],
+     [
+      "Мана макс.",
+      "393"
+     ],
+     [
+      "Реген маны",
+      "4.08/с"
+     ],
+     [
+      "Мана в конце",
+      "54%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "0.62 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.240"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Fallout": 2337.9,
+     "Chaos Nova": 2456.8,
+     "Chaos Blade": 2456.8,
+     "Singularity": 2313.0,
+     "Chains of Anguish": 2316.4,
+     "Enduring Torment": 2413.8,
+     "Felfire": 2376.7,
+     "Incubus": 2456.8,
+     "Void Glaive": 2301.0
+    },
+    "glyphDps": {
+     "Fortitude": 2456.8,
+     "Unsealed Power": 2456.8,
+     "Fortune": 2235.0,
+     "Supremacy": 2231.7,
+     "Arc Striking": 2231.7,
+     "Battle Frenzy": 2253.1,
+     "Hellfire": 2231.7,
+     "Thunder": 2231.7,
+     "Blood Violence": 2231.7,
+     "Animosity": 2278.3,
+     "Glass Cannon": 2456.8,
+     "Mindhaste": 2190.5
+    }
+   },
+   {
     "farm_dps": 2449.5,
     "dps": 2449.5,
     "total": 73486,
@@ -5879,24 +3751,24 @@
       "source": "shop"
      },
      {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
       "name": "Sulfuras, Hand of Ragnaros",
       "code": "I0BR",
       "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
      }
     ],
     "talents": [
@@ -5922,7 +3794,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 2211570685,
+    "chunk": 109925446,
     "sources": [
      [
       "Всплеск огня",
@@ -6137,11 +4009,6 @@
       "source": "shop"
      },
      {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
       "name": "Unbound Power Core",
       "code": "I0FW",
       "source": "shop"
@@ -6160,6 +4027,11 @@
       "name": "Sulfuron Gloves",
       "code": "I0QT",
       "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
      }
     ],
     "talents": [
@@ -6185,7 +4057,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 611373240,
+    "chunk": 36027460,
     "sources": [
      [
       "Автоатака",
@@ -6401,11 +4273,6 @@
       "source": "shop"
      },
      {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
       "name": "Unbound Power Core",
       "code": "I0FW",
       "source": "shop"
@@ -6419,6 +4286,11 @@
       "name": "Silent Messenger",
       "code": "I0QN",
       "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
      }
     ],
     "talents": [
@@ -6444,7 +4316,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 614537569,
+    "chunk": 36852667,
     "sources": [
      [
       "Автоатака",
@@ -6659,11 +4531,6 @@
       "source": "shop"
      },
      {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
       "name": "Unbound Power Core",
       "code": "I0FW",
       "source": "shop"
@@ -6682,6 +4549,11 @@
       "name": "Sulfuron Gloves",
       "code": "I0QT",
       "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
      }
     ],
     "talents": [
@@ -6707,7 +4579,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 611374401,
+    "chunk": 36028621,
     "sources": [
      [
       "Всплеск огня",
@@ -6902,261 +4774,6 @@
      "Animosity": 2271.8,
      "Glass Cannon": 2412.8,
      "Mindhaste": 2150.6
-    }
-   },
-   {
-    "farm_dps": 2398.7,
-    "dps": 2398.7,
-    "total": 71961,
-    "manaLeft": 79.8,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Nightfall",
-      "code": "I04F",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I07O",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Fallout",
-     "Incubus"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 2,
-     "attack_speed": 0,
-     "damage": 0,
-     "crit": 20,
-     "potency": 8,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 3719850716,
-    "sources": [
-     [
-      "Всплеск огня",
-      553.2
-     ],
-     [
-      "Автоатака",
-      547.8
-     ],
-     [
-      "Immolation Aura",
-      451.4
-     ],
-     [
-      "Chaos Nova",
-      449.3
-     ],
-     [
-      "Sulfuras",
-      292.1
-     ],
-     [
-      "The Hunt",
-      83.3
-     ],
-     [
-      "Sulfuras (удар)",
-      21.6
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "12.59",
-      "Demon Spikes"
-     ],
-     [
-      "13.04",
-      "The Hunt"
-     ],
-     [
-      "13.49",
-      "Immolation Aura"
-     ],
-     [
-      "16.37",
-      "Inner Demon"
-     ],
-     [
-      "24.74",
-      "Demon Spikes"
-     ],
-     [
-      "25.19",
-      "The Hunt"
-     ],
-     [
-      "25.64",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "295"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "253.2"
-     ],
-     [
-      "Potency",
-      "4.0"
-     ],
-     [
-      "Mastery",
-      "10"
-     ],
-     [
-      "Шанс крита",
-      "28%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "12.0%"
-     ],
-     [
-      "Скорость атаки",
-      "143.0%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Магический бонус",
-      "+38%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "493"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "80%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.70 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.360"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2398.7,
-     "Chaos Nova": 2398.7,
-     "Chaos Blade": 2342.4,
-     "Singularity": 2254.6,
-     "Chains of Anguish": 2270.5,
-     "Enduring Torment": 2303.6,
-     "Felfire": 2319.5,
-     "Incubus": 2398.7,
-     "Void Glaive": 2310.3
-    },
-    "glyphDps": {
-     "Fortitude": 2398.7,
-     "Unsealed Power": 2398.7,
-     "Fortune": 2164.0,
-     "Supremacy": 2161.0,
-     "Arc Striking": 2161.0,
-     "Battle Frenzy": 2250.1,
-     "Hellfire": 2161.0,
-     "Thunder": 2161.0,
-     "Blood Violence": 2161.0,
-     "Animosity": 2347.0,
-     "Glass Cannon": 2398.7,
-     "Mindhaste": 2190.1
     }
    },
    {
@@ -7400,29 +5017,29 @@
       "source": "shop"
      },
      {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
       "name": "Sulfuras, Hand of Ragnaros",
       "code": "I0BR",
       "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
      }
     ],
     "talents": [
@@ -7448,7 +5065,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 611374431,
+    "chunk": 36028651,
     "sources": [
      [
       "Всплеск огня",
@@ -7643,2847 +5260,6 @@
      "Animosity": 2252.1,
      "Glass Cannon": 2396.2,
      "Mindhaste": 2125.0
-    }
-   },
-   {
-    "farm_dps": 2392.3,
-    "dps": 2392.3,
-    "total": 71770,
-    "manaLeft": 96.3,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Aruzal, Fang of Neltharion",
-      "code": "I052",
-      "source": "legendary"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I07O",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Silent Messenger",
-      "code": "I0QN",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Chaos Blade",
-     "Fallout",
-     "Void Glaive"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 1,
-     "attack_speed": 0,
-     "damage": 9,
-     "crit": 20,
-     "potency": 0,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 3042970824,
-    "sources": [
-     [
-      "Автоатака",
-      1132.6
-     ],
-     [
-      "Всплеск огня",
-      658.4
-     ],
-     [
-      "Immolation Aura",
-      330.6
-     ],
-     [
-      "Chaos Blade",
-      211.8
-     ],
-     [
-      "The Hunt",
-      58.9
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "The Hunt"
-     ],
-     [
-      "0.90",
-      "Immolation Aura"
-     ],
-     [
-      "12.70",
-      "The Hunt"
-     ],
-     [
-      "13.15",
-      "Immolation Aura"
-     ],
-     [
-      "24.95",
-      "The Hunt"
-     ],
-     [
-      "25.40",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "262"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "304.5"
-     ],
-     [
-      "Potency",
-      "0.0"
-     ],
-     [
-      "Mastery",
-      "0"
-     ],
-     [
-      "Шанс крита",
-      "47%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.30"
-     ],
-     [
-      "Спешка",
-      "11.0%"
-     ],
-     [
-      "Скорость атаки",
-      "130.0%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Магический бонус",
-      "+18%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "393"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "96%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.74 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.360"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "3"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2392.3,
-     "Chaos Nova": 2370.0,
-     "Chaos Blade": 2392.3,
-     "Singularity": 2237.8,
-     "Chains of Anguish": 2304.0,
-     "Enduring Torment": 2264.9,
-     "Felfire": 2295.4,
-     "Incubus": 2318.6,
-     "Void Glaive": 2392.3
-    },
-    "glyphDps": {
-     "Fortitude": 2392.3,
-     "Unsealed Power": 2392.3,
-     "Fortune": 2193.8,
-     "Supremacy": 2193.8,
-     "Arc Striking": 2193.8,
-     "Battle Frenzy": 2326.6,
-     "Hellfire": 2193.8,
-     "Thunder": 2193.8,
-     "Blood Violence": 2193.8,
-     "Animosity": 2342.4,
-     "Glass Cannon": 2392.3,
-     "Mindhaste": 2161.4
-    }
-   },
-   {
-    "farm_dps": 2362.2,
-    "dps": 2362.2,
-    "total": 70866,
-    "manaLeft": 74.7,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Aruzal, Fang of Neltharion",
-      "code": "I052",
-      "source": "legendary"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I07O",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Silent Messenger",
-      "code": "I0QN",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuron Gloves",
-      "code": "I0QT",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Chaos Blade",
-     "Chaos Nova",
-     "Fallout"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 10,
-     "crit": 20,
-     "potency": 0,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 3042969662,
-    "sources": [
-     [
-      "Автоатака",
-      1047.3
-     ],
-     [
-      "Всплеск огня",
-      471.2
-     ],
-     [
-      "Chaos Nova",
-      324.3
-     ],
-     [
-      "Immolation Aura",
-      315.8
-     ],
-     [
-      "Chaos Blade",
-      140.9
-     ],
-     [
-      "The Hunt",
-      62.6
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "12.63",
-      "Demon Spikes"
-     ],
-     [
-      "13.08",
-      "The Hunt"
-     ],
-     [
-      "13.53",
-      "Immolation Aura"
-     ],
-     [
-      "16.42",
-      "Inner Demon"
-     ],
-     [
-      "24.81",
-      "Demon Spikes"
-     ],
-     [
-      "25.26",
-      "The Hunt"
-     ],
-     [
-      "25.71",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "221"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "284.8"
-     ],
-     [
-      "Potency",
-      "0.0"
-     ],
-     [
-      "Mastery",
-      "0"
-     ],
-     [
-      "Шанс крита",
-      "47%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.30"
-     ],
-     [
-      "Спешка",
-      "10.0%"
-     ],
-     [
-      "Скорость атаки",
-      "118.4%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Магический бонус",
-      "+18%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "393"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "75%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.78 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.340"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "3"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2372.0,
-     "Chaos Nova": 2362.2,
-     "Chaos Blade": 2372.0,
-     "Singularity": 2254.0,
-     "Chains of Anguish": 2326.0,
-     "Enduring Torment": 2282.8,
-     "Felfire": 2301.1,
-     "Incubus": 2317.6,
-     "Void Glaive": 2372.0
-    },
-    "glyphDps": {
-     "Fortitude": 2362.2,
-     "Unsealed Power": 2362.2,
-     "Fortune": 2141.9,
-     "Supremacy": 2141.9,
-     "Arc Striking": 2141.9,
-     "Battle Frenzy": 2268.8,
-     "Hellfire": 2141.9,
-     "Thunder": 2141.9,
-     "Blood Violence": 2141.9,
-     "Animosity": 2280.8,
-     "Glass Cannon": 2362.2,
-     "Mindhaste": 2177.5
-    }
-   },
-   {
-    "farm_dps": 2362.1,
-    "dps": 2362.1,
-    "total": 70863,
-    "manaLeft": 69.6,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Orb of Unstable Magic",
-      "code": "I04J",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I07O",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Chaos Blade",
-     "Chaos Nova",
-     "Incubus"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 3,
-     "crit": 7,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 3360795822,
-    "sources": [
-     [
-      "Всплеск огня",
-      524.9
-     ],
-     [
-      "Chaos Nova",
-      418.8
-     ],
-     [
-      "Автоатака",
-      416.3
-     ],
-     [
-      "Immolation Aura",
-      404.7
-     ],
-     [
-      "Sulfuras",
-      364.2
-     ],
-     [
-      "Chaos Blade",
-      143.3
-     ],
-     [
-      "The Hunt",
-      67.9
-     ],
-     [
-      "Sulfuras (удар)",
-      22.1
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "11.33",
-      "Demon Spikes"
-     ],
-     [
-      "11.78",
-      "The Hunt"
-     ],
-     [
-      "12.23",
-      "Immolation Aura"
-     ],
-     [
-      "14.86",
-      "Inner Demon"
-     ],
-     [
-      "22.21",
-      "Demon Spikes"
-     ],
-     [
-      "22.66",
-      "The Hunt"
-     ],
-     [
-      "23.11",
-      "Immolation Aura"
-     ],
-     [
-      "27.91",
-      "Inner Demon"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "294"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "258.5"
-     ],
-     [
-      "Potency",
-      "10.0"
-     ],
-     [
-      "Mastery",
-      "10"
-     ],
-     [
-      "Шанс крита",
-      "7%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "25.0%"
-     ],
-     [
-      "Скорость атаки",
-      "143.0%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Магический бонус",
-      "+48%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "393"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "70%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.70 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.360"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2284.6,
-     "Chaos Nova": 2362.1,
-     "Chaos Blade": 2362.1,
-     "Singularity": 2255.3,
-     "Chains of Anguish": 2260.5,
-     "Enduring Torment": 2319.0,
-     "Felfire": 2339.0,
-     "Incubus": 2362.1,
-     "Void Glaive": 2301.3
-    },
-    "glyphDps": {
-     "Fortitude": 2362.1,
-     "Unsealed Power": 2362.1,
-     "Fortune": 2149.0,
-     "Supremacy": 2145.6,
-     "Arc Striking": 2145.6,
-     "Battle Frenzy": 2235.4,
-     "Hellfire": 2145.6,
-     "Thunder": 2145.6,
-     "Blood Violence": 2145.6,
-     "Animosity": 2194.6,
-     "Glass Cannon": 2362.1,
-     "Mindhaste": 2145.6
-    }
-   },
-   {
-    "farm_dps": 2355.9,
-    "dps": 2355.9,
-    "total": 70676,
-    "manaLeft": 69.6,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Elemental Orb",
-      "code": "I07O",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Infinity Breaker",
-      "code": "I0NI",
-      "source": "shop"
-     },
-     {
-      "name": "Silent Messenger",
-      "code": "I0QN",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Chaos Blade",
-     "Chaos Nova",
-     "Incubus"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 10,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 611373478,
-    "sources": [
-     [
-      "Всплеск огня",
-      510.1
-     ],
-     [
-      "Автоатака",
-      494.7
-     ],
-     [
-      "Immolation Aura",
-      387.6
-     ],
-     [
-      "Chaos Nova",
-      387.0
-     ],
-     [
-      "Sulfuras",
-      321.7
-     ],
-     [
-      "Chaos Blade",
-      167.2
-     ],
-     [
-      "The Hunt",
-      62.4
-     ],
-     [
-      "Sulfuras (удар)",
-      25.0
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "11.72",
-      "Demon Spikes"
-     ],
-     [
-      "12.17",
-      "The Hunt"
-     ],
-     [
-      "12.62",
-      "Immolation Aura"
-     ],
-     [
-      "15.33",
-      "Inner Demon"
-     ],
-     [
-      "23.00",
-      "Demon Spikes"
-     ],
-     [
-      "23.45",
-      "The Hunt"
-     ],
-     [
-      "23.90",
-      "Immolation Aura"
-     ],
-     [
-      "28.85",
-      "Inner Demon"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "237"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "252.8"
-     ],
-     [
-      "Potency",
-      "10.0"
-     ],
-     [
-      "Mastery",
-      "18"
-     ],
-     [
-      "Шанс крита",
-      "12%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "10.0%"
-     ],
-     [
-      "Скорость атаки",
-      "153.8%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Магический бонус",
-      "+50%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "393"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "70%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.67 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.240"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "3"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2260.8,
-     "Chaos Nova": 2355.9,
-     "Chaos Blade": 2355.9,
-     "Singularity": 2232.0,
-     "Chains of Anguish": 2252.5,
-     "Enduring Torment": 2267.8,
-     "Felfire": 2300.5,
-     "Incubus": 2355.9,
-     "Void Glaive": 2338.2
-    },
-    "glyphDps": {
-     "Fortitude": 2355.9,
-     "Unsealed Power": 2355.9,
-     "Fortune": 2144.9,
-     "Supremacy": 2141.1,
-     "Arc Striking": 2141.1,
-     "Battle Frenzy": 2275.7,
-     "Hellfire": 2141.1,
-     "Thunder": 2141.1,
-     "Blood Violence": 2141.1,
-     "Animosity": 2128.3,
-     "Glass Cannon": 2355.9,
-     "Mindhaste": 2099.7
-    }
-   },
-   {
-    "farm_dps": 2352.1,
-    "dps": 2352.1,
-    "total": 70564,
-    "manaLeft": 74.7,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Elemental Orb",
-      "code": "I07O",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Infinity Breaker",
-      "code": "I0NI",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Chaos Blade",
-     "Chaos Nova",
-     "Incubus"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 1,
-     "attack_speed": 0,
-     "damage": 3,
-     "crit": 6,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 611374410,
-    "sources": [
-     [
-      "Всплеск огня",
-      560.1
-     ],
-     [
-      "Автоатака",
-      440.1
-     ],
-     [
-      "Immolation Aura",
-      399.9
-     ],
-     [
-      "Chaos Nova",
-      389.6
-     ],
-     [
-      "Sulfuras",
-      314.3
-     ],
-     [
-      "Chaos Blade",
-      156.1
-     ],
-     [
-      "The Hunt",
-      68.4
-     ],
-     [
-      "Sulfuras (удар)",
-      23.6
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "12.70",
-      "Demon Spikes"
-     ],
-     [
-      "13.15",
-      "The Hunt"
-     ],
-     [
-      "13.60",
-      "Immolation Aura"
-     ],
-     [
-      "16.50",
-      "Inner Demon"
-     ],
-     [
-      "24.95",
-      "Demon Spikes"
-     ],
-     [
-      "25.40",
-      "The Hunt"
-     ],
-     [
-      "25.85",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "292"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "257.0"
-     ],
-     [
-      "Potency",
-      "10.0"
-     ],
-     [
-      "Mastery",
-      "18"
-     ],
-     [
-      "Шанс крита",
-      "6%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "11.0%"
-     ],
-     [
-      "Скорость атаки",
-      "159.0%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Магический бонус",
-      "+50%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "393"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "75%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.66 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.360"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2272.2,
-     "Chaos Nova": 2352.1,
-     "Chaos Blade": 2352.1,
-     "Singularity": 2232.8,
-     "Chains of Anguish": 2241.5,
-     "Enduring Torment": 2276.8,
-     "Felfire": 2297.0,
-     "Incubus": 2352.1,
-     "Void Glaive": 2218.0
-    },
-    "glyphDps": {
-     "Fortitude": 2352.1,
-     "Unsealed Power": 2352.1,
-     "Fortune": 2147.6,
-     "Supremacy": 2144.1,
-     "Arc Striking": 2144.1,
-     "Battle Frenzy": 2207.1,
-     "Hellfire": 2144.1,
-     "Thunder": 2144.1,
-     "Blood Violence": 2144.1,
-     "Animosity": 2195.8,
-     "Glass Cannon": 2352.1,
-     "Mindhaste": 2207.4
-    }
-   },
-   {
-    "farm_dps": 2351.0,
-    "dps": 2351.0,
-    "total": 70530,
-    "manaLeft": 69.6,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Elemental Orb",
-      "code": "I07O",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Arcpower Stone",
-      "code": "I0O5",
-      "source": "shop"
-     },
-     {
-      "name": "Silent Messenger",
-      "code": "I0QN",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Chaos Blade",
-     "Chaos Nova",
-     "Void Glaive"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 1,
-     "damage": 9,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 611373381,
-    "sources": [
-     [
-      "Всплеск огня",
-      584.9
-     ],
-     [
-      "Автоатака",
-      558.6
-     ],
-     [
-      "Immolation Aura",
-      332.1
-     ],
-     [
-      "Chaos Nova",
-      319.8
-     ],
-     [
-      "Sulfuras",
-      269.6
-     ],
-     [
-      "Chaos Blade",
-      206.0
-     ],
-     [
-      "The Hunt",
-      51.7
-     ],
-     [
-      "Sulfuras (удар)",
-      28.3
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "11.72",
-      "Demon Spikes"
-     ],
-     [
-      "12.17",
-      "The Hunt"
-     ],
-     [
-      "12.62",
-      "Immolation Aura"
-     ],
-     [
-      "15.33",
-      "Inner Demon"
-     ],
-     [
-      "23.00",
-      "Demon Spikes"
-     ],
-     [
-      "23.45",
-      "The Hunt"
-     ],
-     [
-      "23.90",
-      "Immolation Aura"
-     ],
-     [
-      "28.85",
-      "Inner Demon"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "252"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "262.0"
-     ],
-     [
-      "Potency",
-      "10.0"
-     ],
-     [
-      "Mastery",
-      "10"
-     ],
-     [
-      "Шанс крита",
-      "12%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "10.0%"
-     ],
-     [
-      "Скорость атаки",
-      "145.0%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Магический бонус",
-      "+18%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "393"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "70%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.69 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.240"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "3"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2301.9,
-     "Chaos Nova": 2351.0,
-     "Chaos Blade": 2351.0,
-     "Singularity": 2172.6,
-     "Chains of Anguish": 2200.8,
-     "Enduring Torment": 2206.5,
-     "Felfire": 2237.2,
-     "Incubus": 2307.9,
-     "Void Glaive": 2351.0
-    },
-    "glyphDps": {
-     "Fortitude": 2351.0,
-     "Unsealed Power": 2351.0,
-     "Fortune": 2155.5,
-     "Supremacy": 2151.2,
-     "Arc Striking": 2151.2,
-     "Battle Frenzy": 2214.8,
-     "Hellfire": 2151.2,
-     "Thunder": 2151.2,
-     "Blood Violence": 2151.2,
-     "Animosity": 2212.6,
-     "Glass Cannon": 2351.0,
-     "Mindhaste": 2046.8
-    }
-   },
-   {
-    "farm_dps": 2351.0,
-    "dps": 2351.0,
-    "total": 70530,
-    "manaLeft": 69.6,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Elemental Orb",
-      "code": "I07O",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Arcpower Stone",
-      "code": "I0MT",
-      "source": "shop"
-     },
-     {
-      "name": "Silent Messenger",
-      "code": "I0QN",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Chaos Blade",
-     "Chaos Nova",
-     "Void Glaive"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 1,
-     "damage": 9,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 611373547,
-    "sources": [
-     [
-      "Всплеск огня",
-      584.9
-     ],
-     [
-      "Автоатака",
-      558.6
-     ],
-     [
-      "Immolation Aura",
-      332.1
-     ],
-     [
-      "Chaos Nova",
-      319.8
-     ],
-     [
-      "Sulfuras",
-      269.6
-     ],
-     [
-      "Chaos Blade",
-      206.0
-     ],
-     [
-      "The Hunt",
-      51.7
-     ],
-     [
-      "Sulfuras (удар)",
-      28.3
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "11.72",
-      "Demon Spikes"
-     ],
-     [
-      "12.17",
-      "The Hunt"
-     ],
-     [
-      "12.62",
-      "Immolation Aura"
-     ],
-     [
-      "15.33",
-      "Inner Demon"
-     ],
-     [
-      "23.00",
-      "Demon Spikes"
-     ],
-     [
-      "23.45",
-      "The Hunt"
-     ],
-     [
-      "23.90",
-      "Immolation Aura"
-     ],
-     [
-      "28.85",
-      "Inner Demon"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "252"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "262.0"
-     ],
-     [
-      "Potency",
-      "10.0"
-     ],
-     [
-      "Mastery",
-      "10"
-     ],
-     [
-      "Шанс крита",
-      "12%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "10.0%"
-     ],
-     [
-      "Скорость атаки",
-      "145.0%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Магический бонус",
-      "+18%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "393"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "70%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.69 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.240"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "3"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2301.9,
-     "Chaos Nova": 2351.0,
-     "Chaos Blade": 2351.0,
-     "Singularity": 2172.6,
-     "Chains of Anguish": 2200.8,
-     "Enduring Torment": 2206.5,
-     "Felfire": 2237.2,
-     "Incubus": 2307.9,
-     "Void Glaive": 2351.0
-    },
-    "glyphDps": {
-     "Fortitude": 2351.0,
-     "Unsealed Power": 2351.0,
-     "Fortune": 2155.5,
-     "Supremacy": 2151.2,
-     "Arc Striking": 2151.2,
-     "Battle Frenzy": 2214.8,
-     "Hellfire": 2151.2,
-     "Thunder": 2151.2,
-     "Blood Violence": 2151.2,
-     "Animosity": 2212.6,
-     "Glass Cannon": 2351.0,
-     "Mindhaste": 2046.8
-    }
-   },
-   {
-    "farm_dps": 2351.0,
-    "dps": 2351.0,
-    "total": 70530,
-    "manaLeft": 69.6,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Elemental Orb",
-      "code": "I07O",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Arcpower Stone",
-      "code": "I0MM",
-      "source": "shop"
-     },
-     {
-      "name": "Silent Messenger",
-      "code": "I0QN",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Chaos Blade",
-     "Chaos Nova",
-     "Void Glaive"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 1,
-     "damage": 9,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 611373583,
-    "sources": [
-     [
-      "Всплеск огня",
-      584.9
-     ],
-     [
-      "Автоатака",
-      558.6
-     ],
-     [
-      "Immolation Aura",
-      332.1
-     ],
-     [
-      "Chaos Nova",
-      319.8
-     ],
-     [
-      "Sulfuras",
-      269.6
-     ],
-     [
-      "Chaos Blade",
-      206.0
-     ],
-     [
-      "The Hunt",
-      51.7
-     ],
-     [
-      "Sulfuras (удар)",
-      28.3
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "11.72",
-      "Demon Spikes"
-     ],
-     [
-      "12.17",
-      "The Hunt"
-     ],
-     [
-      "12.62",
-      "Immolation Aura"
-     ],
-     [
-      "15.33",
-      "Inner Demon"
-     ],
-     [
-      "23.00",
-      "Demon Spikes"
-     ],
-     [
-      "23.45",
-      "The Hunt"
-     ],
-     [
-      "23.90",
-      "Immolation Aura"
-     ],
-     [
-      "28.85",
-      "Inner Demon"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "252"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "262.0"
-     ],
-     [
-      "Potency",
-      "10.0"
-     ],
-     [
-      "Mastery",
-      "10"
-     ],
-     [
-      "Шанс крита",
-      "12%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "10.0%"
-     ],
-     [
-      "Скорость атаки",
-      "145.0%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Магический бонус",
-      "+18%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "393"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "70%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.69 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.240"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "3"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2301.9,
-     "Chaos Nova": 2351.0,
-     "Chaos Blade": 2351.0,
-     "Singularity": 2172.6,
-     "Chains of Anguish": 2200.8,
-     "Enduring Torment": 2206.5,
-     "Felfire": 2237.2,
-     "Incubus": 2307.9,
-     "Void Glaive": 2351.0
-    },
-    "glyphDps": {
-     "Fortitude": 2351.0,
-     "Unsealed Power": 2351.0,
-     "Fortune": 2155.5,
-     "Supremacy": 2151.2,
-     "Arc Striking": 2151.2,
-     "Battle Frenzy": 2214.8,
-     "Hellfire": 2151.2,
-     "Thunder": 2151.2,
-     "Blood Violence": 2151.2,
-     "Animosity": 2212.6,
-     "Glass Cannon": 2351.0,
-     "Mindhaste": 2046.8
-    }
-   },
-   {
-    "farm_dps": 2351.0,
-    "dps": 2351.0,
-    "total": 70530,
-    "manaLeft": 69.6,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Elemental Orb",
-      "code": "I07O",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Arcpower Stone",
-      "code": "I0E2",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Silent Messenger",
-      "code": "I0QN",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Chaos Blade",
-     "Chaos Nova",
-     "Void Glaive"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 1,
-     "damage": 9,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 611594305,
-    "sources": [
-     [
-      "Всплеск огня",
-      584.9
-     ],
-     [
-      "Автоатака",
-      558.6
-     ],
-     [
-      "Immolation Aura",
-      332.1
-     ],
-     [
-      "Chaos Nova",
-      319.8
-     ],
-     [
-      "Sulfuras",
-      269.6
-     ],
-     [
-      "Chaos Blade",
-      206.0
-     ],
-     [
-      "The Hunt",
-      51.7
-     ],
-     [
-      "Sulfuras (удар)",
-      28.3
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "11.72",
-      "Demon Spikes"
-     ],
-     [
-      "12.17",
-      "The Hunt"
-     ],
-     [
-      "12.62",
-      "Immolation Aura"
-     ],
-     [
-      "15.33",
-      "Inner Demon"
-     ],
-     [
-      "23.00",
-      "Demon Spikes"
-     ],
-     [
-      "23.45",
-      "The Hunt"
-     ],
-     [
-      "23.90",
-      "Immolation Aura"
-     ],
-     [
-      "28.85",
-      "Inner Demon"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "252"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "262.0"
-     ],
-     [
-      "Potency",
-      "10.0"
-     ],
-     [
-      "Mastery",
-      "10"
-     ],
-     [
-      "Шанс крита",
-      "12%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "10.0%"
-     ],
-     [
-      "Скорость атаки",
-      "145.0%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Магический бонус",
-      "+18%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "393"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "70%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.69 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.240"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "3"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2301.9,
-     "Chaos Nova": 2351.0,
-     "Chaos Blade": 2351.0,
-     "Singularity": 2172.6,
-     "Chains of Anguish": 2200.8,
-     "Enduring Torment": 2206.5,
-     "Felfire": 2237.2,
-     "Incubus": 2307.9,
-     "Void Glaive": 2351.0
-    },
-    "glyphDps": {
-     "Fortitude": 2351.0,
-     "Unsealed Power": 2351.0,
-     "Fortune": 2155.5,
-     "Supremacy": 2151.2,
-     "Arc Striking": 2151.2,
-     "Battle Frenzy": 2214.8,
-     "Hellfire": 2151.2,
-     "Thunder": 2151.2,
-     "Blood Violence": 2151.2,
-     "Animosity": 2212.6,
-     "Glass Cannon": 2351.0,
-     "Mindhaste": 2046.8
-    }
-   },
-   {
-    "farm_dps": 2350.3,
-    "dps": 2350.3,
-    "total": 70508,
-    "manaLeft": 59.4,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Razorwind",
-      "code": "I05X",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I07O",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Silent Messenger",
-      "code": "I0QN",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Chaos Blade",
-     "Chaos Nova",
-     "Fallout"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 1,
-     "damage": 9,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 2211570656,
-    "sources": [
-     [
-      "Автоатака",
-      571.8
-     ],
-     [
-      "Всплеск огня",
-      504.0
-     ],
-     [
-      "Chaos Nova",
-      361.8
-     ],
-     [
-      "Immolation Aura",
-      336.0
-     ],
-     [
-      "Sulfuras",
-      242.8
-     ],
-     [
-      "Chaos Blade",
-      241.8
-     ],
-     [
-      "The Hunt",
-      67.4
-     ],
-     [
-      "Sulfuras (удар)",
-      24.7
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "10.14",
-      "Demon Spikes"
-     ],
-     [
-      "10.59",
-      "The Hunt"
-     ],
-     [
-      "11.04",
-      "Immolation Aura"
-     ],
-     [
-      "13.42",
-      "Inner Demon"
-     ],
-     [
-      "19.82",
-      "Demon Spikes"
-     ],
-     [
-      "20.27",
-      "The Hunt"
-     ],
-     [
-      "20.73",
-      "Immolation Aura"
-     ],
-     [
-      "25.05",
-      "Inner Demon"
-     ],
-     [
-      "29.51",
-      "Demon Spikes"
-     ],
-     [
-      "29.96",
-      "The Hunt"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "227"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "243.2"
-     ],
-     [
-      "Potency",
-      "18.0"
-     ],
-     [
-      "Mastery",
-      "10"
-     ],
-     [
-      "Шанс крита",
-      "12%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "28.0%"
-     ],
-     [
-      "Скорость атаки",
-      "167.8%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Магический бонус",
-      "+18%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "393"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "59%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.63 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.240"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "3"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2350.3,
-     "Chaos Nova": 2398.7,
-     "Chaos Blade": 2398.7,
-     "Singularity": 2267.8,
-     "Chains of Anguish": 2283.3,
-     "Enduring Torment": 2325.7,
-     "Felfire": 2325.7,
-     "Incubus": 2398.7,
-     "Void Glaive": 2364.1
-    },
-    "glyphDps": {
-     "Fortitude": 2350.3,
-     "Unsealed Power": 2350.3,
-     "Fortune": 2147.9,
-     "Supremacy": 2144.2,
-     "Arc Striking": 2144.2,
-     "Battle Frenzy": 2261.6,
-     "Hellfire": 2144.2,
-     "Thunder": 2144.2,
-     "Blood Violence": 2144.2,
-     "Animosity": 2235.3,
-     "Glass Cannon": 2350.3,
-     "Mindhaste": 2255.0
-    }
-   },
-   {
-    "farm_dps": 2331.1,
-    "dps": 2331.1,
-    "total": 69933,
-    "manaLeft": 74.7,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     },
-     {
-      "name": "Silent Messenger",
-      "code": "I0QN",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuron Gloves",
-      "code": "I0QT",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Chaos Blade",
-     "Chaos Nova",
-     "Fallout"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 1,
-     "damage": 14,
-     "crit": 15,
-     "potency": 0,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 231163139,
-    "sources": [
-     [
-      "Автоатака",
-      976.4
-     ],
-     [
-      "Immolation Aura",
-      402.2
-     ],
-     [
-      "Chaos Nova",
-      399.5
-     ],
-     [
-      "Sulfuras",
-      263.7
-     ],
-     [
-      "Chaos Blade",
-      180.6
-     ],
-     [
-      "The Hunt",
-      76.3
-     ],
-     [
-      "Sulfuras (удар)",
-      32.3
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "12.63",
-      "Demon Spikes"
-     ],
-     [
-      "13.08",
-      "The Hunt"
-     ],
-     [
-      "13.53",
-      "Immolation Aura"
-     ],
-     [
-      "16.42",
-      "Inner Demon"
-     ],
-     [
-      "24.81",
-      "Demon Spikes"
-     ],
-     [
-      "25.26",
-      "The Hunt"
-     ],
-     [
-      "25.71",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "241"
-     ],
-     [
-      "Сила",
-      "34"
-     ],
-     [
-      "Интеллект",
-      "39"
-     ],
-     [
-      "Урон автоатаки",
-      "272.8"
-     ],
-     [
-      "Potency",
-      "0.0"
-     ],
-     [
-      "Mastery",
-      "10"
-     ],
-     [
-      "Шанс крита",
-      "27%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "10.0%"
-     ],
-     [
-      "Скорость атаки",
-      "141.4%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Магический бонус",
-      "+18%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "760"
-     ],
-     [
-      "Мана макс.",
-      "393"
-     ],
-     [
-      "Реген маны",
-      "4.08/с"
-     ],
-     [
-      "Мана в конце",
-      "75%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.70 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.340"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "9"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2331.1,
-     "Chaos Nova": 2331.1,
-     "Chaos Blade": 2331.1,
-     "Singularity": 2190.6,
-     "Chains of Anguish": 2248.1,
-     "Enduring Torment": 2233.8,
-     "Felfire": 2256.3,
-     "Incubus": 2314.5,
-     "Void Glaive": 2272.5
-    },
-    "glyphDps": {
-     "Fortitude": 2331.1,
-     "Unsealed Power": 2331.1,
-     "Fortune": 2063.3,
-     "Supremacy": 2058.4,
-     "Arc Striking": 2058.4,
-     "Battle Frenzy": 2116.2,
-     "Hellfire": 2058.4,
-     "Thunder": 2058.4,
-     "Blood Violence": 2058.4,
-     "Animosity": 2150.6,
-     "Glass Cannon": 2331.1,
-     "Mindhaste": 2140.2
     }
    }
   ],
@@ -11327,11 +6103,6 @@
       "source": "drop"
      },
      {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
       "name": "Tormentor's Visage",
       "code": "I0V4",
       "source": "drop"
@@ -11350,6 +6121,11 @@
       "name": "Hood of Dark Deeds",
       "code": "tgrh",
       "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
      }
     ],
     "talents": [
@@ -11375,7 +6151,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 7415445408,
+    "chunk": 267708439,
     "sources": [
      [
       "Immolation Aura",
@@ -11594,11 +6370,6 @@
       "source": "drop"
      },
      {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
       "name": "Qiraji Talisman",
       "code": "I0C9",
       "source": "drop"
@@ -11617,6 +6388,11 @@
       "name": "The Darkglaive",
       "code": "fgrd",
       "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
      }
     ],
     "talents": [
@@ -11642,7 +6418,7 @@
      "luck": 0,
      "pet_damage": 0
     },
-    "chunk": 7416549089,
+    "chunk": 268812120,
     "sources": [
      [
       "Immolation Aura",
@@ -13224,2776 +8000,6 @@
      "Animosity": 2063.7,
      "Glass Cannon": 2269.8,
      "Mindhaste": 2083.0
-    }
-   },
-   {
-    "farm_dps": 2254.4,
-    "dps": 2254.4,
-    "total": 67631,
-    "manaLeft": 42.0,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Qiraji Talisman",
-      "code": "I0C9",
-      "source": "drop"
-     },
-     {
-      "name": "The Zircon Star",
-      "code": "I0DF",
-      "source": "drop"
-     },
-     {
-      "name": "Tormentor's Visage",
-      "code": "I0V4",
-      "source": "drop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Felfire",
-     "Incubus"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 1,
-     "attack_speed": 0,
-     "damage": 9,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 242637850,
-    "sources": [
-     [
-      "Immolation Aura",
-      1025.3
-     ],
-     [
-      "Chaos Nova",
-      551.4
-     ],
-     [
-      "Sulfuras",
-      320.0
-     ],
-     [
-      "Автоатака",
-      254.8
-     ],
-     [
-      "The Hunt",
-      91.0
-     ],
-     [
-      "Sulfuras (удар)",
-      11.8
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "7.39",
-      "Demon Spikes"
-     ],
-     [
-      "7.84",
-      "The Hunt"
-     ],
-     [
-      "8.29",
-      "Immolation Aura"
-     ],
-     [
-      "10.13",
-      "Inner Demon"
-     ],
-     [
-      "14.34",
-      "Demon Spikes"
-     ],
-     [
-      "14.79",
-      "The Hunt"
-     ],
-     [
-      "15.24",
-      "Immolation Aura"
-     ],
-     [
-      "18.47",
-      "Inner Demon"
-     ],
-     [
-      "21.28",
-      "Demon Spikes"
-     ],
-     [
-      "21.73",
-      "The Hunt"
-     ],
-     [
-      "22.18",
-      "Immolation Aura"
-     ],
-     [
-      "26.80",
-      "Inner Demon"
-     ],
-     [
-      "28.23",
-      "Demon Spikes"
-     ],
-     [
-      "28.68",
-      "The Hunt"
-     ],
-     [
-      "29.13",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "145"
-     ],
-     [
-      "Сила",
-      "33"
-     ],
-     [
-      "Интеллект",
-      "38"
-     ],
-     [
-      "Урон автоатаки",
-      "170.8"
-     ],
-     [
-      "Potency",
-      "17.0"
-     ],
-     [
-      "Mastery",
-      "23"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "44.0%"
-     ],
-     [
-      "Скорость атаки",
-      "86.0%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+68%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "745"
-     ],
-     [
-      "Мана макс.",
-      "451"
-     ],
-     [
-      "Реген маны",
-      "4.00/с"
-     ],
-     [
-      "Мана в конце",
-      "42%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.91 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.000"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2058.9,
-     "Chaos Nova": 2254.4,
-     "Chaos Blade": 2123.2,
-     "Singularity": 2066.5,
-     "Chains of Anguish": 2044.2,
-     "Enduring Torment": 2006.9,
-     "Felfire": 2254.4,
-     "Incubus": 2254.4,
-     "Void Glaive": 1983.1
-    },
-    "glyphDps": {
-     "Fortitude": 2254.4,
-     "Unsealed Power": 2254.4,
-     "Fortune": 2003.6,
-     "Supremacy": 2001.9,
-     "Arc Striking": 2001.9,
-     "Battle Frenzy": 1960.3,
-     "Hellfire": 2001.9,
-     "Thunder": 2001.9,
-     "Blood Violence": 2001.9,
-     "Animosity": 2031.7,
-     "Glass Cannon": 2254.4,
-     "Mindhaste": 2056.4
-    }
-   },
-   {
-    "farm_dps": 2254.1,
-    "dps": 2254.1,
-    "total": 67622,
-    "manaLeft": 22.0,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Arcane Ring",
-      "code": "I029",
-      "source": "drop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "The Zircon Star",
-      "code": "I0DF",
-      "source": "drop"
-     },
-     {
-      "name": "Tormentor's Visage",
-      "code": "I0V4",
-      "source": "drop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Felfire",
-     "Incubus"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 10,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 7759074822,
-    "sources": [
-     [
-      "Immolation Aura",
-      1051.3
-     ],
-     [
-      "Chaos Nova",
-      554.4
-     ],
-     [
-      "Sulfuras",
-      306.7
-     ],
-     [
-      "Автоатака",
-      241.5
-     ],
-     [
-      "The Hunt",
-      89.1
-     ],
-     [
-      "Sulfuras (удар)",
-      10.9
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "7.39",
-      "Demon Spikes"
-     ],
-     [
-      "7.84",
-      "The Hunt"
-     ],
-     [
-      "8.29",
-      "Immolation Aura"
-     ],
-     [
-      "10.13",
-      "Inner Demon"
-     ],
-     [
-      "14.34",
-      "Demon Spikes"
-     ],
-     [
-      "14.79",
-      "The Hunt"
-     ],
-     [
-      "15.24",
-      "Immolation Aura"
-     ],
-     [
-      "18.47",
-      "Inner Demon"
-     ],
-     [
-      "21.28",
-      "Demon Spikes"
-     ],
-     [
-      "21.73",
-      "The Hunt"
-     ],
-     [
-      "22.18",
-      "Immolation Aura"
-     ],
-     [
-      "26.80",
-      "Inner Demon"
-     ],
-     [
-      "28.23",
-      "Demon Spikes"
-     ],
-     [
-      "28.68",
-      "The Hunt"
-     ],
-     [
-      "29.13",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "140"
-     ],
-     [
-      "Сила",
-      "28"
-     ],
-     [
-      "Интеллект",
-      "33"
-     ],
-     [
-      "Урон автоатаки",
-      "157.0"
-     ],
-     [
-      "Potency",
-      "21.0"
-     ],
-     [
-      "Mastery",
-      "17"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "44.0%"
-     ],
-     [
-      "Скорость атаки",
-      "84.0%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+66%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "670"
-     ],
-     [
-      "Мана макс.",
-      "351"
-     ],
-     [
-      "Реген маны",
-      "3.60/с"
-     ],
-     [
-      "Мана в конце",
-      "22%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.92 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.000"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2069.2,
-     "Chaos Nova": 2254.1,
-     "Chaos Blade": 2140.6,
-     "Singularity": 2076.6,
-     "Chains of Anguish": 2054.5,
-     "Enduring Torment": 2017.7,
-     "Felfire": 2254.1,
-     "Incubus": 2254.1,
-     "Void Glaive": 1995.9
-    },
-    "glyphDps": {
-     "Fortitude": 2254.1,
-     "Unsealed Power": 2254.1,
-     "Fortune": 2002.1,
-     "Supremacy": 2000.5,
-     "Arc Striking": 2000.5,
-     "Battle Frenzy": 1960.8,
-     "Hellfire": 2000.5,
-     "Thunder": 2000.5,
-     "Blood Violence": 2000.5,
-     "Animosity": 2028.7,
-     "Glass Cannon": 2254.1,
-     "Mindhaste": 2056.9
-    }
-   },
-   {
-    "farm_dps": 2250.8,
-    "dps": 2250.8,
-    "total": 67523,
-    "manaLeft": 62.7,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Atiesh, Greatstaff of the Guardian",
-      "code": "I048",
-      "source": "legendary"
-     },
-     {
-      "name": "Qiraji Talisman",
-      "code": "I0C9",
-      "source": "drop"
-     },
-     {
-      "name": "The Zircon Star",
-      "code": "I0DF",
-      "source": "drop"
-     },
-     {
-      "name": "Tormentor's Visage",
-      "code": "I0V4",
-      "source": "drop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Felfire",
-     "Incubus"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 10,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 4053684993,
-    "sources": [
-     [
-      "Immolation Aura",
-      1298.3
-     ],
-     [
-      "Chaos Nova",
-      617.2
-     ],
-     [
-      "Автоатака",
-      233.4
-     ],
-     [
-      "The Hunt",
-      101.9
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "6.53",
-      "Demon Spikes"
-     ],
-     [
-      "6.98",
-      "The Hunt"
-     ],
-     [
-      "7.43",
-      "Immolation Aura"
-     ],
-     [
-      "9.10",
-      "Inner Demon"
-     ],
-     [
-      "12.62",
-      "Demon Spikes"
-     ],
-     [
-      "13.07",
-      "The Hunt"
-     ],
-     [
-      "13.52",
-      "Immolation Aura"
-     ],
-     [
-      "16.40",
-      "Inner Demon"
-     ],
-     [
-      "18.70",
-      "Demon Spikes"
-     ],
-     [
-      "19.15",
-      "The Hunt"
-     ],
-     [
-      "19.60",
-      "Immolation Aura"
-     ],
-     [
-      "23.70",
-      "Inner Demon"
-     ],
-     [
-      "24.79",
-      "Demon Spikes"
-     ],
-     [
-      "25.24",
-      "The Hunt"
-     ],
-     [
-      "25.69",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "145"
-     ],
-     [
-      "Сила",
-      "33"
-     ],
-     [
-      "Интеллект",
-      "38"
-     ],
-     [
-      "Урон автоатаки",
-      "172.8"
-     ],
-     [
-      "Potency",
-      "17.0"
-     ],
-     [
-      "Mastery",
-      "23"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "43.0%"
-     ],
-     [
-      "Скорость атаки",
-      "58.0%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+88%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "745"
-     ],
-     [
-      "Мана макс.",
-      "701"
-     ],
-     [
-      "Реген маны",
-      "4.00/с"
-     ],
-     [
-      "Мана в конце",
-      "63%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "1.08 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×0.870"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2075.4,
-     "Chaos Nova": 2250.8,
-     "Chaos Blade": 2135.0,
-     "Singularity": 2093.4,
-     "Chains of Anguish": 2060.4,
-     "Enduring Torment": 1931.6,
-     "Felfire": 2250.8,
-     "Incubus": 2250.8,
-     "Void Glaive": 2064.3
-    },
-    "glyphDps": {
-     "Fortitude": 2250.8,
-     "Unsealed Power": 2250.8,
-     "Fortune": 2021.5,
-     "Supremacy": 2021.5,
-     "Arc Striking": 2021.5,
-     "Battle Frenzy": 2032.0,
-     "Hellfire": 2021.5,
-     "Thunder": 2021.5,
-     "Blood Violence": 2021.5,
-     "Animosity": 2048.8,
-     "Glass Cannon": 2250.8,
-     "Mindhaste": 1989.6
-    }
-   },
-   {
-    "farm_dps": 2250.0,
-    "dps": 2250.0,
-    "total": 67500,
-    "manaLeft": 57.6,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Arcane Ring",
-      "code": "I029",
-      "source": "drop"
-     },
-     {
-      "name": "Atiesh, Greatstaff of the Guardian",
-      "code": "I048",
-      "source": "legendary"
-     },
-     {
-      "name": "Nightborne Scepter",
-      "code": "I0FU",
-      "source": "drop"
-     },
-     {
-      "name": "Tormentor's Visage",
-      "code": "I0V4",
-      "source": "drop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Felfire",
-     "Incubus"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 10,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 7946905168,
-    "sources": [
-     [
-      "Immolation Aura",
-      1275.5
-     ],
-     [
-      "Chaos Nova",
-      658.3
-     ],
-     [
-      "Автоатака",
-      210.5
-     ],
-     [
-      "The Hunt",
-      105.8
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "7.09",
-      "Demon Spikes"
-     ],
-     [
-      "7.54",
-      "The Hunt"
-     ],
-     [
-      "7.99",
-      "Immolation Aura"
-     ],
-     [
-      "9.77",
-      "Inner Demon"
-     ],
-     [
-      "13.73",
-      "Demon Spikes"
-     ],
-     [
-      "14.18",
-      "The Hunt"
-     ],
-     [
-      "14.63",
-      "Immolation Aura"
-     ],
-     [
-      "17.74",
-      "Inner Demon"
-     ],
-     [
-      "20.37",
-      "Demon Spikes"
-     ],
-     [
-      "20.82",
-      "The Hunt"
-     ],
-     [
-      "21.27",
-      "Immolation Aura"
-     ],
-     [
-      "25.71",
-      "Inner Demon"
-     ],
-     [
-      "27.01",
-      "Demon Spikes"
-     ],
-     [
-      "27.46",
-      "The Hunt"
-     ],
-     [
-      "27.91",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "139"
-     ],
-     [
-      "Сила",
-      "28"
-     ],
-     [
-      "Интеллект",
-      "33"
-     ],
-     [
-      "Урон автоатаки",
-      "156.2"
-     ],
-     [
-      "Potency",
-      "21.0"
-     ],
-     [
-      "Mastery",
-      "17"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "31.0%"
-     ],
-     [
-      "Скорость атаки",
-      "63.6%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+98%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "670"
-     ],
-     [
-      "Мана макс.",
-      "601"
-     ],
-     [
-      "Реген маны",
-      "4.24/с"
-     ],
-     [
-      "Мана в конце",
-      "58%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "1.04 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×0.870"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2094.3,
-     "Chaos Nova": 2250.0,
-     "Chaos Blade": 2150.9,
-     "Singularity": 2116.6,
-     "Chains of Anguish": 2079.8,
-     "Enduring Torment": 2022.1,
-     "Felfire": 2250.0,
-     "Incubus": 2250.0,
-     "Void Glaive": 2085.3
-    },
-    "glyphDps": {
-     "Fortitude": 2250.0,
-     "Unsealed Power": 2250.0,
-     "Fortune": 2032.7,
-     "Supremacy": 2032.7,
-     "Arc Striking": 2032.7,
-     "Battle Frenzy": 2063.9,
-     "Hellfire": 2032.7,
-     "Thunder": 2032.7,
-     "Blood Violence": 2032.7,
-     "Animosity": 2057.3,
-     "Glass Cannon": 2250.0,
-     "Mindhaste": 2143.1
-    }
-   },
-   {
-    "farm_dps": 2245.4,
-    "dps": 2245.4,
-    "total": 67362,
-    "manaLeft": 65.4,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Atiesh, Greatstaff of the Guardian",
-      "code": "I048",
-      "source": "legendary"
-     },
-     {
-      "name": "Qiraji Talisman",
-      "code": "I0C9",
-      "source": "drop"
-     },
-     {
-      "name": "Nightborne Scepter",
-      "code": "I0FU",
-      "source": "drop"
-     },
-     {
-      "name": "Tormentor's Visage",
-      "code": "I0V4",
-      "source": "drop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Felfire",
-     "Incubus"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 1,
-     "attack_speed": 2,
-     "damage": 7,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 4053387051,
-    "sources": [
-     [
-      "Immolation Aura",
-      1250.8
-     ],
-     [
-      "Chaos Nova",
-      653.9
-     ],
-     [
-      "Автоатака",
-      232.8
-     ],
-     [
-      "The Hunt",
-      107.9
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "7.09",
-      "Demon Spikes"
-     ],
-     [
-      "7.54",
-      "The Hunt"
-     ],
-     [
-      "7.99",
-      "Immolation Aura"
-     ],
-     [
-      "9.77",
-      "Inner Demon"
-     ],
-     [
-      "13.73",
-      "Demon Spikes"
-     ],
-     [
-      "14.18",
-      "The Hunt"
-     ],
-     [
-      "14.63",
-      "Immolation Aura"
-     ],
-     [
-      "17.74",
-      "Inner Demon"
-     ],
-     [
-      "20.37",
-      "Demon Spikes"
-     ],
-     [
-      "20.82",
-      "The Hunt"
-     ],
-     [
-      "21.27",
-      "Immolation Aura"
-     ],
-     [
-      "25.71",
-      "Inner Demon"
-     ],
-     [
-      "27.01",
-      "Demon Spikes"
-     ],
-     [
-      "27.46",
-      "The Hunt"
-     ],
-     [
-      "27.91",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "144"
-     ],
-     [
-      "Сила",
-      "33"
-     ],
-     [
-      "Интеллект",
-      "38"
-     ],
-     [
-      "Урон автоатаки",
-      "166.0"
-     ],
-     [
-      "Potency",
-      "17.0"
-     ],
-     [
-      "Mastery",
-      "23"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "31.0%"
-     ],
-     [
-      "Скорость атаки",
-      "69.6%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+100%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "745"
-     ],
-     [
-      "Мана макс.",
-      "701"
-     ],
-     [
-      "Реген маны",
-      "4.64/с"
-     ],
-     [
-      "Мана в конце",
-      "65%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "1.00 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×0.870"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2083.9,
-     "Chaos Nova": 2245.4,
-     "Chaos Blade": 2142.4,
-     "Singularity": 2104.6,
-     "Chains of Anguish": 2068.1,
-     "Enduring Torment": 2009.8,
-     "Felfire": 2245.4,
-     "Incubus": 2245.4,
-     "Void Glaive": 2072.0
-    },
-    "glyphDps": {
-     "Fortitude": 2245.4,
-     "Unsealed Power": 2245.4,
-     "Fortune": 2028.3,
-     "Supremacy": 2028.3,
-     "Arc Striking": 2028.3,
-     "Battle Frenzy": 2038.8,
-     "Hellfire": 2028.3,
-     "Thunder": 2028.3,
-     "Blood Violence": 2028.3,
-     "Animosity": 2055.5,
-     "Glass Cannon": 2245.4,
-     "Mindhaste": 2125.0
-    }
-   },
-   {
-    "farm_dps": 2242.3,
-    "dps": 2242.3,
-    "total": 67270,
-    "manaLeft": 54.5,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Trident of Atal'ai",
-      "code": "I01R",
-      "source": "drop"
-     },
-     {
-      "name": "Atiesh, Greatstaff of the Guardian",
-      "code": "I048",
-      "source": "legendary"
-     },
-     {
-      "name": "The Zircon Star",
-      "code": "I0DF",
-      "source": "drop"
-     },
-     {
-      "name": "Tormentor's Visage",
-      "code": "I0V4",
-      "source": "drop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Felfire",
-     "Incubus"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 2,
-     "attack_speed": 1,
-     "damage": 7,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 9469492964,
-    "sources": [
-     [
-      "Immolation Aura",
-      1266.3
-     ],
-     [
-      "Chaos Nova",
-      615.8
-     ],
-     [
-      "Автоатака",
-      256.5
-     ],
-     [
-      "The Hunt",
-      103.8
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "6.75",
-      "Demon Spikes"
-     ],
-     [
-      "7.20",
-      "The Hunt"
-     ],
-     [
-      "7.65",
-      "Immolation Aura"
-     ],
-     [
-      "9.37",
-      "Inner Demon"
-     ],
-     [
-      "13.06",
-      "Demon Spikes"
-     ],
-     [
-      "13.51",
-      "The Hunt"
-     ],
-     [
-      "13.96",
-      "Immolation Aura"
-     ],
-     [
-      "16.93",
-      "Inner Demon"
-     ],
-     [
-      "19.36",
-      "Demon Spikes"
-     ],
-     [
-      "19.81",
-      "The Hunt"
-     ],
-     [
-      "20.26",
-      "Immolation Aura"
-     ],
-     [
-      "24.50",
-      "Inner Demon"
-     ],
-     [
-      "25.67",
-      "Demon Spikes"
-     ],
-     [
-      "26.12",
-      "The Hunt"
-     ],
-     [
-      "26.57",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "152"
-     ],
-     [
-      "Сила",
-      "28"
-     ],
-     [
-      "Интеллект",
-      "33"
-     ],
-     [
-      "Урон автоатаки",
-      "175.0"
-     ],
-     [
-      "Potency",
-      "14.0"
-     ],
-     [
-      "Mastery",
-      "17"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "38.0%"
-     ],
-     [
-      "Скорость атаки",
-      "82.8%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+86%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "670"
-     ],
-     [
-      "Мана макс.",
-      "601"
-     ],
-     [
-      "Реген маны",
-      "3.60/с"
-     ],
-     [
-      "Мана в конце",
-      "54%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.93 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×0.870"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2085.9,
-     "Chaos Nova": 2242.3,
-     "Chaos Blade": 2142.1,
-     "Singularity": 2099.9,
-     "Chains of Anguish": 2069.1,
-     "Enduring Torment": 1957.7,
-     "Felfire": 2242.3,
-     "Incubus": 2242.3,
-     "Void Glaive": 2059.4
-    },
-    "glyphDps": {
-     "Fortitude": 2242.3,
-     "Unsealed Power": 2242.3,
-     "Fortune": 2011.3,
-     "Supremacy": 2011.3,
-     "Arc Striking": 2011.3,
-     "Battle Frenzy": 2021.7,
-     "Hellfire": 2011.3,
-     "Thunder": 2011.3,
-     "Blood Violence": 2011.3,
-     "Animosity": 2041.3,
-     "Glass Cannon": 2242.3,
-     "Mindhaste": 1935.7
-    }
-   },
-   {
-    "farm_dps": 2241.8,
-    "dps": 2241.8,
-    "total": 67254,
-    "manaLeft": 78.0,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Cursed Skull",
-      "code": "I02K",
-      "source": "drop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Nightborne Scepter",
-      "code": "I0FU",
-      "source": "drop"
-     },
-     {
-      "name": "Tormentor's Visage",
-      "code": "I0V4",
-      "source": "drop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Felfire",
-     "Incubus"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 10,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 7415874075,
-    "sources": [
-     [
-      "Immolation Aura",
-      1057.7
-     ],
-     [
-      "Chaos Nova",
-      513.5
-     ],
-     [
-      "Sulfuras",
-      290.0
-     ],
-     [
-      "Автоатака",
-      280.5
-     ],
-     [
-      "The Hunt",
-      86.8
-     ],
-     [
-      "Sulfuras (удар)",
-      13.3
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "8.58",
-      "Demon Spikes"
-     ],
-     [
-      "9.03",
-      "The Hunt"
-     ],
-     [
-      "9.48",
-      "Immolation Aura"
-     ],
-     [
-      "11.56",
-      "Inner Demon"
-     ],
-     [
-      "16.71",
-      "Demon Spikes"
-     ],
-     [
-      "17.16",
-      "The Hunt"
-     ],
-     [
-      "17.61",
-      "Immolation Aura"
-     ],
-     [
-      "21.31",
-      "Inner Demon"
-     ],
-     [
-      "24.84",
-      "Demon Spikes"
-     ],
-     [
-      "25.29",
-      "The Hunt"
-     ],
-     [
-      "25.74",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "164"
-     ],
-     [
-      "Сила",
-      "53"
-     ],
-     [
-      "Интеллект",
-      "58"
-     ],
-     [
-      "Урон автоатаки",
-      "175.0"
-     ],
-     [
-      "Potency",
-      "14.0"
-     ],
-     [
-      "Mastery",
-      "17"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "23.0%"
-     ],
-     [
-      "Скорость атаки",
-      "101.6%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+84%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "1060"
-     ],
-     [
-      "Мана макс.",
-      "526"
-     ],
-     [
-      "Реген маны",
-      "6.24/с"
-     ],
-     [
-      "Мана в конце",
-      "78%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "0.84 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.000"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2023.0,
-     "Chaos Nova": 2241.8,
-     "Chaos Blade": 2102.4,
-     "Singularity": 2024.4,
-     "Chains of Anguish": 2006.5,
-     "Enduring Torment": 2055.1,
-     "Felfire": 2241.8,
-     "Incubus": 2241.8,
-     "Void Glaive": 2007.1
-    },
-    "glyphDps": {
-     "Fortitude": 2241.8,
-     "Unsealed Power": 2241.8,
-     "Fortune": 2010.9,
-     "Supremacy": 2009.0,
-     "Arc Striking": 2009.0,
-     "Battle Frenzy": 2030.8,
-     "Hellfire": 2009.0,
-     "Thunder": 2009.0,
-     "Blood Violence": 2009.0,
-     "Animosity": 2041.8,
-     "Glass Cannon": 2241.8,
-     "Mindhaste": 2069.2
-    }
-   },
-   {
-    "farm_dps": 2233.1,
-    "dps": 2233.1,
-    "total": 66992,
-    "manaLeft": 60.8,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Arcane Ring",
-      "code": "I029",
-      "source": "drop"
-     },
-     {
-      "name": "Shard of Infinity",
-      "code": "I03C",
-      "source": "drop"
-     },
-     {
-      "name": "Atiesh, Greatstaff of the Guardian",
-      "code": "I048",
-      "source": "legendary"
-     },
-     {
-      "name": "Tormentor's Visage",
-      "code": "I0V4",
-      "source": "drop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Felfire",
-     "Incubus"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 10,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 7989089593,
-    "sources": [
-     [
-      "Immolation Aura",
-      1312.9
-     ],
-     [
-      "Chaos Nova",
-      613.1
-     ],
-     [
-      "Автоатака",
-      208.7
-     ],
-     [
-      "The Hunt",
-      98.4
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "6.71",
-      "Demon Spikes"
-     ],
-     [
-      "7.16",
-      "The Hunt"
-     ],
-     [
-      "7.61",
-      "Immolation Aura"
-     ],
-     [
-      "9.39",
-      "Inner Demon"
-     ],
-     [
-      "12.97",
-      "Demon Spikes"
-     ],
-     [
-      "13.42",
-      "The Hunt"
-     ],
-     [
-      "13.87",
-      "Immolation Aura"
-     ],
-     [
-      "16.98",
-      "Inner Demon"
-     ],
-     [
-      "19.23",
-      "Demon Spikes"
-     ],
-     [
-      "19.68",
-      "The Hunt"
-     ],
-     [
-      "20.13",
-      "Immolation Aura"
-     ],
-     [
-      "24.56",
-      "Inner Demon"
-     ],
-     [
-      "25.49",
-      "Demon Spikes"
-     ],
-     [
-      "25.94",
-      "The Hunt"
-     ],
-     [
-      "26.39",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "137"
-     ],
-     [
-      "Сила",
-      "28"
-     ],
-     [
-      "Интеллект",
-      "33"
-     ],
-     [
-      "Урон автоатаки",
-      "154.8"
-     ],
-     [
-      "Potency",
-      "21.0"
-     ],
-     [
-      "Mastery",
-      "17"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "31.0%"
-     ],
-     [
-      "Скорость атаки",
-      "54.8%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+86%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "675"
-     ],
-     [
-      "Мана макс.",
-      "601"
-     ],
-     [
-      "Реген маны",
-      "4.88/с"
-     ],
-     [
-      "Мана в конце",
-      "61%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "1.10 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×0.870"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.50 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2066.1,
-     "Chaos Nova": 2233.1,
-     "Chaos Blade": 2127.7,
-     "Singularity": 2084.9,
-     "Chains of Anguish": 2052.1,
-     "Enduring Torment": 1904.4,
-     "Felfire": 2233.1,
-     "Incubus": 2233.1,
-     "Void Glaive": 2057.1
-    },
-    "glyphDps": {
-     "Fortitude": 2233.1,
-     "Unsealed Power": 2233.1,
-     "Fortune": 2005.6,
-     "Supremacy": 2005.6,
-     "Arc Striking": 2005.6,
-     "Battle Frenzy": 2035.7,
-     "Hellfire": 2005.6,
-     "Thunder": 2005.6,
-     "Blood Violence": 2005.6,
-     "Animosity": 2030.0,
-     "Glass Cannon": 2233.1,
-     "Mindhaste": 1955.4
-    }
-   },
-   {
-    "farm_dps": 2230.4,
-    "dps": 2230.4,
-    "total": 66911,
-    "manaLeft": 44.5,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Atiesh, Greatstaff of the Guardian",
-      "code": "I048",
-      "source": "legendary"
-     },
-     {
-      "name": "The Zircon Star",
-      "code": "I0DF",
-      "source": "drop"
-     },
-     {
-      "name": "The Zircon Star",
-      "code": "I0DF",
-      "source": "drop"
-     },
-     {
-      "name": "Tormentor's Visage",
-      "code": "I0V4",
-      "source": "drop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Felfire",
-     "Incubus"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 3,
-     "attack_speed": 0,
-     "damage": 7,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 4047363603,
-    "sources": [
-     [
-      "Immolation Aura",
-      1179.1
-     ],
-     [
-      "Chaos Nova",
-      711.2
-     ],
-     [
-      "Автоатака",
-      214.9
-     ],
-     [
-      "The Hunt",
-      125.1
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "6.17",
-      "Demon Spikes"
-     ],
-     [
-      "6.62",
-      "The Hunt"
-     ],
-     [
-      "7.07",
-      "Immolation Aura"
-     ],
-     [
-      "8.67",
-      "Inner Demon"
-     ],
-     [
-      "11.90",
-      "Demon Spikes"
-     ],
-     [
-      "12.35",
-      "The Hunt"
-     ],
-     [
-      "12.80",
-      "Immolation Aura"
-     ],
-     [
-      "15.54",
-      "Inner Demon"
-     ],
-     [
-      "17.62",
-      "Demon Spikes"
-     ],
-     [
-      "18.07",
-      "The Hunt"
-     ],
-     [
-      "18.52",
-      "Immolation Aura"
-     ],
-     [
-      "22.41",
-      "Inner Demon"
-     ],
-     [
-      "23.34",
-      "Demon Spikes"
-     ],
-     [
-      "23.79",
-      "The Hunt"
-     ],
-     [
-      "24.24",
-      "Immolation Aura"
-     ],
-     [
-      "29.07",
-      "Demon Spikes"
-     ],
-     [
-      "29.52",
-      "The Hunt"
-     ],
-     [
-      "29.97",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "153"
-     ],
-     [
-      "Сила",
-      "28"
-     ],
-     [
-      "Интеллект",
-      "33"
-     ],
-     [
-      "Урон автоатаки",
-      "160.8"
-     ],
-     [
-      "Potency",
-      "14.0"
-     ],
-     [
-      "Mastery",
-      "17"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "52.0%"
-     ],
-     [
-      "Скорость атаки",
-      "61.2%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+86%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "670"
-     ],
-     [
-      "Мана макс.",
-      "601"
-     ],
-     [
-      "Реген маны",
-      "3.60/с"
-     ],
-     [
-      "Мана в конце",
-      "44%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "1.05 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×0.870"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2065.6,
-     "Chaos Nova": 2230.4,
-     "Chaos Blade": 2118.1,
-     "Singularity": 2095.8,
-     "Chains of Anguish": 2050.8,
-     "Enduring Torment": 2032.9,
-     "Felfire": 2230.4,
-     "Incubus": 2230.4,
-     "Void Glaive": 2043.9
-    },
-    "glyphDps": {
-     "Fortitude": 2230.4,
-     "Unsealed Power": 2230.4,
-     "Fortune": 2002.8,
-     "Supremacy": 2002.8,
-     "Arc Striking": 2002.8,
-     "Battle Frenzy": 2012.7,
-     "Hellfire": 2002.8,
-     "Thunder": 2002.8,
-     "Blood Violence": 2002.8,
-     "Animosity": 2027.9,
-     "Glass Cannon": 2230.4,
-     "Mindhaste": 1928.6
-    }
-   },
-   {
-    "farm_dps": 2228.7,
-    "dps": 2228.7,
-    "total": 66860,
-    "manaLeft": 54.5,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Atiesh, Greatstaff of the Guardian",
-      "code": "I048",
-      "source": "legendary"
-     },
-     {
-      "name": "The Zircon Star",
-      "code": "I0DF",
-      "source": "drop"
-     },
-     {
-      "name": "Tormentor's Visage",
-      "code": "I0V4",
-      "source": "drop"
-     },
-     {
-      "name": "Deceiver's Warglaive",
-      "code": "I0V5",
-      "source": "drop"
-     },
-     {
-      "name": "The Darkglaive",
-      "code": "fgrd",
-      "source": "drop"
-     },
-     {
-      "name": "Hand of Hatred",
-      "code": "sor3",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Chaos Nova",
-     "Felfire",
-     "Incubus"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 1,
-     "attack_speed": 0,
-     "damage": 9,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 4046636998,
-    "sources": [
-     [
-      "Immolation Aura",
-      1285.6
-     ],
-     [
-      "Chaos Nova",
-      623.8
-     ],
-     [
-      "Автоатака",
-      214.0
-     ],
-     [
-      "The Hunt",
-      105.2
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Metamorphosis"
-     ],
-     [
-      "0.45",
-      "Demon Spikes"
-     ],
-     [
-      "0.90",
-      "The Hunt"
-     ],
-     [
-      "1.35",
-      "Immolation Aura"
-     ],
-     [
-      "1.80",
-      "Inner Demon"
-     ],
-     [
-      "6.80",
-      "Demon Spikes"
-     ],
-     [
-      "7.25",
-      "The Hunt"
-     ],
-     [
-      "7.70",
-      "Immolation Aura"
-     ],
-     [
-      "9.42",
-      "Inner Demon"
-     ],
-     [
-      "13.15",
-      "Demon Spikes"
-     ],
-     [
-      "13.60",
-      "The Hunt"
-     ],
-     [
-      "14.05",
-      "Immolation Aura"
-     ],
-     [
-      "17.04",
-      "Inner Demon"
-     ],
-     [
-      "19.50",
-      "Demon Spikes"
-     ],
-     [
-      "19.95",
-      "The Hunt"
-     ],
-     [
-      "20.40",
-      "Immolation Aura"
-     ],
-     [
-      "24.66",
-      "Inner Demon"
-     ],
-     [
-      "25.85",
-      "Demon Spikes"
-     ],
-     [
-      "26.30",
-      "The Hunt"
-     ],
-     [
-      "26.75",
-      "Immolation Aura"
-     ]
-    ],
-    "stats": [
-     [
-      "Ловкость",
-      "155"
-     ],
-     [
-      "Сила",
-      "28"
-     ],
-     [
-      "Интеллект",
-      "33"
-     ],
-     [
-      "Урон автоатаки",
-      "166.2"
-     ],
-     [
-      "Potency",
-      "14.0"
-     ],
-     [
-      "Mastery",
-      "17"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "37.0%"
-     ],
-     [
-      "Скорость атаки",
-      "62.0%"
-     ],
-     [
-      "Удача",
-      "4%"
-     ],
-     [
-      "Магический бонус",
-      "+86%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "670"
-     ],
-     [
-      "Мана макс.",
-      "601"
-     ],
-     [
-      "Реген маны",
-      "3.60/с"
-     ],
-     [
-      "Мана в конце",
-      "54%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "1.05 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×0.870"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Fallout": 2063.0,
-     "Chaos Nova": 2228.7,
-     "Chaos Blade": 2108.5,
-     "Singularity": 2084.2,
-     "Chains of Anguish": 2049.1,
-     "Enduring Torment": 1921.9,
-     "Felfire": 2228.7,
-     "Incubus": 2228.7,
-     "Void Glaive": 2031.3
-    },
-    "glyphDps": {
-     "Fortitude": 2228.7,
-     "Unsealed Power": 2228.7,
-     "Fortune": 2001.3,
-     "Supremacy": 2001.3,
-     "Arc Striking": 2001.3,
-     "Battle Frenzy": 2011.4,
-     "Hellfire": 2001.3,
-     "Thunder": 2001.3,
-     "Blood Violence": 2001.3,
-     "Animosity": 2026.3,
-     "Glass Cannon": 2228.7,
-     "Mindhaste": 1909.8
     }
    }
   ]
