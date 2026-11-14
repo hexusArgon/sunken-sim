@@ -16,7 +16,7 @@ def pct(v):
     return float(v)
 
 POOLS = [("mixed", "Shop + drop"), ("shop", "Shop"), ("drop", "Drop")]
-COL = {"Paladin": "#F48CBA", "Priest": "#FFFFFF", "Shaman": "#0070DD", "Mage": "#3FC7EB", "Druid": "#FF7C0A", "Berserker": "#C41E3A"}
+COL = {"Paladin": "#F48CBA", "Priest": "#FFFFFF", "Shaman": "#0070DD", "Mage": "#3FC7EB", "Druid": "#FF7C0A", "Berserker": "#C41E3A", "Hunter": "#AAD372"}
 specs = []  # dict(cls, spec, page, level, pools{pool:{dps,total,mana,sources}})
 
 def add(cls, spec, page, level, runs_by_pool):
@@ -35,10 +35,11 @@ for name, spec in (("DATA", "Fire"), ("FROST_DATA", "Frost"), ("ARCANE_DATA", "A
 # Paladin / Shaman / Berserker: three specs each (full Top-150 GPU runs, level 15) from paladin.tsx / shaman.tsx
 for f, cls, page, names in [("paladin.tsx", "Paladin", "paladin.html", ("retribution", "protection", "holy")),
                             ("shaman.tsx", "Shaman", "shaman.html", ("restoration", "enhancement", "elemental")),
-                            ("berserker.tsx", "Berserker", "berserker.html", ("headhunter", "poison", "fury"))]:
+                            ("berserker.tsx", "Berserker", "berserker.html", ("headhunter", "poison", "fury")),
+                            ("hunter.tsx", "Hunter", "hunter.html", ("marksmanship", "beast_mastery", "survival"))]:
     for sp in names:
         d = const(f, sp.upper() + "_DATA")
-        add(cls, sp.capitalize(), page, d["level"], {p: max(d["runs"][p], key=lambda r: float(r["dps"])) for p, _ in POOLS if p in d["runs"]})
+        add(cls, sp.replace("_", " ").title(), page, d["level"], {p: max(d["runs"][p], key=lambda r: float(r["dps"])) for p, _ in POOLS if p in d["runs"]})
 # Druid: Restoration, Balance; Priest: Shadow, Discipline, Holy (full Top-150 GPU runs, level from the data)
 for f, name, cls, spec, page in [("druid.tsx", "RESTORATION_DATA", "Druid", "Restoration", "druid.html"),
                                  ("druid.tsx", "BALANCE_DATA", "Druid", "Balance", "druid.html"),
@@ -92,7 +93,7 @@ css += """
 @media(max-width:800px){.rrow,.srow{grid-template-columns:150px 1fr 64px}.lv{display:none}}
 """
 
-pages = [("paladin", "Paladin"), ("priest", "Priest"), ("shaman", "Shaman"), ("mage", "Mage"), ("druid", "Druid"), ("berserker", "Berserker")]
+pages = [("paladin", "Paladin"), ("priest", "Priest"), ("shaman", "Shaman"), ("mage", "Mage"), ("druid", "Druid"), ("berserker", "Berserker"), ("hunter", "Hunter")]
 nav = '<nav class="topnav"><a href="index.html" class="cur">← Sunken City sims</a>' + "".join(f'<a href="{f}.html">{t}</a>' for f, t in pages) + "</nav>"
 
 lv = sorted({s["level"] for s in specs})

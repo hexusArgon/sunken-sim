@@ -24,6 +24,7 @@ PAGES = {
     "paladin": {"retribution": "RETRIBUTION_DATA", "protection": "PROTECTION_DATA", "holy": "HOLY_DATA"},
     "druid": {"restoration": "RESTORATION_DATA", "balance": "BALANCE_DATA"},
     "berserker": {"headhunter": "HEADHUNTER_DATA", "poison": "POISON_DATA", "fury": "FURY_DATA"},
+    "hunter": {"marksmanship": "MARKSMANSHIP_DATA", "beast_mastery": "BEAST_MASTERY_DATA", "survival": "SURVIVAL_DATA"},
 }
 
 

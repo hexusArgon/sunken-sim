@@ -33,11 +33,17 @@ def clean(t: str) -> str:
 
 # A damage source named after a mechanic that the map describes inside another ability's tooltip.
 ALIASES = {"Surge of Toxins": "Venomous Axes"}
+# Hero abilities by rawcode where the name is ambiguous in war3mapSkin.w3a (A06B "Steel Trap" carries another
+# hero's learn tooltip there): the level-1 tooltip (aub1) of that ability.
+BY_CODE = {
+    "hunter": {"Steel Trap": "A06B", "Serpent Sting": "A0E3", "Serpent Sting (тики)": "A0E3", "Multi-Shot": "A01V",
+               "Split Shot": "A01V", "Bestial Wrath": "A03X"},
+}
 
 
-def _ability_tips(strings) -> dict[str, str]:
+def _ability_tips(strings, by_code: dict | None = None, file: str = "war3mapSkin.w3a") -> dict[str, str]:
     """Hero ability name -> learn tooltip (arut, all levels) from war3mapSkin.w3a, raw with colors."""
-    blob = L._extract(L.MAP_PATH, "war3mapSkin.w3a")
+    blob = L._extract(L.MAP_PATH, file)
     pos = 0
 
     def i32():
@@ -50,6 +56,9 @@ def _ability_tips(strings) -> dict[str, str]:
     out: dict[str, str] = {}
     for _table in range(2):
         for _ in range(i32()):
+            orig = blob[pos:pos + 4].decode("latin1")
+            new = blob[pos + 4:pos + 8].decode("latin1")
+            code = orig if new == "\0\0\0\0" else new
             pos += 8
             mods: dict[tuple[str, int], object] = {}
             for _set in range(i32() if ver >= 3 else 1):
@@ -75,7 +84,12 @@ def _ability_tips(strings) -> dict[str, str]:
             name = L._resolve(str(mods.get(("anam", 0), "")), strings)
             tip = mods.get(("arut", 0))
             if name and isinstance(tip, str):
-                out.setdefault(name, L._resolve(tip, strings).replace("|n", "\n").strip())
+                text = L._resolve(tip, strings).replace("|n", "\n").strip()
+                out.setdefault(name, text)
+                if by_code is not None:
+                    ub = mods.get(("aub1", 1)) or mods.get(("aub1", 0))
+                    ub = L._resolve(ub, strings).replace("|n", "\n").strip() if isinstance(ub, str) else ""
+                    by_code[code] = (name, text, ub)
     return out
 
 
@@ -112,12 +126,17 @@ def main(hero: str, specs: list[str]) -> None:
         codes |= {it["code"] for rs in data["runs"].values() for r in rs for it in r["items"]}
         names |= {n for rs in data["runs"].values() for r in rs for n, _ in r["sources"]}
         names |= {a for rs in data["runs"].values() for r in rs for _, a in r["actions"]}
-    abilities = _ability_tips(strings)
+    codes_tips: dict = {}
+    abilities = _ability_tips(strings, codes_tips)
     shared = _page_name_tips()
     name_tips: dict[str, list] = {}
+    by_code = BY_CODE.get(hero, {})
     for n in sorted(names):
         src = ALIASES.get(n, n)
-        if src in abilities:
+        if n in by_code and by_code[n] in codes_tips:
+            name, learn, level1 = codes_tips[by_code[n]]
+            name_tips[n] = [name, level1 or learn]
+        elif src in abilities:
             name_tips[n] = [src, abilities[src]]
         elif src in talents:
             name_tips[n] = [src, talents[src]]
