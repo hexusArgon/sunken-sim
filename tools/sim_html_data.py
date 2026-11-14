@@ -25,6 +25,10 @@ PAGES = {
     "druid": {"restoration": "RESTORATION_DATA", "balance": "BALANCE_DATA"},
     "berserker": {"headhunter": "HEADHUNTER_DATA", "poison": "POISON_DATA", "fury": "FURY_DATA"},
     "hunter": {"marksmanship": "MARKSMANSHIP_DATA", "beast_mastery": "BEAST_MASTERY_DATA", "survival": "SURVIVAL_DATA"},
+    "death_knight": {"frost": "FROST_DATA", "blood": "BLOOD_DATA", "unholy": "UNHOLY_DATA"},
+    "demon_hunter": {"havoc": "HAVOC_DATA", "vengeance": "VENGEANCE_DATA", "devourer": "DEVOURER_DATA"},
+    "dragon_sentinel": {"ruby": "RUBY_DATA", "obsidian": "OBSIDIAN_DATA", "emerald": "EMERALD_DATA"},
+    "feral_druid": {"primal": "PRIMAL_DATA", "guardian": "GUARDIAN_DATA", "savage": "SAVAGE_DATA"},
 }
 
 

@@ -4,7 +4,7 @@
  "hero": "paladin",
  "spec": "protection",
  "top": 150,
- "farm_file": "../sunken-sim-runs/paladin-protection-opencl-top150-gpu/results/rescored-local-hybrid-paladin-protection-mixed-top150-5-0-14700535054-admission-v2-bare-top10-86f9b4e2699bce59.json",
+ "farm_file": "../../sessions/rcw-01dggafd7ettcq4v2v4lcdlh/mnt/sunken-sim-runs/paladin-protection-opencl-top150-gate50-1113/results/local-hybrid-paladin-protection-mixed-top150-5-0-14700535054-admission-v2-bare-top50-7fc675ff7068cb9f.json",
  "done": 14700535055,
  "end": 14700535054,
  "errors": 0,
@@ -32,6 +32,648 @@
  ],
  "runs": {
   "mixed": [
+   {
+    "farm_dps": 4813.0,
+    "dps": 4813.0,
+    "total": 144391,
+    "manaLeft": 95.6,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Flask of Sands",
+      "code": "I096",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Divine Hammer",
+     "Divine Storm",
+     "Divine Toll"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 12716290590,
+    "sources": [
+     [
+      "Blessed Hammer",
+      3999.5
+     ],
+     [
+      "Divine Storm",
+      348.8
+     ],
+     [
+      "Crusader Strike",
+      299.7
+     ],
+     [
+      "Righteous Fury",
+      93.8
+     ],
+     [
+      "Автоатака",
+      71.3
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.75",
+      "Blessed Hammer"
+     ],
+     [
+      "2.21",
+      "Blessed Hammer"
+     ],
+     [
+      "2.96",
+      "Crusader Strike"
+     ],
+     [
+      "3.71",
+      "Blessed Hammer"
+     ],
+     [
+      "5.17",
+      "Blessed Hammer"
+     ],
+     [
+      "5.92",
+      "Crusader Strike"
+     ],
+     [
+      "6.67",
+      "Blessed Hammer"
+     ],
+     [
+      "8.14",
+      "Blessed Hammer"
+     ],
+     [
+      "8.89",
+      "Crusader Strike"
+     ],
+     [
+      "9.64",
+      "Blessed Hammer"
+     ],
+     [
+      "11.10",
+      "Blessed Hammer"
+     ],
+     [
+      "11.85",
+      "Crusader Strike"
+     ],
+     [
+      "12.60",
+      "Blessed Hammer"
+     ],
+     [
+      "14.06",
+      "Blessed Hammer"
+     ],
+     [
+      "14.81",
+      "Crusader Strike"
+     ],
+     [
+      "15.56",
+      "Blessed Hammer"
+     ],
+     [
+      "17.02",
+      "Blessed Hammer"
+     ],
+     [
+      "17.77",
+      "Crusader Strike"
+     ],
+     [
+      "18.52",
+      "Blessed Hammer"
+     ],
+     [
+      "19.98",
+      "Blessed Hammer"
+     ],
+     [
+      "20.73",
+      "Crusader Strike"
+     ],
+     [
+      "21.48",
+      "Blessed Hammer"
+     ],
+     [
+      "22.94",
+      "Blessed Hammer"
+     ],
+     [
+      "23.69",
+      "Crusader Strike"
+     ],
+     [
+      "24.44",
+      "Blessed Hammer"
+     ],
+     [
+      "25.91",
+      "Blessed Hammer"
+     ],
+     [
+      "26.66",
+      "Crusader Strike"
+     ],
+     [
+      "27.41",
+      "Blessed Hammer"
+     ],
+     [
+      "28.87",
+      "Blessed Hammer"
+     ],
+     [
+      "29.62",
+      "Crusader Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "148"
+     ],
+     [
+      "Ловкость",
+      "36"
+     ],
+     [
+      "Интеллект",
+      "42"
+     ],
+     [
+      "Урон автоатаки",
+      "124.0"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "31.0%"
+     ],
+     [
+      "Скорость атаки",
+      "29.4%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+98%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "864"
+     ],
+     [
+      "Реген маны",
+      "6.24/с"
+     ],
+     [
+      "Мана в конце",
+      "96%"
+     ],
+     [
+      "Интервал атаки",
+      "1.72 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "2.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 4524.0,
+     "Divine Storm": 4813.0,
+     "Divine Hammer": 4813.0,
+     "Divine Toll": 4813.0,
+     "Crusade": 4662.4
+    },
+    "glyphDps": {
+     "Fortitude": 4813.0,
+     "Unsealed Power": 4813.0,
+     "Fortune": 4460.4,
+     "Supremacy": 4396.5,
+     "Arc Striking": 4371.1,
+     "Battle Frenzy": 4371.1,
+     "Hellfire": 4371.1,
+     "Thunder": 4371.1,
+     "Blood Violence": 4371.1,
+     "Animosity": 4379.4,
+     "Glass Cannon": 4813.0,
+     "Mindhaste": 4731.6
+    }
+   },
+   {
+    "farm_dps": 4721.7,
+    "dps": 4721.7,
+    "total": 141652,
+    "manaLeft": 88.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Shard of Infinity",
+      "code": "I03C",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Divine Hammer",
+     "Divine Storm",
+     "Divine Toll"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Mindhaste"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 12752347890,
+    "sources": [
+     [
+      "Blessed Hammer",
+      3951.4
+     ],
+     [
+      "Divine Storm",
+      329.8
+     ],
+     [
+      "Crusader Strike",
+      286.4
+     ],
+     [
+      "Righteous Fury",
+      90.3
+     ],
+     [
+      "Автоатака",
+      63.8
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.75",
+      "Blessed Hammer"
+     ],
+     [
+      "2.11",
+      "Blessed Hammer"
+     ],
+     [
+      "2.86",
+      "Crusader Strike"
+     ],
+     [
+      "3.61",
+      "Blessed Hammer"
+     ],
+     [
+      "4.97",
+      "Blessed Hammer"
+     ],
+     [
+      "5.72",
+      "Crusader Strike"
+     ],
+     [
+      "6.47",
+      "Blessed Hammer"
+     ],
+     [
+      "7.83",
+      "Blessed Hammer"
+     ],
+     [
+      "8.58",
+      "Crusader Strike"
+     ],
+     [
+      "9.33",
+      "Blessed Hammer"
+     ],
+     [
+      "10.69",
+      "Blessed Hammer"
+     ],
+     [
+      "11.44",
+      "Crusader Strike"
+     ],
+     [
+      "12.19",
+      "Blessed Hammer"
+     ],
+     [
+      "13.56",
+      "Blessed Hammer"
+     ],
+     [
+      "14.31",
+      "Crusader Strike"
+     ],
+     [
+      "15.06",
+      "Blessed Hammer"
+     ],
+     [
+      "16.42",
+      "Blessed Hammer"
+     ],
+     [
+      "17.17",
+      "Crusader Strike"
+     ],
+     [
+      "17.92",
+      "Blessed Hammer"
+     ],
+     [
+      "19.28",
+      "Blessed Hammer"
+     ],
+     [
+      "20.03",
+      "Crusader Strike"
+     ],
+     [
+      "20.78",
+      "Blessed Hammer"
+     ],
+     [
+      "22.14",
+      "Blessed Hammer"
+     ],
+     [
+      "22.89",
+      "Crusader Strike"
+     ],
+     [
+      "23.64",
+      "Blessed Hammer"
+     ],
+     [
+      "25.00",
+      "Blessed Hammer"
+     ],
+     [
+      "25.75",
+      "Crusader Strike"
+     ],
+     [
+      "26.50",
+      "Blessed Hammer"
+     ],
+     [
+      "27.86",
+      "Blessed Hammer"
+     ],
+     [
+      "28.61",
+      "Crusader Strike"
+     ],
+     [
+      "29.36",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "158"
+     ],
+     [
+      "Ловкость",
+      "36"
+     ],
+     [
+      "Интеллект",
+      "42"
+     ],
+     [
+      "Урон автоатаки",
+      "131.5"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "26.0%"
+     ],
+     [
+      "Скорость атаки",
+      "29.4%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+80%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "864"
+     ],
+     [
+      "Реген маны",
+      "5.60/с"
+     ],
+     [
+      "Мана в конце",
+      "88%"
+     ],
+     [
+      "Интервал атаки",
+      "1.72 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "2.20 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 4448.0,
+     "Divine Storm": 4721.7,
+     "Divine Hammer": 4721.7,
+     "Divine Toll": 4721.7,
+     "Crusade": 4609.3
+    },
+    "glyphDps": {
+     "Fortitude": 4721.7,
+     "Unsealed Power": 4697.5,
+     "Fortune": 4352.1,
+     "Supremacy": 4291.5,
+     "Arc Striking": 4266.1,
+     "Battle Frenzy": 4300.1,
+     "Hellfire": 4266.1,
+     "Thunder": 4266.1,
+     "Blood Violence": 4266.1,
+     "Animosity": 4274.4,
+     "Glass Cannon": 4721.7,
+     "Mindhaste": 4721.7
+    }
+   },
    {
     "farm_dps": 4587.6,
     "dps": 4587.6,
@@ -342,13 +984,332 @@
      "Fortune": 4071.3,
      "Supremacy": 4011.3,
      "Arc Striking": 3989.2,
-     "Battle Frenzy": 3989.2,
+     "Battle Frenzy": 4147.7,
      "Hellfire": 3989.2,
      "Thunder": 3989.2,
      "Blood Violence": 3989.2,
      "Animosity": 3997.0,
      "Glass Cannon": 4587.6,
      "Mindhaste": 4587.6
+    }
+   },
+   {
+    "farm_dps": 4496.9,
+    "dps": 4496.9,
+    "total": 134908,
+    "manaLeft": 84.3,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Bell Ringer",
+      "code": "I0R0",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Crusade",
+     "Divine Hammer",
+     "Divine Storm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 5,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 5,
+     "pet_damage": 0
+    },
+    "chunk": 12720289066,
+    "sources": [
+     [
+      "Blessed Hammer",
+      3737.3
+     ],
+     [
+      "Divine Storm",
+      298.3
+     ],
+     [
+      "Crusader Strike",
+      252.9
+     ],
+     [
+      "Righteous Fury",
+      111.4
+     ],
+     [
+      "Автоатака",
+      97.1
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.75",
+      "Blessed Hammer"
+     ],
+     [
+      "2.33",
+      "Blessed Hammer"
+     ],
+     [
+      "3.08",
+      "Crusader Strike"
+     ],
+     [
+      "3.89",
+      "Blessed Hammer"
+     ],
+     [
+      "5.42",
+      "Blessed Hammer"
+     ],
+     [
+      "6.17",
+      "Crusader Strike"
+     ],
+     [
+      "6.94",
+      "Blessed Hammer"
+     ],
+     [
+      "8.44",
+      "Blessed Hammer"
+     ],
+     [
+      "9.19",
+      "Crusader Strike"
+     ],
+     [
+      "9.94",
+      "Blessed Hammer"
+     ],
+     [
+      "11.41",
+      "Blessed Hammer"
+     ],
+     [
+      "12.16",
+      "Crusader Strike"
+     ],
+     [
+      "12.91",
+      "Blessed Hammer"
+     ],
+     [
+      "14.34",
+      "Blessed Hammer"
+     ],
+     [
+      "15.09",
+      "Crusader Strike"
+     ],
+     [
+      "15.84",
+      "Blessed Hammer"
+     ],
+     [
+      "17.25",
+      "Blessed Hammer"
+     ],
+     [
+      "18.00",
+      "Crusader Strike"
+     ],
+     [
+      "18.75",
+      "Blessed Hammer"
+     ],
+     [
+      "20.16",
+      "Blessed Hammer"
+     ],
+     [
+      "20.91",
+      "Crusader Strike"
+     ],
+     [
+      "21.66",
+      "Blessed Hammer"
+     ],
+     [
+      "23.07",
+      "Blessed Hammer"
+     ],
+     [
+      "23.82",
+      "Crusader Strike"
+     ],
+     [
+      "24.57",
+      "Blessed Hammer"
+     ],
+     [
+      "25.99",
+      "Blessed Hammer"
+     ],
+     [
+      "26.74",
+      "Crusader Strike"
+     ],
+     [
+      "27.49",
+      "Blessed Hammer"
+     ],
+     [
+      "28.90",
+      "Blessed Hammer"
+     ],
+     [
+      "29.65",
+      "Crusader Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "144"
+     ],
+     [
+      "Ловкость",
+      "36"
+     ],
+     [
+      "Интеллект",
+      "42"
+     ],
+     [
+      "Урон автоатаки",
+      "121.0"
+     ],
+     [
+      "Potency",
+      "18.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "51.0%"
+     ],
+     [
+      "Скорость атаки",
+      "61.4%"
+     ],
+     [
+      "Удача",
+      "5%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "864"
+     ],
+     [
+      "Реген маны",
+      "4.32/с"
+     ],
+     [
+      "Мана в конце",
+      "84%"
+     ],
+     [
+      "Интервал атаки",
+      "1.15 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "1.50 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 4382.2,
+     "Divine Storm": 4496.9,
+     "Divine Hammer": 4496.9,
+     "Divine Toll": 4198.6,
+     "Crusade": 4496.9
+    },
+    "glyphDps": {
+     "Fortitude": 4496.9,
+     "Unsealed Power": 4496.9,
+     "Fortune": 4082.8,
+     "Supremacy": 4031.9,
+     "Arc Striking": 4010.7,
+     "Battle Frenzy": 4010.7,
+     "Hellfire": 4010.7,
+     "Thunder": 4010.7,
+     "Blood Violence": 4010.7,
+     "Animosity": 4022.1,
+     "Glass Cannon": 4496.9,
+     "Mindhaste": 3876.7
     }
    },
    {
@@ -665,7 +1626,7 @@
      "Fortune": 4017.8,
      "Supremacy": 3961.5,
      "Arc Striking": 3938.2,
-     "Battle Frenzy": 3938.2,
+     "Battle Frenzy": 3968.6,
      "Hellfire": 3938.2,
      "Thunder": 3938.2,
      "Blood Violence": 3938.2,
@@ -988,13 +1949,643 @@
      "Fortune": 4076.8,
      "Supremacy": 4019.4,
      "Arc Striking": 3995.7,
-     "Battle Frenzy": 3995.7,
+     "Battle Frenzy": 3999.0,
      "Hellfire": 3995.7,
      "Thunder": 3995.7,
      "Blood Violence": 3995.7,
      "Animosity": 4002.5,
      "Glass Cannon": 4399.2,
      "Mindhaste": 4170.3
+    }
+   },
+   {
+    "farm_dps": 4381.6,
+    "dps": 4381.6,
+    "total": 131448,
+    "manaLeft": 84.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Bell Ringer",
+      "code": "I0R0",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Crusade",
+     "Divine Hammer",
+     "Divine Storm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 3,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 6,
+     "pet_damage": 0
+    },
+    "chunk": 12720292194,
+    "sources": [
+     [
+      "Blessed Hammer",
+      3615.6
+     ],
+     [
+      "Divine Storm",
+      315.5
+     ],
+     [
+      "Crusader Strike",
+      266.4
+     ],
+     [
+      "Righteous Fury",
+      101.3
+     ],
+     [
+      "Автоатака",
+      82.8
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.75",
+      "Blessed Hammer"
+     ],
+     [
+      "2.46",
+      "Blessed Hammer"
+     ],
+     [
+      "3.21",
+      "Crusader Strike"
+     ],
+     [
+      "4.15",
+      "Blessed Hammer"
+     ],
+     [
+      "5.78",
+      "Crusader Strike"
+     ],
+     [
+      "6.53",
+      "Blessed Hammer"
+     ],
+     [
+      "8.15",
+      "Blessed Hammer"
+     ],
+     [
+      "8.90",
+      "Crusader Strike"
+     ],
+     [
+      "9.75",
+      "Blessed Hammer"
+     ],
+     [
+      "11.33",
+      "Blessed Hammer"
+     ],
+     [
+      "12.08",
+      "Crusader Strike"
+     ],
+     [
+      "12.88",
+      "Blessed Hammer"
+     ],
+     [
+      "14.42",
+      "Blessed Hammer"
+     ],
+     [
+      "15.17",
+      "Crusader Strike"
+     ],
+     [
+      "15.94",
+      "Blessed Hammer"
+     ],
+     [
+      "17.46",
+      "Blessed Hammer"
+     ],
+     [
+      "18.21",
+      "Crusader Strike"
+     ],
+     [
+      "18.98",
+      "Blessed Hammer"
+     ],
+     [
+      "20.50",
+      "Blessed Hammer"
+     ],
+     [
+      "21.25",
+      "Crusader Strike"
+     ],
+     [
+      "22.02",
+      "Blessed Hammer"
+     ],
+     [
+      "23.54",
+      "Blessed Hammer"
+     ],
+     [
+      "24.29",
+      "Crusader Strike"
+     ],
+     [
+      "25.06",
+      "Blessed Hammer"
+     ],
+     [
+      "26.57",
+      "Blessed Hammer"
+     ],
+     [
+      "27.32",
+      "Crusader Strike"
+     ],
+     [
+      "28.09",
+      "Blessed Hammer"
+     ],
+     [
+      "29.61",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "154"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "36"
+     ],
+     [
+      "Урон автоатаки",
+      "128.5"
+     ],
+     [
+      "Potency",
+      "18.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "39.0%"
+     ],
+     [
+      "Скорость атаки",
+      "46.0%"
+     ],
+     [
+      "Удача",
+      "6%"
+     ],
+     [
+      "Магический бонус",
+      "+98%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "822"
+     ],
+     [
+      "Реген маны",
+      "3.84/с"
+     ],
+     [
+      "Мана в конце",
+      "84%"
+     ],
+     [
+      "Интервал атаки",
+      "1.52 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "1.50 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 4066.1,
+     "Divine Storm": 4381.6,
+     "Divine Hammer": 4381.6,
+     "Divine Toll": 4066.1,
+     "Crusade": 4381.6
+    },
+    "glyphDps": {
+     "Fortitude": 4381.6,
+     "Unsealed Power": 4381.6,
+     "Fortune": 4049.1,
+     "Supremacy": 3999.7,
+     "Arc Striking": 3978.2,
+     "Battle Frenzy": 3978.2,
+     "Hellfire": 3978.2,
+     "Thunder": 3978.2,
+     "Blood Violence": 3978.2,
+     "Animosity": 3987.9,
+     "Glass Cannon": 4381.6,
+     "Mindhaste": 4295.8
+    }
+   },
+   {
+    "farm_dps": 4378.5,
+    "dps": 4378.5,
+    "total": 131356,
+    "manaLeft": 89.3,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Lightning Rod",
+      "code": "I07F",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Bell Ringer",
+      "code": "I0R0",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Crusade",
+     "Divine Hammer",
+     "Divine Storm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Mindhaste"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 2,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 7,
+     "pet_damage": 0
+    },
+    "chunk": 12717379394,
+    "sources": [
+     [
+      "Blessed Hammer",
+      3629.4
+     ],
+     [
+      "Divine Storm",
+      294.0
+     ],
+     [
+      "Crusader Strike",
+      256.6
+     ],
+     [
+      "Righteous Fury",
+      113.5
+     ],
+     [
+      "Автоатака",
+      84.9
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.75",
+      "Blessed Hammer"
+     ],
+     [
+      "2.34",
+      "Blessed Hammer"
+     ],
+     [
+      "3.09",
+      "Crusader Strike"
+     ],
+     [
+      "3.91",
+      "Blessed Hammer"
+     ],
+     [
+      "5.46",
+      "Blessed Hammer"
+     ],
+     [
+      "6.21",
+      "Crusader Strike"
+     ],
+     [
+      "6.99",
+      "Blessed Hammer"
+     ],
+     [
+      "8.50",
+      "Blessed Hammer"
+     ],
+     [
+      "9.25",
+      "Crusader Strike"
+     ],
+     [
+      "10.00",
+      "Blessed Hammer"
+     ],
+     [
+      "11.46",
+      "Blessed Hammer"
+     ],
+     [
+      "12.21",
+      "Crusader Strike"
+     ],
+     [
+      "12.96",
+      "Blessed Hammer"
+     ],
+     [
+      "14.39",
+      "Blessed Hammer"
+     ],
+     [
+      "15.14",
+      "Crusader Strike"
+     ],
+     [
+      "15.89",
+      "Blessed Hammer"
+     ],
+     [
+      "17.30",
+      "Blessed Hammer"
+     ],
+     [
+      "18.05",
+      "Crusader Strike"
+     ],
+     [
+      "18.80",
+      "Blessed Hammer"
+     ],
+     [
+      "20.22",
+      "Blessed Hammer"
+     ],
+     [
+      "20.97",
+      "Crusader Strike"
+     ],
+     [
+      "21.72",
+      "Blessed Hammer"
+     ],
+     [
+      "23.13",
+      "Blessed Hammer"
+     ],
+     [
+      "23.88",
+      "Crusader Strike"
+     ],
+     [
+      "24.63",
+      "Blessed Hammer"
+     ],
+     [
+      "26.04",
+      "Blessed Hammer"
+     ],
+     [
+      "26.79",
+      "Crusader Strike"
+     ],
+     [
+      "27.54",
+      "Blessed Hammer"
+     ],
+     [
+      "28.95",
+      "Blessed Hammer"
+     ],
+     [
+      "29.70",
+      "Crusader Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "154"
+     ],
+     [
+      "Ловкость",
+      "36"
+     ],
+     [
+      "Интеллект",
+      "42"
+     ],
+     [
+      "Урон автоатаки",
+      "128.5"
+     ],
+     [
+      "Potency",
+      "15.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "37.0%"
+     ],
+     [
+      "Скорость атаки",
+      "31.4%"
+     ],
+     [
+      "Удача",
+      "7%"
+     ],
+     [
+      "Магический бонус",
+      "+63%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "864"
+     ],
+     [
+      "Реген маны",
+      "5.76/с"
+     ],
+     [
+      "Мана в конце",
+      "89%"
+     ],
+     [
+      "Интервал атаки",
+      "1.41 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "1.70 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 4084.5,
+     "Divine Storm": 4378.5,
+     "Divine Hammer": 4378.5,
+     "Divine Toll": 4084.5,
+     "Crusade": 4378.5
+    },
+    "glyphDps": {
+     "Fortitude": 4378.5,
+     "Unsealed Power": 4233.0,
+     "Fortune": 3879.4,
+     "Supremacy": 3827.4,
+     "Arc Striking": 3807.4,
+     "Battle Frenzy": 3807.4,
+     "Hellfire": 3807.4,
+     "Thunder": 3807.4,
+     "Blood Violence": 3807.4,
+     "Animosity": 3817.6,
+     "Glass Cannon": 4378.5,
+     "Mindhaste": 4378.5
     }
    },
    {
@@ -1307,7 +2898,7 @@
      "Fortune": 4031.6,
      "Supremacy": 3971.3,
      "Arc Striking": 3949.7,
-     "Battle Frenzy": 3949.7,
+     "Battle Frenzy": 3972.6,
      "Hellfire": 3949.7,
      "Thunder": 3949.7,
      "Blood Violence": 3949.7,
@@ -1640,6 +3231,329 @@
     }
    },
    {
+    "farm_dps": 4343.6,
+    "dps": 4343.6,
+    "total": 130308,
+    "manaLeft": 88.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Shard of Infinity",
+      "code": "I03C",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Bell Ringer",
+      "code": "I0R0",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Crusade",
+     "Divine Hammer",
+     "Divine Storm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 4,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 6,
+     "pet_damage": 0
+    },
+    "chunk": 12752347903,
+    "sources": [
+     [
+      "Blessed Hammer",
+      3608.9
+     ],
+     [
+      "Divine Storm",
+      307.8
+     ],
+     [
+      "Crusader Strike",
+      267.3
+     ],
+     [
+      "Righteous Fury",
+      84.3
+     ],
+     [
+      "Автоатака",
+      75.3
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.75",
+      "Blessed Hammer"
+     ],
+     [
+      "2.27",
+      "Blessed Hammer"
+     ],
+     [
+      "3.02",
+      "Crusader Strike"
+     ],
+     [
+      "3.77",
+      "Blessed Hammer"
+     ],
+     [
+      "5.24",
+      "Blessed Hammer"
+     ],
+     [
+      "5.99",
+      "Crusader Strike"
+     ],
+     [
+      "6.74",
+      "Blessed Hammer"
+     ],
+     [
+      "8.19",
+      "Blessed Hammer"
+     ],
+     [
+      "8.94",
+      "Crusader Strike"
+     ],
+     [
+      "9.69",
+      "Blessed Hammer"
+     ],
+     [
+      "11.10",
+      "Blessed Hammer"
+     ],
+     [
+      "11.85",
+      "Crusader Strike"
+     ],
+     [
+      "12.60",
+      "Blessed Hammer"
+     ],
+     [
+      "13.99",
+      "Blessed Hammer"
+     ],
+     [
+      "14.74",
+      "Crusader Strike"
+     ],
+     [
+      "15.49",
+      "Blessed Hammer"
+     ],
+     [
+      "16.84",
+      "Blessed Hammer"
+     ],
+     [
+      "17.59",
+      "Crusader Strike"
+     ],
+     [
+      "18.34",
+      "Blessed Hammer"
+     ],
+     [
+      "19.67",
+      "Blessed Hammer"
+     ],
+     [
+      "20.42",
+      "Crusader Strike"
+     ],
+     [
+      "21.17",
+      "Blessed Hammer"
+     ],
+     [
+      "22.50",
+      "Blessed Hammer"
+     ],
+     [
+      "23.25",
+      "Crusader Strike"
+     ],
+     [
+      "24.00",
+      "Blessed Hammer"
+     ],
+     [
+      "25.33",
+      "Blessed Hammer"
+     ],
+     [
+      "26.08",
+      "Crusader Strike"
+     ],
+     [
+      "26.83",
+      "Blessed Hammer"
+     ],
+     [
+      "28.16",
+      "Blessed Hammer"
+     ],
+     [
+      "28.91",
+      "Crusader Strike"
+     ],
+     [
+      "29.66",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "158"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "42"
+     ],
+     [
+      "Урон автоатаки",
+      "131.5"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "24.0%"
+     ],
+     [
+      "Скорость атаки",
+      "27.0%"
+     ],
+     [
+      "Удача",
+      "6%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "864"
+     ],
+     [
+      "Реген маны",
+      "5.60/с"
+     ],
+     [
+      "Мана в конце",
+      "88%"
+     ],
+     [
+      "Интервал атаки",
+      "1.75 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "2.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 4142.9,
+     "Divine Storm": 4343.6,
+     "Divine Hammer": 4343.6,
+     "Divine Toll": 4102.5,
+     "Crusade": 4343.6
+    },
+    "glyphDps": {
+     "Fortitude": 4343.6,
+     "Unsealed Power": 4343.6,
+     "Fortune": 3954.0,
+     "Supremacy": 3895.9,
+     "Arc Striking": 3874.8,
+     "Battle Frenzy": 3874.8,
+     "Hellfire": 3874.8,
+     "Thunder": 3874.8,
+     "Blood Violence": 3874.8,
+     "Animosity": 3883.6,
+     "Glass Cannon": 4343.6,
+     "Mindhaste": 4171.4
+    }
+   },
+   {
     "farm_dps": 4334.7,
     "dps": 4334.7,
     "total": 130042,
@@ -1957,7 +3871,7 @@
      "Fortune": 3944.1,
      "Supremacy": 3890.2,
      "Arc Striking": 3866.9,
-     "Battle Frenzy": 3866.9,
+     "Battle Frenzy": 3884.5,
      "Hellfire": 3866.9,
      "Thunder": 3866.9,
      "Blood Violence": 3866.9,
@@ -2898,7 +4812,7 @@
      "Fortune": 3793.1,
      "Supremacy": 3745.8,
      "Arc Striking": 3726.0,
-     "Battle Frenzy": 3726.0,
+     "Battle Frenzy": 3752.0,
      "Hellfire": 3726.0,
      "Thunder": 3726.0,
      "Blood Violence": 3726.0,
@@ -3225,9 +5139,2377 @@
      "Glass Cannon": 4167.4,
      "Mindhaste": 3536.7
     }
+   },
+   {
+    "farm_dps": 4160.4,
+    "dps": 4160.4,
+    "total": 124811,
+    "manaLeft": 91.7,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Shard of Infinity",
+      "code": "I03C",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Lightning Rod",
+      "code": "I07F",
+      "source": "shop"
+     },
+     {
+      "name": "Bell Ringer",
+      "code": "I0R0",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Crusade",
+     "Divine Hammer",
+     "Divine Storm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 12752460281,
+    "sources": [
+     [
+      "Blessed Hammer",
+      3493.5
+     ],
+     [
+      "Divine Storm",
+      275.4
+     ],
+     [
+      "Crusader Strike",
+      247.0
+     ],
+     [
+      "Righteous Fury",
+      78.3
+     ],
+     [
+      "Автоатака",
+      66.3
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.75",
+      "Blessed Hammer"
+     ],
+     [
+      "2.33",
+      "Blessed Hammer"
+     ],
+     [
+      "3.08",
+      "Crusader Strike"
+     ],
+     [
+      "3.89",
+      "Blessed Hammer"
+     ],
+     [
+      "5.42",
+      "Blessed Hammer"
+     ],
+     [
+      "6.17",
+      "Crusader Strike"
+     ],
+     [
+      "6.95",
+      "Blessed Hammer"
+     ],
+     [
+      "8.46",
+      "Blessed Hammer"
+     ],
+     [
+      "9.21",
+      "Crusader Strike"
+     ],
+     [
+      "9.96",
+      "Blessed Hammer"
+     ],
+     [
+      "11.42",
+      "Blessed Hammer"
+     ],
+     [
+      "12.17",
+      "Crusader Strike"
+     ],
+     [
+      "12.92",
+      "Blessed Hammer"
+     ],
+     [
+      "14.36",
+      "Blessed Hammer"
+     ],
+     [
+      "15.11",
+      "Crusader Strike"
+     ],
+     [
+      "15.86",
+      "Blessed Hammer"
+     ],
+     [
+      "17.26",
+      "Blessed Hammer"
+     ],
+     [
+      "18.01",
+      "Crusader Strike"
+     ],
+     [
+      "18.76",
+      "Blessed Hammer"
+     ],
+     [
+      "20.14",
+      "Blessed Hammer"
+     ],
+     [
+      "20.89",
+      "Crusader Strike"
+     ],
+     [
+      "21.64",
+      "Blessed Hammer"
+     ],
+     [
+      "23.02",
+      "Blessed Hammer"
+     ],
+     [
+      "23.77",
+      "Crusader Strike"
+     ],
+     [
+      "24.52",
+      "Blessed Hammer"
+     ],
+     [
+      "25.89",
+      "Blessed Hammer"
+     ],
+     [
+      "26.64",
+      "Crusader Strike"
+     ],
+     [
+      "27.39",
+      "Blessed Hammer"
+     ],
+     [
+      "28.77",
+      "Blessed Hammer"
+     ],
+     [
+      "29.52",
+      "Crusader Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "158"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "36"
+     ],
+     [
+      "Урон автоатаки",
+      "131.5"
+     ],
+     [
+      "Potency",
+      "15.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "19.0%"
+     ],
+     [
+      "Скорость атаки",
+      "12.0%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+81%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "822"
+     ],
+     [
+      "Реген маны",
+      "6.56/с"
+     ],
+     [
+      "Мана в конце",
+      "92%"
+     ],
+     [
+      "Интервал атаки",
+      "1.65 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "2.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3937.0,
+     "Divine Storm": 4160.4,
+     "Divine Hammer": 4160.4,
+     "Divine Toll": 3885.0,
+     "Crusade": 4160.4
+    },
+    "glyphDps": {
+     "Fortitude": 4160.4,
+     "Unsealed Power": 4160.4,
+     "Fortune": 3815.0,
+     "Supremacy": 3762.6,
+     "Arc Striking": 3743.1,
+     "Battle Frenzy": 3746.6,
+     "Hellfire": 3743.1,
+     "Thunder": 3743.1,
+     "Blood Violence": 3743.1,
+     "Animosity": 3750.9,
+     "Glass Cannon": 4160.4,
+     "Mindhaste": 4078.4
+    }
+   },
+   {
+    "farm_dps": 4123.5,
+    "dps": 4123.5,
+    "total": 123704,
+    "manaLeft": 85.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Shard of Infinity",
+      "code": "I03C",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Bell Ringer",
+      "code": "I0R0",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Crusade",
+     "Divine Hammer",
+     "Divine Storm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 12752549498,
+    "sources": [
+     [
+      "Blessed Hammer",
+      3444.6
+     ],
+     [
+      "Divine Storm",
+      292.2
+     ],
+     [
+      "Crusader Strike",
+      246.2
+     ],
+     [
+      "Righteous Fury",
+      70.8
+     ],
+     [
+      "Автоатака",
+      69.7
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.75",
+      "Blessed Hammer"
+     ],
+     [
+      "2.21",
+      "Blessed Hammer"
+     ],
+     [
+      "2.96",
+      "Crusader Strike"
+     ],
+     [
+      "3.71",
+      "Blessed Hammer"
+     ],
+     [
+      "5.13",
+      "Blessed Hammer"
+     ],
+     [
+      "5.88",
+      "Crusader Strike"
+     ],
+     [
+      "6.63",
+      "Blessed Hammer"
+     ],
+     [
+      "8.03",
+      "Blessed Hammer"
+     ],
+     [
+      "8.78",
+      "Crusader Strike"
+     ],
+     [
+      "9.53",
+      "Blessed Hammer"
+     ],
+     [
+      "10.89",
+      "Blessed Hammer"
+     ],
+     [
+      "11.64",
+      "Crusader Strike"
+     ],
+     [
+      "12.39",
+      "Blessed Hammer"
+     ],
+     [
+      "13.73",
+      "Blessed Hammer"
+     ],
+     [
+      "14.48",
+      "Crusader Strike"
+     ],
+     [
+      "15.23",
+      "Blessed Hammer"
+     ],
+     [
+      "16.53",
+      "Blessed Hammer"
+     ],
+     [
+      "17.28",
+      "Crusader Strike"
+     ],
+     [
+      "18.03",
+      "Blessed Hammer"
+     ],
+     [
+      "19.31",
+      "Blessed Hammer"
+     ],
+     [
+      "20.06",
+      "Crusader Strike"
+     ],
+     [
+      "20.81",
+      "Blessed Hammer"
+     ],
+     [
+      "22.10",
+      "Blessed Hammer"
+     ],
+     [
+      "22.85",
+      "Crusader Strike"
+     ],
+     [
+      "23.60",
+      "Blessed Hammer"
+     ],
+     [
+      "24.88",
+      "Blessed Hammer"
+     ],
+     [
+      "25.63",
+      "Crusader Strike"
+     ],
+     [
+      "26.38",
+      "Blessed Hammer"
+     ],
+     [
+      "27.67",
+      "Blessed Hammer"
+     ],
+     [
+      "28.42",
+      "Crusader Strike"
+     ],
+     [
+      "29.17",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "152"
+     ],
+     [
+      "Ловкость",
+      "24"
+     ],
+     [
+      "Интеллект",
+      "36"
+     ],
+     [
+      "Урон автоатаки",
+      "127.0"
+     ],
+     [
+      "Potency",
+      "18.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "29.0%"
+     ],
+     [
+      "Скорость атаки",
+      "41.6%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "822"
+     ],
+     [
+      "Реген маны",
+      "5.12/с"
+     ],
+     [
+      "Мана в конце",
+      "86%"
+     ],
+     [
+      "Интервал атаки",
+      "1.57 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "2.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3968.1,
+     "Divine Storm": 4123.5,
+     "Divine Hammer": 4123.5,
+     "Divine Toll": 3919.2,
+     "Crusade": 4123.5
+    },
+    "glyphDps": {
+     "Fortitude": 4123.5,
+     "Unsealed Power": 4123.5,
+     "Fortune": 3745.4,
+     "Supremacy": 3698.3,
+     "Arc Striking": 3678.5,
+     "Battle Frenzy": 3694.6,
+     "Hellfire": 3678.5,
+     "Thunder": 3678.5,
+     "Blood Violence": 3678.5,
+     "Animosity": 3686.7,
+     "Glass Cannon": 4123.5,
+     "Mindhaste": 3968.2
+    }
+   },
+   {
+    "farm_dps": 4118.6,
+    "dps": 4118.6,
+    "total": 123559,
+    "manaLeft": 93.1,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Shard of Infinity",
+      "code": "I03C",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Flask of Sands",
+      "code": "I096",
+      "source": "shop"
+     },
+     {
+      "name": "Bell Ringer",
+      "code": "I0R0",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Crusade",
+     "Divine Hammer",
+     "Divine Storm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 12752420986,
+    "sources": [
+     [
+      "Blessed Hammer",
+      3444.7
+     ],
+     [
+      "Divine Storm",
+      282.6
+     ],
+     [
+      "Crusader Strike",
+      259.4
+     ],
+     [
+      "Righteous Fury",
+      67.6
+     ],
+     [
+      "Автоатака",
+      64.4
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.75",
+      "Blessed Hammer"
+     ],
+     [
+      "1.81",
+      "Blessed Hammer"
+     ],
+     [
+      "2.56",
+      "Crusader Strike"
+     ],
+     [
+      "3.31",
+      "Blessed Hammer"
+     ],
+     [
+      "4.35",
+      "Blessed Hammer"
+     ],
+     [
+      "5.10",
+      "Crusader Strike"
+     ],
+     [
+      "5.85",
+      "Blessed Hammer"
+     ],
+     [
+      "6.86",
+      "Blessed Hammer"
+     ],
+     [
+      "7.61",
+      "Crusader Strike"
+     ],
+     [
+      "8.36",
+      "Blessed Hammer"
+     ],
+     [
+      "9.37",
+      "Blessed Hammer"
+     ],
+     [
+      "10.12",
+      "Crusader Strike"
+     ],
+     [
+      "10.87",
+      "Blessed Hammer"
+     ],
+     [
+      "11.84",
+      "Blessed Hammer"
+     ],
+     [
+      "12.59",
+      "Crusader Strike"
+     ],
+     [
+      "13.34",
+      "Blessed Hammer"
+     ],
+     [
+      "14.31",
+      "Blessed Hammer"
+     ],
+     [
+      "15.06",
+      "Crusader Strike"
+     ],
+     [
+      "15.81",
+      "Blessed Hammer"
+     ],
+     [
+      "16.76",
+      "Blessed Hammer"
+     ],
+     [
+      "17.51",
+      "Crusader Strike"
+     ],
+     [
+      "18.26",
+      "Blessed Hammer"
+     ],
+     [
+      "19.19",
+      "Blessed Hammer"
+     ],
+     [
+      "19.94",
+      "Crusader Strike"
+     ],
+     [
+      "20.69",
+      "Blessed Hammer"
+     ],
+     [
+      "21.63",
+      "Blessed Hammer"
+     ],
+     [
+      "22.38",
+      "Crusader Strike"
+     ],
+     [
+      "23.13",
+      "Blessed Hammer"
+     ],
+     [
+      "24.07",
+      "Blessed Hammer"
+     ],
+     [
+      "24.82",
+      "Crusader Strike"
+     ],
+     [
+      "25.57",
+      "Blessed Hammer"
+     ],
+     [
+      "26.50",
+      "Blessed Hammer"
+     ],
+     [
+      "27.25",
+      "Crusader Strike"
+     ],
+     [
+      "28.00",
+      "Blessed Hammer"
+     ],
+     [
+      "28.94",
+      "Blessed Hammer"
+     ],
+     [
+      "29.69",
+      "Crusader Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "148"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "36"
+     ],
+     [
+      "Урон автоатаки",
+      "124.0"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "31.0%"
+     ],
+     [
+      "Скорость атаки",
+      "12.0%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "822"
+     ],
+     [
+      "Реген маны",
+      "7.04/с"
+     ],
+     [
+      "Мана в конце",
+      "93%"
+     ],
+     [
+      "Интервал атаки",
+      "1.65 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "2.50 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 4043.8,
+     "Divine Storm": 4118.6,
+     "Divine Hammer": 4118.6,
+     "Divine Toll": 4011.3,
+     "Crusade": 4118.6
+    },
+    "glyphDps": {
+     "Fortitude": 4118.6,
+     "Unsealed Power": 4118.6,
+     "Fortune": 3749.2,
+     "Supremacy": 3696.0,
+     "Arc Striking": 3674.4,
+     "Battle Frenzy": 3692.9,
+     "Hellfire": 3674.4,
+     "Thunder": 3674.4,
+     "Blood Violence": 3674.4,
+     "Animosity": 3682.0,
+     "Glass Cannon": 4118.6,
+     "Mindhaste": 3893.3
+    }
+   },
+   {
+    "farm_dps": 4116.9,
+    "dps": 4116.9,
+    "total": 123507,
+    "manaLeft": 84.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Bell Ringer",
+      "code": "I0R0",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Divine Hammer",
+     "Divine Storm",
+     "Zeal"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 12720493610,
+    "sources": [
+     [
+      "Blessed Hammer",
+      3334.3
+     ],
+     [
+      "Divine Storm",
+      257.6
+     ],
+     [
+      "Crusader Strike",
+      211.5
+     ],
+     [
+      "Righteous Fury",
+      160.4
+     ],
+     [
+      "Автоатака",
+      153.1
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.75",
+      "Blessed Hammer"
+     ],
+     [
+      "2.31",
+      "Blessed Hammer"
+     ],
+     [
+      "3.06",
+      "Crusader Strike"
+     ],
+     [
+      "3.87",
+      "Blessed Hammer"
+     ],
+     [
+      "5.42",
+      "Blessed Hammer"
+     ],
+     [
+      "6.17",
+      "Crusader Strike"
+     ],
+     [
+      "6.98",
+      "Blessed Hammer"
+     ],
+     [
+      "8.54",
+      "Blessed Hammer"
+     ],
+     [
+      "9.29",
+      "Crusader Strike"
+     ],
+     [
+      "10.10",
+      "Blessed Hammer"
+     ],
+     [
+      "11.66",
+      "Blessed Hammer"
+     ],
+     [
+      "12.41",
+      "Crusader Strike"
+     ],
+     [
+      "13.21",
+      "Blessed Hammer"
+     ],
+     [
+      "14.77",
+      "Blessed Hammer"
+     ],
+     [
+      "15.52",
+      "Crusader Strike"
+     ],
+     [
+      "16.33",
+      "Blessed Hammer"
+     ],
+     [
+      "17.89",
+      "Blessed Hammer"
+     ],
+     [
+      "18.64",
+      "Crusader Strike"
+     ],
+     [
+      "19.45",
+      "Blessed Hammer"
+     ],
+     [
+      "21.00",
+      "Blessed Hammer"
+     ],
+     [
+      "21.75",
+      "Crusader Strike"
+     ],
+     [
+      "22.56",
+      "Blessed Hammer"
+     ],
+     [
+      "24.12",
+      "Blessed Hammer"
+     ],
+     [
+      "24.87",
+      "Crusader Strike"
+     ],
+     [
+      "25.68",
+      "Blessed Hammer"
+     ],
+     [
+      "27.24",
+      "Blessed Hammer"
+     ],
+     [
+      "27.99",
+      "Crusader Strike"
+     ],
+     [
+      "28.80",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "138"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "36"
+     ],
+     [
+      "Урон автоатаки",
+      "116.5"
+     ],
+     [
+      "Potency",
+      "26.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "55.0%"
+     ],
+     [
+      "Скорость атаки",
+      "76.0%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "822"
+     ],
+     [
+      "Реген маны",
+      "3.84/с"
+     ],
+     [
+      "Мана в конце",
+      "84%"
+     ],
+     [
+      "Интервал атаки",
+      "1.05 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "1.50 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 4116.9,
+     "Divine Storm": 4116.9,
+     "Divine Hammer": 4116.9,
+     "Divine Toll": 3964.2,
+     "Crusade": 3889.4
+    },
+    "glyphDps": {
+     "Fortitude": 4116.9,
+     "Unsealed Power": 4116.9,
+     "Fortune": 3725.5,
+     "Supremacy": 3686.8,
+     "Arc Striking": 3668.9,
+     "Battle Frenzy": 3668.9,
+     "Hellfire": 3668.9,
+     "Thunder": 3668.9,
+     "Blood Violence": 3668.9,
+     "Animosity": 3686.8,
+     "Glass Cannon": 4116.9,
+     "Mindhaste": 3915.8
+    }
    }
   ],
   "shop": [
+   {
+    "farm_dps": 3380.9,
+    "dps": 3380.9,
+    "total": 101428,
+    "manaLeft": 90.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Crusade",
+     "Divine Hammer",
+     "Divine Toll"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 2,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 8,
+     "pet_damage": 0
+    },
+    "chunk": 4194893118,
+    "sources": [
+     [
+      "Blessed Hammer",
+      2160.8
+     ],
+     [
+      "Sulfuras",
+      678.0
+     ],
+     [
+      "Crusader Strike",
+      217.0
+     ],
+     [
+      "Righteous Fury",
+      161.7
+     ],
+     [
+      "Автоатака",
+      152.4
+     ],
+     [
+      "Sulfuras (удар)",
+      10.9
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.45",
+      "Blessed Hammer"
+     ],
+     [
+      "3.88",
+      "Blessed Hammer"
+     ],
+     [
+      "4.57",
+      "Crusader Strike"
+     ],
+     [
+      "7.17",
+      "Blessed Hammer"
+     ],
+     [
+      "8.96",
+      "Crusader Strike"
+     ],
+     [
+      "10.38",
+      "Blessed Hammer"
+     ],
+     [
+      "13.14",
+      "Crusader Strike"
+     ],
+     [
+      "13.59",
+      "Blessed Hammer"
+     ],
+     [
+      "16.64",
+      "Blessed Hammer"
+     ],
+     [
+      "17.21",
+      "Crusader Strike"
+     ],
+     [
+      "19.70",
+      "Blessed Hammer"
+     ],
+     [
+      "21.28",
+      "Crusader Strike"
+     ],
+     [
+      "22.75",
+      "Blessed Hammer"
+     ],
+     [
+      "25.36",
+      "Crusader Strike"
+     ],
+     [
+      "25.81",
+      "Blessed Hammer"
+     ],
+     [
+      "28.86",
+      "Blessed Hammer"
+     ],
+     [
+      "29.43",
+      "Crusader Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "203"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "42"
+     ],
+     [
+      "Урон автоатаки",
+      "165.2"
+     ],
+     [
+      "Potency",
+      "18.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "45.0%"
+     ],
+     [
+      "Скорость атаки",
+      "87.0%"
+     ],
+     [
+      "Удача",
+      "8%"
+     ],
+     [
+      "Магический бонус",
+      "+58%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "414"
+     ],
+     [
+      "Реген маны",
+      "4.32/с"
+     ],
+     [
+      "Мана в конце",
+      "90%"
+     ],
+     [
+      "Интервал атаки",
+      "1.19 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3303.4,
+     "Divine Storm": 3305.0,
+     "Divine Hammer": 3380.9,
+     "Divine Toll": 3380.9,
+     "Crusade": 3380.9
+    },
+    "glyphDps": {
+     "Fortitude": 3380.9,
+     "Unsealed Power": 3380.9,
+     "Fortune": 3036.7,
+     "Supremacy": 2991.1,
+     "Arc Striking": 2991.1,
+     "Battle Frenzy": 3036.8,
+     "Hellfire": 2991.1,
+     "Thunder": 2991.1,
+     "Blood Violence": 2991.1,
+     "Animosity": 3008.9,
+     "Glass Cannon": 3380.9,
+     "Mindhaste": 3083.4
+    }
+   },
+   {
+    "farm_dps": 3319.9,
+    "dps": 3319.9,
+    "total": 99598,
+    "manaLeft": 97.6,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Divine Hammer",
+     "Divine Storm",
+     "Divine Toll"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 4,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 6,
+     "pet_damage": 0
+    },
+    "chunk": 4078588743,
+    "sources": [
+     [
+      "Blessed Hammer",
+      1851.9
+     ],
+     [
+      "Sulfuras",
+      679.6
+     ],
+     [
+      "Divine Storm",
+      272.8
+     ],
+     [
+      "Crusader Strike",
+      227.4
+     ],
+     [
+      "Righteous Fury",
+      148.4
+     ],
+     [
+      "Автоатака",
+      130.3
+     ],
+     [
+      "Sulfuras (удар)",
+      9.6
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.45",
+      "Blessed Hammer"
+     ],
+     [
+      "4.02",
+      "Blessed Hammer"
+     ],
+     [
+      "4.77",
+      "Crusader Strike"
+     ],
+     [
+      "7.60",
+      "Blessed Hammer"
+     ],
+     [
+      "9.53",
+      "Crusader Strike"
+     ],
+     [
+      "11.17",
+      "Blessed Hammer"
+     ],
+     [
+      "14.30",
+      "Crusader Strike"
+     ],
+     [
+      "14.75",
+      "Blessed Hammer"
+     ],
+     [
+      "18.32",
+      "Blessed Hammer"
+     ],
+     [
+      "19.06",
+      "Crusader Strike"
+     ],
+     [
+      "21.90",
+      "Blessed Hammer"
+     ],
+     [
+      "23.83",
+      "Crusader Strike"
+     ],
+     [
+      "25.47",
+      "Blessed Hammer"
+     ],
+     [
+      "28.60",
+      "Crusader Strike"
+     ],
+     [
+      "29.05",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "218"
+     ],
+     [
+      "Ловкость",
+      "45"
+     ],
+     [
+      "Интеллект",
+      "57"
+     ],
+     [
+      "Урон автоатаки",
+      "176.5"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "35"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "41.0%"
+     ],
+     [
+      "Скорость атаки",
+      "61.0%"
+     ],
+     [
+      "Удача",
+      "6%"
+     ],
+     [
+      "Магический бонус",
+      "+58%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "519"
+     ],
+     [
+      "Реген маны",
+      "5.52/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.38 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3087.7,
+     "Divine Storm": 3319.9,
+     "Divine Hammer": 3319.9,
+     "Divine Toll": 3319.9,
+     "Crusade": 3134.5
+    },
+    "glyphDps": {
+     "Fortitude": 3319.9,
+     "Unsealed Power": 3319.9,
+     "Fortune": 2981.8,
+     "Supremacy": 2951.6,
+     "Arc Striking": 2937.8,
+     "Battle Frenzy": 2906.2,
+     "Hellfire": 2937.8,
+     "Thunder": 2937.8,
+     "Blood Violence": 2937.8,
+     "Animosity": 2953.0,
+     "Glass Cannon": 3319.9,
+     "Mindhaste": 2997.0
+    }
+   },
+   {
+    "farm_dps": 3300.8,
+    "dps": 3300.8,
+    "total": 99023,
+    "manaLeft": 95.1,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Divine Hammer",
+     "Divine Storm",
+     "Divine Toll"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 2550778074,
+    "sources": [
+     [
+      "Blessed Hammer",
+      2010.2
+     ],
+     [
+      "Sulfuras",
+      517.9
+     ],
+     [
+      "Divine Storm",
+      237.3
+     ],
+     [
+      "Crusader Strike",
+      196.0
+     ],
+     [
+      "Righteous Fury",
+      164.4
+     ],
+     [
+      "Автоатака",
+      163.7
+     ],
+     [
+      "Sulfuras (удар)",
+      11.3
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.45",
+      "Blessed Hammer"
+     ],
+     [
+      "3.88",
+      "Blessed Hammer"
+     ],
+     [
+      "4.57",
+      "Crusader Strike"
+     ],
+     [
+      "7.31",
+      "Blessed Hammer"
+     ],
+     [
+      "9.14",
+      "Crusader Strike"
+     ],
+     [
+      "10.74",
+      "Blessed Hammer"
+     ],
+     [
+      "13.71",
+      "Crusader Strike"
+     ],
+     [
+      "14.16",
+      "Blessed Hammer"
+     ],
+     [
+      "17.59",
+      "Blessed Hammer"
+     ],
+     [
+      "18.29",
+      "Crusader Strike"
+     ],
+     [
+      "21.02",
+      "Blessed Hammer"
+     ],
+     [
+      "22.86",
+      "Crusader Strike"
+     ],
+     [
+      "24.45",
+      "Blessed Hammer"
+     ],
+     [
+      "27.43",
+      "Crusader Strike"
+     ],
+     [
+      "27.88",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "191"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "42"
+     ],
+     [
+      "Урон автоатаки",
+      "156.2"
+     ],
+     [
+      "Potency",
+      "26.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "47.0%"
+     ],
+     [
+      "Скорость атаки",
+      "119.0%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "414"
+     ],
+     [
+      "Реген маны",
+      "4.32/с"
+     ],
+     [
+      "Мана в конце",
+      "95%"
+     ],
+     [
+      "Интервал атаки",
+      "1.01 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3176.6,
+     "Divine Storm": 3300.8,
+     "Divine Hammer": 3300.8,
+     "Divine Toll": 3300.8,
+     "Crusade": 3294.9
+    },
+    "glyphDps": {
+     "Fortitude": 3300.8,
+     "Unsealed Power": 3300.8,
+     "Fortune": 2933.3,
+     "Supremacy": 2908.5,
+     "Arc Striking": 2895.6,
+     "Battle Frenzy": 2863.9,
+     "Hellfire": 2895.6,
+     "Thunder": 2895.6,
+     "Blood Violence": 2895.6,
+     "Animosity": 2914.8,
+     "Glass Cannon": 3300.8,
+     "Mindhaste": 3050.7
+    }
+   },
+   {
+    "farm_dps": 3268.9,
+    "dps": 3268.9,
+    "total": 98066,
+    "manaLeft": 97.5,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Divine Hammer",
+     "Divine Storm",
+     "Divine Toll"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 4078565167,
+    "sources": [
+     [
+      "Blessed Hammer",
+      1835.3
+     ],
+     [
+      "Sulfuras",
+      639.8
+     ],
+     [
+      "Divine Storm",
+      279.5
+     ],
+     [
+      "Crusader Strike",
+      223.2
+     ],
+     [
+      "Righteous Fury",
+      142.0
+     ],
+     [
+      "Автоатака",
+      140.3
+     ],
+     [
+      "Sulfuras (удар)",
+      8.7
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.45",
+      "Blessed Hammer"
+     ],
+     [
+      "4.04",
+      "Blessed Hammer"
+     ],
+     [
+      "4.78",
+      "Crusader Strike"
+     ],
+     [
+      "7.62",
+      "Blessed Hammer"
+     ],
+     [
+      "9.57",
+      "Crusader Strike"
+     ],
+     [
+      "11.21",
+      "Blessed Hammer"
+     ],
+     [
+      "14.35",
+      "Crusader Strike"
+     ],
+     [
+      "14.80",
+      "Blessed Hammer"
+     ],
+     [
+      "18.38",
+      "Blessed Hammer"
+     ],
+     [
+      "19.13",
+      "Crusader Strike"
+     ],
+     [
+      "21.97",
+      "Blessed Hammer"
+     ],
+     [
+      "23.91",
+      "Crusader Strike"
+     ],
+     [
+      "25.56",
+      "Blessed Hammer"
+     ],
+     [
+      "28.70",
+      "Crusader Strike"
+     ],
+     [
+      "29.15",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "177"
+     ],
+     [
+      "Ловкость",
+      "45"
+     ],
+     [
+      "Интеллект",
+      "57"
+     ],
+     [
+      "Урон автоатаки",
+      "154.8"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "35"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "38.0%"
+     ],
+     [
+      "Скорость атаки",
+      "61.0%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+58%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "519"
+     ],
+     [
+      "Реген маны",
+      "5.52/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.38 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3034.4,
+     "Divine Storm": 3268.9,
+     "Divine Hammer": 3268.9,
+     "Divine Toll": 3268.9,
+     "Crusade": 3054.8
+    },
+    "glyphDps": {
+     "Fortitude": 3268.9,
+     "Unsealed Power": 3268.9,
+     "Fortune": 2986.3,
+     "Supremacy": 2959.7,
+     "Arc Striking": 2943.4,
+     "Battle Frenzy": 2913.2,
+     "Hellfire": 2943.4,
+     "Thunder": 2943.4,
+     "Blood Violence": 2943.4,
+     "Animosity": 2960.4,
+     "Glass Cannon": 3268.9,
+     "Mindhaste": 3011.1
+    }
+   },
    {
     "farm_dps": 3259.3,
     "dps": 3259.3,
@@ -3486,13 +7768,1081 @@
      "Fortune": 2927.6,
      "Supremacy": 2897.9,
      "Arc Striking": 2884.1,
-     "Battle Frenzy": 2884.1,
+     "Battle Frenzy": 2853.0,
      "Hellfire": 2884.1,
      "Thunder": 2884.1,
      "Blood Violence": 2884.1,
      "Animosity": 2899.2,
      "Glass Cannon": 3259.3,
      "Mindhaste": 2979.6
+    }
+   },
+   {
+    "farm_dps": 3235.4,
+    "dps": 3235.4,
+    "total": 97061,
+    "manaLeft": 97.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Lightning Rod",
+      "code": "I07F",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Arcpower Stone",
+      "code": "I0O5",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Divine Hammer",
+     "Divine Storm",
+     "Divine Toll"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 4115027656,
+    "sources": [
+     [
+      "Blessed Hammer",
+      1891.3
+     ],
+     [
+      "Sulfuras",
+      617.4
+     ],
+     [
+      "Divine Storm",
+      248.8
+     ],
+     [
+      "Crusader Strike",
+      215.3
+     ],
+     [
+      "Righteous Fury",
+      138.7
+     ],
+     [
+      "Автоатака",
+      115.4
+     ],
+     [
+      "Sulfuras (удар)",
+      8.4
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.45",
+      "Blessed Hammer"
+     ],
+     [
+      "4.02",
+      "Blessed Hammer"
+     ],
+     [
+      "4.76",
+      "Crusader Strike"
+     ],
+     [
+      "7.59",
+      "Blessed Hammer"
+     ],
+     [
+      "9.52",
+      "Crusader Strike"
+     ],
+     [
+      "11.16",
+      "Blessed Hammer"
+     ],
+     [
+      "14.29",
+      "Crusader Strike"
+     ],
+     [
+      "14.74",
+      "Blessed Hammer"
+     ],
+     [
+      "18.31",
+      "Blessed Hammer"
+     ],
+     [
+      "19.05",
+      "Crusader Strike"
+     ],
+     [
+      "21.88",
+      "Blessed Hammer"
+     ],
+     [
+      "23.81",
+      "Crusader Strike"
+     ],
+     [
+      "25.45",
+      "Blessed Hammer"
+     ],
+     [
+      "28.57",
+      "Crusader Strike"
+     ],
+     [
+      "29.02",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "183"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "42"
+     ],
+     [
+      "Урон автоатаки",
+      "150.2"
+     ],
+     [
+      "Potency",
+      "15.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "26.0%"
+     ],
+     [
+      "Скорость атаки",
+      "55.0%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+71%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "414"
+     ],
+     [
+      "Реген маны",
+      "5.76/с"
+     ],
+     [
+      "Мана в конце",
+      "97%"
+     ],
+     [
+      "Интервал атаки",
+      "1.43 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3023.3,
+     "Divine Storm": 3235.4,
+     "Divine Hammer": 3235.4,
+     "Divine Toll": 3235.4,
+     "Crusade": 3151.9
+    },
+    "glyphDps": {
+     "Fortitude": 3235.4,
+     "Unsealed Power": 3235.4,
+     "Fortune": 2931.5,
+     "Supremacy": 2905.3,
+     "Arc Striking": 2890.2,
+     "Battle Frenzy": 2860.9,
+     "Hellfire": 2890.2,
+     "Thunder": 2890.2,
+     "Blood Violence": 2890.2,
+     "Animosity": 2903.7,
+     "Glass Cannon": 3235.4,
+     "Mindhaste": 2989.8
+    }
+   },
+   {
+    "farm_dps": 3235.4,
+    "dps": 3235.4,
+    "total": 97061,
+    "manaLeft": 97.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Lightning Rod",
+      "code": "I07F",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Arcpower Stone",
+      "code": "I0MT",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Divine Hammer",
+     "Divine Storm",
+     "Divine Toll"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 4115027761,
+    "sources": [
+     [
+      "Blessed Hammer",
+      1891.3
+     ],
+     [
+      "Sulfuras",
+      617.4
+     ],
+     [
+      "Divine Storm",
+      248.8
+     ],
+     [
+      "Crusader Strike",
+      215.3
+     ],
+     [
+      "Righteous Fury",
+      138.7
+     ],
+     [
+      "Автоатака",
+      115.4
+     ],
+     [
+      "Sulfuras (удар)",
+      8.4
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.45",
+      "Blessed Hammer"
+     ],
+     [
+      "4.02",
+      "Blessed Hammer"
+     ],
+     [
+      "4.76",
+      "Crusader Strike"
+     ],
+     [
+      "7.59",
+      "Blessed Hammer"
+     ],
+     [
+      "9.52",
+      "Crusader Strike"
+     ],
+     [
+      "11.16",
+      "Blessed Hammer"
+     ],
+     [
+      "14.29",
+      "Crusader Strike"
+     ],
+     [
+      "14.74",
+      "Blessed Hammer"
+     ],
+     [
+      "18.31",
+      "Blessed Hammer"
+     ],
+     [
+      "19.05",
+      "Crusader Strike"
+     ],
+     [
+      "21.88",
+      "Blessed Hammer"
+     ],
+     [
+      "23.81",
+      "Crusader Strike"
+     ],
+     [
+      "25.45",
+      "Blessed Hammer"
+     ],
+     [
+      "28.57",
+      "Crusader Strike"
+     ],
+     [
+      "29.02",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "183"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "42"
+     ],
+     [
+      "Урон автоатаки",
+      "150.2"
+     ],
+     [
+      "Potency",
+      "15.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "26.0%"
+     ],
+     [
+      "Скорость атаки",
+      "55.0%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+71%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "414"
+     ],
+     [
+      "Реген маны",
+      "5.76/с"
+     ],
+     [
+      "Мана в конце",
+      "97%"
+     ],
+     [
+      "Интервал атаки",
+      "1.43 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3023.3,
+     "Divine Storm": 3235.4,
+     "Divine Hammer": 3235.4,
+     "Divine Toll": 3235.4,
+     "Crusade": 3151.9
+    },
+    "glyphDps": {
+     "Fortitude": 3235.4,
+     "Unsealed Power": 3235.4,
+     "Fortune": 2931.5,
+     "Supremacy": 2905.3,
+     "Arc Striking": 2890.2,
+     "Battle Frenzy": 2860.9,
+     "Hellfire": 2890.2,
+     "Thunder": 2890.2,
+     "Blood Violence": 2890.2,
+     "Animosity": 2903.7,
+     "Glass Cannon": 3235.4,
+     "Mindhaste": 2989.8
+    }
+   },
+   {
+    "farm_dps": 3235.4,
+    "dps": 3235.4,
+    "total": 97061,
+    "manaLeft": 97.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Lightning Rod",
+      "code": "I07F",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Arcpower Stone",
+      "code": "I0MM",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Divine Hammer",
+     "Divine Storm",
+     "Divine Toll"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 4115027798,
+    "sources": [
+     [
+      "Blessed Hammer",
+      1891.3
+     ],
+     [
+      "Sulfuras",
+      617.4
+     ],
+     [
+      "Divine Storm",
+      248.8
+     ],
+     [
+      "Crusader Strike",
+      215.3
+     ],
+     [
+      "Righteous Fury",
+      138.7
+     ],
+     [
+      "Автоатака",
+      115.4
+     ],
+     [
+      "Sulfuras (удар)",
+      8.4
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.45",
+      "Blessed Hammer"
+     ],
+     [
+      "4.02",
+      "Blessed Hammer"
+     ],
+     [
+      "4.76",
+      "Crusader Strike"
+     ],
+     [
+      "7.59",
+      "Blessed Hammer"
+     ],
+     [
+      "9.52",
+      "Crusader Strike"
+     ],
+     [
+      "11.16",
+      "Blessed Hammer"
+     ],
+     [
+      "14.29",
+      "Crusader Strike"
+     ],
+     [
+      "14.74",
+      "Blessed Hammer"
+     ],
+     [
+      "18.31",
+      "Blessed Hammer"
+     ],
+     [
+      "19.05",
+      "Crusader Strike"
+     ],
+     [
+      "21.88",
+      "Blessed Hammer"
+     ],
+     [
+      "23.81",
+      "Crusader Strike"
+     ],
+     [
+      "25.45",
+      "Blessed Hammer"
+     ],
+     [
+      "28.57",
+      "Crusader Strike"
+     ],
+     [
+      "29.02",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "183"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "42"
+     ],
+     [
+      "Урон автоатаки",
+      "150.2"
+     ],
+     [
+      "Potency",
+      "15.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "26.0%"
+     ],
+     [
+      "Скорость атаки",
+      "55.0%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+71%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "414"
+     ],
+     [
+      "Реген маны",
+      "5.76/с"
+     ],
+     [
+      "Мана в конце",
+      "97%"
+     ],
+     [
+      "Интервал атаки",
+      "1.43 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3023.3,
+     "Divine Storm": 3235.4,
+     "Divine Hammer": 3235.4,
+     "Divine Toll": 3235.4,
+     "Crusade": 3151.9
+    },
+    "glyphDps": {
+     "Fortitude": 3235.4,
+     "Unsealed Power": 3235.4,
+     "Fortune": 2931.5,
+     "Supremacy": 2905.3,
+     "Arc Striking": 2890.2,
+     "Battle Frenzy": 2860.9,
+     "Hellfire": 2890.2,
+     "Thunder": 2890.2,
+     "Blood Violence": 2890.2,
+     "Animosity": 2903.7,
+     "Glass Cannon": 3235.4,
+     "Mindhaste": 2989.8
+    }
+   },
+   {
+    "farm_dps": 3235.4,
+    "dps": 3235.4,
+    "total": 97061,
+    "manaLeft": 97.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Lightning Rod",
+      "code": "I07F",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Arcpower Stone",
+      "code": "I0E2",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Divine Hammer",
+     "Divine Storm",
+     "Divine Toll"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 4115064550,
+    "sources": [
+     [
+      "Blessed Hammer",
+      1891.3
+     ],
+     [
+      "Sulfuras",
+      617.4
+     ],
+     [
+      "Divine Storm",
+      248.8
+     ],
+     [
+      "Crusader Strike",
+      215.3
+     ],
+     [
+      "Righteous Fury",
+      138.7
+     ],
+     [
+      "Автоатака",
+      115.4
+     ],
+     [
+      "Sulfuras (удар)",
+      8.4
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.45",
+      "Blessed Hammer"
+     ],
+     [
+      "4.02",
+      "Blessed Hammer"
+     ],
+     [
+      "4.76",
+      "Crusader Strike"
+     ],
+     [
+      "7.59",
+      "Blessed Hammer"
+     ],
+     [
+      "9.52",
+      "Crusader Strike"
+     ],
+     [
+      "11.16",
+      "Blessed Hammer"
+     ],
+     [
+      "14.29",
+      "Crusader Strike"
+     ],
+     [
+      "14.74",
+      "Blessed Hammer"
+     ],
+     [
+      "18.31",
+      "Blessed Hammer"
+     ],
+     [
+      "19.05",
+      "Crusader Strike"
+     ],
+     [
+      "21.88",
+      "Blessed Hammer"
+     ],
+     [
+      "23.81",
+      "Crusader Strike"
+     ],
+     [
+      "25.45",
+      "Blessed Hammer"
+     ],
+     [
+      "28.57",
+      "Crusader Strike"
+     ],
+     [
+      "29.02",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "183"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "42"
+     ],
+     [
+      "Урон автоатаки",
+      "150.2"
+     ],
+     [
+      "Potency",
+      "15.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "26.0%"
+     ],
+     [
+      "Скорость атаки",
+      "55.0%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+71%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "414"
+     ],
+     [
+      "Реген маны",
+      "5.76/с"
+     ],
+     [
+      "Мана в конце",
+      "97%"
+     ],
+     [
+      "Интервал атаки",
+      "1.43 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3023.3,
+     "Divine Storm": 3235.4,
+     "Divine Hammer": 3235.4,
+     "Divine Toll": 3235.4,
+     "Crusade": 3151.9
+    },
+    "glyphDps": {
+     "Fortitude": 3235.4,
+     "Unsealed Power": 3235.4,
+     "Fortune": 2931.5,
+     "Supremacy": 2905.3,
+     "Arc Striking": 2890.2,
+     "Battle Frenzy": 2860.9,
+     "Hellfire": 2890.2,
+     "Thunder": 2890.2,
+     "Blood Violence": 2890.2,
+     "Animosity": 2903.7,
+     "Glass Cannon": 3235.4,
+     "Mindhaste": 2989.8
     }
    },
    {
@@ -3753,13 +9103,276 @@
      "Fortune": 2905.3,
      "Supremacy": 2876.0,
      "Arc Striking": 2862.2,
-     "Battle Frenzy": 2862.2,
+     "Battle Frenzy": 2831.4,
      "Hellfire": 2862.2,
      "Thunder": 2862.2,
      "Blood Violence": 2862.2,
      "Animosity": 2877.1,
      "Glass Cannon": 3234.5,
      "Mindhaste": 2957.0
+    }
+   },
+   {
+    "farm_dps": 3233.5,
+    "dps": 3233.5,
+    "total": 97006,
+    "manaLeft": 97.6,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Lightning Rod",
+      "code": "I07F",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Crusade",
+     "Divine Hammer",
+     "Divine Toll"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 10,
+     "pet_damage": 0
+    },
+    "chunk": 2470936182,
+    "sources": [
+     [
+      "Blessed Hammer",
+      2088.1
+     ],
+     [
+      "Sulfuras",
+      592.9
+     ],
+     [
+      "Crusader Strike",
+      221.0
+     ],
+     [
+      "Righteous Fury",
+      165.2
+     ],
+     [
+      "Автоатака",
+      155.3
+     ],
+     [
+      "Sulfuras (удар)",
+      11.0
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.45",
+      "Blessed Hammer"
+     ],
+     [
+      "4.33",
+      "Blessed Hammer"
+     ],
+     [
+      "5.17",
+      "Crusader Strike"
+     ],
+     [
+      "8.03",
+      "Blessed Hammer"
+     ],
+     [
+      "10.04",
+      "Crusader Strike"
+     ],
+     [
+      "11.58",
+      "Blessed Hammer"
+     ],
+     [
+      "14.64",
+      "Crusader Strike"
+     ],
+     [
+      "15.09",
+      "Blessed Hammer"
+     ],
+     [
+      "18.50",
+      "Blessed Hammer"
+     ],
+     [
+      "19.18",
+      "Crusader Strike"
+     ],
+     [
+      "21.90",
+      "Blessed Hammer"
+     ],
+     [
+      "23.72",
+      "Crusader Strike"
+     ],
+     [
+      "25.31",
+      "Blessed Hammer"
+     ],
+     [
+      "28.26",
+      "Crusader Strike"
+     ],
+     [
+      "28.71",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "201"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "42"
+     ],
+     [
+      "Урон автоатаки",
+      "163.8"
+     ],
+     [
+      "Potency",
+      "23.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "28.0%"
+     ],
+     [
+      "Скорость атаки",
+      "87.0%"
+     ],
+     [
+      "Удача",
+      "10%"
+     ],
+     [
+      "Магический бонус",
+      "+61%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "414"
+     ],
+     [
+      "Реген маны",
+      "5.76/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки",
+      "1.19 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3062.0,
+     "Divine Storm": 3198.1,
+     "Divine Hammer": 3233.5,
+     "Divine Toll": 3233.5,
+     "Crusade": 3233.5
+    },
+    "glyphDps": {
+     "Fortitude": 3233.5,
+     "Unsealed Power": 3233.5,
+     "Fortune": 2909.1,
+     "Supremacy": 2866.9,
+     "Arc Striking": 2866.9,
+     "Battle Frenzy": 2872.6,
+     "Hellfire": 2866.9,
+     "Thunder": 2866.9,
+     "Blood Violence": 2866.9,
+     "Animosity": 2885.1,
+     "Glass Cannon": 3233.5,
+     "Mindhaste": 2935.5
     }
    },
    {
@@ -4008,13 +9621,280 @@
      "Fortune": 2927.5,
      "Supremacy": 2901.5,
      "Arc Striking": 2888.4,
-     "Battle Frenzy": 2888.4,
+     "Battle Frenzy": 2930.7,
      "Hellfire": 2888.4,
      "Thunder": 2888.4,
      "Blood Violence": 2888.4,
      "Animosity": 2912.1,
      "Glass Cannon": 3228.0,
      "Mindhaste": 3083.8
+    }
+   },
+   {
+    "farm_dps": 3211.6,
+    "dps": 3211.6,
+    "total": 96349,
+    "manaLeft": 100.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Flask of Sands",
+      "code": "I096",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Divine Hammer",
+     "Divine Storm",
+     "Divine Toll"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 2,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 8,
+     "pet_damage": 0
+    },
+    "chunk": 4089210174,
+    "sources": [
+     [
+      "Blessed Hammer",
+      1855.9
+     ],
+     [
+      "Sulfuras",
+      632.8
+     ],
+     [
+      "Divine Storm",
+      237.7
+     ],
+     [
+      "Crusader Strike",
+      214.6
+     ],
+     [
+      "Righteous Fury",
+      139.0
+     ],
+     [
+      "Автоатака",
+      122.4
+     ],
+     [
+      "Sulfuras (удар)",
+      9.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.45",
+      "Blessed Hammer"
+     ],
+     [
+      "3.76",
+      "Blessed Hammer"
+     ],
+     [
+      "4.54",
+      "Crusader Strike"
+     ],
+     [
+      "7.08",
+      "Blessed Hammer"
+     ],
+     [
+      "9.08",
+      "Crusader Strike"
+     ],
+     [
+      "10.39",
+      "Blessed Hammer"
+     ],
+     [
+      "13.62",
+      "Crusader Strike"
+     ],
+     [
+      "14.07",
+      "Blessed Hammer"
+     ],
+     [
+      "17.38",
+      "Blessed Hammer"
+     ],
+     [
+      "18.16",
+      "Crusader Strike"
+     ],
+     [
+      "20.70",
+      "Blessed Hammer"
+     ],
+     [
+      "22.70",
+      "Crusader Strike"
+     ],
+     [
+      "24.01",
+      "Blessed Hammer"
+     ],
+     [
+      "27.24",
+      "Crusader Strike"
+     ],
+     [
+      "27.69",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "203"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "42"
+     ],
+     [
+      "Урон автоатаки",
+      "165.2"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "37.0%"
+     ],
+     [
+      "Скорость атаки",
+      "59.0%"
+     ],
+     [
+      "Удача",
+      "8%"
+     ],
+     [
+      "Магический бонус",
+      "+58%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "414"
+     ],
+     [
+      "Реген маны",
+      "6.24/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки",
+      "1.40 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.50 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 2960.8,
+     "Divine Storm": 3211.6,
+     "Divine Hammer": 3211.6,
+     "Divine Toll": 3211.6,
+     "Crusade": 3066.8
+    },
+    "glyphDps": {
+     "Fortitude": 3211.6,
+     "Unsealed Power": 3211.6,
+     "Fortune": 2885.0,
+     "Supremacy": 2855.9,
+     "Arc Striking": 2842.1,
+     "Battle Frenzy": 2812.8,
+     "Hellfire": 2842.1,
+     "Thunder": 2842.1,
+     "Blood Violence": 2842.1,
+     "Animosity": 2856.4,
+     "Glass Cannon": 3211.6,
+     "Mindhaste": 2962.6
     }
    },
    {
@@ -4275,7 +10155,7 @@
      "Fortune": 2883.0,
      "Supremacy": 2854.0,
      "Arc Striking": 2840.2,
-     "Battle Frenzy": 2840.2,
+     "Battle Frenzy": 2809.7,
      "Hellfire": 2840.2,
      "Thunder": 2840.2,
      "Blood Violence": 2840.2,
@@ -4285,13 +10165,18 @@
     }
    },
    {
-    "farm_dps": 3050.4,
-    "dps": 3050.4,
-    "total": 91511,
-    "manaLeft": 97.4,
+    "farm_dps": 3200.0,
+    "dps": 3200.0,
+    "total": 96000,
+    "manaLeft": 98.8,
     "bound_spell": null,
     "orb_mode": null,
     "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
      {
       "name": "Sulfuras, Hand of Ragnaros",
       "code": "I0BR",
@@ -4303,9 +10188,259 @@
       "source": "shop"
      },
      {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
       "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Crusade",
+     "Divine Hammer",
+     "Divine Toll"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 3,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 7,
+     "pet_damage": 0
+    },
+    "chunk": 4077860535,
+    "sources": [
+     [
+      "Blessed Hammer",
+      1958.9
+     ],
+     [
+      "Sulfuras",
+      668.4
+     ],
+     [
+      "Crusader Strike",
+      226.4
+     ],
+     [
+      "Righteous Fury",
+      170.6
+     ],
+     [
+      "Автоатака",
+      165.5
+     ],
+     [
+      "Sulfuras (удар)",
+      10.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.45",
+      "Blessed Hammer"
+     ],
+     [
+      "4.67",
+      "Blessed Hammer"
+     ],
+     [
+      "5.63",
+      "Crusader Strike"
+     ],
+     [
+      "8.71",
+      "Blessed Hammer"
+     ],
+     [
+      "11.01",
+      "Crusader Strike"
+     ],
+     [
+      "12.63",
+      "Blessed Hammer"
+     ],
+     [
+      "16.10",
+      "Crusader Strike"
+     ],
+     [
+      "16.55",
+      "Blessed Hammer"
+     ],
+     [
+      "20.26",
+      "Blessed Hammer"
+     ],
+     [
+      "21.04",
+      "Crusader Strike"
+     ],
+     [
+      "23.97",
+      "Blessed Hammer"
+     ],
+     [
+      "25.99",
+      "Crusader Strike"
+     ],
+     [
+      "27.67",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "217"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "42"
+     ],
+     [
+      "Урон автоатаки",
+      "184.8"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "28.0%"
+     ],
+     [
+      "Скорость атаки",
+      "55.0%"
+     ],
+     [
+      "Удача",
+      "7%"
+     ],
+     [
+      "Магический бонус",
+      "+58%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "414"
+     ],
+     [
+      "Реген маны",
+      "4.32/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки",
+      "1.43 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3018.1,
+     "Divine Storm": 3162.3,
+     "Divine Hammer": 3200.0,
+     "Divine Toll": 3200.0,
+     "Crusade": 3200.0
+    },
+    "glyphDps": {
+     "Fortitude": 3200.0,
+     "Unsealed Power": 3200.0,
+     "Fortune": 2927.3,
+     "Supremacy": 2880.1,
+     "Arc Striking": 2880.1,
+     "Battle Frenzy": 2851.5,
+     "Hellfire": 2880.1,
+     "Thunder": 2880.1,
+     "Blood Violence": 2880.1,
+     "Animosity": 2900.1,
+     "Glass Cannon": 3200.0,
+     "Mindhaste": 3004.9
+    }
+   },
+   {
+    "farm_dps": 3197.7,
+    "dps": 3197.7,
+    "total": 95931,
+    "manaLeft": 97.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Hand of the Magi",
+      "code": "I06M",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
      },
      {
       "name": "Staff of Galactic Fury",
@@ -4346,35 +10481,35 @@
      "luck": 9,
      "pet_damage": 0
     },
-    "chunk": 229421384,
+    "chunk": 4152162622,
     "sources": [
      [
       "Blessed Hammer",
-      1596.1
+      1812.9
      ],
      [
       "Sulfuras",
-      631.1
+      628.6
      ],
      [
       "Divine Storm",
-      220.9
+      249.5
      ],
      [
       "Crusader Strike",
-      206.3
-     ],
-     [
-      "Автоатака",
-      193.1
+      220.0
      ],
      [
       "Righteous Fury",
-      190.6
+      139.8
+     ],
+     [
+      "Автоатака",
+      138.3
      ],
      [
       "Sulfuras (удар)",
-      12.2
+      8.6
      ]
     ],
     "actions": [
@@ -4387,46 +10522,66 @@
       "Blessed Hammer"
      ],
      [
-      "5.88",
+      "4.04",
       "Blessed Hammer"
      ],
      [
-      "7.24",
+      "4.78",
       "Crusader Strike"
      ],
      [
-      "11.31",
+      "7.62",
       "Blessed Hammer"
      ],
      [
-      "14.49",
+      "9.57",
       "Crusader Strike"
      ],
      [
-      "16.75",
+      "11.21",
       "Blessed Hammer"
      ],
      [
-      "21.73",
+      "14.35",
       "Crusader Strike"
      ],
      [
-      "22.18",
+      "14.80",
       "Blessed Hammer"
      ],
      [
-      "27.61",
+      "18.38",
       "Blessed Hammer"
      ],
      [
-      "28.97",
+      "19.13",
       "Crusader Strike"
+     ],
+     [
+      "21.97",
+      "Blessed Hammer"
+     ],
+     [
+      "23.91",
+      "Crusader Strike"
+     ],
+     [
+      "25.56",
+      "Blessed Hammer"
+     ],
+     [
+      "28.70",
+      "Crusader Strike"
+     ],
+     [
+      "29.15",
+      "Blessed Hammer"
      ]
     ],
     "stats": [
      [
       "Сила",
-      "260"
+      "174"
      ],
      [
       "Ловкость",
@@ -4438,7 +10593,7 @@
      ],
      [
       "Урон автоатаки",
-      "217.0"
+      "152.5"
      ],
      [
       "Potency",
@@ -4458,7 +10613,7 @@
      ],
      [
       "Спешка",
-      "11.0%"
+      "38.0%"
      ],
      [
       "Скорость атаки",
@@ -4470,7 +10625,800 @@
      ],
      [
       "Магический бонус",
-      "+48%"
+      "+58%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "414"
+     ],
+     [
+      "Реген маны",
+      "5.92/с"
+     ],
+     [
+      "Мана в конце",
+      "97%"
+     ],
+     [
+      "Интервал атаки",
+      "1.43 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 2993.0,
+     "Divine Storm": 3197.7,
+     "Divine Hammer": 3197.7,
+     "Divine Toll": 3197.7,
+     "Crusade": 3013.4
+    },
+    "glyphDps": {
+     "Fortitude": 3197.7,
+     "Unsealed Power": 3197.7,
+     "Fortune": 2921.5,
+     "Supremacy": 2895.5,
+     "Arc Striking": 2879.2,
+     "Battle Frenzy": 2850.0,
+     "Hellfire": 2879.2,
+     "Thunder": 2879.2,
+     "Blood Violence": 2879.2,
+     "Animosity": 2895.9,
+     "Glass Cannon": 3197.7,
+     "Mindhaste": 2981.2
+    }
+   },
+   {
+    "farm_dps": 3195.4,
+    "dps": 3195.4,
+    "total": 95862,
+    "manaLeft": 97.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Raging Core Pendant",
+      "code": "I0T0",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Divine Hammer",
+     "Divine Storm",
+     "Divine Toll"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 4,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 6,
+     "pet_damage": 0
+    },
+    "chunk": 4077860525,
+    "sources": [
+     [
+      "Blessed Hammer",
+      1805.7
+     ],
+     [
+      "Sulfuras",
+      648.4
+     ],
+     [
+      "Divine Storm",
+      245.5
+     ],
+     [
+      "Crusader Strike",
+      218.8
+     ],
+     [
+      "Righteous Fury",
+      142.2
+     ],
+     [
+      "Автоатака",
+      125.0
+     ],
+     [
+      "Sulfuras (удар)",
+      9.7
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.45",
+      "Blessed Hammer"
+     ],
+     [
+      "4.02",
+      "Blessed Hammer"
+     ],
+     [
+      "4.77",
+      "Crusader Strike"
+     ],
+     [
+      "7.60",
+      "Blessed Hammer"
+     ],
+     [
+      "9.53",
+      "Crusader Strike"
+     ],
+     [
+      "11.17",
+      "Blessed Hammer"
+     ],
+     [
+      "14.30",
+      "Crusader Strike"
+     ],
+     [
+      "14.75",
+      "Blessed Hammer"
+     ],
+     [
+      "18.32",
+      "Blessed Hammer"
+     ],
+     [
+      "19.06",
+      "Crusader Strike"
+     ],
+     [
+      "21.90",
+      "Blessed Hammer"
+     ],
+     [
+      "23.83",
+      "Crusader Strike"
+     ],
+     [
+      "25.47",
+      "Blessed Hammer"
+     ],
+     [
+      "28.60",
+      "Crusader Strike"
+     ],
+     [
+      "29.05",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "208"
+     ],
+     [
+      "Ловкость",
+      "35"
+     ],
+     [
+      "Интеллект",
+      "47"
+     ],
+     [
+      "Урон автоатаки",
+      "169.0"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "41.0%"
+     ],
+     [
+      "Скорость атаки",
+      "57.0%"
+     ],
+     [
+      "Удача",
+      "12%"
+     ],
+     [
+      "Магический бонус",
+      "+58%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "449"
+     ],
+     [
+      "Реген маны",
+      "4.72/с"
+     ],
+     [
+      "Мана в конце",
+      "97%"
+     ],
+     [
+      "Интервал атаки",
+      "1.41 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 2989.1,
+     "Divine Storm": 3195.4,
+     "Divine Hammer": 3195.4,
+     "Divine Toll": 3195.4,
+     "Crusade": 3035.9
+    },
+    "glyphDps": {
+     "Fortitude": 3195.4,
+     "Unsealed Power": 3195.4,
+     "Fortune": 2869.9,
+     "Supremacy": 2841.5,
+     "Arc Striking": 2827.7,
+     "Battle Frenzy": 2797.6,
+     "Hellfire": 2827.7,
+     "Thunder": 2827.7,
+     "Blood Violence": 2827.7,
+     "Animosity": 2842.3,
+     "Glass Cannon": 3195.4,
+     "Mindhaste": 2921.8
+    }
+   },
+   {
+    "farm_dps": 3195.4,
+    "dps": 3195.4,
+    "total": 95862,
+    "manaLeft": 97.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Raging Core Pendant",
+      "code": "I0SZ",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Divine Hammer",
+     "Divine Storm",
+     "Divine Toll"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 4,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 6,
+     "pet_damage": 0
+    },
+    "chunk": 4077860526,
+    "sources": [
+     [
+      "Blessed Hammer",
+      1805.7
+     ],
+     [
+      "Sulfuras",
+      648.4
+     ],
+     [
+      "Divine Storm",
+      245.5
+     ],
+     [
+      "Crusader Strike",
+      218.8
+     ],
+     [
+      "Righteous Fury",
+      142.2
+     ],
+     [
+      "Автоатака",
+      125.0
+     ],
+     [
+      "Sulfuras (удар)",
+      9.7
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.45",
+      "Blessed Hammer"
+     ],
+     [
+      "4.02",
+      "Blessed Hammer"
+     ],
+     [
+      "4.77",
+      "Crusader Strike"
+     ],
+     [
+      "7.60",
+      "Blessed Hammer"
+     ],
+     [
+      "9.53",
+      "Crusader Strike"
+     ],
+     [
+      "11.17",
+      "Blessed Hammer"
+     ],
+     [
+      "14.30",
+      "Crusader Strike"
+     ],
+     [
+      "14.75",
+      "Blessed Hammer"
+     ],
+     [
+      "18.32",
+      "Blessed Hammer"
+     ],
+     [
+      "19.06",
+      "Crusader Strike"
+     ],
+     [
+      "21.90",
+      "Blessed Hammer"
+     ],
+     [
+      "23.83",
+      "Crusader Strike"
+     ],
+     [
+      "25.47",
+      "Blessed Hammer"
+     ],
+     [
+      "28.60",
+      "Crusader Strike"
+     ],
+     [
+      "29.05",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "208"
+     ],
+     [
+      "Ловкость",
+      "35"
+     ],
+     [
+      "Интеллект",
+      "47"
+     ],
+     [
+      "Урон автоатаки",
+      "169.0"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "41.0%"
+     ],
+     [
+      "Скорость атаки",
+      "57.0%"
+     ],
+     [
+      "Удача",
+      "12%"
+     ],
+     [
+      "Магический бонус",
+      "+58%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "449"
+     ],
+     [
+      "Реген маны",
+      "4.72/с"
+     ],
+     [
+      "Мана в конце",
+      "97%"
+     ],
+     [
+      "Интервал атаки",
+      "1.41 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 2989.1,
+     "Divine Storm": 3195.4,
+     "Divine Hammer": 3195.4,
+     "Divine Toll": 3195.4,
+     "Crusade": 3035.9
+    },
+    "glyphDps": {
+     "Fortitude": 3195.4,
+     "Unsealed Power": 3195.4,
+     "Fortune": 2869.9,
+     "Supremacy": 2841.5,
+     "Arc Striking": 2827.7,
+     "Battle Frenzy": 2797.6,
+     "Hellfire": 2827.7,
+     "Thunder": 2827.7,
+     "Blood Violence": 2827.7,
+     "Animosity": 2842.3,
+     "Glass Cannon": 3195.4,
+     "Mindhaste": 2921.8
+    }
+   },
+   {
+    "farm_dps": 3189.8,
+    "dps": 3189.8,
+    "total": 95694,
+    "manaLeft": 99.3,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Infinity Breaker",
+      "code": "I0NI",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Divine Hammer",
+     "Divine Storm",
+     "Divine Toll"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 4,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 6,
+     "pet_damage": 0
+    },
+    "chunk": 4077860610,
+    "sources": [
+     [
+      "Blessed Hammer",
+      1804.2
+     ],
+     [
+      "Sulfuras",
+      612.4
+     ],
+     [
+      "Divine Storm",
+      232.2
+     ],
+     [
+      "Crusader Strike",
+      205.8
+     ],
+     [
+      "Righteous Fury",
+      178.6
+     ],
+     [
+      "Автоатака",
+      145.9
+     ],
+     [
+      "Sulfuras (удар)",
+      10.8
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.45",
+      "Blessed Hammer"
+     ],
+     [
+      "4.36",
+      "Blessed Hammer"
+     ],
+     [
+      "5.21",
+      "Crusader Strike"
+     ],
+     [
+      "8.26",
+      "Blessed Hammer"
+     ],
+     [
+      "10.42",
+      "Crusader Strike"
+     ],
+     [
+      "12.17",
+      "Blessed Hammer"
+     ],
+     [
+      "15.63",
+      "Crusader Strike"
+     ],
+     [
+      "16.08",
+      "Blessed Hammer"
+     ],
+     [
+      "19.98",
+      "Blessed Hammer"
+     ],
+     [
+      "20.84",
+      "Crusader Strike"
+     ],
+     [
+      "23.89",
+      "Blessed Hammer"
+     ],
+     [
+      "26.05",
+      "Crusader Strike"
+     ],
+     [
+      "27.80",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "213"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "42"
+     ],
+     [
+      "Урон автоатаки",
+      "172.8"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "28"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "29.0%"
+     ],
+     [
+      "Скорость атаки",
+      "71.0%"
+     ],
+     [
+      "Удача",
+      "6%"
+     ],
+     [
+      "Магический бонус",
+      "+70%"
      ],
      [
       "Физический бонус",
@@ -4490,15 +11438,15 @@
      ],
      [
       "Мана в конце",
-      "97%"
+      "99%"
      ],
      [
       "Интервал атаки",
-      "1.43 с"
+      "1.30 с"
      ],
      [
       "Множитель КД (предметы)",
-      "×1.340"
+      "×1.120"
      ],
      [
       "Плоское снижение КД",
@@ -4510,35 +11458,40 @@
      ]
     ],
     "talentDps": {
-     "Zeal": 2845.3,
-     "Divine Storm": 3050.4,
-     "Divine Hammer": 3050.4,
-     "Divine Toll": 3050.4,
-     "Crusade": 2795.9
+     "Zeal": 3063.6,
+     "Divine Storm": 3189.8,
+     "Divine Hammer": 3218.7,
+     "Divine Toll": 3218.7,
+     "Crusade": 3218.7
     },
     "glyphDps": {
-     "Fortitude": 3050.4,
-     "Unsealed Power": 3050.4,
-     "Fortune": 2768.3,
-     "Supremacy": 2740.0,
-     "Arc Striking": 2729.0,
-     "Battle Frenzy": 2729.0,
-     "Hellfire": 2729.0,
-     "Thunder": 2729.0,
-     "Blood Violence": 2729.0,
-     "Animosity": 2752.4,
-     "Glass Cannon": 3050.4,
-     "Mindhaste": 2819.4
+     "Fortitude": 3189.8,
+     "Unsealed Power": 3189.8,
+     "Fortune": 2889.8,
+     "Supremacy": 2859.2,
+     "Arc Striking": 2846.4,
+     "Battle Frenzy": 2846.4,
+     "Hellfire": 2846.4,
+     "Thunder": 2846.4,
+     "Blood Violence": 2846.4,
+     "Animosity": 2863.4,
+     "Glass Cannon": 3189.8,
+     "Mindhaste": 3060.6
     }
    },
    {
-    "farm_dps": 2997.7,
-    "dps": 2997.7,
-    "total": 89931,
-    "manaLeft": 99.4,
+    "farm_dps": 3189.1,
+    "dps": 3189.1,
+    "total": 95673,
+    "manaLeft": 97.6,
     "bound_spell": null,
     "orb_mode": null,
     "items": [
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
      {
       "name": "Sulfuras, Hand of Ragnaros",
       "code": "I0BR",
@@ -4563,16 +11516,11 @@
       "name": "Elemental Orb",
       "code": "I0NT",
       "source": "shop"
-     },
-     {
-      "name": "Sulfuron Gloves",
-      "code": "I0QT",
-      "source": "shop"
      }
     ],
     "talents": [
-     "Crusade",
      "Divine Hammer",
+     "Divine Storm",
      "Divine Toll"
     ],
     "glyphs": [
@@ -4584,8 +11532,8 @@
      "health": 0,
      "mana": 0,
      "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 1,
+     "haste": 1,
+     "attack_speed": 0,
      "damage": 0,
      "crit": 0,
      "potency": 20,
@@ -4593,31 +11541,35 @@
      "luck": 9,
      "pet_damage": 0
     },
-    "chunk": 240753171,
+    "chunk": 2434473699,
     "sources": [
      [
       "Blessed Hammer",
-      1788.7
+      1840.8
      ],
      [
       "Sulfuras",
-      641.8
+      558.6
+     ],
+     [
+      "Divine Storm",
+      258.4
      ],
      [
       "Crusader Strike",
-      215.9
+      205.7
      ],
      [
       "Автоатака",
-      176.0
+      160.4
      ],
      [
       "Righteous Fury",
-      164.3
+      153.5
      ],
      [
       "Sulfuras (удар)",
-      11.0
+      11.6
      ]
     ],
     "actions": [
@@ -4630,58 +11582,66 @@
       "Blessed Hammer"
      ],
      [
-      "4.88",
+      "4.02",
       "Blessed Hammer"
      ],
      [
-      "5.90",
+      "4.77",
       "Crusader Strike"
      ],
      [
-      "9.10",
+      "7.60",
       "Blessed Hammer"
      ],
      [
-      "11.45",
+      "9.53",
       "Crusader Strike"
      ],
      [
-      "13.14",
+      "11.17",
       "Blessed Hammer"
      ],
      [
-      "16.68",
+      "14.30",
       "Crusader Strike"
      ],
      [
-      "17.13",
+      "14.75",
       "Blessed Hammer"
      ],
      [
-      "20.99",
+      "18.32",
       "Blessed Hammer"
      ],
      [
-      "21.83",
+      "19.06",
       "Crusader Strike"
      ],
      [
-      "24.86",
+      "21.90",
       "Blessed Hammer"
      ],
      [
-      "26.99",
+      "23.83",
       "Crusader Strike"
      ],
      [
-      "28.73",
+      "25.47",
+      "Blessed Hammer"
+     ],
+     [
+      "28.60",
+      "Crusader Strike"
+     ],
+     [
+      "29.05",
       "Blessed Hammer"
      ]
     ],
     "stats": [
      [
       "Сила",
-      "220"
+      "206"
      ],
      [
       "Ловкость",
@@ -4693,11 +11653,11 @@
      ],
      [
       "Урон автоатаки",
-      "187.0"
+      "167.5"
      ],
      [
       "Potency",
-      "10.0"
+      "18.0"
      ],
      [
       "Mastery",
@@ -4713,11 +11673,11 @@
      ],
      [
       "Спешка",
-      "22.0%"
+      "41.0%"
      ],
      [
       "Скорость атаки",
-      "63.0%"
+      "93.0%"
      ],
      [
       "Удача",
@@ -4745,776 +11705,15 @@
      ],
      [
       "Мана в конце",
-      "99%"
-     ],
-     [
-      "Интервал атаки",
-      "1.36 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.220"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "6"
-     ]
-    ],
-    "talentDps": {
-     "Zeal": 2809.7,
-     "Divine Storm": 2921.5,
-     "Divine Hammer": 2997.7,
-     "Divine Toll": 2997.7,
-     "Crusade": 2997.7
-    },
-    "glyphDps": {
-     "Fortitude": 2997.7,
-     "Unsealed Power": 2997.7,
-     "Fortune": 2724.2,
-     "Supremacy": 2681.9,
-     "Arc Striking": 2681.9,
-     "Battle Frenzy": 2681.9,
-     "Hellfire": 2681.9,
-     "Thunder": 2681.9,
-     "Blood Violence": 2681.9,
-     "Animosity": 2703.2,
-     "Glass Cannon": 2997.7,
-     "Mindhaste": 2765.4
-    }
-   },
-   {
-    "farm_dps": 2991.2,
-    "dps": 2991.2,
-    "total": 89737,
-    "manaLeft": 100.0,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Lightning Rod",
-      "code": "I07F",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Staff of Galactic Fury",
-      "code": "I0JO",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuron Gloves",
-      "code": "I0QT",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Divine Hammer",
-     "Divine Storm",
-     "Divine Toll"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 0,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 10,
-     "pet_damage": 0
-    },
-    "chunk": 838497377,
-    "sources": [
-     [
-      "Blessed Hammer",
-      1666.4
-     ],
-     [
-      "Sulfuras",
-      564.4
-     ],
-     [
-      "Divine Storm",
-      215.6
-     ],
-     [
-      "Crusader Strike",
-      191.5
-     ],
-     [
-      "Righteous Fury",
-      174.0
-     ],
-     [
-      "Автоатака",
-      168.9
-     ],
-     [
-      "Sulfuras (удар)",
-      10.4
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Crusader Strike"
-     ],
-     [
-      "0.45",
-      "Blessed Hammer"
-     ],
-     [
-      "5.44",
-      "Blessed Hammer"
-     ],
-     [
-      "6.65",
-      "Crusader Strike"
-     ],
-     [
-      "10.43",
-      "Blessed Hammer"
-     ],
-     [
-      "13.31",
-      "Crusader Strike"
-     ],
-     [
-      "15.42",
-      "Blessed Hammer"
-     ],
-     [
-      "19.96",
-      "Crusader Strike"
-     ],
-     [
-      "20.41",
-      "Blessed Hammer"
-     ],
-     [
-      "25.40",
-      "Blessed Hammer"
-     ],
-     [
-      "26.62",
-      "Crusader Strike"
-     ]
-    ],
-    "stats": [
-     [
-      "Сила",
-      "215"
-     ],
-     [
-      "Ловкость",
-      "30"
-     ],
-     [
-      "Интеллект",
-      "42"
-     ],
-     [
-      "Урон автоатаки",
-      "183.2"
-     ],
-     [
-      "Potency",
-      "15.0"
-     ],
-     [
-      "Mastery",
-      "20"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "10.0%"
-     ],
-     [
-      "Скорость атаки",
-      "55.0%"
-     ],
-     [
-      "Удача",
-      "10%"
-     ],
-     [
-      "Магический бонус",
-      "+61%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "414"
-     ],
-     [
-      "Реген маны",
-      "5.76/с"
-     ],
-     [
-      "Мана в конце",
-      "100%"
-     ],
-     [
-      "Интервал атаки",
-      "1.43 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.220"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "6"
-     ]
-    ],
-    "talentDps": {
-     "Zeal": 2790.1,
-     "Divine Storm": 2991.2,
-     "Divine Hammer": 2991.2,
-     "Divine Toll": 2991.2,
-     "Crusade": 2941.7
-    },
-    "glyphDps": {
-     "Fortitude": 2991.2,
-     "Unsealed Power": 2991.2,
-     "Fortune": 2735.6,
-     "Supremacy": 2709.6,
-     "Arc Striking": 2697.7,
-     "Battle Frenzy": 2697.7,
-     "Hellfire": 2697.7,
-     "Thunder": 2697.7,
-     "Blood Violence": 2697.7,
-     "Animosity": 2718.0,
-     "Glass Cannon": 2991.2,
-     "Mindhaste": 2850.5
-    }
-   },
-   {
-    "farm_dps": 2982.8,
-    "dps": 2982.8,
-    "total": 89483,
-    "manaLeft": 98.1,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Razorwind",
-      "code": "I05X",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I07O",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Staff of Galactic Fury",
-      "code": "I0JO",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuron Gloves",
-      "code": "I0QT",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Divine Hammer",
-     "Divine Storm",
-     "Divine Toll"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 1,
-     "attack_speed": 0,
-     "damage": 0,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 9,
-     "pet_damage": 0
-    },
-    "chunk": 2462619279,
-    "sources": [
-     [
-      "Blessed Hammer",
-      1528.8
-     ],
-     [
-      "Sulfuras",
-      509.9
-     ],
-     [
-      "Всплеск огня",
-      238.9
-     ],
-     [
-      "Divine Storm",
-      201.4
-     ],
-     [
-      "Crusader Strike",
-      175.0
-     ],
-     [
-      "Автоатака",
-      166.7
-     ],
-     [
-      "Righteous Fury",
-      152.0
-     ],
-     [
-      "Sulfuras (удар)",
-      10.0
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Crusader Strike"
-     ],
-     [
-      "0.45",
-      "Blessed Hammer"
-     ],
-     [
-      "4.71",
-      "Blessed Hammer"
-     ],
-     [
-      "5.67",
-      "Crusader Strike"
-     ],
-     [
-      "8.96",
-      "Blessed Hammer"
-     ],
-     [
-      "11.35",
-      "Crusader Strike"
-     ],
-     [
-      "13.22",
-      "Blessed Hammer"
-     ],
-     [
-      "17.02",
-      "Crusader Strike"
-     ],
-     [
-      "17.47",
-      "Blessed Hammer"
-     ],
-     [
-      "21.73",
-      "Blessed Hammer"
-     ],
-     [
-      "22.70",
-      "Crusader Strike"
-     ],
-     [
-      "25.98",
-      "Blessed Hammer"
-     ],
-     [
-      "28.37",
-      "Crusader Strike"
-     ]
-    ],
-    "stats": [
-     [
-      "Сила",
-      "205"
-     ],
-     [
-      "Ловкость",
-      "30"
-     ],
-     [
-      "Интеллект",
-      "42"
-     ],
-     [
-      "Урон автоатаки",
-      "175.8"
-     ],
-     [
-      "Potency",
-      "18.0"
-     ],
-     [
-      "Mastery",
-      "20"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "29.0%"
-     ],
-     [
-      "Скорость атаки",
-      "87.0%"
-     ],
-     [
-      "Удача",
-      "9%"
-     ],
-     [
-      "Магический бонус",
-      "+48%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "414"
-     ],
-     [
-      "Реген маны",
-      "4.32/с"
-     ],
-     [
-      "Мана в конце",
       "98%"
      ],
      [
       "Интервал атаки",
-      "1.19 с"
+      "1.15 с"
      ],
      [
       "Множитель КД (предметы)",
-      "×1.220"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "0"
-     ]
-    ],
-    "talentDps": {
-     "Zeal": 2861.1,
-     "Divine Storm": 2982.8,
-     "Divine Hammer": 2982.8,
-     "Divine Toll": 2982.8,
-     "Crusade": 2905.6
-    },
-    "glyphDps": {
-     "Fortitude": 2982.8,
-     "Unsealed Power": 2982.8,
-     "Fortune": 2727.3,
-     "Supremacy": 2705.2,
-     "Arc Striking": 2694.1,
-     "Battle Frenzy": 2694.1,
-     "Hellfire": 2694.1,
-     "Thunder": 2694.1,
-     "Blood Violence": 2694.1,
-     "Animosity": 2714.2,
-     "Glass Cannon": 2982.8,
-     "Mindhaste": 2860.2
-    }
-   },
-   {
-    "farm_dps": 2974.8,
-    "dps": 2974.8,
-    "total": 89244,
-    "manaLeft": 97.9,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Amplifying Bracers",
-      "code": "I0IK",
-      "source": "shop"
-     },
-     {
-      "name": "Staff of Galactic Fury",
-      "code": "I0JO",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuron Gloves",
-      "code": "I0QT",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Crusade",
-     "Divine Hammer",
-     "Divine Toll"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 2,
-     "attack_speed": 0,
-     "damage": 0,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 8,
-     "pet_damage": 0
-    },
-    "chunk": 229143969,
-    "sources": [
-     [
-      "Blessed Hammer",
-      1749.4
-     ],
-     [
-      "Sulfuras",
-      678.1
-     ],
-     [
-      "Crusader Strike",
-      211.6
-     ],
-     [
-      "Автоатака",
-      164.6
-     ],
-     [
-      "Righteous Fury",
-      160.2
-     ],
-     [
-      "Sulfuras (удар)",
-      10.9
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Crusader Strike"
-     ],
-     [
-      "0.45",
-      "Blessed Hammer"
-     ],
-     [
-      "4.95",
-      "Blessed Hammer"
-     ],
-     [
-      "6.00",
-      "Crusader Strike"
-     ],
-     [
-      "9.24",
-      "Blessed Hammer"
-     ],
-     [
-      "11.63",
-      "Crusader Strike"
-     ],
-     [
-      "13.34",
-      "Blessed Hammer"
-     ],
-     [
-      "16.94",
-      "Crusader Strike"
-     ],
-     [
-      "17.39",
-      "Blessed Hammer"
-     ],
-     [
-      "21.31",
-      "Blessed Hammer"
-     ],
-     [
-      "22.16",
-      "Crusader Strike"
-     ],
-     [
-      "25.23",
-      "Blessed Hammer"
-     ],
-     [
-      "27.39",
-      "Crusader Strike"
-     ],
-     [
-      "29.15",
-      "Blessed Hammer"
-     ]
-    ],
-    "stats": [
-     [
-      "Сила",
-      "215"
-     ],
-     [
-      "Ловкость",
-      "30"
-     ],
-     [
-      "Интеллект",
-      "42"
-     ],
-     [
-      "Урон автоатаки",
-      "183.2"
-     ],
-     [
-      "Potency",
-      "10.0"
-     ],
-     [
-      "Mastery",
-      "20"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "20.0%"
-     ],
-     [
-      "Скорость атаки",
-      "55.0%"
-     ],
-     [
-      "Удача",
-      "16%"
-     ],
-     [
-      "Магический бонус",
-      "+48%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "414"
-     ],
-     [
-      "Реген маны",
-      "4.32/с"
-     ],
-     [
-      "Мана в конце",
-      "98%"
-     ],
-     [
-      "Интервал атаки",
-      "1.43 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.220"
+      "×1.120"
      ],
      [
       "Плоское снижение КД",
@@ -5526,280 +11725,25 @@
      ]
     ],
     "talentDps": {
-     "Zeal": 2671.0,
-     "Divine Storm": 2856.1,
-     "Divine Hammer": 2974.8,
-     "Divine Toll": 2974.8,
-     "Crusade": 2974.8
+     "Zeal": 3051.7,
+     "Divine Storm": 3189.1,
+     "Divine Hammer": 3189.1,
+     "Divine Toll": 3189.1,
+     "Crusade": 3134.3
     },
     "glyphDps": {
-     "Fortitude": 2974.8,
-     "Unsealed Power": 2974.8,
-     "Fortune": 2702.8,
-     "Supremacy": 2661.4,
-     "Arc Striking": 2661.4,
-     "Battle Frenzy": 2661.4,
-     "Hellfire": 2661.4,
-     "Thunder": 2661.4,
-     "Blood Violence": 2661.4,
-     "Animosity": 2681.3,
-     "Glass Cannon": 2974.8,
-     "Mindhaste": 2723.7
-    }
-   },
-   {
-    "farm_dps": 2956.4,
-    "dps": 2956.4,
-    "total": 88693,
-    "manaLeft": 97.9,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Sulfuras, Hand of Ragnaros",
-      "code": "I0BR",
-      "source": "legendary"
-     },
-     {
-      "name": "Unbound Power Core",
-      "code": "I0FW",
-      "source": "shop"
-     },
-     {
-      "name": "Staff of Galactic Fury",
-      "code": "I0JO",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     },
-     {
-      "name": "Mechanical Mace",
-      "code": "I0ON",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuron Gloves",
-      "code": "I0QT",
-      "source": "shop"
-     }
-    ],
-    "talents": [
-     "Crusade",
-     "Divine Hammer",
-     "Divine Toll"
-    ],
-    "glyphs": [
-     "Fortitude",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 0,
-     "crit": 0,
-     "potency": 20,
-     "mastery": 0,
-     "luck": 10,
-     "pet_damage": 0
-    },
-    "chunk": 229044305,
-    "sources": [
-     [
-      "Blessed Hammer",
-      1731.5
-     ],
-     [
-      "Sulfuras",
-      678.1
-     ],
-     [
-      "Crusader Strike",
-      211.6
-     ],
-     [
-      "Автоатака",
-      164.6
-     ],
-     [
-      "Righteous Fury",
-      160.2
-     ],
-     [
-      "Sulfuras (удар)",
-      10.4
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Crusader Strike"
-     ],
-     [
-      "0.45",
-      "Blessed Hammer"
-     ],
-     [
-      "4.95",
-      "Blessed Hammer"
-     ],
-     [
-      "6.00",
-      "Crusader Strike"
-     ],
-     [
-      "9.24",
-      "Blessed Hammer"
-     ],
-     [
-      "11.63",
-      "Crusader Strike"
-     ],
-     [
-      "13.34",
-      "Blessed Hammer"
-     ],
-     [
-      "16.94",
-      "Crusader Strike"
-     ],
-     [
-      "17.39",
-      "Blessed Hammer"
-     ],
-     [
-      "21.31",
-      "Blessed Hammer"
-     ],
-     [
-      "22.16",
-      "Crusader Strike"
-     ],
-     [
-      "25.23",
-      "Blessed Hammer"
-     ],
-     [
-      "27.39",
-      "Crusader Strike"
-     ],
-     [
-      "29.15",
-      "Blessed Hammer"
-     ]
-    ],
-    "stats": [
-     [
-      "Сила",
-      "215"
-     ],
-     [
-      "Ловкость",
-      "30"
-     ],
-     [
-      "Интеллект",
-      "42"
-     ],
-     [
-      "Урон автоатаки",
-      "183.2"
-     ],
-     [
-      "Potency",
-      "10.0"
-     ],
-     [
-      "Mastery",
-      "20"
-     ],
-     [
-      "Шанс крита",
-      "0%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.00"
-     ],
-     [
-      "Спешка",
-      "20.0%"
-     ],
-     [
-      "Скорость атаки",
-      "55.0%"
-     ],
-     [
-      "Удача",
-      "10%"
-     ],
-     [
-      "Магический бонус",
-      "+48%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье от ESC",
-      "+0"
-     ],
-     [
-      "Мана макс.",
-      "414"
-     ],
-     [
-      "Реген маны",
-      "4.32/с"
-     ],
-     [
-      "Мана в конце",
-      "98%"
-     ],
-     [
-      "Интервал атаки",
-      "1.43 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.220"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "6"
-     ]
-    ],
-    "talentDps": {
-     "Zeal": 2654.0,
-     "Divine Storm": 2839.3,
-     "Divine Hammer": 2956.4,
-     "Divine Toll": 2956.4,
-     "Crusade": 2956.4
-    },
-    "glyphDps": {
-     "Fortitude": 2956.4,
-     "Unsealed Power": 2956.4,
-     "Fortune": 2686.2,
-     "Supremacy": 2644.9,
-     "Arc Striking": 2644.9,
-     "Battle Frenzy": 2644.9,
-     "Hellfire": 2644.9,
-     "Thunder": 2644.9,
-     "Blood Violence": 2644.9,
-     "Animosity": 2664.8,
-     "Glass Cannon": 2956.4,
-     "Mindhaste": 2706.1
+     "Fortitude": 3189.1,
+     "Unsealed Power": 3189.1,
+     "Fortune": 2837.0,
+     "Supremacy": 2810.5,
+     "Arc Striking": 2797.7,
+     "Battle Frenzy": 2797.7,
+     "Hellfire": 2797.7,
+     "Thunder": 2797.7,
+     "Blood Violence": 2797.7,
+     "Animosity": 2816.4,
+     "Glass Cannon": 3189.1,
+     "Mindhaste": 2817.3
     }
    }
   ],
@@ -6114,7 +12058,7 @@
      "Fortune": 3590.4,
      "Supremacy": 3535.3,
      "Arc Striking": 3517.3,
-     "Battle Frenzy": 3517.3,
+     "Battle Frenzy": 3521.1,
      "Hellfire": 3517.3,
      "Thunder": 3517.3,
      "Blood Violence": 3517.3,
@@ -6756,7 +12700,7 @@
      "Fortune": 3594.3,
      "Supremacy": 3541.6,
      "Arc Striking": 3522.2,
-     "Battle Frenzy": 3522.2,
+     "Battle Frenzy": 3563.8,
      "Hellfire": 3522.2,
      "Thunder": 3522.2,
      "Blood Violence": 3522.2,
@@ -7075,7 +13019,7 @@
      "Fortune": 3547.4,
      "Supremacy": 3494.1,
      "Arc Striking": 3476.1,
-     "Battle Frenzy": 3476.1,
+     "Battle Frenzy": 3518.5,
      "Hellfire": 3476.1,
      "Thunder": 3476.1,
      "Blood Violence": 3476.1,
@@ -7394,7 +13338,7 @@
      "Fortune": 3570.3,
      "Supremacy": 3519.6,
      "Arc Striking": 3499.3,
-     "Battle Frenzy": 3499.3,
+     "Battle Frenzy": 3503.1,
      "Hellfire": 3499.3,
      "Thunder": 3499.3,
      "Blood Violence": 3499.3,
@@ -7727,6 +13671,317 @@
     }
    },
    {
+    "farm_dps": 3840.5,
+    "dps": 3840.5,
+    "total": 115216,
+    "manaLeft": 90.6,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Shard of Infinity",
+      "code": "I03C",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Ogre Warclub",
+      "code": "war2",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Crusade",
+     "Divine Hammer",
+     "Divine Toll"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 5,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 5,
+     "pet_damage": 0
+    },
+    "chunk": 12752372534,
+    "sources": [
+     [
+      "Blessed Hammer",
+      3412.8
+     ],
+     [
+      "Crusader Strike",
+      267.2
+     ],
+     [
+      "Righteous Fury",
+      85.4
+     ],
+     [
+      "Автоатака",
+      75.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.75",
+      "Blessed Hammer"
+     ],
+     [
+      "2.42",
+      "Blessed Hammer"
+     ],
+     [
+      "3.17",
+      "Crusader Strike"
+     ],
+     [
+      "4.05",
+      "Blessed Hammer"
+     ],
+     [
+      "5.66",
+      "Blessed Hammer"
+     ],
+     [
+      "6.41",
+      "Crusader Strike"
+     ],
+     [
+      "7.24",
+      "Blessed Hammer"
+     ],
+     [
+      "8.80",
+      "Blessed Hammer"
+     ],
+     [
+      "9.55",
+      "Crusader Strike"
+     ],
+     [
+      "10.33",
+      "Blessed Hammer"
+     ],
+     [
+      "11.84",
+      "Blessed Hammer"
+     ],
+     [
+      "12.59",
+      "Crusader Strike"
+     ],
+     [
+      "13.34",
+      "Blessed Hammer"
+     ],
+     [
+      "14.80",
+      "Blessed Hammer"
+     ],
+     [
+      "15.55",
+      "Crusader Strike"
+     ],
+     [
+      "16.30",
+      "Blessed Hammer"
+     ],
+     [
+      "17.74",
+      "Blessed Hammer"
+     ],
+     [
+      "18.49",
+      "Crusader Strike"
+     ],
+     [
+      "19.24",
+      "Blessed Hammer"
+     ],
+     [
+      "20.68",
+      "Blessed Hammer"
+     ],
+     [
+      "21.43",
+      "Crusader Strike"
+     ],
+     [
+      "22.18",
+      "Blessed Hammer"
+     ],
+     [
+      "23.62",
+      "Blessed Hammer"
+     ],
+     [
+      "24.37",
+      "Crusader Strike"
+     ],
+     [
+      "25.12",
+      "Blessed Hammer"
+     ],
+     [
+      "26.56",
+      "Blessed Hammer"
+     ],
+     [
+      "27.31",
+      "Crusader Strike"
+     ],
+     [
+      "28.06",
+      "Blessed Hammer"
+     ],
+     [
+      "29.50",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "178"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "36"
+     ],
+     [
+      "Урон автоатаки",
+      "146.5"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "13.0%"
+     ],
+     [
+      "Скорость атаки",
+      "20.0%"
+     ],
+     [
+      "Удача",
+      "5%"
+     ],
+     [
+      "Магический бонус",
+      "+80%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "822"
+     ],
+     [
+      "Реген маны",
+      "5.76/с"
+     ],
+     [
+      "Мана в конце",
+      "91%"
+     ],
+     [
+      "Интервал атаки",
+      "1.54 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "2.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3572.7,
+     "Divine Storm": 3759.3,
+     "Divine Hammer": 3840.5,
+     "Divine Toll": 3840.5,
+     "Crusade": 3840.5
+    },
+    "glyphDps": {
+     "Fortitude": 3840.5,
+     "Unsealed Power": 3840.5,
+     "Fortune": 3528.7,
+     "Supremacy": 3452.5,
+     "Arc Striking": 3452.5,
+     "Battle Frenzy": 3479.2,
+     "Hellfire": 3452.5,
+     "Thunder": 3452.5,
+     "Blood Violence": 3452.5,
+     "Animosity": 3461.3,
+     "Glass Cannon": 3840.5,
+     "Mindhaste": 3734.8
+    }
+   },
+   {
     "farm_dps": 3834.0,
     "dps": 3834.0,
     "total": 115019,
@@ -8036,7 +14291,7 @@
      "Fortune": 3485.7,
      "Supremacy": 3438.2,
      "Arc Striking": 3420.2,
-     "Battle Frenzy": 3420.2,
+     "Battle Frenzy": 3423.7,
      "Hellfire": 3420.2,
      "Thunder": 3420.2,
      "Blood Violence": 3420.2,
@@ -8359,13 +14614,635 @@
      "Fortune": 3478.3,
      "Supremacy": 3429.6,
      "Arc Striking": 3411.7,
-     "Battle Frenzy": 3411.7,
+     "Battle Frenzy": 3458.2,
      "Hellfire": 3411.7,
      "Thunder": 3411.7,
      "Blood Violence": 3411.7,
      "Animosity": 3419.7,
      "Glass Cannon": 3824.6,
      "Mindhaste": 3696.8
+    }
+   },
+   {
+    "farm_dps": 3807.0,
+    "dps": 3807.0,
+    "total": 114211,
+    "manaLeft": 88.9,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Shard of Infinity",
+      "code": "I03C",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Ogre Warclub",
+      "code": "war2",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Divine Hammer",
+     "Divine Storm",
+     "Divine Toll"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 2,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 8,
+     "pet_damage": 0
+    },
+    "chunk": 12752388446,
+    "sources": [
+     [
+      "Blessed Hammer",
+      3143.1
+     ],
+     [
+      "Divine Storm",
+      266.7
+     ],
+     [
+      "Crusader Strike",
+      250.5
+     ],
+     [
+      "Righteous Fury",
+      80.1
+     ],
+     [
+      "Автоатака",
+      66.7
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.75",
+      "Blessed Hammer"
+     ],
+     [
+      "2.31",
+      "Blessed Hammer"
+     ],
+     [
+      "3.06",
+      "Crusader Strike"
+     ],
+     [
+      "3.86",
+      "Blessed Hammer"
+     ],
+     [
+      "5.42",
+      "Blessed Hammer"
+     ],
+     [
+      "6.17",
+      "Crusader Strike"
+     ],
+     [
+      "6.98",
+      "Blessed Hammer"
+     ],
+     [
+      "8.53",
+      "Blessed Hammer"
+     ],
+     [
+      "9.28",
+      "Crusader Strike"
+     ],
+     [
+      "10.09",
+      "Blessed Hammer"
+     ],
+     [
+      "11.65",
+      "Blessed Hammer"
+     ],
+     [
+      "12.40",
+      "Crusader Strike"
+     ],
+     [
+      "13.21",
+      "Blessed Hammer"
+     ],
+     [
+      "14.76",
+      "Blessed Hammer"
+     ],
+     [
+      "15.51",
+      "Crusader Strike"
+     ],
+     [
+      "16.32",
+      "Blessed Hammer"
+     ],
+     [
+      "17.88",
+      "Blessed Hammer"
+     ],
+     [
+      "18.63",
+      "Crusader Strike"
+     ],
+     [
+      "19.43",
+      "Blessed Hammer"
+     ],
+     [
+      "20.99",
+      "Blessed Hammer"
+     ],
+     [
+      "21.74",
+      "Crusader Strike"
+     ],
+     [
+      "22.55",
+      "Blessed Hammer"
+     ],
+     [
+      "24.10",
+      "Blessed Hammer"
+     ],
+     [
+      "24.85",
+      "Crusader Strike"
+     ],
+     [
+      "25.66",
+      "Blessed Hammer"
+     ],
+     [
+      "27.22",
+      "Blessed Hammer"
+     ],
+     [
+      "27.97",
+      "Crusader Strike"
+     ],
+     [
+      "28.77",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "179"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "36"
+     ],
+     [
+      "Урон автоатаки",
+      "147.2"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "23.0%"
+     ],
+     [
+      "Скорость атаки",
+      "12.0%"
+     ],
+     [
+      "Удача",
+      "8%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "822"
+     ],
+     [
+      "Реген маны",
+      "5.12/с"
+     ],
+     [
+      "Мана в конце",
+      "89%"
+     ],
+     [
+      "Интервал атаки",
+      "1.65 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "2.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3578.6,
+     "Divine Storm": 3807.0,
+     "Divine Hammer": 3807.0,
+     "Divine Toll": 3807.0,
+     "Crusade": 3743.9
+    },
+    "glyphDps": {
+     "Fortitude": 3807.0,
+     "Unsealed Power": 3807.0,
+     "Fortune": 3466.3,
+     "Supremacy": 3414.1,
+     "Arc Striking": 3396.1,
+     "Battle Frenzy": 3425.5,
+     "Hellfire": 3396.1,
+     "Thunder": 3396.1,
+     "Blood Violence": 3396.1,
+     "Animosity": 3403.9,
+     "Glass Cannon": 3807.0,
+     "Mindhaste": 3748.2
+    }
+   },
+   {
+    "farm_dps": 3806.6,
+    "dps": 3806.6,
+    "total": 114197,
+    "manaLeft": 91.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Shard of Infinity",
+      "code": "I03C",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Divine Hammer",
+     "Divine Storm",
+     "Divine Toll"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 2,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 8,
+     "pet_damage": 0
+    },
+    "chunk": 12752390173,
+    "sources": [
+     [
+      "Blessed Hammer",
+      3122.4
+     ],
+     [
+      "Divine Storm",
+      266.3
+     ],
+     [
+      "Crusader Strike",
+      247.0
+     ],
+     [
+      "Righteous Fury",
+      93.7
+     ],
+     [
+      "Автоатака",
+      77.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.75",
+      "Blessed Hammer"
+     ],
+     [
+      "2.31",
+      "Blessed Hammer"
+     ],
+     [
+      "3.06",
+      "Crusader Strike"
+     ],
+     [
+      "3.86",
+      "Blessed Hammer"
+     ],
+     [
+      "5.42",
+      "Blessed Hammer"
+     ],
+     [
+      "6.17",
+      "Crusader Strike"
+     ],
+     [
+      "6.98",
+      "Blessed Hammer"
+     ],
+     [
+      "8.53",
+      "Blessed Hammer"
+     ],
+     [
+      "9.28",
+      "Crusader Strike"
+     ],
+     [
+      "10.09",
+      "Blessed Hammer"
+     ],
+     [
+      "11.65",
+      "Blessed Hammer"
+     ],
+     [
+      "12.40",
+      "Crusader Strike"
+     ],
+     [
+      "13.21",
+      "Blessed Hammer"
+     ],
+     [
+      "14.76",
+      "Blessed Hammer"
+     ],
+     [
+      "15.51",
+      "Crusader Strike"
+     ],
+     [
+      "16.32",
+      "Blessed Hammer"
+     ],
+     [
+      "17.88",
+      "Blessed Hammer"
+     ],
+     [
+      "18.63",
+      "Crusader Strike"
+     ],
+     [
+      "19.43",
+      "Blessed Hammer"
+     ],
+     [
+      "20.99",
+      "Blessed Hammer"
+     ],
+     [
+      "21.74",
+      "Crusader Strike"
+     ],
+     [
+      "22.55",
+      "Blessed Hammer"
+     ],
+     [
+      "24.10",
+      "Blessed Hammer"
+     ],
+     [
+      "24.85",
+      "Crusader Strike"
+     ],
+     [
+      "25.66",
+      "Blessed Hammer"
+     ],
+     [
+      "27.22",
+      "Blessed Hammer"
+     ],
+     [
+      "27.97",
+      "Crusader Strike"
+     ],
+     [
+      "28.77",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "161"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "36"
+     ],
+     [
+      "Урон автоатаки",
+      "133.8"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "23.0%"
+     ],
+     [
+      "Скорость атаки",
+      "20.0%"
+     ],
+     [
+      "Удача",
+      "8%"
+     ],
+     [
+      "Магический бонус",
+      "+80%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "822"
+     ],
+     [
+      "Реген маны",
+      "5.76/с"
+     ],
+     [
+      "Мана в конце",
+      "91%"
+     ],
+     [
+      "Интервал атаки",
+      "1.54 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "2.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3544.3,
+     "Divine Storm": 3806.6,
+     "Divine Hammer": 3806.6,
+     "Divine Toll": 3806.6,
+     "Crusade": 3710.3
+    },
+    "glyphDps": {
+     "Fortitude": 3806.6,
+     "Unsealed Power": 3806.6,
+     "Fortune": 3491.2,
+     "Supremacy": 3441.3,
+     "Arc Striking": 3421.8,
+     "Battle Frenzy": 3425.3,
+     "Hellfire": 3421.8,
+     "Thunder": 3421.8,
+     "Blood Violence": 3421.8,
+     "Animosity": 3430.9,
+     "Glass Cannon": 3806.6,
+     "Mindhaste": 3745.8
     }
    },
    {
@@ -8678,7 +15555,7 @@
      "Fortune": 3455.6,
      "Supremacy": 3410.9,
      "Arc Striking": 3392.9,
-     "Battle Frenzy": 3392.9,
+     "Battle Frenzy": 3396.3,
      "Hellfire": 3392.9,
      "Thunder": 3392.9,
      "Blood Violence": 3392.9,
@@ -9008,6 +15885,2251 @@
      "Animosity": 3394.2,
      "Glass Cannon": 3796.0,
      "Mindhaste": 3653.8
+    }
+   },
+   {
+    "farm_dps": 3785.4,
+    "dps": 3785.4,
+    "total": 113562,
+    "manaLeft": 86.4,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Shard of Infinity",
+      "code": "I03C",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Aruthar's Warblade",
+      "code": "I0J2",
+      "source": "drop"
+     },
+     {
+      "name": "Bell Ringer",
+      "code": "I0R0",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Crusade",
+     "Divine Hammer",
+     "Divine Storm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 10,
+     "pet_damage": 0
+    },
+    "chunk": 12752351714,
+    "sources": [
+     [
+      "Blessed Hammer",
+      3160.4
+     ],
+     [
+      "Divine Storm",
+      247.5
+     ],
+     [
+      "Crusader Strike",
+      218.6
+     ],
+     [
+      "Righteous Fury",
+      82.6
+     ],
+     [
+      "Автоатака",
+      76.3
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.75",
+      "Blessed Hammer"
+     ],
+     [
+      "2.35",
+      "Blessed Hammer"
+     ],
+     [
+      "3.10",
+      "Crusader Strike"
+     ],
+     [
+      "3.92",
+      "Blessed Hammer"
+     ],
+     [
+      "5.46",
+      "Blessed Hammer"
+     ],
+     [
+      "6.21",
+      "Crusader Strike"
+     ],
+     [
+      "6.98",
+      "Blessed Hammer"
+     ],
+     [
+      "8.48",
+      "Blessed Hammer"
+     ],
+     [
+      "9.23",
+      "Crusader Strike"
+     ],
+     [
+      "9.98",
+      "Blessed Hammer"
+     ],
+     [
+      "11.43",
+      "Blessed Hammer"
+     ],
+     [
+      "12.18",
+      "Crusader Strike"
+     ],
+     [
+      "12.93",
+      "Blessed Hammer"
+     ],
+     [
+      "14.33",
+      "Blessed Hammer"
+     ],
+     [
+      "15.08",
+      "Crusader Strike"
+     ],
+     [
+      "15.83",
+      "Blessed Hammer"
+     ],
+     [
+      "17.22",
+      "Blessed Hammer"
+     ],
+     [
+      "17.97",
+      "Crusader Strike"
+     ],
+     [
+      "18.72",
+      "Blessed Hammer"
+     ],
+     [
+      "20.11",
+      "Blessed Hammer"
+     ],
+     [
+      "20.86",
+      "Crusader Strike"
+     ],
+     [
+      "21.61",
+      "Blessed Hammer"
+     ],
+     [
+      "23.00",
+      "Blessed Hammer"
+     ],
+     [
+      "23.75",
+      "Crusader Strike"
+     ],
+     [
+      "24.50",
+      "Blessed Hammer"
+     ],
+     [
+      "25.89",
+      "Blessed Hammer"
+     ],
+     [
+      "26.64",
+      "Crusader Strike"
+     ],
+     [
+      "27.39",
+      "Blessed Hammer"
+     ],
+     [
+      "28.77",
+      "Blessed Hammer"
+     ],
+     [
+      "29.52",
+      "Crusader Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "148"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "36"
+     ],
+     [
+      "Урон автоатаки",
+      "134.0"
+     ],
+     [
+      "Potency",
+      "16.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "18.0%"
+     ],
+     [
+      "Скорость атаки",
+      "30.0%"
+     ],
+     [
+      "Удача",
+      "10%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "822"
+     ],
+     [
+      "Реген маны",
+      "5.12/с"
+     ],
+     [
+      "Мана в конце",
+      "86%"
+     ],
+     [
+      "Интервал атаки",
+      "1.42 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "2.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3564.4,
+     "Divine Storm": 3785.4,
+     "Divine Hammer": 3785.4,
+     "Divine Toll": 3537.9,
+     "Crusade": 3785.4
+    },
+    "glyphDps": {
+     "Fortitude": 3785.4,
+     "Unsealed Power": 3785.4,
+     "Fortune": 3439.0,
+     "Supremacy": 3394.3,
+     "Arc Striking": 3376.4,
+     "Battle Frenzy": 3399.4,
+     "Hellfire": 3376.4,
+     "Thunder": 3376.4,
+     "Blood Violence": 3376.4,
+     "Animosity": 3385.3,
+     "Glass Cannon": 3785.4,
+     "Mindhaste": 3632.7
+    }
+   },
+   {
+    "farm_dps": 3776.5,
+    "dps": 3776.5,
+    "total": 113295,
+    "manaLeft": 85.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Shard of Infinity",
+      "code": "I03C",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Judgement Helm",
+      "code": "I0QX",
+      "source": "drop"
+     },
+     {
+      "name": "Bell Ringer",
+      "code": "I0R0",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Crusade",
+     "Divine Hammer",
+     "Divine Storm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 8,
+     "pet_damage": 0
+    },
+    "chunk": 12752341050,
+    "sources": [
+     [
+      "Blessed Hammer",
+      3047.5
+     ],
+     [
+      "Crusader Strike",
+      338.0
+     ],
+     [
+      "Divine Storm",
+      259.0
+     ],
+     [
+      "Righteous Fury",
+      67.6
+     ],
+     [
+      "Автоатака",
+      64.4
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.75",
+      "Blessed Hammer"
+     ],
+     [
+      "2.17",
+      "Blessed Hammer"
+     ],
+     [
+      "2.92",
+      "Crusader Strike"
+     ],
+     [
+      "3.67",
+      "Blessed Hammer"
+     ],
+     [
+      "5.05",
+      "Blessed Hammer"
+     ],
+     [
+      "5.80",
+      "Crusader Strike"
+     ],
+     [
+      "6.55",
+      "Blessed Hammer"
+     ],
+     [
+      "7.89",
+      "Blessed Hammer"
+     ],
+     [
+      "8.64",
+      "Crusader Strike"
+     ],
+     [
+      "9.39",
+      "Blessed Hammer"
+     ],
+     [
+      "10.71",
+      "Blessed Hammer"
+     ],
+     [
+      "11.46",
+      "Crusader Strike"
+     ],
+     [
+      "12.21",
+      "Blessed Hammer"
+     ],
+     [
+      "13.49",
+      "Blessed Hammer"
+     ],
+     [
+      "14.24",
+      "Crusader Strike"
+     ],
+     [
+      "14.99",
+      "Blessed Hammer"
+     ],
+     [
+      "16.26",
+      "Blessed Hammer"
+     ],
+     [
+      "17.01",
+      "Crusader Strike"
+     ],
+     [
+      "17.76",
+      "Blessed Hammer"
+     ],
+     [
+      "19.01",
+      "Blessed Hammer"
+     ],
+     [
+      "19.76",
+      "Crusader Strike"
+     ],
+     [
+      "20.51",
+      "Blessed Hammer"
+     ],
+     [
+      "21.76",
+      "Blessed Hammer"
+     ],
+     [
+      "22.51",
+      "Crusader Strike"
+     ],
+     [
+      "23.26",
+      "Blessed Hammer"
+     ],
+     [
+      "24.51",
+      "Blessed Hammer"
+     ],
+     [
+      "25.26",
+      "Crusader Strike"
+     ],
+     [
+      "26.01",
+      "Blessed Hammer"
+     ],
+     [
+      "27.27",
+      "Blessed Hammer"
+     ],
+     [
+      "28.02",
+      "Crusader Strike"
+     ],
+     [
+      "28.77",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "148"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "36"
+     ],
+     [
+      "Урон автоатаки",
+      "124.0"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "33.0%"
+     ],
+     [
+      "Скорость атаки",
+      "32.0%"
+     ],
+     [
+      "Удача",
+      "8%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "822"
+     ],
+     [
+      "Реген маны",
+      "5.12/с"
+     ],
+     [
+      "Мана в конце",
+      "86%"
+     ],
+     [
+      "Интервал атаки",
+      "1.40 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "2.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3611.9,
+     "Divine Storm": 3776.5,
+     "Divine Hammer": 3776.5,
+     "Divine Toll": 3611.9,
+     "Crusade": 3776.5
+    },
+    "glyphDps": {
+     "Fortitude": 3776.5,
+     "Unsealed Power": 3776.5,
+     "Fortune": 3438.2,
+     "Supremacy": 3388.7,
+     "Arc Striking": 3368.9,
+     "Battle Frenzy": 3388.9,
+     "Hellfire": 3368.9,
+     "Thunder": 3368.9,
+     "Blood Violence": 3368.9,
+     "Animosity": 3376.5,
+     "Glass Cannon": 3776.5,
+     "Mindhaste": 3611.0
+    }
+   },
+   {
+    "farm_dps": 3760.0,
+    "dps": 3760.0,
+    "total": 112800,
+    "manaLeft": 88.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Shard of Infinity",
+      "code": "I03C",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Topaz Amulet",
+      "code": "I0BD",
+      "source": "drop"
+     },
+     {
+      "name": "Bell Ringer",
+      "code": "I0R0",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Crusade",
+     "Divine Hammer",
+     "Divine Storm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 12752406251,
+    "sources": [
+     [
+      "Blessed Hammer",
+      3155.7
+     ],
+     [
+      "Divine Storm",
+      253.6
+     ],
+     [
+      "Crusader Strike",
+      218.6
+     ],
+     [
+      "Righteous Fury",
+      68.8
+     ],
+     [
+      "Автоатака",
+      63.3
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.75",
+      "Blessed Hammer"
+     ],
+     [
+      "2.33",
+      "Blessed Hammer"
+     ],
+     [
+      "3.08",
+      "Crusader Strike"
+     ],
+     [
+      "3.89",
+      "Blessed Hammer"
+     ],
+     [
+      "5.42",
+      "Blessed Hammer"
+     ],
+     [
+      "6.17",
+      "Crusader Strike"
+     ],
+     [
+      "6.95",
+      "Blessed Hammer"
+     ],
+     [
+      "8.46",
+      "Blessed Hammer"
+     ],
+     [
+      "9.21",
+      "Crusader Strike"
+     ],
+     [
+      "9.96",
+      "Blessed Hammer"
+     ],
+     [
+      "11.42",
+      "Blessed Hammer"
+     ],
+     [
+      "12.17",
+      "Crusader Strike"
+     ],
+     [
+      "12.92",
+      "Blessed Hammer"
+     ],
+     [
+      "14.36",
+      "Blessed Hammer"
+     ],
+     [
+      "15.11",
+      "Crusader Strike"
+     ],
+     [
+      "15.86",
+      "Blessed Hammer"
+     ],
+     [
+      "17.26",
+      "Blessed Hammer"
+     ],
+     [
+      "18.01",
+      "Crusader Strike"
+     ],
+     [
+      "18.76",
+      "Blessed Hammer"
+     ],
+     [
+      "20.14",
+      "Blessed Hammer"
+     ],
+     [
+      "20.89",
+      "Crusader Strike"
+     ],
+     [
+      "21.64",
+      "Blessed Hammer"
+     ],
+     [
+      "23.02",
+      "Blessed Hammer"
+     ],
+     [
+      "23.77",
+      "Crusader Strike"
+     ],
+     [
+      "24.52",
+      "Blessed Hammer"
+     ],
+     [
+      "25.89",
+      "Blessed Hammer"
+     ],
+     [
+      "26.64",
+      "Crusader Strike"
+     ],
+     [
+      "27.39",
+      "Blessed Hammer"
+     ],
+     [
+      "28.77",
+      "Blessed Hammer"
+     ],
+     [
+      "29.52",
+      "Crusader Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "148"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "42"
+     ],
+     [
+      "Урон автоатаки",
+      "124.0"
+     ],
+     [
+      "Potency",
+      "16.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "19.0%"
+     ],
+     [
+      "Скорость атаки",
+      "12.0%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "864"
+     ],
+     [
+      "Реген маны",
+      "5.60/с"
+     ],
+     [
+      "Мана в конце",
+      "89%"
+     ],
+     [
+      "Интервал атаки",
+      "1.65 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "2.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3553.7,
+     "Divine Storm": 3760.0,
+     "Divine Hammer": 3760.0,
+     "Divine Toll": 3506.4,
+     "Crusade": 3760.0
+    },
+    "glyphDps": {
+     "Fortitude": 3760.0,
+     "Unsealed Power": 3760.0,
+     "Fortune": 3416.9,
+     "Supremacy": 3372.2,
+     "Arc Striking": 3354.3,
+     "Battle Frenzy": 3357.6,
+     "Hellfire": 3354.3,
+     "Thunder": 3354.3,
+     "Blood Violence": 3354.3,
+     "Animosity": 3361.7,
+     "Glass Cannon": 3760.0,
+     "Mindhaste": 3654.5
+    }
+   },
+   {
+    "farm_dps": 3754.0,
+    "dps": 3754.0,
+    "total": 112619,
+    "manaLeft": 86.4,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Shard of Infinity",
+      "code": "I03C",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Seal of Vampirism",
+      "code": "I074",
+      "source": "drop"
+     },
+     {
+      "name": "Bell Ringer",
+      "code": "I0R0",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Crusade",
+     "Divine Hammer",
+     "Divine Storm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 12752481696,
+    "sources": [
+     [
+      "Blessed Hammer",
+      3155.7
+     ],
+     [
+      "Divine Storm",
+      247.5
+     ],
+     [
+      "Crusader Strike",
+      218.6
+     ],
+     [
+      "Righteous Fury",
+      68.8
+     ],
+     [
+      "Автоатака",
+      63.3
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.75",
+      "Blessed Hammer"
+     ],
+     [
+      "2.33",
+      "Blessed Hammer"
+     ],
+     [
+      "3.08",
+      "Crusader Strike"
+     ],
+     [
+      "3.89",
+      "Blessed Hammer"
+     ],
+     [
+      "5.42",
+      "Blessed Hammer"
+     ],
+     [
+      "6.17",
+      "Crusader Strike"
+     ],
+     [
+      "6.95",
+      "Blessed Hammer"
+     ],
+     [
+      "8.46",
+      "Blessed Hammer"
+     ],
+     [
+      "9.21",
+      "Crusader Strike"
+     ],
+     [
+      "9.96",
+      "Blessed Hammer"
+     ],
+     [
+      "11.42",
+      "Blessed Hammer"
+     ],
+     [
+      "12.17",
+      "Crusader Strike"
+     ],
+     [
+      "12.92",
+      "Blessed Hammer"
+     ],
+     [
+      "14.36",
+      "Blessed Hammer"
+     ],
+     [
+      "15.11",
+      "Crusader Strike"
+     ],
+     [
+      "15.86",
+      "Blessed Hammer"
+     ],
+     [
+      "17.26",
+      "Blessed Hammer"
+     ],
+     [
+      "18.01",
+      "Crusader Strike"
+     ],
+     [
+      "18.76",
+      "Blessed Hammer"
+     ],
+     [
+      "20.14",
+      "Blessed Hammer"
+     ],
+     [
+      "20.89",
+      "Crusader Strike"
+     ],
+     [
+      "21.64",
+      "Blessed Hammer"
+     ],
+     [
+      "23.02",
+      "Blessed Hammer"
+     ],
+     [
+      "23.77",
+      "Crusader Strike"
+     ],
+     [
+      "24.52",
+      "Blessed Hammer"
+     ],
+     [
+      "25.89",
+      "Blessed Hammer"
+     ],
+     [
+      "26.64",
+      "Crusader Strike"
+     ],
+     [
+      "27.39",
+      "Blessed Hammer"
+     ],
+     [
+      "28.77",
+      "Blessed Hammer"
+     ],
+     [
+      "29.52",
+      "Crusader Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "148"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "36"
+     ],
+     [
+      "Урон автоатаки",
+      "124.0"
+     ],
+     [
+      "Potency",
+      "16.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "19.0%"
+     ],
+     [
+      "Скорость атаки",
+      "12.0%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "822"
+     ],
+     [
+      "Реген маны",
+      "5.12/с"
+     ],
+     [
+      "Мана в конце",
+      "86%"
+     ],
+     [
+      "Интервал атаки",
+      "1.65 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "2.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3553.7,
+     "Divine Storm": 3754.0,
+     "Divine Hammer": 3754.0,
+     "Divine Toll": 3506.4,
+     "Crusade": 3754.0
+    },
+    "glyphDps": {
+     "Fortitude": 3754.0,
+     "Unsealed Power": 3754.0,
+     "Fortune": 3411.5,
+     "Supremacy": 3366.8,
+     "Arc Striking": 3348.9,
+     "Battle Frenzy": 3352.2,
+     "Hellfire": 3348.9,
+     "Thunder": 3348.9,
+     "Blood Violence": 3348.9,
+     "Animosity": 3356.3,
+     "Glass Cannon": 3754.0,
+     "Mindhaste": 3648.6
+    }
+   },
+   {
+    "farm_dps": 3754.0,
+    "dps": 3754.0,
+    "total": 112619,
+    "manaLeft": 86.4,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Radiation Gauntlets",
+      "code": "I039",
+      "source": "drop"
+     },
+     {
+      "name": "Shard of Infinity",
+      "code": "I03C",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Bell Ringer",
+      "code": "I0R0",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Crusade",
+     "Divine Hammer",
+     "Divine Storm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 12764489725,
+    "sources": [
+     [
+      "Blessed Hammer",
+      3155.7
+     ],
+     [
+      "Divine Storm",
+      247.5
+     ],
+     [
+      "Crusader Strike",
+      218.6
+     ],
+     [
+      "Righteous Fury",
+      68.8
+     ],
+     [
+      "Автоатака",
+      63.3
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.75",
+      "Blessed Hammer"
+     ],
+     [
+      "2.33",
+      "Blessed Hammer"
+     ],
+     [
+      "3.08",
+      "Crusader Strike"
+     ],
+     [
+      "3.89",
+      "Blessed Hammer"
+     ],
+     [
+      "5.42",
+      "Blessed Hammer"
+     ],
+     [
+      "6.17",
+      "Crusader Strike"
+     ],
+     [
+      "6.95",
+      "Blessed Hammer"
+     ],
+     [
+      "8.46",
+      "Blessed Hammer"
+     ],
+     [
+      "9.21",
+      "Crusader Strike"
+     ],
+     [
+      "9.96",
+      "Blessed Hammer"
+     ],
+     [
+      "11.42",
+      "Blessed Hammer"
+     ],
+     [
+      "12.17",
+      "Crusader Strike"
+     ],
+     [
+      "12.92",
+      "Blessed Hammer"
+     ],
+     [
+      "14.36",
+      "Blessed Hammer"
+     ],
+     [
+      "15.11",
+      "Crusader Strike"
+     ],
+     [
+      "15.86",
+      "Blessed Hammer"
+     ],
+     [
+      "17.26",
+      "Blessed Hammer"
+     ],
+     [
+      "18.01",
+      "Crusader Strike"
+     ],
+     [
+      "18.76",
+      "Blessed Hammer"
+     ],
+     [
+      "20.14",
+      "Blessed Hammer"
+     ],
+     [
+      "20.89",
+      "Crusader Strike"
+     ],
+     [
+      "21.64",
+      "Blessed Hammer"
+     ],
+     [
+      "23.02",
+      "Blessed Hammer"
+     ],
+     [
+      "23.77",
+      "Crusader Strike"
+     ],
+     [
+      "24.52",
+      "Blessed Hammer"
+     ],
+     [
+      "25.89",
+      "Blessed Hammer"
+     ],
+     [
+      "26.64",
+      "Crusader Strike"
+     ],
+     [
+      "27.39",
+      "Blessed Hammer"
+     ],
+     [
+      "28.77",
+      "Blessed Hammer"
+     ],
+     [
+      "29.52",
+      "Crusader Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "148"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Интеллект",
+      "36"
+     ],
+     [
+      "Урон автоатаки",
+      "124.0"
+     ],
+     [
+      "Potency",
+      "16.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "19.0%"
+     ],
+     [
+      "Скорость атаки",
+      "12.0%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "822"
+     ],
+     [
+      "Реген маны",
+      "5.12/с"
+     ],
+     [
+      "Мана в конце",
+      "86%"
+     ],
+     [
+      "Интервал атаки",
+      "1.65 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "2.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3553.7,
+     "Divine Storm": 3754.0,
+     "Divine Hammer": 3754.0,
+     "Divine Toll": 3506.4,
+     "Crusade": 3754.0
+    },
+    "glyphDps": {
+     "Fortitude": 3754.0,
+     "Unsealed Power": 3754.0,
+     "Fortune": 3411.5,
+     "Supremacy": 3366.8,
+     "Arc Striking": 3348.9,
+     "Battle Frenzy": 3352.2,
+     "Hellfire": 3348.9,
+     "Thunder": 3348.9,
+     "Blood Violence": 3348.9,
+     "Animosity": 3356.3,
+     "Glass Cannon": 3754.0,
+     "Mindhaste": 3648.6
+    }
+   },
+   {
+    "farm_dps": 3734.9,
+    "dps": 3734.9,
+    "total": 112046,
+    "manaLeft": 88.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Shard of Infinity",
+      "code": "I03C",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Bell Ringer",
+      "code": "I0R0",
+      "source": "drop"
+     },
+     {
+      "name": "Gaze of Anubisath",
+      "code": "I0TO",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Crusade",
+     "Divine Hammer",
+     "Divine Storm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 2,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 8,
+     "pet_damage": 0
+    },
+    "chunk": 12752340301,
+    "sources": [
+     [
+      "Blessed Hammer",
+      3080.9
+     ],
+     [
+      "Divine Storm",
+      272.3
+     ],
+     [
+      "Crusader Strike",
+      245.1
+     ],
+     [
+      "Righteous Fury",
+      70.0
+     ],
+     [
+      "Автоатака",
+      66.6
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.75",
+      "Blessed Hammer"
+     ],
+     [
+      "2.20",
+      "Blessed Hammer"
+     ],
+     [
+      "2.95",
+      "Crusader Strike"
+     ],
+     [
+      "3.70",
+      "Blessed Hammer"
+     ],
+     [
+      "5.11",
+      "Blessed Hammer"
+     ],
+     [
+      "5.86",
+      "Crusader Strike"
+     ],
+     [
+      "6.61",
+      "Blessed Hammer"
+     ],
+     [
+      "8.00",
+      "Blessed Hammer"
+     ],
+     [
+      "8.75",
+      "Crusader Strike"
+     ],
+     [
+      "9.50",
+      "Blessed Hammer"
+     ],
+     [
+      "10.85",
+      "Blessed Hammer"
+     ],
+     [
+      "11.60",
+      "Crusader Strike"
+     ],
+     [
+      "12.35",
+      "Blessed Hammer"
+     ],
+     [
+      "13.67",
+      "Blessed Hammer"
+     ],
+     [
+      "14.42",
+      "Crusader Strike"
+     ],
+     [
+      "15.17",
+      "Blessed Hammer"
+     ],
+     [
+      "16.47",
+      "Blessed Hammer"
+     ],
+     [
+      "17.22",
+      "Crusader Strike"
+     ],
+     [
+      "17.97",
+      "Blessed Hammer"
+     ],
+     [
+      "19.25",
+      "Blessed Hammer"
+     ],
+     [
+      "20.00",
+      "Crusader Strike"
+     ],
+     [
+      "20.75",
+      "Blessed Hammer"
+     ],
+     [
+      "22.02",
+      "Blessed Hammer"
+     ],
+     [
+      "22.77",
+      "Crusader Strike"
+     ],
+     [
+      "23.52",
+      "Blessed Hammer"
+     ],
+     [
+      "24.80",
+      "Blessed Hammer"
+     ],
+     [
+      "25.55",
+      "Crusader Strike"
+     ],
+     [
+      "26.30",
+      "Blessed Hammer"
+     ],
+     [
+      "27.58",
+      "Blessed Hammer"
+     ],
+     [
+      "28.33",
+      "Crusader Strike"
+     ],
+     [
+      "29.08",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "154"
+     ],
+     [
+      "Ловкость",
+      "36"
+     ],
+     [
+      "Интеллект",
+      "42"
+     ],
+     [
+      "Урон автоатаки",
+      "128.5"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "30.0%"
+     ],
+     [
+      "Скорость атаки",
+      "14.4%"
+     ],
+     [
+      "Удача",
+      "8%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "864"
+     ],
+     [
+      "Реген маны",
+      "5.60/с"
+     ],
+     [
+      "Мана в конце",
+      "88%"
+     ],
+     [
+      "Интервал атаки",
+      "1.62 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "2.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3603.6,
+     "Divine Storm": 3734.9,
+     "Divine Hammer": 3734.9,
+     "Divine Toll": 3556.1,
+     "Crusade": 3734.9
+    },
+    "glyphDps": {
+     "Fortitude": 3734.9,
+     "Unsealed Power": 3734.9,
+     "Fortune": 3399.3,
+     "Supremacy": 3351.4,
+     "Arc Striking": 3331.7,
+     "Battle Frenzy": 3331.7,
+     "Hellfire": 3331.7,
+     "Thunder": 3331.7,
+     "Blood Violence": 3331.7,
+     "Animosity": 3339.5,
+     "Glass Cannon": 3734.9,
+     "Mindhaste": 3595.0
+    }
+   },
+   {
+    "farm_dps": 3717.8,
+    "dps": 3717.8,
+    "total": 111534,
+    "manaLeft": 88.9,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Shard of Infinity",
+      "code": "I03C",
+      "source": "drop"
+     },
+     {
+      "name": "Crown of the Scourgelord",
+      "code": "I041",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Bell Ringer",
+      "code": "I0R0",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Crusade",
+     "Divine Hammer",
+     "Divine Storm"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 12753241264,
+    "sources": [
+     [
+      "Blessed Hammer",
+      3107.1
+     ],
+     [
+      "Divine Storm",
+      251.6
+     ],
+     [
+      "Crusader Strike",
+      225.0
+     ],
+     [
+      "Righteous Fury",
+      70.8
+     ],
+     [
+      "Автоатака",
+      63.3
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Crusader Strike"
+     ],
+     [
+      "0.75",
+      "Blessed Hammer"
+     ],
+     [
+      "2.23",
+      "Blessed Hammer"
+     ],
+     [
+      "2.98",
+      "Crusader Strike"
+     ],
+     [
+      "3.73",
+      "Blessed Hammer"
+     ],
+     [
+      "5.17",
+      "Blessed Hammer"
+     ],
+     [
+      "5.92",
+      "Crusader Strike"
+     ],
+     [
+      "6.67",
+      "Blessed Hammer"
+     ],
+     [
+      "8.09",
+      "Blessed Hammer"
+     ],
+     [
+      "8.84",
+      "Crusader Strike"
+     ],
+     [
+      "9.59",
+      "Blessed Hammer"
+     ],
+     [
+      "10.97",
+      "Blessed Hammer"
+     ],
+     [
+      "11.72",
+      "Crusader Strike"
+     ],
+     [
+      "12.47",
+      "Blessed Hammer"
+     ],
+     [
+      "13.83",
+      "Blessed Hammer"
+     ],
+     [
+      "14.58",
+      "Crusader Strike"
+     ],
+     [
+      "15.33",
+      "Blessed Hammer"
+     ],
+     [
+      "16.65",
+      "Blessed Hammer"
+     ],
+     [
+      "17.40",
+      "Crusader Strike"
+     ],
+     [
+      "18.15",
+      "Blessed Hammer"
+     ],
+     [
+      "19.45",
+      "Blessed Hammer"
+     ],
+     [
+      "20.20",
+      "Crusader Strike"
+     ],
+     [
+      "20.95",
+      "Blessed Hammer"
+     ],
+     [
+      "22.25",
+      "Blessed Hammer"
+     ],
+     [
+      "23.00",
+      "Crusader Strike"
+     ],
+     [
+      "23.75",
+      "Blessed Hammer"
+     ],
+     [
+      "25.06",
+      "Blessed Hammer"
+     ],
+     [
+      "25.81",
+      "Crusader Strike"
+     ],
+     [
+      "26.56",
+      "Blessed Hammer"
+     ],
+     [
+      "27.86",
+      "Blessed Hammer"
+     ],
+     [
+      "28.61",
+      "Crusader Strike"
+     ],
+     [
+      "29.36",
+      "Blessed Hammer"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "156"
+     ],
+     [
+      "Ловкость",
+      "38"
+     ],
+     [
+      "Интеллект",
+      "44"
+     ],
+     [
+      "Урон автоатаки",
+      "130.0"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "27.0%"
+     ],
+     [
+      "Скорость атаки",
+      "15.2%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье от ESC",
+      "+0"
+     ],
+     [
+      "Мана макс.",
+      "878"
+     ],
+     [
+      "Реген маны",
+      "5.76/с"
+     ],
+     [
+      "Мана в конце",
+      "89%"
+     ],
+     [
+      "Интервал атаки",
+      "1.61 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "2.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Zeal": 3592.7,
+     "Divine Storm": 3717.8,
+     "Divine Hammer": 3717.8,
+     "Divine Toll": 3558.8,
+     "Crusade": 3717.8
+    },
+    "glyphDps": {
+     "Fortitude": 3717.8,
+     "Unsealed Power": 3717.8,
+     "Fortune": 3384.3,
+     "Supremacy": 3334.5,
+     "Arc Striking": 3316.6,
+     "Battle Frenzy": 3362.5,
+     "Hellfire": 3316.6,
+     "Thunder": 3316.6,
+     "Blood Violence": 3316.6,
+     "Animosity": 3324.0,
+     "Glass Cannon": 3717.8,
+     "Mindhaste": 3594.5
     }
    }
   ]

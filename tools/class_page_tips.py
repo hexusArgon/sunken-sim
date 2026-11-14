@@ -35,9 +35,22 @@ def clean(t: str) -> str:
 ALIASES = {"Surge of Toxins": "Venomous Axes"}
 # Hero abilities by rawcode where the name is ambiguous in war3mapSkin.w3a (A06B "Steel Trap" carries another
 # hero's learn tooltip there): the level-1 tooltip (aub1) of that ability.
+# Hero unit types per page: their hero abilities (uhab) and unit abilities (uabi) in war3map.w3u give the ability
+# codes of this class, so a name shared with another hero's ability (Metamorphosis, Cleansing Fire, Steel Trap)
+# resolves to this hero's own tooltip (level-1 aub1, else the learn tooltip).
+HERO_UNITS = {
+    "hunter": ("H001",),
+    "death_knight": ("U002",),
+    "demon_hunter": ("E00A", "E00B"),
+    "dragon_sentinel": ("O00P", "O007", "O015", "O01Q"),
+    "feral_druid": ("O00R", "O00J", "O01B"),
+}
 BY_CODE = {
     "hunter": {"Steel Trap": "A06B", "Serpent Sting": "A0E3", "Serpent Sting (тики)": "A0E3", "Multi-Shot": "A01V",
                "Split Shot": "A01V", "Bestial Wrath": "A03X"},
+    # spec-swapped abilities that are not in the hero unit's lists
+    "dragon_sentinel": {"Cleansing Fire": "A0OO", "Cleansing Fire (от лечения)": "A0OO"},
+    "demon_hunter": {"Demon Spikes": "A0RH"},
 }
 
 
@@ -131,11 +144,25 @@ def main(hero: str, specs: list[str]) -> None:
     shared = _page_name_tips()
     name_tips: dict[str, list] = {}
     by_code = BY_CODE.get(hero, {})
+    own: dict[str, list] = {}
+    if hero in HERO_UNITS:
+        units = L._parse_objects(L._extract(L.MAP_PATH, "war3map.w3u"))
+        for unit in HERO_UNITS[hero]:
+            mods = units.get(unit, {})
+            for field in ("uhab", "uabi"):
+                for code in str((mods.get(field) or [""])[0] or "").split(","):
+                    if code in codes_tips:
+                        name, learn, level1 = codes_tips[code]
+                        own.setdefault(name, [name, level1 or learn])
     for n in sorted(names):
         src = ALIASES.get(n, n)
+        if src not in abilities and src not in talents and " (" in src:
+            src = src.split(" (")[0]  # "Burnout (пассив)" -> "Burnout"
         if n in by_code and by_code[n] in codes_tips:
             name, learn, level1 = codes_tips[by_code[n]]
             name_tips[n] = [name, level1 or learn]
+        elif src in own:
+            name_tips[n] = own[src]
         elif src in abilities:
             name_tips[n] = [src, abilities[src]]
         elif src in talents:
