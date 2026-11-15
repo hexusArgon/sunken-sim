@@ -4,7 +4,7 @@
  "hero": "dragon_sentinel",
  "spec": "emerald",
  "top": 150,
- "farm_file": "../../sessions/rcw-01dggafd7ettcq4v2v4lcdlh/mnt/sunken-sim-runs/dragon_sentinel-emerald-merged-1114/results/merged-top150-sulfuras.json",
+ "farm_file": "../sunken-sim-runs/dragon_sentinel-emerald-merged-1114/results/merged-top150-sulfuras.json",
  "done": 15161574120,
  "end": 14676641473,
  "errors": 0,
@@ -3014,6 +3014,3058 @@
      "Glass Cannon": 2047.7,
      "Mindhaste": 1857.7
     }
+   },
+   {
+    "farm_dps": 2029.0,
+    "dps": 2029.0,
+    "total": 60870,
+    "manaLeft": 52.5,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Engulfing Flames"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 10,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 420269960,
+    "sources": [
+     [
+      "Sulfuras",
+      653.6
+     ],
+     [
+      "Burning Heart",
+      308.2
+     ],
+     [
+      "Автоатака",
+      307.8
+     ],
+     [
+      "Dragon Strike",
+      297.2
+     ],
+     [
+      "Engulfing Flames",
+      190.3
+     ],
+     [
+      "Cleansing Fire",
+      148.7
+     ],
+     [
+      "Blazing Shield",
+      92.0
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      18.5
+     ],
+     [
+      "Sulfuras (удар)",
+      12.7
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.11",
+      "Lifebinder"
+     ],
+     [
+      "7.01",
+      "Dragon Strike"
+     ],
+     [
+      "7.46",
+      "Cleansing Fire"
+     ],
+     [
+      "8.27",
+      "Blazing Shield"
+     ],
+     [
+      "11.77",
+      "Lifebinder"
+     ],
+     [
+      "12.67",
+      "Dragon Strike"
+     ],
+     [
+      "13.93",
+      "Cleansing Fire"
+     ],
+     [
+      "14.74",
+      "Blazing Shield"
+     ],
+     [
+      "17.44",
+      "Lifebinder"
+     ],
+     [
+      "18.34",
+      "Dragon Strike"
+     ],
+     [
+      "20.40",
+      "Cleansing Fire"
+     ],
+     [
+      "21.21",
+      "Blazing Shield"
+     ],
+     [
+      "23.10",
+      "Lifebinder"
+     ],
+     [
+      "24.00",
+      "Dragon Strike"
+     ],
+     [
+      "26.87",
+      "Cleansing Fire"
+     ],
+     [
+      "27.68",
+      "Blazing Shield"
+     ],
+     [
+      "28.76",
+      "Lifebinder"
+     ],
+     [
+      "29.66",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "154"
+     ],
+     [
+      "Ловкость",
+      "33"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "181.5"
+     ],
+     [
+      "Potency",
+      "18.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "12%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "36.0%"
+     ],
+     [
+      "Скорость атаки",
+      "88.2%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "2610"
+     ],
+     [
+      "Броня",
+      "11.3"
+     ],
+     [
+      "Мана макс.",
+      "421"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "52%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.06 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "9"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1970.5,
+     "Draconic Scales": 1991.5,
+     "Alexstrasza's Gift": 2029.0,
+     "Burning Heart": 2029.0,
+     "Gift of Life": 1986.0,
+     "Engulfing Flames": 2029.0,
+     "Explosive Impact": 1858.8,
+     "Blazing Strikes": 2007.4
+    },
+    "glyphDps": {
+     "Fortitude": 2029.0,
+     "Unsealed Power": 2029.0,
+     "Fortune": 1866.3,
+     "Supremacy": 1893.0,
+     "Arc Striking": 1861.7,
+     "Battle Frenzy": 1891.4,
+     "Hellfire": 1861.7,
+     "Thunder": 1861.7,
+     "Blood Violence": 1861.7,
+     "Animosity": 1946.3,
+     "Glass Cannon": 2029.0,
+     "Mindhaste": 1925.4
+    }
+   },
+   {
+    "farm_dps": 2022.2,
+    "dps": 2022.2,
+    "total": 60667,
+    "manaLeft": 67.4,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Engulfing Flames"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 420336954,
+    "sources": [
+     [
+      "Sulfuras",
+      670.4
+     ],
+     [
+      "Автоатака",
+      378.8
+     ],
+     [
+      "Burning Heart",
+      308.2
+     ],
+     [
+      "Dragon Strike",
+      253.9
+     ],
+     [
+      "Engulfing Flames",
+      159.6
+     ],
+     [
+      "Cleansing Fire",
+      129.0
+     ],
+     [
+      "Blazing Shield",
+      91.5
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      18.1
+     ],
+     [
+      "Sulfuras (удар)",
+      12.6
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.47",
+      "Lifebinder"
+     ],
+     [
+      "7.37",
+      "Dragon Strike"
+     ],
+     [
+      "7.82",
+      "Cleansing Fire"
+     ],
+     [
+      "8.68",
+      "Blazing Shield"
+     ],
+     [
+      "12.48",
+      "Lifebinder"
+     ],
+     [
+      "13.38",
+      "Dragon Strike"
+     ],
+     [
+      "14.69",
+      "Cleansing Fire"
+     ],
+     [
+      "15.55",
+      "Blazing Shield"
+     ],
+     [
+      "18.50",
+      "Lifebinder"
+     ],
+     [
+      "19.40",
+      "Dragon Strike"
+     ],
+     [
+      "21.57",
+      "Cleansing Fire"
+     ],
+     [
+      "22.43",
+      "Blazing Shield"
+     ],
+     [
+      "24.51",
+      "Lifebinder"
+     ],
+     [
+      "25.41",
+      "Dragon Strike"
+     ],
+     [
+      "28.44",
+      "Cleansing Fire"
+     ],
+     [
+      "29.30",
+      "Blazing Shield"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "155"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "162.2"
+     ],
+     [
+      "Potency",
+      "13.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "52%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.15"
+     ],
+     [
+      "Спешка",
+      "28.0%"
+     ],
+     [
+      "Скорость атаки",
+      "85.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+0%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "2625"
+     ],
+     [
+      "Броня",
+      "10.7"
+     ],
+     [
+      "Мана макс.",
+      "521"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "67%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.08 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "9"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1965.1,
+     "Draconic Scales": 1987.9,
+     "Alexstrasza's Gift": 2022.2,
+     "Burning Heart": 2022.2,
+     "Gift of Life": 1971.1,
+     "Engulfing Flames": 2022.2,
+     "Explosive Impact": 1849.7,
+     "Blazing Strikes": 1928.0
+    },
+    "glyphDps": {
+     "Fortitude": 2044.4,
+     "Unsealed Power": 2044.4,
+     "Fortune": 1850.3,
+     "Supremacy": 1871.1,
+     "Arc Striking": 1845.6,
+     "Battle Frenzy": 1846.1,
+     "Hellfire": 1845.6,
+     "Thunder": 1845.6,
+     "Blood Violence": 1845.6,
+     "Animosity": 2022.2,
+     "Glass Cannon": 2044.4,
+     "Mindhaste": 1957.3
+    }
+   },
+   {
+    "farm_dps": 2019.1,
+    "dps": 2019.1,
+    "total": 60572,
+    "manaLeft": 67.4,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Engulfing Flames"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 2,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 8,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 420338077,
+    "sources": [
+     [
+      "Sulfuras",
+      741.4
+     ],
+     [
+      "Автоатака",
+      313.9
+     ],
+     [
+      "Burning Heart",
+      308.2
+     ],
+     [
+      "Dragon Strike",
+      270.5
+     ],
+     [
+      "Cleansing Fire",
+      143.6
+     ],
+     [
+      "Engulfing Flames",
+      109.0
+     ],
+     [
+      "Blazing Shield",
+      102.4
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      19.1
+     ],
+     [
+      "Sulfuras (удар)",
+      11.0
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.51",
+      "Lifebinder"
+     ],
+     [
+      "7.41",
+      "Dragon Strike"
+     ],
+     [
+      "7.86",
+      "Cleansing Fire"
+     ],
+     [
+      "8.73",
+      "Blazing Shield"
+     ],
+     [
+      "12.58",
+      "Lifebinder"
+     ],
+     [
+      "13.48",
+      "Dragon Strike"
+     ],
+     [
+      "14.79",
+      "Cleansing Fire"
+     ],
+     [
+      "15.66",
+      "Blazing Shield"
+     ],
+     [
+      "18.64",
+      "Lifebinder"
+     ],
+     [
+      "19.54",
+      "Dragon Strike"
+     ],
+     [
+      "21.72",
+      "Cleansing Fire"
+     ],
+     [
+      "22.59",
+      "Blazing Shield"
+     ],
+     [
+      "24.70",
+      "Lifebinder"
+     ],
+     [
+      "25.60",
+      "Dragon Strike"
+     ],
+     [
+      "28.65",
+      "Cleansing Fire"
+     ],
+     [
+      "29.52",
+      "Blazing Shield"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "167"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "171.2"
+     ],
+     [
+      "Potency",
+      "4.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "40%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "27.0%"
+     ],
+     [
+      "Скорость атаки",
+      "53.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+28%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "2805"
+     ],
+     [
+      "Броня",
+      "10.7"
+     ],
+     [
+      "Мана макс.",
+      "521"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "67%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.30 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "9"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1969.6,
+     "Draconic Scales": 1995.5,
+     "Alexstrasza's Gift": 2019.1,
+     "Burning Heart": 2019.1,
+     "Gift of Life": 1965.7,
+     "Engulfing Flames": 2019.1,
+     "Explosive Impact": 1921.8,
+     "Blazing Strikes": 1940.1
+    },
+    "glyphDps": {
+     "Fortitude": 2019.1,
+     "Unsealed Power": 2019.1,
+     "Fortune": 1840.1,
+     "Supremacy": 1853.4,
+     "Arc Striking": 1835.6,
+     "Battle Frenzy": 1761.0,
+     "Hellfire": 1835.6,
+     "Thunder": 1835.6,
+     "Blood Violence": 1835.6,
+     "Animosity": 1960.5,
+     "Glass Cannon": 2019.1,
+     "Mindhaste": 1794.6
+    }
+   },
+   {
+    "farm_dps": 2012.3,
+    "dps": 2012.3,
+    "total": 60369,
+    "manaLeft": 56.1,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Drake Sword",
+      "code": "I0TL",
+      "source": "drop"
+     },
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Engulfing Flames"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 9,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 404554581,
+    "sources": [
+     [
+      "Sulfuras",
+      680.5
+     ],
+     [
+      "Burning Heart",
+      281.0
+     ],
+     [
+      "Dragon Strike",
+      241.9
+     ],
+     [
+      "Автоатака",
+      215.5
+     ],
+     [
+      "Dragon Strike (Drake Sword)",
+      210.7
+     ],
+     [
+      "Engulfing Flames",
+      133.4
+     ],
+     [
+      "Cleansing Fire",
+      129.9
+     ],
+     [
+      "Blazing Shield",
+      91.4
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      18.7
+     ],
+     [
+      "Sulfuras (удар)",
+      9.5
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.24",
+      "Lifebinder"
+     ],
+     [
+      "7.14",
+      "Dragon Strike"
+     ],
+     [
+      "7.59",
+      "Cleansing Fire"
+     ],
+     [
+      "8.42",
+      "Blazing Shield"
+     ],
+     [
+      "12.03",
+      "Lifebinder"
+     ],
+     [
+      "12.93",
+      "Dragon Strike"
+     ],
+     [
+      "14.21",
+      "Cleansing Fire"
+     ],
+     [
+      "15.03",
+      "Blazing Shield"
+     ],
+     [
+      "17.82",
+      "Lifebinder"
+     ],
+     [
+      "18.72",
+      "Dragon Strike"
+     ],
+     [
+      "20.82",
+      "Cleansing Fire"
+     ],
+     [
+      "21.65",
+      "Blazing Shield"
+     ],
+     [
+      "23.61",
+      "Lifebinder"
+     ],
+     [
+      "24.51",
+      "Dragon Strike"
+     ],
+     [
+      "27.44",
+      "Cleansing Fire"
+     ],
+     [
+      "28.27",
+      "Blazing Shield"
+     ],
+     [
+      "29.40",
+      "Lifebinder"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "166"
+     ],
+     [
+      "Ловкость",
+      "33"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "147.5"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "13%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "33.0%"
+     ],
+     [
+      "Скорость атаки",
+      "78.2%"
+     ],
+     [
+      "Удача",
+      "5%"
+     ],
+     [
+      "Магический бонус",
+      "+58%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "2790"
+     ],
+     [
+      "Броня",
+      "11.3"
+     ],
+     [
+      "Мана макс.",
+      "421"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "56%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.12 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1962.3,
+     "Draconic Scales": 1981.6,
+     "Alexstrasza's Gift": 2012.3,
+     "Burning Heart": 2012.3,
+     "Gift of Life": 1947.8,
+     "Engulfing Flames": 2012.3,
+     "Explosive Impact": 1843.6,
+     "Blazing Strikes": 1883.3
+    },
+    "glyphDps": {
+     "Fortitude": 2012.3,
+     "Unsealed Power": 2012.3,
+     "Fortune": 1882.8,
+     "Supremacy": 1873.8,
+     "Arc Striking": 1851.6,
+     "Battle Frenzy": 1827.7,
+     "Hellfire": 1851.6,
+     "Thunder": 1851.6,
+     "Blood Violence": 1851.6,
+     "Animosity": 1898.1,
+     "Glass Cannon": 2012.3,
+     "Mindhaste": 1756.5
+    }
+   },
+   {
+    "farm_dps": 2008.0,
+    "dps": 2008.0,
+    "total": 60240,
+    "manaLeft": 76.4,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Engulfing Flames"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 9,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 398406101,
+    "sources": [
+     [
+      "Sulfuras",
+      736.2
+     ],
+     [
+      "Dragon Strike",
+      291.6
+     ],
+     [
+      "Burning Heart",
+      281.0
+     ],
+     [
+      "Автоатака",
+      245.0
+     ],
+     [
+      "Engulfing Flames",
+      180.9
+     ],
+     [
+      "Cleansing Fire",
+      144.5
+     ],
+     [
+      "Blazing Shield",
+      98.8
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      18.9
+     ],
+     [
+      "Sulfuras (удар)",
+      11.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.07",
+      "Lifebinder"
+     ],
+     [
+      "6.97",
+      "Dragon Strike"
+     ],
+     [
+      "7.42",
+      "Cleansing Fire"
+     ],
+     [
+      "8.22",
+      "Blazing Shield"
+     ],
+     [
+      "11.69",
+      "Lifebinder"
+     ],
+     [
+      "12.59",
+      "Dragon Strike"
+     ],
+     [
+      "13.84",
+      "Cleansing Fire"
+     ],
+     [
+      "14.65",
+      "Blazing Shield"
+     ],
+     [
+      "17.31",
+      "Lifebinder"
+     ],
+     [
+      "18.21",
+      "Dragon Strike"
+     ],
+     [
+      "20.27",
+      "Cleansing Fire"
+     ],
+     [
+      "21.07",
+      "Blazing Shield"
+     ],
+     [
+      "22.93",
+      "Lifebinder"
+     ],
+     [
+      "23.83",
+      "Dragon Strike"
+     ],
+     [
+      "26.69",
+      "Cleansing Fire"
+     ],
+     [
+      "27.49",
+      "Blazing Shield"
+     ],
+     [
+      "28.55",
+      "Lifebinder"
+     ],
+     [
+      "29.45",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "179"
+     ],
+     [
+      "Ловкость",
+      "58"
+     ],
+     [
+      "Интеллект",
+      "68"
+     ],
+     [
+      "Урон автоатаки",
+      "175.2"
+     ],
+     [
+      "Potency",
+      "18.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "37.0%"
+     ],
+     [
+      "Скорость атаки",
+      "98.2%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3000"
+     ],
+     [
+      "Броня",
+      "13.8"
+     ],
+     [
+      "Мана макс.",
+      "596"
+     ],
+     [
+      "Реген маны",
+      "6.40/с"
+     ],
+     [
+      "Мана в конце",
+      "76%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.01 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1953.5,
+     "Draconic Scales": 1982.0,
+     "Alexstrasza's Gift": 2008.0,
+     "Burning Heart": 2008.0,
+     "Gift of Life": 1967.4,
+     "Engulfing Flames": 2008.0,
+     "Explosive Impact": 1813.6,
+     "Blazing Strikes": 1990.0
+    },
+    "glyphDps": {
+     "Fortitude": 2008.0,
+     "Unsealed Power": 2008.0,
+     "Fortune": 1845.3,
+     "Supremacy": 1870.6,
+     "Arc Striking": 1840.8,
+     "Battle Frenzy": 1823.0,
+     "Hellfire": 1840.8,
+     "Thunder": 1840.8,
+     "Blood Violence": 1840.8,
+     "Animosity": 1870.3,
+     "Glass Cannon": 2008.0,
+     "Mindhaste": 1891.7
+    }
+   },
+   {
+    "farm_dps": 2005.1,
+    "dps": 2005.1,
+    "total": 60154,
+    "manaLeft": 70.3,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Engulfing Flames"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 7,
+     "crit": 2,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 451357099,
+    "sources": [
+     [
+      "Sulfuras",
+      719.1
+     ],
+     [
+      "Автоатака",
+      330.5
+     ],
+     [
+      "Burning Heart",
+      308.2
+     ],
+     [
+      "Dragon Strike",
+      232.0
+     ],
+     [
+      "Cleansing Fire",
+      150.3
+     ],
+     [
+      "Engulfing Flames",
+      138.0
+     ],
+     [
+      "Blazing Shield",
+      91.1
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      22.0
+     ],
+     [
+      "Sulfuras (удар)",
+      14.0
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "7.69",
+      "Lifebinder"
+     ],
+     [
+      "8.59",
+      "Dragon Strike"
+     ],
+     [
+      "9.17",
+      "Cleansing Fire"
+     ],
+     [
+      "10.07",
+      "Blazing Shield"
+     ],
+     [
+      "14.92",
+      "Lifebinder"
+     ],
+     [
+      "15.82",
+      "Dragon Strike"
+     ],
+     [
+      "17.44",
+      "Cleansing Fire"
+     ],
+     [
+      "18.34",
+      "Blazing Shield"
+     ],
+     [
+      "22.16",
+      "Lifebinder"
+     ],
+     [
+      "23.06",
+      "Dragon Strike"
+     ],
+     [
+      "25.71",
+      "Cleansing Fire"
+     ],
+     [
+      "26.61",
+      "Blazing Shield"
+     ],
+     [
+      "29.40",
+      "Lifebinder"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "209"
+     ],
+     [
+      "Ловкость",
+      "33"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "216.8"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "14%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "18.0%"
+     ],
+     [
+      "Скорость атаки",
+      "58.2%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3435"
+     ],
+     [
+      "Броня",
+      "11.3"
+     ],
+     [
+      "Мана макс.",
+      "421"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "70%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.26 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "9"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1908.5,
+     "Draconic Scales": 1931.8,
+     "Alexstrasza's Gift": 2005.1,
+     "Burning Heart": 2005.1,
+     "Gift of Life": 1934.7,
+     "Engulfing Flames": 2005.1,
+     "Explosive Impact": 1737.1,
+     "Blazing Strikes": 1750.1
+    },
+    "glyphDps": {
+     "Fortitude": 2005.1,
+     "Unsealed Power": 2005.1,
+     "Fortune": 1845.9,
+     "Supremacy": 1863.2,
+     "Arc Striking": 1840.5,
+     "Battle Frenzy": 1841.2,
+     "Hellfire": 1840.5,
+     "Thunder": 1840.5,
+     "Blood Violence": 1840.5,
+     "Animosity": 1881.3,
+     "Glass Cannon": 2005.1,
+     "Mindhaste": 1823.1
+    }
+   },
+   {
+    "farm_dps": 2004.8,
+    "dps": 2004.8,
+    "total": 60145,
+    "manaLeft": 52.5,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Drake Sword",
+      "code": "I0TL",
+      "source": "drop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Engulfing Flames"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 8,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 449412322,
+    "sources": [
+     [
+      "Sulfuras",
+      691.4
+     ],
+     [
+      "Dragon Strike",
+      258.5
+     ],
+     [
+      "Автоатака",
+      239.2
+     ],
+     [
+      "Dragon Strike (Drake Sword)",
+      229.6
+     ],
+     [
+      "Burning Heart",
+      224.8
+     ],
+     [
+      "Engulfing Flames",
+      138.4
+     ],
+     [
+      "Cleansing Fire",
+      115.6
+     ],
+     [
+      "Blazing Shield",
+      78.1
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      16.7
+     ],
+     [
+      "Sulfuras (удар)",
+      12.4
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.17",
+      "Lifebinder"
+     ],
+     [
+      "7.07",
+      "Dragon Strike"
+     ],
+     [
+      "7.52",
+      "Cleansing Fire"
+     ],
+     [
+      "8.34",
+      "Blazing Shield"
+     ],
+     [
+      "11.90",
+      "Lifebinder"
+     ],
+     [
+      "12.80",
+      "Dragon Strike"
+     ],
+     [
+      "14.06",
+      "Cleansing Fire"
+     ],
+     [
+      "14.88",
+      "Blazing Shield"
+     ],
+     [
+      "17.62",
+      "Lifebinder"
+     ],
+     [
+      "18.52",
+      "Dragon Strike"
+     ],
+     [
+      "20.60",
+      "Cleansing Fire"
+     ],
+     [
+      "21.42",
+      "Blazing Shield"
+     ],
+     [
+      "23.34",
+      "Lifebinder"
+     ],
+     [
+      "24.24",
+      "Dragon Strike"
+     ],
+     [
+      "27.14",
+      "Cleansing Fire"
+     ],
+     [
+      "27.96",
+      "Blazing Shield"
+     ],
+     [
+      "29.06",
+      "Lifebinder"
+     ],
+     [
+      "29.96",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "195"
+     ],
+     [
+      "Ловкость",
+      "33"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "160.2"
+     ],
+     [
+      "Potency",
+      "18.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "12%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "37.0%"
+     ],
+     [
+      "Скорость атаки",
+      "110.2%"
+     ],
+     [
+      "Удача",
+      "5%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3225"
+     ],
+     [
+      "Броня",
+      "7.3"
+     ],
+     [
+      "Мана макс.",
+      "421"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "52%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "0.95 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1959.6,
+     "Draconic Scales": 1947.7,
+     "Alexstrasza's Gift": 2004.8,
+     "Burning Heart": 2004.8,
+     "Gift of Life": 1945.9,
+     "Engulfing Flames": 2004.8,
+     "Explosive Impact": 1829.4,
+     "Blazing Strikes": 1905.6
+    },
+    "glyphDps": {
+     "Fortitude": 2004.8,
+     "Unsealed Power": 2004.8,
+     "Fortune": 1831.5,
+     "Supremacy": 1820.8,
+     "Arc Striking": 1798.5,
+     "Battle Frenzy": 1798.5,
+     "Hellfire": 1798.5,
+     "Thunder": 1798.5,
+     "Blood Violence": 1798.5,
+     "Animosity": 1848.4,
+     "Glass Cannon": 2004.8,
+     "Mindhaste": 1790.4
+    }
+   },
+   {
+    "farm_dps": 2002.8,
+    "dps": 2002.8,
+    "total": 60085,
+    "manaLeft": 56.1,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Engulfing Flames"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 9,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 1,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 435295240,
+    "sources": [
+     [
+      "Sulfuras",
+      813.4
+     ],
+     [
+      "Dragon Strike",
+      294.3
+     ],
+     [
+      "Burning Heart",
+      281.0
+     ],
+     [
+      "Engulfing Flames",
+      169.7
+     ],
+     [
+      "Автоатака",
+      164.8
+     ],
+     [
+      "Cleansing Fire",
+      138.8
+     ],
+     [
+      "Blazing Shield",
+      114.1
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      19.0
+     ],
+     [
+      "Sulfuras (удар)",
+      7.8
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.24",
+      "Lifebinder"
+     ],
+     [
+      "7.14",
+      "Dragon Strike"
+     ],
+     [
+      "7.59",
+      "Cleansing Fire"
+     ],
+     [
+      "8.42",
+      "Blazing Shield"
+     ],
+     [
+      "12.03",
+      "Lifebinder"
+     ],
+     [
+      "12.93",
+      "Dragon Strike"
+     ],
+     [
+      "14.21",
+      "Cleansing Fire"
+     ],
+     [
+      "15.03",
+      "Blazing Shield"
+     ],
+     [
+      "17.82",
+      "Lifebinder"
+     ],
+     [
+      "18.72",
+      "Dragon Strike"
+     ],
+     [
+      "20.82",
+      "Cleansing Fire"
+     ],
+     [
+      "21.65",
+      "Blazing Shield"
+     ],
+     [
+      "23.61",
+      "Lifebinder"
+     ],
+     [
+      "24.51",
+      "Dragon Strike"
+     ],
+     [
+      "27.44",
+      "Cleansing Fire"
+     ],
+     [
+      "28.27",
+      "Blazing Shield"
+     ],
+     [
+      "29.40",
+      "Lifebinder"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "182"
+     ],
+     [
+      "Ловкость",
+      "33"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "177.5"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "21"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "33.0%"
+     ],
+     [
+      "Скорость атаки",
+      "56.2%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+88%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3030"
+     ],
+     [
+      "Броня",
+      "11.3"
+     ],
+     [
+      "Мана макс.",
+      "421"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "56%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.54 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1953.8,
+     "Draconic Scales": 1990.2,
+     "Alexstrasza's Gift": 2002.8,
+     "Burning Heart": 2002.8,
+     "Gift of Life": 1951.2,
+     "Engulfing Flames": 2002.8,
+     "Explosive Impact": 1799.8,
+     "Blazing Strikes": 1920.5
+    },
+    "glyphDps": {
+     "Fortitude": 2002.8,
+     "Unsealed Power": 2002.8,
+     "Fortune": 1868.4,
+     "Supremacy": 1890.4,
+     "Arc Striking": 1864.4,
+     "Battle Frenzy": 1826.4,
+     "Hellfire": 1864.4,
+     "Thunder": 1864.4,
+     "Blood Violence": 1864.4,
+     "Animosity": 1884.3,
+     "Glass Cannon": 2002.8,
+     "Mindhaste": 1873.9
+    }
+   },
+   {
+    "farm_dps": 2001.6,
+    "dps": 2001.6,
+    "total": 60048,
+    "manaLeft": 68.7,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Engulfing Flames"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 10,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 394585408,
+    "sources": [
+     [
+      "Sulfuras",
+      696.7
+     ],
+     [
+      "Dragon Strike",
+      294.2
+     ],
+     [
+      "Burning Heart",
+      281.0
+     ],
+     [
+      "Автоатака",
+      246.4
+     ],
+     [
+      "Engulfing Flames",
+      202.5
+     ],
+     [
+      "Cleansing Fire",
+      158.5
+     ],
+     [
+      "Blazing Shield",
+      93.2
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      18.0
+     ],
+     [
+      "Sulfuras (удар)",
+      11.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "5.65",
+      "Lifebinder"
+     ],
+     [
+      "6.55",
+      "Dragon Strike"
+     ],
+     [
+      "7.00",
+      "Cleansing Fire"
+     ],
+     [
+      "7.75",
+      "Blazing Shield"
+     ],
+     [
+      "10.86",
+      "Lifebinder"
+     ],
+     [
+      "11.76",
+      "Dragon Strike"
+     ],
+     [
+      "12.95",
+      "Cleansing Fire"
+     ],
+     [
+      "13.69",
+      "Blazing Shield"
+     ],
+     [
+      "16.06",
+      "Lifebinder"
+     ],
+     [
+      "16.96",
+      "Dragon Strike"
+     ],
+     [
+      "18.89",
+      "Cleansing Fire"
+     ],
+     [
+      "19.64",
+      "Blazing Shield"
+     ],
+     [
+      "21.26",
+      "Lifebinder"
+     ],
+     [
+      "22.16",
+      "Dragon Strike"
+     ],
+     [
+      "24.84",
+      "Cleansing Fire"
+     ],
+     [
+      "25.58",
+      "Blazing Shield"
+     ],
+     [
+      "26.46",
+      "Lifebinder"
+     ],
+     [
+      "27.36",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "169"
+     ],
+     [
+      "Ловкость",
+      "48"
+     ],
+     [
+      "Интеллект",
+      "58"
+     ],
+     [
+      "Урон автоатаки",
+      "169.8"
+     ],
+     [
+      "Potency",
+      "18.0"
+     ],
+     [
+      "Mastery",
+      "25"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "48.0%"
+     ],
+     [
+      "Скорость атаки",
+      "94.2%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "2835"
+     ],
+     [
+      "Броня",
+      "12.8"
+     ],
+     [
+      "Мана макс.",
+      "526"
+     ],
+     [
+      "Реген маны",
+      "5.60/с"
+     ],
+     [
+      "Мана в конце",
+      "69%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.03 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1961.6,
+     "Draconic Scales": 1976.7,
+     "Alexstrasza's Gift": 2001.6,
+     "Burning Heart": 2001.6,
+     "Gift of Life": 1957.9,
+     "Engulfing Flames": 2001.6,
+     "Explosive Impact": 1931.4,
+     "Blazing Strikes": 1952.3
+    },
+    "glyphDps": {
+     "Fortitude": 2001.6,
+     "Unsealed Power": 2001.6,
+     "Fortune": 1841.2,
+     "Supremacy": 1859.6,
+     "Arc Striking": 1836.8,
+     "Battle Frenzy": 1845.4,
+     "Hellfire": 1836.8,
+     "Thunder": 1836.8,
+     "Blood Violence": 1836.8,
+     "Animosity": 1866.5,
+     "Glass Cannon": 2001.6,
+     "Mindhaste": 1870.7
+    }
+   },
+   {
+    "farm_dps": 1997.1,
+    "dps": 1997.1,
+    "total": 59912,
+    "manaLeft": 73.1,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Predaplant Thorn",
+      "code": "I05W",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Engulfing Flames"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 9,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 467248296,
+    "sources": [
+     [
+      "Sulfuras",
+      581.9
+     ],
+     [
+      "Автоатака",
+      345.8
+     ],
+     [
+      "Burning Heart",
+      258.2
+     ],
+     [
+      "Dragon Strike",
+      248.4
+     ],
+     [
+      "Всплеск огня",
+      209.0
+     ],
+     [
+      "Engulfing Flames",
+      154.7
+     ],
+     [
+      "Cleansing Fire",
+      101.8
+     ],
+     [
+      "Blazing Shield",
+      73.4
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      14.8
+     ],
+     [
+      "Sulfuras (удар)",
+      9.1
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "7.39",
+      "Lifebinder"
+     ],
+     [
+      "8.29",
+      "Dragon Strike"
+     ],
+     [
+      "8.83",
+      "Cleansing Fire"
+     ],
+     [
+      "9.73",
+      "Blazing Shield"
+     ],
+     [
+      "14.32",
+      "Lifebinder"
+     ],
+     [
+      "15.22",
+      "Dragon Strike"
+     ],
+     [
+      "16.76",
+      "Cleansing Fire"
+     ],
+     [
+      "17.66",
+      "Blazing Shield"
+     ],
+     [
+      "21.26",
+      "Lifebinder"
+     ],
+     [
+      "22.16",
+      "Dragon Strike"
+     ],
+     [
+      "24.68",
+      "Cleansing Fire"
+     ],
+     [
+      "25.58",
+      "Blazing Shield"
+     ],
+     [
+      "28.20",
+      "Lifebinder"
+     ],
+     [
+      "29.10",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "155"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "162.2"
+     ],
+     [
+      "Potency",
+      "12.5"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "55%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.20"
+     ],
+     [
+      "Спешка",
+      "11.0%"
+     ],
+     [
+      "Скорость атаки",
+      "53.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+18%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "2625"
+     ],
+     [
+      "Броня",
+      "10.7"
+     ],
+     [
+      "Мана макс.",
+      "521"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "73%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.30 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "3"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1903.2,
+     "Draconic Scales": 1951.7,
+     "Alexstrasza's Gift": 1997.1,
+     "Burning Heart": 1997.1,
+     "Gift of Life": 1915.7,
+     "Engulfing Flames": 1997.1,
+     "Explosive Impact": 1837.7,
+     "Blazing Strikes": 1837.7
+    },
+    "glyphDps": {
+     "Fortitude": 1997.1,
+     "Unsealed Power": 1997.1,
+     "Fortune": 1823.3,
+     "Supremacy": 1844.2,
+     "Arc Striking": 1819.7,
+     "Battle Frenzy": 1786.6,
+     "Hellfire": 1819.7,
+     "Thunder": 1819.7,
+     "Blood Violence": 1819.7,
+     "Animosity": 1991.9,
+     "Glass Cannon": 1997.1,
+     "Mindhaste": 1768.4
+    }
    }
   ],
   "shop": [
@@ -5988,6 +9040,3002 @@
      "Glass Cannon": 1957.3,
      "Mindhaste": 1777.3
     }
+   },
+   {
+    "farm_dps": 1957.2,
+    "dps": 1957.2,
+    "total": 58716,
+    "manaLeft": 73.1,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 9,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 450713958,
+    "sources": [
+     [
+      "Sulfuras",
+      804.0
+     ],
+     [
+      "Автоатака",
+      334.2
+     ],
+     [
+      "Burning Heart",
+      281.0
+     ],
+     [
+      "Dragon Strike",
+      269.6
+     ],
+     [
+      "Cleansing Fire",
+      144.2
+     ],
+     [
+      "Blazing Shield",
+      90.5
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      21.0
+     ],
+     [
+      "Sulfuras (удар)",
+      12.7
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "7.28",
+      "Lifebinder"
+     ],
+     [
+      "8.18",
+      "Dragon Strike"
+     ],
+     [
+      "8.71",
+      "Cleansing Fire"
+     ],
+     [
+      "9.61",
+      "Blazing Shield"
+     ],
+     [
+      "14.11",
+      "Lifebinder"
+     ],
+     [
+      "15.01",
+      "Dragon Strike"
+     ],
+     [
+      "16.52",
+      "Cleansing Fire"
+     ],
+     [
+      "17.42",
+      "Blazing Shield"
+     ],
+     [
+      "20.95",
+      "Lifebinder"
+     ],
+     [
+      "21.85",
+      "Dragon Strike"
+     ],
+     [
+      "24.32",
+      "Cleansing Fire"
+     ],
+     [
+      "25.22",
+      "Blazing Shield"
+     ],
+     [
+      "27.78",
+      "Lifebinder"
+     ],
+     [
+      "28.68",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "222"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "207.5"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "33%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "25.0%"
+     ],
+     [
+      "Скорость атаки",
+      "75.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+28%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3630"
+     ],
+     [
+      "Броня",
+      "10.7"
+     ],
+     [
+      "Мана макс.",
+      "521"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "73%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.14 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1864.4,
+     "Draconic Scales": 1854.8,
+     "Alexstrasza's Gift": 1957.2,
+     "Burning Heart": 1957.2,
+     "Gift of Life": 1864.6,
+     "Engulfing Flames": 1890.7,
+     "Explosive Impact": 1798.7,
+     "Blazing Strikes": 1957.2
+    },
+    "glyphDps": {
+     "Fortitude": 1957.2,
+     "Unsealed Power": 1957.2,
+     "Fortune": 1782.5,
+     "Supremacy": 1777.4,
+     "Arc Striking": 1777.4,
+     "Battle Frenzy": 1779.0,
+     "Hellfire": 1777.4,
+     "Thunder": 1777.4,
+     "Blood Violence": 1777.4,
+     "Animosity": 1941.6,
+     "Glass Cannon": 1957.2,
+     "Mindhaste": 1714.5
+    }
+   },
+   {
+    "farm_dps": 1956.3,
+    "dps": 1956.3,
+    "total": 58688,
+    "manaLeft": 67.4,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Ardite Impaler",
+      "code": "I0BB",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Engulfing Flames"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 396798880,
+    "sources": [
+     [
+      "Sulfuras",
+      663.5
+     ],
+     [
+      "Автоатака",
+      368.2
+     ],
+     [
+      "Burning Heart",
+      281.0
+     ],
+     [
+      "Dragon Strike",
+      250.4
+     ],
+     [
+      "Engulfing Flames",
+      157.8
+     ],
+     [
+      "Cleansing Fire",
+      117.6
+     ],
+     [
+      "Blazing Shield",
+      90.5
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      16.5
+     ],
+     [
+      "Sulfuras (удар)",
+      10.6
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.47",
+      "Lifebinder"
+     ],
+     [
+      "7.37",
+      "Dragon Strike"
+     ],
+     [
+      "7.82",
+      "Cleansing Fire"
+     ],
+     [
+      "8.68",
+      "Blazing Shield"
+     ],
+     [
+      "12.48",
+      "Lifebinder"
+     ],
+     [
+      "13.38",
+      "Dragon Strike"
+     ],
+     [
+      "14.69",
+      "Cleansing Fire"
+     ],
+     [
+      "15.55",
+      "Blazing Shield"
+     ],
+     [
+      "18.50",
+      "Lifebinder"
+     ],
+     [
+      "19.40",
+      "Dragon Strike"
+     ],
+     [
+      "21.57",
+      "Cleansing Fire"
+     ],
+     [
+      "22.43",
+      "Blazing Shield"
+     ],
+     [
+      "24.51",
+      "Lifebinder"
+     ],
+     [
+      "25.41",
+      "Dragon Strike"
+     ],
+     [
+      "28.44",
+      "Cleansing Fire"
+     ],
+     [
+      "29.30",
+      "Blazing Shield"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "155"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "149.2"
+     ],
+     [
+      "Potency",
+      "13.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "38%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.25"
+     ],
+     [
+      "Спешка",
+      "28.0%"
+     ],
+     [
+      "Скорость атаки",
+      "105.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+18%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "2625"
+     ],
+     [
+      "Броня",
+      "10.7"
+     ],
+     [
+      "Мана макс.",
+      "521"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "67%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "0.97 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1899.0,
+     "Draconic Scales": 1927.0,
+     "Alexstrasza's Gift": 1956.3,
+     "Burning Heart": 1956.3,
+     "Gift of Life": 1904.1,
+     "Engulfing Flames": 1956.3,
+     "Explosive Impact": 1792.5,
+     "Blazing Strikes": 1894.8
+    },
+    "glyphDps": {
+     "Fortitude": 1956.3,
+     "Unsealed Power": 1956.3,
+     "Fortune": 1767.4,
+     "Supremacy": 1788.0,
+     "Arc Striking": 1763.3,
+     "Battle Frenzy": 1766.4,
+     "Hellfire": 1763.3,
+     "Thunder": 1763.3,
+     "Blood Violence": 1763.3,
+     "Animosity": 1950.9,
+     "Glass Cannon": 1956.3,
+     "Mindhaste": 1793.8
+    }
+   },
+   {
+    "farm_dps": 1955.7,
+    "dps": 1955.7,
+    "total": 58671,
+    "manaLeft": 66.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 2,
+     "damage": 20,
+     "crit": 8,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 468129899,
+    "sources": [
+     [
+      "Sulfuras",
+      543.5
+     ],
+     [
+      "Автоатака",
+      431.7
+     ],
+     [
+      "Всплеск огня",
+      320.5
+     ],
+     [
+      "Burning Heart",
+      258.2
+     ],
+     [
+      "Dragon Strike",
+      186.5
+     ],
+     [
+      "Cleansing Fire",
+      121.2
+     ],
+     [
+      "Blazing Shield",
+      59.5
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      17.6
+     ],
+     [
+      "Sulfuras (удар)",
+      16.8
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "7.12",
+      "Lifebinder"
+     ],
+     [
+      "8.02",
+      "Dragon Strike"
+     ],
+     [
+      "8.53",
+      "Cleansing Fire"
+     ],
+     [
+      "9.43",
+      "Blazing Shield"
+     ],
+     [
+      "13.79",
+      "Lifebinder"
+     ],
+     [
+      "14.69",
+      "Dragon Strike"
+     ],
+     [
+      "16.15",
+      "Cleansing Fire"
+     ],
+     [
+      "17.05",
+      "Blazing Shield"
+     ],
+     [
+      "20.47",
+      "Lifebinder"
+     ],
+     [
+      "21.37",
+      "Dragon Strike"
+     ],
+     [
+      "23.78",
+      "Cleansing Fire"
+     ],
+     [
+      "24.68",
+      "Blazing Shield"
+     ],
+     [
+      "27.14",
+      "Lifebinder"
+     ],
+     [
+      "28.04",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "197"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "233.8"
+     ],
+     [
+      "Potency",
+      "8.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "25%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "28.0%"
+     ],
+     [
+      "Скорость атаки",
+      "109.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+18%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3255"
+     ],
+     [
+      "Броня",
+      "10.7"
+     ],
+     [
+      "Мана макс.",
+      "421"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "67%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "0.95 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "3"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1893.4,
+     "Draconic Scales": 1881.7,
+     "Alexstrasza's Gift": 1955.7,
+     "Burning Heart": 1955.7,
+     "Gift of Life": 1901.2,
+     "Engulfing Flames": 1935.6,
+     "Explosive Impact": 1854.4,
+     "Blazing Strikes": 1955.7
+    },
+    "glyphDps": {
+     "Fortitude": 1955.7,
+     "Unsealed Power": 1955.7,
+     "Fortune": 1807.1,
+     "Supremacy": 1801.9,
+     "Arc Striking": 1801.9,
+     "Battle Frenzy": 1824.0,
+     "Hellfire": 1801.9,
+     "Thunder": 1801.9,
+     "Blood Violence": 1801.9,
+     "Animosity": 1855.3,
+     "Glass Cannon": 1955.7,
+     "Mindhaste": 1791.4
+    }
+   },
+   {
+    "farm_dps": 1953.8,
+    "dps": 1953.8,
+    "total": 58613,
+    "manaLeft": 67.4,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Ardite Impaler",
+      "code": "I0BB",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 9,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 396855770,
+    "sources": [
+     [
+      "Sulfuras",
+      744.8
+     ],
+     [
+      "Автоатака",
+      406.4
+     ],
+     [
+      "Burning Heart",
+      281.0
+     ],
+     [
+      "Dragon Strike",
+      266.0
+     ],
+     [
+      "Cleansing Fire",
+      124.4
+     ],
+     [
+      "Blazing Shield",
+      101.7
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      17.4
+     ],
+     [
+      "Sulfuras (удар)",
+      12.1
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.61",
+      "Lifebinder"
+     ],
+     [
+      "7.51",
+      "Dragon Strike"
+     ],
+     [
+      "7.96",
+      "Cleansing Fire"
+     ],
+     [
+      "8.84",
+      "Blazing Shield"
+     ],
+     [
+      "12.77",
+      "Lifebinder"
+     ],
+     [
+      "13.67",
+      "Dragon Strike"
+     ],
+     [
+      "15.00",
+      "Cleansing Fire"
+     ],
+     [
+      "15.88",
+      "Blazing Shield"
+     ],
+     [
+      "18.93",
+      "Lifebinder"
+     ],
+     [
+      "19.83",
+      "Dragon Strike"
+     ],
+     [
+      "22.04",
+      "Cleansing Fire"
+     ],
+     [
+      "22.92",
+      "Blazing Shield"
+     ],
+     [
+      "25.09",
+      "Lifebinder"
+     ],
+     [
+      "25.99",
+      "Dragon Strike"
+     ],
+     [
+      "29.08",
+      "Cleansing Fire"
+     ],
+     [
+      "29.96",
+      "Blazing Shield"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "167"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "176.2"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "55%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.40"
+     ],
+     [
+      "Спешка",
+      "25.0%"
+     ],
+     [
+      "Скорость атаки",
+      "95.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+10%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "2805"
+     ],
+     [
+      "Броня",
+      "10.7"
+     ],
+     [
+      "Мана макс.",
+      "521"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "67%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.02 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1887.6,
+     "Draconic Scales": 1880.5,
+     "Alexstrasza's Gift": 1953.8,
+     "Burning Heart": 1953.8,
+     "Gift of Life": 1882.0,
+     "Engulfing Flames": 1918.4,
+     "Explosive Impact": 1833.9,
+     "Blazing Strikes": 1953.8
+    },
+    "glyphDps": {
+     "Fortitude": 1953.8,
+     "Unsealed Power": 1947.5,
+     "Fortune": 1770.5,
+     "Supremacy": 1766.0,
+     "Arc Striking": 1766.0,
+     "Battle Frenzy": 1767.5,
+     "Hellfire": 1766.0,
+     "Thunder": 1766.0,
+     "Blood Violence": 1766.0,
+     "Animosity": 1953.8,
+     "Glass Cannon": 1953.8,
+     "Mindhaste": 1878.6
+    }
+   },
+   {
+    "farm_dps": 1942.4,
+    "dps": 1942.4,
+    "total": 58272,
+    "manaLeft": 68.7,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Engulfing Flames"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 10,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 420271832,
+    "sources": [
+     [
+      "Sulfuras",
+      617.4
+     ],
+     [
+      "Автоатака",
+      324.8
+     ],
+     [
+      "Burning Heart",
+      308.2
+     ],
+     [
+      "Dragon Strike",
+      248.6
+     ],
+     [
+      "Engulfing Flames",
+      182.0
+     ],
+     [
+      "Cleansing Fire",
+      150.6
+     ],
+     [
+      "Blazing Shield",
+      78.8
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      18.8
+     ],
+     [
+      "Sulfuras (удар)",
+      13.3
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "5.95",
+      "Lifebinder"
+     ],
+     [
+      "6.85",
+      "Dragon Strike"
+     ],
+     [
+      "7.30",
+      "Cleansing Fire"
+     ],
+     [
+      "8.09",
+      "Blazing Shield"
+     ],
+     [
+      "11.45",
+      "Lifebinder"
+     ],
+     [
+      "12.35",
+      "Dragon Strike"
+     ],
+     [
+      "13.59",
+      "Cleansing Fire"
+     ],
+     [
+      "14.37",
+      "Blazing Shield"
+     ],
+     [
+      "16.95",
+      "Lifebinder"
+     ],
+     [
+      "17.85",
+      "Dragon Strike"
+     ],
+     [
+      "19.87",
+      "Cleansing Fire"
+     ],
+     [
+      "20.66",
+      "Blazing Shield"
+     ],
+     [
+      "22.45",
+      "Lifebinder"
+     ],
+     [
+      "23.35",
+      "Dragon Strike"
+     ],
+     [
+      "26.16",
+      "Cleansing Fire"
+     ],
+     [
+      "26.94",
+      "Blazing Shield"
+     ],
+     [
+      "27.95",
+      "Lifebinder"
+     ],
+     [
+      "28.85",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "157"
+     ],
+     [
+      "Ловкость",
+      "42"
+     ],
+     [
+      "Интеллект",
+      "58"
+     ],
+     [
+      "Урон автоатаки",
+      "183.8"
+     ],
+     [
+      "Potency",
+      "18.0"
+     ],
+     [
+      "Mastery",
+      "25"
+     ],
+     [
+      "Шанс крита",
+      "12%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "40.0%"
+     ],
+     [
+      "Скорость атаки",
+      "91.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+18%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "2655"
+     ],
+     [
+      "Броня",
+      "12.2"
+     ],
+     [
+      "Мана макс.",
+      "526"
+     ],
+     [
+      "Реген маны",
+      "5.60/с"
+     ],
+     [
+      "Мана в конце",
+      "69%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.04 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "9"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1893.9,
+     "Draconic Scales": 1907.6,
+     "Alexstrasza's Gift": 1942.4,
+     "Burning Heart": 1942.4,
+     "Gift of Life": 1904.0,
+     "Engulfing Flames": 1942.4,
+     "Explosive Impact": 1743.5,
+     "Blazing Strikes": 1883.5
+    },
+    "glyphDps": {
+     "Fortitude": 1942.4,
+     "Unsealed Power": 1942.4,
+     "Fortune": 1763.9,
+     "Supremacy": 1778.6,
+     "Arc Striking": 1759.1,
+     "Battle Frenzy": 1788.7,
+     "Hellfire": 1759.1,
+     "Thunder": 1759.1,
+     "Blood Violence": 1759.1,
+     "Animosity": 1741.1,
+     "Glass Cannon": 1942.4,
+     "Mindhaste": 1762.3
+    }
+   },
+   {
+    "farm_dps": 1942.3,
+    "dps": 1942.3,
+    "total": 58268,
+    "manaLeft": 78.9,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 3,
+     "damage": 20,
+     "crit": 7,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 468129911,
+    "sources": [
+     [
+      "Sulfuras",
+      591.1
+     ],
+     [
+      "Автоатака",
+      399.5
+     ],
+     [
+      "Всплеск огня",
+      294.8
+     ],
+     [
+      "Burning Heart",
+      258.2
+     ],
+     [
+      "Dragon Strike",
+      181.0
+     ],
+     [
+      "Cleansing Fire",
+      112.5
+     ],
+     [
+      "Blazing Shield",
+      71.7
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      18.0
+     ],
+     [
+      "Sulfuras (удар)",
+      15.4
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "8.21",
+      "Lifebinder"
+     ],
+     [
+      "9.11",
+      "Dragon Strike"
+     ],
+     [
+      "9.77",
+      "Cleansing Fire"
+     ],
+     [
+      "10.67",
+      "Blazing Shield"
+     ],
+     [
+      "15.98",
+      "Lifebinder"
+     ],
+     [
+      "16.88",
+      "Dragon Strike"
+     ],
+     [
+      "18.65",
+      "Cleansing Fire"
+     ],
+     [
+      "19.55",
+      "Blazing Shield"
+     ],
+     [
+      "23.74",
+      "Lifebinder"
+     ],
+     [
+      "24.64",
+      "Dragon Strike"
+     ],
+     [
+      "27.52",
+      "Cleansing Fire"
+     ],
+     [
+      "28.42",
+      "Blazing Shield"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "210"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "243.5"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "44%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.15"
+     ],
+     [
+      "Спешка",
+      "10.0%"
+     ],
+     [
+      "Скорость атаки",
+      "79.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+0%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "3450"
+     ],
+     [
+      "Броня",
+      "10.7"
+     ],
+     [
+      "Мана макс.",
+      "521"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "79%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.11 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "3"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1857.3,
+     "Draconic Scales": 1846.5,
+     "Alexstrasza's Gift": 1942.3,
+     "Burning Heart": 1942.3,
+     "Gift of Life": 1857.7,
+     "Engulfing Flames": 1876.5,
+     "Explosive Impact": 1817.2,
+     "Blazing Strikes": 1942.3
+    },
+    "glyphDps": {
+     "Fortitude": 1942.3,
+     "Unsealed Power": 1885.2,
+     "Fortune": 1734.0,
+     "Supremacy": 1729.4,
+     "Arc Striking": 1729.4,
+     "Battle Frenzy": 1812.7,
+     "Hellfire": 1729.4,
+     "Thunder": 1729.4,
+     "Blood Violence": 1729.4,
+     "Animosity": 1942.3,
+     "Glass Cannon": 1942.3,
+     "Mindhaste": 1790.3
+    }
+   },
+   {
+    "farm_dps": 1938.7,
+    "dps": 1938.7,
+    "total": 58160,
+    "manaLeft": 80.3,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Thorim's Hand",
+      "code": "I0IQ",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Engulfing Flames"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 9,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 420332890,
+    "sources": [
+     [
+      "Sulfuras",
+      667.6
+     ],
+     [
+      "Автоатака",
+      347.1
+     ],
+     [
+      "Burning Heart",
+      308.2
+     ],
+     [
+      "Dragon Strike",
+      262.8
+     ],
+     [
+      "Cleansing Fire",
+      126.9
+     ],
+     [
+      "Engulfing Flames",
+      113.5
+     ],
+     [
+      "Blazing Shield",
+      82.6
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      18.5
+     ],
+     [
+      "Sulfuras (удар)",
+      11.4
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "7.39",
+      "Lifebinder"
+     ],
+     [
+      "8.29",
+      "Dragon Strike"
+     ],
+     [
+      "8.83",
+      "Cleansing Fire"
+     ],
+     [
+      "9.73",
+      "Blazing Shield"
+     ],
+     [
+      "14.32",
+      "Lifebinder"
+     ],
+     [
+      "15.22",
+      "Dragon Strike"
+     ],
+     [
+      "16.76",
+      "Cleansing Fire"
+     ],
+     [
+      "17.66",
+      "Blazing Shield"
+     ],
+     [
+      "21.26",
+      "Lifebinder"
+     ],
+     [
+      "22.16",
+      "Dragon Strike"
+     ],
+     [
+      "24.68",
+      "Cleansing Fire"
+     ],
+     [
+      "25.58",
+      "Blazing Shield"
+     ],
+     [
+      "28.20",
+      "Lifebinder"
+     ],
+     [
+      "29.10",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "165"
+     ],
+     [
+      "Ловкость",
+      "37"
+     ],
+     [
+      "Интеллект",
+      "53"
+     ],
+     [
+      "Урон автоатаки",
+      "169.8"
+     ],
+     [
+      "Potency",
+      "4.5"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "50%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "11.0%"
+     ],
+     [
+      "Скорость атаки",
+      "57.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+18%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "2775"
+     ],
+     [
+      "Броня",
+      "11.7"
+     ],
+     [
+      "Мана макс.",
+      "591"
+     ],
+     [
+      "Реген маны",
+      "5.20/с"
+     ],
+     [
+      "Мана в конце",
+      "80%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.27 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "9"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1866.0,
+     "Draconic Scales": 1880.3,
+     "Alexstrasza's Gift": 1938.7,
+     "Burning Heart": 1938.7,
+     "Gift of Life": 1880.9,
+     "Engulfing Flames": 1938.7,
+     "Explosive Impact": 1781.2,
+     "Blazing Strikes": 1860.4
+    },
+    "glyphDps": {
+     "Fortitude": 1938.7,
+     "Unsealed Power": 1938.7,
+     "Fortune": 1757.0,
+     "Supremacy": 1770.4,
+     "Arc Striking": 1752.5,
+     "Battle Frenzy": 1641.1,
+     "Hellfire": 1752.5,
+     "Thunder": 1752.5,
+     "Blood Violence": 1752.5,
+     "Animosity": 1922.6,
+     "Glass Cannon": 1938.7,
+     "Mindhaste": 1674.4
+    }
+   },
+   {
+    "farm_dps": 1938.6,
+    "dps": 1938.6,
+    "total": 58158,
+    "manaLeft": 56.1,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Engulfing Flames"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 8,
+     "crit": 1,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 450650160,
+    "sources": [
+     [
+      "Sulfuras",
+      666.9
+     ],
+     [
+      "Автоатака",
+      312.6
+     ],
+     [
+      "Burning Heart",
+      281.0
+     ],
+     [
+      "Dragon Strike",
+      225.1
+     ],
+     [
+      "Engulfing Flames",
+      180.7
+     ],
+     [
+      "Cleansing Fire",
+      154.4
+     ],
+     [
+      "Blazing Shield",
+      84.0
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      20.1
+     ],
+     [
+      "Sulfuras (удар)",
+      13.7
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.26",
+      "Lifebinder"
+     ],
+     [
+      "7.16",
+      "Dragon Strike"
+     ],
+     [
+      "7.61",
+      "Cleansing Fire"
+     ],
+     [
+      "8.44",
+      "Blazing Shield"
+     ],
+     [
+      "12.07",
+      "Lifebinder"
+     ],
+     [
+      "12.97",
+      "Dragon Strike"
+     ],
+     [
+      "14.25",
+      "Cleansing Fire"
+     ],
+     [
+      "15.08",
+      "Blazing Shield"
+     ],
+     [
+      "17.88",
+      "Lifebinder"
+     ],
+     [
+      "18.78",
+      "Dragon Strike"
+     ],
+     [
+      "20.89",
+      "Cleansing Fire"
+     ],
+     [
+      "21.72",
+      "Blazing Shield"
+     ],
+     [
+      "23.69",
+      "Lifebinder"
+     ],
+     [
+      "24.59",
+      "Dragon Strike"
+     ],
+     [
+      "27.53",
+      "Cleansing Fire"
+     ],
+     [
+      "28.36",
+      "Blazing Shield"
+     ],
+     [
+      "29.50",
+      "Lifebinder"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "197"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "186.8"
+     ],
+     [
+      "Potency",
+      "26.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "1%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "47.0%"
+     ],
+     [
+      "Скорость атаки",
+      "117.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+18%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3255"
+     ],
+     [
+      "Броня",
+      "10.7"
+     ],
+     [
+      "Мана макс.",
+      "421"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "56%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "0.92 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1884.4,
+     "Draconic Scales": 1888.6,
+     "Alexstrasza's Gift": 1938.6,
+     "Burning Heart": 1938.6,
+     "Gift of Life": 1916.9,
+     "Engulfing Flames": 1938.6,
+     "Explosive Impact": 1724.7,
+     "Blazing Strikes": 1838.8
+    },
+    "glyphDps": {
+     "Fortitude": 1938.6,
+     "Unsealed Power": 1938.6,
+     "Fortune": 1758.3,
+     "Supremacy": 1782.3,
+     "Arc Striking": 1753.2,
+     "Battle Frenzy": 1753.6,
+     "Hellfire": 1753.2,
+     "Thunder": 1753.2,
+     "Blood Violence": 1753.2,
+     "Animosity": 1791.0,
+     "Glass Cannon": 1938.6,
+     "Mindhaste": 1819.1
+    }
+   },
+   {
+    "farm_dps": 1936.8,
+    "dps": 1936.8,
+    "total": 58103,
+    "manaLeft": 67.4,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Engulfing Flames"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 467248295,
+    "sources": [
+     [
+      "Sulfuras",
+      561.7
+     ],
+     [
+      "Автоатака",
+      317.4
+     ],
+     [
+      "Burning Heart",
+      258.2
+     ],
+     [
+      "Всплеск огня",
+      242.5
+     ],
+     [
+      "Dragon Strike",
+      212.7
+     ],
+     [
+      "Engulfing Flames",
+      133.7
+     ],
+     [
+      "Cleansing Fire",
+      108.1
+     ],
+     [
+      "Blazing Shield",
+      76.7
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      15.2
+     ],
+     [
+      "Sulfuras (удар)",
+      10.6
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.47",
+      "Lifebinder"
+     ],
+     [
+      "7.37",
+      "Dragon Strike"
+     ],
+     [
+      "7.82",
+      "Cleansing Fire"
+     ],
+     [
+      "8.68",
+      "Blazing Shield"
+     ],
+     [
+      "12.48",
+      "Lifebinder"
+     ],
+     [
+      "13.38",
+      "Dragon Strike"
+     ],
+     [
+      "14.69",
+      "Cleansing Fire"
+     ],
+     [
+      "15.55",
+      "Blazing Shield"
+     ],
+     [
+      "18.50",
+      "Lifebinder"
+     ],
+     [
+      "19.40",
+      "Dragon Strike"
+     ],
+     [
+      "21.57",
+      "Cleansing Fire"
+     ],
+     [
+      "22.43",
+      "Blazing Shield"
+     ],
+     [
+      "24.51",
+      "Lifebinder"
+     ],
+     [
+      "25.41",
+      "Dragon Strike"
+     ],
+     [
+      "28.44",
+      "Cleansing Fire"
+     ],
+     [
+      "29.30",
+      "Blazing Shield"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "155"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "162.2"
+     ],
+     [
+      "Potency",
+      "13.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "52%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.15"
+     ],
+     [
+      "Спешка",
+      "28.0%"
+     ],
+     [
+      "Скорость атаки",
+      "85.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+0%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "2625"
+     ],
+     [
+      "Броня",
+      "10.7"
+     ],
+     [
+      "Мана макс.",
+      "521"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "67%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.08 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "3"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1888.9,
+     "Draconic Scales": 1908.0,
+     "Alexstrasza's Gift": 1936.8,
+     "Burning Heart": 1936.8,
+     "Gift of Life": 1894.0,
+     "Engulfing Flames": 1936.8,
+     "Explosive Impact": 1783.9,
+     "Blazing Strikes": 1874.5
+    },
+    "glyphDps": {
+     "Fortitude": 1955.4,
+     "Unsealed Power": 1955.4,
+     "Fortune": 1792.7,
+     "Supremacy": 1810.1,
+     "Arc Striking": 1788.8,
+     "Battle Frenzy": 1789.2,
+     "Hellfire": 1788.8,
+     "Thunder": 1788.8,
+     "Blood Violence": 1788.8,
+     "Animosity": 1936.8,
+     "Glass Cannon": 1955.4,
+     "Mindhaste": 1874.0
+    }
+   },
+   {
+    "farm_dps": 1936.6,
+    "dps": 1936.6,
+    "total": 58099,
+    "manaLeft": 52.5,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Engulfing Flames"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 10,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 420331169,
+    "sources": [
+     [
+      "Sulfuras",
+      615.4
+     ],
+     [
+      "Автоатака",
+      321.2
+     ],
+     [
+      "Burning Heart",
+      308.2
+     ],
+     [
+      "Dragon Strike",
+      263.9
+     ],
+     [
+      "Engulfing Flames",
+      167.1
+     ],
+     [
+      "Cleansing Fire",
+      148.5
+     ],
+     [
+      "Blazing Shield",
+      80.7
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      18.5
+     ],
+     [
+      "Sulfuras (удар)",
+      13.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "5.83",
+      "Lifebinder"
+     ],
+     [
+      "6.73",
+      "Dragon Strike"
+     ],
+     [
+      "7.18",
+      "Cleansing Fire"
+     ],
+     [
+      "7.95",
+      "Blazing Shield"
+     ],
+     [
+      "11.22",
+      "Lifebinder"
+     ],
+     [
+      "12.12",
+      "Dragon Strike"
+     ],
+     [
+      "13.34",
+      "Cleansing Fire"
+     ],
+     [
+      "14.11",
+      "Blazing Shield"
+     ],
+     [
+      "16.60",
+      "Lifebinder"
+     ],
+     [
+      "17.50",
+      "Dragon Strike"
+     ],
+     [
+      "19.49",
+      "Cleansing Fire"
+     ],
+     [
+      "20.26",
+      "Blazing Shield"
+     ],
+     [
+      "21.99",
+      "Lifebinder"
+     ],
+     [
+      "22.89",
+      "Dragon Strike"
+     ],
+     [
+      "25.65",
+      "Cleansing Fire"
+     ],
+     [
+      "26.42",
+      "Blazing Shield"
+     ],
+     [
+      "27.37",
+      "Lifebinder"
+     ],
+     [
+      "28.27",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "154"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "181.5"
+     ],
+     [
+      "Potency",
+      "18.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "12%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "43.0%"
+     ],
+     [
+      "Скорость атаки",
+      "85.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+28%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "2610"
+     ],
+     [
+      "Броня",
+      "10.7"
+     ],
+     [
+      "Мана макс.",
+      "421"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "52%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.08 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "9"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1888.7,
+     "Draconic Scales": 1894.2,
+     "Alexstrasza's Gift": 1936.6,
+     "Burning Heart": 1936.6,
+     "Gift of Life": 1898.5,
+     "Engulfing Flames": 1936.6,
+     "Explosive Impact": 1825.2,
+     "Blazing Strikes": 1851.2
+    },
+    "glyphDps": {
+     "Fortitude": 1936.6,
+     "Unsealed Power": 1936.6,
+     "Fortune": 1768.3,
+     "Supremacy": 1790.6,
+     "Arc Striking": 1763.5,
+     "Battle Frenzy": 1773.4,
+     "Hellfire": 1763.5,
+     "Thunder": 1763.5,
+     "Blood Violence": 1763.5,
+     "Animosity": 1802.2,
+     "Glass Cannon": 1936.6,
+     "Mindhaste": 1657.0
+    }
    }
   ],
   "drop": [
@@ -8937,6 +14985,2958 @@
      "Animosity": 1376.8,
      "Glass Cannon": 1471.8,
      "Mindhaste": 1354.8
+    }
+   },
+   {
+    "farm_dps": 1471.3,
+    "dps": 1471.3,
+    "total": 44139,
+    "manaLeft": 86.3,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Drake Sword",
+      "code": "I0TL",
+      "source": "drop"
+     },
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "Aruthar's Warblade",
+      "code": "I0J2",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Engulfing Flames"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 9,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 357150903,
+    "sources": [
+     [
+      "Sulfuras",
+      458.8
+     ],
+     [
+      "Burning Heart",
+      191.1
+     ],
+     [
+      "Dragon Strike",
+      186.6
+     ],
+     [
+      "Dragon Strike (Drake Sword)",
+      178.3
+     ],
+     [
+      "Автоатака",
+      174.4
+     ],
+     [
+      "Engulfing Flames",
+      121.9
+     ],
+     [
+      "Cleansing Fire",
+      84.9
+     ],
+     [
+      "Blazing Shield",
+      53.9
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      12.3
+     ],
+     [
+      "Sulfuras (удар)",
+      9.0
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.87",
+      "Lifebinder"
+     ],
+     [
+      "7.77",
+      "Dragon Strike"
+     ],
+     [
+      "8.24",
+      "Cleansing Fire"
+     ],
+     [
+      "9.14",
+      "Blazing Shield"
+     ],
+     [
+      "13.29",
+      "Lifebinder"
+     ],
+     [
+      "14.19",
+      "Dragon Strike"
+     ],
+     [
+      "15.58",
+      "Cleansing Fire"
+     ],
+     [
+      "16.48",
+      "Blazing Shield"
+     ],
+     [
+      "19.72",
+      "Lifebinder"
+     ],
+     [
+      "20.62",
+      "Dragon Strike"
+     ],
+     [
+      "22.92",
+      "Cleansing Fire"
+     ],
+     [
+      "23.82",
+      "Blazing Shield"
+     ],
+     [
+      "26.14",
+      "Lifebinder"
+     ],
+     [
+      "27.04",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "171"
+     ],
+     [
+      "Ловкость",
+      "52"
+     ],
+     [
+      "Интеллект",
+      "62"
+     ],
+     [
+      "Урон автоатаки",
+      "152.2"
+     ],
+     [
+      "Potency",
+      "16.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "13%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "9.0%"
+     ],
+     [
+      "Скорость атаки",
+      "94.8%"
+     ],
+     [
+      "Удача",
+      "5%"
+     ],
+     [
+      "Магический бонус",
+      "+60%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "2880"
+     ],
+     [
+      "Броня",
+      "9.2"
+     ],
+     [
+      "Мана макс.",
+      "554"
+     ],
+     [
+      "Реген маны",
+      "6.56/с"
+     ],
+     [
+      "Мана в конце",
+      "86%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.03 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1419.4,
+     "Draconic Scales": 1419.4,
+     "Alexstrasza's Gift": 1471.3,
+     "Burning Heart": 1471.3,
+     "Gift of Life": 1417.8,
+     "Engulfing Flames": 1471.3,
+     "Explosive Impact": 1259.6,
+     "Blazing Strikes": 1375.5
+    },
+    "glyphDps": {
+     "Fortitude": 1471.3,
+     "Unsealed Power": 1471.3,
+     "Fortune": 1357.9,
+     "Supremacy": 1352.2,
+     "Arc Striking": 1332.3,
+     "Battle Frenzy": 1332.3,
+     "Hellfire": 1332.3,
+     "Thunder": 1332.3,
+     "Blood Violence": 1332.3,
+     "Animosity": 1369.7,
+     "Glass Cannon": 1471.3,
+     "Mindhaste": 1325.6
+    }
+   },
+   {
+    "farm_dps": 1463.9,
+    "dps": 1463.9,
+    "total": 43917,
+    "manaLeft": 82.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Drake Sword",
+      "code": "I0TL",
+      "source": "drop"
+     },
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Bonecrackers",
+      "code": "I0D6",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Ogre Warclub",
+      "code": "war2",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Engulfing Flames"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 2,
+     "damage": 0,
+     "crit": 7,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 357161260,
+    "sources": [
+     [
+      "Sulfuras",
+      481.5
+     ],
+     [
+      "Burning Heart",
+      191.1
+     ],
+     [
+      "Dragon Strike",
+      177.9
+     ],
+     [
+      "Автоатака",
+      172.6
+     ],
+     [
+      "Dragon Strike (Drake Sword)",
+      166.9
+     ],
+     [
+      "Engulfing Flames",
+      97.7
+     ],
+     [
+      "Cleansing Fire",
+      93.1
+     ],
+     [
+      "Blazing Shield",
+      60.2
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      13.5
+     ],
+     [
+      "Sulfuras (удар)",
+      9.4
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.87",
+      "Lifebinder"
+     ],
+     [
+      "7.77",
+      "Dragon Strike"
+     ],
+     [
+      "8.24",
+      "Cleansing Fire"
+     ],
+     [
+      "9.14",
+      "Blazing Shield"
+     ],
+     [
+      "13.29",
+      "Lifebinder"
+     ],
+     [
+      "14.19",
+      "Dragon Strike"
+     ],
+     [
+      "15.58",
+      "Cleansing Fire"
+     ],
+     [
+      "16.48",
+      "Blazing Shield"
+     ],
+     [
+      "19.72",
+      "Lifebinder"
+     ],
+     [
+      "20.62",
+      "Dragon Strike"
+     ],
+     [
+      "22.92",
+      "Cleansing Fire"
+     ],
+     [
+      "23.82",
+      "Blazing Shield"
+     ],
+     [
+      "26.14",
+      "Lifebinder"
+     ],
+     [
+      "27.04",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "194"
+     ],
+     [
+      "Ловкость",
+      "52"
+     ],
+     [
+      "Интеллект",
+      "62"
+     ],
+     [
+      "Урон автоатаки",
+      "159.5"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "11%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "9.0%"
+     ],
+     [
+      "Скорость атаки",
+      "87.8%"
+     ],
+     [
+      "Удача",
+      "5%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3225"
+     ],
+     [
+      "Броня",
+      "14.2"
+     ],
+     [
+      "Мана макс.",
+      "554"
+     ],
+     [
+      "Реген маны",
+      "5.92/с"
+     ],
+     [
+      "Мана в конце",
+      "83%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.06 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1414.2,
+     "Draconic Scales": 1427.6,
+     "Alexstrasza's Gift": 1463.9,
+     "Burning Heart": 1463.9,
+     "Gift of Life": 1407.8,
+     "Engulfing Flames": 1463.9,
+     "Explosive Impact": 1243.9,
+     "Blazing Strikes": 1381.4
+    },
+    "glyphDps": {
+     "Fortitude": 1463.9,
+     "Unsealed Power": 1463.9,
+     "Fortune": 1342.1,
+     "Supremacy": 1333.7,
+     "Arc Striking": 1317.9,
+     "Battle Frenzy": 1317.9,
+     "Hellfire": 1317.9,
+     "Thunder": 1317.9,
+     "Blood Violence": 1317.9,
+     "Animosity": 1354.1,
+     "Glass Cannon": 1463.9,
+     "Mindhaste": 1344.1
+    }
+   },
+   {
+    "farm_dps": 1457.7,
+    "dps": 1457.7,
+    "total": 43731,
+    "manaLeft": 82.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Drake Sword",
+      "code": "I0TL",
+      "source": "drop"
+     },
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Blackrock Hammer",
+      "code": "soul",
+      "source": "drop"
+     },
+     {
+      "name": "Ogre Warclub",
+      "code": "war2",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 9,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 357127337,
+    "sources": [
+     [
+      "Sulfuras",
+      469.1
+     ],
+     [
+      "Автоатака",
+      275.1
+     ],
+     [
+      "Burning Heart",
+      191.1
+     ],
+     [
+      "Dragon Strike (Drake Sword)",
+      187.6
+     ],
+     [
+      "Dragon Strike",
+      165.7
+     ],
+     [
+      "Cleansing Fire",
+      91.3
+     ],
+     [
+      "Blazing Shield",
+      51.3
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      13.3
+     ],
+     [
+      "Sulfuras (удар)",
+      13.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.87",
+      "Lifebinder"
+     ],
+     [
+      "7.77",
+      "Dragon Strike"
+     ],
+     [
+      "8.24",
+      "Cleansing Fire"
+     ],
+     [
+      "9.14",
+      "Blazing Shield"
+     ],
+     [
+      "13.29",
+      "Lifebinder"
+     ],
+     [
+      "14.19",
+      "Dragon Strike"
+     ],
+     [
+      "15.58",
+      "Cleansing Fire"
+     ],
+     [
+      "16.48",
+      "Blazing Shield"
+     ],
+     [
+      "19.72",
+      "Lifebinder"
+     ],
+     [
+      "20.62",
+      "Dragon Strike"
+     ],
+     [
+      "22.92",
+      "Cleansing Fire"
+     ],
+     [
+      "23.82",
+      "Blazing Shield"
+     ],
+     [
+      "26.14",
+      "Lifebinder"
+     ],
+     [
+      "27.04",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "189"
+     ],
+     [
+      "Ловкость",
+      "52"
+     ],
+     [
+      "Интеллект",
+      "62"
+     ],
+     [
+      "Урон автоатаки",
+      "223.8"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "34%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "9.0%"
+     ],
+     [
+      "Скорость атаки",
+      "88.8%"
+     ],
+     [
+      "Удача",
+      "5%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3150"
+     ],
+     [
+      "Броня",
+      "9.2"
+     ],
+     [
+      "Мана макс.",
+      "554"
+     ],
+     [
+      "Реген маны",
+      "5.92/с"
+     ],
+     [
+      "Мана в конце",
+      "83%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.06 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1393.8,
+     "Draconic Scales": 1374.6,
+     "Alexstrasza's Gift": 1457.7,
+     "Burning Heart": 1457.7,
+     "Gift of Life": 1387.9,
+     "Engulfing Flames": 1390.3,
+     "Explosive Impact": 1300.7,
+     "Blazing Strikes": 1457.7
+    },
+    "glyphDps": {
+     "Fortitude": 1457.7,
+     "Unsealed Power": 1457.7,
+     "Fortune": 1336.8,
+     "Supremacy": 1309.5,
+     "Arc Striking": 1309.5,
+     "Battle Frenzy": 1309.5,
+     "Hellfire": 1309.5,
+     "Thunder": 1309.5,
+     "Blood Violence": 1309.5,
+     "Animosity": 1357.1,
+     "Glass Cannon": 1457.7,
+     "Mindhaste": 1324.6
+    }
+   },
+   {
+    "farm_dps": 1456.5,
+    "dps": 1456.5,
+    "total": 43695,
+    "manaLeft": 86.3,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Drake Sword",
+      "code": "I0TL",
+      "source": "drop"
+     },
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Bonecrackers",
+      "code": "I0D6",
+      "source": "drop"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Engulfing Flames"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 9,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 357162535,
+    "sources": [
+     [
+      "Sulfuras",
+      472.3
+     ],
+     [
+      "Burning Heart",
+      191.1
+     ],
+     [
+      "Dragon Strike",
+      182.9
+     ],
+     [
+      "Dragon Strike (Drake Sword)",
+      174.7
+     ],
+     [
+      "Автоатака",
+      161.7
+     ],
+     [
+      "Engulfing Flames",
+      105.7
+     ],
+     [
+      "Cleansing Fire",
+      86.7
+     ],
+     [
+      "Blazing Shield",
+      60.3
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      12.6
+     ],
+     [
+      "Sulfuras (удар)",
+      8.6
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.87",
+      "Lifebinder"
+     ],
+     [
+      "7.77",
+      "Dragon Strike"
+     ],
+     [
+      "8.24",
+      "Cleansing Fire"
+     ],
+     [
+      "9.14",
+      "Blazing Shield"
+     ],
+     [
+      "13.29",
+      "Lifebinder"
+     ],
+     [
+      "14.19",
+      "Dragon Strike"
+     ],
+     [
+      "15.58",
+      "Cleansing Fire"
+     ],
+     [
+      "16.48",
+      "Blazing Shield"
+     ],
+     [
+      "19.72",
+      "Lifebinder"
+     ],
+     [
+      "20.62",
+      "Dragon Strike"
+     ],
+     [
+      "22.92",
+      "Cleansing Fire"
+     ],
+     [
+      "23.82",
+      "Blazing Shield"
+     ],
+     [
+      "26.14",
+      "Lifebinder"
+     ],
+     [
+      "27.04",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "176"
+     ],
+     [
+      "Ловкость",
+      "52"
+     ],
+     [
+      "Интеллект",
+      "62"
+     ],
+     [
+      "Урон автоатаки",
+      "146.0"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "13%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "9.0%"
+     ],
+     [
+      "Скорость атаки",
+      "91.8%"
+     ],
+     [
+      "Удача",
+      "5%"
+     ],
+     [
+      "Магический бонус",
+      "+60%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "2955"
+     ],
+     [
+      "Броня",
+      "14.2"
+     ],
+     [
+      "Мана макс.",
+      "554"
+     ],
+     [
+      "Реген маны",
+      "6.56/с"
+     ],
+     [
+      "Мана в конце",
+      "86%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.04 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1407.1,
+     "Draconic Scales": 1425.2,
+     "Alexstrasza's Gift": 1456.5,
+     "Burning Heart": 1456.5,
+     "Gift of Life": 1399.3,
+     "Engulfing Flames": 1456.5,
+     "Explosive Impact": 1214.5,
+     "Blazing Strikes": 1365.7
+    },
+    "glyphDps": {
+     "Fortitude": 1456.5,
+     "Unsealed Power": 1456.5,
+     "Fortune": 1345.0,
+     "Supremacy": 1337.1,
+     "Arc Striking": 1319.8,
+     "Battle Frenzy": 1319.8,
+     "Hellfire": 1319.8,
+     "Thunder": 1319.8,
+     "Blood Violence": 1319.8,
+     "Animosity": 1355.4,
+     "Glass Cannon": 1456.5,
+     "Mindhaste": 1315.7
+    }
+   },
+   {
+    "farm_dps": 1454.8,
+    "dps": 1454.8,
+    "total": 43643,
+    "manaLeft": 82.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Drake Sword",
+      "code": "I0TL",
+      "source": "drop"
+     },
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Imperial Ruby",
+      "code": "I0HE",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Ogre Warclub",
+      "code": "war2",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 9,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 357141185,
+    "sources": [
+     [
+      "Sulfuras",
+      493.9
+     ],
+     [
+      "Автоатака",
+      214.5
+     ],
+     [
+      "Dragon Strike (Drake Sword)",
+      195.5
+     ],
+     [
+      "Burning Heart",
+      191.1
+     ],
+     [
+      "Dragon Strike",
+      179.4
+     ],
+     [
+      "Cleansing Fire",
+      101.4
+     ],
+     [
+      "Blazing Shield",
+      53.5
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      14.7
+     ],
+     [
+      "Sulfuras (удар)",
+      10.7
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.87",
+      "Lifebinder"
+     ],
+     [
+      "7.77",
+      "Dragon Strike"
+     ],
+     [
+      "8.24",
+      "Cleansing Fire"
+     ],
+     [
+      "9.14",
+      "Blazing Shield"
+     ],
+     [
+      "13.29",
+      "Lifebinder"
+     ],
+     [
+      "14.19",
+      "Dragon Strike"
+     ],
+     [
+      "15.58",
+      "Cleansing Fire"
+     ],
+     [
+      "16.48",
+      "Blazing Shield"
+     ],
+     [
+      "19.72",
+      "Lifebinder"
+     ],
+     [
+      "20.62",
+      "Dragon Strike"
+     ],
+     [
+      "22.92",
+      "Cleansing Fire"
+     ],
+     [
+      "23.82",
+      "Blazing Shield"
+     ],
+     [
+      "26.14",
+      "Lifebinder"
+     ],
+     [
+      "27.04",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "199"
+     ],
+     [
+      "Ловкость",
+      "52"
+     ],
+     [
+      "Интеллект",
+      "62"
+     ],
+     [
+      "Урон автоатаки",
+      "181.2"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "29%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "9.0%"
+     ],
+     [
+      "Скорость атаки",
+      "88.8%"
+     ],
+     [
+      "Удача",
+      "5%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3575"
+     ],
+     [
+      "Броня",
+      "9.2"
+     ],
+     [
+      "Мана макс.",
+      "554"
+     ],
+     [
+      "Реген маны",
+      "5.92/с"
+     ],
+     [
+      "Мана в конце",
+      "83%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.06 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1392.7,
+     "Draconic Scales": 1373.5,
+     "Alexstrasza's Gift": 1454.8,
+     "Burning Heart": 1454.8,
+     "Gift of Life": 1387.4,
+     "Engulfing Flames": 1389.5,
+     "Explosive Impact": 1305.5,
+     "Blazing Strikes": 1454.8
+    },
+    "glyphDps": {
+     "Fortitude": 1454.8,
+     "Unsealed Power": 1454.8,
+     "Fortune": 1338.0,
+     "Supremacy": 1309.9,
+     "Arc Striking": 1309.9,
+     "Battle Frenzy": 1309.9,
+     "Hellfire": 1309.9,
+     "Thunder": 1309.9,
+     "Blood Violence": 1309.9,
+     "Animosity": 1351.4,
+     "Glass Cannon": 1454.8,
+     "Mindhaste": 1331.2
+    }
+   },
+   {
+    "farm_dps": 1454.0,
+    "dps": 1454.0,
+    "total": 43621,
+    "manaLeft": 82.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Drake Sword",
+      "code": "I0TL",
+      "source": "drop"
+     },
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Hand of Hatred",
+      "code": "sor3",
+      "source": "drop"
+     },
+     {
+      "name": "Ogre Warclub",
+      "code": "war2",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 9,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 357127353,
+    "sources": [
+     [
+      "Sulfuras",
+      506.3
+     ],
+     [
+      "Автоатака",
+      218.9
+     ],
+     [
+      "Burning Heart",
+      191.1
+     ],
+     [
+      "Dragon Strike (Drake Sword)",
+      188.5
+     ],
+     [
+      "Dragon Strike",
+      173.0
+     ],
+     [
+      "Cleansing Fire",
+      96.7
+     ],
+     [
+      "Blazing Shield",
+      54.6
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      14.0
+     ],
+     [
+      "Sulfuras (удар)",
+      10.9
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.87",
+      "Lifebinder"
+     ],
+     [
+      "7.77",
+      "Dragon Strike"
+     ],
+     [
+      "8.24",
+      "Cleansing Fire"
+     ],
+     [
+      "9.14",
+      "Blazing Shield"
+     ],
+     [
+      "13.29",
+      "Lifebinder"
+     ],
+     [
+      "14.19",
+      "Dragon Strike"
+     ],
+     [
+      "15.58",
+      "Cleansing Fire"
+     ],
+     [
+      "16.48",
+      "Blazing Shield"
+     ],
+     [
+      "19.72",
+      "Lifebinder"
+     ],
+     [
+      "20.62",
+      "Dragon Strike"
+     ],
+     [
+      "22.92",
+      "Cleansing Fire"
+     ],
+     [
+      "23.82",
+      "Blazing Shield"
+     ],
+     [
+      "26.14",
+      "Lifebinder"
+     ],
+     [
+      "27.04",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "204"
+     ],
+     [
+      "Ловкость",
+      "52"
+     ],
+     [
+      "Интеллект",
+      "62"
+     ],
+     [
+      "Урон автоатаки",
+      "185.0"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "29%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "9.0%"
+     ],
+     [
+      "Скорость атаки",
+      "88.8%"
+     ],
+     [
+      "Удача",
+      "5%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3375"
+     ],
+     [
+      "Броня",
+      "9.2"
+     ],
+     [
+      "Мана макс.",
+      "554"
+     ],
+     [
+      "Реген маны",
+      "5.92/с"
+     ],
+     [
+      "Мана в конце",
+      "83%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.06 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1393.3,
+     "Draconic Scales": 1374.1,
+     "Alexstrasza's Gift": 1454.0,
+     "Burning Heart": 1454.0,
+     "Gift of Life": 1387.9,
+     "Engulfing Flames": 1390.1,
+     "Explosive Impact": 1304.0,
+     "Blazing Strikes": 1454.0
+    },
+    "glyphDps": {
+     "Fortitude": 1454.0,
+     "Unsealed Power": 1454.0,
+     "Fortune": 1335.7,
+     "Supremacy": 1308.5,
+     "Arc Striking": 1308.5,
+     "Battle Frenzy": 1308.5,
+     "Hellfire": 1308.5,
+     "Thunder": 1308.5,
+     "Blood Violence": 1308.5,
+     "Animosity": 1350.0,
+     "Glass Cannon": 1454.0,
+     "Mindhaste": 1330.7
+    }
+   },
+   {
+    "farm_dps": 1454.0,
+    "dps": 1454.0,
+    "total": 43621,
+    "manaLeft": 91.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Drake Sword",
+      "code": "I0TL",
+      "source": "drop"
+     },
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Manual of Dark Arts",
+      "code": "I09J",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Ogre Warclub",
+      "code": "war2",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 9,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 357186860,
+    "sources": [
+     [
+      "Sulfuras",
+      506.3
+     ],
+     [
+      "Автоатака",
+      218.9
+     ],
+     [
+      "Burning Heart",
+      191.1
+     ],
+     [
+      "Dragon Strike (Drake Sword)",
+      188.5
+     ],
+     [
+      "Dragon Strike",
+      173.0
+     ],
+     [
+      "Cleansing Fire",
+      96.7
+     ],
+     [
+      "Blazing Shield",
+      54.6
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      14.0
+     ],
+     [
+      "Sulfuras (удар)",
+      10.9
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.87",
+      "Lifebinder"
+     ],
+     [
+      "7.77",
+      "Dragon Strike"
+     ],
+     [
+      "8.24",
+      "Cleansing Fire"
+     ],
+     [
+      "9.14",
+      "Blazing Shield"
+     ],
+     [
+      "13.29",
+      "Lifebinder"
+     ],
+     [
+      "14.19",
+      "Dragon Strike"
+     ],
+     [
+      "15.58",
+      "Cleansing Fire"
+     ],
+     [
+      "16.48",
+      "Blazing Shield"
+     ],
+     [
+      "19.72",
+      "Lifebinder"
+     ],
+     [
+      "20.62",
+      "Dragon Strike"
+     ],
+     [
+      "22.92",
+      "Cleansing Fire"
+     ],
+     [
+      "23.82",
+      "Blazing Shield"
+     ],
+     [
+      "26.14",
+      "Lifebinder"
+     ],
+     [
+      "27.04",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "204"
+     ],
+     [
+      "Ловкость",
+      "52"
+     ],
+     [
+      "Интеллект",
+      "77"
+     ],
+     [
+      "Урон автоатаки",
+      "185.0"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "29%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "9.0%"
+     ],
+     [
+      "Скорость атаки",
+      "88.8%"
+     ],
+     [
+      "Удача",
+      "5%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3375"
+     ],
+     [
+      "Броня",
+      "9.2"
+     ],
+     [
+      "Мана макс.",
+      "659"
+     ],
+     [
+      "Реген маны",
+      "7.12/с"
+     ],
+     [
+      "Мана в конце",
+      "91%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.06 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1393.3,
+     "Draconic Scales": 1374.1,
+     "Alexstrasza's Gift": 1454.0,
+     "Burning Heart": 1454.0,
+     "Gift of Life": 1387.9,
+     "Engulfing Flames": 1390.1,
+     "Explosive Impact": 1304.0,
+     "Blazing Strikes": 1454.0
+    },
+    "glyphDps": {
+     "Fortitude": 1454.0,
+     "Unsealed Power": 1454.0,
+     "Fortune": 1335.7,
+     "Supremacy": 1308.5,
+     "Arc Striking": 1308.5,
+     "Battle Frenzy": 1308.5,
+     "Hellfire": 1308.5,
+     "Thunder": 1308.5,
+     "Blood Violence": 1308.5,
+     "Animosity": 1350.0,
+     "Glass Cannon": 1454.0,
+     "Mindhaste": 1330.7
+    }
+   },
+   {
+    "farm_dps": 1454.0,
+    "dps": 1454.0,
+    "total": 43621,
+    "manaLeft": 82.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Drake Sword",
+      "code": "I0TL",
+      "source": "drop"
+     },
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Queen's Scepter",
+      "code": "I080",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Ogre Warclub",
+      "code": "war2",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 9,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 357197540,
+    "sources": [
+     [
+      "Sulfuras",
+      506.3
+     ],
+     [
+      "Автоатака",
+      218.9
+     ],
+     [
+      "Burning Heart",
+      191.1
+     ],
+     [
+      "Dragon Strike (Drake Sword)",
+      188.5
+     ],
+     [
+      "Dragon Strike",
+      173.0
+     ],
+     [
+      "Cleansing Fire",
+      96.7
+     ],
+     [
+      "Blazing Shield",
+      54.6
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      14.0
+     ],
+     [
+      "Sulfuras (удар)",
+      10.9
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.87",
+      "Lifebinder"
+     ],
+     [
+      "7.77",
+      "Dragon Strike"
+     ],
+     [
+      "8.24",
+      "Cleansing Fire"
+     ],
+     [
+      "9.14",
+      "Blazing Shield"
+     ],
+     [
+      "13.29",
+      "Lifebinder"
+     ],
+     [
+      "14.19",
+      "Dragon Strike"
+     ],
+     [
+      "15.58",
+      "Cleansing Fire"
+     ],
+     [
+      "16.48",
+      "Blazing Shield"
+     ],
+     [
+      "19.72",
+      "Lifebinder"
+     ],
+     [
+      "20.62",
+      "Dragon Strike"
+     ],
+     [
+      "22.92",
+      "Cleansing Fire"
+     ],
+     [
+      "23.82",
+      "Blazing Shield"
+     ],
+     [
+      "26.14",
+      "Lifebinder"
+     ],
+     [
+      "27.04",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "204"
+     ],
+     [
+      "Ловкость",
+      "52"
+     ],
+     [
+      "Интеллект",
+      "62"
+     ],
+     [
+      "Урон автоатаки",
+      "185.0"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "25"
+     ],
+     [
+      "Шанс крита",
+      "29%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "9.0%"
+     ],
+     [
+      "Скорость атаки",
+      "88.8%"
+     ],
+     [
+      "Удача",
+      "5%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3375"
+     ],
+     [
+      "Броня",
+      "9.2"
+     ],
+     [
+      "Мана макс.",
+      "554"
+     ],
+     [
+      "Реген маны",
+      "5.92/с"
+     ],
+     [
+      "Мана в конце",
+      "83%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.06 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1393.3,
+     "Draconic Scales": 1374.1,
+     "Alexstrasza's Gift": 1454.0,
+     "Burning Heart": 1454.0,
+     "Gift of Life": 1387.9,
+     "Engulfing Flames": 1395.7,
+     "Explosive Impact": 1304.0,
+     "Blazing Strikes": 1454.0
+    },
+    "glyphDps": {
+     "Fortitude": 1454.0,
+     "Unsealed Power": 1454.0,
+     "Fortune": 1335.7,
+     "Supremacy": 1308.5,
+     "Arc Striking": 1308.5,
+     "Battle Frenzy": 1308.5,
+     "Hellfire": 1308.5,
+     "Thunder": 1308.5,
+     "Blood Violence": 1308.5,
+     "Animosity": 1350.0,
+     "Glass Cannon": 1454.0,
+     "Mindhaste": 1330.7
+    }
+   },
+   {
+    "farm_dps": 1452.8,
+    "dps": 1452.8,
+    "total": 43584,
+    "manaLeft": 64.3,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Drake Sword",
+      "code": "I0TL",
+      "source": "drop"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "Imperial Ruby",
+      "code": "I0HE",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Ogre Warclub",
+      "code": "war2",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 1,
+     "damage": 8,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 350224509,
+    "sources": [
+     [
+      "Sulfuras",
+      499.1
+     ],
+     [
+      "Dragon Strike (Drake Sword)",
+      203.4
+     ],
+     [
+      "Автоатака",
+      200.6
+     ],
+     [
+      "Burning Heart",
+      191.1
+     ],
+     [
+      "Dragon Strike",
+      186.6
+     ],
+     [
+      "Cleansing Fire",
+      96.4
+     ],
+     [
+      "Blazing Shield",
+      51.6
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      14.0
+     ],
+     [
+      "Sulfuras (удар)",
+      10.0
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.87",
+      "Lifebinder"
+     ],
+     [
+      "7.77",
+      "Dragon Strike"
+     ],
+     [
+      "8.24",
+      "Cleansing Fire"
+     ],
+     [
+      "9.14",
+      "Blazing Shield"
+     ],
+     [
+      "13.29",
+      "Lifebinder"
+     ],
+     [
+      "14.19",
+      "Dragon Strike"
+     ],
+     [
+      "15.58",
+      "Cleansing Fire"
+     ],
+     [
+      "16.48",
+      "Blazing Shield"
+     ],
+     [
+      "19.72",
+      "Lifebinder"
+     ],
+     [
+      "20.62",
+      "Dragon Strike"
+     ],
+     [
+      "22.92",
+      "Cleansing Fire"
+     ],
+     [
+      "23.82",
+      "Blazing Shield"
+     ],
+     [
+      "26.14",
+      "Lifebinder"
+     ],
+     [
+      "27.04",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "186"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "37"
+     ],
+     [
+      "Урон автоатаки",
+      "169.5"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "29%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "9.0%"
+     ],
+     [
+      "Скорость атаки",
+      "88.8%"
+     ],
+     [
+      "Удача",
+      "5%"
+     ],
+     [
+      "Магический бонус",
+      "+60%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3365"
+     ],
+     [
+      "Броня",
+      "6.7"
+     ],
+     [
+      "Мана макс.",
+      "379"
+     ],
+     [
+      "Реген маны",
+      "4.56/с"
+     ],
+     [
+      "Мана в конце",
+      "64%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.06 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1391.4,
+     "Draconic Scales": 1369.3,
+     "Alexstrasza's Gift": 1452.8,
+     "Burning Heart": 1452.8,
+     "Gift of Life": 1386.0,
+     "Engulfing Flames": 1386.2,
+     "Explosive Impact": 1302.1,
+     "Blazing Strikes": 1452.8
+    },
+    "glyphDps": {
+     "Fortitude": 1452.8,
+     "Unsealed Power": 1452.8,
+     "Fortune": 1345.6,
+     "Supremacy": 1316.4,
+     "Arc Striking": 1316.4,
+     "Battle Frenzy": 1316.4,
+     "Hellfire": 1316.4,
+     "Thunder": 1316.4,
+     "Blood Violence": 1316.4,
+     "Animosity": 1357.1,
+     "Glass Cannon": 1452.8,
+     "Mindhaste": 1338.0
+    }
+   },
+   {
+    "farm_dps": 1452.7,
+    "dps": 1452.7,
+    "total": 43582,
+    "manaLeft": 82.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Drake Sword",
+      "code": "I0TL",
+      "source": "drop"
+     },
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Skull of Ravius",
+      "code": "I071",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Ogre Warclub",
+      "code": "war2",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 9,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 357226055,
+    "sources": [
+     [
+      "Sulfuras",
+      496.4
+     ],
+     [
+      "Автоатака",
+      215.4
+     ],
+     [
+      "Dragon Strike (Drake Sword)",
+      193.4
+     ],
+     [
+      "Burning Heart",
+      191.1
+     ],
+     [
+      "Dragon Strike",
+      177.5
+     ],
+     [
+      "Cleansing Fire",
+      100.0
+     ],
+     [
+      "Blazing Shield",
+      53.8
+     ],
+     [
+      "Cleansing Fire (от лечения)",
+      14.5
+     ],
+     [
+      "Sulfuras (удар)",
+      10.7
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Cleansing Fire"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.87",
+      "Lifebinder"
+     ],
+     [
+      "7.77",
+      "Dragon Strike"
+     ],
+     [
+      "8.24",
+      "Cleansing Fire"
+     ],
+     [
+      "9.14",
+      "Blazing Shield"
+     ],
+     [
+      "13.29",
+      "Lifebinder"
+     ],
+     [
+      "14.19",
+      "Dragon Strike"
+     ],
+     [
+      "15.58",
+      "Cleansing Fire"
+     ],
+     [
+      "16.48",
+      "Blazing Shield"
+     ],
+     [
+      "19.72",
+      "Lifebinder"
+     ],
+     [
+      "20.62",
+      "Dragon Strike"
+     ],
+     [
+      "22.92",
+      "Cleansing Fire"
+     ],
+     [
+      "23.82",
+      "Blazing Shield"
+     ],
+     [
+      "26.14",
+      "Lifebinder"
+     ],
+     [
+      "27.04",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "200"
+     ],
+     [
+      "Ловкость",
+      "52"
+     ],
+     [
+      "Интеллект",
+      "62"
+     ],
+     [
+      "Урон автоатаки",
+      "182.0"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "29%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "9.0%"
+     ],
+     [
+      "Скорость атаки",
+      "88.8%"
+     ],
+     [
+      "Удача",
+      "5%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3515"
+     ],
+     [
+      "Броня",
+      "9.2"
+     ],
+     [
+      "Мана макс.",
+      "554"
+     ],
+     [
+      "Реген маны",
+      "5.92/с"
+     ],
+     [
+      "Мана в конце",
+      "83%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.06 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 1391.1,
+     "Draconic Scales": 1371.9,
+     "Alexstrasza's Gift": 1452.7,
+     "Burning Heart": 1452.7,
+     "Gift of Life": 1385.8,
+     "Engulfing Flames": 1387.9,
+     "Explosive Impact": 1303.5,
+     "Blazing Strikes": 1452.7
+    },
+    "glyphDps": {
+     "Fortitude": 1452.7,
+     "Unsealed Power": 1452.7,
+     "Fortune": 1335.7,
+     "Supremacy": 1307.9,
+     "Arc Striking": 1307.9,
+     "Battle Frenzy": 1307.9,
+     "Hellfire": 1307.9,
+     "Thunder": 1307.9,
+     "Blood Violence": 1307.9,
+     "Animosity": 1349.3,
+     "Glass Cannon": 1452.7,
+     "Mindhaste": 1329.4
     }
    }
   ]

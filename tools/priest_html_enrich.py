@@ -201,7 +201,7 @@ def main() -> None:
     }
     if SPEC == "shadow":
         out["shadow_talents"] = out["spec_talents"]
-    limit = int(sys.argv[1]) if len(sys.argv) > 1 else 10
+    limit = int(sys.argv[1]) if len(sys.argv) > 1 else 20
     for mode, key in GROUPS.items():
         rows = []
         for i, entry in enumerate(farm[key][:limit]):

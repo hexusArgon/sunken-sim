@@ -4,7 +4,7 @@
  "hero": "dragon_sentinel",
  "spec": "ruby",
  "top": 150,
- "farm_file": "../../sessions/rcw-01dggafd7ettcq4v2v4lcdlh/mnt/sunken-sim-runs/dragon_sentinel-ruby-merged-1114/results/merged-top150-sulfuras.json",
+ "farm_file": "../sunken-sim-runs/dragon_sentinel-ruby-merged-1114/results/merged-top150-sulfuras.json",
  "done": 15122504716,
  "end": 14638489227,
  "errors": 0,
@@ -3151,6 +3151,3076 @@
      "Glass Cannon": 4930.0,
      "Mindhaste": 4182.2
     }
+   },
+   {
+    "farm_dps": 4929.2,
+    "dps": 4929.2,
+    "total": 147875,
+    "manaLeft": 63.5,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Dragonplate Gauntlets",
+      "code": "I0TK",
+      "source": "drop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Worldbreaker"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 4,
+     "luck": 5,
+     "pet_damage": 0
+    },
+    "chunk": 375561091,
+    "sources": [
+     [
+      "Burnout",
+      1554.2
+     ],
+     [
+      "Burnout (крит, Blazing Strikes)",
+      1035.2
+     ],
+     [
+      "Burnout (пассив)",
+      724.8
+     ],
+     [
+      "Sulfuras",
+      695.7
+     ],
+     [
+      "Dragon Strike",
+      291.6
+     ],
+     [
+      "Burning Heart",
+      246.5
+     ],
+     [
+      "Автоатака",
+      240.3
+     ],
+     [
+      "Blazing Shield",
+      101.6
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      27.7
+     ],
+     [
+      "Sulfuras (удар)",
+      11.7
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "5.98",
+      "Burnout"
+     ],
+     [
+      "6.43",
+      "Lifebinder"
+     ],
+     [
+      "7.28",
+      "Dragon Strike"
+     ],
+     [
+      "8.58",
+      "Blazing Shield"
+     ],
+     [
+      "11.07",
+      "Burnout"
+     ],
+     [
+      "12.37",
+      "Lifebinder"
+     ],
+     [
+      "13.21",
+      "Dragon Strike"
+     ],
+     [
+      "15.36",
+      "Blazing Shield"
+     ],
+     [
+      "16.15",
+      "Burnout"
+     ],
+     [
+      "18.30",
+      "Lifebinder"
+     ],
+     [
+      "19.15",
+      "Dragon Strike"
+     ],
+     [
+      "22.14",
+      "Blazing Shield"
+     ],
+     [
+      "22.93",
+      "Burnout"
+     ],
+     [
+      "24.23",
+      "Lifebinder"
+     ],
+     [
+      "25.08",
+      "Dragon Strike"
+     ],
+     [
+      "28.92",
+      "Blazing Shield"
+     ],
+     [
+      "29.71",
+      "Burnout"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "163"
+     ],
+     [
+      "Ловкость",
+      "33"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "159.2"
+     ],
+     [
+      "Potency",
+      "3.0"
+     ],
+     [
+      "Mastery",
+      "14"
+     ],
+     [
+      "Шанс крита",
+      "52%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.15"
+     ],
+     [
+      "Спешка",
+      "18.0%"
+     ],
+     [
+      "Скорость атаки",
+      "58.2%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+30%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "2745"
+     ],
+     [
+      "Броня",
+      "7.3"
+     ],
+     [
+      "Мана макс.",
+      "521"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "64%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.26 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "9"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 4778.7,
+     "Draconic Scales": 4706.8,
+     "Alexstrasza's Gift": 4938.3,
+     "Dragonborn": 4758.1,
+     "Burning Heart": 4938.3,
+     "Engulfing Flames": 4839.7,
+     "Worldbreaker": 4929.3,
+     "Explosive Impact": 4451.2,
+     "Legacy of the Aspects": 4814.0,
+     "Blazing Strikes": 4938.3,
+     "Heated Shield": 4634.4
+    },
+    "glyphDps": {
+     "Fortitude": 4929.2,
+     "Unsealed Power": 4855.5,
+     "Fortune": 4478.9,
+     "Supremacy": 4542.1,
+     "Arc Striking": 4287.8,
+     "Battle Frenzy": 4427.4,
+     "Hellfire": 4287.8,
+     "Thunder": 4287.8,
+     "Blood Violence": 4287.8,
+     "Animosity": 4929.2,
+     "Glass Cannon": 4929.2,
+     "Mindhaste": 4593.4
+    }
+   },
+   {
+    "farm_dps": 4925.9,
+    "dps": 4925.9,
+    "total": 147776,
+    "manaLeft": 63.6,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Aruzal, Fang of Neltharion",
+      "code": "I052",
+      "source": "legendary"
+     },
+     {
+      "name": "Predaplant Thorn",
+      "code": "I05W",
+      "source": "shop"
+     },
+     {
+      "name": "Ardite Impaler",
+      "code": "I0BB",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 9915795372,
+    "sources": [
+     [
+      "Burnout (крит, Blazing Strikes)",
+      1878.2
+     ],
+     [
+      "Burnout",
+      1038.1
+     ],
+     [
+      "Burnout (пассив)",
+      721.9
+     ],
+     [
+      "Автоатака",
+      529.6
+     ],
+     [
+      "Dragon Strike",
+      395.9
+     ],
+     [
+      "Burning Heart",
+      216.8
+     ],
+     [
+      "Blazing Shield",
+      104.3
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      41.0
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.40",
+      "Burnout"
+     ],
+     [
+      "6.87",
+      "Lifebinder"
+     ],
+     [
+      "7.77",
+      "Dragon Strike"
+     ],
+     [
+      "9.14",
+      "Blazing Shield"
+     ],
+     [
+      "11.91",
+      "Burnout"
+     ],
+     [
+      "13.29",
+      "Lifebinder"
+     ],
+     [
+      "14.19",
+      "Dragon Strike"
+     ],
+     [
+      "16.48",
+      "Blazing Shield"
+     ],
+     [
+      "17.41",
+      "Burnout"
+     ],
+     [
+      "19.72",
+      "Lifebinder"
+     ],
+     [
+      "20.62",
+      "Dragon Strike"
+     ],
+     [
+      "23.82",
+      "Blazing Shield"
+     ],
+     [
+      "24.75",
+      "Burnout"
+     ],
+     [
+      "26.14",
+      "Lifebinder"
+     ],
+     [
+      "27.04",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "127"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "37"
+     ],
+     [
+      "Урон автоатаки",
+      "177.2"
+     ],
+     [
+      "Potency",
+      "8.0"
+     ],
+     [
+      "Mastery",
+      "0"
+     ],
+     [
+      "Шанс крита",
+      "97%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.90"
+     ],
+     [
+      "Спешка",
+      "9.0%"
+     ],
+     [
+      "Скорость атаки",
+      "65.8%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+30%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "2205"
+     ],
+     [
+      "Броня",
+      "6.7"
+     ],
+     [
+      "Мана макс.",
+      "479"
+     ],
+     [
+      "Реген маны",
+      "3.92/с"
+     ],
+     [
+      "Мана в конце",
+      "64%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.21 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "3"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 4619.4,
+     "Draconic Scales": 4664.2,
+     "Alexstrasza's Gift": 4925.9,
+     "Dragonborn": 4667.1,
+     "Burning Heart": 4925.9,
+     "Engulfing Flames": 4803.4,
+     "Worldbreaker": 4861.2,
+     "Explosive Impact": 4624.5,
+     "Legacy of the Aspects": 4607.5,
+     "Blazing Strikes": 4925.9,
+     "Heated Shield": 4530.0
+    },
+    "glyphDps": {
+     "Fortitude": 4925.9,
+     "Unsealed Power": 4864.5,
+     "Fortune": 4581.5,
+     "Supremacy": 4570.4,
+     "Arc Striking": 4283.4,
+     "Battle Frenzy": 4365.7,
+     "Hellfire": 4283.4,
+     "Thunder": 4283.4,
+     "Blood Violence": 4283.4,
+     "Animosity": 4925.9,
+     "Glass Cannon": 4925.9,
+     "Mindhaste": 4456.9
+    }
+   },
+   {
+    "farm_dps": 4918.8,
+    "dps": 4918.8,
+    "total": 147565,
+    "manaLeft": 69.3,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Aruzal, Fang of Neltharion",
+      "code": "I052",
+      "source": "legendary"
+     },
+     {
+      "name": "Ardite Impaler",
+      "code": "I0BB",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 10191830517,
+    "sources": [
+     [
+      "Burnout (крит, Blazing Strikes)",
+      1692.2
+     ],
+     [
+      "Burnout",
+      1032.2
+     ],
+     [
+      "Автоатака",
+      690.2
+     ],
+     [
+      "Burnout (пассив)",
+      621.3
+     ],
+     [
+      "Dragon Strike",
+      390.9
+     ],
+     [
+      "Burning Heart",
+      322.4
+     ],
+     [
+      "Blazing Shield",
+      114.9
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      54.7
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "7.08",
+      "Burnout"
+     ],
+     [
+      "7.53",
+      "Lifebinder"
+     ],
+     [
+      "8.35",
+      "Dragon Strike"
+     ],
+     [
+      "9.80",
+      "Blazing Shield"
+     ],
+     [
+      "13.26",
+      "Burnout"
+     ],
+     [
+      "14.53",
+      "Lifebinder"
+     ],
+     [
+      "15.35",
+      "Dragon Strike"
+     ],
+     [
+      "17.80",
+      "Blazing Shield"
+     ],
+     [
+      "21.26",
+      "Burnout"
+     ],
+     [
+      "21.71",
+      "Lifebinder"
+     ],
+     [
+      "22.35",
+      "Dragon Strike"
+     ],
+     [
+      "25.80",
+      "Blazing Shield"
+     ],
+     [
+      "28.71",
+      "Lifebinder"
+     ],
+     [
+      "29.26",
+      "Burnout"
+     ],
+     [
+      "29.71",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "135"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "192.2"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "0"
+     ],
+     [
+      "Шанс крита",
+      "82%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.70"
+     ],
+     [
+      "Спешка",
+      "10.0%"
+     ],
+     [
+      "Скорость атаки",
+      "82.8%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+0%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "2325"
+     ],
+     [
+      "Броня",
+      "10.7"
+     ],
+     [
+      "Мана макс.",
+      "521"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "69%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.09 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "9"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 4601.5,
+     "Draconic Scales": 4604.2,
+     "Alexstrasza's Gift": 4918.8,
+     "Dragonborn": 4568.7,
+     "Burning Heart": 4918.8,
+     "Engulfing Flames": 4636.0,
+     "Worldbreaker": 4744.2,
+     "Explosive Impact": 4504.5,
+     "Legacy of the Aspects": 4430.8,
+     "Blazing Strikes": 4918.8,
+     "Heated Shield": 4450.8
+    },
+    "glyphDps": {
+     "Fortitude": 4918.8,
+     "Unsealed Power": 4843.1,
+     "Fortune": 4542.3,
+     "Supremacy": 4554.3,
+     "Arc Striking": 4277.2,
+     "Battle Frenzy": 4505.3,
+     "Hellfire": 4277.2,
+     "Thunder": 4277.2,
+     "Blood Violence": 4277.2,
+     "Animosity": 4918.8,
+     "Glass Cannon": 4918.8,
+     "Mindhaste": 4193.1
+    }
+   },
+   {
+    "farm_dps": 4905.7,
+    "dps": 4905.7,
+    "total": 147171,
+    "manaLeft": 63.6,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Drake Sword",
+      "code": "I0TL",
+      "source": "drop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Aruzal, Fang of Neltharion",
+      "code": "I052",
+      "source": "legendary"
+     },
+     {
+      "name": "Predaplant Thorn",
+      "code": "I05W",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 10148502894,
+    "sources": [
+     [
+      "Burnout (крит, Blazing Strikes)",
+      1606.9
+     ],
+     [
+      "Burnout",
+      905.2
+     ],
+     [
+      "Burnout (пассив)",
+      697.6
+     ],
+     [
+      "Dragon Strike (Drake Sword)",
+      605.5
+     ],
+     [
+      "Автоатака",
+      401.7
+     ],
+     [
+      "Dragon Strike",
+      345.2
+     ],
+     [
+      "Burning Heart",
+      216.8
+     ],
+     [
+      "Blazing Shield",
+      90.9
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      35.8
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.40",
+      "Burnout"
+     ],
+     [
+      "6.87",
+      "Lifebinder"
+     ],
+     [
+      "7.77",
+      "Dragon Strike"
+     ],
+     [
+      "9.14",
+      "Blazing Shield"
+     ],
+     [
+      "11.91",
+      "Burnout"
+     ],
+     [
+      "13.29",
+      "Lifebinder"
+     ],
+     [
+      "14.19",
+      "Dragon Strike"
+     ],
+     [
+      "16.48",
+      "Blazing Shield"
+     ],
+     [
+      "17.41",
+      "Burnout"
+     ],
+     [
+      "19.72",
+      "Lifebinder"
+     ],
+     [
+      "20.62",
+      "Dragon Strike"
+     ],
+     [
+      "23.82",
+      "Blazing Shield"
+     ],
+     [
+      "24.75",
+      "Burnout"
+     ],
+     [
+      "26.14",
+      "Lifebinder"
+     ],
+     [
+      "27.04",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "127"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "37"
+     ],
+     [
+      "Урон автоатаки",
+      "167.2"
+     ],
+     [
+      "Potency",
+      "8.0"
+     ],
+     [
+      "Mastery",
+      "0"
+     ],
+     [
+      "Шанс крита",
+      "91%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.65"
+     ],
+     [
+      "Спешка",
+      "9.0%"
+     ],
+     [
+      "Скорость атаки",
+      "65.8%"
+     ],
+     [
+      "Удача",
+      "14%"
+     ],
+     [
+      "Магический бонус",
+      "+30%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "2205"
+     ],
+     [
+      "Броня",
+      "6.7"
+     ],
+     [
+      "Мана макс.",
+      "479"
+     ],
+     [
+      "Реген маны",
+      "3.92/с"
+     ],
+     [
+      "Мана в конце",
+      "64%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.21 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "3"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 4674.0,
+     "Draconic Scales": 4673.5,
+     "Alexstrasza's Gift": 4905.7,
+     "Dragonborn": 4650.2,
+     "Burning Heart": 4905.7,
+     "Engulfing Flames": 4771.2,
+     "Worldbreaker": 4822.8,
+     "Explosive Impact": 4600.8,
+     "Legacy of the Aspects": 4540.5,
+     "Blazing Strikes": 4905.7,
+     "Heated Shield": 4534.4
+    },
+    "glyphDps": {
+     "Fortitude": 4905.7,
+     "Unsealed Power": 4840.6,
+     "Fortune": 4591.8,
+     "Supremacy": 4518.8,
+     "Arc Striking": 4265.8,
+     "Battle Frenzy": 4339.0,
+     "Hellfire": 4265.8,
+     "Thunder": 4265.8,
+     "Blood Violence": 4265.8,
+     "Animosity": 4905.7,
+     "Glass Cannon": 4905.7,
+     "Mindhaste": 4394.3
+    }
+   },
+   {
+    "farm_dps": 4898.7,
+    "dps": 4898.7,
+    "total": 146961,
+    "manaLeft": 63.6,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Aruzal, Fang of Neltharion",
+      "code": "I052",
+      "source": "legendary"
+     },
+     {
+      "name": "Predaplant Thorn",
+      "code": "I05W",
+      "source": "shop"
+     },
+     {
+      "name": "Ardite Impaler",
+      "code": "I0BB",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 2,
+     "attack_speed": 3,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 5,
+     "pet_damage": 0
+    },
+    "chunk": 9499784420,
+    "sources": [
+     [
+      "Burnout (крит, Blazing Strikes)",
+      1661.2
+     ],
+     [
+      "Burnout",
+      1175.3
+     ],
+     [
+      "Burnout (пассив)",
+      701.3
+     ],
+     [
+      "Автоатака",
+      492.2
+     ],
+     [
+      "Dragon Strike",
+      443.2
+     ],
+     [
+      "Burning Heart",
+      249.9
+     ],
+     [
+      "Blazing Shield",
+      129.0
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      46.7
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "7.08",
+      "Burnout"
+     ],
+     [
+      "7.53",
+      "Lifebinder"
+     ],
+     [
+      "8.35",
+      "Dragon Strike"
+     ],
+     [
+      "9.80",
+      "Blazing Shield"
+     ],
+     [
+      "13.26",
+      "Burnout"
+     ],
+     [
+      "14.53",
+      "Lifebinder"
+     ],
+     [
+      "15.35",
+      "Dragon Strike"
+     ],
+     [
+      "17.80",
+      "Blazing Shield"
+     ],
+     [
+      "21.26",
+      "Burnout"
+     ],
+     [
+      "21.71",
+      "Lifebinder"
+     ],
+     [
+      "22.35",
+      "Dragon Strike"
+     ],
+     [
+      "25.80",
+      "Blazing Shield"
+     ],
+     [
+      "28.71",
+      "Lifebinder"
+     ],
+     [
+      "29.26",
+      "Burnout"
+     ],
+     [
+      "29.71",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "141"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "37"
+     ],
+     [
+      "Урон автоатаки",
+      "173.8"
+     ],
+     [
+      "Potency",
+      "8.0"
+     ],
+     [
+      "Mastery",
+      "0"
+     ],
+     [
+      "Шанс крита",
+      "85%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.90"
+     ],
+     [
+      "Спешка",
+      "10.0%"
+     ],
+     [
+      "Скорость атаки",
+      "71.8%"
+     ],
+     [
+      "Удача",
+      "5%"
+     ],
+     [
+      "Магический бонус",
+      "+30%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "2415"
+     ],
+     [
+      "Броня",
+      "10.7"
+     ],
+     [
+      "Мана макс.",
+      "479"
+     ],
+     [
+      "Реген маны",
+      "3.92/с"
+     ],
+     [
+      "Мана в конце",
+      "64%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.16 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 4546.3,
+     "Draconic Scales": 4615.3,
+     "Alexstrasza's Gift": 4898.7,
+     "Dragonborn": 4573.7,
+     "Burning Heart": 4898.7,
+     "Engulfing Flames": 4758.8,
+     "Worldbreaker": 4816.2,
+     "Explosive Impact": 4426.0,
+     "Legacy of the Aspects": 4361.8,
+     "Blazing Strikes": 4898.7,
+     "Heated Shield": 4453.8
+    },
+    "glyphDps": {
+     "Fortitude": 4898.7,
+     "Unsealed Power": 4734.4,
+     "Fortune": 4537.6,
+     "Supremacy": 4540.3,
+     "Arc Striking": 4259.7,
+     "Battle Frenzy": 4267.2,
+     "Hellfire": 4259.7,
+     "Thunder": 4259.7,
+     "Blood Violence": 4259.7,
+     "Animosity": 4898.7,
+     "Glass Cannon": 4898.7,
+     "Mindhaste": 4207.5
+    }
+   },
+   {
+    "farm_dps": 4894.0,
+    "dps": 4894.0,
+    "total": 146821,
+    "manaLeft": 57.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Predaplant Thorn",
+      "code": "I05W",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Burning Heart",
+     "Legacy of the Aspects",
+     "Worldbreaker"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 15,
+     "potency": 0,
+     "mastery": 14,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 382484662,
+    "sources": [
+     [
+      "Burnout",
+      1799.6
+     ],
+     [
+      "Sulfuras",
+      800.3
+     ],
+     [
+      "Burnout (пассив)",
+      770.5
+     ],
+     [
+      "Burnout (крит, Blazing Strikes)",
+      646.7
+     ],
+     [
+      "Dragon Strike",
+      382.7
+     ],
+     [
+      "Burning Heart",
+      204.4
+     ],
+     [
+      "Автоатака",
+      144.3
+     ],
+     [
+      "Blazing Shield",
+      115.1
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      24.3
+     ],
+     [
+      "Sulfuras (удар)",
+      6.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "5.98",
+      "Burnout"
+     ],
+     [
+      "6.43",
+      "Lifebinder"
+     ],
+     [
+      "6.88",
+      "Dragon Strike"
+     ],
+     [
+      "7.98",
+      "Blazing Shield"
+     ],
+     [
+      "11.05",
+      "Burnout"
+     ],
+     [
+      "11.86",
+      "Lifebinder"
+     ],
+     [
+      "12.62",
+      "Dragon Strike"
+     ],
+     [
+      "14.29",
+      "Blazing Shield"
+     ],
+     [
+      "15.76",
+      "Burnout"
+     ],
+     [
+      "17.57",
+      "Lifebinder"
+     ],
+     [
+      "18.38",
+      "Dragon Strike"
+     ],
+     [
+      "20.81",
+      "Blazing Shield"
+     ],
+     [
+      "22.08",
+      "Burnout"
+     ],
+     [
+      "23.28",
+      "Lifebinder"
+     ],
+     [
+      "23.94",
+      "Dragon Strike"
+     ],
+     [
+      "27.45",
+      "Blazing Shield"
+     ],
+     [
+      "28.45",
+      "Burnout"
+     ],
+     [
+      "28.96",
+      "Lifebinder"
+     ],
+     [
+      "29.47",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "169"
+     ],
+     [
+      "Ловкость",
+      "33"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "140.8"
+     ],
+     [
+      "Potency",
+      "8.0"
+     ],
+     [
+      "Mastery",
+      "34"
+     ],
+     [
+      "Шанс крита",
+      "50%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.35"
+     ],
+     [
+      "Спешка",
+      "18.0%"
+     ],
+     [
+      "Скорость атаки",
+      "58.2%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+60%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "2835"
+     ],
+     [
+      "Броня",
+      "7.3"
+     ],
+     [
+      "Мана макс.",
+      "521"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "58%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.52 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 4720.2,
+     "Draconic Scales": 4712.7,
+     "Alexstrasza's Gift": 4809.2,
+     "Dragonborn": 4732.9,
+     "Burning Heart": 4894.0,
+     "Engulfing Flames": 4956.7,
+     "Worldbreaker": 4956.7,
+     "Explosive Impact": 4495.0,
+     "Legacy of the Aspects": 4894.0,
+     "Blazing Strikes": 4956.7,
+     "Heated Shield": 4636.0
+    },
+    "glyphDps": {
+     "Fortitude": 4894.0,
+     "Unsealed Power": 4720.7,
+     "Fortune": 4330.6,
+     "Supremacy": 4477.9,
+     "Arc Striking": 4256.5,
+     "Battle Frenzy": 4211.8,
+     "Hellfire": 4256.5,
+     "Thunder": 4256.5,
+     "Blood Violence": 4256.5,
+     "Animosity": 4894.0,
+     "Glass Cannon": 4894.0,
+     "Mindhaste": 4251.2
+    }
+   },
+   {
+    "farm_dps": 4891.3,
+    "dps": 4891.3,
+    "total": 146739,
+    "manaLeft": 69.3,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Aruzal, Fang of Neltharion",
+      "code": "I052",
+      "source": "legendary"
+     },
+     {
+      "name": "Ardite Impaler",
+      "code": "I0BB",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 2,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 8,
+     "pet_damage": 0
+    },
+    "chunk": 11085524243,
+    "sources": [
+     [
+      "Burnout (крит, Blazing Strikes)",
+      1783.0
+     ],
+     [
+      "Burnout",
+      1091.1
+     ],
+     [
+      "Burnout (пассив)",
+      650.7
+     ],
+     [
+      "Автоатака",
+      624.5
+     ],
+     [
+      "Dragon Strike",
+      374.0
+     ],
+     [
+      "Burning Heart",
+      225.0
+     ],
+     [
+      "Blazing Shield",
+      107.2
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      35.8
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "7.11",
+      "Burnout"
+     ],
+     [
+      "7.56",
+      "Lifebinder"
+     ],
+     [
+      "8.35",
+      "Dragon Strike"
+     ],
+     [
+      "9.80",
+      "Blazing Shield"
+     ],
+     [
+      "13.33",
+      "Burnout"
+     ],
+     [
+      "14.56",
+      "Lifebinder"
+     ],
+     [
+      "15.35",
+      "Dragon Strike"
+     ],
+     [
+      "17.80",
+      "Blazing Shield"
+     ],
+     [
+      "21.33",
+      "Burnout"
+     ],
+     [
+      "21.78",
+      "Lifebinder"
+     ],
+     [
+      "22.35",
+      "Dragon Strike"
+     ],
+     [
+      "25.80",
+      "Blazing Shield"
+     ],
+     [
+      "28.78",
+      "Lifebinder"
+     ],
+     [
+      "29.33",
+      "Burnout"
+     ],
+     [
+      "29.78",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "176"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "214.0"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "0"
+     ],
+     [
+      "Шанс крита",
+      "82%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.70"
+     ],
+     [
+      "Спешка",
+      "12.0%"
+     ],
+     [
+      "Скорость атаки",
+      "80.8%"
+     ],
+     [
+      "Удача",
+      "8%"
+     ],
+     [
+      "Магический бонус",
+      "+18%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "2940"
+     ],
+     [
+      "Броня",
+      "6.7"
+     ],
+     [
+      "Мана макс.",
+      "521"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "69%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.11 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "9"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 4612.8,
+     "Draconic Scales": 4578.7,
+     "Alexstrasza's Gift": 4891.3,
+     "Dragonborn": 4624.1,
+     "Burning Heart": 4891.3,
+     "Engulfing Flames": 4670.3,
+     "Worldbreaker": 4822.2,
+     "Explosive Impact": 4560.1,
+     "Legacy of the Aspects": 4496.7,
+     "Blazing Strikes": 4891.3,
+     "Heated Shield": 4492.6
+    },
+    "glyphDps": {
+     "Fortitude": 4891.3,
+     "Unsealed Power": 4891.3,
+     "Fortune": 4459.0,
+     "Supremacy": 4469.4,
+     "Arc Striking": 4184.9,
+     "Battle Frenzy": 4418.6,
+     "Hellfire": 4184.9,
+     "Thunder": 4184.9,
+     "Blood Violence": 4184.9,
+     "Animosity": 4891.3,
+     "Glass Cannon": 4812.7,
+     "Mindhaste": 4099.5
+    }
+   },
+   {
+    "farm_dps": 4884.1,
+    "dps": 4884.1,
+    "total": 146522,
+    "manaLeft": 63.5,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Dragonplate Gauntlets",
+      "code": "I0TK",
+      "source": "drop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Predaplant Thorn",
+      "code": "I05W",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Blazing Strikes",
+     "Burning Heart",
+     "Worldbreaker"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 10,
+     "pet_damage": 0
+    },
+    "chunk": 330067227,
+    "sources": [
+     [
+      "Burnout",
+      1465.0
+     ],
+     [
+      "Burnout (крит, Blazing Strikes)",
+      1134.1
+     ],
+     [
+      "Burnout (пассив)",
+      734.5
+     ],
+     [
+      "Sulfuras",
+      716.7
+     ],
+     [
+      "Dragon Strike",
+      284.9
+     ],
+     [
+      "Автоатака",
+      211.9
+     ],
+     [
+      "Burning Heart",
+      204.4
+     ],
+     [
+      "Blazing Shield",
+      97.5
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      25.9
+     ],
+     [
+      "Sulfuras (удар)",
+      9.1
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "5.98",
+      "Burnout"
+     ],
+     [
+      "6.43",
+      "Lifebinder"
+     ],
+     [
+      "7.28",
+      "Dragon Strike"
+     ],
+     [
+      "8.58",
+      "Blazing Shield"
+     ],
+     [
+      "11.07",
+      "Burnout"
+     ],
+     [
+      "12.37",
+      "Lifebinder"
+     ],
+     [
+      "13.21",
+      "Dragon Strike"
+     ],
+     [
+      "15.36",
+      "Blazing Shield"
+     ],
+     [
+      "16.15",
+      "Burnout"
+     ],
+     [
+      "18.30",
+      "Lifebinder"
+     ],
+     [
+      "19.15",
+      "Dragon Strike"
+     ],
+     [
+      "22.14",
+      "Blazing Shield"
+     ],
+     [
+      "22.93",
+      "Burnout"
+     ],
+     [
+      "24.23",
+      "Lifebinder"
+     ],
+     [
+      "25.08",
+      "Dragon Strike"
+     ],
+     [
+      "28.92",
+      "Blazing Shield"
+     ],
+     [
+      "29.71",
+      "Burnout"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "163"
+     ],
+     [
+      "Ловкость",
+      "33"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "136.2"
+     ],
+     [
+      "Potency",
+      "11.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "60%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.35"
+     ],
+     [
+      "Спешка",
+      "18.0%"
+     ],
+     [
+      "Скорость атаки",
+      "76.2%"
+     ],
+     [
+      "Удача",
+      "14%"
+     ],
+     [
+      "Магический бонус",
+      "+30%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "2745"
+     ],
+     [
+      "Броня",
+      "7.3"
+     ],
+     [
+      "Мана макс.",
+      "521"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "64%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.14 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 4704.8,
+     "Draconic Scales": 4623.9,
+     "Alexstrasza's Gift": 4883.7,
+     "Dragonborn": 4667.7,
+     "Burning Heart": 4884.1,
+     "Engulfing Flames": 4809.7,
+     "Worldbreaker": 4884.1,
+     "Explosive Impact": 4472.4,
+     "Legacy of the Aspects": 4808.0,
+     "Blazing Strikes": 4884.1,
+     "Heated Shield": 4546.1
+    },
+    "glyphDps": {
+     "Fortitude": 4884.1,
+     "Unsealed Power": 4815.1,
+     "Fortune": 4444.1,
+     "Supremacy": 4500.9,
+     "Arc Striking": 4248.2,
+     "Battle Frenzy": 4256.8,
+     "Hellfire": 4248.2,
+     "Thunder": 4248.2,
+     "Blood Violence": 4248.2,
+     "Animosity": 4884.1,
+     "Glass Cannon": 4884.1,
+     "Mindhaste": 4579.9
+    }
+   },
+   {
+    "farm_dps": 4881.4,
+    "dps": 4881.4,
+    "total": 146442,
+    "manaLeft": 51.1,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Predaplant Thorn",
+      "code": "I05W",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Blazing Strikes",
+     "Burning Heart",
+     "Worldbreaker"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 10,
+     "pet_damage": 0
+    },
+    "chunk": 368838129,
+    "sources": [
+     [
+      "Burnout",
+      1412.2
+     ],
+     [
+      "Burnout (крит, Blazing Strikes)",
+      1128.1
+     ],
+     [
+      "Sulfuras",
+      793.3
+     ],
+     [
+      "Burnout (пассив)",
+      645.6
+     ],
+     [
+      "Dragon Strike",
+      340.2
+     ],
+     [
+      "Автоатака",
+      239.7
+     ],
+     [
+      "Burning Heart",
+      187.8
+     ],
+     [
+      "Blazing Shield",
+      99.1
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      25.6
+     ],
+     [
+      "Sulfuras (удар)",
+      9.7
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "5.78",
+      "Burnout"
+     ],
+     [
+      "6.23",
+      "Lifebinder"
+     ],
+     [
+      "7.04",
+      "Dragon Strike"
+     ],
+     [
+      "8.30",
+      "Blazing Shield"
+     ],
+     [
+      "10.66",
+      "Burnout"
+     ],
+     [
+      "11.92",
+      "Lifebinder"
+     ],
+     [
+      "12.73",
+      "Dragon Strike"
+     ],
+     [
+      "14.81",
+      "Blazing Shield"
+     ],
+     [
+      "15.53",
+      "Burnout"
+     ],
+     [
+      "17.61",
+      "Lifebinder"
+     ],
+     [
+      "18.42",
+      "Dragon Strike"
+     ],
+     [
+      "21.31",
+      "Blazing Shield"
+     ],
+     [
+      "22.04",
+      "Burnout"
+     ],
+     [
+      "23.30",
+      "Lifebinder"
+     ],
+     [
+      "24.11",
+      "Dragon Strike"
+     ],
+     [
+      "27.82",
+      "Blazing Shield"
+     ],
+     [
+      "28.54",
+      "Burnout"
+     ],
+     [
+      "28.99",
+      "Lifebinder"
+     ],
+     [
+      "29.81",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "159"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "37"
+     ],
+     [
+      "Урон автоатаки",
+      "156.2"
+     ],
+     [
+      "Potency",
+      "8.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "72%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.35"
+     ],
+     [
+      "Спешка",
+      "23.0%"
+     ],
+     [
+      "Скорость атаки",
+      "58.8%"
+     ],
+     [
+      "Удача",
+      "10%"
+     ],
+     [
+      "Магический бонус",
+      "+40%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "2685"
+     ],
+     [
+      "Броня",
+      "6.7"
+     ],
+     [
+      "Мана макс.",
+      "479"
+     ],
+     [
+      "Реген маны",
+      "3.92/с"
+     ],
+     [
+      "Мана в конце",
+      "51%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.26 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "3"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 4711.6,
+     "Draconic Scales": 4621.0,
+     "Alexstrasza's Gift": 4895.5,
+     "Dragonborn": 4636.0,
+     "Burning Heart": 4883.6,
+     "Engulfing Flames": 4761.2,
+     "Worldbreaker": 4895.5,
+     "Explosive Impact": 4446.0,
+     "Legacy of the Aspects": 4662.2,
+     "Blazing Strikes": 4895.5,
+     "Heated Shield": 4536.8
+    },
+    "glyphDps": {
+     "Fortitude": 4881.4,
+     "Unsealed Power": 4777.5,
+     "Fortune": 4440.9,
+     "Supremacy": 4488.2,
+     "Arc Striking": 4246.0,
+     "Battle Frenzy": 4248.3,
+     "Hellfire": 4246.0,
+     "Thunder": 4246.0,
+     "Blood Violence": 4246.0,
+     "Animosity": 4881.4,
+     "Glass Cannon": 4881.4,
+     "Mindhaste": 4290.6
+    }
+   },
+   {
+    "farm_dps": 4879.1,
+    "dps": 4879.1,
+    "total": 146373,
+    "manaLeft": 57.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Dragonplate Gauntlets",
+      "code": "I0TK",
+      "source": "drop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Aruzal, Fang of Neltharion",
+      "code": "I052",
+      "source": "legendary"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Burning Heart",
+     "Legacy of the Aspects",
+     "Worldbreaker"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 10,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 10593837025,
+    "sources": [
+     [
+      "Burnout",
+      2199.5
+     ],
+     [
+      "Burnout (пассив)",
+      940.5
+     ],
+     [
+      "Burnout (крит, Blazing Strikes)",
+      809.1
+     ],
+     [
+      "Dragon Strike",
+      402.6
+     ],
+     [
+      "Burning Heart",
+      214.5
+     ],
+     [
+      "Автоатака",
+      168.3
+     ],
+     [
+      "Blazing Shield",
+      118.5
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      26.0
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "5.98",
+      "Burnout"
+     ],
+     [
+      "6.43",
+      "Lifebinder"
+     ],
+     [
+      "6.88",
+      "Dragon Strike"
+     ],
+     [
+      "7.98",
+      "Blazing Shield"
+     ],
+     [
+      "11.02",
+      "Burnout"
+     ],
+     [
+      "11.85",
+      "Lifebinder"
+     ],
+     [
+      "12.61",
+      "Dragon Strike"
+     ],
+     [
+      "14.30",
+      "Blazing Shield"
+     ],
+     [
+      "15.68",
+      "Burnout"
+     ],
+     [
+      "17.56",
+      "Lifebinder"
+     ],
+     [
+      "18.36",
+      "Dragon Strike"
+     ],
+     [
+      "20.84",
+      "Blazing Shield"
+     ],
+     [
+      "22.01",
+      "Burnout"
+     ],
+     [
+      "23.26",
+      "Lifebinder"
+     ],
+     [
+      "23.90",
+      "Dragon Strike"
+     ],
+     [
+      "27.46",
+      "Blazing Shield"
+     ],
+     [
+      "28.38",
+      "Burnout"
+     ],
+     [
+      "28.93",
+      "Lifebinder"
+     ],
+     [
+      "29.42",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "159"
+     ],
+     [
+      "Ловкость",
+      "33"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "168.2"
+     ],
+     [
+      "Potency",
+      "3.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "55%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.45"
+     ],
+     [
+      "Спешка",
+      "18.0%"
+     ],
+     [
+      "Скорость атаки",
+      "43.2%"
+     ],
+     [
+      "Удача",
+      "4%"
+     ],
+     [
+      "Магический бонус",
+      "+60%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "2685"
+     ],
+     [
+      "Броня",
+      "7.3"
+     ],
+     [
+      "Мана макс.",
+      "521"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "58%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.68 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 4703.2,
+     "Draconic Scales": 4703.2,
+     "Alexstrasza's Gift": 4753.6,
+     "Dragonborn": 4759.5,
+     "Burning Heart": 4879.1,
+     "Engulfing Flames": 4914.0,
+     "Worldbreaker": 4914.0,
+     "Explosive Impact": 4707.9,
+     "Legacy of the Aspects": 4879.1,
+     "Blazing Strikes": 4914.0,
+     "Heated Shield": 4622.4
+    },
+    "glyphDps": {
+     "Fortitude": 4879.1,
+     "Unsealed Power": 4706.4,
+     "Fortune": 4422.8,
+     "Supremacy": 4537.7,
+     "Arc Striking": 4242.7,
+     "Battle Frenzy": 4336.7,
+     "Hellfire": 4242.7,
+     "Thunder": 4242.7,
+     "Blood Violence": 4242.7,
+     "Animosity": 4879.1,
+     "Glass Cannon": 4879.1,
+     "Mindhaste": 4185.2
+    }
    }
   ],
   "shop": [
@@ -6170,6 +9240,2996 @@
      "Animosity": 4804.4,
      "Glass Cannon": 4804.4,
      "Mindhaste": 4185.2
+    }
+   },
+   {
+    "farm_dps": 4780.2,
+    "dps": 4780.2,
+    "total": 143407,
+    "manaLeft": 74.1,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Aruzal, Fang of Neltharion",
+      "code": "I052",
+      "source": "legendary"
+     },
+     {
+      "name": "Predaplant Thorn",
+      "code": "I05W",
+      "source": "shop"
+     },
+     {
+      "name": "Ardite Impaler",
+      "code": "I0BB",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 10191833391,
+    "sources": [
+     [
+      "Burnout (крит, Blazing Strikes)",
+      1828.5
+     ],
+     [
+      "Burnout",
+      858.9
+     ],
+     [
+      "Автоатака",
+      676.0
+     ],
+     [
+      "Burnout (пассив)",
+      649.2
+     ],
+     [
+      "Dragon Strike",
+      332.2
+     ],
+     [
+      "Burning Heart",
+      270.1
+     ],
+     [
+      "Blazing Shield",
+      110.8
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      54.5
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "7.63",
+      "Burnout"
+     ],
+     [
+      "8.08",
+      "Lifebinder"
+     ],
+     [
+      "8.97",
+      "Dragon Strike"
+     ],
+     [
+      "10.51",
+      "Blazing Shield"
+     ],
+     [
+      "14.37",
+      "Burnout"
+     ],
+     [
+      "15.71",
+      "Lifebinder"
+     ],
+     [
+      "16.60",
+      "Dragon Strike"
+     ],
+     [
+      "19.23",
+      "Blazing Shield"
+     ],
+     [
+      "23.08",
+      "Burnout"
+     ],
+     [
+      "23.53",
+      "Lifebinder"
+     ],
+     [
+      "24.22",
+      "Dragon Strike"
+     ],
+     [
+      "27.94",
+      "Blazing Shield"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "129"
+     ],
+     [
+      "Ловкость",
+      "21"
+     ],
+     [
+      "Интеллект",
+      "37"
+     ],
+     [
+      "Урон автоатаки",
+      "187.8"
+     ],
+     [
+      "Potency",
+      "8.0"
+     ],
+     [
+      "Mastery",
+      "0"
+     ],
+     [
+      "Шанс крита",
+      "97%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.90"
+     ],
+     [
+      "Спешка",
+      "1.0%"
+     ],
+     [
+      "Скорость атаки",
+      "63.4%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+0%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "2235"
+     ],
+     [
+      "Броня",
+      "10.1"
+     ],
+     [
+      "Мана макс.",
+      "479"
+     ],
+     [
+      "Реген маны",
+      "3.92/с"
+     ],
+     [
+      "Мана в конце",
+      "74%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.22 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "3"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 4452.3,
+     "Draconic Scales": 4509.3,
+     "Alexstrasza's Gift": 4780.2,
+     "Dragonborn": 4460.1,
+     "Burning Heart": 4780.2,
+     "Engulfing Flames": 4616.2,
+     "Worldbreaker": 4611.4,
+     "Explosive Impact": 4343.3,
+     "Legacy of the Aspects": 4365.3,
+     "Blazing Strikes": 4780.2,
+     "Heated Shield": 4343.9
+    },
+    "glyphDps": {
+     "Fortitude": 4780.2,
+     "Unsealed Power": 4710.2,
+     "Fortune": 4442.3,
+     "Supremacy": 4420.4,
+     "Arc Striking": 4156.7,
+     "Battle Frenzy": 4354.1,
+     "Hellfire": 4156.7,
+     "Thunder": 4156.7,
+     "Blood Violence": 4156.7,
+     "Animosity": 4780.2,
+     "Glass Cannon": 4780.2,
+     "Mindhaste": 4211.5
+    }
+   },
+   {
+    "farm_dps": 4770.1,
+    "dps": 4770.1,
+    "total": 143104,
+    "manaLeft": 69.3,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Aruzal, Fang of Neltharion",
+      "code": "I052",
+      "source": "legendary"
+     },
+     {
+      "name": "Predaplant Thorn",
+      "code": "I05W",
+      "source": "shop"
+     },
+     {
+      "name": "Ardite Impaler",
+      "code": "I0BB",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 10,
+     "pet_damage": 0
+    },
+    "chunk": 9499784436,
+    "sources": [
+     [
+      "Burnout (крит, Blazing Strikes)",
+      1587.2
+     ],
+     [
+      "Burnout",
+      1072.4
+     ],
+     [
+      "Burnout (пассив)",
+      666.4
+     ],
+     [
+      "Автоатака",
+      565.9
+     ],
+     [
+      "Dragon Strike",
+      411.2
+     ],
+     [
+      "Burning Heart",
+      294.0
+     ],
+     [
+      "Blazing Shield",
+      118.3
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      54.9
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "7.08",
+      "Burnout"
+     ],
+     [
+      "7.53",
+      "Lifebinder"
+     ],
+     [
+      "8.35",
+      "Dragon Strike"
+     ],
+     [
+      "9.80",
+      "Blazing Shield"
+     ],
+     [
+      "13.26",
+      "Burnout"
+     ],
+     [
+      "14.53",
+      "Lifebinder"
+     ],
+     [
+      "15.35",
+      "Dragon Strike"
+     ],
+     [
+      "17.80",
+      "Blazing Shield"
+     ],
+     [
+      "21.26",
+      "Burnout"
+     ],
+     [
+      "21.71",
+      "Lifebinder"
+     ],
+     [
+      "22.35",
+      "Dragon Strike"
+     ],
+     [
+      "25.80",
+      "Blazing Shield"
+     ],
+     [
+      "28.71",
+      "Lifebinder"
+     ],
+     [
+      "29.26",
+      "Burnout"
+     ],
+     [
+      "29.71",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "135"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "169.2"
+     ],
+     [
+      "Potency",
+      "8.0"
+     ],
+     [
+      "Mastery",
+      "0"
+     ],
+     [
+      "Шанс крита",
+      "85%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.90"
+     ],
+     [
+      "Спешка",
+      "10.0%"
+     ],
+     [
+      "Скорость атаки",
+      "80.8%"
+     ],
+     [
+      "Удача",
+      "10%"
+     ],
+     [
+      "Магический бонус",
+      "+0%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "2325"
+     ],
+     [
+      "Броня",
+      "10.7"
+     ],
+     [
+      "Мана макс.",
+      "521"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "69%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.11 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 4450.0,
+     "Draconic Scales": 4480.7,
+     "Alexstrasza's Gift": 4770.1,
+     "Dragonborn": 4426.7,
+     "Burning Heart": 4770.1,
+     "Engulfing Flames": 4581.1,
+     "Worldbreaker": 4624.3,
+     "Explosive Impact": 4376.1,
+     "Legacy of the Aspects": 4355.0,
+     "Blazing Strikes": 4770.1,
+     "Heated Shield": 4316.1
+    },
+    "glyphDps": {
+     "Fortitude": 4770.1,
+     "Unsealed Power": 4698.5,
+     "Fortune": 4401.6,
+     "Supremacy": 4411.2,
+     "Arc Striking": 4147.9,
+     "Battle Frenzy": 4154.1,
+     "Hellfire": 4147.9,
+     "Thunder": 4147.9,
+     "Blood Violence": 4147.9,
+     "Animosity": 4770.1,
+     "Glass Cannon": 4770.1,
+     "Mindhaste": 4121.0
+    }
+   },
+   {
+    "farm_dps": 4761.6,
+    "dps": 4761.6,
+    "total": 142849,
+    "manaLeft": 57.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Burning Heart",
+     "Melting Flames",
+     "Worldbreaker"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 9,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 390444128,
+    "sources": [
+     [
+      "Burnout",
+      1616.4
+     ],
+     [
+      "Sulfuras",
+      828.6
+     ],
+     [
+      "Burnout (крит, Blazing Strikes)",
+      671.6
+     ],
+     [
+      "Burnout (пассив)",
+      659.5
+     ],
+     [
+      "Dragon Strike",
+      332.0
+     ],
+     [
+      "Burning Heart",
+      311.4
+     ],
+     [
+      "Автоатака",
+      185.6
+     ],
+     [
+      "Blazing Shield",
+      103.5
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      44.3
+     ],
+     [
+      "Sulfuras (удар)",
+      8.8
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "5.66",
+      "Burnout"
+     ],
+     [
+      "6.11",
+      "Lifebinder"
+     ],
+     [
+      "6.91",
+      "Dragon Strike"
+     ],
+     [
+      "8.15",
+      "Blazing Shield"
+     ],
+     [
+      "10.42",
+      "Burnout"
+     ],
+     [
+      "11.67",
+      "Lifebinder"
+     ],
+     [
+      "12.46",
+      "Dragon Strike"
+     ],
+     [
+      "14.50",
+      "Blazing Shield"
+     ],
+     [
+      "15.19",
+      "Burnout"
+     ],
+     [
+      "17.22",
+      "Lifebinder"
+     ],
+     [
+      "18.02",
+      "Dragon Strike"
+     ],
+     [
+      "20.85",
+      "Blazing Shield"
+     ],
+     [
+      "21.53",
+      "Burnout"
+     ],
+     [
+      "22.78",
+      "Lifebinder"
+     ],
+     [
+      "23.57",
+      "Dragon Strike"
+     ],
+     [
+      "27.20",
+      "Blazing Shield"
+     ],
+     [
+      "27.88",
+      "Burnout"
+     ],
+     [
+      "28.33",
+      "Lifebinder"
+     ],
+     [
+      "29.13",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "169"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "163.8"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "29"
+     ],
+     [
+      "Шанс крита",
+      "52%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.15"
+     ],
+     [
+      "Спешка",
+      "26.0%"
+     ],
+     [
+      "Скорость атаки",
+      "53.8%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+40%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "2835"
+     ],
+     [
+      "Броня",
+      "6.7"
+     ],
+     [
+      "Мана макс.",
+      "521"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "58%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.56 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "9"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 4761.6,
+     "Draconic Scales": 4609.6,
+     "Alexstrasza's Gift": 4881.0,
+     "Dragonborn": 4631.3,
+     "Burning Heart": 4881.0,
+     "Engulfing Flames": 4723.6,
+     "Worldbreaker": 4881.0,
+     "Explosive Impact": 4469.7,
+     "Legacy of the Aspects": 4452.1,
+     "Blazing Strikes": 4603.4,
+     "Heated Shield": 4538.5
+    },
+    "glyphDps": {
+     "Fortitude": 4761.6,
+     "Unsealed Power": 4657.7,
+     "Fortune": 4326.6,
+     "Supremacy": 4379.2,
+     "Arc Striking": 4174.1,
+     "Battle Frenzy": 4089.2,
+     "Hellfire": 4174.1,
+     "Thunder": 4174.1,
+     "Blood Violence": 4174.1,
+     "Animosity": 4761.6,
+     "Glass Cannon": 4761.6,
+     "Mindhaste": 4053.5
+    }
+   },
+   {
+    "farm_dps": 4747.4,
+    "dps": 4747.4,
+    "total": 142422,
+    "manaLeft": 69.3,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Aruzal, Fang of Neltharion",
+      "code": "I052",
+      "source": "legendary"
+     },
+     {
+      "name": "Predaplant Thorn",
+      "code": "I05W",
+      "source": "shop"
+     },
+     {
+      "name": "Ardite Impaler",
+      "code": "I0BB",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 9915795388,
+    "sources": [
+     [
+      "Burnout (крит, Blazing Strikes)",
+      1767.2
+     ],
+     [
+      "Burnout",
+      936.0
+     ],
+     [
+      "Burnout (пассив)",
+      660.6
+     ],
+     [
+      "Автоатака",
+      657.8
+     ],
+     [
+      "Dragon Strike",
+      363.7
+     ],
+     [
+      "Burning Heart",
+      225.0
+     ],
+     [
+      "Blazing Shield",
+      94.4
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      42.6
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.31",
+      "Burnout"
+     ],
+     [
+      "6.76",
+      "Lifebinder"
+     ],
+     [
+      "7.66",
+      "Dragon Strike"
+     ],
+     [
+      "9.01",
+      "Blazing Shield"
+     ],
+     [
+      "11.71",
+      "Burnout"
+     ],
+     [
+      "13.06",
+      "Lifebinder"
+     ],
+     [
+      "13.96",
+      "Dragon Strike"
+     ],
+     [
+      "16.21",
+      "Blazing Shield"
+     ],
+     [
+      "17.12",
+      "Burnout"
+     ],
+     [
+      "19.37",
+      "Lifebinder"
+     ],
+     [
+      "20.27",
+      "Dragon Strike"
+     ],
+     [
+      "23.42",
+      "Blazing Shield"
+     ],
+     [
+      "24.32",
+      "Burnout"
+     ],
+     [
+      "25.68",
+      "Lifebinder"
+     ],
+     [
+      "26.58",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "121"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "172.8"
+     ],
+     [
+      "Potency",
+      "8.0"
+     ],
+     [
+      "Mastery",
+      "0"
+     ],
+     [
+      "Шанс крита",
+      "97%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.90"
+     ],
+     [
+      "Спешка",
+      "11.0%"
+     ],
+     [
+      "Скорость атаки",
+      "80.8%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+18%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "2115"
+     ],
+     [
+      "Броня",
+      "6.7"
+     ],
+     [
+      "Мана макс.",
+      "521"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "69%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.11 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "9"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 4527.6,
+     "Draconic Scales": 4501.5,
+     "Alexstrasza's Gift": 4747.4,
+     "Dragonborn": 4482.9,
+     "Burning Heart": 4747.4,
+     "Engulfing Flames": 4614.0,
+     "Worldbreaker": 4660.2,
+     "Explosive Impact": 4439.8,
+     "Legacy of the Aspects": 4593.2,
+     "Blazing Strikes": 4747.4,
+     "Heated Shield": 4361.4
+    },
+    "glyphDps": {
+     "Fortitude": 4747.4,
+     "Unsealed Power": 4747.4,
+     "Fortune": 4335.8,
+     "Supremacy": 4322.2,
+     "Arc Striking": 4064.0,
+     "Battle Frenzy": 4349.6,
+     "Hellfire": 4064.0,
+     "Thunder": 4064.0,
+     "Blood Violence": 4064.0,
+     "Animosity": 4747.4,
+     "Glass Cannon": 4673.7,
+     "Mindhaste": 4201.3
+    }
+   },
+   {
+    "farm_dps": 4738.3,
+    "dps": 4738.3,
+    "total": 142150,
+    "manaLeft": 63.6,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Aruzal, Fang of Neltharion",
+      "code": "I052",
+      "source": "legendary"
+     },
+     {
+      "name": "Predaplant Thorn",
+      "code": "I05W",
+      "source": "shop"
+     },
+     {
+      "name": "Ardite Impaler",
+      "code": "I0BB",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 10638456653,
+    "sources": [
+     [
+      "Burnout (крит, Blazing Strikes)",
+      1718.1
+     ],
+     [
+      "Burnout",
+      1117.0
+     ],
+     [
+      "Burnout (пассив)",
+      687.6
+     ],
+     [
+      "Автоатака",
+      438.5
+     ],
+     [
+      "Dragon Strike",
+      413.8
+     ],
+     [
+      "Burning Heart",
+      216.8
+     ],
+     [
+      "Blazing Shield",
+      105.4
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      41.0
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.90",
+      "Burnout"
+     ],
+     [
+      "7.45",
+      "Lifebinder"
+     ],
+     [
+      "8.35",
+      "Dragon Strike"
+     ],
+     [
+      "9.80",
+      "Blazing Shield"
+     ],
+     [
+      "12.90",
+      "Burnout"
+     ],
+     [
+      "14.45",
+      "Lifebinder"
+     ],
+     [
+      "15.35",
+      "Dragon Strike"
+     ],
+     [
+      "17.80",
+      "Blazing Shield"
+     ],
+     [
+      "20.90",
+      "Burnout"
+     ],
+     [
+      "21.45",
+      "Lifebinder"
+     ],
+     [
+      "22.35",
+      "Dragon Strike"
+     ],
+     [
+      "25.80",
+      "Blazing Shield"
+     ],
+     [
+      "28.45",
+      "Lifebinder"
+     ],
+     [
+      "28.90",
+      "Burnout"
+     ],
+     [
+      "29.35",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "131"
+     ],
+     [
+      "Ловкость",
+      "21"
+     ],
+     [
+      "Интеллект",
+      "37"
+     ],
+     [
+      "Урон автоатаки",
+      "180.2"
+     ],
+     [
+      "Potency",
+      "8.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "97%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.90"
+     ],
+     [
+      "Спешка",
+      "0.0%"
+     ],
+     [
+      "Скорость атаки",
+      "65.4%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+30%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "2265"
+     ],
+     [
+      "Броня",
+      "6.1"
+     ],
+     [
+      "Мана макс.",
+      "479"
+     ],
+     [
+      "Реген маны",
+      "3.92/с"
+     ],
+     [
+      "Мана в конце",
+      "64%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.45 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "3"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 4444.1,
+     "Draconic Scales": 4438.1,
+     "Alexstrasza's Gift": 4738.3,
+     "Dragonborn": 4442.5,
+     "Burning Heart": 4738.3,
+     "Engulfing Flames": 4648.2,
+     "Worldbreaker": 4673.1,
+     "Explosive Impact": 4430.4,
+     "Legacy of the Aspects": 4348.0,
+     "Blazing Strikes": 4738.3,
+     "Heated Shield": 4330.1
+    },
+    "glyphDps": {
+     "Fortitude": 4738.3,
+     "Unsealed Power": 4675.6,
+     "Fortune": 4394.3,
+     "Supremacy": 4386.6,
+     "Arc Striking": 4120.3,
+     "Battle Frenzy": 4200.5,
+     "Hellfire": 4120.3,
+     "Thunder": 4120.3,
+     "Blood Violence": 4120.3,
+     "Animosity": 4738.3,
+     "Glass Cannon": 4738.3,
+     "Mindhaste": 4158.6
+    }
+   },
+   {
+    "farm_dps": 4734.8,
+    "dps": 4734.8,
+    "total": 142044,
+    "manaLeft": 78.9,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Aruzal, Fang of Neltharion",
+      "code": "I052",
+      "source": "legendary"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 9,
+     "pet_damage": 0
+    },
+    "chunk": 11094405759,
+    "sources": [
+     [
+      "Burnout (крит, Blazing Strikes)",
+      1581.1
+     ],
+     [
+      "Burnout",
+      1046.1
+     ],
+     [
+      "Burnout (пассив)",
+      706.8
+     ],
+     [
+      "Автоатака",
+      551.1
+     ],
+     [
+      "Dragon Strike",
+      348.1
+     ],
+     [
+      "Burning Heart",
+      322.4
+     ],
+     [
+      "Blazing Shield",
+      132.6
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      46.6
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "7.95",
+      "Burnout"
+     ],
+     [
+      "8.40",
+      "Lifebinder"
+     ],
+     [
+      "9.11",
+      "Dragon Strike"
+     ],
+     [
+      "10.67",
+      "Blazing Shield"
+     ],
+     [
+      "15.01",
+      "Burnout"
+     ],
+     [
+      "16.17",
+      "Lifebinder"
+     ],
+     [
+      "16.88",
+      "Dragon Strike"
+     ],
+     [
+      "19.55",
+      "Blazing Shield"
+     ],
+     [
+      "23.88",
+      "Burnout"
+     ],
+     [
+      "24.33",
+      "Lifebinder"
+     ],
+     [
+      "24.78",
+      "Dragon Strike"
+     ],
+     [
+      "28.42",
+      "Blazing Shield"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "190"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "223.5"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "0"
+     ],
+     [
+      "Шанс крита",
+      "72%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.45"
+     ],
+     [
+      "Спешка",
+      "10.0%"
+     ],
+     [
+      "Скорость атаки",
+      "62.8%"
+     ],
+     [
+      "Удача",
+      "9%"
+     ],
+     [
+      "Магический бонус",
+      "+0%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "3150"
+     ],
+     [
+      "Броня",
+      "10.7"
+     ],
+     [
+      "Мана макс.",
+      "521"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "79%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.23 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "9"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 4457.7,
+     "Draconic Scales": 4390.6,
+     "Alexstrasza's Gift": 4734.8,
+     "Dragonborn": 4404.8,
+     "Burning Heart": 4734.8,
+     "Engulfing Flames": 4461.2,
+     "Worldbreaker": 4575.6,
+     "Explosive Impact": 4366.4,
+     "Legacy of the Aspects": 4305.0,
+     "Blazing Strikes": 4734.8,
+     "Heated Shield": 4291.1
+    },
+    "glyphDps": {
+     "Fortitude": 4734.8,
+     "Unsealed Power": 4657.8,
+     "Fortune": 4375.5,
+     "Supremacy": 4393.3,
+     "Arc Striking": 4117.2,
+     "Battle Frenzy": 4187.4,
+     "Hellfire": 4117.2,
+     "Thunder": 4117.2,
+     "Blood Violence": 4117.2,
+     "Animosity": 4734.8,
+     "Glass Cannon": 4734.8,
+     "Mindhaste": 4063.5
+    }
+   },
+   {
+    "farm_dps": 4732.2,
+    "dps": 4732.2,
+    "total": 141967,
+    "manaLeft": 76.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Aruzal, Fang of Neltharion",
+      "code": "I052",
+      "source": "legendary"
+     },
+     {
+      "name": "Predaplant Thorn",
+      "code": "I05W",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Blazing Strikes",
+     "Burning Heart"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 2,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 8,
+     "pet_damage": 0
+    },
+    "chunk": 11094405831,
+    "sources": [
+     [
+      "Burnout (крит, Blazing Strikes)",
+      1714.2
+     ],
+     [
+      "Burnout",
+      1028.0
+     ],
+     [
+      "Burnout (пассив)",
+      704.0
+     ],
+     [
+      "Автоатака",
+      538.2
+     ],
+     [
+      "Dragon Strike",
+      350.0
+     ],
+     [
+      "Burning Heart",
+      250.6
+     ],
+     [
+      "Blazing Shield",
+      100.9
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      46.4
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "8.51",
+      "Burnout"
+     ],
+     [
+      "8.96",
+      "Lifebinder"
+     ],
+     [
+      "9.72",
+      "Dragon Strike"
+     ],
+     [
+      "11.37",
+      "Blazing Shield"
+     ],
+     [
+      "16.12",
+      "Burnout"
+     ],
+     [
+      "17.33",
+      "Lifebinder"
+     ],
+     [
+      "18.10",
+      "Dragon Strike"
+     ],
+     [
+      "20.94",
+      "Blazing Shield"
+     ],
+     [
+      "25.68",
+      "Burnout"
+     ],
+     [
+      "26.13",
+      "Lifebinder"
+     ],
+     [
+      "26.58",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "184"
+     ],
+     [
+      "Ловкость",
+      "21"
+     ],
+     [
+      "Интеллект",
+      "37"
+     ],
+     [
+      "Урон автоатаки",
+      "219.0"
+     ],
+     [
+      "Potency",
+      "8.0"
+     ],
+     [
+      "Mastery",
+      "0"
+     ],
+     [
+      "Шанс крита",
+      "87%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.65"
+     ],
+     [
+      "Спешка",
+      "2.0%"
+     ],
+     [
+      "Скорость атаки",
+      "43.4%"
+     ],
+     [
+      "Удача",
+      "8%"
+     ],
+     [
+      "Магический бонус",
+      "+0%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "3060"
+     ],
+     [
+      "Броня",
+      "10.1"
+     ],
+     [
+      "Мана макс.",
+      "479"
+     ],
+     [
+      "Реген маны",
+      "3.92/с"
+     ],
+     [
+      "Мана в конце",
+      "76%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.39 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "3"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 4428.6,
+     "Draconic Scales": 4407.0,
+     "Alexstrasza's Gift": 4732.2,
+     "Dragonborn": 4419.2,
+     "Burning Heart": 4732.2,
+     "Engulfing Flames": 4557.1,
+     "Worldbreaker": 4610.4,
+     "Explosive Impact": 4397.9,
+     "Legacy of the Aspects": 4366.2,
+     "Blazing Strikes": 4732.2,
+     "Heated Shield": 4293.8
+    },
+    "glyphDps": {
+     "Fortitude": 4732.2,
+     "Unsealed Power": 4664.8,
+     "Fortune": 4392.9,
+     "Supremacy": 4391.0,
+     "Arc Striking": 4115.0,
+     "Battle Frenzy": 4191.0,
+     "Hellfire": 4115.0,
+     "Thunder": 4115.0,
+     "Blood Violence": 4115.0,
+     "Animosity": 4732.2,
+     "Glass Cannon": 4732.2,
+     "Mindhaste": 4125.6
+    }
+   },
+   {
+    "farm_dps": 4723.8,
+    "dps": 4723.8,
+    "total": 141715,
+    "manaLeft": 69.3,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Predaplant Thorn",
+      "code": "I05W",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Burning Heart",
+     "Engulfing Flames",
+     "Melting Flames"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 1,
+     "luck": 8,
+     "pet_damage": 0
+    },
+    "chunk": 390443201,
+    "sources": [
+     [
+      "Burnout",
+      1001.0
+     ],
+     [
+      "Burnout (крит, Blazing Strikes)",
+      997.7
+     ],
+     [
+      "Burnout (пассив)",
+      792.2
+     ],
+     [
+      "Sulfuras",
+      737.6
+     ],
+     [
+      "Dragon Strike",
+      313.8
+     ],
+     [
+      "Burning Heart",
+      297.0
+     ],
+     [
+      "Автоатака",
+      242.7
+     ],
+     [
+      "Engulfing Flames",
+      196.6
+     ],
+     [
+      "Blazing Shield",
+      89.7
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      46.1
+     ],
+     [
+      "Sulfuras (удар)",
+      9.4
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.35",
+      "Burnout"
+     ],
+     [
+      "6.81",
+      "Lifebinder"
+     ],
+     [
+      "7.71",
+      "Dragon Strike"
+     ],
+     [
+      "9.07",
+      "Blazing Shield"
+     ],
+     [
+      "11.81",
+      "Burnout"
+     ],
+     [
+      "13.18",
+      "Lifebinder"
+     ],
+     [
+      "14.08",
+      "Dragon Strike"
+     ],
+     [
+      "16.35",
+      "Blazing Shield"
+     ],
+     [
+      "17.26",
+      "Burnout"
+     ],
+     [
+      "19.54",
+      "Lifebinder"
+     ],
+     [
+      "20.44",
+      "Dragon Strike"
+     ],
+     [
+      "23.62",
+      "Blazing Shield"
+     ],
+     [
+      "24.54",
+      "Burnout"
+     ],
+     [
+      "25.90",
+      "Lifebinder"
+     ],
+     [
+      "26.80",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "157"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "154.8"
+     ],
+     [
+      "Potency",
+      "8.0"
+     ],
+     [
+      "Mastery",
+      "21"
+     ],
+     [
+      "Шанс крита",
+      "67%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.35"
+     ],
+     [
+      "Спешка",
+      "10.0%"
+     ],
+     [
+      "Скорость атаки",
+      "55.8%"
+     ],
+     [
+      "Удача",
+      "8%"
+     ],
+     [
+      "Магический бонус",
+      "+30%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "2655"
+     ],
+     [
+      "Броня",
+      "6.7"
+     ],
+     [
+      "Мана макс.",
+      "521"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "69%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.54 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "9"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 4723.8,
+     "Draconic Scales": 4630.5,
+     "Alexstrasza's Gift": 4886.4,
+     "Dragonborn": 4641.4,
+     "Burning Heart": 4886.4,
+     "Engulfing Flames": 4832.2,
+     "Worldbreaker": 4886.4,
+     "Explosive Impact": 4544.0,
+     "Legacy of the Aspects": 4577.3,
+     "Blazing Strikes": 4874.6,
+     "Heated Shield": 4547.8
+    },
+    "glyphDps": {
+     "Fortitude": 4723.8,
+     "Unsealed Power": 4657.0,
+     "Fortune": 4338.4,
+     "Supremacy": 4394.8,
+     "Arc Striking": 4143.2,
+     "Battle Frenzy": 4243.9,
+     "Hellfire": 4143.2,
+     "Thunder": 4143.2,
+     "Blood Violence": 4143.2,
+     "Animosity": 4723.8,
+     "Glass Cannon": 4723.8,
+     "Mindhaste": 4242.0
+    }
+   },
+   {
+    "farm_dps": 4718.1,
+    "dps": 4718.1,
+    "total": 141544,
+    "manaLeft": 69.3,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Predaplant Thorn",
+      "code": "I05W",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Worldbreaker"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 2,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 5,
+     "luck": 3,
+     "pet_damage": 0
+    },
+    "chunk": 390041259,
+    "sources": [
+     [
+      "Burnout",
+      1577.9
+     ],
+     [
+      "Burnout (крит, Blazing Strikes)",
+      752.1
+     ],
+     [
+      "Burnout (пассив)",
+      718.7
+     ],
+     [
+      "Sulfuras",
+      632.5
+     ],
+     [
+      "Dragon Strike",
+      372.2
+     ],
+     [
+      "Burning Heart",
+      281.0
+     ],
+     [
+      "Автоатака",
+      223.8
+     ],
+     [
+      "Blazing Shield",
+      116.4
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      36.7
+     ],
+     [
+      "Sulfuras (удар)",
+      6.9
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "6.97",
+      "Burnout"
+     ],
+     [
+      "7.42",
+      "Lifebinder"
+     ],
+     [
+      "8.22",
+      "Dragon Strike"
+     ],
+     [
+      "9.66",
+      "Blazing Shield"
+     ],
+     [
+      "13.04",
+      "Burnout"
+     ],
+     [
+      "14.30",
+      "Lifebinder"
+     ],
+     [
+      "15.10",
+      "Dragon Strike"
+     ],
+     [
+      "17.51",
+      "Blazing Shield"
+     ],
+     [
+      "20.90",
+      "Burnout"
+     ],
+     [
+      "21.35",
+      "Lifebinder"
+     ],
+     [
+      "21.98",
+      "Dragon Strike"
+     ],
+     [
+      "25.37",
+      "Blazing Shield"
+     ],
+     [
+      "28.22",
+      "Lifebinder"
+     ],
+     [
+      "28.76",
+      "Burnout"
+     ],
+     [
+      "29.21",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "171"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "43"
+     ],
+     [
+      "Урон автоатаки",
+      "151.2"
+     ],
+     [
+      "Potency",
+      "8.0"
+     ],
+     [
+      "Mastery",
+      "25"
+     ],
+     [
+      "Шанс крита",
+      "55%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.35"
+     ],
+     [
+      "Спешка",
+      "12.0%"
+     ],
+     [
+      "Скорость атаки",
+      "53.8%"
+     ],
+     [
+      "Удача",
+      "3%"
+     ],
+     [
+      "Магический бонус",
+      "+30%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "2865"
+     ],
+     [
+      "Броня",
+      "10.7"
+     ],
+     [
+      "Мана макс.",
+      "521"
+     ],
+     [
+      "Реген маны",
+      "4.40/с"
+     ],
+     [
+      "Мана в конце",
+      "69%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.56 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 4466.4,
+     "Draconic Scales": 4445.9,
+     "Alexstrasza's Gift": 4718.1,
+     "Dragonborn": 4417.0,
+     "Burning Heart": 4718.1,
+     "Engulfing Flames": 4659.5,
+     "Worldbreaker": 4718.1,
+     "Explosive Impact": 4328.1,
+     "Legacy of the Aspects": 4357.6,
+     "Blazing Strikes": 4661.6,
+     "Heated Shield": 4337.0
+    },
+    "glyphDps": {
+     "Fortitude": 4718.1,
+     "Unsealed Power": 4549.5,
+     "Fortune": 4267.1,
+     "Supremacy": 4321.4,
+     "Arc Striking": 4103.6,
+     "Battle Frenzy": 4168.3,
+     "Hellfire": 4103.6,
+     "Thunder": 4103.6,
+     "Blood Violence": 4103.6,
+     "Animosity": 4718.1,
+     "Glass Cannon": 4718.1,
+     "Mindhaste": 4166.4
+    }
+   },
+   {
+    "farm_dps": 4712.9,
+    "dps": 4712.9,
+    "total": 141386,
+    "manaLeft": 70.5,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Nightfall",
+      "code": "I04F",
+      "source": "shop"
+     },
+     {
+      "name": "Aruzal, Fang of Neltharion",
+      "code": "I052",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Worldbreaker"
+    ],
+    "glyphs": [
+     "Animosity",
+     "Fortitude",
+     "Glass Cannon"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 2,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 3,
+     "luck": 5,
+     "pet_damage": 0
+    },
+    "chunk": 10638453716,
+    "sources": [
+     [
+      "Burnout",
+      1828.6
+     ],
+     [
+      "Burnout (крит, Blazing Strikes)",
+      1036.5
+     ],
+     [
+      "Burnout (пассив)",
+      741.7
+     ],
+     [
+      "Dragon Strike",
+      408.6
+     ],
+     [
+      "Автоатака",
+      282.4
+     ],
+     [
+      "Burning Heart",
+      258.8
+     ],
+     [
+      "Blazing Shield",
+      122.4
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      34.0
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "5.74",
+      "Burnout"
+     ],
+     [
+      "6.19",
+      "Lifebinder"
+     ],
+     [
+      "7.00",
+      "Dragon Strike"
+     ],
+     [
+      "8.25",
+      "Blazing Shield"
+     ],
+     [
+      "10.58",
+      "Burnout"
+     ],
+     [
+      "11.83",
+      "Lifebinder"
+     ],
+     [
+      "12.64",
+      "Dragon Strike"
+     ],
+     [
+      "14.70",
+      "Blazing Shield"
+     ],
+     [
+      "15.42",
+      "Burnout"
+     ],
+     [
+      "17.48",
+      "Lifebinder"
+     ],
+     [
+      "18.29",
+      "Dragon Strike"
+     ],
+     [
+      "21.15",
+      "Blazing Shield"
+     ],
+     [
+      "21.87",
+      "Burnout"
+     ],
+     [
+      "23.12",
+      "Lifebinder"
+     ],
+     [
+      "23.93",
+      "Dragon Strike"
+     ],
+     [
+      "27.61",
+      "Blazing Shield"
+     ],
+     [
+      "28.32",
+      "Burnout"
+     ],
+     [
+      "28.77",
+      "Lifebinder"
+     ],
+     [
+      "29.58",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "152"
+     ],
+     [
+      "Ловкость",
+      "42"
+     ],
+     [
+      "Интеллект",
+      "58"
+     ],
+     [
+      "Урон автоатаки",
+      "186.0"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "28"
+     ],
+     [
+      "Шанс крита",
+      "67%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.45"
+     ],
+     [
+      "Спешка",
+      "24.0%"
+     ],
+     [
+      "Скорость атаки",
+      "46.8%"
+     ],
+     [
+      "Удача",
+      "5%"
+     ],
+     [
+      "Магический бонус",
+      "+30%"
+     ],
+     [
+      "Физический бонус",
+      "+0%"
+     ],
+     [
+      "Здоровье",
+      "2580"
+     ],
+     [
+      "Броня",
+      "8.2"
+     ],
+     [
+      "Мана макс.",
+      "626"
+     ],
+     [
+      "Реген маны",
+      "5.60/с"
+     ],
+     [
+      "Мана в конце",
+      "71%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.63 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "9"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 4529.1,
+     "Draconic Scales": 4420.6,
+     "Alexstrasza's Gift": 4712.9,
+     "Dragonborn": 4422.2,
+     "Burning Heart": 4712.9,
+     "Engulfing Flames": 4533.6,
+     "Worldbreaker": 4712.9,
+     "Explosive Impact": 4377.8,
+     "Legacy of the Aspects": 4262.7,
+     "Blazing Strikes": 4572.6,
+     "Heated Shield": 4312.2
+    },
+    "glyphDps": {
+     "Fortitude": 4712.9,
+     "Unsealed Power": 4640.5,
+     "Fortune": 4295.6,
+     "Supremacy": 4361.7,
+     "Arc Striking": 4098.1,
+     "Battle Frenzy": 4155.9,
+     "Hellfire": 4098.1,
+     "Thunder": 4098.1,
+     "Blood Violence": 4098.1,
+     "Animosity": 4712.9,
+     "Glass Cannon": 4712.9,
+     "Mindhaste": 4039.3
     }
    }
   ],
@@ -9350,6 +15410,3240 @@
      "Animosity": 3342.2,
      "Glass Cannon": 3530.2,
      "Mindhaste": 3210.8
+    }
+   },
+   {
+    "farm_dps": 3527.6,
+    "dps": 3527.6,
+    "total": 105828,
+    "manaLeft": 76.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Dragonplate Gauntlets",
+      "code": "I0TK",
+      "source": "drop"
+     },
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Hood of Dark Deeds",
+      "code": "tgrh",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Worldbreaker"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 3,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 7,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 331591829,
+    "sources": [
+     [
+      "Burnout",
+      1451.4
+     ],
+     [
+      "Sulfuras",
+      586.0
+     ],
+     [
+      "Burnout (пассив)",
+      559.8
+     ],
+     [
+      "Dragon Strike",
+      256.4
+     ],
+     [
+      "Burnout (крит, Blazing Strikes)",
+      242.1
+     ],
+     [
+      "Burning Heart",
+      191.1
+     ],
+     [
+      "Автоатака",
+      145.7
+     ],
+     [
+      "Blazing Shield",
+      73.4
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      15.2
+     ],
+     [
+      "Sulfuras (удар)",
+      6.5
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "5.74",
+      "Burnout"
+     ],
+     [
+      "6.19",
+      "Lifebinder"
+     ],
+     [
+      "7.00",
+      "Dragon Strike"
+     ],
+     [
+      "8.25",
+      "Blazing Shield"
+     ],
+     [
+      "10.58",
+      "Burnout"
+     ],
+     [
+      "11.83",
+      "Lifebinder"
+     ],
+     [
+      "12.64",
+      "Dragon Strike"
+     ],
+     [
+      "14.70",
+      "Blazing Shield"
+     ],
+     [
+      "15.42",
+      "Burnout"
+     ],
+     [
+      "17.48",
+      "Lifebinder"
+     ],
+     [
+      "18.29",
+      "Dragon Strike"
+     ],
+     [
+      "21.15",
+      "Blazing Shield"
+     ],
+     [
+      "21.87",
+      "Burnout"
+     ],
+     [
+      "23.12",
+      "Lifebinder"
+     ],
+     [
+      "23.93",
+      "Dragon Strike"
+     ],
+     [
+      "27.61",
+      "Blazing Shield"
+     ],
+     [
+      "28.32",
+      "Burnout"
+     ],
+     [
+      "28.77",
+      "Lifebinder"
+     ],
+     [
+      "29.58",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "182"
+     ],
+     [
+      "Ловкость",
+      "52"
+     ],
+     [
+      "Интеллект",
+      "62"
+     ],
+     [
+      "Урон автоатаки",
+      "150.5"
+     ],
+     [
+      "Potency",
+      "3.0"
+     ],
+     [
+      "Mastery",
+      "17"
+     ],
+     [
+      "Шанс крита",
+      "20%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "24.0%"
+     ],
+     [
+      "Скорость атаки",
+      "48.8%"
+     ],
+     [
+      "Удача",
+      "4%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+38%"
+     ],
+     [
+      "Здоровье",
+      "3045"
+     ],
+     [
+      "Броня",
+      "4.2"
+     ],
+     [
+      "Мана макс.",
+      "754"
+     ],
+     [
+      "Реген маны",
+      "5.92/с"
+     ],
+     [
+      "Мана в конце",
+      "77%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.34 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 3448.2,
+     "Draconic Scales": 3307.9,
+     "Alexstrasza's Gift": 3527.6,
+     "Dragonborn": 3350.1,
+     "Burning Heart": 3527.6,
+     "Engulfing Flames": 3427.1,
+     "Worldbreaker": 3527.6,
+     "Explosive Impact": 3212.8,
+     "Legacy of the Aspects": 3238.9,
+     "Blazing Strikes": 3372.4,
+     "Heated Shield": 3277.3
+    },
+    "glyphDps": {
+     "Fortitude": 3527.6,
+     "Unsealed Power": 3527.6,
+     "Fortune": 3250.6,
+     "Supremacy": 3344.4,
+     "Arc Striking": 3169.1,
+     "Battle Frenzy": 3093.8,
+     "Hellfire": 3169.1,
+     "Thunder": 3169.1,
+     "Blood Violence": 3169.1,
+     "Animosity": 3324.4,
+     "Glass Cannon": 3527.6,
+     "Mindhaste": 3143.4
+    }
+   },
+   {
+    "farm_dps": 3523.9,
+    "dps": 3523.9,
+    "total": 105716,
+    "manaLeft": 78.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Dragonplate Gauntlets",
+      "code": "I0TK",
+      "source": "drop"
+     },
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Queen's Scepter",
+      "code": "I080",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Ogre Warclub",
+      "code": "war2",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Worldbreaker"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 9,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 12839394136,
+    "sources": [
+     [
+      "Burnout",
+      1850.8
+     ],
+     [
+      "Burnout (пассив)",
+      700.3
+     ],
+     [
+      "Dragon Strike",
+      286.3
+     ],
+     [
+      "Burnout (крит, Blazing Strikes)",
+      261.0
+     ],
+     [
+      "Burning Heart",
+      191.1
+     ],
+     [
+      "Автоатака",
+      122.5
+     ],
+     [
+      "Blazing Shield",
+      96.7
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      15.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "5.49",
+      "Burnout"
+     ],
+     [
+      "6.09",
+      "Lifebinder"
+     ],
+     [
+      "6.99",
+      "Dragon Strike"
+     ],
+     [
+      "8.24",
+      "Blazing Shield"
+     ],
+     [
+      "10.09",
+      "Burnout"
+     ],
+     [
+      "11.73",
+      "Lifebinder"
+     ],
+     [
+      "12.63",
+      "Dragon Strike"
+     ],
+     [
+      "14.68",
+      "Burnout"
+     ],
+     [
+      "15.13",
+      "Blazing Shield"
+     ],
+     [
+      "17.37",
+      "Lifebinder"
+     ],
+     [
+      "18.27",
+      "Dragon Strike"
+     ],
+     [
+      "21.12",
+      "Burnout"
+     ],
+     [
+      "21.57",
+      "Blazing Shield"
+     ],
+     [
+      "23.01",
+      "Lifebinder"
+     ],
+     [
+      "23.91",
+      "Dragon Strike"
+     ],
+     [
+      "27.57",
+      "Burnout"
+     ],
+     [
+      "28.02",
+      "Blazing Shield"
+     ],
+     [
+      "28.64",
+      "Lifebinder"
+     ],
+     [
+      "29.54",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "214"
+     ],
+     [
+      "Ловкость",
+      "52"
+     ],
+     [
+      "Интеллект",
+      "62"
+     ],
+     [
+      "Урон автоатаки",
+      "174.5"
+     ],
+     [
+      "Potency",
+      "3.0"
+     ],
+     [
+      "Mastery",
+      "34"
+     ],
+     [
+      "Шанс крита",
+      "20%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "8.0%"
+     ],
+     [
+      "Скорость атаки",
+      "22.8%"
+     ],
+     [
+      "Удача",
+      "4%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3525"
+     ],
+     [
+      "Броня",
+      "9.2"
+     ],
+     [
+      "Мана макс.",
+      "804"
+     ],
+     [
+      "Реген маны",
+      "5.92/с"
+     ],
+     [
+      "Мана в конце",
+      "78%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.63 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 3411.5,
+     "Draconic Scales": 3272.7,
+     "Alexstrasza's Gift": 3523.9,
+     "Dragonborn": 3307.4,
+     "Burning Heart": 3523.9,
+     "Engulfing Flames": 3438.8,
+     "Worldbreaker": 3523.9,
+     "Explosive Impact": 3268.6,
+     "Legacy of the Aspects": 3295.9,
+     "Blazing Strikes": 3311.2,
+     "Heated Shield": 3225.3
+    },
+    "glyphDps": {
+     "Fortitude": 3523.9,
+     "Unsealed Power": 3523.9,
+     "Fortune": 3257.8,
+     "Supremacy": 3366.9,
+     "Arc Striking": 3162.8,
+     "Battle Frenzy": 3196.2,
+     "Hellfire": 3162.8,
+     "Thunder": 3162.8,
+     "Blood Violence": 3162.8,
+     "Animosity": 3325.7,
+     "Glass Cannon": 3523.9,
+     "Mindhaste": 3201.7
+    }
+   },
+   {
+    "farm_dps": 3518.8,
+    "dps": 3518.8,
+    "total": 105565,
+    "manaLeft": 68.4,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Dragonplate Gauntlets",
+      "code": "I0TK",
+      "source": "drop"
+     },
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Queen's Scepter",
+      "code": "I080",
+      "source": "drop"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Worldbreaker"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 3,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 7,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 331630290,
+    "sources": [
+     [
+      "Burnout",
+      1480.4
+     ],
+     [
+      "Burnout (пассив)",
+      569.6
+     ],
+     [
+      "Sulfuras",
+      558.8
+     ],
+     [
+      "Burnout (крит, Blazing Strikes)",
+      246.2
+     ],
+     [
+      "Dragon Strike",
+      238.1
+     ],
+     [
+      "Burning Heart",
+      191.1
+     ],
+     [
+      "Автоатака",
+      133.7
+     ],
+     [
+      "Blazing Shield",
+      78.7
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      15.2
+     ],
+     [
+      "Sulfuras (удар)",
+      7.0
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "5.74",
+      "Burnout"
+     ],
+     [
+      "6.19",
+      "Lifebinder"
+     ],
+     [
+      "7.00",
+      "Dragon Strike"
+     ],
+     [
+      "8.25",
+      "Blazing Shield"
+     ],
+     [
+      "10.58",
+      "Burnout"
+     ],
+     [
+      "11.83",
+      "Lifebinder"
+     ],
+     [
+      "12.64",
+      "Dragon Strike"
+     ],
+     [
+      "14.70",
+      "Blazing Shield"
+     ],
+     [
+      "15.42",
+      "Burnout"
+     ],
+     [
+      "17.48",
+      "Lifebinder"
+     ],
+     [
+      "18.29",
+      "Dragon Strike"
+     ],
+     [
+      "21.15",
+      "Blazing Shield"
+     ],
+     [
+      "21.87",
+      "Burnout"
+     ],
+     [
+      "23.12",
+      "Lifebinder"
+     ],
+     [
+      "23.93",
+      "Dragon Strike"
+     ],
+     [
+      "27.61",
+      "Blazing Shield"
+     ],
+     [
+      "28.32",
+      "Burnout"
+     ],
+     [
+      "28.77",
+      "Lifebinder"
+     ],
+     [
+      "29.58",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "197"
+     ],
+     [
+      "Ловкость",
+      "52"
+     ],
+     [
+      "Интеллект",
+      "62"
+     ],
+     [
+      "Урон автоатаки",
+      "161.8"
+     ],
+     [
+      "Potency",
+      "3.0"
+     ],
+     [
+      "Mastery",
+      "32"
+     ],
+     [
+      "Шанс крита",
+      "20%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "24.0%"
+     ],
+     [
+      "Скорость атаки",
+      "48.8%"
+     ],
+     [
+      "Удача",
+      "4%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3270"
+     ],
+     [
+      "Броня",
+      "9.2"
+     ],
+     [
+      "Мана макс.",
+      "554"
+     ],
+     [
+      "Реген маны",
+      "5.92/с"
+     ],
+     [
+      "Мана в конце",
+      "68%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.34 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 3447.8,
+     "Draconic Scales": 3313.0,
+     "Alexstrasza's Gift": 3518.8,
+     "Dragonborn": 3335.9,
+     "Burning Heart": 3518.8,
+     "Engulfing Flames": 3438.2,
+     "Worldbreaker": 3518.8,
+     "Explosive Impact": 3210.8,
+     "Legacy of the Aspects": 3232.8,
+     "Blazing Strikes": 3362.0,
+     "Heated Shield": 3268.2
+    },
+    "glyphDps": {
+     "Fortitude": 3518.8,
+     "Unsealed Power": 3518.8,
+     "Fortune": 3194.3,
+     "Supremacy": 3277.8,
+     "Arc Striking": 3112.7,
+     "Battle Frenzy": 3042.9,
+     "Hellfire": 3112.7,
+     "Thunder": 3112.7,
+     "Blood Violence": 3112.7,
+     "Animosity": 3266.2,
+     "Glass Cannon": 3518.8,
+     "Mindhaste": 3089.7
+    }
+   },
+   {
+    "farm_dps": 3507.9,
+    "dps": 3507.9,
+    "total": 105236,
+    "manaLeft": 65.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Dragonplate Gauntlets",
+      "code": "I0TK",
+      "source": "drop"
+     },
+     {
+      "name": "Queen's Scepter",
+      "code": "I080",
+      "source": "drop"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Ogre Warclub",
+      "code": "war2",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Worldbreaker"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 8,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 12833119272,
+    "sources": [
+     [
+      "Burnout",
+      1846.8
+     ],
+     [
+      "Burnout (пассив)",
+      712.6
+     ],
+     [
+      "Dragon Strike",
+      292.8
+     ],
+     [
+      "Burnout (крит, Blazing Strikes)",
+      247.9
+     ],
+     [
+      "Burning Heart",
+      191.1
+     ],
+     [
+      "Автоатака",
+      109.6
+     ],
+     [
+      "Blazing Shield",
+      91.9
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      15.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "5.45",
+      "Burnout"
+     ],
+     [
+      "6.04",
+      "Lifebinder"
+     ],
+     [
+      "6.94",
+      "Dragon Strike"
+     ],
+     [
+      "8.19",
+      "Blazing Shield"
+     ],
+     [
+      "10.00",
+      "Burnout"
+     ],
+     [
+      "11.62",
+      "Lifebinder"
+     ],
+     [
+      "12.52",
+      "Dragon Strike"
+     ],
+     [
+      "14.55",
+      "Burnout"
+     ],
+     [
+      "15.00",
+      "Blazing Shield"
+     ],
+     [
+      "17.21",
+      "Lifebinder"
+     ],
+     [
+      "18.11",
+      "Dragon Strike"
+     ],
+     [
+      "20.94",
+      "Burnout"
+     ],
+     [
+      "21.39",
+      "Blazing Shield"
+     ],
+     [
+      "22.80",
+      "Lifebinder"
+     ],
+     [
+      "23.70",
+      "Dragon Strike"
+     ],
+     [
+      "27.32",
+      "Burnout"
+     ],
+     [
+      "27.77",
+      "Blazing Shield"
+     ],
+     [
+      "28.39",
+      "Lifebinder"
+     ],
+     [
+      "29.29",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "201"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "37"
+     ],
+     [
+      "Урон автоатаки",
+      "164.8"
+     ],
+     [
+      "Potency",
+      "3.0"
+     ],
+     [
+      "Mastery",
+      "33"
+     ],
+     [
+      "Шанс крита",
+      "20%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "9.0%"
+     ],
+     [
+      "Скорость атаки",
+      "20.8%"
+     ],
+     [
+      "Удача",
+      "4%"
+     ],
+     [
+      "Магический бонус",
+      "+80%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3315"
+     ],
+     [
+      "Броня",
+      "6.7"
+     ],
+     [
+      "Мана макс.",
+      "629"
+     ],
+     [
+      "Реген маны",
+      "4.56/с"
+     ],
+     [
+      "Мана в конце",
+      "66%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.66 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 3389.4,
+     "Draconic Scales": 3250.3,
+     "Alexstrasza's Gift": 3507.9,
+     "Dragonborn": 3293.0,
+     "Burning Heart": 3507.9,
+     "Engulfing Flames": 3423.3,
+     "Worldbreaker": 3507.9,
+     "Explosive Impact": 3268.8,
+     "Legacy of the Aspects": 3272.2,
+     "Blazing Strikes": 3313.7,
+     "Heated Shield": 3209.7
+    },
+    "glyphDps": {
+     "Fortitude": 3507.9,
+     "Unsealed Power": 3507.9,
+     "Fortune": 3267.1,
+     "Supremacy": 3378.0,
+     "Arc Striking": 3171.9,
+     "Battle Frenzy": 3197.1,
+     "Hellfire": 3171.9,
+     "Thunder": 3171.9,
+     "Blood Violence": 3171.9,
+     "Animosity": 3327.6,
+     "Glass Cannon": 3507.9,
+     "Mindhaste": 3208.9
+    }
+   },
+   {
+    "farm_dps": 3500.1,
+    "dps": 3500.1,
+    "total": 105003,
+    "manaLeft": 62.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Dragonplate Gauntlets",
+      "code": "I0TK",
+      "source": "drop"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Hood of Dark Deeds",
+      "code": "tgrh",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Worldbreaker"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 3,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 7,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 324554803,
+    "sources": [
+     [
+      "Burnout",
+      1440.7
+     ],
+     [
+      "Sulfuras",
+      583.0
+     ],
+     [
+      "Burnout (пассив)",
+      556.7
+     ],
+     [
+      "Dragon Strike",
+      261.3
+     ],
+     [
+      "Burnout (крит, Blazing Strikes)",
+      241.0
+     ],
+     [
+      "Burning Heart",
+      191.1
+     ],
+     [
+      "Автоатака",
+      136.5
+     ],
+     [
+      "Blazing Shield",
+      68.6
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      15.2
+     ],
+     [
+      "Sulfuras (удар)",
+      6.1
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "5.74",
+      "Burnout"
+     ],
+     [
+      "6.19",
+      "Lifebinder"
+     ],
+     [
+      "7.00",
+      "Dragon Strike"
+     ],
+     [
+      "8.25",
+      "Blazing Shield"
+     ],
+     [
+      "10.58",
+      "Burnout"
+     ],
+     [
+      "11.83",
+      "Lifebinder"
+     ],
+     [
+      "12.64",
+      "Dragon Strike"
+     ],
+     [
+      "14.70",
+      "Blazing Shield"
+     ],
+     [
+      "15.42",
+      "Burnout"
+     ],
+     [
+      "17.48",
+      "Lifebinder"
+     ],
+     [
+      "18.29",
+      "Dragon Strike"
+     ],
+     [
+      "21.15",
+      "Blazing Shield"
+     ],
+     [
+      "21.87",
+      "Burnout"
+     ],
+     [
+      "23.12",
+      "Lifebinder"
+     ],
+     [
+      "23.93",
+      "Dragon Strike"
+     ],
+     [
+      "27.61",
+      "Blazing Shield"
+     ],
+     [
+      "28.32",
+      "Burnout"
+     ],
+     [
+      "28.77",
+      "Lifebinder"
+     ],
+     [
+      "29.58",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "169"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "37"
+     ],
+     [
+      "Урон автоатаки",
+      "140.8"
+     ],
+     [
+      "Potency",
+      "3.0"
+     ],
+     [
+      "Mastery",
+      "17"
+     ],
+     [
+      "Шанс крита",
+      "20%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "24.0%"
+     ],
+     [
+      "Скорость атаки",
+      "46.8%"
+     ],
+     [
+      "Удача",
+      "4%"
+     ],
+     [
+      "Магический бонус",
+      "+80%"
+     ],
+     [
+      "Физический бонус",
+      "+38%"
+     ],
+     [
+      "Здоровье",
+      "2835"
+     ],
+     [
+      "Броня",
+      "1.7"
+     ],
+     [
+      "Мана макс.",
+      "579"
+     ],
+     [
+      "Реген маны",
+      "4.56/с"
+     ],
+     [
+      "Мана в конце",
+      "63%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.36 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 3413.5,
+     "Draconic Scales": 3272.6,
+     "Alexstrasza's Gift": 3500.1,
+     "Dragonborn": 3324.1,
+     "Burning Heart": 3500.1,
+     "Engulfing Flames": 3398.6,
+     "Worldbreaker": 3500.1,
+     "Explosive Impact": 3185.3,
+     "Legacy of the Aspects": 3213.2,
+     "Blazing Strikes": 3345.2,
+     "Heated Shield": 3250.9
+    },
+    "glyphDps": {
+     "Fortitude": 3500.1,
+     "Unsealed Power": 3500.1,
+     "Fortune": 3248.8,
+     "Supremacy": 3342.6,
+     "Arc Striking": 3167.2,
+     "Battle Frenzy": 3091.0,
+     "Hellfire": 3167.2,
+     "Thunder": 3167.2,
+     "Blood Violence": 3167.2,
+     "Animosity": 3321.9,
+     "Glass Cannon": 3500.1,
+     "Mindhaste": 3139.9
+    }
+   },
+   {
+    "farm_dps": 3480.2,
+    "dps": 3480.2,
+    "total": 104406,
+    "manaLeft": 71.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Dragonplate Gauntlets",
+      "code": "I0TK",
+      "source": "drop"
+     },
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Worldbreaker"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 3,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 7,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 331593059,
+    "sources": [
+     [
+      "Burnout",
+      1477.8
+     ],
+     [
+      "Burnout (пассив)",
+      570.8
+     ],
+     [
+      "Sulfuras",
+      483.4
+     ],
+     [
+      "Burnout (крит, Blazing Strikes)",
+      256.6
+     ],
+     [
+      "Dragon Strike",
+      254.8
+     ],
+     [
+      "Burning Heart",
+      191.1
+     ],
+     [
+      "Автоатака",
+      139.5
+     ],
+     [
+      "Blazing Shield",
+      83.9
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      15.2
+     ],
+     [
+      "Sulfuras (удар)",
+      7.3
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "5.74",
+      "Burnout"
+     ],
+     [
+      "6.19",
+      "Lifebinder"
+     ],
+     [
+      "7.00",
+      "Dragon Strike"
+     ],
+     [
+      "8.25",
+      "Blazing Shield"
+     ],
+     [
+      "10.58",
+      "Burnout"
+     ],
+     [
+      "11.83",
+      "Lifebinder"
+     ],
+     [
+      "12.64",
+      "Dragon Strike"
+     ],
+     [
+      "14.70",
+      "Blazing Shield"
+     ],
+     [
+      "15.42",
+      "Burnout"
+     ],
+     [
+      "17.48",
+      "Lifebinder"
+     ],
+     [
+      "18.29",
+      "Dragon Strike"
+     ],
+     [
+      "21.15",
+      "Blazing Shield"
+     ],
+     [
+      "21.87",
+      "Burnout"
+     ],
+     [
+      "23.12",
+      "Lifebinder"
+     ],
+     [
+      "23.93",
+      "Dragon Strike"
+     ],
+     [
+      "27.61",
+      "Blazing Shield"
+     ],
+     [
+      "28.32",
+      "Burnout"
+     ],
+     [
+      "28.77",
+      "Lifebinder"
+     ],
+     [
+      "29.58",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "194"
+     ],
+     [
+      "Ловкость",
+      "52"
+     ],
+     [
+      "Интеллект",
+      "62"
+     ],
+     [
+      "Урон автоатаки",
+      "159.5"
+     ],
+     [
+      "Potency",
+      "3.0"
+     ],
+     [
+      "Mastery",
+      "17"
+     ],
+     [
+      "Шанс крита",
+      "20%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "24.0%"
+     ],
+     [
+      "Скорость атаки",
+      "56.8%"
+     ],
+     [
+      "Удача",
+      "4%"
+     ],
+     [
+      "Магический бонус",
+      "+60%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3225"
+     ],
+     [
+      "Броня",
+      "9.2"
+     ],
+     [
+      "Мана макс.",
+      "554"
+     ],
+     [
+      "Реген маны",
+      "6.56/с"
+     ],
+     [
+      "Мана в конце",
+      "72%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.28 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 3405.6,
+     "Draconic Scales": 3276.2,
+     "Alexstrasza's Gift": 3480.2,
+     "Dragonborn": 3299.8,
+     "Burning Heart": 3480.2,
+     "Engulfing Flames": 3385.0,
+     "Worldbreaker": 3480.2,
+     "Explosive Impact": 3147.5,
+     "Legacy of the Aspects": 3279.4,
+     "Blazing Strikes": 3422.3,
+     "Heated Shield": 3227.3
+    },
+    "glyphDps": {
+     "Fortitude": 3480.2,
+     "Unsealed Power": 3480.2,
+     "Fortune": 3191.1,
+     "Supremacy": 3285.6,
+     "Arc Striking": 3107.1,
+     "Battle Frenzy": 3226.8,
+     "Hellfire": 3107.1,
+     "Thunder": 3107.1,
+     "Blood Violence": 3107.1,
+     "Animosity": 3268.7,
+     "Glass Cannon": 3480.2,
+     "Mindhaste": 3249.6
+    }
+   },
+   {
+    "farm_dps": 3475.6,
+    "dps": 3475.6,
+    "total": 104269,
+    "manaLeft": 47.7,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Dragonplate Gauntlets",
+      "code": "I0TK",
+      "source": "drop"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Burning Heart",
+     "Melting Flames",
+     "Worldbreaker"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 9,
+     "potency": 0,
+     "mastery": 20,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 12832331912,
+    "sources": [
+     [
+      "Burnout",
+      1938.0
+     ],
+     [
+      "Burnout (пассив)",
+      684.6
+     ],
+     [
+      "Dragon Strike",
+      304.9
+     ],
+     [
+      "Burning Heart",
+      255.1
+     ],
+     [
+      "Blazing Shield",
+      95.1
+     ],
+     [
+      "Автоатака",
+      86.7
+     ],
+     [
+      "Burnout (крит, Blazing Strikes)",
+      81.0
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      30.1
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "4.25",
+      "Burnout"
+     ],
+     [
+      "4.70",
+      "Lifebinder"
+     ],
+     [
+      "5.46",
+      "Dragon Strike"
+     ],
+     [
+      "6.50",
+      "Blazing Shield"
+     ],
+     [
+      "7.60",
+      "Burnout"
+     ],
+     [
+      "8.82",
+      "Lifebinder"
+     ],
+     [
+      "9.58",
+      "Dragon Strike"
+     ],
+     [
+      "10.95",
+      "Burnout"
+     ],
+     [
+      "11.40",
+      "Blazing Shield"
+     ],
+     [
+      "12.93",
+      "Lifebinder"
+     ],
+     [
+      "13.69",
+      "Dragon Strike"
+     ],
+     [
+      "14.31",
+      "Burnout"
+     ],
+     [
+      "16.11",
+      "Blazing Shield"
+     ],
+     [
+      "17.05",
+      "Lifebinder"
+     ],
+     [
+      "17.81",
+      "Dragon Strike"
+     ],
+     [
+      "19.01",
+      "Burnout"
+     ],
+     [
+      "20.81",
+      "Blazing Shield"
+     ],
+     [
+      "21.26",
+      "Lifebinder"
+     ],
+     [
+      "21.92",
+      "Dragon Strike"
+     ],
+     [
+      "23.71",
+      "Burnout"
+     ],
+     [
+      "25.37",
+      "Lifebinder"
+     ],
+     [
+      "25.82",
+      "Blazing Shield"
+     ],
+     [
+      "26.27",
+      "Dragon Strike"
+     ],
+     [
+      "28.41",
+      "Burnout"
+     ],
+     [
+      "29.49",
+      "Lifebinder"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "183"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "37"
+     ],
+     [
+      "Урон автоатаки",
+      "151.2"
+     ],
+     [
+      "Potency",
+      "3.0"
+     ],
+     [
+      "Mastery",
+      "30"
+     ],
+     [
+      "Шанс крита",
+      "9%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "48.0%"
+     ],
+     [
+      "Скорость атаки",
+      "10.8%"
+     ],
+     [
+      "Удача",
+      "4%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3045"
+     ],
+     [
+      "Броня",
+      "6.7"
+     ],
+     [
+      "Мана макс.",
+      "629"
+     ],
+     [
+      "Реген маны",
+      "3.92/с"
+     ],
+     [
+      "Мана в конце",
+      "48%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.81 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 3475.6,
+     "Draconic Scales": 3296.3,
+     "Alexstrasza's Gift": 3550.5,
+     "Dragonborn": 3334.2,
+     "Burning Heart": 3550.5,
+     "Engulfing Flames": 3433.1,
+     "Worldbreaker": 3550.5,
+     "Explosive Impact": 3332.2,
+     "Legacy of the Aspects": 3336.8,
+     "Blazing Strikes": 3314.6,
+     "Heated Shield": 3250.5
+    },
+    "glyphDps": {
+     "Fortitude": 3475.6,
+     "Unsealed Power": 3475.6,
+     "Fortune": 3214.6,
+     "Supremacy": 3336.6,
+     "Arc Striking": 3146.3,
+     "Battle Frenzy": 3163.3,
+     "Hellfire": 3146.3,
+     "Thunder": 3146.3,
+     "Blood Violence": 3146.3,
+     "Animosity": 3259.4,
+     "Glass Cannon": 3475.6,
+     "Mindhaste": 3197.9
+    }
+   },
+   {
+    "farm_dps": 3453.9,
+    "dps": 3453.9,
+    "total": 103616,
+    "manaLeft": 62.1,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Dragonplate Gauntlets",
+      "code": "I0TK",
+      "source": "drop"
+     },
+     {
+      "name": "Queen's Scepter",
+      "code": "I080",
+      "source": "drop"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Hood of Dark Deeds",
+      "code": "tgrh",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     }
+    ],
+    "talents": [
+     "Alexstrasza's Gift",
+     "Burning Heart",
+     "Worldbreaker"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 9,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 325363863,
+    "sources": [
+     [
+      "Burnout",
+      1470.7
+     ],
+     [
+      "Burnout (пассив)",
+      564.6
+     ],
+     [
+      "Sulfuras",
+      553.8
+     ],
+     [
+      "Burnout (крит, Blazing Strikes)",
+      235.1
+     ],
+     [
+      "Dragon Strike",
+      213.5
+     ],
+     [
+      "Burning Heart",
+      191.1
+     ],
+     [
+      "Автоатака",
+      138.6
+     ],
+     [
+      "Blazing Shield",
+      65.1
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      15.2
+     ],
+     [
+      "Sulfuras (удар)",
+      6.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "5.82",
+      "Burnout"
+     ],
+     [
+      "6.27",
+      "Lifebinder"
+     ],
+     [
+      "7.09",
+      "Dragon Strike"
+     ],
+     [
+      "8.36",
+      "Blazing Shield"
+     ],
+     [
+      "10.74",
+      "Burnout"
+     ],
+     [
+      "12.01",
+      "Lifebinder"
+     ],
+     [
+      "12.83",
+      "Dragon Strike"
+     ],
+     [
+      "14.91",
+      "Blazing Shield"
+     ],
+     [
+      "15.65",
+      "Burnout"
+     ],
+     [
+      "17.74",
+      "Lifebinder"
+     ],
+     [
+      "18.56",
+      "Dragon Strike"
+     ],
+     [
+      "21.47",
+      "Blazing Shield"
+     ],
+     [
+      "22.21",
+      "Burnout"
+     ],
+     [
+      "23.48",
+      "Lifebinder"
+     ],
+     [
+      "24.30",
+      "Dragon Strike"
+     ],
+     [
+      "28.03",
+      "Blazing Shield"
+     ],
+     [
+      "28.77",
+      "Burnout"
+     ],
+     [
+      "29.22",
+      "Lifebinder"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "172"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "37"
+     ],
+     [
+      "Урон автоатаки",
+      "143.0"
+     ],
+     [
+      "Potency",
+      "3.0"
+     ],
+     [
+      "Mastery",
+      "34"
+     ],
+     [
+      "Шанс крита",
+      "20%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "22.0%"
+     ],
+     [
+      "Скорость атаки",
+      "38.8%"
+     ],
+     [
+      "Удача",
+      "4%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+38%"
+     ],
+     [
+      "Здоровье",
+      "2880"
+     ],
+     [
+      "Броня",
+      "1.7"
+     ],
+     [
+      "Мана макс.",
+      "579"
+     ],
+     [
+      "Реген маны",
+      "3.92/с"
+     ],
+     [
+      "Мана в конце",
+      "62%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.44 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 3370.5,
+     "Draconic Scales": 3224.7,
+     "Alexstrasza's Gift": 3453.9,
+     "Dragonborn": 3274.5,
+     "Burning Heart": 3453.9,
+     "Engulfing Flames": 3370.9,
+     "Worldbreaker": 3453.9,
+     "Explosive Impact": 3144.3,
+     "Legacy of the Aspects": 3194.8,
+     "Blazing Strikes": 3171.1,
+     "Heated Shield": 3205.4
+    },
+    "glyphDps": {
+     "Fortitude": 3453.9,
+     "Unsealed Power": 3453.9,
+     "Fortune": 3184.3,
+     "Supremacy": 3267.8,
+     "Arc Striking": 3103.3,
+     "Battle Frenzy": 3029.2,
+     "Hellfire": 3103.3,
+     "Thunder": 3103.3,
+     "Blood Violence": 3103.3,
+     "Animosity": 3254.0,
+     "Glass Cannon": 3453.9,
+     "Mindhaste": 3023.8
+    }
+   },
+   {
+    "farm_dps": 3449.9,
+    "dps": 3449.9,
+    "total": 103496,
+    "manaLeft": 62.9,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Shard of Infinity",
+      "code": "I03C",
+      "source": "drop"
+     },
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Dragonplate Gauntlets",
+      "code": "I0TK",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Ogre Warclub",
+      "code": "war2",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Burning Heart",
+     "Melting Flames",
+     "Worldbreaker"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 2,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 8,
+     "potency": 0,
+     "mastery": 20,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 14053817371,
+    "sources": [
+     [
+      "Burnout",
+      1943.6
+     ],
+     [
+      "Burnout (пассив)",
+      690.0
+     ],
+     [
+      "Dragon Strike",
+      339.3
+     ],
+     [
+      "Burning Heart",
+      251.6
+     ],
+     [
+      "Blazing Shield",
+      89.6
+     ],
+     [
+      "Автоатака",
+      57.8
+     ],
+     [
+      "Burnout (крит, Blazing Strikes)",
+      49.3
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      28.7
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.75",
+      "Lifebinder"
+     ],
+     [
+      "1.50",
+      "Burnout"
+     ],
+     [
+      "2.25",
+      "Dragon Strike"
+     ],
+     [
+      "3.00",
+      "Blazing Shield"
+     ],
+     [
+      "4.19",
+      "Burnout"
+     ],
+     [
+      "4.94",
+      "Lifebinder"
+     ],
+     [
+      "5.97",
+      "Dragon Strike"
+     ],
+     [
+      "6.88",
+      "Burnout"
+     ],
+     [
+      "7.63",
+      "Blazing Shield"
+     ],
+     [
+      "8.66",
+      "Lifebinder"
+     ],
+     [
+      "9.57",
+      "Burnout"
+     ],
+     [
+      "10.32",
+      "Dragon Strike"
+     ],
+     [
+      "12.14",
+      "Blazing Shield"
+     ],
+     [
+      "12.89",
+      "Lifebinder"
+     ],
+     [
+      "13.64",
+      "Burnout"
+     ],
+     [
+      "14.39",
+      "Dragon Strike"
+     ],
+     [
+      "16.61",
+      "Lifebinder"
+     ],
+     [
+      "17.36",
+      "Blazing Shield"
+     ],
+     [
+      "18.11",
+      "Dragon Strike"
+     ],
+     [
+      "18.86",
+      "Burnout"
+     ],
+     [
+      "20.33",
+      "Lifebinder"
+     ],
+     [
+      "21.83",
+      "Dragon Strike"
+     ],
+     [
+      "22.58",
+      "Blazing Shield"
+     ],
+     [
+      "23.37",
+      "Burnout"
+     ],
+     [
+      "24.12",
+      "Lifebinder"
+     ],
+     [
+      "25.55",
+      "Dragon Strike"
+     ],
+     [
+      "27.09",
+      "Blazing Shield"
+     ],
+     [
+      "27.84",
+      "Lifebinder"
+     ],
+     [
+      "28.59",
+      "Burnout"
+     ],
+     [
+      "29.34",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "184"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "37"
+     ],
+     [
+      "Урон автоатаки",
+      "152.0"
+     ],
+     [
+      "Potency",
+      "3.0"
+     ],
+     [
+      "Mastery",
+      "30"
+     ],
+     [
+      "Шанс крита",
+      "8%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "10.0%"
+     ],
+     [
+      "Скорость атаки",
+      "10.8%"
+     ],
+     [
+      "Удача",
+      "4%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3065"
+     ],
+     [
+      "Броня",
+      "6.7"
+     ],
+     [
+      "Мана макс.",
+      "829"
+     ],
+     [
+      "Реген маны",
+      "5.20/с"
+     ],
+     [
+      "Мана в конце",
+      "63%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.81 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "2.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 3449.9,
+     "Draconic Scales": 3279.7,
+     "Alexstrasza's Gift": 3532.9,
+     "Dragonborn": 3317.6,
+     "Burning Heart": 3532.9,
+     "Engulfing Flames": 3419.4,
+     "Worldbreaker": 3532.9,
+     "Explosive Impact": 3328.3,
+     "Legacy of the Aspects": 3277.9,
+     "Blazing Strikes": 3246.2,
+     "Heated Shield": 3233.2
+    },
+    "glyphDps": {
+     "Fortitude": 3449.9,
+     "Unsealed Power": 3449.9,
+     "Fortune": 3188.1,
+     "Supremacy": 3312.5,
+     "Arc Striking": 3123.5,
+     "Battle Frenzy": 3123.4,
+     "Hellfire": 3123.5,
+     "Thunder": 3123.5,
+     "Blood Violence": 3123.5,
+     "Animosity": 3200.8,
+     "Glass Cannon": 3449.9,
+     "Mindhaste": 3392.9
+    }
+   },
+   {
+    "farm_dps": 3449.1,
+    "dps": 3449.1,
+    "total": 103474,
+    "manaLeft": 53.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Atiesh, Greatstaff of the Guardian",
+      "code": "I048",
+      "source": "legendary"
+     },
+     {
+      "name": "Dragonplate Gauntlets",
+      "code": "I0TK",
+      "source": "drop"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Ogre Warclub",
+      "code": "war2",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Burning Heart",
+     "Melting Flames",
+     "Worldbreaker"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 10,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 12832330302,
+    "sources": [
+     [
+      "Burnout",
+      1743.7
+     ],
+     [
+      "Burnout (пассив)",
+      682.0
+     ],
+     [
+      "Dragon Strike",
+      324.3
+     ],
+     [
+      "Burning Heart",
+      260.0
+     ],
+     [
+      "Burnout (крит, Blazing Strikes)",
+      204.8
+     ],
+     [
+      "Автоатака",
+      108.8
+     ],
+     [
+      "Blazing Shield",
+      94.4
+     ],
+     [
+      "Ruby Dragon Form (огненные снаряды)",
+      31.1
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Dragon Form"
+     ],
+     [
+      "0.45",
+      "Lifebinder"
+     ],
+     [
+      "0.90",
+      "Burnout"
+     ],
+     [
+      "1.35",
+      "Dragon Strike"
+     ],
+     [
+      "1.80",
+      "Blazing Shield"
+     ],
+     [
+      "4.60",
+      "Burnout"
+     ],
+     [
+      "5.05",
+      "Lifebinder"
+     ],
+     [
+      "5.89",
+      "Dragon Strike"
+     ],
+     [
+      "6.99",
+      "Blazing Shield"
+     ],
+     [
+      "8.30",
+      "Burnout"
+     ],
+     [
+      "9.60",
+      "Lifebinder"
+     ],
+     [
+      "10.44",
+      "Dragon Strike"
+     ],
+     [
+      "12.00",
+      "Burnout"
+     ],
+     [
+      "12.45",
+      "Blazing Shield"
+     ],
+     [
+      "14.14",
+      "Lifebinder"
+     ],
+     [
+      "14.98",
+      "Dragon Strike"
+     ],
+     [
+      "17.20",
+      "Burnout"
+     ],
+     [
+      "17.65",
+      "Blazing Shield"
+     ],
+     [
+      "18.69",
+      "Lifebinder"
+     ],
+     [
+      "19.53",
+      "Dragon Strike"
+     ],
+     [
+      "22.39",
+      "Burnout"
+     ],
+     [
+      "22.84",
+      "Blazing Shield"
+     ],
+     [
+      "23.29",
+      "Lifebinder"
+     ],
+     [
+      "24.07",
+      "Dragon Strike"
+     ],
+     [
+      "27.59",
+      "Burnout"
+     ],
+     [
+      "28.04",
+      "Lifebinder"
+     ],
+     [
+      "28.49",
+      "Blazing Shield"
+     ],
+     [
+      "28.94",
+      "Dragon Strike"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "200"
+     ],
+     [
+      "Ловкость",
+      "27"
+     ],
+     [
+      "Интеллект",
+      "37"
+     ],
+     [
+      "Урон автоатаки",
+      "164.0"
+     ],
+     [
+      "Potency",
+      "3.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "20%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "34.0%"
+     ],
+     [
+      "Скорость атаки",
+      "10.8%"
+     ],
+     [
+      "Удача",
+      "4%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3300"
+     ],
+     [
+      "Броня",
+      "6.7"
+     ],
+     [
+      "Мана макс.",
+      "629"
+     ],
+     [
+      "Реген маны",
+      "3.92/с"
+     ],
+     [
+      "Мана в конце",
+      "53%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.81 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.870"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Melting Flames": 3449.1,
+     "Draconic Scales": 3254.0,
+     "Alexstrasza's Gift": 3507.5,
+     "Dragonborn": 3296.5,
+     "Burning Heart": 3507.5,
+     "Engulfing Flames": 3379.0,
+     "Worldbreaker": 3507.5,
+     "Explosive Impact": 3307.4,
+     "Legacy of the Aspects": 3272.8,
+     "Blazing Strikes": 3245.6,
+     "Heated Shield": 3211.1
+    },
+    "glyphDps": {
+     "Fortitude": 3449.1,
+     "Unsealed Power": 3449.1,
+     "Fortune": 3208.8,
+     "Supremacy": 3315.7,
+     "Arc Striking": 3123.1,
+     "Battle Frenzy": 3123.3,
+     "Hellfire": 3123.1,
+     "Thunder": 3123.1,
+     "Blood Violence": 3123.1,
+     "Animosity": 3252.0,
+     "Glass Cannon": 3449.1,
+     "Mindhaste": 3405.7
     }
    }
   ]

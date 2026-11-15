@@ -3190,6 +3190,3246 @@
      "Glass Cannon": 2821.9,
      "Mindhaste": 2590.3
     }
+   },
+   {
+    "farm_dps": 2813.0,
+    "dps": 2813.0,
+    "total": 84390,
+    "manaLeft": 100.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Spellbinder's Vest",
+      "code": "tlum",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Essence from Blood",
+     "Executor's Swing"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 2,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 8,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 328582119,
+    "sources": [
+     [
+      "Grim Scythe",
+      916.6
+     ],
+     [
+      "Sulfuras",
+      725.5
+     ],
+     [
+      "Corpse Explosion",
+      405.3
+     ],
+     [
+      "Автоатака",
+      185.0
+     ],
+     [
+      "Grim Scythe (пассив)",
+      166.3
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      161.0
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      136.2
+     ],
+     [
+      "Tombstone (аура)",
+      110.4
+     ],
+     [
+      "Sulfuras (удар)",
+      6.8
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "5.14",
+      "Transfusion"
+     ],
+     [
+      "5.59",
+      "Grim Scythe"
+     ],
+     [
+      "8.45",
+      "Corpse Explosion"
+     ],
+     [
+      "8.90",
+      "Tombstone"
+     ],
+     [
+      "9.35",
+      "Transfusion"
+     ],
+     [
+      "9.86",
+      "Grim Scythe"
+     ],
+     [
+      "13.14",
+      "Transfusion"
+     ],
+     [
+      "14.13",
+      "Grim Scythe"
+     ],
+     [
+      "16.45",
+      "Corpse Explosion"
+     ],
+     [
+      "16.93",
+      "Transfusion"
+     ],
+     [
+      "17.38",
+      "Tombstone"
+     ],
+     [
+      "18.41",
+      "Grim Scythe"
+     ],
+     [
+      "20.71",
+      "Transfusion"
+     ],
+     [
+      "22.68",
+      "Grim Scythe"
+     ],
+     [
+      "24.45",
+      "Corpse Explosion"
+     ],
+     [
+      "24.90",
+      "Transfusion"
+     ],
+     [
+      "26.04",
+      "Tombstone"
+     ],
+     [
+      "26.95",
+      "Grim Scythe"
+     ],
+     [
+      "28.69",
+      "Transfusion"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "165"
+     ],
+     [
+      "Сила",
+      "54"
+     ],
+     [
+      "Ловкость",
+      "51"
+     ],
+     [
+      "Урон автоатаки",
+      "137.8"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "50"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "32.0%"
+     ],
+     [
+      "Скорость атаки",
+      "63.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+78%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+0.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1690"
+     ],
+     [
+      "Мана макс.",
+      "1330"
+     ],
+     [
+      "Реген маны",
+      "14.16/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.36 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2813.0,
+     "Lord of the Dead": 2757.0,
+     "Executor's Swing": 2814.0,
+     "Blood Bomb": 2729.2,
+     "Hour of the Dead": 2702.8,
+     "Sanguine Fury": 2672.1,
+     "Serration": 2717.5,
+     "Gravedigger": 2744.9,
+     "Skeletal Archer": 2752.8,
+     "Swift Harvest": 2672.1,
+     "Essence from Blood": 2814.0,
+     "Life from Death": 2726.3,
+     "Reaper of Souls": 2726.5,
+     "Call of the Grave": 2780.3,
+     "Dark Bargain": 2716.5,
+     "Bloody Scythe": 2814.0
+    },
+    "glyphDps": {
+     "Fortitude": 2813.0,
+     "Unsealed Power": 2813.0,
+     "Fortune": 2610.4,
+     "Supremacy": 2722.6,
+     "Arc Striking": 2593.6,
+     "Battle Frenzy": 2564.0,
+     "Hellfire": 2593.6,
+     "Thunder": 2593.6,
+     "Blood Violence": 2593.6,
+     "Animosity": 2617.0,
+     "Glass Cannon": 2813.0,
+     "Mindhaste": 2609.5
+    }
+   },
+   {
+    "farm_dps": 2811.5,
+    "dps": 2811.5,
+    "total": 84344,
+    "manaLeft": 99.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Dark Bargain",
+     "Essence from Blood"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 3,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 7
+    },
+    "chunk": 8490356978,
+    "sources": [
+     [
+      "Grim Scythe",
+      864.1
+     ],
+     [
+      "Sulfuras",
+      720.0
+     ],
+     [
+      "Corpse Explosion",
+      447.5
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      182.5
+     ],
+     [
+      "Автоатака",
+      178.9
+     ],
+     [
+      "Grim Scythe (пассив)",
+      145.5
+     ],
+     [
+      "Tombstone (аура)",
+      133.1
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      132.2
+     ],
+     [
+      "Sulfuras (удар)",
+      7.8
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "4.81",
+      "Transfusion"
+     ],
+     [
+      "5.26",
+      "Grim Scythe"
+     ],
+     [
+      "8.13",
+      "Corpse Explosion"
+     ],
+     [
+      "8.58",
+      "Tombstone"
+     ],
+     [
+      "9.03",
+      "Transfusion"
+     ],
+     [
+      "9.48",
+      "Grim Scythe"
+     ],
+     [
+      "12.30",
+      "Transfusion"
+     ],
+     [
+      "13.32",
+      "Grim Scythe"
+     ],
+     [
+      "15.33",
+      "Corpse Explosion"
+     ],
+     [
+      "15.78",
+      "Transfusion"
+     ],
+     [
+      "16.23",
+      "Tombstone"
+     ],
+     [
+      "17.06",
+      "Grim Scythe"
+     ],
+     [
+      "18.88",
+      "Transfusion"
+     ],
+     [
+      "20.59",
+      "Grim Scythe"
+     ],
+     [
+      "21.87",
+      "Transfusion"
+     ],
+     [
+      "22.32",
+      "Corpse Explosion"
+     ],
+     [
+      "23.60",
+      "Tombstone"
+     ],
+     [
+      "24.05",
+      "Grim Scythe"
+     ],
+     [
+      "24.85",
+      "Transfusion"
+     ],
+     [
+      "27.35",
+      "Grim Scythe"
+     ],
+     [
+      "27.80",
+      "Transfusion"
+     ],
+     [
+      "28.92",
+      "Corpse Explosion"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "205"
+     ],
+     [
+      "Сила",
+      "64"
+     ],
+     [
+      "Ловкость",
+      "61"
+     ],
+     [
+      "Урон автоатаки",
+      "167.8"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "21.0%"
+     ],
+     [
+      "Скорость атаки",
+      "67.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+78%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+10.5%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1580"
+     ],
+     [
+      "Мана макс.",
+      "1610"
+     ],
+     [
+      "Реген маны",
+      "17.36/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.33 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2811.5,
+     "Lord of the Dead": 2716.2,
+     "Executor's Swing": 2809.4,
+     "Blood Bomb": 2702.0,
+     "Hour of the Dead": 2654.5,
+     "Sanguine Fury": 2721.6,
+     "Serration": 2673.4,
+     "Gravedigger": 2700.8,
+     "Skeletal Archer": 2706.7,
+     "Swift Harvest": 2726.9,
+     "Essence from Blood": 2811.5,
+     "Life from Death": 2682.1,
+     "Reaper of Souls": 2677.9,
+     "Call of the Grave": 2798.9,
+     "Dark Bargain": 2811.5,
+     "Bloody Scythe": 2767.5
+    },
+    "glyphDps": {
+     "Fortitude": 2811.5,
+     "Unsealed Power": 2811.5,
+     "Fortune": 2578.9,
+     "Supremacy": 2568.4,
+     "Arc Striking": 2559.9,
+     "Battle Frenzy": 2608.4,
+     "Hellfire": 2559.9,
+     "Thunder": 2559.9,
+     "Blood Violence": 2559.9,
+     "Animosity": 2582.0,
+     "Glass Cannon": 2811.5,
+     "Mindhaste": 2758.4
+    }
+   },
+   {
+    "farm_dps": 2808.8,
+    "dps": 2808.8,
+    "total": 84264,
+    "manaLeft": 100.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Lightning Rod",
+      "code": "I07F",
+      "source": "shop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Bloody Scythe",
+     "Essence from Blood",
+     "Executor's Swing"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 10
+    },
+    "chunk": 1112519165,
+    "sources": [
+     [
+      "Grim Scythe",
+      870.8
+     ],
+     [
+      "Sulfuras",
+      716.0
+     ],
+     [
+      "Corpse Explosion",
+      366.3
+     ],
+     [
+      "Автоатака",
+      175.4
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      164.5
+     ],
+     [
+      "Grim Scythe (пассив)",
+      155.4
+     ],
+     [
+      "Bloody Scythe (взрыв)",
+      128.2
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      117.2
+     ],
+     [
+      "Tombstone (аура)",
+      107.7
+     ],
+     [
+      "Sulfuras (удар)",
+      7.3
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "5.25",
+      "Transfusion"
+     ],
+     [
+      "5.70",
+      "Grim Scythe"
+     ],
+     [
+      "8.68",
+      "Corpse Explosion"
+     ],
+     [
+      "9.13",
+      "Tombstone"
+     ],
+     [
+      "9.58",
+      "Transfusion"
+     ],
+     [
+      "10.10",
+      "Grim Scythe"
+     ],
+     [
+      "13.48",
+      "Transfusion"
+     ],
+     [
+      "14.49",
+      "Grim Scythe"
+     ],
+     [
+      "16.92",
+      "Corpse Explosion"
+     ],
+     [
+      "17.38",
+      "Transfusion"
+     ],
+     [
+      "17.83",
+      "Tombstone"
+     ],
+     [
+      "18.89",
+      "Grim Scythe"
+     ],
+     [
+      "21.28",
+      "Transfusion"
+     ],
+     [
+      "23.29",
+      "Grim Scythe"
+     ],
+     [
+      "25.15",
+      "Corpse Explosion"
+     ],
+     [
+      "25.60",
+      "Transfusion"
+     ],
+     [
+      "26.75",
+      "Tombstone"
+     ],
+     [
+      "27.68",
+      "Grim Scythe"
+     ],
+     [
+      "29.50",
+      "Transfusion"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "190"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "36"
+     ],
+     [
+      "Урон автоатаки",
+      "156.5"
+     ],
+     [
+      "Potency",
+      "15.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "18.0%"
+     ],
+     [
+      "Скорость атаки",
+      "57.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+91%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+15.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1190"
+     ],
+     [
+      "Мана макс.",
+      "1505"
+     ],
+     [
+      "Реген маны",
+      "17.60/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.41 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2765.5,
+     "Lord of the Dead": 2767.9,
+     "Executor's Swing": 2829.5,
+     "Blood Bomb": 2732.4,
+     "Hour of the Dead": 2702.3,
+     "Sanguine Fury": 2736.7,
+     "Serration": 2730.8,
+     "Gravedigger": 2749.2,
+     "Skeletal Archer": 2756.6,
+     "Swift Harvest": 2736.7,
+     "Essence from Blood": 2829.5,
+     "Life from Death": 2729.9,
+     "Reaper of Souls": 2722.2,
+     "Call of the Grave": 2829.5,
+     "Dark Bargain": 2722.6,
+     "Bloody Scythe": 2808.8
+    },
+    "glyphDps": {
+     "Fortitude": 2808.8,
+     "Unsealed Power": 2808.8,
+     "Fortune": 2604.9,
+     "Supremacy": 2578.2,
+     "Arc Striking": 2570.4,
+     "Battle Frenzy": 2541.1,
+     "Hellfire": 2570.4,
+     "Thunder": 2570.4,
+     "Blood Violence": 2570.4,
+     "Animosity": 2592.4,
+     "Glass Cannon": 2808.8,
+     "Mindhaste": 2591.7
+    }
+   },
+   {
+    "farm_dps": 2801.6,
+    "dps": 2801.6,
+    "total": 84047,
+    "manaLeft": 100.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Dark Bargain",
+     "Essence from Blood"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 1,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 9
+    },
+    "chunk": 797612201,
+    "sources": [
+     [
+      "Grim Scythe",
+      888.9
+     ],
+     [
+      "Sulfuras",
+      726.2
+     ],
+     [
+      "Corpse Explosion",
+      438.0
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      195.4
+     ],
+     [
+      "Автоатака",
+      160.9
+     ],
+     [
+      "Grim Scythe (пассив)",
+      129.7
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      128.5
+     ],
+     [
+      "Tombstone (аура)",
+      126.9
+     ],
+     [
+      "Sulfuras (удар)",
+      7.1
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "4.56",
+      "Transfusion"
+     ],
+     [
+      "5.01",
+      "Grim Scythe"
+     ],
+     [
+      "7.57",
+      "Corpse Explosion"
+     ],
+     [
+      "8.02",
+      "Tombstone"
+     ],
+     [
+      "8.47",
+      "Transfusion"
+     ],
+     [
+      "8.92",
+      "Grim Scythe"
+     ],
+     [
+      "11.53",
+      "Transfusion"
+     ],
+     [
+      "12.52",
+      "Grim Scythe"
+     ],
+     [
+      "14.35",
+      "Corpse Explosion"
+     ],
+     [
+      "14.80",
+      "Transfusion"
+     ],
+     [
+      "15.25",
+      "Tombstone"
+     ],
+     [
+      "16.01",
+      "Grim Scythe"
+     ],
+     [
+      "17.75",
+      "Transfusion"
+     ],
+     [
+      "19.33",
+      "Grim Scythe"
+     ],
+     [
+      "20.57",
+      "Transfusion"
+     ],
+     [
+      "21.02",
+      "Corpse Explosion"
+     ],
+     [
+      "22.19",
+      "Tombstone"
+     ],
+     [
+      "22.64",
+      "Grim Scythe"
+     ],
+     [
+      "23.38",
+      "Transfusion"
+     ],
+     [
+      "25.75",
+      "Grim Scythe"
+     ],
+     [
+      "26.20",
+      "Transfusion"
+     ],
+     [
+      "27.21",
+      "Corpse Explosion"
+     ],
+     [
+      "28.60",
+      "Tombstone"
+     ],
+     [
+      "29.05",
+      "Grim Scythe"
+     ],
+     [
+      "29.50",
+      "Transfusion"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "193"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "36"
+     ],
+     [
+      "Урон автоатаки",
+      "160.8"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "31.0%"
+     ],
+     [
+      "Скорость атаки",
+      "57.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+78%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+13.5%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1190"
+     ],
+     [
+      "Мана макс.",
+      "1526"
+     ],
+     [
+      "Реген маны",
+      "16.40/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.41 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2801.6,
+     "Lord of the Dead": 2670.9,
+     "Executor's Swing": 2773.9,
+     "Blood Bomb": 2647.6,
+     "Hour of the Dead": 2611.4,
+     "Sanguine Fury": 2587.2,
+     "Serration": 2627.6,
+     "Gravedigger": 2659.9,
+     "Skeletal Archer": 2663.2,
+     "Swift Harvest": 2637.1,
+     "Essence from Blood": 2801.6,
+     "Life from Death": 2587.2,
+     "Reaper of Souls": 2626.9,
+     "Call of the Grave": 2707.4,
+     "Dark Bargain": 2801.6,
+     "Bloody Scythe": 2736.0
+    },
+    "glyphDps": {
+     "Fortitude": 2801.6,
+     "Unsealed Power": 2801.6,
+     "Fortune": 2570.0,
+     "Supremacy": 2560.8,
+     "Arc Striking": 2551.6,
+     "Battle Frenzy": 2583.0,
+     "Hellfire": 2551.6,
+     "Thunder": 2551.6,
+     "Blood Violence": 2551.6,
+     "Animosity": 2571.5,
+     "Glass Cannon": 2801.6,
+     "Mindhaste": 2537.4
+    }
+   },
+   {
+    "farm_dps": 2787.2,
+    "dps": 2787.2,
+    "total": 83615,
+    "manaLeft": 98.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Dark Bargain",
+     "Executor's Swing"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 1,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 8
+    },
+    "chunk": 329129334,
+    "sources": [
+     [
+      "Grim Scythe",
+      1054.1
+     ],
+     [
+      "Sulfuras",
+      551.9
+     ],
+     [
+      "Corpse Explosion",
+      378.0
+     ],
+     [
+      "Автоатака",
+      204.8
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      184.7
+     ],
+     [
+      "Grim Scythe (пассив)",
+      177.5
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      123.3
+     ],
+     [
+      "Tombstone (аура)",
+      103.6
+     ],
+     [
+      "Sulfuras (удар)",
+      9.3
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "5.68",
+      "Grim Scythe"
+     ],
+     [
+      "10.05",
+      "Grim Scythe"
+     ],
+     [
+      "10.50",
+      "Corpse Explosion"
+     ],
+     [
+      "10.95",
+      "Tombstone"
+     ],
+     [
+      "14.16",
+      "Grim Scythe"
+     ],
+     [
+      "18.01",
+      "Grim Scythe"
+     ],
+     [
+      "18.63",
+      "Corpse Explosion"
+     ],
+     [
+      "19.67",
+      "Tombstone"
+     ],
+     [
+      "21.86",
+      "Grim Scythe"
+     ],
+     [
+      "25.69",
+      "Grim Scythe"
+     ],
+     [
+      "26.33",
+      "Corpse Explosion"
+     ],
+     [
+      "27.97",
+      "Tombstone"
+     ],
+     [
+      "29.52",
+      "Grim Scythe"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "220"
+     ],
+     [
+      "Сила",
+      "54"
+     ],
+     [
+      "Ловкость",
+      "51"
+     ],
+     [
+      "Урон автоатаки",
+      "181.0"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "35"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "31.0%"
+     ],
+     [
+      "Скорость атаки",
+      "63.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+78%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+12.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1415"
+     ],
+     [
+      "Мана макс.",
+      "1715"
+     ],
+     [
+      "Реген маны",
+      "18.56/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.36 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2787.2,
+     "Lord of the Dead": 2663.0,
+     "Executor's Swing": 2787.2,
+     "Blood Bomb": 2665.3,
+     "Hour of the Dead": 2619.4,
+     "Sanguine Fury": 2626.7,
+     "Serration": 2610.0,
+     "Gravedigger": 2667.6,
+     "Skeletal Archer": 2661.4,
+     "Swift Harvest": 2697.6,
+     "Essence from Blood": 2689.5,
+     "Life from Death": 2614.7,
+     "Reaper of Souls": 2642.4,
+     "Call of the Grave": 2735.9,
+     "Dark Bargain": 2787.2,
+     "Bloody Scythe": 2749.7
+    },
+    "glyphDps": {
+     "Fortitude": 2787.2,
+     "Unsealed Power": 2787.2,
+     "Fortune": 2493.6,
+     "Supremacy": 2543.8,
+     "Arc Striking": 2535.4,
+     "Battle Frenzy": 2493.2,
+     "Hellfire": 2535.4,
+     "Thunder": 2535.4,
+     "Blood Violence": 2535.4,
+     "Animosity": 2560.8,
+     "Glass Cannon": 2787.2,
+     "Mindhaste": 2536.7
+    }
+   },
+   {
+    "farm_dps": 2780.2,
+    "dps": 2780.2,
+    "total": 83405,
+    "manaLeft": 100.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Bonebreaker Gloves",
+      "code": "I0UN",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Dark Bargain",
+     "Essence from Blood"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 1,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 9
+    },
+    "chunk": 796767541,
+    "sources": [
+     [
+      "Grim Scythe",
+      858.2
+     ],
+     [
+      "Sulfuras",
+      632.2
+     ],
+     [
+      "Corpse Explosion",
+      571.6
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      189.4
+     ],
+     [
+      "Автоатака",
+      152.5
+     ],
+     [
+      "Grim Scythe (пассив)",
+      123.6
+     ],
+     [
+      "Tombstone (аура)",
+      123.2
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      122.7
+     ],
+     [
+      "Sulfuras (удар)",
+      6.7
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "4.65",
+      "Transfusion"
+     ],
+     [
+      "5.10",
+      "Grim Scythe"
+     ],
+     [
+      "7.84",
+      "Corpse Explosion"
+     ],
+     [
+      "8.29",
+      "Tombstone"
+     ],
+     [
+      "8.74",
+      "Transfusion"
+     ],
+     [
+      "9.19",
+      "Grim Scythe"
+     ],
+     [
+      "11.85",
+      "Transfusion"
+     ],
+     [
+      "12.84",
+      "Grim Scythe"
+     ],
+     [
+      "14.74",
+      "Corpse Explosion"
+     ],
+     [
+      "15.19",
+      "Transfusion"
+     ],
+     [
+      "15.64",
+      "Tombstone"
+     ],
+     [
+      "16.39",
+      "Grim Scythe"
+     ],
+     [
+      "18.15",
+      "Transfusion"
+     ],
+     [
+      "19.74",
+      "Grim Scythe"
+     ],
+     [
+      "21.00",
+      "Transfusion"
+     ],
+     [
+      "21.45",
+      "Corpse Explosion"
+     ],
+     [
+      "22.64",
+      "Tombstone"
+     ],
+     [
+      "23.09",
+      "Grim Scythe"
+     ],
+     [
+      "23.84",
+      "Transfusion"
+     ],
+     [
+      "26.21",
+      "Grim Scythe"
+     ],
+     [
+      "26.66",
+      "Transfusion"
+     ],
+     [
+      "27.71",
+      "Corpse Explosion"
+     ],
+     [
+      "29.08",
+      "Tombstone"
+     ],
+     [
+      "29.53",
+      "Grim Scythe"
+     ],
+     [
+      "29.98",
+      "Transfusion"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "180"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "36"
+     ],
+     [
+      "Урон автоатаки",
+      "151.0"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "28"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "26.0%"
+     ],
+     [
+      "Скорость атаки",
+      "57.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+78%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+13.5%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1340"
+     ],
+     [
+      "Мана макс.",
+      "1435"
+     ],
+     [
+      "Реген маны",
+      "15.36/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.41 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2780.2,
+     "Lord of the Dead": 2601.5,
+     "Executor's Swing": 2708.7,
+     "Blood Bomb": 2601.1,
+     "Hour of the Dead": 2553.3,
+     "Sanguine Fury": 2544.0,
+     "Serration": 2568.7,
+     "Gravedigger": 2594.0,
+     "Skeletal Archer": 2593.5,
+     "Swift Harvest": 2593.1,
+     "Essence from Blood": 2780.2,
+     "Life from Death": 2529.8,
+     "Reaper of Souls": 2565.4,
+     "Call of the Grave": 2663.6,
+     "Dark Bargain": 2780.2,
+     "Bloody Scythe": 2667.1
+    },
+    "glyphDps": {
+     "Fortitude": 2780.2,
+     "Unsealed Power": 2780.2,
+     "Fortune": 2548.4,
+     "Supremacy": 2540.1,
+     "Arc Striking": 2531.3,
+     "Battle Frenzy": 2545.9,
+     "Hellfire": 2531.3,
+     "Thunder": 2531.3,
+     "Blood Violence": 2531.3,
+     "Animosity": 2550.2,
+     "Glass Cannon": 2780.2,
+     "Mindhaste": 2488.6
+    }
+   },
+   {
+    "farm_dps": 2762.2,
+    "dps": 2762.2,
+    "total": 82867,
+    "manaLeft": 100.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Infinity Breaker",
+      "code": "I0NI",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Bloody Scythe",
+     "Essence from Blood",
+     "Executor's Swing"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 9
+    },
+    "chunk": 796769650,
+    "sources": [
+     [
+      "Grim Scythe",
+      856.8
+     ],
+     [
+      "Sulfuras",
+      712.3
+     ],
+     [
+      "Corpse Explosion",
+      348.3
+     ],
+     [
+      "Автоатака",
+      187.3
+     ],
+     [
+      "Grim Scythe (пассив)",
+      165.3
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      153.5
+     ],
+     [
+      "Bloody Scythe (взрыв)",
+      121.9
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      113.2
+     ],
+     [
+      "Tombstone (аура)",
+      95.7
+     ],
+     [
+      "Sulfuras (удар)",
+      8.1
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "5.22",
+      "Transfusion"
+     ],
+     [
+      "5.67",
+      "Grim Scythe"
+     ],
+     [
+      "8.61",
+      "Corpse Explosion"
+     ],
+     [
+      "9.06",
+      "Tombstone"
+     ],
+     [
+      "9.51",
+      "Transfusion"
+     ],
+     [
+      "10.03",
+      "Grim Scythe"
+     ],
+     [
+      "13.38",
+      "Transfusion"
+     ],
+     [
+      "14.39",
+      "Grim Scythe"
+     ],
+     [
+      "16.78",
+      "Corpse Explosion"
+     ],
+     [
+      "17.25",
+      "Transfusion"
+     ],
+     [
+      "17.70",
+      "Tombstone"
+     ],
+     [
+      "18.75",
+      "Grim Scythe"
+     ],
+     [
+      "21.11",
+      "Transfusion"
+     ],
+     [
+      "23.11",
+      "Grim Scythe"
+     ],
+     [
+      "24.94",
+      "Corpse Explosion"
+     ],
+     [
+      "25.39",
+      "Transfusion"
+     ],
+     [
+      "26.54",
+      "Tombstone"
+     ],
+     [
+      "27.47",
+      "Grim Scythe"
+     ],
+     [
+      "29.26",
+      "Transfusion"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "190"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "36"
+     ],
+     [
+      "Урон автоатаки",
+      "156.5"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "28"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "19.0%"
+     ],
+     [
+      "Скорость атаки",
+      "73.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+90%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+13.5%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1190"
+     ],
+     [
+      "Мана макс.",
+      "1505"
+     ],
+     [
+      "Реген маны",
+      "16.16/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.28 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2726.3,
+     "Lord of the Dead": 2722.3,
+     "Executor's Swing": 2762.2,
+     "Blood Bomb": 2689.5,
+     "Hour of the Dead": 2660.7,
+     "Sanguine Fury": 2699.9,
+     "Serration": 2676.9,
+     "Gravedigger": 2711.2,
+     "Skeletal Archer": 2711.6,
+     "Swift Harvest": 2661.6,
+     "Essence from Blood": 2762.2,
+     "Life from Death": 2686.5,
+     "Reaper of Souls": 2685.3,
+     "Call of the Grave": 2745.2,
+     "Dark Bargain": 2715.2,
+     "Bloody Scythe": 2762.2
+    },
+    "glyphDps": {
+     "Fortitude": 2762.2,
+     "Unsealed Power": 2762.2,
+     "Fortune": 2558.0,
+     "Supremacy": 2532.0,
+     "Arc Striking": 2524.9,
+     "Battle Frenzy": 2541.3,
+     "Hellfire": 2524.9,
+     "Thunder": 2524.9,
+     "Blood Violence": 2524.9,
+     "Animosity": 2548.3,
+     "Glass Cannon": 2762.2,
+     "Mindhaste": 2563.1
+    }
+   },
+   {
+    "farm_dps": 2761.0,
+    "dps": 2761.0,
+    "total": 82831,
+    "manaLeft": 100.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Bloody Scythe",
+     "Essence from Blood",
+     "Executor's Swing"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 3,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 7
+    },
+    "chunk": 4320453264,
+    "sources": [
+     [
+      "Grim Scythe",
+      827.5
+     ],
+     [
+      "Sulfuras",
+      720.1
+     ],
+     [
+      "Corpse Explosion",
+      328.0
+     ],
+     [
+      "Автоатака",
+      193.3
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      180.8
+     ],
+     [
+      "Grim Scythe (пассив)",
+      168.3
+     ],
+     [
+      "Bloody Scythe (взрыв)",
+      114.8
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      113.6
+     ],
+     [
+      "Tombstone (аура)",
+      104.6
+     ],
+     [
+      "Sulfuras (удар)",
+      10.1
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "5.14",
+      "Transfusion"
+     ],
+     [
+      "5.59",
+      "Grim Scythe"
+     ],
+     [
+      "8.45",
+      "Corpse Explosion"
+     ],
+     [
+      "8.90",
+      "Tombstone"
+     ],
+     [
+      "9.35",
+      "Transfusion"
+     ],
+     [
+      "9.86",
+      "Grim Scythe"
+     ],
+     [
+      "13.14",
+      "Transfusion"
+     ],
+     [
+      "14.13",
+      "Grim Scythe"
+     ],
+     [
+      "16.45",
+      "Corpse Explosion"
+     ],
+     [
+      "16.93",
+      "Transfusion"
+     ],
+     [
+      "17.38",
+      "Tombstone"
+     ],
+     [
+      "18.41",
+      "Grim Scythe"
+     ],
+     [
+      "20.72",
+      "Transfusion"
+     ],
+     [
+      "22.68",
+      "Grim Scythe"
+     ],
+     [
+      "24.45",
+      "Corpse Explosion"
+     ],
+     [
+      "24.90",
+      "Transfusion"
+     ],
+     [
+      "26.04",
+      "Tombstone"
+     ],
+     [
+      "26.95",
+      "Grim Scythe"
+     ],
+     [
+      "28.69",
+      "Transfusion"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "231"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "36"
+     ],
+     [
+      "Урон автоатаки",
+      "187.2"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "36.0%"
+     ],
+     [
+      "Скорость атаки",
+      "57.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+58%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+10.5%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1190"
+     ],
+     [
+      "Мана макс.",
+      "1792"
+     ],
+     [
+      "Реген маны",
+      "19.44/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.18 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.030"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2721.2,
+     "Lord of the Dead": 2731.6,
+     "Executor's Swing": 2786.2,
+     "Blood Bomb": 2711.7,
+     "Hour of the Dead": 2667.4,
+     "Sanguine Fury": 2717.1,
+     "Serration": 2690.2,
+     "Gravedigger": 2713.7,
+     "Skeletal Archer": 2726.0,
+     "Swift Harvest": 2786.2,
+     "Essence from Blood": 2786.2,
+     "Life from Death": 2695.1,
+     "Reaper of Souls": 2694.7,
+     "Call of the Grave": 2744.4,
+     "Dark Bargain": 2696.9,
+     "Bloody Scythe": 2761.0
+    },
+    "glyphDps": {
+     "Fortitude": 2761.0,
+     "Unsealed Power": 2761.0,
+     "Fortune": 2512.0,
+     "Supremacy": 2488.9,
+     "Arc Striking": 2480.1,
+     "Battle Frenzy": 2543.1,
+     "Hellfire": 2480.1,
+     "Thunder": 2480.1,
+     "Blood Violence": 2480.1,
+     "Animosity": 2503.8,
+     "Glass Cannon": 2761.0,
+     "Mindhaste": 2510.5
+    }
+   },
+   {
+    "farm_dps": 2756.3,
+    "dps": 2756.3,
+    "total": 82689,
+    "manaLeft": 94.7,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Dark Bargain",
+     "Executor's Swing"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 10
+    },
+    "chunk": 8585579372,
+    "sources": [
+     [
+      "Grim Scythe",
+      1038.8
+     ],
+     [
+      "Sulfuras",
+      482.9
+     ],
+     [
+      "Corpse Explosion",
+      361.2
+     ],
+     [
+      "Автоатака",
+      208.7
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      195.2
+     ],
+     [
+      "Grim Scythe (пассив)",
+      186.9
+     ],
+     [
+      "Tombstone (аура)",
+      140.3
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      133.3
+     ],
+     [
+      "Sulfuras (удар)",
+      8.9
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "5.02",
+      "Grim Scythe"
+     ],
+     [
+      "8.81",
+      "Grim Scythe"
+     ],
+     [
+      "9.26",
+      "Tombstone"
+     ],
+     [
+      "9.71",
+      "Corpse Explosion"
+     ],
+     [
+      "12.42",
+      "Grim Scythe"
+     ],
+     [
+      "15.78",
+      "Grim Scythe"
+     ],
+     [
+      "16.75",
+      "Corpse Explosion"
+     ],
+     [
+      "17.20",
+      "Tombstone"
+     ],
+     [
+      "19.13",
+      "Grim Scythe"
+     ],
+     [
+      "22.47",
+      "Grim Scythe"
+     ],
+     [
+      "23.46",
+      "Corpse Explosion"
+     ],
+     [
+      "24.43",
+      "Tombstone"
+     ],
+     [
+      "25.81",
+      "Grim Scythe"
+     ],
+     [
+      "29.13",
+      "Grim Scythe"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "175"
+     ],
+     [
+      "Сила",
+      "64"
+     ],
+     [
+      "Ловкость",
+      "61"
+     ],
+     [
+      "Урон автоатаки",
+      "145.2"
+     ],
+     [
+      "Potency",
+      "18.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "36.0%"
+     ],
+     [
+      "Скорость атаки",
+      "99.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+78%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+15.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1580"
+     ],
+     [
+      "Мана макс.",
+      "1400"
+     ],
+     [
+      "Реген маны",
+      "14.96/с"
+     ],
+     [
+      "Мана в конце",
+      "95%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.11 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2756.3,
+     "Lord of the Dead": 2698.9,
+     "Executor's Swing": 2756.3,
+     "Blood Bomb": 2693.7,
+     "Hour of the Dead": 2645.9,
+     "Sanguine Fury": 2674.8,
+     "Serration": 2682.5,
+     "Gravedigger": 2688.7,
+     "Skeletal Archer": 2700.6,
+     "Swift Harvest": 2735.4,
+     "Essence from Blood": 2739.4,
+     "Life from Death": 2677.6,
+     "Reaper of Souls": 2667.4,
+     "Call of the Grave": 2749.9,
+     "Dark Bargain": 2756.3,
+     "Bloody Scythe": 2745.8
+    },
+    "glyphDps": {
+     "Fortitude": 2756.3,
+     "Unsealed Power": 2756.3,
+     "Fortune": 2531.7,
+     "Supremacy": 2521.6,
+     "Arc Striking": 2512.4,
+     "Battle Frenzy": 2583.0,
+     "Hellfire": 2512.4,
+     "Thunder": 2512.4,
+     "Blood Violence": 2512.4,
+     "Animosity": 2538.3,
+     "Glass Cannon": 2756.3,
+     "Mindhaste": 2662.8
+    }
+   },
+   {
+    "farm_dps": 2756.0,
+    "dps": 2756.0,
+    "total": 82680,
+    "manaLeft": 100.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Spellbinder's Vest",
+      "code": "tlum",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Essence from Blood",
+     "Executor's Swing"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 12,
+     "mastery": 18,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 796767487,
+    "sources": [
+     [
+      "Grim Scythe",
+      927.4
+     ],
+     [
+      "Sulfuras",
+      729.8
+     ],
+     [
+      "Corpse Explosion",
+      392.0
+     ],
+     [
+      "Автоатака",
+      180.1
+     ],
+     [
+      "Grim Scythe (пассив)",
+      160.2
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      140.9
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      124.9
+     ],
+     [
+      "Tombstone (аура)",
+      93.6
+     ],
+     [
+      "Sulfuras (удар)",
+      6.9
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "5.25",
+      "Transfusion"
+     ],
+     [
+      "5.70",
+      "Grim Scythe"
+     ],
+     [
+      "8.68",
+      "Corpse Explosion"
+     ],
+     [
+      "9.13",
+      "Tombstone"
+     ],
+     [
+      "9.58",
+      "Transfusion"
+     ],
+     [
+      "10.10",
+      "Grim Scythe"
+     ],
+     [
+      "13.48",
+      "Transfusion"
+     ],
+     [
+      "14.49",
+      "Grim Scythe"
+     ],
+     [
+      "16.92",
+      "Corpse Explosion"
+     ],
+     [
+      "17.38",
+      "Transfusion"
+     ],
+     [
+      "17.83",
+      "Tombstone"
+     ],
+     [
+      "18.89",
+      "Grim Scythe"
+     ],
+     [
+      "21.28",
+      "Transfusion"
+     ],
+     [
+      "23.29",
+      "Grim Scythe"
+     ],
+     [
+      "25.15",
+      "Corpse Explosion"
+     ],
+     [
+      "25.60",
+      "Transfusion"
+     ],
+     [
+      "26.75",
+      "Tombstone"
+     ],
+     [
+      "27.68",
+      "Grim Scythe"
+     ],
+     [
+      "29.50",
+      "Transfusion"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "180"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "36"
+     ],
+     [
+      "Урон автоатаки",
+      "149.0"
+     ],
+     [
+      "Potency",
+      "6.0"
+     ],
+     [
+      "Mastery",
+      "45"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "18.0%"
+     ],
+     [
+      "Скорость атаки",
+      "57.4%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+78%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+0.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1465"
+     ],
+     [
+      "Мана макс.",
+      "1435"
+     ],
+     [
+      "Реген маны",
+      "15.36/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.41 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2756.0,
+     "Lord of the Dead": 2719.2,
+     "Executor's Swing": 2775.2,
+     "Blood Bomb": 2688.7,
+     "Hour of the Dead": 2666.9,
+     "Sanguine Fury": 2703.7,
+     "Serration": 2680.1,
+     "Gravedigger": 2704.6,
+     "Skeletal Archer": 2711.0,
+     "Swift Harvest": 2703.7,
+     "Essence from Blood": 2775.2,
+     "Life from Death": 2689.2,
+     "Reaper of Souls": 2690.7,
+     "Call of the Grave": 2729.9,
+     "Dark Bargain": 2700.2,
+     "Bloody Scythe": 2775.2
+    },
+    "glyphDps": {
+     "Fortitude": 2756.0,
+     "Unsealed Power": 2756.0,
+     "Fortune": 2553.7,
+     "Supremacy": 2664.4,
+     "Arc Striking": 2535.8,
+     "Battle Frenzy": 2505.7,
+     "Hellfire": 2535.8,
+     "Thunder": 2535.8,
+     "Blood Violence": 2535.8,
+     "Animosity": 2558.4,
+     "Glass Cannon": 2756.0,
+     "Mindhaste": 2546.7
+    }
    }
   ],
   "shop": [
@@ -6363,6 +9603,3142 @@
      "Animosity": 2336.0,
      "Glass Cannon": 2519.6,
      "Mindhaste": 2345.3
+    }
+   },
+   {
+    "farm_dps": 2519.0,
+    "dps": 2519.0,
+    "total": 75571,
+    "manaLeft": 97.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Lightning Rod",
+      "code": "I07F",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Dark Bargain",
+     "Essence from Blood"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 10
+    },
+    "chunk": 4336219777,
+    "sources": [
+     [
+      "Grim Scythe",
+      738.3
+     ],
+     [
+      "Sulfuras",
+      590.4
+     ],
+     [
+      "Corpse Explosion",
+      428.9
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      210.8
+     ],
+     [
+      "Автоатака",
+      154.4
+     ],
+     [
+      "Tombstone (аура)",
+      138.6
+     ],
+     [
+      "Grim Scythe (пассив)",
+      127.9
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      122.9
+     ],
+     [
+      "Sulfuras (удар)",
+      6.8
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "4.70",
+      "Transfusion"
+     ],
+     [
+      "5.15",
+      "Grim Scythe"
+     ],
+     [
+      "7.86",
+      "Corpse Explosion"
+     ],
+     [
+      "8.31",
+      "Tombstone"
+     ],
+     [
+      "8.76",
+      "Transfusion"
+     ],
+     [
+      "9.21",
+      "Grim Scythe"
+     ],
+     [
+      "11.95",
+      "Transfusion"
+     ],
+     [
+      "12.91",
+      "Grim Scythe"
+     ],
+     [
+      "14.84",
+      "Corpse Explosion"
+     ],
+     [
+      "15.29",
+      "Transfusion"
+     ],
+     [
+      "15.74",
+      "Tombstone"
+     ],
+     [
+      "16.54",
+      "Grim Scythe"
+     ],
+     [
+      "18.32",
+      "Transfusion"
+     ],
+     [
+      "20.00",
+      "Grim Scythe"
+     ],
+     [
+      "21.26",
+      "Transfusion"
+     ],
+     [
+      "21.71",
+      "Corpse Explosion"
+     ],
+     [
+      "22.93",
+      "Tombstone"
+     ],
+     [
+      "23.38",
+      "Grim Scythe"
+     ],
+     [
+      "24.19",
+      "Transfusion"
+     ],
+     [
+      "26.62",
+      "Grim Scythe"
+     ],
+     [
+      "27.07",
+      "Transfusion"
+     ],
+     [
+      "28.16",
+      "Corpse Explosion"
+     ],
+     [
+      "29.60",
+      "Tombstone"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "175"
+     ],
+     [
+      "Сила",
+      "54"
+     ],
+     [
+      "Ловкость",
+      "45"
+     ],
+     [
+      "Урон автоатаки",
+      "145.2"
+     ],
+     [
+      "Potency",
+      "15.0"
+     ],
+     [
+      "Mastery",
+      "35"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "37.0%"
+     ],
+     [
+      "Скорость атаки",
+      "61.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+71%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+15.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1415"
+     ],
+     [
+      "Мана макс.",
+      "1400"
+     ],
+     [
+      "Реген маны",
+      "16.40/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.38 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2519.0,
+     "Lord of the Dead": 2483.6,
+     "Executor's Swing": 2522.4,
+     "Blood Bomb": 2488.2,
+     "Hour of the Dead": 2431.7,
+     "Sanguine Fury": 2414.7,
+     "Serration": 2465.2,
+     "Gravedigger": 2472.3,
+     "Skeletal Archer": 2485.7,
+     "Swift Harvest": 2414.7,
+     "Essence from Blood": 2519.0,
+     "Life from Death": 2461.2,
+     "Reaper of Souls": 2448.3,
+     "Call of the Grave": 2522.4,
+     "Dark Bargain": 2519.0,
+     "Bloody Scythe": 2522.4
+    },
+    "glyphDps": {
+     "Fortitude": 2519.0,
+     "Unsealed Power": 2519.0,
+     "Fortune": 2308.5,
+     "Supremacy": 2300.9,
+     "Arc Striking": 2291.4,
+     "Battle Frenzy": 2292.0,
+     "Hellfire": 2291.4,
+     "Thunder": 2291.4,
+     "Blood Violence": 2291.4,
+     "Animosity": 2310.4,
+     "Glass Cannon": 2519.0,
+     "Mindhaste": 2417.1
+    }
+   },
+   {
+    "farm_dps": 2517.0,
+    "dps": 2517.0,
+    "total": 75509,
+    "manaLeft": 100.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Lightning Rod",
+      "code": "I07F",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Call of the Grave",
+     "Essence from Blood",
+     "Lord of the Dead"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 10,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 20
+    },
+    "chunk": 2841995553,
+    "sources": [
+     [
+      "Sulfuras",
+      440.2
+     ],
+     [
+      "Grim Scythe",
+      432.9
+     ],
+     [
+      "Tombstone (аура)",
+      370.1
+     ],
+     [
+      "Всплеск огня",
+      267.0
+     ],
+     [
+      "Corpse Explosion",
+      232.3
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      231.5
+     ],
+     [
+      "Автоатака",
+      169.7
+     ],
+     [
+      "Grim Scythe (пассив)",
+      140.2
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      131.2
+     ],
+     [
+      "Assassin (Lord)",
+      92.2
+     ],
+     [
+      "Sulfuras (удар)",
+      9.6
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "5.19",
+      "Transfusion"
+     ],
+     [
+      "5.64",
+      "Grim Scythe"
+     ],
+     [
+      "8.55",
+      "Corpse Explosion"
+     ],
+     [
+      "9.00",
+      "Tombstone"
+     ],
+     [
+      "9.45",
+      "Transfusion"
+     ],
+     [
+      "9.96",
+      "Grim Scythe"
+     ],
+     [
+      "13.29",
+      "Transfusion"
+     ],
+     [
+      "14.29",
+      "Grim Scythe"
+     ],
+     [
+      "16.65",
+      "Corpse Explosion"
+     ],
+     [
+      "17.12",
+      "Transfusion"
+     ],
+     [
+      "17.57",
+      "Tombstone"
+     ],
+     [
+      "18.62",
+      "Grim Scythe"
+     ],
+     [
+      "20.96",
+      "Transfusion"
+     ],
+     [
+      "22.94",
+      "Grim Scythe"
+     ],
+     [
+      "24.75",
+      "Corpse Explosion"
+     ],
+     [
+      "25.20",
+      "Transfusion"
+     ],
+     [
+      "26.35",
+      "Tombstone"
+     ],
+     [
+      "27.27",
+      "Grim Scythe"
+     ],
+     [
+      "29.04",
+      "Transfusion"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "187"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Урон автоатаки",
+      "154.2"
+     ],
+     [
+      "Potency",
+      "26.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "46.0%"
+     ],
+     [
+      "Скорость атаки",
+      "119.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+31%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+30.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1190"
+     ],
+     [
+      "Мана макс.",
+      "1484"
+     ],
+     [
+      "Реген маны",
+      "17.36/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "0.84 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2495.7,
+     "Lord of the Dead": 2517.0,
+     "Executor's Swing": 2513.1,
+     "Blood Bomb": 2501.6,
+     "Hour of the Dead": 2443.6,
+     "Sanguine Fury": 2477.3,
+     "Serration": 2495.7,
+     "Gravedigger": 2495.6,
+     "Skeletal Archer": 2512.0,
+     "Swift Harvest": 2477.3,
+     "Essence from Blood": 2517.0,
+     "Life from Death": 2476.6,
+     "Reaper of Souls": 2453.8,
+     "Call of the Grave": 2517.0,
+     "Dark Bargain": 2495.7,
+     "Bloody Scythe": 2498.2
+    },
+    "glyphDps": {
+     "Fortitude": 2517.0,
+     "Unsealed Power": 2517.0,
+     "Fortune": 2333.8,
+     "Supremacy": 2330.9,
+     "Arc Striking": 2315.3,
+     "Battle Frenzy": 2352.7,
+     "Hellfire": 2315.3,
+     "Thunder": 2315.3,
+     "Blood Violence": 2315.3,
+     "Animosity": 2335.6,
+     "Glass Cannon": 2517.0,
+     "Mindhaste": 2357.7
+    }
+   },
+   {
+    "farm_dps": 2513.2,
+    "dps": 2513.2,
+    "total": 75395,
+    "manaLeft": 96.9,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Call of the Grave",
+     "Dark Bargain"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 1,
+     "damage": 4,
+     "crit": 0,
+     "potency": 4,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 20
+    },
+    "chunk": 2841381572,
+    "sources": [
+     [
+      "Grim Scythe",
+      539.8
+     ],
+     [
+      "Sulfuras",
+      386.1
+     ],
+     [
+      "Всплеск огня",
+      307.6
+     ],
+     [
+      "Tombstone (аура)",
+      275.3
+     ],
+     [
+      "Corpse Explosion",
+      245.7
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      228.2
+     ],
+     [
+      "Автоатака",
+      226.9
+     ],
+     [
+      "Grim Scythe (пассив)",
+      169.3
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      121.9
+     ],
+     [
+      "Sulfuras (удар)",
+      12.3
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "5.58",
+      "Grim Scythe"
+     ],
+     [
+      "9.75",
+      "Grim Scythe"
+     ],
+     [
+      "10.20",
+      "Corpse Explosion"
+     ],
+     [
+      "10.65",
+      "Tombstone"
+     ],
+     [
+      "13.62",
+      "Grim Scythe"
+     ],
+     [
+      "17.46",
+      "Grim Scythe"
+     ],
+     [
+      "17.93",
+      "Corpse Explosion"
+     ],
+     [
+      "18.98",
+      "Tombstone"
+     ],
+     [
+      "21.30",
+      "Grim Scythe"
+     ],
+     [
+      "25.12",
+      "Grim Scythe"
+     ],
+     [
+      "25.61",
+      "Corpse Explosion"
+     ],
+     [
+      "27.26",
+      "Tombstone"
+     ],
+     [
+      "28.95",
+      "Grim Scythe"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "191"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Урон автоатаки",
+      "174.2"
+     ],
+     [
+      "Potency",
+      "18.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "47.0%"
+     ],
+     [
+      "Скорость атаки",
+      "121.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+18%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+30.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1190"
+     ],
+     [
+      "Мана макс.",
+      "1512"
+     ],
+     [
+      "Реген маны",
+      "16.24/с"
+     ],
+     [
+      "Мана в конце",
+      "97%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "0.84 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2513.2,
+     "Lord of the Dead": 2431.3,
+     "Executor's Swing": 2449.9,
+     "Blood Bomb": 2429.8,
+     "Hour of the Dead": 2369.3,
+     "Sanguine Fury": 2365.2,
+     "Serration": 2417.7,
+     "Gravedigger": 2413.8,
+     "Skeletal Archer": 2434.5,
+     "Swift Harvest": 2429.3,
+     "Essence from Blood": 2449.9,
+     "Life from Death": 2388.3,
+     "Reaper of Souls": 2382.7,
+     "Call of the Grave": 2513.2,
+     "Dark Bargain": 2513.2,
+     "Bloody Scythe": 2428.2
+    },
+    "glyphDps": {
+     "Fortitude": 2513.2,
+     "Unsealed Power": 2513.2,
+     "Fortune": 2317.5,
+     "Supremacy": 2310.9,
+     "Arc Striking": 2299.9,
+     "Battle Frenzy": 2292.1,
+     "Hellfire": 2299.9,
+     "Thunder": 2299.9,
+     "Blood Violence": 2299.9,
+     "Animosity": 2327.3,
+     "Glass Cannon": 2513.2,
+     "Mindhaste": 2298.0
+    }
+   },
+   {
+    "farm_dps": 2513.0,
+    "dps": 2513.0,
+    "total": 75389,
+    "manaLeft": 98.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Bloody Scythe",
+     "Executor's Swing"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 1,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 9
+    },
+    "chunk": 2715683999,
+    "sources": [
+     [
+      "Grim Scythe",
+      734.6
+     ],
+     [
+      "Sulfuras",
+      553.5
+     ],
+     [
+      "Corpse Explosion",
+      288.6
+     ],
+     [
+      "Автоатака",
+      230.4
+     ],
+     [
+      "Grim Scythe (пассив)",
+      193.4
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      171.7
+     ],
+     [
+      "Bloody Scythe (взрыв)",
+      112.9
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      111.8
+     ],
+     [
+      "Tombstone (аура)",
+      105.9
+     ],
+     [
+      "Sulfuras (удар)",
+      10.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "6.12",
+      "Transfusion"
+     ],
+     [
+      "6.62",
+      "Grim Scythe"
+     ],
+     [
+      "10.88",
+      "Transfusion"
+     ],
+     [
+      "11.89",
+      "Corpse Explosion"
+     ],
+     [
+      "12.34",
+      "Grim Scythe"
+     ],
+     [
+      "12.79",
+      "Tombstone"
+     ],
+     [
+      "15.65",
+      "Transfusion"
+     ],
+     [
+      "18.06",
+      "Grim Scythe"
+     ],
+     [
+      "20.41",
+      "Transfusion"
+     ],
+     [
+      "23.33",
+      "Corpse Explosion"
+     ],
+     [
+      "23.78",
+      "Grim Scythe"
+     ],
+     [
+      "25.18",
+      "Tombstone"
+     ],
+     [
+      "25.63",
+      "Transfusion"
+     ],
+     [
+      "29.49",
+      "Grim Scythe"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "207"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Урон автоатаки",
+      "180.2"
+     ],
+     [
+      "Potency",
+      "18.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "28.0%"
+     ],
+     [
+      "Скорость атаки",
+      "87.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+13.5%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1190"
+     ],
+     [
+      "Мана макс.",
+      "1624"
+     ],
+     [
+      "Реген маны",
+      "17.52/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.19 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2589.0,
+     "Lord of the Dead": 2533.8,
+     "Executor's Swing": 2585.5,
+     "Blood Bomb": 2525.9,
+     "Hour of the Dead": 2492.0,
+     "Sanguine Fury": 2445.5,
+     "Serration": 2525.3,
+     "Gravedigger": 2585.5,
+     "Skeletal Archer": 2539.5,
+     "Swift Harvest": 2445.5,
+     "Essence from Blood": 2468.0,
+     "Life from Death": 2511.1,
+     "Reaper of Souls": 2514.5,
+     "Call of the Grave": 2589.0,
+     "Dark Bargain": 2589.0,
+     "Bloody Scythe": 2576.6
+    },
+    "glyphDps": {
+     "Fortitude": 2513.0,
+     "Unsealed Power": 2513.0,
+     "Fortune": 2312.1,
+     "Supremacy": 2289.8,
+     "Arc Striking": 2281.7,
+     "Battle Frenzy": 2257.6,
+     "Hellfire": 2281.7,
+     "Thunder": 2281.7,
+     "Blood Violence": 2281.7,
+     "Animosity": 2310.2,
+     "Glass Cannon": 2513.0,
+     "Mindhaste": 2253.6
+    }
+   },
+   {
+    "farm_dps": 2506.4,
+    "dps": 2506.4,
+    "total": 75193,
+    "manaLeft": 98.9,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Call of the Grave",
+     "Gravedigger",
+     "Sanguine Fury"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 8
+    },
+    "chunk": 2747433949,
+    "sources": [
+     [
+      "Sulfuras",
+      502.9
+     ],
+     [
+      "Grim Scythe",
+      411.0
+     ],
+     [
+      "Всплеск огня",
+      353.7
+     ],
+     [
+      "Tombstone (аура)",
+      252.1
+     ],
+     [
+      "Автоатака",
+      247.3
+     ],
+     [
+      "Corpse Explosion",
+      211.8
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      191.3
+     ],
+     [
+      "Grim Scythe (пассив)",
+      190.0
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      132.6
+     ],
+     [
+      "Sulfuras (удар)",
+      13.8
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "6.54",
+      "Transfusion"
+     ],
+     [
+      "7.13",
+      "Grim Scythe"
+     ],
+     [
+      "11.74",
+      "Transfusion"
+     ],
+     [
+      "12.92",
+      "Corpse Explosion"
+     ],
+     [
+      "13.37",
+      "Grim Scythe"
+     ],
+     [
+      "13.82",
+      "Tombstone"
+     ],
+     [
+      "16.93",
+      "Transfusion"
+     ],
+     [
+      "19.60",
+      "Grim Scythe"
+     ],
+     [
+      "22.13",
+      "Transfusion"
+     ],
+     [
+      "25.38",
+      "Corpse Explosion"
+     ],
+     [
+      "25.83",
+      "Grim Scythe"
+     ],
+     [
+      "27.32",
+      "Tombstone"
+     ],
+     [
+      "27.77",
+      "Transfusion"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "246"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Урон автоатаки",
+      "207.5"
+     ],
+     [
+      "Potency",
+      "18.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "29.0%"
+     ],
+     [
+      "Скорость атаки",
+      "89.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+18%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+12.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1190"
+     ],
+     [
+      "Мана макс.",
+      "1897"
+     ],
+     [
+      "Реген маны",
+      "20.64/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "0.98 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.340"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2442.9,
+     "Lord of the Dead": 2445.4,
+     "Executor's Swing": 2485.4,
+     "Blood Bomb": 2450.8,
+     "Hour of the Dead": 2408.1,
+     "Sanguine Fury": 2506.4,
+     "Serration": 2450.5,
+     "Gravedigger": 2506.4,
+     "Skeletal Archer": 2459.8,
+     "Swift Harvest": 2466.8,
+     "Essence from Blood": 2288.5,
+     "Life from Death": 2425.7,
+     "Reaper of Souls": 2433.9,
+     "Call of the Grave": 2506.4,
+     "Dark Bargain": 2419.0,
+     "Bloody Scythe": 2457.9
+    },
+    "glyphDps": {
+     "Fortitude": 2506.4,
+     "Unsealed Power": 2506.4,
+     "Fortune": 2313.0,
+     "Supremacy": 2302.7,
+     "Arc Striking": 2293.5,
+     "Battle Frenzy": 2317.6,
+     "Hellfire": 2293.5,
+     "Thunder": 2293.5,
+     "Blood Violence": 2293.5,
+     "Animosity": 2323.4,
+     "Glass Cannon": 2506.4,
+     "Mindhaste": 2178.4
+    }
+   },
+   {
+    "farm_dps": 2503.6,
+    "dps": 2503.6,
+    "total": 75108,
+    "manaLeft": 98.6,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Dark Bargain",
+     "Executor's Swing"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 10
+    },
+    "chunk": 2715714667,
+    "sources": [
+     [
+      "Grim Scythe",
+      836.2
+     ],
+     [
+      "Sulfuras",
+      517.3
+     ],
+     [
+      "Corpse Explosion",
+      294.4
+     ],
+     [
+      "Автоатака",
+      221.4
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      196.3
+     ],
+     [
+      "Grim Scythe (пассив)",
+      193.4
+     ],
+     [
+      "Tombstone (аура)",
+      120.4
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      112.5
+     ],
+     [
+      "Sulfuras (удар)",
+      11.8
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "6.31",
+      "Grim Scythe"
+     ],
+     [
+      "11.17",
+      "Grim Scythe"
+     ],
+     [
+      "11.62",
+      "Corpse Explosion"
+     ],
+     [
+      "12.12",
+      "Tombstone"
+     ],
+     [
+      "15.75",
+      "Grim Scythe"
+     ],
+     [
+      "20.10",
+      "Grim Scythe"
+     ],
+     [
+      "20.69",
+      "Corpse Explosion"
+     ],
+     [
+      "21.81",
+      "Tombstone"
+     ],
+     [
+      "24.44",
+      "Grim Scythe"
+     ],
+     [
+      "28.76",
+      "Grim Scythe"
+     ],
+     [
+      "29.38",
+      "Corpse Explosion"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "248"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Урон автоатаки",
+      "200.0"
+     ],
+     [
+      "Potency",
+      "18.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "28.0%"
+     ],
+     [
+      "Скорость атаки",
+      "87.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+15.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1190"
+     ],
+     [
+      "Мана макс.",
+      "1911"
+     ],
+     [
+      "Реген маны",
+      "20.80/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.19 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.240"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2503.6,
+     "Lord of the Dead": 2429.7,
+     "Executor's Swing": 2503.6,
+     "Blood Bomb": 2407.5,
+     "Hour of the Dead": 2372.2,
+     "Sanguine Fury": 2381.6,
+     "Serration": 2415.7,
+     "Gravedigger": 2453.7,
+     "Skeletal Archer": 2430.1,
+     "Swift Harvest": 2405.5,
+     "Essence from Blood": 2472.5,
+     "Life from Death": 2383.9,
+     "Reaper of Souls": 2396.7,
+     "Call of the Grave": 2497.2,
+     "Dark Bargain": 2503.6,
+     "Bloody Scythe": 2469.1
+    },
+    "glyphDps": {
+     "Fortitude": 2503.6,
+     "Unsealed Power": 2503.6,
+     "Fortune": 2256.3,
+     "Supremacy": 2248.3,
+     "Arc Striking": 2239.1,
+     "Battle Frenzy": 2210.0,
+     "Hellfire": 2239.1,
+     "Thunder": 2239.1,
+     "Blood Violence": 2239.1,
+     "Animosity": 2265.9,
+     "Glass Cannon": 2503.6,
+     "Mindhaste": 2294.3
+    }
+   },
+   {
+    "farm_dps": 2494.0,
+    "dps": 2494.0,
+    "total": 74819,
+    "manaLeft": 95.7,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Lightning Rod",
+      "code": "I07F",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Call of the Grave",
+     "Dark Bargain"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 9,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 20
+    },
+    "chunk": 2761892818,
+    "sources": [
+     [
+      "Grim Scythe",
+      539.1
+     ],
+     [
+      "Sulfuras",
+      522.1
+     ],
+     [
+      "Tombstone (аура)",
+      277.2
+     ],
+     [
+      "Всплеск огня",
+      254.1
+     ],
+     [
+      "Corpse Explosion",
+      216.5
+     ],
+     [
+      "Автоатака",
+      198.8
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      196.6
+     ],
+     [
+      "Grim Scythe (пассив)",
+      155.3
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      124.6
+     ],
+     [
+      "Sulfuras (удар)",
+      9.8
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "5.67",
+      "Transfusion"
+     ],
+     [
+      "6.19",
+      "Grim Scythe"
+     ],
+     [
+      "9.77",
+      "Transfusion"
+     ],
+     [
+      "11.30",
+      "Grim Scythe"
+     ],
+     [
+      "11.75",
+      "Corpse Explosion"
+     ],
+     [
+      "12.20",
+      "Tombstone"
+     ],
+     [
+      "13.70",
+      "Transfusion"
+     ],
+     [
+      "16.12",
+      "Grim Scythe"
+     ],
+     [
+      "17.46",
+      "Transfusion"
+     ],
+     [
+      "20.59",
+      "Grim Scythe"
+     ],
+     [
+      "21.07",
+      "Transfusion"
+     ],
+     [
+      "21.52",
+      "Corpse Explosion"
+     ],
+     [
+      "22.37",
+      "Tombstone"
+     ],
+     [
+      "24.62",
+      "Transfusion"
+     ],
+     [
+      "25.07",
+      "Grim Scythe"
+     ],
+     [
+      "28.16",
+      "Transfusion"
+     ],
+     [
+      "29.47",
+      "Grim Scythe"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "201"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Урон автоатаки",
+      "173.8"
+     ],
+     [
+      "Potency",
+      "17.5"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "29.0%"
+     ],
+     [
+      "Скорость атаки",
+      "87.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+31%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+30.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1190"
+     ],
+     [
+      "Мана макс.",
+      "1582"
+     ],
+     [
+      "Реген маны",
+      "18.48/с"
+     ],
+     [
+      "Мана в конце",
+      "96%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "0.99 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2494.0,
+     "Lord of the Dead": 2364.9,
+     "Executor's Swing": 2401.8,
+     "Blood Bomb": 2369.6,
+     "Hour of the Dead": 2327.0,
+     "Sanguine Fury": 2407.6,
+     "Serration": 2374.5,
+     "Gravedigger": 2407.6,
+     "Skeletal Archer": 2384.8,
+     "Swift Harvest": 2404.6,
+     "Essence from Blood": 2294.5,
+     "Life from Death": 2344.1,
+     "Reaper of Souls": 2336.7,
+     "Call of the Grave": 2494.0,
+     "Dark Bargain": 2494.0,
+     "Bloody Scythe": 2379.5
+    },
+    "glyphDps": {
+     "Fortitude": 2494.0,
+     "Unsealed Power": 2494.0,
+     "Fortune": 2308.3,
+     "Supremacy": 2300.7,
+     "Arc Striking": 2291.2,
+     "Battle Frenzy": 2278.4,
+     "Hellfire": 2291.2,
+     "Thunder": 2291.2,
+     "Blood Violence": 2291.2,
+     "Animosity": 2315.5,
+     "Glass Cannon": 2494.0,
+     "Mindhaste": 2336.6
+    }
+   },
+   {
+    "farm_dps": 2486.8,
+    "dps": 2486.8,
+    "total": 74604,
+    "manaLeft": 100.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Orb of Unstable Magic",
+      "code": "I04J",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Essence from Blood",
+     "Executor's Swing",
+     "Swift Harvest"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 10
+    },
+    "chunk": 4417178770,
+    "sources": [
+     [
+      "Grim Scythe",
+      652.0
+     ],
+     [
+      "Sulfuras",
+      543.2
+     ],
+     [
+      "Corpse Explosion",
+      276.3
+     ],
+     [
+      "Всплеск огня",
+      248.5
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      200.0
+     ],
+     [
+      "Автоатака",
+      182.8
+     ],
+     [
+      "Grim Scythe (пассив)",
+      161.4
+     ],
+     [
+      "Tombstone (аура)",
+      116.4
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      97.0
+     ],
+     [
+      "Sulfuras (удар)",
+      9.1
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "5.27",
+      "Transfusion"
+     ],
+     [
+      "5.72",
+      "Grim Scythe"
+     ],
+     [
+      "8.72",
+      "Corpse Explosion"
+     ],
+     [
+      "9.17",
+      "Tombstone"
+     ],
+     [
+      "9.62",
+      "Transfusion"
+     ],
+     [
+      "10.13",
+      "Grim Scythe"
+     ],
+     [
+      "13.54",
+      "Transfusion"
+     ],
+     [
+      "14.55",
+      "Grim Scythe"
+     ],
+     [
+      "16.99",
+      "Corpse Explosion"
+     ],
+     [
+      "17.45",
+      "Transfusion"
+     ],
+     [
+      "17.90",
+      "Tombstone"
+     ],
+     [
+      "18.97",
+      "Grim Scythe"
+     ],
+     [
+      "21.37",
+      "Transfusion"
+     ],
+     [
+      "23.39",
+      "Grim Scythe"
+     ],
+     [
+      "25.26",
+      "Corpse Explosion"
+     ],
+     [
+      "25.71",
+      "Transfusion"
+     ],
+     [
+      "26.86",
+      "Tombstone"
+     ],
+     [
+      "27.80",
+      "Grim Scythe"
+     ],
+     [
+      "29.63",
+      "Transfusion"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "205"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Урон автоатаки",
+      "167.8"
+     ],
+     [
+      "Potency",
+      "18.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "43.0%"
+     ],
+     [
+      "Скорость атаки",
+      "87.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+58%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+15.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1190"
+     ],
+     [
+      "Мана макс.",
+      "1610"
+     ],
+     [
+      "Реген маны",
+      "17.36/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.19 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2495.2,
+     "Lord of the Dead": 2467.7,
+     "Executor's Swing": 2500.9,
+     "Blood Bomb": 2451.2,
+     "Hour of the Dead": 2406.2,
+     "Sanguine Fury": 2475.5,
+     "Serration": 2447.5,
+     "Gravedigger": 2458.5,
+     "Skeletal Archer": 2466.4,
+     "Swift Harvest": 2537.6,
+     "Essence from Blood": 2537.6,
+     "Life from Death": 2431.5,
+     "Reaper of Souls": 2416.2,
+     "Call of the Grave": 2537.6,
+     "Dark Bargain": 2495.2,
+     "Bloody Scythe": 2478.9
+    },
+    "glyphDps": {
+     "Fortitude": 2486.8,
+     "Unsealed Power": 2486.8,
+     "Fortune": 2283.1,
+     "Supremacy": 2278.3,
+     "Arc Striking": 2268.9,
+     "Battle Frenzy": 2256.7,
+     "Hellfire": 2268.9,
+     "Thunder": 2268.9,
+     "Blood Violence": 2268.9,
+     "Animosity": 2291.2,
+     "Glass Cannon": 2486.8,
+     "Mindhaste": 2257.9
+    }
+   },
+   {
+    "farm_dps": 2481.4,
+    "dps": 2481.4,
+    "total": 74441,
+    "manaLeft": 98.1,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Call of the Grave",
+     "Executor's Swing",
+     "Gravedigger"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 9
+    },
+    "chunk": 2747432857,
+    "sources": [
+     [
+      "Grim Scythe",
+      616.9
+     ],
+     [
+      "Sulfuras",
+      470.8
+     ],
+     [
+      "Tombstone (аура)",
+      256.0
+     ],
+     [
+      "Corpse Explosion",
+      231.3
+     ],
+     [
+      "Всплеск огня",
+      221.5
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      187.4
+     ],
+     [
+      "Автоатака",
+      187.2
+     ],
+     [
+      "Grim Scythe (пассив)",
+      157.6
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      144.1
+     ],
+     [
+      "Sulfuras (удар)",
+      8.5
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "6.08",
+      "Transfusion"
+     ],
+     [
+      "6.57",
+      "Grim Scythe"
+     ],
+     [
+      "10.81",
+      "Transfusion"
+     ],
+     [
+      "11.80",
+      "Corpse Explosion"
+     ],
+     [
+      "12.25",
+      "Grim Scythe"
+     ],
+     [
+      "12.70",
+      "Tombstone"
+     ],
+     [
+      "15.54",
+      "Transfusion"
+     ],
+     [
+      "17.92",
+      "Grim Scythe"
+     ],
+     [
+      "20.26",
+      "Transfusion"
+     ],
+     [
+      "23.15",
+      "Corpse Explosion"
+     ],
+     [
+      "23.60",
+      "Grim Scythe"
+     ],
+     [
+      "24.99",
+      "Tombstone"
+     ],
+     [
+      "25.44",
+      "Transfusion"
+     ],
+     [
+      "29.27",
+      "Grim Scythe"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "207"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Урон автоатаки",
+      "178.2"
+     ],
+     [
+      "Potency",
+      "18.0"
+     ],
+     [
+      "Mastery",
+      "20"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "29.0%"
+     ],
+     [
+      "Скорость атаки",
+      "87.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+13.5%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1190"
+     ],
+     [
+      "Мана макс.",
+      "1624"
+     ],
+     [
+      "Реген маны",
+      "17.52/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.19 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.220"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2535.2,
+     "Lord of the Dead": 2432.7,
+     "Executor's Swing": 2481.4,
+     "Blood Bomb": 2427.7,
+     "Hour of the Dead": 2393.8,
+     "Sanguine Fury": 2407.1,
+     "Serration": 2436.2,
+     "Gravedigger": 2481.4,
+     "Skeletal Archer": 2448.7,
+     "Swift Harvest": 2407.1,
+     "Essence from Blood": 2367.8,
+     "Life from Death": 2413.5,
+     "Reaper of Souls": 2409.3,
+     "Call of the Grave": 2535.2,
+     "Dark Bargain": 2535.2,
+     "Bloody Scythe": 2461.5
+    },
+    "glyphDps": {
+     "Fortitude": 2481.4,
+     "Unsealed Power": 2481.4,
+     "Fortune": 2314.2,
+     "Supremacy": 2302.3,
+     "Arc Striking": 2293.5,
+     "Battle Frenzy": 2282.3,
+     "Hellfire": 2293.5,
+     "Thunder": 2293.5,
+     "Blood Violence": 2293.5,
+     "Animosity": 2316.7,
+     "Glass Cannon": 2481.4,
+     "Mindhaste": 2276.7
+    }
+   },
+   {
+    "farm_dps": 2475.6,
+    "dps": 2475.6,
+    "total": 74269,
+    "manaLeft": 100.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Razorwind",
+      "code": "I05X",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I07O",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Unbound Power Core",
+      "code": "I0FW",
+      "source": "shop"
+     },
+     {
+      "name": "Infinity Breaker",
+      "code": "I0NI",
+      "source": "shop"
+     }
+    ],
+    "talents": [
+     "Call of the Grave",
+     "Essence from Blood",
+     "Executor's Swing"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 10
+    },
+    "chunk": 2841381579,
+    "sources": [
+     [
+      "Grim Scythe",
+      509.9
+     ],
+     [
+      "Sulfuras",
+      436.8
+     ],
+     [
+      "Tombstone (аура)",
+      327.4
+     ],
+     [
+      "Всплеск огня",
+      284.8
+     ],
+     [
+      "Corpse Explosion",
+      230.5
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      212.0
+     ],
+     [
+      "Автоатака",
+      179.6
+     ],
+     [
+      "Grim Scythe (пассив)",
+      160.6
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      123.6
+     ],
+     [
+      "Sulfuras (удар)",
+      10.3
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "5.19",
+      "Transfusion"
+     ],
+     [
+      "5.64",
+      "Grim Scythe"
+     ],
+     [
+      "8.55",
+      "Corpse Explosion"
+     ],
+     [
+      "9.00",
+      "Tombstone"
+     ],
+     [
+      "9.45",
+      "Transfusion"
+     ],
+     [
+      "9.96",
+      "Grim Scythe"
+     ],
+     [
+      "13.29",
+      "Transfusion"
+     ],
+     [
+      "14.29",
+      "Grim Scythe"
+     ],
+     [
+      "16.65",
+      "Corpse Explosion"
+     ],
+     [
+      "17.12",
+      "Transfusion"
+     ],
+     [
+      "17.57",
+      "Tombstone"
+     ],
+     [
+      "18.62",
+      "Grim Scythe"
+     ],
+     [
+      "20.96",
+      "Transfusion"
+     ],
+     [
+      "22.94",
+      "Grim Scythe"
+     ],
+     [
+      "24.75",
+      "Corpse Explosion"
+     ],
+     [
+      "25.20",
+      "Transfusion"
+     ],
+     [
+      "26.35",
+      "Tombstone"
+     ],
+     [
+      "27.27",
+      "Grim Scythe"
+     ],
+     [
+      "29.04",
+      "Transfusion"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "187"
+     ],
+     [
+      "Сила",
+      "39"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Урон автоатаки",
+      "154.2"
+     ],
+     [
+      "Potency",
+      "26.0"
+     ],
+     [
+      "Mastery",
+      "18"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "46.0%"
+     ],
+     [
+      "Скорость атаки",
+      "135.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+30%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+15.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1190"
+     ],
+     [
+      "Мана макс.",
+      "1484"
+     ],
+     [
+      "Реген маны",
+      "15.92/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "0.79 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.120"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2451.1,
+     "Lord of the Dead": 2470.7,
+     "Executor's Swing": 2475.6,
+     "Blood Bomb": 2452.0,
+     "Hour of the Dead": 2404.1,
+     "Sanguine Fury": 2399.9,
+     "Serration": 2450.0,
+     "Gravedigger": 2449.8,
+     "Skeletal Archer": 2466.5,
+     "Swift Harvest": 2399.9,
+     "Essence from Blood": 2475.6,
+     "Life from Death": 2430.4,
+     "Reaper of Souls": 2417.4,
+     "Call of the Grave": 2475.6,
+     "Dark Bargain": 2451.1,
+     "Bloody Scythe": 2460.5
+    },
+    "glyphDps": {
+     "Fortitude": 2475.6,
+     "Unsealed Power": 2475.6,
+     "Fortune": 2279.3,
+     "Supremacy": 2271.6,
+     "Arc Striking": 2261.6,
+     "Battle Frenzy": 2280.6,
+     "Hellfire": 2261.6,
+     "Thunder": 2261.6,
+     "Blood Violence": 2261.6,
+     "Animosity": 2283.1,
+     "Glass Cannon": 2475.6,
+     "Mindhaste": 2288.6
     }
    }
   ],
@@ -9545,6 +15921,3234 @@
      "Animosity": 2081.8,
      "Glass Cannon": 2304.3,
      "Mindhaste": 2086.4
+    }
+   },
+   {
+    "farm_dps": 2300.3,
+    "dps": 2300.3,
+    "total": 69008,
+    "manaLeft": 99.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "Nightborne Scepter",
+      "code": "I0FU",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Dark Bargain",
+     "Executor's Swing"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 10
+    },
+    "chunk": 8490402391,
+    "sources": [
+     [
+      "Grim Scythe",
+      874.6
+     ],
+     [
+      "Sulfuras",
+      438.5
+     ],
+     [
+      "Corpse Explosion",
+      281.4
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      170.4
+     ],
+     [
+      "Автоатака",
+      161.6
+     ],
+     [
+      "Grim Scythe (пассив)",
+      142.0
+     ],
+     [
+      "Tombstone (аура)",
+      124.1
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      99.4
+     ],
+     [
+      "Sulfuras (удар)",
+      8.1
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "5.13",
+      "Grim Scythe"
+     ],
+     [
+      "8.98",
+      "Grim Scythe"
+     ],
+     [
+      "9.43",
+      "Corpse Explosion"
+     ],
+     [
+      "9.88",
+      "Tombstone"
+     ],
+     [
+      "12.63",
+      "Grim Scythe"
+     ],
+     [
+      "16.01",
+      "Grim Scythe"
+     ],
+     [
+      "16.58",
+      "Corpse Explosion"
+     ],
+     [
+      "17.54",
+      "Tombstone"
+     ],
+     [
+      "19.38",
+      "Grim Scythe"
+     ],
+     [
+      "22.74",
+      "Grim Scythe"
+     ],
+     [
+      "23.33",
+      "Corpse Explosion"
+     ],
+     [
+      "24.81",
+      "Tombstone"
+     ],
+     [
+      "26.09",
+      "Grim Scythe"
+     ],
+     [
+      "29.43",
+      "Grim Scythe"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "208"
+     ],
+     [
+      "Сила",
+      "58"
+     ],
+     [
+      "Ловкость",
+      "55"
+     ],
+     [
+      "Урон автоатаки",
+      "170.0"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "21.0%"
+     ],
+     [
+      "Скорость атаки",
+      "58.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+60%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+15.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1490"
+     ],
+     [
+      "Мана макс.",
+      "1631"
+     ],
+     [
+      "Реген маны",
+      "18.24/с"
+     ],
+     [
+      "Мана в конце",
+      "99%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.17 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2300.3,
+     "Lord of the Dead": 2246.8,
+     "Executor's Swing": 2300.3,
+     "Blood Bomb": 2261.9,
+     "Hour of the Dead": 2185.2,
+     "Sanguine Fury": 2228.6,
+     "Serration": 2205.3,
+     "Gravedigger": 2230.0,
+     "Skeletal Archer": 2236.2,
+     "Swift Harvest": 2277.4,
+     "Essence from Blood": 2274.9,
+     "Life from Death": 2212.1,
+     "Reaper of Souls": 2204.0,
+     "Call of the Grave": 2263.8,
+     "Dark Bargain": 2300.3,
+     "Bloody Scythe": 2266.8
+    },
+    "glyphDps": {
+     "Fortitude": 2300.3,
+     "Unsealed Power": 2300.3,
+     "Fortune": 2090.0,
+     "Supremacy": 2083.8,
+     "Arc Striking": 2075.5,
+     "Battle Frenzy": 2113.6,
+     "Hellfire": 2075.5,
+     "Thunder": 2075.5,
+     "Blood Violence": 2075.5,
+     "Animosity": 2095.3,
+     "Glass Cannon": 2300.3,
+     "Mindhaste": 2177.2
+    }
+   },
+   {
+    "farm_dps": 2299.9,
+    "dps": 2299.9,
+    "total": 68997,
+    "manaLeft": 100.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "Bonebreaker Gloves",
+      "code": "I0UN",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Spellbinder's Vest",
+      "code": "tlum",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Dark Bargain",
+     "Essence from Blood"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 9,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 797598794,
+    "sources": [
+     [
+      "Grim Scythe",
+      687.1
+     ],
+     [
+      "Sulfuras",
+      522.4
+     ],
+     [
+      "Corpse Explosion",
+      463.0
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      166.7
+     ],
+     [
+      "Автоатака",
+      131.4
+     ],
+     [
+      "Tombstone (аура)",
+      113.7
+     ],
+     [
+      "Grim Scythe (пассив)",
+      108.4
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      101.3
+     ],
+     [
+      "Sulfuras (удар)",
+      5.9
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "4.58",
+      "Transfusion"
+     ],
+     [
+      "5.03",
+      "Grim Scythe"
+     ],
+     [
+      "7.67",
+      "Corpse Explosion"
+     ],
+     [
+      "8.12",
+      "Tombstone"
+     ],
+     [
+      "8.57",
+      "Transfusion"
+     ],
+     [
+      "9.02",
+      "Grim Scythe"
+     ],
+     [
+      "11.62",
+      "Transfusion"
+     ],
+     [
+      "12.61",
+      "Grim Scythe"
+     ],
+     [
+      "14.49",
+      "Corpse Explosion"
+     ],
+     [
+      "14.94",
+      "Transfusion"
+     ],
+     [
+      "15.39",
+      "Tombstone"
+     ],
+     [
+      "16.09",
+      "Grim Scythe"
+     ],
+     [
+      "17.88",
+      "Transfusion"
+     ],
+     [
+      "19.37",
+      "Grim Scythe"
+     ],
+     [
+      "20.67",
+      "Transfusion"
+     ],
+     [
+      "21.12",
+      "Corpse Explosion"
+     ],
+     [
+      "22.25",
+      "Tombstone"
+     ],
+     [
+      "22.70",
+      "Grim Scythe"
+     ],
+     [
+      "23.46",
+      "Transfusion"
+     ],
+     [
+      "25.78",
+      "Grim Scythe"
+     ],
+     [
+      "26.23",
+      "Transfusion"
+     ],
+     [
+      "27.25",
+      "Corpse Explosion"
+     ],
+     [
+      "28.56",
+      "Tombstone"
+     ],
+     [
+      "29.01",
+      "Grim Scythe"
+     ],
+     [
+      "29.46",
+      "Transfusion"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "171"
+     ],
+     [
+      "Сила",
+      "33"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Урон автоатаки",
+      "142.2"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "34"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "29.0%"
+     ],
+     [
+      "Скорость атаки",
+      "42.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+0.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1525"
+     ],
+     [
+      "Мана макс.",
+      "1372"
+     ],
+     [
+      "Реген маны",
+      "14.64/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.30 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2299.9,
+     "Lord of the Dead": 2250.1,
+     "Executor's Swing": 2259.4,
+     "Blood Bomb": 2250.3,
+     "Hour of the Dead": 2177.0,
+     "Sanguine Fury": 2182.0,
+     "Serration": 2188.1,
+     "Gravedigger": 2241.0,
+     "Skeletal Archer": 2241.5,
+     "Swift Harvest": 2194.6,
+     "Essence from Blood": 2299.9,
+     "Life from Death": 2198.4,
+     "Reaper of Souls": 2190.3,
+     "Call of the Grave": 2247.6,
+     "Dark Bargain": 2299.9,
+     "Bloody Scythe": 2259.4
+    },
+    "glyphDps": {
+     "Fortitude": 2299.9,
+     "Unsealed Power": 2299.9,
+     "Fortune": 2100.6,
+     "Supremacy": 2212.7,
+     "Arc Striking": 2086.7,
+     "Battle Frenzy": 2097.1,
+     "Hellfire": 2086.7,
+     "Thunder": 2086.7,
+     "Blood Violence": 2086.7,
+     "Animosity": 2102.9,
+     "Glass Cannon": 2299.9,
+     "Mindhaste": 2092.9
+    }
+   },
+   {
+    "farm_dps": 2298.3,
+    "dps": 2298.3,
+    "total": 68950,
+    "manaLeft": 95.9,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Soulbreaker Scythe",
+      "code": "I0R7",
+      "source": "drop"
+     },
+     {
+      "name": "Bonebreaker Gloves",
+      "code": "I0UN",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Dark Bargain",
+     "Executor's Swing"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 1,
+     "pet_damage": 8
+    },
+    "chunk": 8490346748,
+    "sources": [
+     [
+      "Grim Scythe",
+      772.2
+     ],
+     [
+      "Sulfuras",
+      372.5
+     ],
+     [
+      "Corpse Explosion",
+      354.1
+     ],
+     [
+      "Grim Scythe (пассив)",
+      255.4
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      164.7
+     ],
+     [
+      "Автоатака",
+      151.2
+     ],
+     [
+      "Tombstone (аура)",
+      121.3
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      98.8
+     ],
+     [
+      "Sulfuras (удар)",
+      8.3
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "5.06",
+      "Grim Scythe"
+     ],
+     [
+      "8.84",
+      "Grim Scythe"
+     ],
+     [
+      "9.29",
+      "Corpse Explosion"
+     ],
+     [
+      "9.74",
+      "Tombstone"
+     ],
+     [
+      "12.40",
+      "Grim Scythe"
+     ],
+     [
+      "15.74",
+      "Grim Scythe"
+     ],
+     [
+      "16.24",
+      "Corpse Explosion"
+     ],
+     [
+      "17.21",
+      "Tombstone"
+     ],
+     [
+      "19.07",
+      "Grim Scythe"
+     ],
+     [
+      "22.39",
+      "Grim Scythe"
+     ],
+     [
+      "22.91",
+      "Corpse Explosion"
+     ],
+     [
+      "24.39",
+      "Tombstone"
+     ],
+     [
+      "25.71",
+      "Grim Scythe"
+     ],
+     [
+      "29.01",
+      "Grim Scythe"
+     ],
+     [
+      "29.55",
+      "Corpse Explosion"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "191"
+     ],
+     [
+      "Сила",
+      "58"
+     ],
+     [
+      "Ловкость",
+      "55"
+     ],
+     [
+      "Урон автоатаки",
+      "157.2"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "18"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "22.0%"
+     ],
+     [
+      "Скорость атаки",
+      "67.0%"
+     ],
+     [
+      "Удача",
+      "1%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+12.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1640"
+     ],
+     [
+      "Мана макс.",
+      "1512"
+     ],
+     [
+      "Реген маны",
+      "16.24/с"
+     ],
+     [
+      "Мана в конце",
+      "96%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.11 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2298.3,
+     "Lord of the Dead": 2212.9,
+     "Executor's Swing": 2298.3,
+     "Blood Bomb": 2211.7,
+     "Hour of the Dead": 2171.1,
+     "Sanguine Fury": 2184.6,
+     "Serration": 2153.9,
+     "Gravedigger": 2205.7,
+     "Skeletal Archer": 2203.0,
+     "Swift Harvest": 2196.1,
+     "Essence from Blood": 2229.0,
+     "Life from Death": 2148.8,
+     "Reaper of Souls": 2207.8,
+     "Call of the Grave": 2229.2,
+     "Dark Bargain": 2298.3,
+     "Bloody Scythe": 2247.1
+    },
+    "glyphDps": {
+     "Fortitude": 2298.3,
+     "Unsealed Power": 2298.3,
+     "Fortune": 2055.2,
+     "Supremacy": 2062.4,
+     "Arc Striking": 2054.6,
+     "Battle Frenzy": 2086.8,
+     "Hellfire": 2054.6,
+     "Thunder": 2054.6,
+     "Blood Violence": 2054.6,
+     "Animosity": 2072.9,
+     "Glass Cannon": 2298.3,
+     "Mindhaste": 2170.0
+    }
+   },
+   {
+    "farm_dps": 2297.3,
+    "dps": 2297.3,
+    "total": 68919,
+    "manaLeft": 85.4,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Animator's Gloves",
+      "code": "I0R5",
+      "source": "drop"
+     },
+     {
+      "name": "Soulbreaker Scythe",
+      "code": "I0R7",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Dark Bargain",
+     "Executor's Swing"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 10
+    },
+    "chunk": 8490347878,
+    "sources": [
+     [
+      "Grim Scythe",
+      688.8
+     ],
+     [
+      "Sulfuras",
+      474.1
+     ],
+     [
+      "Corpse Explosion",
+      262.3
+     ],
+     [
+      "Grim Scythe (пассив)",
+      237.4
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      236.3
+     ],
+     [
+      "Tombstone (аура)",
+      149.3
+     ],
+     [
+      "Автоатака",
+      139.4
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      102.6
+     ],
+     [
+      "Sulfuras (удар)",
+      7.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "4.86",
+      "Transfusion"
+     ],
+     [
+      "5.31",
+      "Grim Scythe"
+     ],
+     [
+      "8.31",
+      "Transfusion"
+     ],
+     [
+      "9.37",
+      "Corpse Explosion"
+     ],
+     [
+      "9.82",
+      "Tombstone"
+     ],
+     [
+      "10.27",
+      "Grim Scythe"
+     ],
+     [
+      "11.72",
+      "Transfusion"
+     ],
+     [
+      "14.32",
+      "Grim Scythe"
+     ],
+     [
+      "14.91",
+      "Transfusion"
+     ],
+     [
+      "17.83",
+      "Corpse Explosion"
+     ],
+     [
+      "18.28",
+      "Grim Scythe"
+     ],
+     [
+      "18.73",
+      "Transfusion"
+     ],
+     [
+      "19.18",
+      "Tombstone"
+     ],
+     [
+      "21.74",
+      "Transfusion"
+     ],
+     [
+      "22.19",
+      "Grim Scythe"
+     ],
+     [
+      "24.70",
+      "Transfusion"
+     ],
+     [
+      "25.39",
+      "Corpse Explosion"
+     ],
+     [
+      "25.88",
+      "Grim Scythe"
+     ],
+     [
+      "27.18",
+      "Tombstone"
+     ],
+     [
+      "27.64",
+      "Transfusion"
+     ],
+     [
+      "29.47",
+      "Grim Scythe"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "191"
+     ],
+     [
+      "Сила",
+      "58"
+     ],
+     [
+      "Ловкость",
+      "55"
+     ],
+     [
+      "Урон автоатаки",
+      "157.2"
+     ],
+     [
+      "Potency",
+      "13.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "18.0%"
+     ],
+     [
+      "Скорость атаки",
+      "67.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+29.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1490"
+     ],
+     [
+      "Мана макс.",
+      "1512"
+     ],
+     [
+      "Реген маны",
+      "16.24/с"
+     ],
+     [
+      "Мана в конце",
+      "85%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.11 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2297.3,
+     "Lord of the Dead": 2200.6,
+     "Executor's Swing": 2297.3,
+     "Blood Bomb": 2195.8,
+     "Hour of the Dead": 2139.0,
+     "Sanguine Fury": 2192.1,
+     "Serration": 2177.0,
+     "Gravedigger": 2194.0,
+     "Skeletal Archer": 2262.1,
+     "Swift Harvest": 2192.1,
+     "Essence from Blood": 2239.5,
+     "Life from Death": 2161.1,
+     "Reaper of Souls": 2219.9,
+     "Call of the Grave": 2255.6,
+     "Dark Bargain": 2297.3,
+     "Bloody Scythe": 2198.8
+    },
+    "glyphDps": {
+     "Fortitude": 2297.3,
+     "Unsealed Power": 2297.3,
+     "Fortune": 2023.6,
+     "Supremacy": 2077.0,
+     "Arc Striking": 2065.7,
+     "Battle Frenzy": 1988.9,
+     "Hellfire": 2065.7,
+     "Thunder": 2065.7,
+     "Blood Violence": 2065.7,
+     "Animosity": 2082.6,
+     "Glass Cannon": 2297.3,
+     "Mindhaste": 2187.1
+    }
+   },
+   {
+    "farm_dps": 2292.5,
+    "dps": 2292.5,
+    "total": 68776,
+    "manaLeft": 98.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Qiraji Talisman",
+      "code": "I0C9",
+      "source": "drop"
+     },
+     {
+      "name": "Soulbreaker Scythe",
+      "code": "I0R7",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Dark Bargain",
+     "Executor's Swing"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 1,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 9
+    },
+    "chunk": 8490416812,
+    "sources": [
+     [
+      "Grim Scythe",
+      785.3
+     ],
+     [
+      "Sulfuras",
+      382.2
+     ],
+     [
+      "Grim Scythe (пассив)",
+      269.8
+     ],
+     [
+      "Corpse Explosion",
+      259.9
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      178.2
+     ],
+     [
+      "Автоатака",
+      176.4
+     ],
+     [
+      "Tombstone (аура)",
+      130.3
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      100.8
+     ],
+     [
+      "Sulfuras (удар)",
+      9.5
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "5.16",
+      "Grim Scythe"
+     ],
+     [
+      "9.02",
+      "Grim Scythe"
+     ],
+     [
+      "9.47",
+      "Corpse Explosion"
+     ],
+     [
+      "9.92",
+      "Tombstone"
+     ],
+     [
+      "12.65",
+      "Grim Scythe"
+     ],
+     [
+      "16.04",
+      "Grim Scythe"
+     ],
+     [
+      "16.55",
+      "Corpse Explosion"
+     ],
+     [
+      "17.52",
+      "Tombstone"
+     ],
+     [
+      "19.42",
+      "Grim Scythe"
+     ],
+     [
+      "22.78",
+      "Grim Scythe"
+     ],
+     [
+      "23.32",
+      "Corpse Explosion"
+     ],
+     [
+      "24.81",
+      "Tombstone"
+     ],
+     [
+      "26.15",
+      "Grim Scythe"
+     ],
+     [
+      "29.50",
+      "Grim Scythe"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "196"
+     ],
+     [
+      "Сила",
+      "63"
+     ],
+     [
+      "Ловкость",
+      "60"
+     ],
+     [
+      "Урон автоатаки",
+      "175.0"
+     ],
+     [
+      "Potency",
+      "13.0"
+     ],
+     [
+      "Mastery",
+      "16"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "20.0%"
+     ],
+     [
+      "Скорость атаки",
+      "69.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+13.5%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1565"
+     ],
+     [
+      "Мана макс.",
+      "1612"
+     ],
+     [
+      "Реген маны",
+      "16.64/с"
+     ],
+     [
+      "Мана в конце",
+      "98%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.09 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2292.5,
+     "Lord of the Dead": 2225.4,
+     "Executor's Swing": 2292.5,
+     "Blood Bomb": 2231.2,
+     "Hour of the Dead": 2175.0,
+     "Sanguine Fury": 2191.7,
+     "Serration": 2211.4,
+     "Gravedigger": 2212.5,
+     "Skeletal Archer": 2221.8,
+     "Swift Harvest": 2169.6,
+     "Essence from Blood": 2252.3,
+     "Life from Death": 2201.7,
+     "Reaper of Souls": 2214.3,
+     "Call of the Grave": 2252.3,
+     "Dark Bargain": 2292.5,
+     "Bloody Scythe": 2242.3
+    },
+    "glyphDps": {
+     "Fortitude": 2292.5,
+     "Unsealed Power": 2292.5,
+     "Fortune": 2084.7,
+     "Supremacy": 2060.9,
+     "Arc Striking": 2052.4,
+     "Battle Frenzy": 2125.0,
+     "Hellfire": 2052.4,
+     "Thunder": 2052.4,
+     "Blood Violence": 2052.4,
+     "Animosity": 2073.8,
+     "Glass Cannon": 2292.5,
+     "Mindhaste": 2160.6
+    }
+   },
+   {
+    "farm_dps": 2289.8,
+    "dps": 2289.8,
+    "total": 68694,
+    "manaLeft": 99.9,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Dark Bargain",
+     "Essence from Blood"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 10
+    },
+    "chunk": 8490402731,
+    "sources": [
+     [
+      "Grim Scythe",
+      688.3
+     ],
+     [
+      "Sulfuras",
+      555.8
+     ],
+     [
+      "Corpse Explosion",
+      337.1
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      212.9
+     ],
+     [
+      "Tombstone (аура)",
+      142.7
+     ],
+     [
+      "Автоатака",
+      134.8
+     ],
+     [
+      "Grim Scythe (пассив)",
+      109.4
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      101.7
+     ],
+     [
+      "Sulfuras (удар)",
+      7.1
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "4.50",
+      "Transfusion"
+     ],
+     [
+      "4.95",
+      "Grim Scythe"
+     ],
+     [
+      "7.41",
+      "Corpse Explosion"
+     ],
+     [
+      "7.86",
+      "Tombstone"
+     ],
+     [
+      "8.31",
+      "Transfusion"
+     ],
+     [
+      "8.76",
+      "Grim Scythe"
+     ],
+     [
+      "11.31",
+      "Transfusion"
+     ],
+     [
+      "12.25",
+      "Grim Scythe"
+     ],
+     [
+      "14.04",
+      "Corpse Explosion"
+     ],
+     [
+      "14.49",
+      "Transfusion"
+     ],
+     [
+      "14.94",
+      "Tombstone"
+     ],
+     [
+      "15.66",
+      "Grim Scythe"
+     ],
+     [
+      "17.37",
+      "Transfusion"
+     ],
+     [
+      "18.91",
+      "Grim Scythe"
+     ],
+     [
+      "20.13",
+      "Transfusion"
+     ],
+     [
+      "20.58",
+      "Corpse Explosion"
+     ],
+     [
+      "21.72",
+      "Tombstone"
+     ],
+     [
+      "22.17",
+      "Grim Scythe"
+     ],
+     [
+      "22.88",
+      "Transfusion"
+     ],
+     [
+      "25.22",
+      "Grim Scythe"
+     ],
+     [
+      "25.67",
+      "Transfusion"
+     ],
+     [
+      "26.64",
+      "Corpse Explosion"
+     ],
+     [
+      "27.99",
+      "Tombstone"
+     ],
+     [
+      "28.44",
+      "Grim Scythe"
+     ],
+     [
+      "28.89",
+      "Transfusion"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "209"
+     ],
+     [
+      "Сила",
+      "58"
+     ],
+     [
+      "Ловкость",
+      "55"
+     ],
+     [
+      "Урон автоатаки",
+      "170.8"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "34.0%"
+     ],
+     [
+      "Скорость атаки",
+      "50.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+15.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1490"
+     ],
+     [
+      "Мана макс.",
+      "1638"
+     ],
+     [
+      "Реген маны",
+      "17.68/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.23 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2289.8,
+     "Lord of the Dead": 2210.7,
+     "Executor's Swing": 2233.6,
+     "Blood Bomb": 2182.4,
+     "Hour of the Dead": 2110.9,
+     "Sanguine Fury": 2125.3,
+     "Serration": 2117.5,
+     "Gravedigger": 2198.5,
+     "Skeletal Archer": 2151.9,
+     "Swift Harvest": 2211.2,
+     "Essence from Blood": 2289.8,
+     "Life from Death": 2102.7,
+     "Reaper of Souls": 2122.5,
+     "Call of the Grave": 2220.4,
+     "Dark Bargain": 2289.8,
+     "Bloody Scythe": 2237.8
+    },
+    "glyphDps": {
+     "Fortitude": 2289.8,
+     "Unsealed Power": 2289.8,
+     "Fortune": 2068.3,
+     "Supremacy": 2065.7,
+     "Arc Striking": 2055.4,
+     "Battle Frenzy": 2065.5,
+     "Hellfire": 2055.4,
+     "Thunder": 2055.4,
+     "Blood Violence": 2055.4,
+     "Animosity": 2071.8,
+     "Glass Cannon": 2289.8,
+     "Mindhaste": 2012.8
+    }
+   },
+   {
+    "farm_dps": 2285.5,
+    "dps": 2285.5,
+    "total": 68564,
+    "manaLeft": 96.5,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Pipe of Deew",
+      "code": "I00L",
+      "source": "drop"
+     },
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Shard of Infinity",
+      "code": "I03C",
+      "source": "drop"
+     },
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Dark Bargain",
+     "Executor's Swing"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 10
+    },
+    "chunk": 13375428112,
+    "sources": [
+     [
+      "Grim Scythe",
+      1021.8
+     ],
+     [
+      "Sulfuras",
+      376.4
+     ],
+     [
+      "Corpse Explosion",
+      309.1
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      162.2
+     ],
+     [
+      "Tombstone (аура)",
+      126.6
+     ],
+     [
+      "Автоатака",
+      103.7
+     ],
+     [
+      "Grim Scythe (пассив)",
+      91.7
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      88.4
+     ],
+     [
+      "Sulfuras (удар)",
+      5.6
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.75",
+      "Corpse Explosion"
+     ],
+     [
+      "1.50",
+      "Grim Scythe"
+     ],
+     [
+      "4.46",
+      "Grim Scythe"
+     ],
+     [
+      "7.22",
+      "Grim Scythe"
+     ],
+     [
+      "8.71",
+      "Corpse Explosion"
+     ],
+     [
+      "9.46",
+      "Tombstone"
+     ],
+     [
+      "10.21",
+      "Grim Scythe"
+     ],
+     [
+      "12.61",
+      "Grim Scythe"
+     ],
+     [
+      "14.95",
+      "Grim Scythe"
+     ],
+     [
+      "15.70",
+      "Corpse Explosion"
+     ],
+     [
+      "16.45",
+      "Tombstone"
+     ],
+     [
+      "17.29",
+      "Grim Scythe"
+     ],
+     [
+      "19.61",
+      "Grim Scythe"
+     ],
+     [
+      "21.70",
+      "Corpse Explosion"
+     ],
+     [
+      "22.45",
+      "Grim Scythe"
+     ],
+     [
+      "23.20",
+      "Tombstone"
+     ],
+     [
+      "24.76",
+      "Grim Scythe"
+     ],
+     [
+      "27.07",
+      "Grim Scythe"
+     ],
+     [
+      "27.82",
+      "Corpse Explosion"
+     ],
+     [
+      "29.37",
+      "Grim Scythe"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "193"
+     ],
+     [
+      "Сила",
+      "58"
+     ],
+     [
+      "Ловкость",
+      "55"
+     ],
+     [
+      "Урон автоатаки",
+      "158.8"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "8.0%"
+     ],
+     [
+      "Скорость атаки",
+      "50.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+15.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1495"
+     ],
+     [
+      "Мана макс.",
+      "1726"
+     ],
+     [
+      "Реген маны",
+      "17.68/с"
+     ],
+     [
+      "Мана в конце",
+      "97%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.23 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "2.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2285.5,
+     "Lord of the Dead": 2189.7,
+     "Executor's Swing": 2285.5,
+     "Blood Bomb": 2191.6,
+     "Hour of the Dead": 2129.1,
+     "Sanguine Fury": 2108.7,
+     "Serration": 2146.7,
+     "Gravedigger": 2179.8,
+     "Skeletal Archer": 2174.3,
+     "Swift Harvest": 2132.2,
+     "Essence from Blood": 2108.7,
+     "Life from Death": 2108.7,
+     "Reaper of Souls": 2139.1,
+     "Call of the Grave": 2206.8,
+     "Dark Bargain": 2285.5,
+     "Bloody Scythe": 2253.9
+    },
+    "glyphDps": {
+     "Fortitude": 2285.5,
+     "Unsealed Power": 2285.5,
+     "Fortune": 2055.5,
+     "Supremacy": 2051.1,
+     "Arc Striking": 2043.3,
+     "Battle Frenzy": 2054.1,
+     "Hellfire": 2043.3,
+     "Thunder": 2043.3,
+     "Blood Violence": 2043.3,
+     "Animosity": 2055.9,
+     "Glass Cannon": 2285.5,
+     "Mindhaste": 2166.0
+    }
+   },
+   {
+    "farm_dps": 2283.7,
+    "dps": 2283.7,
+    "total": 68510,
+    "manaLeft": 99.9,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "Soulbreaker Scythe",
+      "code": "I0R7",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Hood of Dark Deeds",
+      "code": "tgrh",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Dark Bargain",
+     "Essence from Blood"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 1,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 8
+    },
+    "chunk": 797601918,
+    "sources": [
+     [
+      "Grim Scythe",
+      666.3
+     ],
+     [
+      "Sulfuras",
+      504.3
+     ],
+     [
+      "Corpse Explosion",
+      332.3
+     ],
+     [
+      "Grim Scythe (пассив)",
+      235.3
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      175.9
+     ],
+     [
+      "Автоатака",
+      141.0
+     ],
+     [
+      "Tombstone (аура)",
+      117.8
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      104.2
+     ],
+     [
+      "Sulfuras (удар)",
+      6.6
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "4.64",
+      "Transfusion"
+     ],
+     [
+      "5.09",
+      "Grim Scythe"
+     ],
+     [
+      "7.78",
+      "Corpse Explosion"
+     ],
+     [
+      "8.23",
+      "Tombstone"
+     ],
+     [
+      "8.68",
+      "Transfusion"
+     ],
+     [
+      "9.13",
+      "Grim Scythe"
+     ],
+     [
+      "11.80",
+      "Transfusion"
+     ],
+     [
+      "12.81",
+      "Grim Scythe"
+     ],
+     [
+      "14.63",
+      "Corpse Explosion"
+     ],
+     [
+      "15.08",
+      "Transfusion"
+     ],
+     [
+      "15.53",
+      "Tombstone"
+     ],
+     [
+      "16.34",
+      "Grim Scythe"
+     ],
+     [
+      "18.01",
+      "Transfusion"
+     ],
+     [
+      "19.68",
+      "Grim Scythe"
+     ],
+     [
+      "20.84",
+      "Transfusion"
+     ],
+     [
+      "21.29",
+      "Corpse Explosion"
+     ],
+     [
+      "22.51",
+      "Tombstone"
+     ],
+     [
+      "22.96",
+      "Grim Scythe"
+     ],
+     [
+      "23.64",
+      "Transfusion"
+     ],
+     [
+      "26.06",
+      "Grim Scythe"
+     ],
+     [
+      "26.51",
+      "Transfusion"
+     ],
+     [
+      "27.46",
+      "Corpse Explosion"
+     ],
+     [
+      "28.90",
+      "Tombstone"
+     ],
+     [
+      "29.35",
+      "Grim Scythe"
+     ],
+     [
+      "29.80",
+      "Transfusion"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "179"
+     ],
+     [
+      "Сила",
+      "33"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Урон автоатаки",
+      "150.2"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "27.0%"
+     ],
+     [
+      "Скорость атаки",
+      "57.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+38%"
+     ],
+     [
+      "Урон питомцев",
+      "+12.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1100"
+     ],
+     [
+      "Мана макс.",
+      "1628"
+     ],
+     [
+      "Реген маны",
+      "15.28/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.18 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2296.0,
+     "Lord of the Dead": 2191.5,
+     "Executor's Swing": 2296.0,
+     "Blood Bomb": 2189.4,
+     "Hour of the Dead": 2164.4,
+     "Sanguine Fury": 2158.0,
+     "Serration": 2179.7,
+     "Gravedigger": 2181.5,
+     "Skeletal Archer": 2181.8,
+     "Swift Harvest": 2229.7,
+     "Essence from Blood": 2283.7,
+     "Life from Death": 2142.9,
+     "Reaper of Souls": 2212.7,
+     "Call of the Grave": 2230.0,
+     "Dark Bargain": 2296.0,
+     "Bloody Scythe": 2256.2
+    },
+    "glyphDps": {
+     "Fortitude": 2283.7,
+     "Unsealed Power": 2283.7,
+     "Fortune": 2102.5,
+     "Supremacy": 2079.6,
+     "Arc Striking": 2071.2,
+     "Battle Frenzy": 2050.5,
+     "Hellfire": 2071.2,
+     "Thunder": 2071.2,
+     "Blood Violence": 2071.2,
+     "Animosity": 2088.5,
+     "Glass Cannon": 2283.7,
+     "Mindhaste": 2110.0
+    }
+   },
+   {
+    "farm_dps": 2283.6,
+    "dps": 2283.6,
+    "total": 68508,
+    "manaLeft": 93.2,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Soulbreaker Scythe",
+      "code": "I0R7",
+      "source": "drop"
+     },
+     {
+      "name": "Bonebreaker Gloves",
+      "code": "I0UN",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Hood of Dark Deeds",
+      "code": "tgrh",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Dark Bargain",
+     "Executor's Swing"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 1,
+     "crit": 0,
+     "potency": 20,
+     "mastery": 0,
+     "luck": 1,
+     "pet_damage": 7
+    },
+    "chunk": 796646206,
+    "sources": [
+     [
+      "Grim Scythe",
+      759.6
+     ],
+     [
+      "Sulfuras",
+      400.9
+     ],
+     [
+      "Corpse Explosion",
+      355.2
+     ],
+     [
+      "Grim Scythe (пассив)",
+      254.0
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      150.3
+     ],
+     [
+      "Автоатака",
+      147.9
+     ],
+     [
+      "Tombstone (аура)",
+      109.9
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      98.7
+     ],
+     [
+      "Sulfuras (удар)",
+      7.1
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "5.06",
+      "Grim Scythe"
+     ],
+     [
+      "8.84",
+      "Grim Scythe"
+     ],
+     [
+      "9.29",
+      "Corpse Explosion"
+     ],
+     [
+      "9.74",
+      "Tombstone"
+     ],
+     [
+      "12.40",
+      "Grim Scythe"
+     ],
+     [
+      "15.74",
+      "Grim Scythe"
+     ],
+     [
+      "16.24",
+      "Corpse Explosion"
+     ],
+     [
+      "17.21",
+      "Tombstone"
+     ],
+     [
+      "19.07",
+      "Grim Scythe"
+     ],
+     [
+      "22.39",
+      "Grim Scythe"
+     ],
+     [
+      "22.91",
+      "Corpse Explosion"
+     ],
+     [
+      "24.39",
+      "Tombstone"
+     ],
+     [
+      "25.71",
+      "Grim Scythe"
+     ],
+     [
+      "29.01",
+      "Grim Scythe"
+     ],
+     [
+      "29.55",
+      "Corpse Explosion"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "166"
+     ],
+     [
+      "Сила",
+      "33"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Урон автоатаки",
+      "140.5"
+     ],
+     [
+      "Potency",
+      "10.0"
+     ],
+     [
+      "Mastery",
+      "18"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "22.0%"
+     ],
+     [
+      "Скорость атаки",
+      "57.0%"
+     ],
+     [
+      "Удача",
+      "1%"
+     ],
+     [
+      "Магический бонус",
+      "+68%"
+     ],
+     [
+      "Физический бонус",
+      "+38%"
+     ],
+     [
+      "Урон питомцев",
+      "+10.5%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1250"
+     ],
+     [
+      "Мана макс.",
+      "1537"
+     ],
+     [
+      "Реген маны",
+      "14.24/с"
+     ],
+     [
+      "Мана в конце",
+      "93%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.18 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2283.6,
+     "Lord of the Dead": 2207.1,
+     "Executor's Swing": 2283.6,
+     "Blood Bomb": 2109.7,
+     "Hour of the Dead": 2157.7,
+     "Sanguine Fury": 2137.0,
+     "Serration": 2105.1,
+     "Gravedigger": 2200.9,
+     "Skeletal Archer": 2198.3,
+     "Swift Harvest": 2156.7,
+     "Essence from Blood": 2205.5,
+     "Life from Death": 2137.0,
+     "Reaper of Souls": 2202.7,
+     "Call of the Grave": 2222.9,
+     "Dark Bargain": 2283.6,
+     "Bloody Scythe": 2247.9
+    },
+    "glyphDps": {
+     "Fortitude": 2283.6,
+     "Unsealed Power": 2283.6,
+     "Fortune": 2038.4,
+     "Supremacy": 2074.7,
+     "Arc Striking": 2067.6,
+     "Battle Frenzy": 2048.8,
+     "Hellfire": 2067.6,
+     "Thunder": 2067.6,
+     "Blood Violence": 2067.6,
+     "Animosity": 2085.8,
+     "Glass Cannon": 2283.6,
+     "Mindhaste": 2113.1
+    }
+   },
+   {
+    "farm_dps": 2283.0,
+    "dps": 2283.0,
+    "total": 68491,
+    "manaLeft": 100.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Harness of Beyond",
+      "code": "I07P",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "The Zircon Star",
+      "code": "I0DF",
+      "source": "drop"
+     },
+     {
+      "name": "Soulbreaker Scythe",
+      "code": "I0R7",
+      "source": "drop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     },
+     {
+      "name": "Spellbinder's Vest",
+      "code": "tlum",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Blood Sacrifice",
+     "Dark Bargain",
+     "Essence from Blood"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 0,
+     "crit": 0,
+     "potency": 18,
+     "mastery": 12,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 797601917,
+    "sources": [
+     [
+      "Grim Scythe",
+      684.8
+     ],
+     [
+      "Sulfuras",
+      502.8
+     ],
+     [
+      "Corpse Explosion",
+      341.4
+     ],
+     [
+      "Grim Scythe (пассив)",
+      235.4
+     ],
+     [
+      "Скелеты (Raise Dead/Tombstone)",
+      159.0
+     ],
+     [
+      "Автоатака",
+      139.4
+     ],
+     [
+      "Tombstone (аура)",
+      107.4
+     ],
+     [
+      "Corpse Explosion (пассив)",
+      106.3
+     ],
+     [
+      "Sulfuras (удар)",
+      6.5
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Tombstone"
+     ],
+     [
+      "0.45",
+      "Corpse Explosion"
+     ],
+     [
+      "0.90",
+      "Grim Scythe"
+     ],
+     [
+      "1.35",
+      "Transfusion"
+     ],
+     [
+      "4.67",
+      "Transfusion"
+     ],
+     [
+      "5.12",
+      "Grim Scythe"
+     ],
+     [
+      "7.84",
+      "Corpse Explosion"
+     ],
+     [
+      "8.29",
+      "Tombstone"
+     ],
+     [
+      "8.74",
+      "Transfusion"
+     ],
+     [
+      "9.19",
+      "Grim Scythe"
+     ],
+     [
+      "11.88",
+      "Transfusion"
+     ],
+     [
+      "12.87",
+      "Grim Scythe"
+     ],
+     [
+      "14.73",
+      "Corpse Explosion"
+     ],
+     [
+      "15.18",
+      "Transfusion"
+     ],
+     [
+      "15.63",
+      "Tombstone"
+     ],
+     [
+      "16.44",
+      "Grim Scythe"
+     ],
+     [
+      "18.14",
+      "Transfusion"
+     ],
+     [
+      "19.80",
+      "Grim Scythe"
+     ],
+     [
+      "20.98",
+      "Transfusion"
+     ],
+     [
+      "21.43",
+      "Corpse Explosion"
+     ],
+     [
+      "22.66",
+      "Tombstone"
+     ],
+     [
+      "23.11",
+      "Grim Scythe"
+     ],
+     [
+      "23.80",
+      "Transfusion"
+     ],
+     [
+      "26.23",
+      "Grim Scythe"
+     ],
+     [
+      "26.68",
+      "Transfusion"
+     ],
+     [
+      "27.64",
+      "Corpse Explosion"
+     ],
+     [
+      "29.09",
+      "Tombstone"
+     ],
+     [
+      "29.54",
+      "Grim Scythe"
+     ],
+     [
+      "29.99",
+      "Transfusion"
+     ]
+    ],
+    "stats": [
+     [
+      "Интеллект",
+      "179"
+     ],
+     [
+      "Сила",
+      "33"
+     ],
+     [
+      "Ловкость",
+      "30"
+     ],
+     [
+      "Урон автоатаки",
+      "148.2"
+     ],
+     [
+      "Potency",
+      "9.0"
+     ],
+     [
+      "Mastery",
+      "29"
+     ],
+     [
+      "Шанс крита",
+      "0%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "26.0%"
+     ],
+     [
+      "Скорость атаки",
+      "57.0%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Урон питомцев",
+      "+0.0%"
+     ],
+     [
+      "Крит питомцев",
+      "0%"
+     ],
+     [
+      "Здоровье",
+      "1375"
+     ],
+     [
+      "Мана макс.",
+      "1428"
+     ],
+     [
+      "Реген маны",
+      "15.28/с"
+     ],
+     [
+      "Мана в конце",
+      "100%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.18 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×0.920"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "0"
+     ]
+    ],
+    "talentDps": {
+     "Blood Sacrifice": 2283.0,
+     "Lord of the Dead": 2177.1,
+     "Executor's Swing": 2272.1,
+     "Blood Bomb": 2180.9,
+     "Hour of the Dead": 2135.5,
+     "Sanguine Fury": 2140.3,
+     "Serration": 2142.1,
+     "Gravedigger": 2170.2,
+     "Skeletal Archer": 2170.5,
+     "Swift Harvest": 2222.9,
+     "Essence from Blood": 2283.0,
+     "Life from Death": 2115.7,
+     "Reaper of Souls": 2176.2,
+     "Call of the Grave": 2188.5,
+     "Dark Bargain": 2283.0,
+     "Bloody Scythe": 2224.7
+    },
+    "glyphDps": {
+     "Fortitude": 2283.0,
+     "Unsealed Power": 2283.0,
+     "Fortune": 2102.2,
+     "Supremacy": 2194.3,
+     "Arc Striking": 2067.0,
+     "Battle Frenzy": 2050.2,
+     "Hellfire": 2067.0,
+     "Thunder": 2067.0,
+     "Blood Violence": 2067.0,
+     "Animosity": 2084.2,
+     "Glass Cannon": 2283.0,
+     "Mindhaste": 2070.3
     }
    }
   ]
