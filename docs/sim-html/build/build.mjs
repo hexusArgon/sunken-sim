@@ -1,7 +1,7 @@
 ﻿import * as esbuild from "esbuild";
 import fs from "fs";
 const OUT = "..";
-const pages = [["paladin","Paladin"],["priest","Priest"],["shaman","Shaman"],["mage","Mage"],["druid","Druid"],["berserker","Berserker"],["hunter","Hunter"],["death_knight","Death Knight"],["demon_hunter","Demon Hunter"],["dragon_sentinel","Dragon Sentinel"],["feral_druid","Feral Druid"]];
+const pages = [["paladin","Paladin"],["priest","Priest"],["shaman","Shaman"],["mage","Mage"],["druid","Druid"],["berserker","Berserker"],["hunter","Hunter"],["death_knight","Death Knight"],["demon_hunter","Demon Hunter"],["dragon_sentinel","Dragon Sentinel"],["feral_druid","Feral Druid"],["monk","Monk"],["necromancer","Necromancer"]];
 const css = fs.readFileSync("style.css","utf8");
 const nav = (cur) => `<nav class="topnav"><a href="index.html">← Sunken City sims</a>${pages.map(([f,t])=>`<a href="${f}.html"${f===cur?' class="cur"':''}>${t}</a>`).join("")}</nav>`;
 // Optional page names build only those pages; default remains all pages.

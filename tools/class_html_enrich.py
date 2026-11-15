@@ -163,12 +163,14 @@ def stats_rows(report, points) -> list[list[str]]:
             ["Мана в конце", f"{report.mana_left:.0f}%"],
             ["Интервал атаки (без баффов)", f"{swing:.2f} с"],
         ]
-    elif HERO in ("death_knight", "demon_hunter", "dragon_sentinel"):
-        primary = "agi" if HERO == "demon_hunter" else "str"
+    elif HERO in ("death_knight", "demon_hunter", "dragon_sentinel", "monk", "necromancer"):
+        primary = {"demon_hunter": "agi", "necromancer": "int"}.get(HERO, "str")
         swing = MOD.SWING * (1.20 if s["galactic"] else 1.0) / (1.0 + max(-0.8, min(4.0, s["attack_speed"])))
         attrs = [["Сила", f"{s['str']:.0f}"], ["Ловкость", f"{s['agi']:.0f}"], ["Интеллект", f"{s['int']:.0f}"]]
         if primary == "agi":
             attrs = [attrs[1], attrs[0], attrs[2]]
+        elif primary == "int":
+            attrs = [attrs[2], attrs[0], attrs[1]]
         rows = attrs + [
             ["Урон автоатаки", f"{MOD.WHITE_BASE + 0.75 * s[primary] + s['damage']:.1f}"],
             ["Potency", f"{s['potency']:.1f}"],
@@ -180,8 +182,13 @@ def stats_rows(report, points) -> list[list[str]]:
             ["Удача", f"{s['luck'] * 100:.0f}%"],
             ["Магический бонус", f"+{s['magic_add'] * 100:.0f}%"],
             ["Физический бонус", f"+{s['phys_add'] * 100:.0f}%"],
-            ["Здоровье", f"{s['hp']:.0f}"],
         ]
+        if HERO == "necromancer":
+            rows += [
+                ["Урон питомцев", f"+{s['pet_damage'] * 100:.1f}%"],
+                ["Крит питомцев", f"{s['summon_crit']:.0f}%"],
+            ]
+        rows.append(["Здоровье", f"{s['hp']:.0f}"])
         if "armor" in s:
             rows.append(["Броня", f"{s['armor']:.1f}"])
         rows += [

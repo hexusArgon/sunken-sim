@@ -29,6 +29,8 @@ PAGES = {
     "demon_hunter": {"havoc": "HAVOC_DATA", "vengeance": "VENGEANCE_DATA", "devourer": "DEVOURER_DATA"},
     "dragon_sentinel": {"ruby": "RUBY_DATA", "obsidian": "OBSIDIAN_DATA", "emerald": "EMERALD_DATA"},
     "feral_druid": {"primal": "PRIMAL_DATA", "guardian": "GUARDIAN_DATA", "savage": "SAVAGE_DATA"},
+    "monk": {"windwalker": "WINDWALKER_DATA", "brewmaster": "BREWMASTER_DATA", "mistweaver": "MISTWEAVER_DATA"},
+    "necromancer": {"bone": "BONE_DATA", "blood": "BLOOD_DATA", "essence": "ESSENCE_DATA"},
 }
 
 

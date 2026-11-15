@@ -277,6 +277,66 @@
    }
   ]
  },
+ "monk-brewmaster": {
+  "minutes": 183.5,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "monk-brewmaster-opencl-top150-gate50-1114",
+    "minutes": 183.5
+   }
+  ]
+ },
+ "monk-mistweaver": {
+  "minutes": 183.6,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "monk-mistweaver-opencl-top150-gate50-1114",
+    "minutes": 183.6
+   }
+  ]
+ },
+ "monk-windwalker": {
+  "minutes": 244.0,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "monk-windwalker-opencl-top150-gate50-1114",
+    "minutes": 244.0
+   }
+  ]
+ },
+ "necromancer-blood": {
+  "minutes": 164.3,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "necromancer-blood-opencl-top150-gate50-1114",
+    "minutes": 164.3
+   }
+  ]
+ },
+ "necromancer-bone": {
+  "minutes": 174.2,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "necromancer-bone-opencl-top150-gate50-1114",
+    "minutes": 174.2
+   }
+  ]
+ },
+ "necromancer-essence": {
+  "minutes": 73.0,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "necromancer-essence-opencl-top150-gate50-1114",
+    "minutes": 73.0
+   }
+  ]
+ },
  "paladin-holy": {
   "minutes": 27.0,
   "estimated": false,

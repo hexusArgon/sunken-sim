@@ -32,7 +32,12 @@ def clean(t: str) -> str:
 
 
 # A damage source named after a mechanic that the map describes inside another ability's tooltip.
-ALIASES = {"Surge of Toxins": "Venomous Axes"}
+ALIASES = {"Surge of Toxins": "Venomous Axes",
+           # Monk: Xuen stance and Windwalker attacks are described in Power Strike, Wrath of Xuen in Celestial Wrath
+           "Celestial Attack (Xuen)": "Power Strike", "White Tiger": "Power Strike", "Wrath of Xuen": "Celestial Wrath",
+           # Necromancer: skeletons come from Tombstone / Raise Dead, the Lords from the Lord of the Dead talent
+           "Скелеты (Raise Dead/Tombstone)": "Tombstone", "Executor (Lord)": "Lord of the Dead",
+           "Mage (Lord)": "Lord of the Dead", "Executor (эхо)": "Lord of the Dead"}
 # Hero abilities by rawcode where the name is ambiguous in war3mapSkin.w3a (A06B "Steel Trap" carries another
 # hero's learn tooltip there): the level-1 tooltip (aub1) of that ability.
 # Hero unit types per page: their hero abilities (uhab) and unit abilities (uabi) in war3map.w3u give the ability
@@ -44,6 +49,8 @@ HERO_UNITS = {
     "demon_hunter": ("E00A", "E00B"),
     "dragon_sentinel": ("O00P", "O007", "O015", "O01Q"),
     "feral_druid": ("O00R", "O00J", "O01B"),
+    "monk": ("N04R",),
+    "necromancer": ("O00H",),
 }
 BY_CODE = {
     "hunter": {"Steel Trap": "A06B", "Serpent Sting": "A0E3", "Serpent Sting (тики)": "A0E3", "Multi-Shot": "A01V",

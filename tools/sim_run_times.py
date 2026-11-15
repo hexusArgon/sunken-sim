@@ -18,6 +18,9 @@ SRC = ROOT / "docs" / "sim-html" / "sources"
 
 # Earlier segments of resumed runs (minutes), read from the queue logs in sunken-sim-runs/opencl-dev.
 RESUMED = {
+    # sulf-monk-necro-1114.log: "== monk windwalker" 15.11 4:52:09; the PC was switched off after the last log write
+    # at 5:55:34 (file time), resumed 6:28:41 from the checkpoint
+    "monk-windwalker-opencl-top150-gate50-1114": (63.42, False),
     # top150-all-1113.log: "== mage frost" 14.11 1:33:06 -> exit 1:36:34, resumed 1:39:36
     "mage-frost-opencl-top150-gate50-1113": (3.47, False),
     # started 13.11 19:05:44, stopped with no log line at 4 386 111 488 of 14 659 159 858 chunks, resumed 23:55;

@@ -16,7 +16,7 @@ def pct(v):
     return float(v)
 
 POOLS = [("mixed", "Shop + drop"), ("shop", "Shop"), ("drop", "Drop")]
-COL = {"Paladin": "#F48CBA", "Priest": "#FFFFFF", "Shaman": "#0070DD", "Mage": "#3FC7EB", "Druid": "#FF7C0A", "Berserker": "#C41E3A", "Hunter": "#AAD372", "Death Knight": "#9B2335", "Demon Hunter": "#A330C9", "Dragon Sentinel": "#33937F", "Feral Druid": "#D4A017"}
+COL = {"Paladin": "#F48CBA", "Priest": "#FFFFFF", "Shaman": "#0070DD", "Mage": "#3FC7EB", "Druid": "#FF7C0A", "Berserker": "#C41E3A", "Hunter": "#AAD372", "Death Knight": "#9B2335", "Demon Hunter": "#A330C9", "Dragon Sentinel": "#33937F", "Feral Druid": "#D4A017", "Monk": "#00FF98", "Necromancer": "#8FA9C9"}
 specs = []  # dict(cls, spec, page, level, pools{pool:{dps,total,mana,sources}})
 # GPU run time per spec page (tools/sim_run_times.py)
 RT_PATH = os.path.join(SRC, "run_times.json")
@@ -44,7 +44,9 @@ for f, cls, page, names in [("paladin.tsx", "Paladin", "paladin.html", ("retribu
                             ("death_knight.tsx", "Death Knight", "death_knight.html", ("frost", "blood", "unholy")),
                             ("demon_hunter.tsx", "Demon Hunter", "demon_hunter.html", ("havoc", "vengeance", "devourer")),
                             ("dragon_sentinel.tsx", "Dragon Sentinel", "dragon_sentinel.html", ("ruby", "obsidian", "emerald")),
-                            ("feral_druid.tsx", "Feral Druid", "feral_druid.html", ("primal", "guardian", "savage"))]:
+                            ("feral_druid.tsx", "Feral Druid", "feral_druid.html", ("primal", "guardian", "savage")),
+                            ("monk.tsx", "Monk", "monk.html", ("windwalker", "brewmaster", "mistweaver")),
+                            ("necromancer.tsx", "Necromancer", "necromancer.html", ("bone", "blood", "essence"))]:
     for sp in names:
         d = const(f, sp.upper() + "_DATA")
         add(cls, sp.replace("_", " ").title(), page, d["level"], {p: max(d["runs"][p], key=lambda r: float(r["dps"])) for p, _ in POOLS if p in d["runs"]})
@@ -116,7 +118,7 @@ css += """
 """
 
 pages = [("paladin", "Paladin"), ("priest", "Priest"), ("shaman", "Shaman"), ("mage", "Mage"), ("druid", "Druid"), ("berserker", "Berserker"), ("hunter", "Hunter"), ("death_knight", "Death Knight"), ("demon_hunter", "Demon Hunter"),
-         ("dragon_sentinel", "Dragon Sentinel"), ("feral_druid", "Feral Druid")]
+         ("dragon_sentinel", "Dragon Sentinel"), ("feral_druid", "Feral Druid"), ("monk", "Monk"), ("necromancer", "Necromancer")]
 nav = '<nav class="topnav"><a href="index.html" class="cur">← Sunken City sims</a>' + "".join(f'<a href="{f}.html">{t}</a>' for f, t in pages) + "</nav>"
 
 lv = sorted({s["level"] for s in specs})
