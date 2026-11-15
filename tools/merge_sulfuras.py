@@ -41,6 +41,7 @@ def run(hero: str, spec: str, main_dir: str, sulf_dir: str, out_dir: str, code: 
     out = Path(out_dir) / "results"
     out.mkdir(parents=True, exist_ok=True)
     filtered = Path(out_dir) / f"main-without-{code}.json"
+    data["filtered_from"] = str(Path(main_file).as_posix())
     filtered.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     print(hero, spec, "dropped from main:", dropped)
     merge(str(out / "merged-top150-sulfuras.json"), str(filtered), sulf_file)

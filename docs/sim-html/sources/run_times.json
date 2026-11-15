@@ -1,0 +1,370 @@
+{
+ "berserker-fury": {
+  "minutes": 67.6,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "berserker-fury-opencl-top150-gate50-1113",
+    "minutes": 63.2
+   },
+   {
+    "run": "berserker-fury-sulfuras-top150-gate50-1114",
+    "minutes": 4.4
+   }
+  ]
+ },
+ "berserker-headhunter": {
+  "minutes": 70.1,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "berserker-headhunter-opencl-top150-gate50-1113",
+    "minutes": 65.9
+   },
+   {
+    "run": "berserker-headhunter-sulfuras-top150-gate50-1114",
+    "minutes": 4.2
+   }
+  ]
+ },
+ "berserker-poison": {
+  "minutes": 114.0,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "berserker-poison-opencl-top150-gate50-1113",
+    "minutes": 107.8
+   },
+   {
+    "run": "berserker-poison-sulfuras-top150-gate50-1114",
+    "minutes": 6.2
+   }
+  ]
+ },
+ "death_knight-blood": {
+  "minutes": 36.5,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "death_knight-blood-opencl-top150-gate50-1113",
+    "minutes": 36.5
+   }
+  ]
+ },
+ "death_knight-frost": {
+  "minutes": 42.4,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "death_knight-frost-opencl-top150-gate50-1113",
+    "minutes": 42.4
+   }
+  ]
+ },
+ "death_knight-unholy": {
+  "minutes": 239.0,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "death_knight-unholy-opencl-top150-gate50-1113",
+    "minutes": 239.0
+   }
+  ]
+ },
+ "demon_hunter-devourer": {
+  "minutes": 22.5,
+  "estimated": true,
+  "runs": [
+   {
+    "run": "demon_hunter-devourer-opencl-top150-gate50-1113",
+    "minutes": 20.7
+   },
+   {
+    "run": "demon_hunter-devourer-sulfuras-top150-gate50-1114",
+    "minutes": 1.8
+   }
+  ]
+ },
+ "demon_hunter-havoc": {
+  "minutes": 70.8,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "demon_hunter-havoc-opencl-top150-gate50-1113",
+    "minutes": 64.4
+   },
+   {
+    "run": "demon_hunter-havoc-sulfuras-top150-gate50-1114",
+    "minutes": 6.4
+   }
+  ]
+ },
+ "demon_hunter-vengeance": {
+  "minutes": 27.3,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "demon_hunter-vengeance-opencl-top150-gate50-1113",
+    "minutes": 25.4
+   },
+   {
+    "run": "demon_hunter-vengeance-sulfuras-top150-gate50-1114",
+    "minutes": 1.9
+   }
+  ]
+ },
+ "dragon_sentinel-emerald": {
+  "minutes": 46.4,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "dragon_sentinel-emerald-opencl-top150-gate50-1114b",
+    "minutes": 42.8
+   },
+   {
+    "run": "dragon_sentinel-emerald-sulfuras-top150-gate50-1114",
+    "minutes": 3.6
+   }
+  ]
+ },
+ "dragon_sentinel-obsidian": {
+  "minutes": 216.7,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "dragon_sentinel-obsidian-opencl-top150-gate50-1114b",
+    "minutes": 198.9
+   },
+   {
+    "run": "dragon_sentinel-obsidian-sulfuras-top150-gate50-1114",
+    "minutes": 17.8
+   }
+  ]
+ },
+ "dragon_sentinel-ruby": {
+  "minutes": 76.8,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "dragon_sentinel-ruby-opencl-top150-gate50-1114b",
+    "minutes": 67.6
+   },
+   {
+    "run": "dragon_sentinel-ruby-sulfuras-top150-gate50-1114",
+    "minutes": 9.2
+   }
+  ]
+ },
+ "druid-balance": {
+  "minutes": 45.5,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "druid-balance-opencl-top150-gate50-1113",
+    "minutes": 45.5
+   }
+  ]
+ },
+ "druid-restoration": {
+  "minutes": 27.4,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "druid-restoration-opencl-top150-gate50-1113",
+    "minutes": 27.4
+   }
+  ]
+ },
+ "feral_druid-guardian": {
+  "minutes": 26.9,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "feral_druid-guardian-opencl-top150-gate50-1114",
+    "minutes": 26.9
+   }
+  ]
+ },
+ "feral_druid-primal": {
+  "minutes": 31.0,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "feral_druid-primal-opencl-top150-gate50-1114",
+    "minutes": 31.0
+   }
+  ]
+ },
+ "feral_druid-savage": {
+  "minutes": 26.3,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "feral_druid-savage-opencl-top150-gate50-1114",
+    "minutes": 26.3
+   }
+  ]
+ },
+ "hunter-beast_mastery": {
+  "minutes": 49.6,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "hunter-beast_mastery-opencl-top150-gate50-1114",
+    "minutes": 47.9
+   },
+   {
+    "run": "hunter-beast_mastery-sulf-nightfall-top150-gate50-1114",
+    "minutes": 1.7
+   }
+  ]
+ },
+ "hunter-marksmanship": {
+  "minutes": 56.1,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "hunter-marksmanship-opencl-top150-gate50-1114",
+    "minutes": 54.5
+   },
+   {
+    "run": "hunter-marksmanship-sulf-nightfall-top150-gate50-1114",
+    "minutes": 1.6
+   }
+  ]
+ },
+ "hunter-survival": {
+  "minutes": 56.8,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "hunter-survival-opencl-top150-gate50-1114",
+    "minutes": 55.4
+   },
+   {
+    "run": "hunter-survival-sulf-nightfall-top150-gate50-1114",
+    "minutes": 1.4
+   }
+  ]
+ },
+ "mage-arcane": {
+  "minutes": 30.2,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "mage-arcane-opencl-top150-gate50-1113",
+    "minutes": 30.2
+   }
+  ]
+ },
+ "mage-fire": {
+  "minutes": 47.3,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "mage-fire-opencl-top150-gate50-1113",
+    "minutes": 47.3
+   }
+  ]
+ },
+ "mage-frost": {
+  "minutes": 52.7,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "mage-frost-opencl-top150-gate50-1113",
+    "minutes": 52.7
+   }
+  ]
+ },
+ "paladin-holy": {
+  "minutes": 27.0,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "paladin-holy-opencl-top150-gate50-1113",
+    "minutes": 27.0
+   }
+  ]
+ },
+ "paladin-protection": {
+  "minutes": 27.3,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "paladin-protection-opencl-top150-gate50-1113",
+    "minutes": 27.3
+   }
+  ]
+ },
+ "paladin-retribution": {
+  "minutes": 28.4,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "paladin-retribution-opencl-top150-gate50-1113",
+    "minutes": 28.4
+   }
+  ]
+ },
+ "priest-discipline": {
+  "minutes": 57.1,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "priest-discipline-opencl-top150-gate50-1113",
+    "minutes": 57.1
+   }
+  ]
+ },
+ "priest-holy": {
+  "minutes": 25.6,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "priest-holy-opencl-top150-gate50-1113",
+    "minutes": 25.6
+   }
+  ]
+ },
+ "priest-shadow": {
+  "minutes": 52.6,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "priest-shadow-opencl-top150-gate50-1113",
+    "minutes": 52.6
+   }
+  ]
+ },
+ "shaman-elemental": {
+  "minutes": 25.7,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "shaman-elemental-opencl-top150-gate50-1113",
+    "minutes": 25.7
+   }
+  ]
+ },
+ "shaman-enhancement": {
+  "minutes": 41.0,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "shaman-enhancement-opencl-top150-gate50-1113",
+    "minutes": 41.0
+   }
+  ]
+ },
+ "shaman-restoration": {
+  "minutes": 35.4,
+  "estimated": false,
+  "runs": [
+   {
+    "run": "shaman-restoration-opencl-top150-gate50-1113",
+    "minutes": 35.4
+   }
+  ]
+ }
+}
