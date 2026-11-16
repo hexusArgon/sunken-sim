@@ -278,32 +278,32 @@
   ]
  },
  "monk-brewmaster": {
-  "minutes": 183.5,
+  "minutes": 200.1,
   "estimated": false,
   "runs": [
    {
-    "run": "monk-brewmaster-opencl-top150-gate50-1114",
-    "minutes": 183.5
+    "run": "monk-brewmaster-opencl-top150-gate50-1116",
+    "minutes": 200.1
    }
   ]
  },
  "monk-mistweaver": {
-  "minutes": 183.6,
+  "minutes": 200.4,
   "estimated": false,
   "runs": [
    {
-    "run": "monk-mistweaver-opencl-top150-gate50-1114",
-    "minutes": 183.6
+    "run": "monk-mistweaver-opencl-top150-gate50-1116",
+    "minutes": 200.4
    }
   ]
  },
  "monk-windwalker": {
-  "minutes": 244.0,
+  "minutes": 253.7,
   "estimated": false,
   "runs": [
    {
-    "run": "monk-windwalker-opencl-top150-gate50-1114",
-    "minutes": 244.0
+    "run": "monk-windwalker-opencl-top150-gate50-1116",
+    "minutes": 253.7
    }
   ]
  },

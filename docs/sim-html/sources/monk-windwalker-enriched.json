@@ -4,7 +4,7 @@
  "hero": "monk",
  "spec": "windwalker",
  "top": 150,
- "farm_file": "../sunken-sim-runs/monk-windwalker-opencl-top150-gate50-1114/results/local-hybrid-monk-windwalker-mixed-top150-5-0-14741955507-admission-v2-bare-top50-83c002d10ac579ae.json",
+ "farm_file": "../sunken-sim-runs/monk-windwalker-opencl-top150-gate50-1116/results/local-hybrid-monk-windwalker-mixed-top150-5-0-14741955507-admission-v2-bare-top50-37d54d22cc3bc53e.json",
  "done": 14741955508,
  "end": 14741955507,
  "errors": 0,
@@ -35,932 +35,6 @@
  ],
  "runs": {
   "mixed": [
-   {
-    "farm_dps": 7739.1,
-    "dps": 7739.1,
-    "total": 232173,
-    "manaLeft": 57.5,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Nightfall",
-      "code": "I04F",
-      "source": "shop"
-     },
-     {
-      "name": "Aruzal, Fang of Neltharion",
-      "code": "I052",
-      "source": "legendary"
-     },
-     {
-      "name": "Predaplant Thorn",
-      "code": "I05W",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     },
-     {
-      "name": "Silent Messenger",
-      "code": "I0QN",
-      "source": "shop"
-     },
-     {
-      "name": "Warstaff of Chi'Ji",
-      "code": "I0UC",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Fists of Fury",
-     "Inner Harmony",
-     "Jab"
-    ],
-    "glyphs": [
-     "Animosity",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 1,
-     "attack_speed": 1,
-     "damage": 13,
-     "crit": 15,
-     "potency": 0,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 3851819449,
-    "sources": [
-     [
-      "Wrath of Xuen",
-      4854.8
-     ],
-     [
-      "Автоатака",
-      2001.9
-     ],
-     [
-      "Fortifying Brew (удар)",
-      432.3
-     ],
-     [
-      "Power Strike",
-      180.9
-     ],
-     [
-      "White Tiger",
-      133.9
-     ],
-     [
-      "Celestial Attack (Xuen)",
-      97.7
-     ],
-     [
-      "Power Strike (WW-повтор)",
-      37.7
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Power Strike"
-     ],
-     [
-      "0.45",
-      "Celestial Wrath"
-     ],
-     [
-      "1.80",
-      "Fortifying Brew"
-     ],
-     [
-      "2.87",
-      "Celestial Wrath"
-     ],
-     [
-      "4.22",
-      "Renewing Mist"
-     ],
-     [
-      "5.22",
-      "Celestial Wrath"
-     ],
-     [
-      "6.57",
-      "Power Strike"
-     ],
-     [
-      "7.02",
-      "Celestial Wrath"
-     ],
-     [
-      "8.37",
-      "Fortifying Brew"
-     ],
-     [
-      "9.19",
-      "Celestial Wrath"
-     ],
-     [
-      "10.54",
-      "Renewing Mist"
-     ],
-     [
-      "11.58",
-      "Celestial Wrath"
-     ],
-     [
-      "12.93",
-      "Power Strike"
-     ],
-     [
-      "13.38",
-      "Celestial Wrath"
-     ],
-     [
-      "14.73",
-      "Fortifying Brew"
-     ],
-     [
-      "15.70",
-      "Celestial Wrath"
-     ],
-     [
-      "17.05",
-      "Renewing Mist"
-     ],
-     [
-      "18.05",
-      "Celestial Wrath"
-     ],
-     [
-      "19.40",
-      "Power Strike"
-     ],
-     [
-      "19.85",
-      "Celestial Wrath"
-     ],
-     [
-      "21.20",
-      "Fortifying Brew"
-     ],
-     [
-      "22.27",
-      "Celestial Wrath"
-     ],
-     [
-      "23.62",
-      "Renewing Mist"
-     ],
-     [
-      "24.62",
-      "Celestial Wrath"
-     ],
-     [
-      "25.97",
-      "Power Strike"
-     ],
-     [
-      "26.42",
-      "Celestial Wrath"
-     ],
-     [
-      "27.77",
-      "Fortifying Brew"
-     ],
-     [
-      "28.48",
-      "Celestial Wrath"
-     ],
-     [
-      "29.83",
-      "Renewing Mist"
-     ]
-    ],
-    "stats": [
-     [
-      "Сила",
-      "81"
-     ],
-     [
-      "Ловкость",
-      "42"
-     ],
-     [
-      "Интеллект",
-      "42"
-     ],
-     [
-      "Урон автоатаки",
-      "178.8"
-     ],
-     [
-      "Potency",
-      "8.0"
-     ],
-     [
-      "Mastery",
-      "0"
-     ],
-     [
-      "Шанс крита",
-      "86%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.65"
-     ],
-     [
-      "Спешка",
-      "11.0%"
-     ],
-     [
-      "Скорость атаки",
-      "48.8%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Магический бонус",
-      "+18%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "1515"
-     ],
-     [
-      "Мана макс.",
-      "514"
-     ],
-     [
-      "Реген маны",
-      "4.32/с"
-     ],
-     [
-      "Мана в конце",
-      "58%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "1.24 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.000"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "9"
-     ]
-    ],
-    "talentDps": {
-     "Martial Artist": 7436.9,
-     "Fists of Fury": 7739.1,
-     "Inner Harmony": 7739.1,
-     "Jab": 7739.1,
-     "Frenzied Assault": 7270.6,
-     "Flurry Strikes": 7586.7,
-     "Avatar of Xuen": 6985.6,
-     "Avatar of Chi'Ji": 6842.7
-    },
-    "glyphDps": {
-     "Fortitude": 7030.6,
-     "Unsealed Power": 7739.1,
-     "Fortune": 6112.9,
-     "Supremacy": 6274.0,
-     "Arc Striking": 6163.9,
-     "Battle Frenzy": 6392.2,
-     "Hellfire": 6163.9,
-     "Thunder": 6163.9,
-     "Blood Violence": 6163.9,
-     "Animosity": 7739.1,
-     "Glass Cannon": 7739.1,
-     "Mindhaste": 6665.7
-    }
-   },
-   {
-    "farm_dps": 7016.5,
-    "dps": 7016.5,
-    "total": 210496,
-    "manaLeft": 66.8,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Nightfall",
-      "code": "I04F",
-      "source": "shop"
-     },
-     {
-      "name": "Aruzal, Fang of Neltharion",
-      "code": "I052",
-      "source": "legendary"
-     },
-     {
-      "name": "Ardite Impaler",
-      "code": "I0BB",
-      "source": "shop"
-     },
-     {
-      "name": "Elemental Orb",
-      "code": "I0NT",
-      "source": "shop"
-     },
-     {
-      "name": "Silent Messenger",
-      "code": "I0QN",
-      "source": "shop"
-     },
-     {
-      "name": "Warstaff of Chi'Ji",
-      "code": "I0UC",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Fists of Fury",
-     "Inner Harmony",
-     "Jab"
-    ],
-    "glyphs": [
-     "Animosity",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 0,
-     "attack_speed": 0,
-     "damage": 20,
-     "crit": 1,
-     "potency": 9,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 3847907796,
-    "sources": [
-     [
-      "Wrath of Xuen",
-      3516.4
-     ],
-     [
-      "Автоатака",
-      3037.2
-     ],
-     [
-      "Power Strike",
-      175.9
-     ],
-     [
-      "White Tiger",
-      117.5
-     ],
-     [
-      "Celestial Attack (Xuen)",
-      86.1
-     ],
-     [
-      "Fortifying Brew (удар)",
-      47.3
-     ],
-     [
-      "Power Strike (WW-повтор)",
-      36.0
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Power Strike"
-     ],
-     [
-      "0.45",
-      "Celestial Wrath"
-     ],
-     [
-      "2.06",
-      "Fortifying Brew"
-     ],
-     [
-      "3.01",
-      "Celestial Wrath"
-     ],
-     [
-      "4.58",
-      "Renewing Mist"
-     ],
-     [
-      "5.78",
-      "Celestial Wrath"
-     ],
-     [
-      "7.14",
-      "Power Strike"
-     ],
-     [
-      "8.06",
-      "Celestial Wrath"
-     ],
-     [
-      "9.63",
-      "Fortifying Brew"
-     ],
-     [
-      "10.58",
-      "Celestial Wrath"
-     ],
-     [
-      "12.16",
-      "Renewing Mist"
-     ],
-     [
-      "13.35",
-      "Celestial Wrath"
-     ],
-     [
-      "14.71",
-      "Power Strike"
-     ],
-     [
-      "15.64",
-      "Celestial Wrath"
-     ],
-     [
-      "17.21",
-      "Fortifying Brew"
-     ],
-     [
-      "18.16",
-      "Celestial Wrath"
-     ],
-     [
-      "19.74",
-      "Renewing Mist"
-     ],
-     [
-      "21.01",
-      "Celestial Wrath"
-     ],
-     [
-      "22.37",
-      "Power Strike"
-     ],
-     [
-      "23.21",
-      "Celestial Wrath"
-     ],
-     [
-      "24.79",
-      "Fortifying Brew"
-     ],
-     [
-      "25.74",
-      "Celestial Wrath"
-     ],
-     [
-      "27.31",
-      "Renewing Mist"
-     ],
-     [
-      "28.68",
-      "Power Strike"
-     ],
-     [
-      "29.13",
-      "Celestial Wrath"
-     ]
-    ],
-    "stats": [
-     [
-      "Сила",
-      "81"
-     ],
-     [
-      "Ловкость",
-      "42"
-     ],
-     [
-      "Интеллект",
-      "42"
-     ],
-     [
-      "Урон автоатаки",
-      "202.8"
-     ],
-     [
-      "Potency",
-      "4.5"
-     ],
-     [
-      "Mastery",
-      "0"
-     ],
-     [
-      "Шанс крита",
-      "67%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.70"
-     ],
-     [
-      "Спешка",
-      "10.0%"
-     ],
-     [
-      "Скорость атаки",
-      "66.8%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Магический бонус",
-      "+18%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "1515"
-     ],
-     [
-      "Мана макс.",
-      "514"
-     ],
-     [
-      "Реген маны",
-      "4.32/с"
-     ],
-     [
-      "Мана в конце",
-      "67%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "1.11 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.000"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "9"
-     ]
-    ],
-    "talentDps": {
-     "Martial Artist": 6508.7,
-     "Fists of Fury": 7016.5,
-     "Inner Harmony": 7016.5,
-     "Jab": 7016.5,
-     "Frenzied Assault": 6554.9,
-     "Flurry Strikes": 6959.3,
-     "Avatar of Xuen": 6483.8,
-     "Avatar of Chi'Ji": 6593.4
-    },
-    "glyphDps": {
-     "Fortitude": 6346.2,
-     "Unsealed Power": 7016.5,
-     "Fortune": 5552.1,
-     "Supremacy": 5636.5,
-     "Arc Striking": 5534.5,
-     "Battle Frenzy": 5446.1,
-     "Hellfire": 5534.5,
-     "Thunder": 5534.5,
-     "Blood Violence": 5534.5,
-     "Animosity": 7016.5,
-     "Glass Cannon": 7016.5,
-     "Mindhaste": 5684.1
-    }
-   },
-   {
-    "farm_dps": 6936.4,
-    "dps": 6936.4,
-    "total": 208091,
-    "manaLeft": 65.9,
-    "bound_spell": null,
-    "orb_mode": null,
-    "items": [
-     {
-      "name": "Nightfall",
-      "code": "I04F",
-      "source": "shop"
-     },
-     {
-      "name": "Aruzal, Fang of Neltharion",
-      "code": "I052",
-      "source": "legendary"
-     },
-     {
-      "name": "Predaplant Thorn",
-      "code": "I05W",
-      "source": "shop"
-     },
-     {
-      "name": "Silent Messenger",
-      "code": "I0QN",
-      "source": "shop"
-     },
-     {
-      "name": "Sulfuron Gloves",
-      "code": "I0QT",
-      "source": "shop"
-     },
-     {
-      "name": "Warstaff of Chi'Ji",
-      "code": "I0UC",
-      "source": "drop"
-     }
-    ],
-    "talents": [
-     "Fists of Fury",
-     "Flurry Strikes",
-     "Inner Harmony"
-    ],
-    "glyphs": [
-     "Animosity",
-     "Glass Cannon",
-     "Unsealed Power"
-    ],
-    "points": {
-     "health": 0,
-     "mana": 0,
-     "healing_power": 0,
-     "haste": 3,
-     "attack_speed": 1,
-     "damage": 6,
-     "crit": 20,
-     "potency": 0,
-     "mastery": 0,
-     "luck": 0,
-     "pet_damage": 0
-    },
-    "chunk": 3851816097,
-    "sources": [
-     [
-      "Wrath of Xuen",
-      3975.5
-     ],
-     [
-      "Автоатака",
-      2567.1
-     ],
-     [
-      "Celestial Attack (Xuen)",
-      140.6
-     ],
-     [
-      "White Tiger",
-      116.6
-     ],
-     [
-      "Power Strike",
-      70.9
-     ],
-     [
-      "Fortifying Brew (удар)",
-      50.9
-     ],
-     [
-      "Power Strike (WW-повтор)",
-      14.7
-     ]
-    ],
-    "actions": [
-     [
-      "0.00",
-      "Power Strike"
-     ],
-     [
-      "0.45",
-      "Celestial Wrath"
-     ],
-     [
-      "2.32",
-      "Fortifying Brew"
-     ],
-     [
-      "3.48",
-      "Celestial Wrath"
-     ],
-     [
-      "5.33",
-      "Renewing Mist"
-     ],
-     [
-      "6.50",
-      "Celestial Wrath"
-     ],
-     [
-      "7.96",
-      "Power Strike"
-     ],
-     [
-      "8.84",
-      "Celestial Wrath"
-     ],
-     [
-      "10.30",
-      "Fortifying Brew"
-     ],
-     [
-      "11.42",
-      "Celestial Wrath"
-     ],
-     [
-      "13.28",
-      "Renewing Mist"
-     ],
-     [
-      "14.45",
-      "Celestial Wrath"
-     ],
-     [
-      "15.90",
-      "Power Strike"
-     ],
-     [
-      "16.79",
-      "Celestial Wrath"
-     ],
-     [
-      "18.24",
-      "Fortifying Brew"
-     ],
-     [
-      "19.37",
-      "Celestial Wrath"
-     ],
-     [
-      "21.22",
-      "Renewing Mist"
-     ],
-     [
-      "22.39",
-      "Celestial Wrath"
-     ],
-     [
-      "23.85",
-      "Power Strike"
-     ],
-     [
-      "24.73",
-      "Celestial Wrath"
-     ],
-     [
-      "26.19",
-      "Fortifying Brew"
-     ],
-     [
-      "27.31",
-      "Celestial Wrath"
-     ],
-     [
-      "29.17",
-      "Renewing Mist"
-     ]
-    ],
-    "stats": [
-     [
-      "Сила",
-      "89"
-     ],
-     [
-      "Ловкость",
-      "36"
-     ],
-     [
-      "Интеллект",
-      "36"
-     ],
-     [
-      "Урон автоатаки",
-      "179.8"
-     ],
-     [
-      "Potency",
-      "8.0"
-     ],
-     [
-      "Mastery",
-      "0"
-     ],
-     [
-      "Шанс крита",
-      "91%"
-     ],
-     [
-      "Рейтинг крита",
-      "0.65"
-     ],
-     [
-      "Спешка",
-      "3.0%"
-     ],
-     [
-      "Скорость атаки",
-      "31.4%"
-     ],
-     [
-      "Удача",
-      "0%"
-     ],
-     [
-      "Магический бонус",
-      "+18%"
-     ],
-     [
-      "Физический бонус",
-      "+18%"
-     ],
-     [
-      "Здоровье",
-      "1635"
-     ],
-     [
-      "Мана макс.",
-      "472"
-     ],
-     [
-      "Реген маны",
-      "3.84/с"
-     ],
-     [
-      "Мана в конце",
-      "66%"
-     ],
-     [
-      "Интервал атаки (без баффов)",
-      "1.41 с"
-     ],
-     [
-      "Множитель КД (предметы)",
-      "×1.100"
-     ],
-     [
-      "Плоское снижение КД",
-      "0.00 с"
-     ],
-     [
-      "Пробитие брони",
-      "3"
-     ]
-    ],
-    "talentDps": {
-     "Martial Artist": 6227.5,
-     "Fists of Fury": 7171.3,
-     "Inner Harmony": 7171.3,
-     "Jab": 7171.3,
-     "Frenzied Assault": 6543.1,
-     "Flurry Strikes": 6936.4,
-     "Avatar of Xuen": 6300.3,
-     "Avatar of Chi'Ji": 6173.3
-    },
-    "glyphDps": {
-     "Fortitude": 6336.5,
-     "Unsealed Power": 6936.4,
-     "Fortune": 5674.7,
-     "Supremacy": 5720.8,
-     "Arc Striking": 5650.7,
-     "Battle Frenzy": 6006.3,
-     "Hellfire": 5650.7,
-     "Thunder": 5650.7,
-     "Blood Violence": 5650.7,
-     "Animosity": 6936.4,
-     "Glass Cannon": 6936.4,
-     "Mindhaste": 5949.7
-    }
-   },
    {
     "farm_dps": 4437.6,
     "dps": 4437.6,
@@ -3431,6 +2505,328 @@
      "Animosity": 3782.8,
      "Glass Cannon": 4123.2,
      "Mindhaste": 3584.8
+    }
+   },
+   {
+    "farm_dps": 4093.8,
+    "dps": 4093.8,
+    "total": 122813,
+    "manaLeft": 85.8,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Cursed Skull",
+      "code": "I02K",
+      "source": "drop"
+     },
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Celestial Crown",
+      "code": "I0C2",
+      "source": "shop"
+     },
+     {
+      "name": "Staff of Galactic Fury",
+      "code": "I0JO",
+      "source": "shop"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Avatar of Xuen",
+     "Fists of Fury",
+     "Inner Harmony"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 0,
+     "damage": 2,
+     "crit": 17,
+     "potency": 0,
+     "mastery": 11,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 6472441522,
+    "sources": [
+     [
+      "Sulfuras",
+      1442.5
+     ],
+     [
+      "White Tiger",
+      939.1
+     ],
+     [
+      "Wrath of Xuen",
+      782.0
+     ],
+     [
+      "Автоатака",
+      429.2
+     ],
+     [
+      "Power Strike",
+      208.7
+     ],
+     [
+      "Fortifying Brew (удар)",
+      124.1
+     ],
+     [
+      "Celestial Attack (Xuen)",
+      116.3
+     ],
+     [
+      "Power Strike (WW-повтор)",
+      41.7
+     ],
+     [
+      "Sulfuras (удар)",
+      10.2
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Power Strike"
+     ],
+     [
+      "1.15",
+      "Fortifying Brew"
+     ],
+     [
+      "2.31",
+      "Celestial Wrath"
+     ],
+     [
+      "3.46",
+      "Renewing Mist"
+     ],
+     [
+      "4.62",
+      "Power Strike"
+     ],
+     [
+      "5.77",
+      "Fortifying Brew"
+     ],
+     [
+      "6.92",
+      "Celestial Wrath"
+     ],
+     [
+      "8.08",
+      "Renewing Mist"
+     ],
+     [
+      "9.23",
+      "Power Strike"
+     ],
+     [
+      "10.38",
+      "Fortifying Brew"
+     ],
+     [
+      "11.54",
+      "Celestial Wrath"
+     ],
+     [
+      "12.69",
+      "Renewing Mist"
+     ],
+     [
+      "13.85",
+      "Power Strike"
+     ],
+     [
+      "15.00",
+      "Fortifying Brew"
+     ],
+     [
+      "16.15",
+      "Celestial Wrath"
+     ],
+     [
+      "17.31",
+      "Renewing Mist"
+     ],
+     [
+      "18.46",
+      "Power Strike"
+     ],
+     [
+      "19.62",
+      "Fortifying Brew"
+     ],
+     [
+      "20.77",
+      "Celestial Wrath"
+     ],
+     [
+      "21.92",
+      "Renewing Mist"
+     ],
+     [
+      "23.08",
+      "Power Strike"
+     ],
+     [
+      "24.23",
+      "Fortifying Brew"
+     ],
+     [
+      "25.38",
+      "Celestial Wrath"
+     ],
+     [
+      "26.54",
+      "Renewing Mist"
+     ],
+     [
+      "27.69",
+      "Power Strike"
+     ],
+     [
+      "28.85",
+      "Fortifying Brew"
+     ],
+     [
+      "30.00",
+      "Celestial Wrath"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "190"
+     ],
+     [
+      "Ловкость",
+      "88"
+     ],
+     [
+      "Интеллект",
+      "82"
+     ],
+     [
+      "Урон автоатаки",
+      "160.5"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "46"
+     ],
+     [
+      "Шанс крита",
+      "17%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "30.0%"
+     ],
+     [
+      "Скорость атаки",
+      "78.2%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+78%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "3165"
+     ],
+     [
+      "Мана макс.",
+      "694"
+     ],
+     [
+      "Реген маны",
+      "7.52/с"
+     ],
+     [
+      "Мана в конце",
+      "86%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.25 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.000"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "6"
+     ]
+    ],
+    "talentDps": {
+     "Martial Artist": 3774.5,
+     "Fists of Fury": 4093.8,
+     "Inner Harmony": 4093.8,
+     "Jab": 3953.4,
+     "Frenzied Assault": 3851.9,
+     "Flurry Strikes": 3833.5,
+     "Avatar of Xuen": 4093.8,
+     "Avatar of Chi'Ji": 3485.2
+    },
+    "glyphDps": {
+     "Fortitude": 4093.8,
+     "Unsealed Power": 4093.8,
+     "Fortune": 3569.5,
+     "Supremacy": 3712.5,
+     "Arc Striking": 3561.7,
+     "Battle Frenzy": 3561.7,
+     "Hellfire": 3561.7,
+     "Thunder": 3561.7,
+     "Blood Violence": 3561.7,
+     "Animosity": 3692.0,
+     "Glass Cannon": 4093.8,
+     "Mindhaste": 3736.5
     }
    },
    {
@@ -6221,6 +5617,618 @@
      "Animosity": 3602.6,
      "Glass Cannon": 3989.0,
      "Mindhaste": 3621.6
+    }
+   },
+   {
+    "farm_dps": 3977.9,
+    "dps": 3977.9,
+    "total": 119336,
+    "manaLeft": 81.0,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "Arbiter Helm",
+      "code": "I0SN",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Avatar of Xuen",
+     "Fists of Fury",
+     "Inner Harmony"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 1,
+     "attack_speed": 0,
+     "damage": 9,
+     "crit": 20,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 193879999,
+    "sources": [
+     [
+      "Sulfuras",
+      1070.0
+     ],
+     [
+      "Автоатака",
+      988.0
+     ],
+     [
+      "Wrath of Xuen",
+      849.6
+     ],
+     [
+      "White Tiger",
+      712.1
+     ],
+     [
+      "Power Strike",
+      119.1
+     ],
+     [
+      "Fortifying Brew (удар)",
+      115.2
+     ],
+     [
+      "Celestial Attack (Xuen)",
+      83.0
+     ],
+     [
+      "Power Strike (WW-повтор)",
+      23.8
+     ],
+     [
+      "Sulfuras (удар)",
+      17.0
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Power Strike"
+     ],
+     [
+      "1.30",
+      "Fortifying Brew"
+     ],
+     [
+      "2.56",
+      "Celestial Wrath"
+     ],
+     [
+      "3.91",
+      "Renewing Mist"
+     ],
+     [
+      "5.55",
+      "Power Strike"
+     ],
+     [
+      "6.85",
+      "Fortifying Brew"
+     ],
+     [
+      "8.11",
+      "Celestial Wrath"
+     ],
+     [
+      "9.45",
+      "Renewing Mist"
+     ],
+     [
+      "11.09",
+      "Power Strike"
+     ],
+     [
+      "12.79",
+      "Fortifying Brew"
+     ],
+     [
+      "14.05",
+      "Celestial Wrath"
+     ],
+     [
+      "15.35",
+      "Renewing Mist"
+     ],
+     [
+      "16.64",
+      "Power Strike"
+     ],
+     [
+      "18.34",
+      "Fortifying Brew"
+     ],
+     [
+      "19.60",
+      "Celestial Wrath"
+     ],
+     [
+      "20.90",
+      "Renewing Mist"
+     ],
+     [
+      "22.18",
+      "Power Strike"
+     ],
+     [
+      "23.89",
+      "Fortifying Brew"
+     ],
+     [
+      "25.15",
+      "Celestial Wrath"
+     ],
+     [
+      "26.45",
+      "Renewing Mist"
+     ],
+     [
+      "27.73",
+      "Power Strike"
+     ],
+     [
+      "29.43",
+      "Fortifying Brew"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "163"
+     ],
+     [
+      "Ловкость",
+      "63"
+     ],
+     [
+      "Интеллект",
+      "57"
+     ],
+     [
+      "Урон автоатаки",
+      "186.2"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "32%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "19.0%"
+     ],
+     [
+      "Скорость атаки",
+      "68.2%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "2745"
+     ],
+     [
+      "Мана макс.",
+      "519"
+     ],
+     [
+      "Реген маны",
+      "5.52/с"
+     ],
+     [
+      "Мана в конце",
+      "81%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.10 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "9"
+     ]
+    ],
+    "talentDps": {
+     "Martial Artist": 3579.9,
+     "Fists of Fury": 3977.9,
+     "Inner Harmony": 3977.9,
+     "Jab": 3951.7,
+     "Frenzied Assault": 3671.4,
+     "Flurry Strikes": 3746.0,
+     "Avatar of Xuen": 3977.9,
+     "Avatar of Chi'Ji": 3460.0
+    },
+    "glyphDps": {
+     "Fortitude": 3977.9,
+     "Unsealed Power": 3977.9,
+     "Fortune": 3413.0,
+     "Supremacy": 3550.4,
+     "Arc Striking": 3406.7,
+     "Battle Frenzy": 3396.3,
+     "Hellfire": 3406.7,
+     "Thunder": 3406.7,
+     "Blood Violence": 3406.7,
+     "Animosity": 3657.0,
+     "Glass Cannon": 3977.9,
+     "Mindhaste": 3666.6
+    }
+   },
+   {
+    "farm_dps": 3968.2,
+    "dps": 3968.2,
+    "total": 119046,
+    "manaLeft": 61.7,
+    "bound_spell": null,
+    "orb_mode": null,
+    "items": [
+     {
+      "name": "Sulfuras, Hand of Ragnaros",
+      "code": "I0BR",
+      "source": "legendary"
+     },
+     {
+      "name": "Elemental Orb",
+      "code": "I0NT",
+      "source": "shop"
+     },
+     {
+      "name": "Mechanical Mace",
+      "code": "I0ON",
+      "source": "shop"
+     },
+     {
+      "name": "Silent Messenger",
+      "code": "I0QN",
+      "source": "shop"
+     },
+     {
+      "name": "Sulfuron Gloves",
+      "code": "I0QT",
+      "source": "shop"
+     },
+     {
+      "name": "The Darkglaive",
+      "code": "fgrd",
+      "source": "drop"
+     }
+    ],
+    "talents": [
+     "Avatar of Xuen",
+     "Fists of Fury",
+     "Inner Harmony"
+    ],
+    "glyphs": [
+     "Fortitude",
+     "Glass Cannon",
+     "Unsealed Power"
+    ],
+    "points": {
+     "health": 0,
+     "mana": 0,
+     "healing_power": 0,
+     "haste": 0,
+     "attack_speed": 1,
+     "damage": 11,
+     "crit": 18,
+     "potency": 0,
+     "mastery": 0,
+     "luck": 0,
+     "pet_damage": 0
+    },
+    "chunk": 193896218,
+    "sources": [
+     [
+      "Sulfuras",
+      1056.6
+     ],
+     [
+      "Автоатака",
+      1002.1
+     ],
+     [
+      "Wrath of Xuen",
+      939.6
+     ],
+     [
+      "White Tiger",
+      642.1
+     ],
+     [
+      "Power Strike",
+      107.4
+     ],
+     [
+      "Fortifying Brew (удар)",
+      104.5
+     ],
+     [
+      "Celestial Attack (Xuen)",
+      77.0
+     ],
+     [
+      "Power Strike (WW-повтор)",
+      21.4
+     ],
+     [
+      "Sulfuras (удар)",
+      17.5
+     ]
+    ],
+    "actions": [
+     [
+      "0.00",
+      "Power Strike"
+     ],
+     [
+      "1.32",
+      "Fortifying Brew"
+     ],
+     [
+      "2.49",
+      "Celestial Wrath"
+     ],
+     [
+      "3.98",
+      "Renewing Mist"
+     ],
+     [
+      "5.16",
+      "Power Strike"
+     ],
+     [
+      "6.54",
+      "Fortifying Brew"
+     ],
+     [
+      "7.71",
+      "Celestial Wrath"
+     ],
+     [
+      "9.14",
+      "Renewing Mist"
+     ],
+     [
+      "10.31",
+      "Power Strike"
+     ],
+     [
+      "11.70",
+      "Fortifying Brew"
+     ],
+     [
+      "12.87",
+      "Celestial Wrath"
+     ],
+     [
+      "14.30",
+      "Renewing Mist"
+     ],
+     [
+      "15.47",
+      "Power Strike"
+     ],
+     [
+      "16.85",
+      "Fortifying Brew"
+     ],
+     [
+      "18.02",
+      "Celestial Wrath"
+     ],
+     [
+      "19.45",
+      "Renewing Mist"
+     ],
+     [
+      "20.63",
+      "Power Strike"
+     ],
+     [
+      "22.01",
+      "Fortifying Brew"
+     ],
+     [
+      "23.18",
+      "Celestial Wrath"
+     ],
+     [
+      "24.61",
+      "Renewing Mist"
+     ],
+     [
+      "25.78",
+      "Power Strike"
+     ],
+     [
+      "27.17",
+      "Fortifying Brew"
+     ],
+     [
+      "28.34",
+      "Celestial Wrath"
+     ],
+     [
+      "29.77",
+      "Renewing Mist"
+     ]
+    ],
+    "stats": [
+     [
+      "Сила",
+      "158"
+     ],
+     [
+      "Ловкость",
+      "48"
+     ],
+     [
+      "Интеллект",
+      "42"
+     ],
+     [
+      "Урон автоатаки",
+      "186.5"
+     ],
+     [
+      "Potency",
+      "0.0"
+     ],
+     [
+      "Mastery",
+      "10"
+     ],
+     [
+      "Шанс крита",
+      "30%"
+     ],
+     [
+      "Рейтинг крита",
+      "0.00"
+     ],
+     [
+      "Спешка",
+      "28.0%"
+     ],
+     [
+      "Скорость атаки",
+      "64.2%"
+     ],
+     [
+      "Удача",
+      "0%"
+     ],
+     [
+      "Магический бонус",
+      "+48%"
+     ],
+     [
+      "Физический бонус",
+      "+18%"
+     ],
+     [
+      "Здоровье",
+      "2850"
+     ],
+     [
+      "Мана макс.",
+      "414"
+     ],
+     [
+      "Реген маны",
+      "4.32/с"
+     ],
+     [
+      "Мана в конце",
+      "62%"
+     ],
+     [
+      "Интервал атаки (без баффов)",
+      "1.13 с"
+     ],
+     [
+      "Множитель КД (предметы)",
+      "×1.100"
+     ],
+     [
+      "Плоское снижение КД",
+      "0.00 с"
+     ],
+     [
+      "Пробитие брони",
+      "9"
+     ]
+    ],
+    "talentDps": {
+     "Martial Artist": 3597.8,
+     "Fists of Fury": 3968.2,
+     "Inner Harmony": 3968.2,
+     "Jab": 3757.5,
+     "Frenzied Assault": 3600.9,
+     "Flurry Strikes": 3601.6,
+     "Avatar of Xuen": 3968.2,
+     "Avatar of Chi'Ji": 3351.4
+    },
+    "glyphDps": {
+     "Fortitude": 3968.2,
+     "Unsealed Power": 3968.2,
+     "Fortune": 3396.2,
+     "Supremacy": 3519.7,
+     "Arc Striking": 3390.2,
+     "Battle Frenzy": 3394.9,
+     "Hellfire": 3390.2,
+     "Thunder": 3390.2,
+     "Blood Violence": 3390.2,
+     "Animosity": 3653.7,
+     "Glass Cannon": 3968.2,
+     "Mindhaste": 3390.3
     }
    }
   ],
