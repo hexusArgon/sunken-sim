@@ -456,7 +456,9 @@ def _simulate(build: Build, targets: int, spec: str, policy: tuple[str, bool, bo
         note_damage_mana(count)
         if has(TALENT_FISTS_OF_FURY):
             fof = min(50.0 * LEVEL, fof + 0.10 * dealt * count)
-        cut_wrath(crits, now)
+        # Warstaff of Chi'Ji (OnDamage_Items_Glyphs Func006/Func022) needs IsDamageAttack: spell crits do not cut
+        # Celestial Wrath (before 2026-11-16: every spell crit, White Tiger / Wrath of Xuen on 5 targets included).
+        del crits
         return dealt
 
     def attack_hit(name: str, raw: float, now: float, *, red_crane: bool, potency_scale: float) -> float:

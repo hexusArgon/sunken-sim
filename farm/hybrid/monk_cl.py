@@ -244,7 +244,7 @@ double magic(const Row* r, St* s, int name, double raw, double now, double count
     double v = s->fof + 0.10 * dealt * count;
     s->fof = (v < 750.0) ? v : 750.0;
   }
-  cut_wrath(r, s, crits, now);
+  (void)crits;  /* Warstaff of Chi'Ji: attack crits only (IsDamageAttack) */
   return dealt;
 }
 
