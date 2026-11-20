@@ -2,7 +2,11 @@
 
 Decided by the user:
 - 2026-11-17: each dummy hits for 5% of max HP once per second, dummies 0.2 s apart; heal 75% of max HP every 3 s; HP floor 1.
-- 2026-11-20: round(N*122/176) dummies are melee (Normal attack), the rest ranged (Magic attack); damage reduction is modelled.
+- 2026-11-20: round(N*122/176) dummies are melee (Normal attack), the rest ranged (Magic attack).
+- 2026-11-21: damage reduction is NOT modelled (a hit is exactly 5% of max HP); own temporary reductions are not
+  modelled either. All dummies stand right next to the hero. Lifesteal, HP regeneration and healing items are
+  ignored unless they change damage dealt (e.g. through an HP-dependent damage effect); then they are counted.
+  The pipeline below is kept for reference only.
 
 Monsters on the map (war3map.w3u + placed units, service units with 1 HP excluded; melee = weapon type
 "normal", the engine flag UNIT_TYPE_MELEE_ATTACKER):
