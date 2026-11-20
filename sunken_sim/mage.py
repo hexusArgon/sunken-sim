@@ -88,23 +88,23 @@ def _flat_health(build: Build) -> float:
     return total
 
 
-def _hero_ratio(build: Build, stats: dict, when: float) -> float:
+def _hero_ratio(build: Build, stats: dict, when: float, targets: int = 5) -> float:
     cap = 0.38 if _wears(build, _CRIMSON) else 1.0
     health = max_hp(BASE_HP, stats["str"]) + _flat_health(build)
-    return hero_hp_ratio(when, health, 0.0, cap)
+    return hero_hp_ratio(when, health, 0.0, cap, targets)
 
 
-def _swing_base(build: Build, stats: dict, when: float) -> float:
+def _swing_base(build: Build, stats: dict, when: float, targets: int = 5) -> float:
     base = stats["attack_base"]
     if _wears(build, _BLOODHOWL):
-        missing = 1.0 - _hero_ratio(build, stats, when)
+        missing = 1.0 - _hero_ratio(build, stats, when, targets)
         base *= 1.0 - 0.30 * missing
     return base
 
 
-def _damage_factor(build: Build, stats: dict, when: float, kind: str) -> float:
+def _damage_factor(build: Build, stats: dict, when: float, kind: str, targets: int = 5) -> float:
     """Map PreDamage increase: Furnace on the hero, low-health bonus on his damage."""
-    ratio = _hero_ratio(build, stats, when)
+    ratio = _hero_ratio(build, stats, when, targets)
     factor = 1.0
     if _wears(build, _FURNACE) and kind not in ("hydra", "cleave"):
         factor += 0.20 * (1.0 - ratio)
@@ -387,7 +387,7 @@ def simulate(
         return max(-0.8, min(4.0, stats["attack_speed"] + extra_as(now)))
 
     def current_swing(now: float) -> float:
-        base = _swing_base(build, stats, now)
+        base = _swing_base(build, stats, now, targets)
         if spec == "fire":
             return base
         return base / (1.0 + current_as(now))
@@ -654,7 +654,7 @@ def simulate(
     mana_left = 0.0 if stats["mana_max"] <= 0 else 100.0 * mana / stats["mana_max"]
     if _capture_only:
         return (events, stats, spec, evocation)
-    compiled = _compile(events, build, stats, spec, evocation)
+    compiled = _compile(events, build, stats, spec, evocation, targets=targets)
     if counter is not None:
         counter["engine"] = "mage"
         counter["compiled"] = compiled
@@ -678,7 +678,8 @@ def _magic(codes, when: float, mana: float, evocation: bool) -> tuple[float, flo
     return _magic_factors(codes, when, extra)
 
 
-def _compile(events: list[tuple], build: Build, stats: dict, spec: str, evocation: bool, *, _damage_at=None) -> dict:
+def _compile(events: list[tuple], build: Build, stats: dict, spec: str, evocation: bool, *, _damage_at=None,
+             targets: int = 5) -> dict:
     codes = _codes(build)
     mana = stats["mana_max"]
     buckets = (
@@ -741,7 +742,7 @@ def _compile(events: list[tuple], build: Build, stats: dict, spec: str, evocatio
         return base_factor + slope * spl, slope
 
     for when, kind, hits, raw_w, pot_w, extra in events:
-        dealt = _damage_factor(build, stats, when, kind) if _damage_at is None else _damage_at(when, kind)
+        dealt = _damage_factor(build, stats, when, kind, targets) if _damage_at is None else _damage_at(when, kind)
         raw_w *= dealt
         pot_w *= dealt
         if kind == "auto":

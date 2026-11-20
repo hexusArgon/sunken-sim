@@ -139,7 +139,7 @@ typedef struct {
   double surge_p[MAXT], surge_at[MAXT];
   double pend[MAXP]; int npend;
   double mana, mana_time, lm;
-  double hp_max, hp_health, hp_next_hit, hp_next_heal; long hp_idx; int hp_flat;
+  double hp_max, hp_health, hp_next_hit, hp_next_heal; long hp_idx; int hp_flat, hp_slot, hp_targets;
   int armed, status;
   ulong miss_b, miss_e;
   AP ap;
@@ -190,10 +190,16 @@ double pow_lookup(const PowT* P, St* s, double x, double y) {
 }
 
 /* pressure.hero_hp_ratio(time, hp, 0.0): the 0.01 s health table, replayed with a cursor */
+/* pressure.hit_time / pressure.slot_hits: dummy j hits at 0.2 * (j % 5 + 1) + k seconds */
+inline double hp_hit_time(int slot) { return (double)(slot / 5) + 0.2 * (double)(slot % 5 + 1); }
+inline int hp_slot_hits(int slot, int targets) { return targets / 5 + ((slot % 5 < targets % 5) ? 1 : 0); }
+
 void hp_reset(St* s) {
   s->hp_health = s->hp_max;
-  s->hp_next_hit = 0.2;
-  s->hp_next_heal = 1.0;
+  s->hp_slot = 0;
+  while (hp_slot_hits(s->hp_slot, s->hp_targets) == 0) s->hp_slot++;
+  s->hp_next_hit = hp_hit_time(s->hp_slot);
+  s->hp_next_heal = 3.0;
   s->hp_idx = -1;
 }
 
@@ -213,16 +219,19 @@ double hero_ratio(St* s, double t) {
     ei = (ei > 3000) ? 3000 : ei;
     if (ei > index) break;
     if (is_hit) {
-      double h = s->hp_health - 91.0;
+      double hit = 0.05 * s->hp_max;
+      double h = s->hp_health - (double)hp_slot_hits(s->hp_slot, s->hp_targets) * hit;
       s->hp_health = (1.0 >= h) ? 1.0 : h;
-      s->hp_next_hit = s->hp_next_hit + 0.2;
+      s->hp_slot++;
+      while (hp_slot_hits(s->hp_slot, s->hp_targets) == 0) s->hp_slot++;
+      s->hp_next_hit = hp_hit_time(s->hp_slot);
     } else {
       double ceiling = s->hp_max * 1.0;
       if (s->hp_health < ceiling) {
-        double h = s->hp_health + 0.5 * s->hp_max;
+        double h = s->hp_health + 0.75 * s->hp_max;
         s->hp_health = (ceiling <= h) ? ceiling : h;
       }
-      s->hp_next_heal = s->hp_next_heal + 1.0;
+      s->hp_next_heal = s->hp_next_heal + 3.0;
     }
   }
   s->hp_idx = index;
@@ -437,8 +446,8 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
   s.mana = r->mana_max; s.mana_time = 0.0; s.armed = 0;
   ap_init(&s.ap, GM(r, G_FREN) ? frenzy_chance(r->luck) : 0.0, (r->mask & S_SILM) ? SILENT_AS : 0.0,
           (r->mask & S_SILM) ? SILENT_DUR : 0.0);
-  s.hp_flat = 0;
-  if (r->hp <= 1.0) s.hp_flat = 1;
+  s.hp_flat = 0; s.hp_targets = r->targets;
+  if (r->hp <= 1.0 || r->targets <= 0) s.hp_flat = 1;
   else { s.hp_max = rint(r->hp * 1000.0) / 1000.0; if (s.hp_max <= 1.0) s.hp_flat = 1; hp_reset(&s); }
   const int sulf = (r->mask & S_SULF) != 0;
   const int blades = TM(r, T_BLADES) || (r->mask & S_VENOM);
@@ -852,9 +861,9 @@ def berserker_tables(space, items, sources) -> dict:
             B.SKULL_CD, B.SKULL_MANA, B.VA_DUR, B.SURGE_DUR, B.BERSERK_DUR, B.PRESSURE_STEP, B.BLOOD_CRAZE_DCS) != \
             (30.0, 1.6, 120.0, 230.0, 1, 200, 10.0, 30.0, 0.75, 20.0, 25.0, 4.0, 5.0, 6.0, 0.2, 30.0):
         raise ValueError("kernel constants assume the 2026-11-12 berserker")
-    if (pressure.ATTACK_INTERVAL, pressure.ATTACK_DAMAGE, pressure.HEAL_OF_MAX, pressure.HP_FLOOR, pressure.STR_HP) != \
-            (0.2, 91.0, 0.5, 1.0, 15.0):
-        raise ValueError("kernel constants assume the 2026-11-12 hero health model")
+    if (pressure.ATTACK_INTERVAL, pressure.ATTACK_COOLDOWN, pressure.SLOTS, pressure.HIT_OF_MAX, pressure.HEAL_OF_MAX,
+            pressure.HEAL_EVERY, pressure.HP_FLOOR, pressure.STR_HP) != (0.2, 1.0, 5, 0.05, 0.75, 3.0, 1.0, 15.0):
+        raise ValueError("kernel constants assume the 2026-11-17 hero health model")
     t = C.character_tables(space, items, sources, SPECIAL_BITS, TALENT_BITS, GLYPH_BITS, NO_EFFECT,
                            [float(B.BASE_INT), float(B.BASE_STR), float(B.BASE_AGI), float(B.BASE_HP)], "Berserker")
     pieces = space.pieces

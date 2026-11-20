@@ -181,7 +181,7 @@ typedef struct {
 
 typedef struct {
   int trivial, done, last_q;
-  double maxh, ceiling, health, next_hit, next_heal;
+  double maxh, ceiling, health, next_hit, next_heal; int slot, targets;
 } HP;
 
 typedef struct {
@@ -224,7 +224,11 @@ inline double armor_taken(double armor, int* status) {
   return 1.0;
 }
 
-void hp_init(HP* h, double str, double flat_health, int crimson) {
+/* pressure.hit_time / pressure.slot_hits: dummy j hits at 0.2 * (j % 5 + 1) + k seconds */
+inline double hp_hit_time(int slot) { return (double)(slot / 5) + 0.2 * (double)(slot % 5 + 1); }
+inline int hp_slot_hits(int slot, int targets) { return targets / 5 + ((slot % 5 < targets % 5) ? 1 : 0); }
+
+void hp_init(HP* h, double str, double flat_health, int crimson, int targets) {
   double cap = crimson ? 0.38 : 1.0;
   double health = (230.0 + 15.0 * str) + flat_health;
   h->last_q = 0; h->done = 0; h->trivial = 0;
@@ -237,8 +241,12 @@ void hp_init(HP* h, double str, double flat_health, int crimson) {
   h->maxh = maxh;
   h->health = maxh;
   h->ceiling = maxh * heal_cap;
-  h->next_hit = 0.2;
-  h->next_heal = 1.0;
+  h->targets = targets;
+  if (targets <= 0) { h->trivial = 1; return; }
+  h->slot = 0;
+  while (hp_slot_hits(h->slot, targets) == 0) h->slot++;
+  h->next_hit = hp_hit_time(h->slot);
+  h->next_heal = 3.0;
 }
 
 double hp_ratio(HP* h, double t, int* status) {
@@ -258,15 +266,18 @@ double hp_ratio(HP* h, double t, int* status) {
     if (p > 3000) p = 3000;
     if (p > q) break;
     if (hit) {
-      double v = h->health - 91.0;
+      double hitv = 0.05 * h->maxh;
+      double v = h->health - (double)hp_slot_hits(h->slot, h->targets) * hitv;
       h->health = (1.0 >= v) ? 1.0 : v;
-      h->next_hit = h->next_hit + 0.2;
+      h->slot++;
+      while (hp_slot_hits(h->slot, h->targets) == 0) h->slot++;
+      h->next_hit = hp_hit_time(h->slot);
     } else {
       if (h->health < h->ceiling) {
-        double v = h->health + 0.5 * h->maxh;
+        double v = h->health + 0.75 * h->maxh;
         h->health = (h->ceiling <= v) ? h->ceiling : v;
       }
-      h->next_heal = h->next_heal + 1.0;
+      h->next_heal = h->next_heal + 3.0;
     }
   }
   return h->health / h->maxh;
@@ -768,7 +779,7 @@ double score(Row* r, Comp* c, int* status) {
 
 double fight(Row* r, int bound, int* status_out, __global const double* p120, __global const double* p115) {
   St s; HP h; Comp c;
-  hp_init(&h, r->str, r->flat_health, (r->mask & S_CRIM) != 0);
+  hp_init(&h, r->str, r->flat_health, (r->mask & S_CRIM) != 0, r->targets);
   double base_cd[4] = {8.0, 13.0, 8.0, 13.0};
   double extra[4] = {0.0, 0.0, 0.0, 0.0};
   if (SP_FIRE && (r->mask & S_FELO)) extra[B_HY] = 3.0;

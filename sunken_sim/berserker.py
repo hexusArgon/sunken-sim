@@ -392,7 +392,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "headhunter") -> Report
     cast_time = CAST_POINT + CAST_BACKSWING
 
     def hero_ratio(now: float) -> float:
-        return hero_hp_ratio(now, stats["hp"], 0.0)
+        return hero_hp_ratio(now, stats["hp"], 0.0, 1.0, targets)
 
     def berserk_speed(now: float) -> float:
         if not has(TALENT_BERSERK) or now < PRESSURE_STEP:
