@@ -5,7 +5,10 @@ Model (set by the user on 2026-11-17):
 * the dummies attack in turn, 0.2 s apart (dummy j hits at 0.2 * (j % 5 + 1) + k seconds),
   so five dummies give one hit every 0.2 s and never a burst;
 * the hero is healed for 75% of maximum health every 3 s (at 3, 6, 9, ...);
-* health never drops below 1 hit point.  Armor does not reduce the hit.
+* health never drops below 1 hit point;
+* round(N * 122 / 176) of the N dummies fight in melee with a Normal attack, the rest at range with a
+  Magic attack: 122 of the 176 monsters placed on the 2.5.2c map have a melee weapon, most melee
+  monsters attack Normal and most ranged ones Magic (user decision 2026-11-20).
 
 Hit slot e (five slots per second) is at ``hit_time(e)`` and carries ``slot_hits(e, targets)`` hits.
 The OpenCL kernels replay the same arithmetic (farm/hybrid/berserker_cl.py, mage_cl.py).
@@ -28,6 +31,25 @@ AGI_ARMOR = 0.1
 ARMOR_FACTOR = 0.04
 LOW_HP = 0.40
 DEFAULT_TARGETS = 5
+
+
+MELEE_SHARE = (122, 176)
+
+
+def melee_count(targets: int) -> int:
+    """Melee dummies among `targets`: 69.318...% rounded to the nearest whole dummy."""
+    num, den = MELEE_SHARE
+    return (2 * targets * num + den) // (2 * den)
+
+
+def dummy_is_melee(dummy: int, targets: int) -> bool:
+    """Dummies 0 .. melee_count-1 are melee (Normal attack); the rest are ranged (Magic attack)."""
+    return dummy < melee_count(targets)
+
+
+def slot_dummies(slot: int, targets: int) -> list[int]:
+    """Dummies that hit in this slot (dummy j uses slot j % 5 of every second)."""
+    return [j for j in range(slot % SLOTS, targets, SLOTS)]
 
 
 def max_hp(base_hp: float, strength: float) -> float:
