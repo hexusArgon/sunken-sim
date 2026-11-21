@@ -27,6 +27,12 @@ def _key(text: str) -> str:
 
 
 def _talent_names(hero: str) -> dict[str, str]:
+    from farm.protocol import GPU_ONLY
+
+    if hero in GPU_ONLY:
+        import importlib
+
+        return dict(importlib.import_module(f"farm.hybrid.{hero}_cl").TALENT_NAMES)
     if hero == "priest":
         from sunken_sim.search import TALENTS
     else:

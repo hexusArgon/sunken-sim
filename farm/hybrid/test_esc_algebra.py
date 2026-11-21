@@ -176,7 +176,7 @@ class RealHeroTests(unittest.TestCase):
         from farm.hybrid.stat_kernel import greedy_points_batched, structural_skip_attrs
         from farm.hybrid.test_stat_kernel_greedy import _catalog_build, cpu_dps_many
 
-        for hero, spec in (("berserker", "headhunter"), ("necromancer", "essence"), ("demon_hunter", "havoc")):
+        for hero, spec in (("dragon_sentinel", "ruby"), ("necromancer", "essence"), ("demon_hunter", "havoc")):
             build = _catalog_build(hero, spec, 0)
             many = cpu_dps_many(hero, spec)
             ref = greedy_points_batched(many, build, hero=hero)
@@ -191,10 +191,10 @@ class RealHeroTests(unittest.TestCase):
             raise unittest.SkipTest("torch not installed")
         from farm.hybrid.kindscore import compile_sums, pack
         from farm.hybrid.test_stat_kernel_greedy import _catalog_build
-        from sunken_sim import berserker as mod
+        from sunken_sim import dragon_sentinel as mod
         from sunken_sim.shadow import FIGHT
 
-        b = _catalog_build("berserker", "headhunter", 0)
+        b = _catalog_build("dragon_sentinel", "ruby", 0)
         tr = A.trace_current(mod, b, 5, "headhunter", {"crit", "potency", "luck"})
         self.assertTrue(tr.ok, tr.note)
         W = A.event_weights(tr, tr.program.val[:, None])

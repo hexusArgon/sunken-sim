@@ -233,6 +233,9 @@ class ExactCL:
     hero = ""
     TABLE_KEYS: tuple = ()
     SCALARS: dict = {}
+    # False once the class's Python fight model is removed: self-checks replay farm/hybrid/fixtures/<hero>.json
+    # and a row the kernel declines is an error (there is no Python oracle to score it).
+    PYTHON = True
 
     def __init__(self, space, items: dict, sources: dict, targets: int, device=None, spec: str = "") -> None:
         from farm.hybrid.mage_cl import _import_cl, pick_device
@@ -337,8 +340,10 @@ class ExactCL:
     def py_value(self, build, build_tl=None) -> float:
         """simulate(build).dps with an empty timeline cache; with build_tl, after simulate(build_tl)
         filled it (the replayed cache of the ESC search)."""
+        if not self.PYTHON:
+            raise RuntimeError(f"{self.hero} {self.spec}: the kernel declined a fight and there is no Python model to score it")
         mod = self.module()
-        old = getattr(mod, "_TIMELINE", None)  # berserker has no fight cache
+        old = getattr(mod, "_TIMELINE", None)
         if old is not None:
             mod._TIMELINE = {}
         try:
@@ -498,8 +503,62 @@ def parity_full(engine: ExactCL, space, items: dict, targets: int, builds, timel
     return {"rows": len(builds), "mismatches": len(bad), "status_rows": fallback, "examples": bad[:5], "ok": not bad}
 
 
+def fixture_check(engine: ExactCL, rows: int, full: int, seed: int):
+    """Self-check of a class without a Python model: replay frozen Python == GPU fights
+    (farm/hybrid/fixtures/<hero>.json) whose items are all in the engine's pool."""
+    import json
+    import random
+    from pathlib import Path
+
+    from sunken_sim.esc import ESC_ATTRS
+
+    data = json.loads((Path(__file__).resolve().parent / "fixtures" / f"{engine.hero}.json").read_text(encoding="utf-8"))
+    have = {p.code for p in engine.space.pieces}
+    cases = [c for c in data["cases"] if c["spec"] == engine.spec and c["targets"] == engine.targets
+             and not c.get("incoming") and set(c["items"]) <= have]
+    random.Random(seed).shuffle(cases)
+    if len(cases) < rows + full:  # split what there is between the two checks
+        rows = len(cases) // 2
+        full = len(cases) - rows
+    parts = []
+    for chosen in (cases[:rows], cases[rows:rows + full]):
+        bad = []
+        if chosen:
+            dps, _g, status = engine.pick([engine.picks_of(c["items"]) for c in chosen],
+                                          [engine.talent_mask(c["talents"]) for c in chosen],
+                                          [engine.glyph_mask(c["glyphs"]) for c in chosen],
+                                          [[c["points"][a] for a in ESC_ATTRS] for c in chosen])
+            for c, d, st in zip(chosen, dps, status):
+                if st or float(d).hex() != c["dps"]:
+                    bad.append({"items": c["items"], "kernel": float(d), "fixture": float.fromhex(c["dps"]), "status": int(st)})
+        parts.append({"rows": len(chosen), "mismatches": len(bad), "status_rows": sum(1 for b in bad if b["status"]),
+                      "examples": bad[:5], "ok": not bad and len(chosen) > 0})
+    # The chunk paths (bare scan, rows) against the explicit-pieces kernel on the same items.
+    if engine.space.total > 0:
+        n = min(max(rows, 1), 256)
+        start = random.Random(seed + 7).randrange(max(1, engine.space.total - n))
+        n = min(n, engine.space.total - start)
+        chunks = list(range(start, start + n))
+        picks = [engine.picks_of(engine.space.decode(c)[0]) for c in chunks]
+        zero_t, zero_p = [0] * n, [[0] * len(ESC_ATTRS)] * n
+        ref, _g, st0 = engine.pick(picks, zero_t, zero_t, zero_p)
+        bare, _g, st1 = engine.bare(start, n)
+        rowv, _g, st2 = engine.rows(chunks, zero_t, zero_t, zero_p)
+        bad = [{"chunk": c, "pick": float(a), "bare": float(b), "rows": float(r)}
+               for c, a, b, r, s0, s1, s2 in zip(chunks, ref, bare, rowv, st0, st1, st2)
+               if s0 or s1 or s2 or float(a).hex() != float(b).hex() or float(a).hex() != float(r).hex()]
+        parts[0]["rows"] += n
+        parts[0]["mismatches"] += len(bad)
+        parts[0]["examples"] = (parts[0]["examples"] + bad)[:5]
+        parts[0]["ok"] = parts[0]["ok"] and not bad
+    return parts[0], parts[1]
+
+
 def self_check(engine: ExactCL, space, items: dict, sources: dict, targets: int, rows: int, full: int, seed: int):
     from farm.hybrid.mage_cl import sample
+
+    if not getattr(engine, "PYTHON", True):
+        return fixture_check(engine, rows, full, seed)
 
     check = parity(engine, space, items, sources, targets, sample(space, rows, seed))
     builds = random_builds(space, full, seed + 1)
@@ -526,3 +585,22 @@ def finish_reference(hero: str, spec: str, targets: int, equipped: tuple, space)
     finally:
         if old is not None:
             mod._TIMELINE = old
+
+
+def full_space(hero: str, class_name: str, talents) -> tuple:
+    """Every item of the class pools (shop + drop + legendaries) as one Space: the one-slot screen and reports
+    of builds outside a run's top-N use it with the explicit-pieces kernels."""
+    from farm.space import Piece, Space
+    from sunken_sim.library import load_items
+    from sunken_sim.search import GLYPHS, _item_kind, pools_for
+    from sunken_sim.shadow import MIND_AMPLIFIER
+
+    shop, drop, legs = pools_for(load_items(), class_name)
+    items = {}
+    for item in shop + drop + legs:
+        items.setdefault(item.rawcode, item)
+    pieces = [Piece(code, _item_kind(items[code]), amp=code == MIND_AMPLIFIER, name=items[code].name)
+              for code in sorted(items)]
+    space = Space(pieces, sorted(talents), sorted(GLYPHS), picks_without=3, picks_with=3,
+                  talent_names=dict(talents), glyph_names=dict(GLYPHS))
+    return space, items

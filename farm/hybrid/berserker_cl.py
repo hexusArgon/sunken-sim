@@ -1,9 +1,9 @@
 """Exact float64 OpenCL kernel for Berserker fights (Headhunter, Poison, Fury).
 
 One work-item scores one fight: unrank the six items, fold the sheet like
-``sunken_sim.berserker.stats_of`` (agility primary, Blood Fury agility from
+the removed ``sunken_sim.berserker.stats_of`` (agility primary, Blood Fury agility from
 health, Gift of the Blood God, Hemotoxin, typed adds, luck and health from
-tooltips) and run ``berserker.simulate`` with its Ledger sums in insertion order.
+tooltips) and run the fight of the removed ``berserker.simulate`` with its Ledger sums in insertion order.
 
 ``berserker.simulate`` has no timeline cache, so every row is its own fight.
 Two library calls of the sim are not computed on the device:
@@ -39,6 +39,11 @@ KERNEL = r"""
 #ifndef SPEC
 #define SPEC 0
 #endif
+/* REPORT 1: the report kernel also keeps the final fight state (sources in Ledger order, casts, mana) */
+#ifndef REPORT
+#define REPORT 0
+#endif
+#define MAXA 64
 #define SP_HEAD (SPEC == 0)
 #define SP_POISON (SPEC == 1)
 #define SP_FURY (SPEC == 2)
@@ -143,6 +148,9 @@ typedef struct {
   int armed, status;
   ulong miss_b, miss_e;
   AP ap;
+#if REPORT
+  double act_t[MAXA]; int act_id[MAXA]; int nact;
+#endif
 } St;
 
 double target_hp(double t) {
@@ -434,8 +442,15 @@ void axe_hit(const Row* r, St* s, double now, double count) {
   attack_hit(r, s, N_AXE, 20.0 + 1.25 * dcs(r), now, r->attack_potency, 0, count);
 }
 
+#if REPORT
+double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* miss_e, St* keep) {
+#else
 double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* miss_e) {
+#endif
   St s;
+#if REPORT
+  s.nact = 0;
+#endif
   s.nord = 0; s.seen = 0u;
   for (int id = 0; id < 8; id++) { s.seen |= 1u << id; s.ord[s.nord++] = id; s.src[id] = 0.0; }
   s.status = 0; s.miss_b = 0; s.miss_e = 0;
@@ -504,6 +519,9 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
     }
     if (moment == next_sack) {
       if (!pay(r, &s, 30.0, moment)) { next_sack = moment + 0.25; continue; }
+#if REPORT
+      if (s.nact < MAXA) { s.act_t[s.nact] = moment; s.act_id[s.nact] = 0; s.nact++; }
+#endif
       if (s.npend >= MAXP) { s.status = 2; break; }
       double t = moment + CAST_POINT + 0.75;
       int k = s.npend++;
@@ -517,6 +535,9 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
     }
     if (moment == next_skull) {
       if (!pay(r, &s, 25.0, moment)) { next_skull = moment + 0.25; continue; }
+#if REPORT
+      if (s.nact < MAXA) { s.act_t[s.nact] = moment; s.act_id[s.nact] = 1; s.nact++; }
+#endif
       double hit = moment + CAST_POINT;
       double raw = 150.0 * 1.0 + 2.0 * dcs(r) + 0.05 * 5300.0;
       double coeff = (TM(r, T_EXEC) && target_hp(hit) <= 0.40) ? 1.35 : 1.0;
@@ -605,6 +626,10 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
   if (s.status) { *status = s.status; *miss_b = s.miss_b; *miss_e = s.miss_e; return 0.0; }
   double total = 0.0;
   for (int i = 0; i < s.nord; i++) total += s.src[s.ord[i]];
+#if REPORT
+  recover(r, &s, FIGHT);
+  *keep = s;
+#endif
   return total / FIGHT;
 }
 
@@ -675,6 +700,7 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   int n_core = 0, n_sulg = 0, has_shop = 0, has_drop = 0, nexec = 0;
   for (int si = 0; si < 6; si++) {
     int p = chosen[si];
+    if (p < 0) { first[si] = 0; continue; }
     int f1 = 1;
     for (int j = 0; j < si; j++) if (chosen[j] == p) { f1 = 0; break; }
     first[si] = f1;
@@ -781,6 +807,7 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   r->glass = (GM(r, G_GLASS) || (mask & S_GLAS)) ? 1 : 0;
 }
 
+#if !REPORT
 double row_value(Tab* T, const PowT* P, long index, uint tmask, uint gmask, const int* pts, int targets,
                  int* status, int* group, ulong* mb, ulong* me) {
   int chosen[6];
@@ -789,6 +816,7 @@ double row_value(Tab* T, const PowT* P, long index, uint tmask, uint gmask, cons
   sheet(T, &r, chosen, tmask, gmask, pts, targets, group);
   return fight(&r, P, status, mb, me);
 }
+#endif
 
 #define TAB_ARGS \
     __global const long* dp0, __global const long* dp1, const long count_without, const long total, \
@@ -803,6 +831,7 @@ double row_value(Tab* T, const PowT* P, long index, uint tmask, uint gmask, cons
   T.pal = pal; T.base = base; \
   PowT P; P.pkb = pkb; P.pke = pke; P.pv = pv; P.np = npow;
 
+#if !REPORT
 __kernel void cls_bare(const long start, const int n, const int targets, TAB_ARGS,
     __global double* out_dps, __global uchar* out_group, __global uchar* out_status, __global ulong* out_mb, __global ulong* out_me)
 {
@@ -831,6 +860,84 @@ __kernel void cls_rows(const int n, const int targets, __global const long* chun
   double d = row_value(&T, &P, chunks[gid], tmasks[gid], gmasks[gid], pts, targets, &status, &group, &mb, &me);
   out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status; out_mb[gid] = mb; out_me[gid] = me;
 }
+#endif
+
+/* Explicit pieces (-1 = empty slot): the one-slot screen and any build outside the pool's 6-item ranks. */
+int picks_ok(Tab* T, __global const int* picks, long gid, int* chosen) {
+  for (int j = 0; j < 6; j++) {
+    int p = picks[gid * 6 + j];
+    if (p >= T->npieces) return 0;
+    chosen[j] = (p < 0) ? -1 : p;
+  }
+  return 1;
+}
+
+#if !REPORT
+__kernel void cls_pick(const int n, const int targets, __global const int* picks, __global const uint* tmasks,
+    __global const uint* gmasks, __global const int* points, TAB_ARGS,
+    __global double* out_dps, __global uchar* out_group, __global uchar* out_status, __global ulong* out_mb, __global ulong* out_me)
+{
+  int gid = get_global_id(0);
+  if (gid >= n) return;
+  TAB_INIT
+  int pts[NP];
+  for (int j = 0; j < NP; j++) pts[j] = points[(long)gid * NP + j];
+  int status = 0, group = 0, chosen[6];
+  ulong mb = 0, me = 0;
+  double d = 0.0;
+  if (!picks_ok(&T, picks, gid, chosen)) status = 1;
+  else {
+    Row r;
+    sheet(&T, &r, chosen, tmasks[gid], gmasks[gid], pts, targets, &group);
+    d = fight(&r, &P, &status, &mb, &me);
+  }
+  out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status; out_mb[gid] = mb; out_me[gid] = me;
+}
+#else
+#define NSTAT 20
+__kernel void cls_report(const int n, const int targets, __global const int* picks, __global const uint* tmasks,
+    __global const uint* gmasks, __global const int* points, TAB_ARGS,
+    __global double* out_dps, __global uchar* out_group, __global uchar* out_status, __global ulong* out_mb, __global ulong* out_me,
+    __global double* out_src, __global int* out_ord, __global int* out_nord, __global double* out_mana,
+    __global double* out_act_t, __global int* out_act_id, __global int* out_nact, __global double* out_stats)
+{
+  int gid = get_global_id(0);
+  if (gid >= n) return;
+  TAB_INIT
+  int pts[NP];
+  for (int j = 0; j < NP; j++) pts[j] = points[(long)gid * NP + j];
+  int status = 0, group = 0, chosen[6];
+  ulong mb = 0, me = 0;
+  double d = 0.0;
+  St keep;
+  keep.nord = 0; keep.nact = 0; keep.mana = 0.0;
+  Row r;
+  if (!picks_ok(&T, picks, gid, chosen)) status = 1;
+  else {
+    sheet(&T, &r, chosen, tmasks[gid], gmasks[gid], pts, targets, &group);
+    d = fight(&r, &P, &status, &mb, &me, &keep);
+  }
+  out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status; out_mb[gid] = mb; out_me[gid] = me;
+  out_nord[gid] = keep.nord;
+  for (int i = 0; i < NSRC; i++) {
+    out_ord[(long)gid * NSRC + i] = (i < keep.nord) ? keep.ord[i] : -1;
+    out_src[(long)gid * NSRC + i] = (i < keep.nord) ? keep.src[keep.ord[i]] : 0.0;
+  }
+  out_mana[gid] = (status == 0 && r.mana_max > 0.0) ? 100.0 * keep.mana / r.mana_max : 0.0;
+  out_nact[gid] = keep.nact;
+  for (int i = 0; i < MAXA; i++) {
+    out_act_t[(long)gid * MAXA + i] = (i < keep.nact) ? keep.act_t[i] : 0.0;
+    out_act_id[(long)gid * MAXA + i] = (i < keep.nact) ? keep.act_id[i] : -1;
+  }
+  __global double* o = out_stats + (long)gid * NSTAT;
+  if (status == 0) {
+    o[0] = r.agi; o[1] = r.str; o[2] = r.intel; o[3] = r.damage; o[4] = r.potency; o[5] = r.mastery; o[6] = r.crit;
+    o[7] = r.rating; o[8] = r.haste; o[9] = r.aspd; o[10] = r.luck; o[11] = r.magic_add; o[12] = r.phys_add;
+    o[13] = r.hp; o[14] = r.mana_max; o[15] = r.mana_regen; o[16] = (r.mask & S_GALA) ? 1.0 : 0.0;
+    o[17] = r.cd_temp; o[18] = r.flat_cdr; o[19] = r.armor_pen;
+  }
+}
+#endif
 """
 KERNEL = KERNEL.replace("#pragma OPENCL FP_CONTRACT OFF\n", "#pragma OPENCL FP_CONTRACT OFF\n" + AP.C, 1)
 
@@ -849,23 +956,48 @@ GLYPH_BITS = {"I0AV": 0, "I0JA": 1, "I07B": 2, "I0EK": 3, "I0HC": 4, "I0OF": 5, 
 NO_EFFECT = {"I0H3", "I0H5", "I0H6", "I0EN"}
 SPECS = {"headhunter": 0, "poison": 1, "fury": 2}
 
+# Level-15 Berserker O005 (map 2.5.2c): base attributes int(base + 14 * per-level), base health.
+LEVEL = 15
+BASE_STR = int(14 + (LEVEL - 1) * 1.4)
+BASE_AGI = int(28 + (LEVEL - 1) * 2.8)
+BASE_INT = int(8 + (LEVEL - 1) * 0.8)
+BASE_HP = 230.0
+WHITE_BASE = 30.0
+SWING = 1.6
+
+# Talent names and the talents without a fight effect (moved from the removed sunken_sim.berserker model).
+TALENT_NAMES = {'I0LO': 'Axe Mastery',
+    'I0PE': 'Might of Dambala',
+    'I0A2': 'Berserk',
+    'I0LS': 'Executor',
+    'I09O': 'Deadly Poison',
+    'I0LP': 'Voodoo Shuffle',
+    'I0LR': 'Poison Bomb',
+    'I09V': 'Boneslicer',
+    'I0LQ': 'Blood Craze',
+    'I0PD': 'Leeching Poison',
+    'I0PF': 'Poisoned Blades',
+    'I0A3': 'Blood Hunter',
+    'I0PG': 'Way of the Snake',
+    'I0PH': "Taz'dingo", 'I0HS': 'Wound Poison',
+    'I0TZ': 'Hemotoxin',
+    'I0U0': 'Gurubashi Ward',
+    'I0U1': 'Gift of the Blood God'}
+IGNORED_TALENTS = frozenset({"I0MD", "I0MC", "I0LP", "I0PH", "I0U0"})
+
 
 def berserker_tables(space, items, sources) -> dict:
     """class_cl.character_tables with the agility primary fold and the berserker-only per-piece columns."""
     import re
 
-    from sunken_sim import berserker as B, pressure, shadow
+    from sunken_sim import pressure, shadow
     from sunken_sim.stacking import stack_fields
 
-    if (B.WHITE_BASE, B.SWING, B.BASE_MANA, B.BASE_HP, B.RANK, B.TROPHIES, B.SACK_CD, B.SACK_MANA, B.SACK_DELAY,
-            B.SKULL_CD, B.SKULL_MANA, B.VA_DUR, B.SURGE_DUR, B.BERSERK_DUR, B.PRESSURE_STEP, B.BLOOD_CRAZE_DCS) != \
-            (30.0, 1.6, 120.0, 230.0, 1, 200, 10.0, 30.0, 0.75, 20.0, 25.0, 4.0, 5.0, 6.0, 0.2, 30.0):
-        raise ValueError("kernel constants assume the 2026-11-12 berserker")
     if (pressure.ATTACK_INTERVAL, pressure.ATTACK_COOLDOWN, pressure.SLOTS, pressure.HIT_OF_MAX, pressure.HEAL_OF_MAX,
             pressure.HEAL_EVERY, pressure.HP_FLOOR, pressure.STR_HP) != (0.2, 1.0, 5, 0.05, 0.75, 3.0, 1.0, 15.0):
         raise ValueError("kernel constants assume the 2026-11-17 hero health model")
     t = C.character_tables(space, items, sources, SPECIAL_BITS, TALENT_BITS, GLYPH_BITS, NO_EFFECT,
-                           [float(B.BASE_INT), float(B.BASE_STR), float(B.BASE_AGI), float(B.BASE_HP)], "Berserker")
+                           [float(BASE_INT), float(BASE_STR), float(BASE_AGI), float(BASE_HP)], "Berserker")
     pieces = space.pieces
     n = len(pieces)
     fold = t["fold"].reshape(n, 2, C.NF).copy()
@@ -900,6 +1032,7 @@ def berserker_tables(space, items, sources) -> dict:
 
 class BerserkerCL(C.ExactCL):
     hero = "berserker"
+    PYTHON = False  # sunken_sim.berserker fight model removed 2026-11-21: fixtures + report mode
     KERNEL = KERNEL
     SPECS = SPECS
     TALENT_BITS = TALENT_BITS
@@ -920,9 +1053,7 @@ class BerserkerCL(C.ExactCL):
 
     @staticmethod
     def module():
-        from sunken_sim import berserker
-
-        return berserker
+        raise RuntimeError("berserker: the Python fight model was removed (2026-11-21)")
 
     def tables(self, space, items, sources):
         return berserker_tables(space, items, sources)
@@ -1045,6 +1176,106 @@ class BerserkerCL(C.ExactCL):
 
         self._settle(dps, group, status, mb, me, rerun)
         return dps, group, status
+
+    # -- explicit pieces and the report ------------------------------------
+    def picks_of(self, codes) -> list[int]:
+        """Piece indices of an item list (at most 6; -1 pads empty slots)."""
+        index = {piece.code: i for i, piece in enumerate(self.space.pieces)}
+        out = [index[c] for c in codes]
+        if len(out) > 6:
+            raise ValueError("more than 6 items")
+        return out + [-1] * (6 - len(out))
+
+    def _pick_launch(self, kernel, picks, tmasks, gmasks, points, extra_out=()):
+        cl = self.cl
+        n = len(picks)
+        self._ensure(n)
+        mf = cl.mem_flags
+
+        def buf(a):
+            return cl.Buffer(self.ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=np.ascontiguousarray(a))
+
+        args = [buf(np.asarray(picks, dtype=np.int32).reshape(n, 6)), buf(np.asarray(tmasks, dtype=np.uint32)),
+                buf(np.asarray(gmasks, dtype=np.uint32)), buf(np.asarray(points, dtype=np.int32).reshape(n, C.NP))]
+        kernel.set_args(np.int32(n), np.int32(self.targets), *args, *self.tab_args, *self._pow_args(),
+                        self.out_dps, self.out_group, self.out_status, self.out_mb, self.out_me, *extra_out)
+        cl.enqueue_nd_range_kernel(self.queue, kernel, (n,), None)
+        out = self._read5(n)
+        del args
+        return out
+
+    def pick(self, picks, tmasks, gmasks, points):
+        """DPS of explicit builds: picks (n, 6) piece indices, -1 = empty slot."""
+        n = len(picks)
+        if n == 0:
+            return np.empty(0), np.empty(0, np.uint8), np.empty(0, np.uint8)
+        if not hasattr(self, "_k_pick"):
+            self._k_pick = self.cl.Kernel(self.p_full, "cls_pick")
+        picks = np.asarray(picks, dtype=np.int32).reshape(n, 6)
+        tmasks = np.asarray(tmasks, dtype=np.uint32)
+        gmasks = np.asarray(gmasks, dtype=np.uint32)
+        points = np.asarray(points, dtype=np.int32).reshape(n, C.NP)
+        dps, group, status, mb, me = self._pick_launch(self._k_pick, picks, tmasks, gmasks, points)
+        # A fight stops at its first missing x ** y: keep adding values while every round fills some.
+        for _ in range(1000):
+            idx = np.nonzero(status == POW_MISS)[0]
+            if not len(idx) or not self.pow_add(mb[idx], me[idx]):
+                break
+            d, g, st, b_, e_ = self._pick_launch(self._k_pick, picks[idx], tmasks[idx], gmasks[idx], points[idx])
+            dps[idx], group[idx], status[idx], mb[idx], me[idx] = d, g, st, b_, e_
+            self.counts["pow_reruns"] += len(idx)
+        return dps, group, status
+
+    SOURCE_NAMES = ("Автоатака", "Toxic Sack", "Skull Split", "Venomous Axes", "Surge of Toxins", "Way of the Snake",
+                    "Axe Mastery", "Всплеск огня", "Sulfuras", "Sulfuras (удар)")
+    ACTION_NAMES = ("Toxic Sack", "Skull Split")
+    STAT_KEYS = ("agi", "str", "int", "damage", "potency", "mastery", "crit", "rating", "haste", "attack_speed", "luck",
+                 "magic_add", "phys_add", "hp", "mana_max", "mana_regen", "galactic", "cd_temp", "flat_cdr", "armor_pen")
+    NSRC, MAXA = 10, 64
+
+    def report(self, codes, talents=(), glyphs=(), points: dict | None = None) -> dict:
+        """One fight with the sources in Ledger order, the casts, mana left and the stat sheet."""
+        from sunken_sim.esc import ESC_ATTRS
+
+        cl = self.cl
+        if not hasattr(self, "_k_report"):
+            opts = ["-cl-std=CL1.2", f"-DSPEC={self.SPECS[self.spec]}", "-DTALENTS=1", "-DREPORT=1"]
+            self._p_report = cl.Program(self.ctx, self.KERNEL).build(options=opts)
+            self._k_report = cl.Kernel(self._p_report, "cls_report")
+        mf = cl.mem_flags
+        picks = np.asarray([self.picks_of(codes)], dtype=np.int32)
+        tm = np.asarray([self.talent_mask(talents)], dtype=np.uint32)
+        gm = np.asarray([self.glyph_mask(glyphs)], dtype=np.uint32)
+        pts = np.asarray([[int((points or {}).get(k, 0)) for k in ESC_ATTRS]], dtype=np.int32)
+        outs = {
+            "src": np.empty(self.NSRC, np.float64), "ord": np.empty(self.NSRC, np.int32), "nord": np.empty(1, np.int32),
+            "mana": np.empty(1, np.float64), "act_t": np.empty(self.MAXA, np.float64),
+            "act_id": np.empty(self.MAXA, np.int32), "nact": np.empty(1, np.int32), "stats": np.zeros(len(self.STAT_KEYS), np.float64),
+        }
+        for _ in range(1000):
+            bufs = {k: cl.Buffer(self.ctx, mf.WRITE_ONLY, v.nbytes) for k, v in outs.items()}
+            dps, group, status, mb, me = self._pick_launch(
+                self._k_report, picks, tm, gm, pts,
+                [bufs[k] for k in ("src", "ord", "nord", "mana", "act_t", "act_id", "nact", "stats")])
+            if status[0] != POW_MISS:
+                break
+            self.pow_add(mb, me)
+        if status[0]:
+            raise RuntimeError(f"berserker report status {int(status[0])}")
+        for k, v in outs.items():
+            cl.enqueue_copy(self.queue, v, bufs[k])
+        self.queue.finish()
+        sources = {}
+        for i in range(int(outs["nord"][0])):
+            sources[self.SOURCE_NAMES[int(outs["ord"][i])]] = float(outs["src"][i])
+        total = 0.0
+        for v in sources.values():
+            total += v
+        stats = dict(zip(self.STAT_KEYS, (float(x) for x in outs["stats"])))
+        stats["galactic"] = bool(stats["galactic"])
+        actions = [(float(outs["act_t"][i]), self.ACTION_NAMES[int(outs["act_id"][i])]) for i in range(int(outs["nact"][0]))]
+        return {"dps": float(dps[0]), "total": total, "sources": sources, "actions": actions,
+                "mana_left": float(outs["mana"][0]), "stats": stats, "group": int(group[0])}
 
     @property
     def k_rows_bare(self):

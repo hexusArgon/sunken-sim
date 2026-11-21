@@ -110,6 +110,16 @@ def check_spec(hero, spec, args, device):
     print(f"\n== {tag}: kernel built in {out['build_s']} s on {engine.name}; Top-{args.top} chunks {space.total:,}", flush=True)
     mod = mage_cl.engine_module(engine)
 
+    if not getattr(engine, "PYTHON", True):  # no Python model: frozen Python == GPU fixtures instead
+        from farm.hybrid import class_cl
+
+        check, full = class_cl.fixture_check(engine, 100000, 100000, 2026)
+        out["fixtures"] = {"rows": check["rows"] + full["rows"], "mismatches": check["mismatches"] + full["mismatches"],
+                           "examples": (check["examples"] + full["examples"])[:5]}
+        print(f"   fixtures: {out['fixtures']['rows']} fights, mismatches {out['fixtures']['mismatches']}", flush=True)
+        out["ok"] = check["ok"] and full["ok"]
+        return out
+
     t0 = time.perf_counter()
     rows = mage_cl.sample(space, args.parity, 2026) + _coverage_rows(space, 5, 2027)
     check = mod.parity(engine, space, items, sources, 5, rows)

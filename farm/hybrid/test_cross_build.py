@@ -81,7 +81,7 @@ class GreedyManyTests(unittest.TestCase):
         os.environ.pop("FARM_HYBRID_ESC_ALGEBRA", None)
 
     def test_lockstep_equals_sequential(self):
-        for hero, spec in (("demon_hunter", "havoc"), ("berserker", "headhunter"), ("necromancer", "essence")):
+        for hero, spec in (("demon_hunter", "havoc"), ("dragon_sentinel", "ruby"), ("necromancer", "essence")):
             many = cpu_dps_many(hero, spec)
             builds = [_catalog_build(hero, spec, i) for i in range(3)]
             rec = Recorder(many)

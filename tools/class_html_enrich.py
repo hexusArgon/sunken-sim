@@ -45,7 +45,9 @@ from sunken_sim.esc import ESC_ATTRS, apply_points  # noqa: E402
 from sunken_sim.library import load_items  # noqa: E402
 from sunken_sim.shadow import FIGHT, LEVEL, MIND_AMPLIFIER, Build  # noqa: E402
 
-MOD = importlib.import_module(f"sunken_sim.{HERO}")
+# Classes whose Python fight model was removed: reports come from the exact kernel's report mode.
+GPU_ONLY = frozenset({"berserker"})
+MOD = importlib.import_module(f"farm.hybrid.{HERO}_cl" if HERO in GPU_ONLY else f"sunken_sim.{HERO}")
 
 
 def _default_farm() -> Path:
@@ -95,6 +97,16 @@ def build_of(items, talents, glyphs, points) -> Build:
 
 def fresh_sim(build):
     """simulate() on an empty timeline cache (the value the farm and the kernel report)."""
+    if HERO in GPU_ONLY:
+        from types import SimpleNamespace
+
+        from sunken_sim.esc import points_from_build
+
+        engine = _engine()
+        if engine is None:
+            raise SystemExit(f"{HERO}: no Python model, the report needs an OpenCL float64 device")
+        rep = engine.report([it.rawcode for it in build.items], build.talents, build.glyphs, points_from_build(build))
+        return SimpleNamespace(orb_mode=None, bound_spell=None, **rep)
     if not hasattr(MOD, "_TIMELINE"):  # berserker: no fight cache
         return MOD.simulate(build, TARGETS, SPEC)
     old = MOD._TIMELINE
@@ -111,6 +123,16 @@ def scan(entry, items, combos) -> list[float]:
     if engine is not None and chunk is not None and 0 <= int(chunk) < SPACE.total \
             and list(SPACE.decode(int(chunk))[0]) == [it.rawcode for it in items]:
         return engine.scores(int(chunk), combos)
+    if HERO in GPU_ONLY and engine is not None:
+        from sunken_sim.esc import ESC_ATTRS as _A
+
+        codes = [it.rawcode for it in items]
+        dps, _g, status = engine.pick([engine.picks_of(codes)] * len(combos), [engine.talent_mask(t) for t, _g2, _p in combos],
+                                      [engine.glyph_mask(g) for _t, g, _p in combos],
+                                      [[int(p.get(a, 0)) for a in _A] for _t, _g2, p in combos])
+        if status.any():
+            raise SystemExit(f"{HERO}: kernel declined {int((status != 0).sum())} scan rows")
+        return [float(d) for d in dps]
     return [fresh_sim(build_of(items, t, g, p)).dps for t, g, p in combos]
 
 

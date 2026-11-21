@@ -117,8 +117,9 @@ def generic_blocks(tab: str, file: str, talent_code: bool, glyph_code: bool):
 
     talents_map = {}
     if tab in TALENT_MODULE:
-        mod = __import__(f"sunken_sim.{TALENT_MODULE[tab]}", fromlist=["TALENTS"])
-        talents_map = {title: code for code, title in mod.TALENTS.items()}
+        from farm.top import _talent_names
+
+        talents_map = {title: code for code, title in _talent_names(TALENT_MODULE[tab]).items()}
 
     def small(block: str, bare_name: str, with_code: bool, first_title: str):
         rows = saved[block]

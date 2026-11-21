@@ -1829,6 +1829,8 @@ def _worker_engine():
         if not check["ok"]:
             raise RuntimeError(f"worker self-check mismatch: {check['examples'][:2]}")
         if not full["ok"]:
+            if not getattr(engine, "PYTHON", True):
+                raise RuntimeError(f"fixture self-check mismatch: {full['examples'][:2]}")
             _REFINE = False
             print(f"{tag}: refinement self-check mismatch, refinement stays on CPU: {full['examples'][:1]}", flush=True)
         _ENGINE = engine

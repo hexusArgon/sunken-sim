@@ -83,6 +83,10 @@ def _can_take(chosen: list, piece) -> bool:
 def _module(hero: str):
     import importlib
 
+    from farm.protocol import GPU_ONLY
+
+    if hero in GPU_ONLY:
+        raise RuntimeError(f"{hero}: the Python fight model was removed; fights run on the OpenCL kernel only")
     return importlib.import_module(f"sunken_sim.{hero}")
 
 
