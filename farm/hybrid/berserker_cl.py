@@ -59,7 +59,9 @@ KERNEL = r"""
 #define MAXT 8
 #define MAXP 16
 #define VK 8
-#define NSRC 10
+#define NSRC 14
+#define NG 8
+#define NBM 96
 #define LEVEL 15.0
 #define TROPHIES 200.0
 
@@ -80,6 +82,32 @@ KERNEL = r"""
 #define S_VENOM (1UL<<14)
 #define S_FANAT (1UL<<15)
 #define S_SILM (1UL<<16)
+#define S_SPIKE (1UL<<17)
+#define S_THORN (1UL<<18)
+#define S_DSCALE (1UL<<19)
+#define S_SUN (1UL<<20)
+#define S_SOD (1UL<<21)
+#define S_BMASK (1UL<<22)
+#define S_SEAL (1UL<<23)
+#define S_PCB (1UL<<24)
+#define S_ICE (1UL<<25)
+#define S_NERUB (1UL<<26)
+#define S_EV12 (1UL<<27)
+#define S_EV13 (1UL<<28)
+#define S_EV16A (1UL<<29)
+#define S_EV16B (1UL<<30)
+#define S_EV18 (1UL<<31)
+#define S_ALE (1UL<<32)
+#define S_CRIM (1UL<<33)
+#define S_IGM (1UL<<34)
+#define S_FURN (1UL<<35)
+#define S_BLS (1UL<<36)
+#define S_BHOWL (1UL<<37)
+#define S_SERA (1UL<<38)
+#define S_EVD (1UL<<39)
+/* Builds where incoming hits change the damage (otherwise the hit stream is not run at all) */
+#define HP_DEP (S_FANAT | S_ALE | S_CRIM | S_IGM | S_FURN | S_BLS | S_BHOWL)
+#define HIT_DEP (S_SPIKE | S_THORN | S_DSCALE | S_SUN | S_SOD | S_BMASK | S_SEAL | S_PCB | S_ICE | S_EVD)
 
 #define T_AXE (1u<<0)
 #define T_DAMBALA (1u<<1)
@@ -121,6 +149,10 @@ KERNEL = r"""
 #define N_SPLASH 7
 #define N_SULF 8
 #define N_ECHO 9
+#define N_REFL 10
+#define N_SUNS 11
+#define N_SOD 12
+#define N_EVADE 13
 
 typedef struct {
   double str, agi, intel, potency, mastery, damage, crit, rating, haste, aspd;
@@ -144,7 +176,14 @@ typedef struct {
   double surge_p[MAXT], surge_at[MAXT];
   double pend[MAXP]; int npend;
   double mana, mana_time, lm;
-  double hp_max, hp_health, hp_next_hit, hp_next_heal; long hp_idx; int hp_flat, hp_slot, hp_targets;
+  /* incoming hits (expected values): dummy j attacks at db[j] + 0.5 k with mass dm[j][k] */
+  double hp_max, hp_health, hp_next_heal, hp_cap; int hp_on, hits_on;
+  double db[MAXT], dm[MAXT][NG];
+  double dinc;
+  double bz_end, bz_stacks;              /* Berserk B03J window and stacks */
+  double bm_t[NBM], bm_q[NBM]; int bm_n;  /* Battlemask rolls in the last 6 s: time, 1 - chance */
+  double seal[21];                       /* Seal of the Black Empire stack distribution */
+  double ice_ready;
   int armed, status;
   ulong miss_b, miss_e;
   AP ap;
@@ -179,6 +218,7 @@ double exec_factor(const Row* r, double t) {
 }
 
 void add_src(St* s, int id, double amount) {
+  amount = amount * s->dinc;
   uint bit = 1u << id;
   if (s->seen & bit) s->src[id] = s->src[id] + amount;
   else { s->seen |= bit; s->ord[s->nord++] = id; s->src[id] = 0.0 + amount; }
@@ -197,53 +237,81 @@ double pow_lookup(const PowT* P, St* s, double x, double y) {
   return 0.5;
 }
 
-/* pressure.hero_hp_ratio(time, hp, 0.0): the 0.01 s health table, replayed with a cursor */
-/* pressure.hit_time / pressure.slot_hits: dummy j hits at 0.2 * (j % 5 + 1) + k seconds */
-inline double hp_hit_time(int slot) { return (double)(slot / 5) + 0.2 * (double)(slot % 5 + 1); }
-inline int hp_slot_hits(int slot, int targets) { return targets / 5 + ((slot % 5 < targets % 5) ? 1 : 0); }
-
-void hp_reset(St* s) {
-  s->hp_health = s->hp_max;
-  s->hp_slot = 0;
-  while (hp_slot_hits(s->hp_slot, s->hp_targets) == 0) s->hp_slot++;
-  s->hp_next_hit = hp_hit_time(s->hp_slot);
-  s->hp_next_heal = 3.0;
-  s->hp_idx = -1;
-}
+/* ---- incoming hits (docs/defense-model.md; user model 2026-11-17/20/21) --------------------------
+ * Dummy j (0..targets-1) attacks the hero every 1 s, first at 0.2 * (j % 5 + 1) s; dummies 0 .. melee-1
+ * are melee, melee = round(targets * 122 / 176). A hit is 5% of max HP (no damage reduction). The hero
+ * heals 75% of max HP every 3 s, never above the heal ceiling, never below 1 HP. Chance effects are
+ * expectations: a stun (Nerubian Scales) moves that share of the dummy's next attack 1.5 s later instead
+ * of 1 s, an Icecrown freeze 2.5 s. Health is the expected health. */
+int melee_count(int targets) { return (2 * targets * 122 + 176) / 352; }
 
 double hero_ratio(St* s, double t) {
-  if (s->hp_flat) return 1.0;
-  long index = (long)(t * 100.0 + 1e-6);
-  index = (index < 0) ? 0 : index;
-  index = (index > 3000) ? 3000 : index;
-  if (index >= 3000) return 1.0;  /* the last table slot is never painted: it stays 1.0 */
-  if (index < s->hp_idx) hp_reset(s);
-  /* apply every event whose paint index is <= index (events past FIGHT never happen) */
-  while (1) {
-    int is_hit = s->hp_next_hit <= s->hp_next_heal;
-    double moment = is_hit ? s->hp_next_hit : s->hp_next_heal;
-    if (moment > FIGHT) break;
-    long ei = (long)(moment * 100.0 + 1e-6);
-    ei = (ei > 3000) ? 3000 : ei;
-    if (ei > index) break;
-    if (is_hit) {
-      double hit = 0.05 * s->hp_max;
-      double h = s->hp_health - (double)hp_slot_hits(s->hp_slot, s->hp_targets) * hit;
-      s->hp_health = (1.0 >= h) ? 1.0 : h;
-      s->hp_slot++;
-      while (hp_slot_hits(s->hp_slot, s->hp_targets) == 0) s->hp_slot++;
-      s->hp_next_hit = hp_hit_time(s->hp_slot);
-    } else {
-      double ceiling = s->hp_max * 1.0;
-      if (s->hp_health < ceiling) {
-        double h = s->hp_health + 0.75 * s->hp_max;
-        s->hp_health = (ceiling <= h) ? ceiling : h;
-      }
-      s->hp_next_heal = s->hp_next_heal + 3.0;
-    }
-  }
-  s->hp_idx = index;
+  (void)t;
+  if (!s->hp_on) return 1.0;
   return s->hp_health / s->hp_max;
+}
+
+void hp_add(St* s, double delta) {
+  double h = s->hp_health + delta;
+  if (delta > 0.0) {
+    double ceiling = s->hp_max * s->hp_cap;
+    if (s->hp_health >= ceiling) return;
+    h = (h < ceiling) ? h : ceiling;
+  }
+  s->hp_health = (h > 1.0) ? h : 1.0;
+}
+
+double dummy_next(const St* s, int j, int* k) {
+  for (int i = 0; i < NG; i++) if (s->dm[j][i] > 0.0) { *k = i; return s->db[j] + 0.5 * (double)i; }
+  *k = -1;
+  return 1.0e9;
+}
+
+void dummy_push(St* s, int j, int k, double mass) {
+  if (k < NG && mass > 0.0) s->dm[j][k] += mass;
+}
+
+double seal_mean(const St* s) {
+  double e = 0.0;
+  for (int k = 1; k <= 20; k++) e += (double)k * s->seal[k];
+  return e;
+}
+
+#define MAST(r, s) ((r)->mastery + (((r)->mask & S_SEAL) ? seal_mean(s) : 0.0))
+
+double bm_active(St* s, double t) {
+  double q = 1.0;
+  int w = 0;
+  for (int i = 0; i < s->bm_n; i++) {
+    if (t < s->bm_t[i] + 6.0) { s->bm_t[w] = s->bm_t[i]; s->bm_q[w] = s->bm_q[i]; w++; q *= s->bm_q[i]; }
+  }
+  s->bm_n = w;
+  return 1.0 - q;
+}
+
+/* DamageIncrease_Amount by hero health (PreDamage_Increase): Crimson Fury / Immortal Gladiator's Mask
+ * +15% at <= 40%, The Furnace + missing% / 500, Belt of Living Strength +12% at >= 75%. One additive pool. */
+void dinc_update(const Row* r, St* s) {
+  if (!(r->mask & (S_CRIM | S_IGM | S_FURN | S_BLS))) { s->dinc = 1.0; return; }
+  double pct = 100.0 * hero_ratio(s, 0.0);
+  double d = 1.0;
+  if ((r->mask & S_CRIM) && pct <= 40.0) d += 0.15;
+  if ((r->mask & S_IGM) && pct <= 40.0) d += 0.15;
+  if (r->mask & S_FURN) d += ((100.0 - pct) / 50.0) / 10.0;
+  if ((r->mask & S_BLS) && pct >= 75.0) d += 0.12;
+  s->dinc = d;
+}
+
+/* evasion: product of the hit-chance factors of PreDamage_Reduce */
+double hit_chance(const Row* r, St* s) {
+  double h = 1.0;
+  if (r->mask & S_EV12) h *= 0.88;
+  if (r->mask & S_EV13) h *= 0.87;
+  if (r->mask & S_EV16A) h *= 0.84;
+  if (r->mask & S_EV16B) h *= 0.84;
+  if (r->mask & S_EV18) h *= 0.82;
+  if ((r->mask & S_ALE) && hero_ratio(s, 0.0) <= 0.40) h *= 0.82;
+  return h;
 }
 
 /* Venomous Axes buff per target: expiry points with probabilities (see sunken_sim/berserker.py). */
@@ -342,7 +410,7 @@ double attack_hit(const Row* r, St* s, int name, double raw, double when, double
   amount *= increase;
   double chance = attack_crit(r, s, when);
   double mult = 2.0 + r->rating;
-  if (SP_HEAD) mult += 0.10 + 0.008 * r->mastery;
+  if (SP_HEAD) mult += 0.10 + 0.008 * MAST(r, s);
   double cf = crit_factor(chance, mult);
   double expected = amount * cf;
   double pot_coeff = potency_scale * increase * cf;
@@ -371,7 +439,7 @@ void va_tick(const Row* r, const PowT* P, St* s, int index, double now, double w
     coeff *= deadly;
   }
   double ticks = 1.0;
-  if (SP_POISON) ticks += chance01((5.0 + 0.5 * r->mastery) / 100.0);
+  if (SP_POISON) ticks += chance01((5.0 + 0.5 * MAST(r, s)) / 100.0);
   double typed = TM(r, T_HEMO) ? physical(r, now) : gen_mult(r, now);
   finish(r, s, N_VA, raw * typed, index, now, calls * ticks * w, coeff * typed);
   if (!SP_POISON) surge_proc(s, index, now, (1.0 - pow_lookup(P, s, 1.0 - chance01(0.02 * s->lm), calls)) * w);
@@ -411,7 +479,7 @@ int pay(const Row* r, St* s, double cost, double now) {
   recover(r, s, now);
   if (s->mana < cost) return 0;
   s->mana -= cost;
-  double back = cost * r->cast_refund + r->cast_refund_flat + r->cast_refund_mastery * r->mastery;
+  double back = cost * r->cast_refund + r->cast_refund_flat + r->cast_refund_mastery * MAST(r, s);
   double v = s->mana + back;
   s->mana = (v < r->mana_max) ? v : r->mana_max;
   return 1;
@@ -429,17 +497,119 @@ double cooldown_of(double base, const Row* r) {
   return (v > 0.5) ? v : 0.5;
 }
 
-double berserk_speed(const Row* r, double now) {
-  if (!TM(r, T_BERSERK) || now < 0.2) return 0.0;
-  double phase = fmod(now - 0.2, 6.0 + 0.2);
-  if (phase >= 6.0) return 0.0;
-  int stacks = (int)(phase / 0.2 + 1e-9);
+/* Berserk (I0A2): the first damage taken without buff B03J casts it (6 s, stacks 0); every later damage
+ * instance while it lasts adds a stack: +12% attack speed, +3% (Fury 2%) per stack. */
+double berserk_speed(const Row* r, St* s, double now) {
+  if (!TM(r, T_BERSERK) || now >= s->bz_end) return 0.0;
   double per = SP_FURY ? 0.02 : 0.03;
-  return 0.12 + per * (double)stacks;
+  return 0.12 + per * s->bz_stacks;
 }
 
 void axe_hit(const Row* r, St* s, double now, double count) {
   attack_hit(r, s, N_AXE, 20.0 + 1.25 * dcs(r), now, r->attack_potency, 0, count);
+}
+
+/* PreDamage_Enemies (PreDamageEvent 4, before evasion): one damage instance of mass m taken at now.
+ * axe = the Axe Mastery chance of this instance (5% x Luck from enemies, 10% x Luck self-damage). */
+void taken_event(const Row* r, St* s, double now, double m, double axe) {
+  if (m <= 0.0) return;
+  if (TM(r, T_AXE) && axe > 0.0) axe_hit(r, s, now, m * axe);
+  if (TM(r, T_BERSERK)) {
+    if (now < s->bz_end) s->bz_stacks += m;
+    else { s->bz_end = now + 6.0; s->bz_stacks = 0.0; }
+  }
+  if (r->mask & S_BMASK) {
+    if (s->bm_n >= NBM) bm_active(s, now);
+    if (s->bm_n < NBM) { s->bm_t[s->bm_n] = now; s->bm_q[s->bm_n] = 1.0 - m * chance01(0.08 * s->lm); s->bm_n++; }
+    else if (!s->status) s->status = 2;
+  }
+  if (r->mask & S_SEAL) {
+    double p = m * chance01(0.25 * s->lm);
+    for (int k = 19; k >= 0; k--) { double move = s->seal[k] * p; s->seal[k] -= move; s->seal[k + 1] += move; }
+  }
+}
+
+/* Damage of an incoming-hit effect on dummy i: magical = Magical Type (Sunstrider), else untyped. */
+void item_dmg(const Row* r, St* s, int name, double raw, int i, double when, int magical) {
+  double v = raw * gen_mult(r, when) * taken_for(r, s, i, when) * exec_factor(r, when) * (SP_FURY ? 0.85 : 1.0);
+  if (magical) {
+    v *= 1.0 + r->magic_add;
+    if (r->spell_crit) {
+      double rating = r->spell_mult + r->rating;
+      if (SP_HEAD) rating += 0.10 + 0.008 * MAST(r, s);
+      v *= crit_factor(attack_crit(r, s, when), rating);
+    }
+  }
+  add_src(s, name, v);
+}
+
+double taken_avg(const Row* r, St* s, double when) {
+  double t = 0.0;
+  for (int i = 0; i < r->targets; i++) t += taken_for(r, s, i, when);
+  return t / (double)r->targets;
+}
+
+/* One attack of dummy j, mass m, at now (Hero_Attacked, PreDamage 4, evasion, landing, OnDamage). */
+void dummy_attack(const Row* r, St* s, int j, double m, double now) {
+  int melee = j < melee_count(r->targets);
+  double hit = 0.05 * s->hp_max;
+  /* attack start: Hero_Attacked */
+  recover(r, s, now);
+  double gain = 0.0;
+  if (r->mask & S_PCB) gain += 3.0;
+  if (r->mask & S_ICE) gain += 2.0 + (0.01 / 5.0) * r->mana_max;
+  if (gain > 0.0) { double v = s->mana + m * gain; s->mana = (v < r->mana_max) ? v : r->mana_max; }
+  if (r->mask & S_EVD) hp_add(s, m * chance01(0.05 * s->lm) * 0.08 * r->mana_max);
+  if (r->mask & S_SOD) item_dmg(r, s, N_SOD, 125.0 * m * chance01(0.08 * s->lm), j, now, 0);
+  /* PreDamage 4 */
+  taken_event(r, s, now, m, chance01(0.05 * s->lm));
+  /* PreDamage 6: evasion; an evaded hit has amount 0 */
+  double land = m * hit_chance(r, s);
+  double evaded = m - land;
+  if ((r->mask & S_EV13) && evaded > 0.0) item_dmg(r, s, N_EVADE, 100.0 * evaded, j, now, 0);
+  if ((r->mask & S_EV16A) && evaded > 0.0) hp_add(s, evaded * 0.025 * s->hp_max);
+  if (land > 0.0) {
+    if (melee) {
+      double back = 0.0;
+      if (r->mask & S_SPIKE) back += 0.10;
+      if (r->mask & S_THORN) back += 0.10;
+      if (back > 0.0) item_dmg(r, s, N_REFL, back * hit * land, j, now, 0);
+    }
+    if (r->mask & S_DSCALE) item_dmg(r, s, N_REFL, 0.10 * hit * land, j, now, 0);
+    if (r->mask & S_SUN) {
+      double v = 0.15 * hit * land * gen_mult(r, now) * taken_avg(r, s, now) * exec_factor(r, now) * (SP_FURY ? 0.85 : 1.0);
+      v *= 1.0 + r->magic_add;
+      if (r->spell_crit) {
+        double rating = r->spell_mult + r->rating;
+        if (SP_HEAD) rating += 0.10 + 0.008 * MAST(r, s);
+        v *= crit_factor(attack_crit(r, s, now), rating);
+      }
+      add_src(s, N_SUNS, v);
+    }
+    if (s->hp_on) hp_add(s, -land * hit);
+  }
+  /* the dummy's next attack: 1 s, a stun 1.5 s, an Icecrown freeze 2.5 s */
+  int k0 = 0;
+  double t0 = dummy_next(s, j, &k0);
+  (void)t0;
+  s->dm[j][k0] -= m;
+  if (s->dm[j][k0] < 1e-12) s->dm[j][k0] = 0.0;
+  double frozen = 0.0;
+  if ((r->mask & S_ICE) && now >= s->ice_ready) {
+    frozen = m;
+    s->ice_ready = now + ((hero_ratio(s, now) <= 0.40) ? 12.0 : 20.0);
+  }
+  double stun = (r->mask & S_NERUB) ? (m - frozen) * chance01(0.05 * s->lm) : 0.0;
+  dummy_push(s, j, k0 + 5, frozen);
+  dummy_push(s, j, k0 + 3, stun);
+  dummy_push(s, j, k0 + 2, m - frozen - stun);
+  /* keep slot 0 the earliest live slot */
+  int lead = 0;
+  while (lead < NG && s->dm[j][lead] <= 0.0) lead++;
+  if (lead > 0 && lead < NG) {
+    for (int i = 0; i < NG; i++) s->dm[j][i] = (i + lead < NG) ? s->dm[j][i + lead] : 0.0;
+    s->db[j] += 0.5 * (double)lead;
+  }
 }
 
 #if REPORT
@@ -461,15 +631,25 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
   s.mana = r->mana_max; s.mana_time = 0.0; s.armed = 0;
   ap_init(&s.ap, GM(r, G_FREN) ? frenzy_chance(r->luck) : 0.0, (r->mask & S_SILM) ? SILENT_AS : 0.0,
           (r->mask & S_SILM) ? SILENT_DUR : 0.0);
-  s.hp_flat = 0; s.hp_targets = r->targets;
-  if (r->hp <= 1.0 || r->targets <= 0) s.hp_flat = 1;
-  else { s.hp_max = rint(r->hp * 1000.0) / 1000.0; if (s.hp_max <= 1.0) s.hp_flat = 1; hp_reset(&s); }
+  s.dinc = 1.0;
+  s.hp_max = r->hp; s.hp_health = r->hp; s.hp_cap = (r->mask & S_CRIM) ? 0.38 : 1.0;
+  s.hp_on = (r->hp > 1.0) && ((r->mask & (HP_DEP | S_ICE)) || TM(r, T_BONE));
+  s.hits_on = s.hp_on || (r->mask & HIT_DEP) || TM(r, T_AXE) || TM(r, T_BERSERK);
+  s.hp_next_heal = 3.0;
+  s.bz_end = -1.0; s.bz_stacks = 0.0; s.bm_n = 0; s.ice_ready = 0.0;
+  for (int k = 0; k <= 20; k++) s.seal[k] = 0.0;
+  s.seal[0] = 1.0;
+  for (int j = 0; j < MAXT; j++) {
+    s.db[j] = 0.2 * (double)(j % 5 + 1);
+    for (int k = 0; k < NG; k++) s.dm[j][k] = 0.0;
+    if (j < targets) s.dm[j][0] = 1.0;
+  }
   const int sulf = (r->mask & S_SULF) != 0;
   const int blades = TM(r, T_BLADES) || (r->mask & S_VENOM);
   const double fury_mult = SP_FURY ? 0.85 : 1.0;
   const double agi = r->agi;
   const double cast_time = CAST_POINT + CAST_BACKSWING;
-  double next_attack = 0.0, next_sack = 0.0, next_skull = 0.0, next_tick = 1.0, next_pressure = 0.2, busy = 0.0;
+  double next_attack = 0.0, next_sack = 0.0, next_skull = 0.0, next_tick = 1.0, busy = 0.0;
   int guard = 0;
   while (1) {
     guard += 1;
@@ -480,7 +660,18 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
     if (next_sack < moment) moment = next_sack;
     if (next_skull < moment) moment = next_skull;
     if (next_tick < moment) moment = next_tick;
-    if (next_pressure < moment) moment = next_pressure;
+    int hit_j = -1, hit_k = -1;
+    double next_hit = 1.0e9;
+    if (s.hits_on) {
+      for (int j = 0; j < targets; j++) {
+        int k;
+        double t = dummy_next(&s, j, &k);
+        if (t < next_hit) { next_hit = t; hit_j = j; hit_k = k; }
+      }
+    }
+    double next_heal = s.hp_on ? s.hp_next_heal : 1.0e9;
+    if (next_hit < moment) moment = next_hit;
+    if (next_heal < moment) moment = next_heal;
     if (land < moment) moment = land;
     if (moment >= FIGHT) break;
     if (moment == land) {
@@ -506,9 +697,15 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
       next_tick += 1.0;
       continue;
     }
-    if (moment == next_pressure) {
-      if (TM(r, T_AXE)) axe_hit(r, &s, moment, chance01(0.05 * s.lm));
-      next_pressure += 0.2;
+    if (moment == next_hit) {
+      dummy_attack(r, &s, hit_j, s.dm[hit_j][hit_k], moment);
+      dinc_update(r, &s);
+      continue;
+    }
+    if (moment == next_heal) {
+      hp_add(&s, 0.75 * s.hp_max);
+      s.hp_next_heal += 3.0;
+      dinc_update(r, &s);
       continue;
     }
     if (moment < busy) {
@@ -554,6 +751,7 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
     if (moment == next_attack) {
       recover(r, &s, moment);
       double power = dcs(r);
+      if (r->mask & S_SERA) power += 0.01 * r->hp;
       double had_va = va_mass(&s, 0, moment);
       surge_consume(r, &s, 0, moment);
       attack_hit(r, &s, N_AUTO, power, moment, r->attack_potency, 0, r->auto_pct);
@@ -584,9 +782,20 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
         }
         damage_mana(r, &s, (double)targets * chance);
       }
-      if (TM(r, T_AXE)) {
-        double rolls = 1.0 + (TM(r, T_CRAZE) ? chance01(0.30 * s.lm) : 0.0);
-        axe_hit(r, &s, moment, rolls * chance01(0.10 * s.lm));
+      /* self-damage of the attack (PreDamage_Heroes): Blood Fury 3 + 6 x level, Blood Craze 30% x Luck
+       * for half of it again, Blade of the Fallen Seraph 1% of max HP; each is a damage instance taken */
+      {
+        double axe = chance01(0.10 * s.lm);
+        double craze = TM(r, T_CRAZE) ? chance01(0.30 * s.lm) : 0.0;
+        double fury = 3.0 + 6.0 * LEVEL;
+        if (s.hp_on) hp_add(&s, -(fury + craze * 0.5 * fury));
+        taken_event(r, &s, moment, 1.0, axe);
+        taken_event(r, &s, moment, craze, axe);
+        if (r->mask & S_SERA) {
+          if (s.hp_on) hp_add(&s, -0.01 * r->hp);
+          taken_event(r, &s, moment, 1.0, axe);
+        }
+        dinc_update(r, &s);
       }
       if (r->mask & S_ORB) {
         double ex = exec_factor(r, moment);
@@ -603,7 +812,7 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
           double splash = agi * (1.0 + r->magic_add) * gen_mult(r, moment) * taken * execute * (double)targets;
           if (r->spell_crit) {
             double rating = r->spell_mult + r->rating;
-            if (SP_HEAD) rating += 0.10 + 0.008 * r->mastery;
+            if (SP_HEAD) rating += 0.10 + 0.008 * MAST(r, &s);
             splash *= crit_factor(attack_crit(r, &s, moment), rating);
           }
           add_src(&s, N_SULF, splash * fury_mult);
@@ -614,7 +823,9 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
       }
       ap_attack(&s.ap, moment, attack_crit(r, &s, moment));
       double swing = 1.6 * ((r->mask & S_GALA) ? 1.20 : 1.0);
-      double speed = r->aspd + berserk_speed(r, moment) + ap_bonus(&s.ap, moment);
+      if (r->mask & S_BHOWL) swing *= 1.0 - (1.0 - hero_ratio(&s, moment)) * 0.30;
+      double speed = r->aspd + berserk_speed(r, &s, moment) + ap_bonus(&s.ap, moment);
+      if (r->mask & S_BMASK) speed += 0.28 * bm_active(&s, moment);
       if (r->mask & S_FANAT) speed += 0.01 * 100.0 * (1.0 - hero_ratio(&s, moment));
       speed = (-0.8 >= speed) ? -0.8 : speed;
       speed = (4.0 <= speed) ? 4.0 : speed;
@@ -945,6 +1156,22 @@ SPECIAL_BITS = {
     "I0BR": 0, "I07O": 1, "I0JO": 2, "I0QT": 3, "tlum": 4, "I0JA": 5, "I096": 6, "I03C": 7, "I00L": 8,
     "I00Y": 9, "I07P": 10, "I048": 11, "I0FW": 12, "I0AV": 13, "I0U2": 14, "I0U5": 15,
     "I0QN": 16,
+    # incoming hits (docs/defense-model.md, Berserker inventory)
+    "I0BC": 17, "stre": 17,                  # Spiked Carapace A083: 10% of melee damage back
+    "I0BD": 18, "I0GX": 18, "I0JK": 18,      # Thorns Aura A0NH: 10% of melee damage back
+    "I02Q": 19,                               # Dragonscale Aura: 10% of attack damage taken
+    "I04M": 20,                               # Sunstrider Crown: 15% of attack damage taken, magical
+    "I0B5": 21,                               # Shield of Death: 8% x Luck, 125 on attack
+    "I0GE": 22,                               # Warlord's Battlemask: 8% x Luck, +28% AS 6 s
+    "I09X": 23,                               # Seal of the Black Empire: 25% x Luck, +1 Mastery (20)
+    "I0F2": 24,                               # Plasma-Core Belt: +3 mana per attack against the hero
+    "I015": 25,                               # Icecrown Ring: mana per attack, freezes the attacker
+    "I06N": 26,                               # Nerubian Scales: 5% x Luck stun 1.5 s
+    "I07A": 27, "I07C": 28, "I0IS": 29, "I0SU": 30, "I0DL": 31, "I06J": 32,  # evasion
+    "I024": 33, "arsc": 34, "I079": 35, "fgun": 36,  # DamageIncrease pool by hero health
+    "I05N": 37,                               # Bloodhowl: base attack cooldown x (1 - 0.30 missing)
+    "I00J": 38,                               # Blade of the Fallen Seraph: +1% max HP per attack, self-damage
+    "I0D4": 39,                               # Eversong Defender: 5% x Luck heal 8% max mana on attack
 }
 TALENT_BITS = {
     "I0LO": 0, "I0PE": 1, "I0A2": 2, "I0LS": 3, "I09O": 4, "I0LR": 5, "I09V": 6, "I0LQ": 7, "I0PD": 8,
@@ -983,6 +1210,10 @@ TALENT_NAMES = {'I0LO': 'Axe Mastery',
     'I0TZ': 'Hemotoxin',
     'I0U0': 'Gurubashi Ward',
     'I0U1': 'Gift of the Blood God'}
+# Builds whose fight depends on the incoming hits (talents and items): their frozen pre-2026-11-21 values changed
+# on purpose with the incoming-hit model and are not replayed by farm/hybrid/test_fixtures.py.
+INCOMING_TALENTS = frozenset({"I0LO", "I0A2", "I09V"})
+INCOMING_ITEMS = frozenset(code for code, bit in SPECIAL_BITS.items() if bit >= 17) | {"I0U5"}
 IGNORED_TALENTS = frozenset({"I0MD", "I0MC", "I0LP", "I0PH", "I0U0"})
 
 
@@ -1227,11 +1458,12 @@ class BerserkerCL(C.ExactCL):
         return dps, group, status
 
     SOURCE_NAMES = ("Автоатака", "Toxic Sack", "Skull Split", "Venomous Axes", "Surge of Toxins", "Way of the Snake",
-                    "Axe Mastery", "Всплеск огня", "Sulfuras", "Sulfuras (удар)")
+                    "Axe Mastery", "Всплеск огня", "Sulfuras", "Sulfuras (удар)",
+                    "Отражение урона", "Sunstrider Crown", "Shield of Death", "Shado-Pan Faceguard")
     ACTION_NAMES = ("Toxic Sack", "Skull Split")
     STAT_KEYS = ("agi", "str", "int", "damage", "potency", "mastery", "crit", "rating", "haste", "attack_speed", "luck",
                  "magic_add", "phys_add", "hp", "mana_max", "mana_regen", "galactic", "cd_temp", "flat_cdr", "armor_pen")
-    NSRC, MAXA = 10, 64
+    NSRC, MAXA = 14, 64
 
     def report(self, codes, talents=(), glyphs=(), points: dict | None = None) -> dict:
         """One fight with the sources in Ledger order, the casts, mana left and the stat sheet."""
