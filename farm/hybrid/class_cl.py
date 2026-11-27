@@ -601,7 +601,7 @@ def fixture_check(engine: ExactCL, rows: int, full: int, seed: int):
     data = json.loads((Path(__file__).resolve().parent / "fixtures" / f"{engine.hero}.json").read_text(encoding="utf-8"))
     have = {p.code for p in engine.space.pieces}
     cases = [c for c in data["cases"] if c["spec"] == engine.spec and c["targets"] == engine.targets
-             and not c.get("incoming") and set(c["items"]) <= have]
+             and not c.get("incoming") and not c.get("model_fix") and set(c["items"]) <= have]
     random.Random(seed).shuffle(cases)
     if len(cases) < rows + full:  # split what there is between the two checks
         rows = len(cases) // 2

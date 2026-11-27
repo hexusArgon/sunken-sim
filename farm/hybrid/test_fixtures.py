@@ -3,7 +3,8 @@
     python3.11 -m unittest farm.hybrid.test_fixtures
 
 A case marked "incoming": true depends on the incoming-hit model and is checked by
-farm/hybrid/test_incoming.py instead (its value changed on purpose when the model changed).
+farm/hybrid/test_incoming.py instead (its value changed on purpose when the model changed); "model_fix": <why>
+marks a case whose value changed with a deliberate fix of the kernel (e.g. the Death Knight Fire Orb splash).
 """
 
 from __future__ import annotations
@@ -31,7 +32,7 @@ def replay(hero: str) -> list[str]:
     errors = []
     groups: dict = {}
     for case in data["cases"]:
-        if case.get("incoming"):
+        if case.get("incoming") or case.get("model_fix"):
             continue
         groups.setdefault((case["spec"], case["targets"]), []).append(case)
     for (spec, targets), cases in groups.items():

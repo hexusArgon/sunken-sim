@@ -120,11 +120,20 @@ Marrowrend, as in the damage formula).
 Notes: Sulfuras echo is DAMAGE_TYPE_ENHANCED and gets no pool (Berserker fixed the same way); Ancient Voodoo
 Doll counts the debuffs the kernel tracks (Outbreak, Blood Plague, Chill, Freeze, Marrowrend). Seal of the Black
 Empire Mastery feeds Tlum, Frost Strike (Frost), the Outbreak tick rate (Unholy) and the Blood healing bonus.
-Approximations: health is the expected health; max HP growth does not raise current HP; the Orb splash gets the
-pool entries above but (as before) not chill / freeze / Grim Reaper.
+Approximations: health is the expected health; max HP growth does not raise current HP.
+Fire Orb splash fixed 2026-11-27 (user decision): it is DAMAGE_TYPE_NORMAL damage dealt inside
+PreDamage_Items_Glyphs, so PreDamage_Increase runs on it — Potency and the Blood Plague flat are added and the whole
+DamageIncrease pool (chill / freeze / Grim Reaper + the entries above) applies per target; no type bonus, no crit.
+22 frozen fixtures with the Fire Orb are marked "model_fix". One-slot: Elemental Orb (Fire) +1.3 / +1.3 / +6.3.
+
+Blood Feast in the search (user decision 2026-11-27): `farm.top.TALENT_INCLUDE` puts I0CU in every DK talent pool,
+`farm.top.ITEM_INCLUDE` adds Bloodlord's Regalia, Mask of the Blood Hungerer and the health items (Crimson Fury,
+Immortal Gladiator's Mask, The Furnace, Belt of Living Strength, Bloodhowl, Dark Iron Ale, Icecrown Ring) to the
+top-N item pool when they are not in it. The one-slot file has a "combos" table: Blood Feast with each of them and
+the talent's gain over the item alone (Bloodlord +33 / +35 / +37; health items -4 .. +6: healing keeps the health
+up, which lowers the missing-health bonuses and raises Belt of Living Strength).
 
 One-slot changes (5 targets, top-150 by spec): entered Frost and Blood — Blade of the Fallen Seraph, The Furnace,
 Shield of Death, Giantsbane, Ursal's Mighty Plate, Immortal Gladiator's Mask, Ancient Voodoo Doll, Volcanic Shield;
 Unholy — the same without Immortal Gladiator's Mask, plus Icecrown Ring, Warlord's Battlemask, Belt of Living
-Strength. Talent pools unchanged (14 / 14 / 15): Blood Feast gains only together with Bloodlord's Regalia or
-health-dependent items, so a lone-talent screen never shows it.
+Strength. Talent pools by the screen unchanged (14 / 14 / 15); Blood Feast is added by TALENT_INCLUDE (below).

@@ -753,9 +753,15 @@ double fight(const Row* r, int* status) {
       razorice(r, &s, moment, 1.0);
       int side = 1 % targets;
       if (r->mask & S_ORB) {
-        double splash = (20.0 + 0.35 * r->str) * (double)targets * taken(r, &s, side, moment) * exec_factor(r, moment);
-        double extra = pool_extra(r, &s, side, moment);
-        if (extra != 0.0) splash *= 1.0 + extra;
+        /* Fire Orb splash (PreDamage_Items_Glyphs, DAMAGE_TYPE_NORMAL, no damage type): Potency and Blood Plague
+         * flat are added and the whole DamageIncrease pool applies (chill / freeze / Grim Reaper + incoming
+         * entries) per target; no type bonus, no crit. Fixed 2026-11-27 (was targets x armour only). */
+        double execute = exec_factor(r, moment);
+        double pot = potency_now(r, &s, moment);
+        double splash = 0.0;
+        for (int t = 0; t < targets; t++)
+          splash += (20.0 + 0.35 * r->str + pot + plague_flat(r, &s, t, moment)) * increase(r, &s, t, moment)
+                    * taken(r, &s, t, moment) * execute;
         add_src(&s, N_SPLASH, splash);
         dk_dealt(r, &s, moment, splash, (double)targets);
         note_damage_mana(r, &s, (double)targets);

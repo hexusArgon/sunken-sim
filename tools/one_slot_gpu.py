@@ -20,7 +20,10 @@ HEROES = {
     "berserker": dict(class_name="Berserker", module="farm.hybrid.berserker_cl", engine="BerserkerCL",
                       specs=(("Headhunter", "headhunter"), ("Poison", "poison"), ("Fury", "fury"))),
     "death_knight": dict(class_name="DeathKnight", module="farm.hybrid.death_knight_cl", engine="DeathKnightCL",
-                         specs=(("Frost", "frost"), ("Blood", "blood"), ("Unholy", "unholy"))),
+                         specs=(("Frost", "frost"), ("Blood", "blood"), ("Unholy", "unholy")),
+                         # Blood Feast gains only with its partners (farm.top.TALENT_INCLUDE / ITEM_INCLUDE)
+                         combos=[("I0CU", code) for code in ("I05V", "I024", "arsc", "I079", "fgun", "I05N", "I06J",
+                                                             "I015")]),
 }
 TARGETS = 5
 
@@ -52,6 +55,8 @@ def main() -> None:
 
     cases = [((), (), ())] + [((), (c,), ()) for c, _ in talents] + [((code,), (), ()) for code in pool] + \
             [((), (), (c,)) for c, _ in glyphs]
+    combos = [((item,), (talent,), ()) for talent, item in cfg.get("combos", ())]
+    cases += combos
     value = {}
     for title, spec in cfg["specs"]:
         engine = getattr(mod, cfg["engine"])(space, items, sources, TARGETS, None, spec)
@@ -75,9 +80,20 @@ def main() -> None:
     item_rows += body
     glyph_rows = [["Глиф", "Код"] + [f"{t} DPS" for t in titles], ["Без глифа", ""] + [bare[t] for t in titles]]
     glyph_rows += [[n, c] + [value[t][((), (), (c,))] for t in titles] for c, n in glyphs]
+    payload = {"specs": titles, "talents": talent_rows, "items": item_rows, "glyphs": glyph_rows}
+    if combos:
+        # talent + item together: DPS, and the talent's gain over the item alone
+        tname = dict(talents)
+        combo_rows = [["Талант + предмет", "Коды"] + [f"{t} DPS" for t in titles] + [f"Прирост таланта {t}" for t in titles]]
+        for case in combos:
+            (item,), (talent,), _ = case
+            label = f"{tname.get(talent, talent)} + {pool[item][0] if item in pool else item}"
+            alone = ((item,), (), ())
+            combo_rows.append([label, f"{talent}+{item}"] + [value[t][case] for t in titles]
+                              + [round(value[t][case] - value[t][alone], 1) for t in titles])
+        payload["combos"] = combo_rows
     out = Path("extract") / f"{hero}-one-slot.json"
-    out.write_text(json.dumps({"specs": titles, "talents": talent_rows, "items": item_rows, "glyphs": glyph_rows},
-                              ensure_ascii=False), encoding="utf-8")
+    out.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
     print("wrote", out, "items", len(pool), "talents", len(talents), "glyphs", len(glyphs), "bare", bare)
 
 

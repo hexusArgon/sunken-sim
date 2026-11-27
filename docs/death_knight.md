@@ -55,6 +55,7 @@ Blood Tap I09T: `BloodTap_Bonus` 1,00 → 1,35 — множитель всех �
 ### Множители
 
 - Магическая ветка: `1 + magic add вещей + Sulfuron + Spellbinder + Frost Presence (0,01 × мана/40) + Bloodforged Armor (0,05 + 0,01 × броня DK, с Bone Shield +4)`, затем Glass Cannon ×1,15.
+- Всплеск Fire Orb (с 2026-11-27): 20 + 35% STR + Potency + Blood Plague, весь пул DamageIncrease по каждой цели, без бонуса типа и крита.
 - DamageIncrease (весь урон DK-игрока, включая призывы): Frost Strike изучен → `+15%` по замороженной цели, иначе `+8%` по охлаждённой. Grim Reaper I07Z `+6%` за каждый из B08P, B06E, Bfro, B011, B08Q на цели.
 - Marrowrend I09S: Blood Strike вешает B08Q −5 брони на 5 с и Bone Shield.
 - Razorice I0DS: каждая атака героя −0,30 с с кулдауна Frost Strike (у призывов 15% × удача).
@@ -72,7 +73,7 @@ ERW почти всегда сбрасывает Unholy Fury — это дубл
 
 ## IGNORED
 
-Не дают урона по манекену и в прогоне не участвуют: Will of the Necropolis I0G9 (защита), Anti-Magic Zone I03G (защита), страницы I0MD / I0MC. Blood Feast I0CU (и Mask of the Blood Hungerer I0NJ) с 2026-11-27 лечит на каждый экземпляр урона; влияет на урон только вместе с Bloodlord's Regalia или предметами от здоровья героя. Лечение Blood-спека, Blood Strike, Presence, червей и стоимость HP заклинаний моделируются (входящий урон, `docs/defense-model.md`). Не моделируются: таунт Death Grip, −18% урона от Outbreak (Cri3), замедление Chill.
+Не дают урона по манекену и в прогоне не участвуют: Will of the Necropolis I0G9 (защита), Anti-Magic Zone I03G (защита), страницы I0MD / I0MC. Blood Feast I0CU (и Mask of the Blood Hungerer I0NJ) с 2026-11-27 лечит на каждый экземпляр урона; влияет на урон только вместе с Bloodlord's Regalia или предметами от здоровья героя. Поэтому он всегда в пуле талантов прогона (`farm.top.TALENT_INCLUDE`), а Bloodlord's Regalia, Mask of the Blood Hungerer и предметы от здоровья всегда в пуле предметов (`ITEM_INCLUDE`); в одиночной таблице — блок `combos`. Лечение Blood-спека, Blood Strike, Presence, червей и стоимость HP заклинаний моделируются (входящий урон, `docs/defense-model.md`). Не моделируются: таунт Death Grip, −18% урона от Outbreak (Cri3), замедление Chill.
 
 ## Пробелы модели
 

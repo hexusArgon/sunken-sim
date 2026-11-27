@@ -166,12 +166,13 @@ class ProtocolTest(unittest.TestCase):
     def test_specs_match_modules(self) -> None:
         import importlib
 
-        from farm.protocol import SPECS
+        from farm.protocol import GPU_ONLY, SPECS
 
         for hero, specs in SPECS.items():
             if hero == "priest":
                 continue
-            module = importlib.import_module(f"sunken_sim.{hero}")
+            # GPU-only classes: the specs live in the kernel module (farm/hybrid/<hero>_cl.py)
+            module = importlib.import_module(f"farm.hybrid.{hero}_cl" if hero in GPU_ONLY else f"sunken_sim.{hero}")
             self.assertEqual(tuple(module.SPECS), specs, hero)
 
     def test_status_line_is_readable_and_parseable(self) -> None:

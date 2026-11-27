@@ -19,6 +19,15 @@ RUNEMASTERY = "I0Q8"
 CLASSES_BLOCK = {"priest": "Priest", "mage": "Mage", "paladin": "Paladin"}
 SHEET_FILE = {"feral_druid": "feral-druid-one-slot.json"}
 TALENT_EXCLUDE = {"mage": {RUNEMASTERY}}
+# Talents that only gain together with items (a lone-talent screen never shows them): always in the pool.
+# Death Knight Blood Feast heals on every damage instance: damage through Bloodlord's Regalia and the
+# health-dependent items (user decision 2026-11-27).
+TALENT_INCLUDE = {"death_knight": {"I0CU"}}
+# Items always added to the top-N pool (after it, like Mind Amplifier) so such talents meet their partners:
+# Bloodlord's Regalia, Mask of the Blood Hungerer (Blood Feast as an item) and the items whose damage depends
+# on the hero's health (Crimson Fury, Immortal Gladiator's Mask, The Furnace, Belt of Living Strength,
+# Bloodhowl, Dark Iron Ale, Icecrown Ring).
+ITEM_INCLUDE = {"death_knight": ("I05V", "I0NJ", "I024", "arsc", "I079", "fgun", "I05N", "I06J", "I015")}
 SOURCE_POOL = {"Shop": "shop", "Drop": "drop", "Legendary": "legendary"}
 
 
@@ -127,6 +136,11 @@ def top_items(hero: str, spec: str, top: int, pool: str = "mixed", known: set[st
         codes.append(row["code"])
         if len(codes) >= top:
             break
+    by_code = {row["code"]: row for row in rows}
+    for code in ITEM_INCLUDE.get(hero, ()):
+        if code in by_code and code not in seen:
+            seen.add(code)
+            codes.append(code)
     codes.append(MIND_AMPLIFIER)
     return codes
 
@@ -144,6 +158,7 @@ def top_talents(hero: str, spec: str) -> list[str]:
             continue
         if row["dps"][i] > bare:
             out.add(code)
+    out |= {code for code in TALENT_INCLUDE.get(hero, set()) if code in names and code not in exclude}
     return sorted(out)
 
 
