@@ -184,3 +184,35 @@ procs). One-slot: Vengeance bare 115.6 -> 151.2 (Demon Spikes 43.5 DPS, Meta end
 Bloodlet Vengeance +30; top-150 refinements with the Shadow Orb 11-15% lower (penetration only on attacks).
 Speed (CPU pocl, 2^14 builds without such items): Havoc 121k -> 117k rows/s; Vengeance (hits always on) 403k -> 83k.
 
+
+## Dragon Sentinel: incoming hits and healing (inventory 2026-11-27, map 2.5.2c)
+
+Item pool: 336 items, all screened (`tools/one_slot_gpu.py dragon_sentinel`). Strength hero (model heal from an ally),
+hero armour = the sheet armour (4 + 0.1 AGI + items + Draconic Scales), Primalist Ring 0.4% Physical Type per point of
+HP regeneration. Shared items come from farm/hybrid/incoming_cl.py; class integration in farm/hybrid/dragon_sentinel_cl.py.
+
+| Effect | Trigger / rule (war3map_norm.j) | Value | Modelled |
+|---|---|---|---|
+| Blazing Shield reflect (A0O1, every spec) | `Dragon_Sentinel_Attacked` (EVENT_PLAYER_UNIT_ATTACKED, before evasion), every attack against the DS | 5 x rank + 0.5 x current armour, Magical (Spells), to the attacker; a second hit with chance (10 + 0.1 STR under Molten Armor B03K, + 15 in Dragon Form) x Luck | yes (source "Blazing Shield (отражение)"): hits are always on |
+| Dragonfire / Dragon Claw on the attacker (B02B / B06C, each one runs gg_trg_Dragonfire) | same trigger | Backfire I0HQ: 6 + 0.3 STR Magical to the attacker; a heal of 4 x rank + 2% max mana on the DS (healer DS) | yes: Backfire now counts (talent active) |
+| Emerald heal procs | trigger Healing, healer DS, target a hero, not PreventOnHeal: 8% x Luck (x1.15 Legacy) | Cleansing Fire 4 x damage on a random enemy (+ Legacy CDR) | every DS heal: Dragonfire heal, Lifebinder ticks, Dragon Form, Cleansing Fire cast, Ysera's Gift |
+| Ysera's Gift I0JE | every 0.5 s: the most wounded allied hero in 700, the DS itself when there is none, if below 100% health | 3% max mana, healer DS | yes (expected health < max; feeds the Emerald procs) |
+| DS heals on itself | Dragon Form 25% max HP; Lifebinder Loop 2% of current health; Cleansing Fire 80 + 10% max HP + 3 Mastery (Emerald); the Emerald damage proc heal 10% of that (PreventOnHeal) | own Healing Type | yes (health only) |
+| Molten Armor / Earthen Crust armour | B03K +2 (+3 Earthen Crust) | raises the reflect (0.5 x armour) and Draconic Scales potency | yes (existing armour timeline) |
+| Blazewing Guard I0TJ, Backfire / Molten Armor reductions | ArmorDamage_Reduce | damage reduction | no |
+
+Map fixes with this class (GPU only): every DS spell uses ATTACK_TYPE_NORMAL (Spells), so item penetration only reaches the
+auto attack (with Iron Cleaver); Voidseeker Hood reaches the Magical Type spells; Branded lowers the real armour of the
+target (Giantsbane reads it). Fire Orb splash goes through the class damage (Potency, Sulfuron / glass, Alexstrasza,
+Melting Flames, Branded, procs, the DamageIncrease pool), no type bonus, no crit. Sulfuras echo: no penetration, no pool.
+Frost Orb and Ice Cleaver chills (Ancient Voodoo Doll counts Dragonfire, Dragon Claw, Branded, Cleansing Fire and Chill).
+Seal of the Black Empire Mastery feeds Tlum, Ruby Burnout, Engulfing Flames, Dragonfury generation and cast refunds.
+
+Fixtures: all 2760 frozen fights changed (Blazing Shield answers every attack): 2378 marked "incoming", 382 "model_fix";
+the 18 refinements re-frozen from the GPU (top builds with the Shadow Orb / Silent Messenger 10-28% lower: penetration
+only on attacks). `-DINC_OFF=1` (tests only) switches the hits and the health off: it replays the frozen Part-A fights
+without changed items bit for bit (test_incoming). One-slot bare 268.3 / 219.5 / 138.5 -> 328.2 / 278.2 / 184.6; talents
+entered: Earthen Crust, Backfire (all specs), Ysera's Gift (Emerald). Speed (CPU pocl, 2^14 top-150 rows): Ruby
+35k -> 13k, Obsidian 26k -> 11k, Emerald 25k -> 12k rows/s.
+Approximations: health is the expected health; the Emerald Dragon Form group heal is taken as 25% max HP; Ysera's Gift
+ticks at 0.5 s multiples; Lifebinder's own cast heal and the Cleansing Fire centre bonus (x1.5) are not counted.

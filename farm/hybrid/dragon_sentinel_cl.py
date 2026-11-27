@@ -19,6 +19,7 @@ import numpy as np
 
 from farm.hybrid import attack_procs_cl as AP
 from farm.hybrid import class_cl as C
+from farm.hybrid import incoming_cl as INC
 
 NPAL = 16
 
@@ -36,6 +37,11 @@ KERNEL = r"""
 #define SP_RUBY (SPEC == 0)
 #define SP_OBS (SPEC == 1)
 #define SP_EMER (SPEC == 2)
+@INC_HEAD@
+/* INC_OFF 1 (tests only): no incoming hits and no hero health, as before 2026-11-27 */
+#ifndef INC_OFF
+#define INC_OFF 0
+#endif
 /* REPORT 1: the report kernel also keeps the final fight state (sources in Ledger order, casts, mana) */
 #ifndef REPORT
 #define REPORT 0
@@ -49,7 +55,9 @@ KERNEL = r"""
 #define NU 48
 #define NP 11
 #define NPAL 16
-#define NSRC 16
+#define NSRC 24
+#define CLS_INT_HERO 0  /* Strength hero: the model heal comes from an ally */
+#define LEVEL 15
 #define MAXT 8
 #define MAXA 160
 #define BS 8
@@ -78,6 +86,8 @@ KERNEL = r"""
 #define S_EYE  (1UL<<16)
 #define S_LHELM (1UL<<17)
 #define S_SILM (1UL<<18)
+#define S_VOID (1UL<<19)   /* Voidseeker Hood I07Y: Magical Type damage ignores 2 armour */
+#define S_ICLV (1UL<<20)   /* Iron Cleaver I055: Physical Type damage ignores 3 armour */
 
 #define T_WORLD (1u<<0)
 #define T_DBORN (1u<<1)
@@ -93,6 +103,8 @@ KERNEL = r"""
 #define T_EXPL (1u<<11)
 #define T_LEGACY (1u<<12)
 #define T_BLAZE (1u<<13)
+#define T_BACKFIRE (1u<<14)  /* Backfire I0HQ: attackers under Dragonfire / Dragon Claw take 6 + 0.3 STR */
+#define T_YSERA (1u<<15)     /* Ysera's Gift I0JE: every 0.5 s heals the DS (no ally) below 100% health */
 
 #define G_UNSL (1u<<0)
 #define G_GLASS (1u<<1)
@@ -124,6 +136,21 @@ KERNEL = r"""
 #define N_SPLASH 13
 #define N_SULF 14
 #define N_ECHO 15
+/* incoming-hit sources (farm/hybrid/incoming_cl.py) */
+#define N_REFL 16
+#define N_SUNS 17
+#define N_SOD 18
+#define N_EVADE 19
+#define N_BLOOD 20
+#define N_ICE 21
+#define N_BSREF 22   /* Blazing Shield reflect on every attack against the DS */
+#define N_BACKF 23   /* Backfire */
+
+/* armour kinds of the penetration table (ArmorDamage_Increase) */
+#define P_PLAIN 0   /* spells without a type, ENHANCED */
+#define P_MAG 1     /* Magical Type: Voidseeker Hood */
+#define P_ATK 2     /* auto attacks: item penetration + Iron Cleaver */
+#define P_PHYS 3    /* Physical Type, not an attack: Iron Cleaver */
 
 /* order[] keys */
 #define K_FORM 0
@@ -152,9 +179,10 @@ typedef struct {
   double luck, mana_max, mana_regen, cast_lock, hp;
   double cast_refund, cast_refund_flat, cast_refund_mastery, attack_mana, attack_mana_pct, attack_mana_crit, damage_mana_pct;
   double ex_thr[MAXE], ex_pct[MAXE];
-  int nexec, targets, glass, spell_crit;
+  int nexec, targets, glass, spell_crit, pool_on;
   uint tmask, gmask;
   ulong mask;
+@INC_ROW_FIELDS@
 } Row;
 
 typedef struct {
@@ -170,7 +198,10 @@ typedef struct {
   double q_w[MAXQ], q_p[MAXQ], q_m[MAXQ]; uint q_s[MAXQ]; uchar q_k[MAXQ], q_a[MAXQ]; int qn; uint seq;
   uint lp_seq; double lp_at;
   double nxt[6]; uchar order[6]; int norder;
-  double am[7]; uchar am_neg[7];
+  double am[4][7]; uchar am_neg[7];
+  double ch_e[MAXT][BS + 1], ch_m[MAXT][BS + 1]; int ch_n[MAXT]; double ch_t[MAXT], ch_lo[MAXT];
+  double lm, ys_next; int fire_on;
+@INC_ST_FIELDS@
   double mana, mana_time, molten_until, life_until, form_until, burnout_bonus, fury, fury_max;
   double trig0, trig2, trig3, max_life, strength;
   int life_ticking, heated, bolt_target, armed, status, targets;
@@ -288,11 +319,13 @@ void gain_mana(const Row* r, St* s, double amount) {
   s->mana = (v < r->mana_max) ? v : r->mana_max;
 }
 
+@INC_C1@
+
 int pay(const Row* r, St* s, double cost, double now) {
   recover(r, s, now);
   if (s->mana < cost) return 0;
   s->mana -= cost;
-  if (cost > 0.0) gain_mana(r, s, cost * r->cast_refund + r->cast_refund_flat + r->cast_refund_mastery * r->mastery);
+  if (cost > 0.0) gain_mana(r, s, cost * r->cast_refund + r->cast_refund_flat + r->cast_refund_mastery * MAST(r, s));
   return 1;
 }
 
@@ -362,34 +395,50 @@ double potency_now(const Row* r, const St* s, double now) {
 
 double ruby_bonus(const St* s) { return 0.05 + 0.20 * s->strength / 100.0; }
 
-double typed(const Row* r, int kind, double now) {
+double typed(const Row* r, St* s, int kind, double now) {
   /* kind: 0 none, 1 magical, 2 physical */
   double bonus = 1.0;
   if (kind == 1) bonus += r->magic_add;
   else if (kind == 2) bonus += r->phys_add;
   if (r->mask & S_SULG) bonus += 0.13 + 0.25 * target_hp(now);
-  if (kind == 1 && (r->mask & S_TLUM)) bonus += 0.05 + 0.005 * r->mastery;
+  if (kind == 1 && (r->mask & S_TLUM)) bonus += 0.05 + 0.005 * MAST(r, s);
   if (r->glass) bonus *= 1.15;
   return bonus;
 }
 
 double dcs(const Row* r, const St* s) { return 14.0 + 0.75 * s->strength + r->damage; }
 
-/* armor_taken(15 - pen - v) for Branded values v = 0..6, filled once per fight */
-double am_of(St* s, int v) {
-  return s->am[v];
+/* armor_taken of the dummy's armour 15 - v (Branded v = 0..6) for each penetration kind, filled once per fight.
+ * ArmorDamage_Increase / CalculateArmorPenetration: p1 = item penetration, only for attack types other than Spells
+ * (the DS auto attack; every DS spell uses ATTACK_TYPE_NORMAL = Spells); p2 = Voidseeker Hood (Magical Type) /
+ * Iron Cleaver (Physical Type) on top: x m(A-p1) x m(A-p2) / m(A). */
+double am_of(St* s, int pk, int v) {
+  return s->am[pk][v];
+}
+
+double pen_taken(St* s, double armor, double p1, double p2) {
+  if (p2 <= 0.0) return armor_mult(s, armor - p1);
+  double m = (p1 > 0.0) ? armor_mult(s, armor - p1) : armor_mult(s, armor);
+  return m / armor_mult(s, armor) * armor_mult(s, armor - p2);
 }
 
 #if SPEC == 1
-double taken(const Row* r, St* s, int t, double now) {
+double taken(const Row* r, St* s, int t, double now, int pk) {
   double off = 1.0, total = 0.0;
   for (int k = 0; k < s->br_n[t]; k++) {
     if (now < s->br_e[t][k]) {
-      total += s->br_m[t][k] * am_of(s, (int)s->br_v[t][k]);
+      total += s->br_m[t][k] * am_of(s, pk, (int)s->br_v[t][k]);
       off -= s->br_m[t][k];
     }
   }
-  return total + off * am_of(s, 0);
+  return total + off * am_of(s, pk, 0);
+}
+
+/* the target's expected armour (Giantsbane reads the real armour) */
+double real_armor(const St* s, int t, double now) {
+  double v = 0.0;
+  for (int k = 0; k < s->br_n[t]; k++) if (now < s->br_e[t][k]) v += s->br_m[t][k] * s->br_v[t][k];
+  return 15.0 - v;
 }
 
 double brand_mass(const St* s, int t, double now) {
@@ -418,9 +467,36 @@ void brand_apply(St* s, int t, double now, double w, double value) {
 }
 #else
 /* no Branded outside Obsidian: the loop above with br_n == 0 */
-double taken(const Row* r, St* s, int t, double now) { return 0.0 + 1.0 * am_of(s, 0); }
+double taken(const Row* r, St* s, int t, double now, int pk) { return 0.0 + 1.0 * am_of(s, pk, 0); }
+double brand_mass(const St* s, int t, double now) { return 0.0; }
 void brand_apply(St* s, int t, double now, double w, double value) {}
+double real_armor(const St* s, int t, double now) { return 15.0; }
 #endif
+
+#define CH_MASS(s, t, now) bmass((s)->ch_e[t], (s)->ch_m[t], (s)->ch_n[t], (s)->ch_t[t], (s)->ch_lo[t], now)
+#define CH_ARGS(s, t) (s)->ch_e[t], (s)->ch_m[t], &(s)->ch_n[t], &(s)->ch_t[t], &(s)->ch_lo[t]
+
+/* Ancient Voodoo Doll: the debuffs the kernel tracks on dummy t (Dragonfire, Dragon Claw, Branded, Cleansing
+ * Fire, Chill) */
+double cls_buffs(const Row* r, St* s, int t, double now) {
+  double n = 0.0;
+  if (s->fire_on) n += FI_MASS(s, t, now) + CL_MASS(s, t, now);
+  n += brand_mass(s, t, now);
+#if SPEC == 2
+  if (s->cleanse_until[t] > now) n += 1.0;
+#endif
+  if (r->imask & (I_FORB | I_ICLE)) n += CH_MASS(s, t, now);
+  return n;
+}
+
+/* DamageIncrease_Amount entries of the incoming layer (hero health, Voodoo Dolls, Giantsbane on the real armour) */
+double pool_extra(const Row* r, St* s, int t, double now) {
+  if (!r->pool_on) return 0.0;
+  double d = s->dinc + r->pool_flat;
+  if (r->imask & I_GIANT) d += (0.03 / 4.0) * real_armor(s, t, now);
+  if (r->voodoo != 0.0) d += 0.04 + 0.02 * cls_buffs(r, s, t, now);
+  return d;
+}
 
 double melting(const Row* r, St* s, int t, double now) {
   if (!TM(r, T_MELT)) return 0.0;
@@ -460,8 +536,9 @@ double hero_hit(const Row* r, St* s, int name, double raw, double now, int t0, i
      Branded value) is computed once: the same expressions, so the same bits. */
   double chance = r->crit;
   double execute = exec_factor(r, now);
-  double factor = typed(r, kind, now);
+  double factor = typed(r, s, kind, now);
   if (TM(r, T_ALEX) && s->life_until > now) factor *= 1.10;
+  int pk = attack ? P_ATK : (kind == 1) ? P_MAG : (kind == 2) ? P_PHYS : P_PLAIN;
   double pot = potency_now(r, s, now);
   double luck_mult = 1.0 + r->luck;
   double base = (raw + pot * potency_scale) * factor * mult;
@@ -469,7 +546,7 @@ double hero_hit(const Row* r, St* s, int name, double raw, double now, int t0, i
   else if (r->spell_crit && crit) base *= crit_factor(chance, r->spell_mult + r->rating);
   const int melt = TM(r, T_MELT) != 0;
   /* without Branded every target takes the same armour factor */
-  double tk_all = SP_OBS ? 0.0 : taken(r, s, t0, now);
+  double tk_all = SP_OBS ? 0.0 : taken(r, s, t0, now, pk);
   double brand_v = 0.0;
   if (SP_OBS) {
     double a = (double)(int)(1.0 + 0.08 * armor_now(r, s, now));
@@ -482,7 +559,8 @@ double hero_hit(const Row* r, St* s, int name, double raw, double now, int t0, i
   for (int t = t0; t < t0 + n; t++) {
     double amount = base;
     if (melt) amount += melting(r, s, t, now);
-    double tk = SP_OBS ? taken(r, s, t, now) : tk_all;
+    double tk = SP_OBS ? taken(r, s, t, now, pk) : tk_all;
+    if (r->pool_on) amount *= 1.0 + pool_extra(r, s, t, now);
     total += amount * tk * execute * w;
     if (SP_OBS) brand_apply(s, t, now, w, brand_v);
     if (!procs) continue;
@@ -496,29 +574,44 @@ double hero_hit(const Row* r, St* s, int name, double raw, double now, int t0, i
         legacy_cdr(r, s, now, p);
       }
     }
-    if (SP_EMER) legacy_cdr(r, s, now, p_cf);
+    if (SP_EMER) {
+      legacy_cdr(r, s, now, p_cf);
+      /* the Cleansing Fire heal of the proc (PreDamage_Heroes, PreventOnHeal): 10% of 80 + 10% max HP + 3 Mastery */
+      if (s->hp_on && p_cf > 0.0) { s->tnow = now; heal_mod(r, s, 0.10 * (80.0 + 0.10 * s->max_life + 3.0 * MAST(r, s)), p_cf, 1, 1, 1); }
+    }
   }
   add_src(s, name, total);
+  if (s->hp_on) inc_dealt(r, s, now, total, (double)n * w);
   note_damage_mana(r, s, (double)n * w);
   return total;
 }
 
 double cleansing_damage(const St* s) { return 7.0 + 0.01 * s->max_life; }
 
-void heal(const Row* r, St* s, double now) {
-  if (!SP_EMER) return;
+/* a heal of the DS on itself (trigger Healing, healer = DS, not PreventOnHeal): Emerald 8% x Luck (x1.15 Legacy)
+ * Cleansing Fire for 4 x its damage on a random enemy; w = expected number of such heals */
+void heal_w(const Row* r, St* s, double now, double w) {
+  if (!SP_EMER || w <= 0.0) return;
   double proc = 8.0 * (TM(r, T_LEGACY) ? 1.15 : 1.0);
   double p = chance01(proc * (1.0 + r->luck) / 100.0);
   if (p > 0.0) {
-    hero_hit(r, s, N_CFHEAL, 4.0 * cleansing_damage(s), now, 0, s->targets, 0, 0, 0.0, 1.0, 1, 0, p / (double)s->targets);
-    legacy_cdr(r, s, now, p);
+    hero_hit(r, s, N_CFHEAL, 4.0 * cleansing_damage(s), now, 0, s->targets, 0, 0, 0.0, 1.0, 1, 0,
+             (w >= 1.0) ? p / (double)s->targets : p * w / (double)s->targets);
+    legacy_cdr(r, s, now, (w >= 1.0) ? p : p * w);
   }
+}
+void heal(const Row* r, St* s, double now) { heal_w(r, s, now, 1.0); }
+
+/* own Healing Type heal of amount (x count) on the DS, then the Emerald heal procs */
+void ds_heal(const Row* r, St* s, double now, double amount, double count) {
+  if (s->hp_on) { s->tnow = now; heal_mod(r, s, amount, count, 1, 1, 1); }
+  heal_w(r, s, now, count);
 }
 
 void burnout_impact(const Row* r, St* s, double now, int source, double w, double miss) {
   double dmg = 25.0 * RANK + 1.20 * s->strength;
   if (source == B_PASSIVE) dmg *= 0.40;
-  if (SP_RUBY) dmg *= 1.05 + 0.005 * r->mastery;
+  if (SP_RUBY) dmg *= 1.05 + 0.005 * MAST(r, s);
   if (SP_RUBY && in_form(s, now)) dmg *= 1.0 + ruby_bonus(s);
   if (r->mask & S_GAUNT) dmg *= 1.25;
   int value;
@@ -554,8 +647,8 @@ void dragon_strike(const Row* r, St* s, double now, int name, double w) {
   if (form) dmg *= 1.25;
   if (SP_RUBY && form) dmg *= 1.0 + ruby_bonus(s);
   hero_hit(r, s, name, dmg, now, 0, s->targets, 1, 0, 1.0, 1.0, 1, 1, w);
-  /* Dragonfire / Dragon Claw are read only by Melting Flames */
-  if (!TM(r, T_MELT)) return;
+  /* Dragonfire / Dragon Claw are read by Melting Flames, attackers' Backfire and the Dragonfire heal */
+  if (!s->fire_on) return;
   for (int t = 0; t < s->targets; t++) {
     if (w >= 1.0) bsure(FI_ARGS(s, t), now, 5.0);
     else bmaybe(FI_ARGS(s, t), now, 5.0, w, w);
@@ -566,6 +659,44 @@ void dragon_strike(const Row* r, St* s, double now, int name, double w) {
   }
 }
 
+/* item_dmg of the incoming layer: one DS damage instance per count (Potency per instance, procs, Branded) */
+void item_dmg(const Row* r, St* s, int name, double raw, int t, double when, int magical, double count) {
+  if (count <= 0.0) return;
+  hero_hit(r, s, name, raw / count, when, t, 1, magical ? 1 : 0, 0, 1.0, 1.0, 1, 1, count);
+}
+
+void cls_taken(const Row* r, St* s, double now, double m, double axe) { (void)r; (void)s; (void)now; (void)m; (void)axe; }
+double cls_hit(const Row* r, St* s, double now) { (void)r; (void)s; (void)now; return 1.0; }
+double cls_heal_mod(const Row* r, St* s) { (void)r; (void)s; return 0.0; }
+double cls_heal_flat(const Row* r, St* s) { (void)r; (void)s; return 0.0; }
+void cls_own_heal(const Row* r, St* s, double total) { (void)r; (void)s; (void)total; }
+void cls_lifesteal(const Row* r, St* s, double amount) { (void)r; (void)s; (void)amount; }
+double cls_primary(const Row* r) { return r->str; }
+
+/* Dragon_Sentinel_Attacked (EVENT_PLAYER_UNIT_ATTACKED: every attack against the DS, before evasion):
+ * - the attacker under Dragonfire (B02B) and, separately, under Dragon Claw (B06C) runs gg_trg_Dragonfire:
+ *   Backfire I0HQ 6 + 0.3 STR magical to the attacker; a heal of 4 x rank + 2% max mana on the DS (healer DS);
+ * - Blazing Shield A0O1: 5 x rank + 0.5 x armour magical (Spells) to the attacker, and once more with chance
+ *   (10 + 0.1 STR under Molten Armor B03K, + 15 in Dragon Form) x Luck. */
+void cls_attacked(const Row* r, St* s, int j, double now, double m) {
+  if (m <= 0.0) return;
+  if (s->fire_on) {
+    double on = FI_MASS(s, j, now) + CL_MASS(s, j, now);
+    if (on > 0.0) {
+      if (TM(r, T_BACKFIRE)) hero_hit(r, s, N_BACKF, 6.0 + 0.30 * s->strength, now, j, 1, 1, 0, 1.0, 1.0, 1, 1, m * on);
+      ds_heal(r, s, now, 4.0 * RANK + 0.02 * r->mana_max, m * on);
+    }
+  }
+  double chance = 0.0;
+  if (s->molten_until > now) chance += 10.0 + 0.10 * s->strength;
+  if (in_form(s, now)) chance += 15.0;
+  double hits = 1.0 + chance01(chance * s->lm / 100.0);
+  hero_hit(r, s, N_BSREF, 5.0 * RANK + 0.50 * armor_now(r, s, now), now, j, 1, 1, 0, 1.0, 1.0, 1, 1, m * hits);
+}
+void cls_evade(const Row* r, St* s, int j, double now, double evaded) { (void)r; (void)s; (void)j; (void)now; (void)evaded; }
+
+@INC_C2@
+
 double tick_rate(const Row* r, const St* s) {
   double rate = 1.0;
   if (TM(r, T_GIFT)) rate += 0.15 + 0.008 * potency_now(r, s, 0.0);
@@ -573,10 +704,23 @@ double tick_rate(const Row* r, const St* s) {
   return rate;
 }
 
-double attack_interval(const Row* r, const St* s, double now) {
+double attack_interval(const Row* r, St* s, double now) {
   double swing = 2.00 * ((r->mask & S_GALA) ? 1.20 : 1.0);
+  if (r->imask & I_BHOWL) swing *= 1.0 - (1.0 - hero_ratio(s, now)) * 0.30;
+  if (r->imask & I_BMASK) {
+    double speed = ap_speed(r->aspd + ap_bonus(&s->ap, now) + 0.28 * bm_active(s, now));
+    return swing / (1.0 + speed);
+  }
   double speed = ap_speed(r->aspd + ap_bonus(&s->ap, now));
   return swing / (1.0 + speed);
+}
+
+/* Dragonfury generation period (gg_trg_Dragonfury, recomputed every tick: Mastery may grow with the Seal) */
+double fury_gen(const Row* r, St* s) {
+  double gen = 1.0 / (1.0 + r->haste);
+  if (TM(r, T_DBORN)) gen /= 1.0 + 0.01 * MAST(r, s);
+  if (r->mask & S_EYE) gen /= 1.20;
+  return gen;
 }
 
 #if REPORT
@@ -593,9 +737,12 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
   s.nord = 1; s.seen = 1u; s.ord[0] = N_AUTO; s.src[N_AUTO] = 0.0;
   s.strength = (double)(int)r->str;
   for (int v = 0; v <= 6; v++) {
-    double armor = 15.0 - r->armor_pen - (double)v;
+    double armor = 15.0 - (double)v;
     s.am_neg[v] = armor < 0.0;
-    s.am[v] = armor_mult(&s, armor);
+    s.am[P_PLAIN][v] = armor_mult(&s, armor);
+    s.am[P_MAG][v] = (r->mask & S_VOID) ? pen_taken(&s, armor, 0.0, 2.0) : s.am[P_PLAIN][v];
+    s.am[P_ATK][v] = pen_taken(&s, armor, r->armor_pen, (r->mask & S_ICLV) ? 3.0 : 0.0);
+    s.am[P_PHYS][v] = (r->mask & S_ICLV) ? pen_taken(&s, armor, 0.0, 3.0) : s.am[P_PLAIN][v];
   }
   s.max_life = r->hp;
   s.mana = r->mana_max; s.mana_time = 0.0;
@@ -603,6 +750,7 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
   for (int t = 0; t < MAXT; t++) {
     s.fi_n[t] = 0; s.fi_t[t] = 0.0; s.fi_lo[t] = INFINITY;
     s.cl_n[t] = 0; s.cl_t[t] = 0.0; s.cl_lo[t] = INFINITY;
+    s.ch_n[t] = 0; s.ch_t[t] = 0.0; s.ch_lo[t] = INFINITY;
 #if SPEC == 1
     s.br_n[t] = 0;
 #endif
@@ -614,12 +762,18 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
   s.burnout_bonus = 0.0; s.trig0 = 1.0; s.trig2 = 0.0; s.trig3 = 0.0;
   s.fury_max = TM(r, T_WAKING) ? 85.0 : 100.0; s.fury = s.fury_max; s.bolt_target = 0;
   int forms = 0;
+  s.lm = 1.0 + r->luck; s.tnow = 0.0;
+  /* incoming hits: Blazing Shield answers every attack against the DS (hits always on); Ysera's Gift heals only
+   * below 100% health (needs the health) */
+  inc_init(r, &s, r->targets, TM(r, T_YSERA) != 0, 1);
+#if INC_OFF
+  s.hits_on = 0; s.hp_on = 0;
+#endif
+  s.fire_on = TM(r, T_MELT) || (s.hits_on && (TM(r, T_BACKFIRE) || SP_EMER || s.hp_on));
+  s.ys_next = (TM(r, T_YSERA) && s.hp_on) ? 0.5 : 1.0e9;
   ap_init(&s.ap, GM(r, G_FREN) ? frenzy_chance(r->luck) : 0.0, (r->mask & S_SILM) ? SILENT_AS : 0.0,
           (r->mask & S_SILM) ? SILENT_DUR : 0.0);
-  double gen = 1.0 / (1.0 + r->haste);
-  if (TM(r, T_DBORN)) gen /= 1.0 + 0.01 * r->mastery;
-  if (r->mask & S_EYE) gen /= 1.20;
-  push(&s, gen, E_FURY, 0, 0, 0.0);
+  push(&s, fury_gen(r, &s), E_FURY, 0, 0, 0.0);
   if (TM(r, T_ENGULF)) push(&s, 1.5 / (1.0 + 0.01 * r->mastery), E_ENGULF, 0, 0, 0.0);
   if (SP_EMER) push(&s, 1.0, E_CLEANSE, 0, 0, 0.0);
   s.norder = 0;
@@ -653,8 +807,14 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
     double moment = attack_at;
     if (cast_at < moment) moment = cast_at;
     if (event_at < moment) moment = event_at;
+    int hit_j = -1, hit_k = -1;
+    double next_inc = (s.hits_on || s.hp_on) ? inc_next(&s, s.targets, &hit_j, &hit_k) : 1.0e9;
+    if (next_inc < moment) moment = next_inc;
+    if (s.ys_next < moment) moment = s.ys_next;
     if (moment >= FIGHT) break;
     clock = moment;
+    s.tnow = moment;
+    if (s.hp_on) regen_adv(r, &s, moment);
     if (event_at == moment && event_at < attack_at && event_at < cast_at) {
       int kind = s.q_k[qi], a = s.q_a[qi]; double p = s.q_p[qi], miss = s.q_m[qi];
       s.qn--;
@@ -662,12 +822,12 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
       s.q_a[qi] = s.q_a[s.qn]; s.q_p[qi] = s.q_p[s.qn]; s.q_m[qi] = s.q_m[s.qn];
       if (kind == E_FURY) {
         add_fury(&s, 1.0);
-        push(&s, moment + gen, E_FURY, 0, 0, 0.0);
+        push(&s, moment + fury_gen(r, &s), E_FURY, 0, 0, 0.0);
       } else if (kind == E_BURN) {
         burnout_impact(r, &s, moment, a, p, miss);
       } else if (kind == E_ENGULF) {
         hero_hit(r, &s, N_ENGULF, 5.0 * RANK + 0.5 * armor_now(r, &s, moment), moment, 0, s.targets, 1, 0, 1.0, 1.0, 1, 1, 1.0);
-        push(&s, moment + 1.5 / (1.0 + 0.01 * r->mastery), E_ENGULF, 0, 0, 0.0);
+        push(&s, moment + 1.5 / (1.0 + 0.01 * MAST(r, &s)), E_ENGULF, 0, 0, 0.0);
       } else if (kind == E_CLEANSE) {
 #if SPEC == 2
         int first = -1, n = 0, contiguous = 1;
@@ -686,7 +846,8 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
 #endif
       } else if (kind == E_LIFE) {
         if (s.life_until > moment) {
-          heal(r, &s, moment);
+          /* Lifebinder Loop: 2% of the DS's current health on the DS (x2 only for a target below the DS's %) */
+          ds_heal(r, &s, moment, 0.02 * (s.hp_on ? s.hp_health : s.max_life), 1.0);
           if (TM(r, T_BHEART))
             hero_hit(r, &s, N_BHEART, 5.0 + 3.0 * 15.0, moment, 0, s.targets, 0, 0, 0.0, 1.0, 1, 0, 1.0);
           push(&s, moment + 1.0 / tick_rate(r, &s), E_LIFE, 0, 0, 0.0);
@@ -703,6 +864,16 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
       }
       continue;
     }
+    if (moment == next_inc) {
+      inc_event(r, &s, moment, hit_j, hit_k, s.targets);
+      continue;
+    }
+    if (moment == s.ys_next) {
+      /* Ysera's Gift: no wounded ally hero in 700 -> the DS itself, 3% max mana while below 100% health */
+      if (s.hp_health < s.hp_max) ds_heal(r, &s, moment, 0.03 * r->mana_max, 1.0);
+      s.ys_next += 0.5;
+      continue;
+    }
     if (cast_at <= attack_at && choice >= 0 && moment == cast_at) {
       int key = choice;
       double cost = (key == K_FORM) ? 0.0 : (key == K_BURN || key == K_CLEANSE) ? 20.0 : (key == K_STRIKE || key == K_LIFE) ? 15.0 : 10.0;
@@ -717,7 +888,7 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
         forms += 1;
         s.fury = 0.0;
         s.form_until = hit_at + 12.0;
-        heal(r, &s, hit_at);
+        ds_heal(r, &s, hit_at, 0.25 * s.max_life, 1.0);  /* Dragon Form: 25% max HP */
         if (TM(r, T_WAKING)) {
           for (int i = 0; i < s.norder; i++) {
             int o = s.order[i];
@@ -741,7 +912,8 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
       } else if (key == K_CLEANSE) {
 #if SPEC == 2
         for (int t = 0; t < s.targets; t++) s.cleanse_until[t] = hit_at + 4.0;
-        heal(r, &s, hit_at);
+        /* Cleansing Fire heals the DS: 80 + 10% max HP + 3 Mastery (Emerald) */
+        ds_heal(r, &s, hit_at, 80.0 + 0.10 * s.max_life + 3.0 * MAST(r, &s), 1.0);
 #endif
       } else if (key == K_STRIKE) {
         dragon_strike(r, &s, hit_at, N_STRIKE, 1.0);
@@ -755,6 +927,8 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
         s.molten_until = hit_at + 5.0 + (TM(r, T_EARTH) ? 2.0 : 0.0);
         if (TM(r, T_EXPL)) flat = 1.0;
       }
+      s.tnow = hit_at;
+      cast_heal(r, &s, hit_at, cost);
       if (key != K_FORM) {
         double base = (key == K_BURN || key == K_CLEANSE || key == K_SHIELD) ? 8.0 : 7.0;
         s.nxt[key] = moment + cooldown_of(base, r, flat);
@@ -767,10 +941,18 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
     moment = attack_at;
     recover(r, &s, moment);
     double power = dcs(r, &s);
+    if (r->imask & I_SERA) power += 0.01 * s.hp_max;
     double before = s.src[N_AUTO];
     double chaos = in_form(&s, moment) ? 1.25 : 1.0;
     hero_hit(r, &s, N_AUTO, power, moment, 0, 1, 2, 1, r->attack_potency, chaos, 1, 1, 1.0);
     if (r->auto_pct != 1.0) s.src[N_AUTO] = before + (s.src[N_AUTO] - before) * r->auto_pct;
+    if (s.hp_on) attack_heal(r, &s, moment, s.src[N_AUTO] - before);
+    /* Blade of the Fallen Seraph: the attack costs 1% of max HP (a damage instance taken) */
+    if (r->imask & I_SERA) {
+      if (s.hp_on) hp_add(&s, -0.01 * s.hp_max);
+      taken_event(r, &s, moment, 1.0, 0.0);
+      if (s.hp_on) dinc_update(r, &s);
+    }
     double c1 = (r->crit < 100.0) ? r->crit : 100.0;
     double p_crit = ((c1 > 0.0) ? c1 : 0.0) / 100.0;
     double luck_mult = 1.0 + r->luck;
@@ -784,21 +966,31 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
       if (p > 0.0) dragon_strike(r, &s, moment, N_DRAKE, p);
     }
     gain_mana(r, &s, attack_mana_gain(r));
+    /* Frost Orb chills the attacked dummy (4 s), Ice Cleaver's Ice Nova (18% x Luck) every dummy */
+    if (r->imask & I_FORB) { bsure(CH_ARGS(&s, 0), moment, 4.0); inc_ice(r, &s, 0, moment, 1.0, 0); }
+    if (r->imask & I_ICLE) {
+      double c = chance01(0.18 * s.lm);
+      for (int t = 0; t < s.targets; t++) {
+        if (c > 0.0) bmaybe(CH_ARGS(&s, t), moment, 4.0, c, c);
+        inc_ice(r, &s, t, moment, c, 0);
+      }
+    }
     if (r->mask & S_ORB) {
-      double splash = (20.0 + 0.35 * s.strength) * (double)s.targets * taken(r, &s, 0, moment) * exec_factor(r, moment);
-      add_src(&s, N_SPLASH, splash);
-      note_damage_mana(r, &s, (double)s.targets);
+      /* Fire Orb splash (PreDamage_Items_Glyphs, DAMAGE_TYPE_NORMAL, Spells, no type): Potency, the DamageIncrease
+       * pool, Melting Flames, Branded and the damage procs per dummy; no type bonus, no crit */
+      hero_hit(r, &s, N_SPLASH, 20.0 + 0.35 * s.strength, moment, 0, s.targets, 0, 0, 1.0, 1.0, 1, 0, 1.0);
     }
     if (r->mask & S_SULF) {
       double execute = exec_factor(r, moment);
       if (s.armed) {
         s.armed = 0;
-        double splash = s.strength * typed(r, 1, moment) * taken(r, &s, 0, moment) * execute * (double)s.targets;
+        double splash = s.strength * typed(r, &s, 1, moment) * taken(r, &s, 0, moment, P_MAG) * execute * (double)s.targets;
         if (r->spell_crit) splash *= crit_factor(r->crit, r->spell_mult + r->rating);
         add_src(&s, N_SULF, splash);
         note_damage_mana(r, &s, (double)s.targets);
       }
-      double echo = power * taken(r, &s, 0, moment) * execute * (0.10 * (1.0 + r->luck));
+      /* DAMAGE_TYPE_ENHANCED: no penetration, no DamageIncrease pool */
+      double echo = power * taken(r, &s, 0, moment, P_PLAIN) * execute * (0.10 * (1.0 + r->luck));
       add_src(&s, N_ECHO, echo);
     }
     ap_attack(&s.ap, moment, r->crit);
@@ -851,7 +1043,7 @@ typedef struct {
   __global const long* dp0; __global const long* dp1; long count_without; long total;
   int npieces; __global const int* pkind; __global const int* pamp;
   __global const double* fold; __global const double* uniq; __global const ulong* pmask; __global const int* psrc;
-  __global const double* pal; __global const double* base;
+  __global const double* pal; __global const double* base; __global const ulong* pimask; __global const double* pinc;
 } Tab;
 
 int unrank(Tab* T, long index, int* chosen) {
@@ -910,6 +1102,7 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   mana_flat += 20.0 * (double)pts[1];
   ulong mask = 0;
   int n_core = 0, n_sulg = 0, has_shop = 0, has_drop = 0, nexec = 0;
+  inc_sheet_init(r);
   for (int si = 0; si < 6; si++) {
     int p = chosen[si];
     if (p < 0) { first[si] = 0; continue; }
@@ -937,6 +1130,7 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
     aspd += f[14];
     ulong m = T->pmask[p];
     mask |= m;
+    r->imask |= T->pimask[p];
     if (m & S_CORE) n_core++;
     if (m & S_SULG) n_sulg++;
     if (T->psrc[p] == 1) has_shop = 1;
@@ -959,6 +1153,8 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
       mana_flat += f[10];
       for (int j = 0; j < 4; j++) luck += a[5 + j];
       for (int j = 0; j < 4; j++) health_flat += a[9 + j];
+      __global const double* ia = T->pinc + (long)p * NINC;
+      INC_FOLD(r, ia);
     }
   }
   r->tmask = tmask; r->gmask = gmask; r->mask = mask;
@@ -1019,6 +1215,12 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   r->attack_mana = aflat; r->attack_mana_pct = apct; r->attack_mana_crit = acrit ? 1.0 : 0.0; r->damage_mana_pct = dpct;
   r->nexec = nexec; r->targets = targets;
   r->glass = (GM(r, G_GLASS) || (mask & S_GLAS)) ? 1 : 0;
+  /* incoming layer: hero armour (Dragon Figurine) = the sheet armour; Primalist Ring 0.4% Physical Type per point of
+   * HP regeneration for Strength heroes */
+  r->armor_hero = r->armor;
+  double regen_stat = inc_sheet_finish(r, hp);
+  if (r->imask & I_PRIM) r->phys_add += 0.004 * regen_stat;
+  r->pool_on = ((r->imask & (I_GIANT | I_CRIM | I_IGM | I_FURN | I_BLS)) || r->pool_flat != 0.0 || r->voodoo != 0.0) ? 1 : 0;
 }
 
 #if !REPORT
@@ -1035,12 +1237,12 @@ double row_value(Tab* T, long index, uint tmask, uint gmask, const int* pts, int
     __global const long* dp0, __global const long* dp1, const long count_without, const long total, \
     const int npieces, __global const int* pkind, __global const int* pamp, \
     __global const double* fold, __global const double* uniq, __global const ulong* pmask, __global const int* psrc, \
-    __global const double* pal, __global const double* base
+    __global const double* pal, __global const double* base, __global const ulong* pimask, __global const double* pinc
 
 #define TAB_INIT \
   Tab T; T.dp0 = dp0; T.dp1 = dp1; T.count_without = count_without; T.total = total; \
   T.npieces = npieces; T.pkind = pkind; T.pamp = pamp; T.fold = fold; T.uniq = uniq; T.pmask = pmask; T.psrc = psrc; \
-  T.pal = pal; T.base = base;
+  T.pal = pal; T.base = base; T.pimask = pimask; T.pinc = pinc;
 
 #if !REPORT
 __kernel void cls_bare(const long start, const int n, const int targets, TAB_ARGS,
@@ -1146,18 +1348,21 @@ __kernel void cls_report(const int n, const int targets, __global const int* pic
 }
 #endif
 """
+KERNEL = (KERNEL.replace("@INC_HEAD@", INC.INC_HEAD + "#define NINC %d\n" % INC.NINC)
+          .replace("@INC_ROW_FIELDS@", INC.INC_ROW_FIELDS).replace("@INC_ST_FIELDS@", INC.INC_ST_FIELDS)
+          .replace("@INC_C1@", INC.INC_C1).replace("@INC_C2@", INC.INC_C2))
 KERNEL = KERNEL.replace("#pragma OPENCL FP_CONTRACT OFF\n", "#pragma OPENCL FP_CONTRACT OFF\n" + AP.C, 1)
 
 SPECIAL_BITS = {
     "I0BR": 0, "I07O": 1, "I0JO": 2, "I0QT": 3, "tlum": 4, "I0JA": 5, "I096": 6, "I03C": 7, "I00L": 8,
     "I00Y": 9, "I07P": 10, "I048": 11, "I0FW": 12, "I0AV": 13, "I0TK": 14, "I0TL": 15, "I0TI": 16, "I0TH": 17,
-    "I0QN": 18,
+    "I0QN": 18, "I07Y": 19, "I055": 20,
 }
 TALENT_BITS = {
     "I0QJ": 0, "I0LV": 1, "I0LU": 2, "I0JF": 3, "I0QH": 4, "I0B0": 5, "I0TG": 6, "I0QI": 7, "I0LT": 8,
-    "I0LW": 9, "I0QK": 10, "I0QL": 11, "I0TE": 12, "I0TF": 13,
-    # dragon_sentinel.IGNORED_TALENTS: no effect on the fight
-    "I0JE": 20, "I0MF": 21, "I0HQ": 22, "I0MQ": 23, "I0MD": 24, "I0MC": 25,
+    "I0LW": 9, "I0QK": 10, "I0QL": 11, "I0TE": 12, "I0TF": 13, "I0HQ": 14, "I0JE": 15,
+    # IGNORED_TALENTS: no effect on the fight
+    "I0MF": 21, "I0MQ": 23, "I0MD": 24, "I0MC": 25,
 }
 GLYPH_BITS = {"I0AV": 0, "I0JA": 1, "I07B": 2, "I0EK": 3, "I0HC": 4, "I0OF": 5, "I0EJ": 6, "I0GZ": 7, "I0H0": 8}
 NO_EFFECT = {"I0H3", "I0H5", "I0H6", "I0EN", "I0OH"}
@@ -1182,11 +1387,10 @@ TALENT_NAMES = {
     "I0QK": "Waking Dragon", "I0QL": "Explosive Impact", "I0TE": "Legacy of the Aspects", "I0TF": "Blazing Strikes",
     "I0MQ": "Lifeblossom",
 }
-IGNORED_TALENTS = frozenset({"I0JE", "I0MF", "I0HQ", "I0MQ", "I0MD", "I0MC"})
+# Backfire I0HQ and Ysera's Gift I0JE count since the dummies attack (2026-11-27)
+IGNORED_TALENTS = frozenset({"I0MF", "I0MQ", "I0MD", "I0MC"})
 IGNORED_REASONS = {
-    "I0JE": "лечение самого раненого союзного героя (только если его HP < 100%, сам DS исключён)",
     "I0MF": "контроль (CC), урона нет",
-    "I0HQ": "урон только когда враг под Dragonfire атакует — пустышка не атакует",
     "I0MQ": "лечение / раздача Lifebinder союзникам, урона нет",
     "I0MD": "страница талантов (UI)",
     "I0MC": "страница талантов (UI)",
@@ -1240,6 +1444,7 @@ def dragon_sentinel_tables(space, items, sources) -> dict:
         ]
     t["fold"] = np.ascontiguousarray(fold.reshape(-1))
     t["pal"] = np.ascontiguousarray(pal.reshape(-1))
+    t.update(INC.inc_tables(space, items))
     return t
 
 
@@ -1255,15 +1460,17 @@ class DragonSentinelCL(C.ExactCL):
     SOURCE_NAMES = ("Автоатака", "Burnout", "Burnout (пассив)", "Burnout (крит, Blazing Strikes)", "Dragon Strike",
                     "Dragon Strike (Drake Sword)", "Blazing Shield", "Blazing Shield (Explosive Impact)",
                     "Engulfing Flames", "Cleansing Fire", "Cleansing Fire (от лечения)", "Burning Heart",
-                    "Ruby Dragon Form (огненные снаряды)", "Всплеск огня", "Sulfuras", "Sulfuras (удар)")
+                    "Ruby Dragon Form (огненные снаряды)", "Всплеск огня", "Sulfuras", "Sulfuras (удар)",
+                    "Отражение урона", "Sunstrider Crown", "Shield of Death", "Shado-Pan Faceguard",
+                    "Bloodlord's Regalia", "Ice Cleaver", "Blazing Shield (отражение)", "Backfire")
     ACTION_NAMES = ("Dragon Form", "Lifebinder", "Burnout", "Cleansing Fire", "Dragon Strike", "Blazing Shield")
     STAT_KEYS = ("str", "agi", "int", "damage", "potency", "mastery", "crit", "rating", "haste", "attack_speed", "luck",
                  "magic_add", "phys_add", "hp", "armor", "mana_max", "mana_regen", "galactic", "cd_temp", "flat_cdr",
                  "armor_pen", "spell_crit")
     BOOL_STATS = ()  # dragon_sentinel.stats_of keeps 1.0 / 0.0
-    NSRC, MAXA = 16, 160
+    NSRC, MAXA = 24, 160
     TABLE_KEYS = ("dp0", "dp1", "count_without", "total", "npieces", "pkind", "pamp", "fold", "uniq", "pmask", "psrc",
-                  "pal", "base")
+                  "pal", "base", "pimask", "pinc")
     SCALARS = {"count_without": np.int64, "total": np.int64, "npieces": np.int32}
 
     @staticmethod
@@ -1285,3 +1492,11 @@ parity = C.parity
 parity_full = C.parity_full
 random_builds = C.random_builds
 self_check = C.self_check
+
+# Talents / items whose effect depends on the incoming-hit model (docs/defense-model.md). Every Dragon Sentinel fight
+# has Blazing Shield answering each attack, so every frozen fight changed with the model.
+INCOMING_TALENTS = frozenset({"I0HQ", "I0JE"})
+INCOMING_ITEMS = INC.INCOMING_ITEMS
+# map fixes after the Python model was removed: penetration only on the auto attack, Voidseeker / Iron Cleaver,
+# Fire Orb splash through the class damage, Ice Cleaver
+MODEL_FIX_ITEMS = frozenset({"I031", "I0DU", "I0IU", "I0JU", "I0NT", "I0QN", "I0QV", "I07Y", "I055", "I07O", "lgdh"})

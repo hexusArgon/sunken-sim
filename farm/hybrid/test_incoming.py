@@ -266,5 +266,102 @@ class DemonHunterIncoming(unittest.TestCase):
             self.assertNotIn(name, rep["sources"])
 
 
+def attack_times(targets: int) -> list:
+    out = []
+    for j in range(targets):
+        t = 0.2 * (j % 5 + 1)
+        while t < 30.0 - 1e-9:
+            out.append(t)
+            t += 1.0
+    return sorted(out)
+
+
+class DragonSentinelIncoming(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        from farm import runner as R
+        from farm.hybrid import class_cl as C, dragon_sentinel_cl as DS
+
+        space, items = C.full_space("dragon_sentinel", "DragonSentinel", DS.TALENT_NAMES)
+        src = R.source_map(items)
+        cls.DS = DS
+        cls.engines = {(spec, t): DS.DragonSentinelCL(space, items, src, t, None, spec)
+                       for spec in ("ruby", "emerald") for t in (1, 5)}
+
+        class Off(DS.DragonSentinelCL):
+            KERNEL = "#define INC_OFF 1\n" + DS.KERNEL
+
+        cls.off = Off(space, items, src, 5, None, "ruby")
+
+    @staticmethod
+    def windows(rep, name, length):
+        """[cast, cast + 0.15 + length) of every cast of `name` (the kernel applies the cast's effects when it starts)"""
+        return [(t, t + 0.15 + length) for t, n in rep["actions"] if n == name]
+
+    def test_blazing_shield_answers_every_attack(self) -> None:
+        for t in (1, 5):
+            rep = self.engines[("ruby", t)].report(())
+            st = rep["stats"]
+            strength = float(int(st["str"]))
+            molten = self.windows(rep, "Blazing Shield", 5.0)
+            form = self.windows(rep, "Dragon Form", 12.0)
+            want = 0.0
+            for now in attack_times(t):
+                on = any(a <= now < b for a, b in molten)
+                chance = (10.0 + 0.10 * strength if on else 0.0) + (15.0 if any(a <= now < b for a, b in form) else 0.0)
+                raw = 5.0 + 0.50 * (st["armor"] + (2.0 if on else 0.0))
+                want += (raw + st["potency"]) * (1.0 + st["magic_add"]) * ARMOR * (1.0 + min(1.0, chance * (1.0 + st["luck"]) / 100.0))
+            got = rep["sources"]["Blazing Shield (отражение)"]
+            self.assertAlmostEqual(got, want, delta=1e-9 * want, msg=t)
+
+    def test_backfire_on_attackers_under_dragonfire(self) -> None:
+        for t in (1, 5):
+            rep = self.engines[("ruby", t)].report((), ("I0HQ",))
+            st = rep["stats"]
+            strike = [(a, a + 0.15 + 5.0) for a, n in rep["actions"] if n == "Dragon Strike"]
+            form = self.windows(rep, "Dragon Form", 12.0)
+            want = 0.0
+            for now in attack_times(t):
+                fire = any(a <= now <= b for a, b in strike)
+                claw = any(a <= now <= b and any(fa <= a + 0.15 < fb for fa, fb in form) for a, b in strike)
+                want += (6.0 + 0.30 * float(int(st["str"])) + st["potency"]) * (1.0 + st["magic_add"]) * ARMOR * (fire + claw)
+            self.assertAlmostEqual(rep["sources"]["Backfire"], want, delta=1e-9 * want, msg=t)
+
+    def test_penetration_only_on_the_auto_attack(self) -> None:
+        rep = self.engines[("emerald", 5)].report(("I0QN",))
+        st = rep["stats"]
+        form = self.windows(rep, "Dragon Form", 12.0)
+        want = 0.0
+        for a, n in rep["actions"]:
+            if n == "Dragon Strike":
+                f = 1.25 if any(fa <= a + 0.15 < fb for fa, fb in form) else 1.0
+                want += ((60.0 + 0.03 * st["hp"]) * f + st["potency"]) * (1.0 + st["magic_add"]) * ARMOR * 5
+        self.assertGreater(st["armor_pen"], 0.0)
+        self.assertAlmostEqual(rep["sources"]["Dragon Strike"], want, delta=1e-9 * want)
+
+    def test_ysera_heals_feed_emerald_procs(self) -> None:
+        base = self.engines[("emerald", 5)].report(())
+        ysera = self.engines[("emerald", 5)].report((), ("I0JE",))
+        self.assertGreater(ysera["sources"]["Cleansing Fire (от лечения)"], base["sources"]["Cleansing Fire (от лечения)"])
+        self.assertEqual(self.engines[("ruby", 5)].report((), ("I0JE",))["dps"], self.engines[("ruby", 5)].report(())["dps"])
+
+    def test_inc_off_replays_part_a_fixtures(self) -> None:
+        """INC_OFF (no hits, no health) is the kernel before the incoming model: frozen fights without changed items."""
+        import json
+        from pathlib import Path
+
+        from sunken_sim.esc import ESC_ATTRS
+
+        data = json.loads((Path(__file__).resolve().parent / "fixtures" / "dragon_sentinel.json").read_text(encoding="utf-8"))
+        skip = self.DS.MODEL_FIX_ITEMS | self.DS.INCOMING_ITEMS
+        cases = [c for c in data["cases"] if c["spec"] == "ruby" and c["targets"] == 5
+                 and not set(c["items"]) & skip and not set(c["talents"]) & self.DS.INCOMING_TALENTS]
+        e = self.off
+        dps, _g, status = e.pick([e.picks_of(c["items"]) for c in cases], [e.talent_mask(c["talents"]) for c in cases],
+                                 [e.glyph_mask(c["glyphs"]) for c in cases], [[c["points"][a] for a in ESC_ATTRS] for c in cases])
+        self.assertGreater(len(cases), 100)
+        self.assertEqual([c["items"] for c, d, s in zip(cases, dps, status) if s or float(d).hex() != c["dps"]], [])
+
+
 if __name__ == "__main__":
     unittest.main()
