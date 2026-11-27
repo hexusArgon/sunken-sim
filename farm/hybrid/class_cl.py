@@ -590,9 +590,17 @@ def parity_full(engine: ExactCL, space, items: dict, targets: int, builds, timel
     return {"rows": len(builds), "mismatches": len(bad), "status_rows": fallback, "examples": bad[:5], "ok": not bad}
 
 
+def fixture_value(case: dict) -> str | None:
+    """The DPS a frozen fight must give now: the Python == GPU value, or for a fight the model changed on purpose
+    ("incoming" / "model_fix") the value of the current kernel frozen by tools/refreeze_fixtures.py ("now")."""
+    if case.get("incoming") or case.get("model_fix"):
+        return case.get("now")
+    return case["dps"]
+
+
 def fixture_check(engine: ExactCL, rows: int, full: int, seed: int):
-    """Self-check of a class without a Python model: replay frozen Python == GPU fights
-    (farm/hybrid/fixtures/<hero>.json) whose items are all in the engine's pool."""
+    """Self-check of a class without a Python model: replay frozen fights (farm/hybrid/fixtures/<hero>.json) whose
+    items are all in the engine's pool: Python == GPU values, and the current-model values of changed fights."""
     import json
     import random
     from pathlib import Path
@@ -602,7 +610,7 @@ def fixture_check(engine: ExactCL, rows: int, full: int, seed: int):
     data = json.loads((Path(__file__).resolve().parent / "fixtures" / f"{engine.hero}.json").read_text(encoding="utf-8"))
     have = {p.code for p in engine.space.pieces}
     cases = [c for c in data["cases"] if c["spec"] == engine.spec and c["targets"] == engine.targets
-             and not c.get("incoming") and not c.get("model_fix") and set(c["items"]) <= have]
+             and fixture_value(c) is not None and set(c["items"]) <= have]
     random.Random(seed).shuffle(cases)
     if len(cases) < rows + full:  # split what there is between the two checks
         rows = len(cases) // 2
@@ -616,10 +624,12 @@ def fixture_check(engine: ExactCL, rows: int, full: int, seed: int):
                                           [engine.glyph_mask(c["glyphs"]) for c in chosen],
                                           [[c["points"][a] for a in ESC_ATTRS] for c in chosen])
             for c, d, st in zip(chosen, dps, status):
-                if st or float(d).hex() != c["dps"]:
-                    bad.append({"items": c["items"], "kernel": float(d), "fixture": float.fromhex(c["dps"]), "status": int(st)})
+                if st or float(d).hex() != fixture_value(c):
+                    bad.append({"items": c["items"], "kernel": float(d), "fixture": float.fromhex(fixture_value(c)),
+                                "status": int(st)})
+        # an empty part is fine when the other one has the fights (a spec with one usable frozen fight)
         parts.append({"rows": len(chosen), "mismatches": len(bad), "status_rows": sum(1 for b in bad if b["status"]),
-                      "examples": bad[:5], "ok": not bad and len(chosen) > 0})
+                      "examples": bad[:5], "ok": not bad and len(cases) > 0})
     # The chunk paths (bare scan, rows) against the explicit-pieces kernel on the same items.
     if engine.space.total > 0:
         n = min(max(rows, 1), 256)

@@ -35,7 +35,7 @@ def replay(hero: str) -> list[str]:
     errors = []
     groups: dict = {}
     for case in data["cases"]:
-        if case.get("incoming") or case.get("model_fix"):
+        if C.fixture_value(case) is None:
             continue
         groups.setdefault((case["spec"], case["targets"]), []).append(case)
     for (spec, targets), cases in groups.items():
@@ -45,9 +45,11 @@ def replay(hero: str) -> list[str]:
                                       [engine.glyph_mask(c["glyphs"]) for c in cases],
                                       [[c["points"][a] for a in ESC_ATTRS] for c in cases])
         for c, d, s in zip(cases, dps, status):
-            if s or float(d).hex() != c["dps"]:
-                errors.append(f"{spec} {targets} {c['items']} {c['talents']} {c['glyphs']}: {float(d)!r} != {float.fromhex(c['dps'])!r}")
-        for c in cases[:: max(1, len(cases) // 25)]:
+            if s or float(d).hex() != C.fixture_value(c):
+                errors.append(f"{spec} {targets} {c['items']} {c['talents']} {c['glyphs']}: {float(d)!r} != "
+                              f"{float.fromhex(C.fixture_value(c))!r}")
+        frozen = [c for c in cases if C.fixture_value(c) == c["dps"]]
+        for c in frozen[:: max(1, len(frozen) // 25)]:
             rep = engine.report(c["items"], c["talents"], c["glyphs"], c["points"])
             got = [[k, float(v).hex()] for k, v in rep["sources"].items()]
             if got != c["sources"]:
