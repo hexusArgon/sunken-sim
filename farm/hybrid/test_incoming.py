@@ -77,6 +77,14 @@ class BerserkerIncoming(unittest.TestCase):
         self.assertLess(ratio, 1.0)
         self.assertGreater(ratio, 0.95)
 
+    def test_bloodlord_stores_ally_healing(self) -> None:
+        # the model heal (75% max HP every 3 s, Healing Type from an ally: 20% stored, +10% received from the
+        # Regalia itself) at 3, 6, ..., 27 s; each burst right after it: 20% x stored x (1 + 0.06 x 15) per target
+        rep = self.engines[5].report(("I05V",))
+        hp = rep["stats"]["hp"]
+        burst = 0.20 * (0.20 * 0.75 * hp * 1.10) * (1.0 + 0.06 * 15)
+        self.assertAlmostEqual(self.per(rep, "Bloodlord's Regalia"), 9 * 5 * burst * ARMOR, places=6)
+
     def test_no_incoming_effects_no_new_sources(self) -> None:
         rep = self.engines[5].report(("I0BR",))
         for name in ("Отражение урона", "Sunstrider Crown", "Shield of Death", "Shado-Pan Faceguard"):

@@ -67,3 +67,30 @@ HP-dependent damage in the pool (need the hero's HP): Boneslicer (crit + 0.5 x m
 Fanatic I0U5, Shoulderpads of Crimson Fury I024, Immortal Gladiator's Mask arsc, The Furnace I079, Belt of
 Living Strength fgun, Bloodhowl I05N, Blade of the Fallen Seraph I00J (also self-damage). Healing that then
 counts: lifesteal, HP regeneration and healing-type effects of the build.
+
+### Berserker: healing and the DamageIncrease pool (2026-11-27)
+
+Decisions: the model heal (75% max HP every 3 s) is a Healing Type heal from the hero itself if the primary
+attribute is Intelligence, otherwise from an ally (Berserker: ally). Healing only runs when the hero's health or
+Bloodlord's Regalia changes the damage.
+- Healing trigger: amount x (1 + received modifiers [Sacred Claymore .15, Husk of Nordrassil .18 (.30 own),
+  Bloodlord's Regalia .10, Dragon Figurine .01 per armor (hero armor taken as 0.1 x Agility), The Darkglaive -.30,
+  Titan's Breastplate -.50] + own Healing Power for own heals); own heals add Dreamweaver's 8, Fist of the
+  Vindicator 5 + 5% Int, Plaguedoctor's 0.5 x Potency. Crimson Fury: Healing Type, regeneration and lifesteal stop at 38%.
+- Bloodlord's Regalia: stores 100% of own / 20% of allies' Healing Type healing; every 3 s (after the model heal)
+  deals 20% x stored x (1 + 0.06 x level) to every dummy (all are within 500).
+- Lifesteal on auto attacks (AfterDamage_Global): item % + Vampiric Aura (Bloodreaver Scythe 13%, Seraph 10%) x
+  damage dealt; Edge of the Red Court makes it Healing Type and adds 10 + level; Goredrinker adds
+  min(0.5% of 5300, 3% own max HP).
+- Regeneration (continuous): "+N Health per second" + Healing Aura 10 + Unholy Aura 5, x (1 + "Increases your
+  Health Regeneration by N%" + Dark Iron Ale 1% per 3% missing), + 1% max HP (Shield of Revendreth, Sigil of the
+  Ancients); Titan's disables it, Cursed Skull makes it damage. Primalist Ring: +0.5% Physical Type damage per point.
+- Healing Type on attacks (Ursoc's Claw 3% max HP, Nathrezim Shiv 10 + 1%, Earthliving, Moon Scythe), on spellcasts
+  (Crown of the Highlord, Amber's Gaze, Crusader's Chestplate, Tribal Staff, Seraphim Staff; Holy Scepter plain),
+  on hits (Jade Forest Mantle, Gladiator's Insignia on evade, Staff of Idrassil blessing 2% max HP per second for
+  5 s after any damage taken); plain: Masochist Mask, Eversong Defender, Seal of Vampirism, Bloodstone's aura.
+- DamageIncrease pool: 1 + hero-health entries + Voodoo Doll .03 + Ancient Voodoo Doll (.04 + .02 per other buff on
+  the target) + Giantsbane .0075 x target armor. Buffs counted: Venomous Axes, Wounded, Surge of Toxins (the kernel
+  tracks no other Berserker debuff windows).
+- Approximations: Cursed Skull regeneration damage is not a damage instance; Axe Mastery's 0.2 s cooldown is not
+  modelled; Icecrown's freeze timer restarts on the first attack after it is ready, whatever that attack's share.
