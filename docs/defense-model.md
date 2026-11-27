@@ -137,3 +137,22 @@ One-slot changes (5 targets, top-150 by spec): entered Frost and Blood — Blade
 Shield of Death, Giantsbane, Ursal's Mighty Plate, Immortal Gladiator's Mask, Ancient Voodoo Doll, Volcanic Shield;
 Unholy — the same without Immortal Gladiator's Mask, plus Icecrown Ring, Warlord's Battlemask, Belt of Living
 Strength. Talent pools by the screen unchanged (14 / 14 / 15); Blood Feast is added by TALENT_INCLUDE (below).
+
+## Armour penetration and Ice Cleaver (2026-11-27, war3map_norm.j)
+
+ArmorDamage_Increase runs on every damage >= 1 to an enemy. Sources of one branch add up (sequential ifs).
+- Item / ability penetration (Gutripper I031 2, Shadow Blade I0QV 2, Elemental Orb (Shadow) I0NT 6, Silent
+  Messenger I0QN 3, ability A042 8, class talents) only for DAMAGE_TYPE_NORMAL with attack type Chaos / Hero / Magic /
+  Normal / Pierce / Siege: unit attacks and damage dealt with ATTACK_TYPE_MELEE (Axe Mastery). Triggered spells use
+  ATTACK_TYPE_NORMAL = Spells (engine id 0) and get none; items are checked on the damage source, so summons get none.
+- Voidseeker Hood I07Y (2): Magical Type DAMAGE_TYPE_NORMAL; Iron Cleaver I055 (3): Physical Type DAMAGE_TYPE_NORMAL.
+  A second CalculateArmorPenetration on top: amount x m(A-p1) x m(A-p2) / m(A), A = the target's real armour.
+- DAMAGE_TYPE_ENHANCED (Sulfuras echo) and DISEASE (Plaguebearer): none. Giantsbane reads the real armour (no penetration).
+Models before: the summed item penetration on all damage. Death Knight top builds (all with the Shadow Orb) lose
+14-21% after refinement; one-slot Shadow Orb -38 / -36 / -33, Silent Messenger -16 / -15 / -13.
+
+Ice Cleaver lgdh (Item_Glyphs, OnChill / OnFreeze, CC_Hero = the hero): attacks 18% x Luck Ice Nova (250: every
+dummy) chill 4 s; every chill 3% and every freeze 6% of max mana as Magical damage to that unit. Counted: Frost Orb,
+Ice Nova, Death Knight ghouls / Sindragosa / Frost Strike, Icecrown Ring freezes of attackers (shared layer).
+Item-effect damage (reflects, Sunstrider, Shield of Death, Bloodlord, Ice Cleaver) also gets Potency (and the DK Blood
+Plague flat) per instance, like any damage of the hero (PreDamage_Increase).

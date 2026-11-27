@@ -50,7 +50,7 @@ KERNEL = r"""
 #define NU 48
 #define NP 11
 #define NPAL 16
-#define NSRC 19
+#define NSRC 20
 #define CLS_INT_HERO 0  /* Strength hero: the model heal comes from an ally */
 #define MAXT 8
 #define BS 8
@@ -80,6 +80,8 @@ KERNEL = r"""
 #define S_SILM (1UL<<18)
 #define S_BHUNG (1UL<<19)  /* Mask of the Blood Hungerer I0NJ: Blood Feast without the talent */
 #define S_FORB (1UL<<20)   /* Elemental Orb (Frost) I0NS: attacks Chill the target for 4 s */
+#define S_VOID (1UL<<21)   /* Voidseeker Hood I07Y: Magical Type damage ignores 2 armour */
+#define S_ICLV (1UL<<22)   /* Iron Cleaver I055: Physical Type damage ignores 3 armour */
 
 #define T_ARMY (1u<<0)
 #define T_VIRUL (1u<<1)
@@ -132,6 +134,7 @@ KERNEL = r"""
 #define N_SOD 16
 #define N_EVADE 17
 #define N_BLOOD 18
+#define N_ICE 19
 
 /* ready[] keys */
 #define K_UF 0
@@ -284,11 +287,23 @@ double potency_now(const Row* r, St* s, double now) {
   return value;
 }
 
+/* the target's armour (Marrowrend -5 on the Blood Strike target) */
 double dk_armor(const Row* r, St* s, int t, double now) {
-  double armor = 15.0 - r->armor_pen;
-  if (t == 0 && s->marrow >= now) armor -= 5.0;
-  return armor;
+  (void)r;
+  return (t == 0 && s->marrow >= now) ? 15.0 - 5.0 : 15.0;
 }
+
+/* ArmorDamage_Increase / CalculateArmorPenetration: p1 = the item / ability armour penetration, only for
+ * DAMAGE_TYPE_NORMAL with an attack type other than Spells (attacks of the hero: its own items); p2 = Voidseeker
+ * Hood (Magical Type) or Iron Cleaver (Physical Type), a second correction on top: amount x m(A-p1) x m(A-p2) / m(A).
+ * Spells (ATTACK_TYPE_NORMAL = Spells), summons (no items), DISEASE and ENHANCED damage: no penetration. */
+double pen_taken(St* s, double armor, double p1, double p2) {
+  if (p2 <= 0.0) return armor_mult(s, armor - p1);
+  double m = (p1 > 0.0) ? armor_mult(s, armor - p1) : armor_mult(s, armor);
+  return m / armor_mult(s, armor) * armor_mult(s, armor - p2);
+}
+double void_pen(const Row* r) { return (r->mask & S_VOID) ? 2.0 : 0.0; }
+double iclv_pen(const Row* r) { return (r->mask & S_ICLV) ? 3.0 : 0.0; }
 
 /* DamageIncrease_Amount entries of the incoming layer (hero health, Voodoo Dolls, Giantsbane): same pool */
 double pool_extra(const Row* r, St* s, int t, double now) {
@@ -330,8 +345,17 @@ double typed(const Row* r, St* s, int magical, double now) {
   return bonus;
 }
 
+/* no penetration (spells without a type, summons, Plaguebearer DISEASE, Sulfuras echo ENHANCED) */
 double taken(const Row* r, St* s, int t, double now) {
   return armor_mult(s, dk_armor(r, s, t, now));
+}
+/* the hero's auto attack: item penetration + Iron Cleaver (Physical Type) */
+double taken_attack(const Row* r, St* s, int t, double now) {
+  return pen_taken(s, dk_armor(r, s, t, now), r->armor_pen, iclv_pen(r));
+}
+/* Magical Type hero damage (spells): Voidseeker Hood only */
+double taken_magic(const Row* r, St* s, int t, double now) {
+  return pen_taken(s, dk_armor(r, s, t, now), 0.0, void_pen(r));
 }
 
 double plague_flat(const Row* r, St* s, int t, double now) {
@@ -369,7 +393,10 @@ void item_dmg(const Row* r, St* s, int name, double raw, int t, double when, int
     if (r->mask & S_SULG) ty += 0.13 + 0.25 * target_hp(when);
     if (r->glass) ty *= 1.15;
   }
-  double v = raw * ty * increase(r, s, t, when) * taken(r, s, t, when) * exec_factor(r, when);
+  /* PreDamage_Increase: + Potency and the Blood Plague flat per instance */
+  double flat = (potency_now(r, s, when) + plague_flat(r, s, t, when)) * count;
+  double v = (raw + flat) * ty * increase(r, s, t, when) * (magical ? taken_magic(r, s, t, when) : taken(r, s, t, when))
+             * exec_factor(r, when);
   add_src(s, name, v);
   dk_dealt(r, s, when, v, count);
 }
@@ -427,7 +454,8 @@ double deal(const Row* r, St* s, int name, double raw, int t, double now, int ma
   amount *= ty * increase(r, s, t, now);
   amount *= magical ? s->spell_critf : s->attack_crit;
   double execute = exec_factor(r, now);
-  amount *= taken(r, s, t, now) * execute;
+  amount *= ((name == N_AUTO) ? taken_attack(r, s, t, now) : magical ? taken_magic(r, s, t, now) : taken(r, s, t, now))
+            * execute;
   add_src(s, name, amount * weight);
   dk_dealt(r, s, now, amount * weight, (name == N_AUTO) ? 1.0 : weight);
   note_damage_mana(r, s, procs);
@@ -467,6 +495,7 @@ void ghoul_proc(const Row* r, St* s, double now, double g) {
   } else {
     double p_chill = g * on + 0.5 * g * (1.0 - on);
     outbreak_on(r, s, 0, now, 0.0, 0.5 * g);
+    inc_ice(r, s, 0, now, p_chill, 0);
     bmaybe(CH_ARGS(s, 0), now, 4.0, p_chill, p_chill);
   }
 }
@@ -531,6 +560,7 @@ void cast_spell(const Row* r, St* s, int key, double now) {
     if (TM(r, T_OBLIT)) raw += 1.00 * dcs(r);
     if (SP_FROST) raw = raw * (1.05 + 0.005 * MAST(r, s)) + 0.10 * r->mana_max;
     deal(r, s, N_FS, raw, 0, hit, 1, 1.0, 1.0, 1.0, 0);
+    inc_ice(r, s, 0, hit, 1.0, 1);
     s->frozen = hit + 1.5;
     unholy_strikes(r, s, hit);
     if (TM(r, T_SINDR)) {
@@ -538,8 +568,10 @@ void cast_spell(const Row* r, St* s, int key, double now) {
       for (int t = 0; t < targets; t++) {
         if (t == 0 && s->frozen >= hit) {
           deal(r, s, N_BREATH, wyrm * 1.5, t, hit, 1, 1.0, 1.0, 1.0, 0);
+          inc_ice(r, s, t, hit, 1.0, 1);
         } else {
           deal(r, s, N_BREATH, wyrm, t, hit, 1, 1.0, 1.0, 1.0, 0);
+          inc_ice(r, s, t, hit, 1.0, 0);
           bsure(CH_ARGS(s, t), hit, 5.0);
         }
       }
@@ -740,7 +772,12 @@ double fight(const Row* r, int* status) {
       if (s.hp_on) attack_heal(r, &s, moment, dealt * r->auto_pct);
       /* Frost Orb (PreDamage_Items_Glyphs, gg_trg_Chill): the dummy's Frost Nova chills the attacked target for
        * 4 s (buff Bfro: +8% DamageIncrease, counted by Grim Reaper); it lands after this hit. */
-      if (r->mask & S_FORB) bsure(CH_ARGS(&s, 0), moment, 4.0);
+      if (r->mask & S_FORB) { inc_ice(r, &s, 0, moment, 1.0, 0); bsure(CH_ARGS(&s, 0), moment, 4.0); }
+      /* Ice Cleaver: 18% x Luck Ice Nova (250 range: every dummy) chills for 4 s */
+      if (r->imask & I_ICLE) {
+        double c = chance01(0.18 * s.lm);
+        for (int t = 0; t < targets; t++) { inc_ice(r, &s, t, moment, c, 0); bmaybe(CH_ARGS(&s, t), moment, 4.0, c, c); }
+      }
       /* Blade of the Fallen Seraph: the attack costs 1% of max HP (a damage instance taken) */
       if (r->imask & I_SERA) {
         if (s.hp_on) hp_add(&s, -0.01 * max_life(r, &s));
@@ -775,7 +812,7 @@ double fight(const Row* r, int* status) {
         if (s.armed) {
           s.armed = 0;
           double ty = typed(r, &s, 1, moment);
-          double splash = r->str * ty * s.spell_critf * taken(r, &s, side, moment) * execute * (double)targets;
+          double splash = r->str * ty * s.spell_critf * taken_magic(r, &s, side, moment) * execute * (double)targets;
           double extra = pool_extra(r, &s, side, moment);
           if (extra != 0.0) splash *= 1.0 + extra;
           add_src(&s, N_SULF, splash);
@@ -1115,7 +1152,7 @@ KERNEL = KERNEL.replace("#pragma OPENCL FP_CONTRACT OFF\n", "#pragma OPENCL FP_C
 SPECIAL_BITS = {
     "I0BR": 0, "I07O": 1, "I0JO": 2, "I0QT": 3, "tlum": 4, "I0JA": 5, "I096": 6, "I03C": 7, "I00L": 8,
     "I00Y": 9, "I07P": 10, "I048": 11, "I0FW": 12, "I0AV": 13, "I07T": 14, "I0NM": 15, "I0NK": 16, "I0RZ": 17,
-    "I0QN": 18, "I0NJ": 19, "I0NS": 20,
+    "I0QN": 18, "I0NJ": 19, "I0NS": 20, "I07Y": 21, "I055": 22,
 }
 TALENT_BITS = {
     "I0CS": 0, "I0E3": 1, "I0CR": 2, "I09S": 3, "I0GP": 4, "I09T": 5, "I0IZ": 6, "I0EV": 7, "I03X": 8,
@@ -1210,12 +1247,12 @@ class DeathKnightCL(C.ExactCL):
     SOURCE_NAMES = ("Автоатака", "Death Grip", "Blood Strike", "Unholy Fury", "Frost Strike", "Outbreak", "Plaguebearer",
                     "Unholy Strikes", "Breath of Sindragosa", "Army of the Dead", "Bloodworms", "Всплеск огня",
                     "Sulfuras", "Sulfuras (удар)", "Отражение урона", "Sunstrider Crown", "Shield of Death",
-                    "Shado-Pan Faceguard", "Bloodlord's Regalia")
+                    "Shado-Pan Faceguard", "Bloodlord's Regalia", "Ice Cleaver")
     ACTION_NAMES = ("Unholy Fury", "Frost Strike", "Blood Strike", "Death Grip", "Empower Rune Weapon")
     STAT_KEYS = ("str", "agi", "int", "damage", "potency", "mastery", "crit", "rating", "haste", "attack_speed", "luck",
                  "magic_add", "phys_add", "hp", "armor", "mana_max", "mana_regen", "galactic", "cd_temp", "flat_cdr",
                  "armor_pen")
-    NSRC, MAXA = 19, 160
+    NSRC, MAXA = 20, 160
 
     @staticmethod
     def module():

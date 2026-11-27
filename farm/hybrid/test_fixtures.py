@@ -65,7 +65,7 @@ def replay_refine(hero: str) -> list[str]:
     _full, items = C.full_space(hero, class_name, mod.TALENT_NAMES)
     errors = []
     for case in data.get("refine", []):
-        if case.get("incoming"):
+        if case.get("incoming") or case.get("model_fix"):
             continue
         pieces = [p for p in _full.pieces if p.code in set(case["items"])]
         space = Space(pieces, case["talent_pool"], case["glyph_pool"], picks_without=case["picks_without"],

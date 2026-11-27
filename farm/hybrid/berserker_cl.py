@@ -60,7 +60,7 @@ KERNEL = r"""
 #define MAXT 8
 #define MAXP 16
 #define VK 8
-#define NSRC 15
+#define NSRC 16
 #define LEVEL 15.0
 #define TROPHIES 200.0
 
@@ -81,6 +81,8 @@ KERNEL = r"""
 #define S_VENOM (1UL<<14)
 #define S_FANAT (1UL<<15)
 #define S_SILM (1UL<<16)
+#define S_VOID (1UL<<17)   /* Voidseeker Hood I07Y: Magical Type damage ignores 2 armour */
+#define S_ICLV (1UL<<18)   /* Iron Cleaver I055: Physical Type damage ignores 3 armour */
 @INC_HEAD@
 #define CLS_INT_HERO 0
 
@@ -129,6 +131,13 @@ KERNEL = r"""
 #define N_SOD 12
 #define N_EVADE 13
 #define N_BLOOD 14
+#define N_ICE 15
+/* armour penetration kinds (ArmorDamage_Increase): none, Magical Type, Physical Type, attack (+ Physical Type) */
+#define PK_NONE 0
+#define PK_MAG 1
+#define PK_PHYS 2
+#define PK_ATK 3
+#define NCH 24
 
 typedef struct {
   double str, agi, intel, potency, mastery, damage, crit, rating, haste, aspd;
@@ -150,6 +159,7 @@ typedef struct {
   double src[NSRC]; int ord[NSRC]; int nord; uint seen;
   double va_e[MAXT][VK], va_m[MAXT][VK]; int va_n[MAXT];
   double surge_p[MAXT], surge_at[MAXT];
+  double ch_t[MAXT][NCH], ch_q[MAXT][NCH]; int ch_n[MAXT];
   double pend[MAXP]; int npend;
   double mana, mana_time, lm;
 @INC_ST_FIELDS@
@@ -222,28 +232,41 @@ void va_apply(St* s, int i, double now) {
 
 double armor_mult(St* s, double armor) {
   if (armor > 0.0) return 1.0 - (armor * 0.04) / (1.0 + 0.04 * armor);
-  if (armor < 0.0) { if (!s->status) s->status = 4; return 1.0; }
+  if (armor < 0.0) return 2.0 - pow(1.0 - 0.04, -armor);  /* shadow.armor_taken */
   return 1.0;
 }
 
-double taken_for(const Row* r, St* s, int i, double now) {
-  double armor = 15.0 - r->armor_pen;
+/* ArmorDamage_Increase / CalculateArmorPenetration: p1 = item armour penetration, only for DAMAGE_TYPE_NORMAL with
+ * an attack type other than Spells (the hero's attacks and Axe Mastery, ATTACK_TYPE_MELEE); p2 = Voidseeker Hood
+ * (Magical Type) / Iron Cleaver (Physical Type) on top: amount x m(A-p1) x m(A-p2) / m(A). Spells
+ * (ATTACK_TYPE_NORMAL = Spells) and ENHANCED damage: no item penetration. A = the target's armour (Wound -3). */
+double pen_taken(St* s, double armor, double p1, double p2) {
+  if (p2 <= 0.0) return armor_mult(s, armor - p1);
+  double m = (p1 > 0.0) ? armor_mult(s, armor - p1) : armor_mult(s, armor);
+  return m / armor_mult(s, armor) * armor_mult(s, armor - p2);
+}
+
+double taken_for(const Row* r, St* s, int i, double now, int kind) {
+  double armor = 15.0;
+  double p1 = (kind == PK_ATK) ? r->armor_pen : 0.0;
+  double p2 = (kind == PK_MAG) ? ((r->mask & S_VOID) ? 2.0 : 0.0)
+            : (kind >= PK_PHYS) ? ((r->mask & S_ICLV) ? 3.0 : 0.0) : 0.0;
   if (TM(r, T_WOUND)) {
     double p = va_mass(s, i, now);
     if (p > 0.0) {
-      double base = armor_mult(s, armor) * pool_of(r, s, i, now, armor);
-      double low = armor_mult(s, armor - 3.0) * pool_of(r, s, i, now, armor - 3.0);
+      double base = pen_taken(s, armor, p1, p2) * pool_of(r, s, i, now, armor);
+      double low = pen_taken(s, armor - 3.0, p1, p2) * pool_of(r, s, i, now, armor - 3.0);
       return (1.0 - p) * base + p * low;
     }
   }
   double pool = pool_of(r, s, i, now, armor);
-  if (pool == 1.0) return armor_mult(s, armor);
-  return armor_mult(s, armor) * pool;
+  if (pool == 1.0) return pen_taken(s, armor, p1, p2);
+  return pen_taken(s, armor, p1, p2) * pool;
 }
 
-/* armour part of taken_for only: DAMAGE_TYPE_ENHANCED damage (Sulfuras echo) skips PreDamage_Increase */
+/* armour only: DAMAGE_TYPE_ENHANCED damage (Sulfuras echo) skips PreDamage_Increase and the penetration */
 double armor_for(const Row* r, St* s, int i, double now) {
-  double armor = 15.0 - r->armor_pen;
+  double armor = 15.0;
   if (TM(r, T_WOUND)) {
     double p = va_mass(s, i, now);
     if (p > 0.0) {
@@ -253,6 +276,23 @@ double armor_for(const Row* r, St* s, int i, double now) {
     }
   }
   return armor_mult(s, armor);
+}
+
+/* Chill (buff Bfro, 4 s) per dummy from Frost Orb / Ice Nova: only the Ancient Voodoo Doll counts it */
+void chill_add(St* s, int i, double now, double p) {
+  if (p <= 0.0) return;
+  int n = 0;
+  for (int k = 0; k < s->ch_n[i]; k++)
+    if (s->ch_t[i][k] + 4.0 > now) { s->ch_t[i][n] = s->ch_t[i][k]; s->ch_q[i][n] = s->ch_q[i][k]; n++; }
+  s->ch_n[i] = n;
+  if (n > 0 && s->ch_t[i][n - 1] == now) { s->ch_q[i][n - 1] *= 1.0 - p; return; }
+  if (n >= NCH) { if (!s->status) s->status = 2; return; }
+  s->ch_t[i][n] = now; s->ch_q[i][n] = 1.0 - p; s->ch_n[i] = n + 1;
+}
+double chill_mass(St* s, int i, double now) {
+  double q = 1.0;
+  for (int k = 0; k < s->ch_n[i]; k++) if (s->ch_t[i][k] + 4.0 > now) q *= s->ch_q[i][k];
+  return 1.0 - q;
 }
 
 double gen_mult(const Row* r, double when) {
@@ -269,9 +309,9 @@ double physical(const Row* r, double when) {
   return bonus;
 }
 
-void finish(const Row* r, St* s, int name, double raw, int index, double when, double count, double pot_coeff) {
+void finish(const Row* r, St* s, int name, double raw, int index, double when, double count, double pot_coeff, int kind) {
   double execute = exec_factor(r, when);
-  double scale = taken_for(r, s, index, when) * (SP_FURY ? 0.85 : 1.0) * count;
+  double scale = taken_for(r, s, index, when, kind) * (SP_FURY ? 0.85 : 1.0) * count;
   double weight = raw * scale, coeff = pot_coeff * scale;
   double dealt = (weight + r->potency * coeff) * execute;
   add_src(s, name, dealt);
@@ -296,7 +336,7 @@ void surge_consume(const Row* r, St* s, int i, double when) {
   if (s->surge_p[i] <= 0.0) return;
   double raw = 15.0 * LEVEL + 2.5 * r->agi;
   double g = gen_mult(r, when);
-  finish(r, s, N_SURGE, raw * g, i, when, s->surge_p[i], g);
+  finish(r, s, N_SURGE, raw * g, i, when, s->surge_p[i], g, PK_NONE);
   s->surge_p[i] = 0.0;
 }
 
@@ -331,7 +371,7 @@ double attack_hit(const Row* r, St* s, int name, double raw, double when, double
     expected += share * (15.0 + 0.05 * r->hp) * mult;
   }
   double ph = physical(r, when);
-  finish(r, s, name, expected * ph, index, when, count, pot_coeff * ph);
+  finish(r, s, name, expected * ph, index, when, count, pot_coeff * ph, PK_ATK);
   return 0.0;
 }
 
@@ -352,7 +392,7 @@ void va_tick(const Row* r, const PowT* P, St* s, int index, double now, double w
   double ticks = 1.0;
   if (SP_POISON) ticks += chance01((5.0 + 0.5 * MAST(r, s)) / 100.0);
   double typed = TM(r, T_HEMO) ? physical(r, now) : gen_mult(r, now);
-  finish(r, s, N_VA, raw * typed, index, now, calls * ticks * w, coeff * typed);
+  finish(r, s, N_VA, raw * typed, index, now, calls * ticks * w, coeff * typed, TM(r, T_HEMO) ? PK_PHYS : PK_NONE);
   if (!SP_POISON) surge_proc(s, index, now, (1.0 - pow_lookup(P, s, 1.0 - chance01(0.02 * s->lm), calls)) * w);
   else poison_spec_proc(P, s, index, now, calls * ticks * w);
   if (refresh && TM(r, T_DAMBALA)) {
@@ -431,8 +471,9 @@ void cls_taken(const Row* r, St* s, double now, double m, double axe) {
 
 /* Damage of an incoming-hit effect on dummy i: magical = Magical Type (Sunstrider), else untyped. */
 void item_dmg(const Row* r, St* s, int name, double raw, int i, double when, int magical, double count) {
-  (void)count;
-  double v = raw * gen_mult(r, when) * taken_for(r, s, i, when) * exec_factor(r, when) * (SP_FURY ? 0.85 : 1.0);
+  /* PreDamage_Increase: + Potency per instance */
+  double v = (raw + r->potency * count) * gen_mult(r, when) * taken_for(r, s, i, when, magical ? PK_MAG : PK_NONE)
+             * exec_factor(r, when) * (SP_FURY ? 0.85 : 1.0);
   if (magical) {
     v *= 1.0 + r->magic_add;
     if (r->spell_crit) {
@@ -448,6 +489,7 @@ void item_dmg(const Row* r, St* s, int name, double raw, int i, double when, int
 double cls_buffs(const Row* r, St* s, int i, double now) {
   double va = va_mass(s, i, now);
   double buffs = va + (TM(r, T_WOUND) ? va : 0.0);
+  if (r->imask & (I_FORB | I_ICLE)) buffs += chill_mass(s, i, now);
   if (now - s->surge_at[i] <= 5.0) buffs += s->surge_p[i];
   return buffs;
 }
@@ -473,7 +515,7 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
   s.status = 0; s.miss_b = 0; s.miss_e = 0;
   s.lm = 1.0 + r->luck;
   const int targets = r->targets;
-  for (int i = 0; i < MAXT; i++) { s.va_n[i] = 0; s.surge_p[i] = 0.0; s.surge_at[i] = -1.0; }
+  for (int i = 0; i < MAXT; i++) { s.va_n[i] = 0; s.surge_p[i] = 0.0; s.surge_at[i] = -1.0; s.ch_n[i] = 0; }
   s.npend = 0;
   s.mana = r->mana_max; s.mana_time = 0.0; s.armed = 0;
   ap_init(&s.ap, GM(r, G_FREN) ? frenzy_chance(r->luck) : 0.0, (r->mask & S_SILM) ? SILENT_AS : 0.0,
@@ -511,7 +553,7 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
         double coeff = 1.0;
         if (TM(r, T_BOMB)) { double p = va_mass(&s, i, moment); coeff = 1.6 * p + 1.3 * (1.0 - p); }
         double ph = physical(r, moment);
-        finish(r, &s, N_SACK, raw * coeff * ph, i, moment, 1.0, coeff * ph);
+        finish(r, &s, N_SACK, raw * coeff * ph, i, moment, 1.0, coeff * ph, PK_PHYS);
         poison_spec_proc(P, &s, i, moment, 1.0);
         va_apply(&s, i, moment);
       }
@@ -563,7 +605,7 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
       double raw = 150.0 * 1.0 + 2.0 * dcs(r) + 0.05 * 5300.0;
       double coeff = (TM(r, T_EXEC) && target_hp(hit) <= 0.40) ? 1.35 : 1.0;
       double ph = physical(r, hit);
-      finish(r, &s, N_SKULL, raw * coeff * ph, 0, hit, 1.0, coeff * ph);
+      finish(r, &s, N_SKULL, raw * coeff * ph, 0, hit, 1.0, coeff * ph, PK_PHYS);
       poison_spec_proc(P, &s, 0, hit, 1.0);
       damage_mana(r, &s, 1.0);
       if (sulf) s.armed = 1;
@@ -581,6 +623,13 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
       double auto_before = (s.seen & (1u << N_AUTO)) ? s.src[N_AUTO] : 0.0;
       attack_hit(r, &s, N_AUTO, power, moment, r->attack_potency, 0, r->auto_pct);
       if (s.hp_on) attack_heal(r, &s, moment, s.src[N_AUTO] - auto_before);
+      /* Frost Orb chills the attacked dummy; Ice Cleaver's Ice Nova (18% x Luck) chills every dummy: 4 s,
+       * Ice Cleaver 3% max mana on every chill; the chill lands after this hit */
+      if (r->imask & I_FORB) { inc_ice(r, &s, 0, moment, 1.0, 0); chill_add(&s, 0, moment, 1.0); }
+      if (r->imask & I_ICLE) {
+        double c = chance01(0.18 * s.lm);
+        for (int t = 0; t < targets; t++) { inc_ice(r, &s, t, moment, c, 0); chill_add(&s, t, moment, c); }
+      }
       poison_spec_proc(P, &s, 0, moment, 1.0);
       double gain = r->attack_mana + r->attack_mana_pct * r->mana_max;
       if (r->attack_mana_crit != 0.0) {
@@ -597,12 +646,12 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
         double raw = 2.0 * (10.0 * 1.0 + 0.5 * agi);
         for (int i = 0; i < targets; i++) {
           double g = gen_mult(r, moment);
-          finish(r, &s, N_SNAKE, raw * g, i, moment, chance, g);
+          finish(r, &s, N_SNAKE, raw * g, i, moment, chance, g, PK_NONE);
           if (s.surge_p[i] > 0.0 && moment - s.surge_at[i] <= 5.0) {
             double consumed = s.surge_p[i] * chance;
             double g2 = gen_mult(r, moment);
             double surge_value = (15.0 * LEVEL + 2.5 * agi) * g2;
-            finish(r, &s, N_SURGE, surge_value, i, moment, consumed, gen_mult(r, moment));
+            finish(r, &s, N_SURGE, surge_value, i, moment, consumed, gen_mult(r, moment), PK_NONE);
             s.surge_p[i] -= consumed;
           }
         }
@@ -627,7 +676,7 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
         double ex = exec_factor(r, moment);
         /* Fire Orb splash (DAMAGE_TYPE_NORMAL): PreDamage_Increase adds Potency (2026-11-27) */
         double splash = 0.0;
-        for (int t = 0; t < targets; t++) splash += (20.0 + 0.35 * agi + r->potency) * taken_for(r, &s, t, moment);
+        for (int t = 0; t < targets; t++) splash += (20.0 + 0.35 * agi + r->potency) * taken_for(r, &s, t, moment, PK_NONE);
         splash *= exec_factor(r, moment);
         add_src(&s, N_SPLASH, splash * fury_mult);
         (void)ex;
@@ -635,7 +684,7 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
       }
       if (sulf) {
         double execute = exec_factor(r, moment);
-        double taken = taken_for(r, &s, 0, moment);
+        double taken = taken_for(r, &s, 0, moment, PK_MAG);
         if (s.armed) {
           s.armed = 0;
           double splash = agi * (1.0 + r->magic_add) * gen_mult(r, moment) * taken * execute * (double)targets;
@@ -995,7 +1044,7 @@ KERNEL = KERNEL.replace("#pragma OPENCL FP_CONTRACT OFF\n", "#pragma OPENCL FP_C
 SPECIAL_BITS = {
     "I0BR": 0, "I07O": 1, "I0JO": 2, "I0QT": 3, "tlum": 4, "I0JA": 5, "I096": 6, "I03C": 7, "I00L": 8,
     "I00Y": 9, "I07P": 10, "I048": 11, "I0FW": 12, "I0AV": 13, "I0U2": 14, "I0U5": 15,
-    "I0QN": 16,
+    "I0QN": 16, "I07Y": 17, "I055": 18,
 }
 
 TALENT_BITS = {
@@ -1282,11 +1331,11 @@ class BerserkerCL(C.ExactCL):
     SOURCE_NAMES = ("Автоатака", "Toxic Sack", "Skull Split", "Venomous Axes", "Surge of Toxins", "Way of the Snake",
                     "Axe Mastery", "Всплеск огня", "Sulfuras", "Sulfuras (удар)",
                     "Отражение урона", "Sunstrider Crown", "Shield of Death", "Shado-Pan Faceguard",
-                    "Bloodlord's Regalia")
+                    "Bloodlord's Regalia", "Ice Cleaver")
     ACTION_NAMES = ("Toxic Sack", "Skull Split")
     STAT_KEYS = ("agi", "str", "int", "damage", "potency", "mastery", "crit", "rating", "haste", "attack_speed", "luck",
                  "magic_add", "phys_add", "hp", "mana_max", "mana_regen", "galactic", "cd_temp", "flat_cdr", "armor_pen")
-    NSRC, MAXA = 15, 64
+    NSRC, MAXA = 16, 64
 
     def report(self, codes, talents=(), glyphs=(), points: dict | None = None) -> dict:
         """One fight with the sources in Ledger order, the casts, mana left and the stat sheet."""

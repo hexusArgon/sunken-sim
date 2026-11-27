@@ -73,6 +73,8 @@ INC_BITS = {
     "I0CZ": 43,   # Giantsbane: DamageIncrease + 0.75% per point of target armor
     "wneu": 44,   # Chaos Shard: 12 to every attacker
     "I0BM": 45,   # Mantle of the Pathfinder-like (PreDamage_Reduce 0.90, 50 magic damage on evade)
+    "lgdh": 46,   # Ice Cleaver: 18% x Luck Ice Nova on attack; chilling 3% / freezing 6% max mana magical damage
+    "I0NS": 47,   # Elemental Orb (Frost): attacks Chill the target 4 s (gg_trg_Chill)
 }
 
 # per-piece doubles (pinc), first copy only
@@ -126,7 +128,7 @@ def _defines() -> str:
              18: "SERA", 19: "EVD", 20: "BLOOD", 21: "TITAN", 22: "CSKULL", 23: "REDC", 24: "GORE", 25: "BREAV",
              26: "FIGUR", 27: "SANG", 28: "SVAMP", 29: "MASO", 30: "PRIM", 31: "IDRA", 32: "JADE", 33: "AMBER",
              34: "EARTH", 35: "MOON", 36: "HAURA", 37: "UNHOLY", 38: "CRUS", 39: "TRIBAL", 40: "SERAPH", 41: "HIGHL",
-             42: "HOLYS", 43: "GIANT", 44: "CHAOS", 45: "PATH"}
+             42: "HOLYS", 43: "GIANT", 44: "CHAOS", 45: "PATH", 46: "ICLE", 47: "FORB"}
     return "\n".join(f"#define I_{name} (1UL<<{bit})" for bit, name in sorted(names.items())) + "\n"
 
 
@@ -320,6 +322,14 @@ void inc_init(const Row* r, St* s, int targets, int cls_hp, int cls_hits) {
 """
 
 INC_C2 = r"""
+/* Ice Cleaver (OnChill / OnFreeze, CC_Hero = the hero): every chill 3%, every freeze 6% of max mana as magical
+ * damage to the chilled / frozen unit; w = expected number of such applications. Classes call it for their own
+ * chills and freezes (Frost Orb, Ice Nova, class spells); the Icecrown Ring freeze of an attacker is here. */
+void inc_ice(const Row* r, St* s, int t, double now, double w, int freeze) {
+  if ((r->imask & I_ICLE) && w > 0.0)
+    item_dmg(r, s, N_ICE, (freeze ? 0.06 : 0.03) * r->mana_max * w, t, now, 1, w);
+}
+
 /* PreDamage_Enemies (PreDamageEvent 4, before evasion): one damage instance of mass m taken at now.
  * axe = the class's Axe-Mastery-like chance of this instance (passed through to cls_taken). */
 void taken_event(const Row* r, St* s, double now, double m, double axe) {
@@ -389,6 +399,7 @@ void dummy_attack(const Row* r, St* s, int j, double m, double now) {
     s->ice_ready = now + ((hero_ratio(s, now) <= 0.40) ? 12.0 : 20.0);
   }
   double stun = (r->imask & I_NERUB) ? (m - frozen) * chance01(0.05 * s->lm) : 0.0;
+  inc_ice(r, s, j, now, frozen, 1);
   dummy_push(s, j, k0 + 5, frozen);
   dummy_push(s, j, k0 + 3, stun);
   dummy_push(s, j, k0 + 2, m - frozen - stun);

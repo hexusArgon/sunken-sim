@@ -108,5 +108,12 @@ GPU-ядра; (Б) добавить в GPU-ядра расчёт урона, к�
 - Frost Orb (I0NS): каждая атака накладывает Chill (gg_trg_Chill, бафф Bfro) на цель на 4 с — учесть, если у
   класса есть эффекты от охлаждённой цели (DamageIncrease, счётчики дебаффов, Ancient Voodoo Doll и т. п.).
 - Отголосок Sulfuras — DAMAGE_TYPE_ENHANCED: без Potency и без пула DamageIncrease.
+- Пробивание брони (ArmorDamage_Increase): предметы/способности/таланты складываются, но действуют только на
+  DAMAGE_TYPE_NORMAL с типом атаки не Spells — атаки героя и урон с ATTACK_TYPE_MELEE; заклинания (ATTACK_TYPE_NORMAL =
+  Spells), призывы (нет предметов), ENHANCED и DISEASE — без пробивания. Voidseeker Hood (Magical, 2) и Iron Cleaver
+  (Physical, 3) — вторая поправка поверх: x m(A-p1) x m(A-p2) / m(A). Giantsbane — по реальной броне цели.
+- Ice Cleaver (lgdh): атаки 18% x Luck — Ice Nova по всем манекенам (Chill 4 с); каждое охлаждение 3%, каждая заморозка
+  6% макс. маны магическим уроном (Frost Orb, Ice Nova, охлаждения/заморозки класса, Icecrown Ring — в общем слое).
+- Урон эффектов предметов получает Potency на каждый экземпляр (как любой урон героя).
 - Замороженные эталоны, значение которых изменилось из-за такой правки, пометить `"model_fix": "<причина>"`
   (их пропускают сверки, как `"incoming"`), убедившись, что все изменившиеся содержат этот предмет.
