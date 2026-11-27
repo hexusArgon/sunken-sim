@@ -241,6 +241,20 @@ double taken_for(const Row* r, St* s, int i, double now) {
   return armor_mult(s, armor) * pool;
 }
 
+/* armour part of taken_for only: DAMAGE_TYPE_ENHANCED damage (Sulfuras echo) skips PreDamage_Increase */
+double armor_for(const Row* r, St* s, int i, double now) {
+  double armor = 15.0 - r->armor_pen;
+  if (TM(r, T_WOUND)) {
+    double p = va_mass(s, i, now);
+    if (p > 0.0) {
+      double base = armor_mult(s, armor) * 1.0;
+      double low = armor_mult(s, armor - 3.0) * 1.0;
+      return (1.0 - p) * base + p * low;
+    }
+  }
+  return armor_mult(s, armor);
+}
+
 double gen_mult(const Row* r, double when) {
   double bonus = 1.0;
   if (r->mask & S_SULG) bonus += 0.13 + 0.25 * target_hp(when);
@@ -416,7 +430,8 @@ void cls_taken(const Row* r, St* s, double now, double m, double axe) {
 }
 
 /* Damage of an incoming-hit effect on dummy i: magical = Magical Type (Sunstrider), else untyped. */
-void item_dmg(const Row* r, St* s, int name, double raw, int i, double when, int magical) {
+void item_dmg(const Row* r, St* s, int name, double raw, int i, double when, int magical, double count) {
+  (void)count;
   double v = raw * gen_mult(r, when) * taken_for(r, s, i, when) * exec_factor(r, when) * (SP_FURY ? 0.85 : 1.0);
   if (magical) {
     v *= 1.0 + r->magic_add;
@@ -438,6 +453,9 @@ double cls_buffs(const Row* r, St* s, int i, double now) {
 }
 
 double cls_primary(const Row* r) { return r->agi; }
+
+/* Berserker has no class healing-received modifiers */
+double cls_heal_mod(const Row* r, St* s) { (void)r; (void)s; return 0.0; }
 
 @INC_C2@
 
@@ -626,7 +644,7 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
           add_src(&s, N_SULF, splash * fury_mult);
           damage_mana(r, &s, (double)targets);
         }
-        double echo = power * taken * execute * (0.10 * (1.0 + r->luck));
+        double echo = power * armor_for(r, &s, 0, moment) * execute * (0.10 * (1.0 + r->luck));  /* ENHANCED: no pool */
         add_src(&s, N_ECHO, echo * fury_mult);
       }
       ap_attack(&s.ap, moment, attack_crit(r, &s, moment));

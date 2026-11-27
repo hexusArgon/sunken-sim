@@ -18,6 +18,7 @@ import numpy as np
 
 from farm.hybrid import attack_procs_cl as AP
 from farm.hybrid import class_cl as C
+from farm.hybrid import incoming_cl as INC
 
 NPAL = 16
 
@@ -39,6 +40,7 @@ KERNEL = r"""
 #define SP_FROST (SPEC == 0)
 #define SP_BLOOD (SPEC == 1)
 #define SP_UNHOLY (SPEC == 2)
+@INC_HEAD@
 
 #define FIGHT 30.0
 #define CAST_POINT 0.15
@@ -48,7 +50,8 @@ KERNEL = r"""
 #define NU 48
 #define NP 11
 #define NPAL 16
-#define NSRC 14
+#define NSRC 19
+#define CLS_INT_HERO 0  /* Strength hero: the model heal comes from an ally */
 #define MAXT 8
 #define BS 8
 #define MAXS 48  /* worms (7 s) + ghouls (16 s) alive at once; more -> status 2 */
@@ -75,6 +78,7 @@ KERNEL = r"""
 #define S_COLD (1UL<<16)
 #define S_MAW  (1UL<<17)
 #define S_SILM (1UL<<18)
+#define S_BHUNG (1UL<<19)  /* Mask of the Blood Hungerer I0NJ: Blood Feast without the talent */
 
 #define T_ARMY (1u<<0)
 #define T_VIRUL (1u<<1)
@@ -91,6 +95,7 @@ KERNEL = r"""
 #define T_GRIM (1u<<12)
 #define T_WORMS (1u<<13)
 #define T_DPRES (1u<<14)
+#define T_BFEAST (1u<<15)  /* Blood Feast I0CU: heals on every damage instance of the DK player */
 
 #define G_UNSL (1u<<0)
 #define G_GLASS (1u<<1)
@@ -120,6 +125,12 @@ KERNEL = r"""
 #define N_SPLASH 11
 #define N_SULF 12
 #define N_ECHO 13
+/* incoming-hit sources (farm/hybrid/incoming_cl.py) */
+#define N_REFL 14
+#define N_SUNS 15
+#define N_SOD 16
+#define N_EVADE 17
+#define N_BLOOD 18
 
 /* ready[] keys */
 #define K_UF 0
@@ -134,9 +145,10 @@ typedef struct {
   double luck, mana_max, mana_regen, cast_lock, hp;
   double attack_mana, attack_mana_pct, attack_mana_crit, damage_mana_pct;
   double ex_thr[MAXE], ex_pct[MAXE];
-  int nexec, targets, glass, spell_crit;
+  int nexec, targets, glass, spell_crit, bfeast, pool_on;
   uint tmask, gmask;
   ulong mask;
+@INC_ROW_FIELDS@
 } Row;
 
 typedef struct {
@@ -150,6 +162,7 @@ typedef struct {
   int sk[MAXS]; double se[MAXS], sn[MAXS], sr[MAXS]; int ns;
   double mana, mana_time, hp_bonus, frozen, marrow, lm, bt, attack_crit, spell_critf, pb_chance;
   int armed, status, army_count, last_cast, rested;
+@INC_ST_FIELDS@
   AP ap;
 #if REPORT
   double act_t[MAXA]; int act_id[MAXA]; int nact;
@@ -252,6 +265,8 @@ void recover(const Row* r, St* s, double now) {
   s->mana_time = now;
 }
 
+@INC_C1@
+
 double dcs(const Row* r) { return 12.0 + 0.75 * r->str + r->damage; }
 
 double max_life(const Row* r, const St* s) { return r->hp + s->hp_bonus; }
@@ -268,6 +283,21 @@ double potency_now(const Row* r, St* s, double now) {
   return value;
 }
 
+double dk_armor(const Row* r, St* s, int t, double now) {
+  double armor = 15.0 - r->armor_pen;
+  if (t == 0 && s->marrow >= now) armor -= 5.0;
+  return armor;
+}
+
+/* DamageIncrease_Amount entries of the incoming layer (hero health, Voodoo Dolls, Giantsbane): same pool */
+double pool_extra(const Row* r, St* s, int t, double now) {
+  if (!r->pool_on) return 0.0;
+  double d = s->dinc + r->pool_flat;
+  if (r->imask & I_GIANT) d += (0.03 / 4.0) * dk_armor(r, s, t, now);
+  if (r->voodoo != 0.0) d += 0.04 + 0.02 * cls_buffs(r, s, t, now);
+  return d;
+}
+
 double increase(const Row* r, St* s, int t, double now) {
   double bonus = 1.0;
   int is_frozen = (t == 0) && (s->frozen >= now);
@@ -279,6 +309,8 @@ double increase(const Row* r, St* s, int t, double now) {
     if (t == 0 && s->marrow >= now) count += 1.0;
     bonus += 0.06 * count;
   }
+  double extra = pool_extra(r, s, t, now);
+  if (extra != 0.0) bonus += extra;
   return bonus;
 }
 
@@ -286,7 +318,7 @@ double typed(const Row* r, St* s, int magical, double now) {
   double bonus = 1.0 + (magical ? r->magic_add : r->phys_add);
   if (r->mask & S_SULG) bonus += 0.13 + 0.25 * target_hp(now);
   if (magical) {
-    if (r->mask & S_TLUM) bonus += 0.05 + 0.005 * r->mastery;
+    if (r->mask & S_TLUM) bonus += 0.05 + 0.005 * MAST(r, s);
     if (frost_presence(r)) {
       recover(r, s, now);
       bonus += 0.01 * (s->mana / 40.0);
@@ -298,9 +330,7 @@ double typed(const Row* r, St* s, int magical, double now) {
 }
 
 double taken(const Row* r, St* s, int t, double now) {
-  double armor = 15.0 - r->armor_pen;
-  if (t == 0 && s->marrow >= now) armor -= 5.0;
-  return armor_mult(s, armor);
+  return armor_mult(s, dk_armor(r, s, t, now));
 }
 
 double plague_flat(const Row* r, St* s, int t, double now) {
@@ -311,6 +341,54 @@ double plague_flat(const Row* r, St* s, int t, double now) {
   return value * on;
 }
 
+/* Ancient Voodoo Doll: debuffs on target t that the kernel tracks (Outbreak, Blood Plague, Chill, Freeze, Marrowrend) */
+double cls_buffs(const Row* r, St* s, int t, double now) {
+  (void)r;
+  double b = PL_MASS(s, t, now) + OB_MASS(s, t, now) + CH_MASS(s, t, now);
+  if (t == 0 && s->frozen >= now) b += 1.0;
+  if (t == 0 && s->marrow >= now) b += 1.0;
+  return b;
+}
+
+/* Damage dealt by the DK player (count = expected instances): Blood Feast I0CU / Mask of the Blood Hungerer
+ * heal 2 + 0.2% max HP x Blood Tap per instance (PreDamage_Heroes, own Healing Type); Sanguine Aura, Seal of
+ * Vampirism. Health only. */
+void dk_dealt(const Row* r, St* s, double when, double amount, double count) {
+  if (!s->hp_on || count <= 0.0) return;
+  if (r->bfeast) heal_mod(r, s, 2.0 + (0.02 / 10.0) * max_life(r, s) * s->bt, count, 1, 1, 1);
+  inc_dealt(r, s, when, amount, count);
+}
+
+/* Damage of an incoming-hit effect on dummy t (source: the hero). magical = Magical Type (Sunstrider), else untyped. */
+void item_dmg(const Row* r, St* s, int name, double raw, int t, double when, int magical, double count) {
+  double ty;
+  if (magical) ty = typed(r, s, 1, when) * s->spell_critf;
+  else {
+    ty = 1.0;
+    if (r->mask & S_SULG) ty += 0.13 + 0.25 * target_hp(when);
+    if (r->glass) ty *= 1.15;
+  }
+  double v = raw * ty * increase(r, s, t, when) * taken(r, s, t, when) * exec_factor(r, when);
+  add_src(s, name, v);
+  dk_dealt(r, s, when, v, count);
+}
+
+/* Death Knight: no class effect of damage taken (Will of the Necropolis, Anti-Magic Zone only reduce it) */
+void cls_taken(const Row* r, St* s, double now, double m, double axe) { (void)r; (void)s; (void)now; (void)m; (void)axe; }
+
+/* Healing received (trigger Healing): Blood specialisation (A0I0 level 2) 8% + 0.7% per Mastery,
+ * Bloodforged Armor I03X 5% + 1% per armor */
+double cls_heal_mod(const Row* r, St* s) {
+  double m = 0.0;
+  if (SP_BLOOD) m += 0.08 + (0.07 / 10.0) * MAST(r, s);
+  if (TM(r, T_BFORGE)) m += 0.05 + 0.01 * r->armor_hero;
+  return m;
+}
+
+double cls_primary(const Row* r) { return r->str; }
+
+@INC_C2@
+
 void outbreak_on(const Row* r, St* s, int t, double now, double p_on, double p_off) {
   if (SP_UNHOLY) {
     double burst = OB_MASS(s, t, now) * p_on;
@@ -319,6 +397,7 @@ void outbreak_on(const Row* r, St* s, int t, double now, double p_on, double p_o
       double execute = exec_factor(r, now);
       double amount = raw * increase(r, s, t, now) * taken(r, s, t, now) * execute;
       add_src(s, N_PLAGB, amount * burst);
+      dk_dealt(r, s, now, amount * burst, burst);
     }
   }
   bmaybe(OB_ARGS(s, t), now, 8.0, p_on, p_off);
@@ -349,6 +428,7 @@ double deal(const Row* r, St* s, int name, double raw, int t, double now, int ma
   double execute = exec_factor(r, now);
   amount *= taken(r, s, t, now) * execute;
   add_src(s, name, amount * weight);
+  dk_dealt(r, s, now, amount * weight, (name == N_AUTO) ? 1.0 : weight);
   note_damage_mana(r, s, procs);
   after_hit(r, s, t, now, procs, on_only);
   return amount;
@@ -359,6 +439,9 @@ double summon_hit(const Row* r, St* s, int name, double raw, int t, double now, 
   double pf = plague_flat(r, s, t, now);
   double amount = (raw + pf) * increase(r, s, t, now) * taken(r, s, t, now) * execute;
   add_src(s, name, amount * weight);
+  dk_dealt(r, s, now, amount * weight, weight);
+  /* Bloodworm o01U hits heal the DK for 50% (OnDamage_Heroes; healer = the worm, the DK player's unit) */
+  if (name == N_WORMS && s->hp_on) heal_mod(r, s, 0.50 * amount, weight, 0, 1, 0);
   after_hit(r, s, t, now, weight, 0);
   return amount;
 }
@@ -406,6 +489,15 @@ void cast_spell(const Row* r, St* s, int key, double now) {
   double hit = now + CAST_POINT;
   double life = max_life(r, s);
   const int targets = r->targets;
+  if (key != K_ERW) {
+    /* every DK spell costs 10% (Unholy Fury 15%) of current health: a damage instance from negm_0344,
+     * then the Blood specialisation heals 20 + 3% max HP x Blood Tap (own Healing Type) */
+    if (s->hp_on) hp_add(s, -((key == K_UF) ? 0.15 : 0.10) * s->hp_health);
+    taken_event(r, s, hit, 1.0, 0.0);
+    if (SP_BLOOD && s->hp_on) heal_ht(r, s, 20.0 + 0.03 * life * s->bt, 1);
+    if (s->hp_on) dinc_update(r, s);
+  }
+  cast_heal(r, s, hit, 0.0);
   if (key == K_DG) {
     double raw = 20.0 + 10.0 * LEVEL + 0.10 * life * s->bt;
     if (TM(r, T_OBLIT)) raw += 0.75 * dcs(r);
@@ -415,17 +507,16 @@ void cast_spell(const Row* r, St* s, int key, double now) {
     s->mana = (v < r->mana_max) ? v : r->mana_max;
     unholy_strikes(r, s, hit);
   } else if (key == K_BS) {
+    double healing = (60.0 * RANK - 40.0) + 0.10 * life * s->bt;
+    if (r->mask & S_SIPH) healing *= 2.0;
+    if (s->hp_on) { heal_ht(r, s, healing, 1); dinc_update(r, s); }
     double raw = 70.0 * RANK - 10.0 + 0.10 * life * s->bt;
     if (TM(r, T_OBLIT)) raw += 0.75 * dcs(r);
-    if (r->mask & S_MAW) {
-      double healing = (60.0 * RANK - 40.0) + 0.10 * life * s->bt;
-      if (r->mask & S_SIPH) healing *= 2.0;
-      raw += 0.35 * healing;
-    }
+    if (r->mask & S_MAW) raw += 0.35 * healing;
     deal(r, s, N_BS, raw, 0, hit, 1, 1.0, 1.0, 1.0, 0);
     if (!(r->mask & S_MAW)) bsure(PL_ARGS(s, 0), hit, 4.0);
     if (TM(r, T_MARROW)) s->marrow = hit + 5.0;
-    if (!s->rested) s->hp_bonus += 1.0;
+    if (!s->rested) { s->hp_bonus += 1.0; if (s->hp_on) s->hp_max = r->hp + s->hp_bonus; }
   } else if (key == K_UF) {
     double raw = 50.0 + 0.05 * life * s->bt;
     if (TM(r, T_OBLIT)) raw += 0.50 * dcs(r);
@@ -437,7 +528,7 @@ void cast_spell(const Row* r, St* s, int key, double now) {
     double raw = 70.0 + 0.05 * life * s->bt + 0.15 * r->mana_max;
     if (TM(r, T_LICH)) raw *= 1.20;
     if (TM(r, T_OBLIT)) raw += 1.00 * dcs(r);
-    if (SP_FROST) raw = raw * (1.05 + 0.005 * r->mastery) + 0.10 * r->mana_max;
+    if (SP_FROST) raw = raw * (1.05 + 0.005 * MAST(r, s)) + 0.10 * r->mana_max;
     deal(r, s, N_FS, raw, 0, hit, 1, 1.0, 1.0, 1.0, 0);
     s->frozen = hit + 1.5;
     unholy_strikes(r, s, hit);
@@ -502,6 +593,8 @@ double fight(const Row* r, int* status) {
   ap_init(&s.ap, GM(r, G_FREN) ? frenzy_chance(r->luck) : 0.0, (r->mask & S_SILM) ? SILENT_AS : 0.0,
           (r->mask & S_SILM) ? SILENT_DUR : 0.0);
   s.frozen = -1.0; s.marrow = -1.0;
+  /* incoming hits: no class reason of its own (heals and the HP cost only matter through items) */
+  inc_init(r, &s, targets, 0, 0);
   s.armed = 0; s.army_count = 0; s.last_cast = -1; s.rested = 0; s.ns = 0;
   s.pb_chance = 0.05 * (TM(r, T_PEST) ? 1.25 : 1.0) * s.lm;
   const double ghoul_chance = chance01(0.10 * s.lm);
@@ -546,7 +639,11 @@ double fight(const Row* r, int* status) {
     if (summon_at < moment) moment = summon_at;
     if (next_tick < moment) moment = next_tick;
     if (next_presence < moment) moment = next_presence;
+    int hit_j = -1, hit_k = -1;
+    double next_inc = (s.hits_on || s.hp_on) ? inc_next(&s, targets, &hit_j, &hit_k) : 1.0e9;
+    if (next_inc < moment) moment = next_inc;
     if (moment >= FIGHT) break;
+    if (s.hp_on) regen_adv(r, &s, moment);
     {
       int c = 0;
       for (int k = 0; k < s.ns; k++) {
@@ -556,7 +653,13 @@ double fight(const Row* r, int* status) {
     }
     if (moment == next_presence) {
       recover(r, &s, moment);
-      if (s.mana >= drain) s.mana = s.mana - drain / 4.0;
+      if (s.mana >= drain) {
+        s.mana = s.mana - drain / 4.0;
+        /* Blood Presence (Blood specialisation or Death Presence): below full health heals
+         * (8 + 0.25% max HP x max mana / 100) / 4 per 0.25 s, own Healing Type */
+        if ((SP_BLOOD || TM(r, T_DPRES)) && s.hp_on && hero_ratio(&s, moment) < 1.0)
+          heal_ht(r, &s, (8.0 + (0.01 / 4.0) * max_life(r, &s) * (r->mana_max / 100.0)) / 4.0, 1);
+      }
       next_presence = moment + 0.25;
       continue;
     }
@@ -573,7 +676,11 @@ double fight(const Row* r, int* status) {
           }
         }
       }
-      next_tick = moment + 1.25 / tick_rate;
+      next_tick = moment + 1.25 / ((r->imask & I_SEAL) ? 1.0 + (SP_UNHOLY ? 0.10 + 0.005 * MAST(r, &s) : 0.0) + ((r->mask & S_BELT) ? 0.25 : 0.0) : tick_rate);
+      continue;
+    }
+    if (moment == next_inc) {
+      inc_event(r, &s, moment, hit_j, hit_k, targets);
       continue;
     }
     if (moment == summon_at) {
@@ -621,9 +728,21 @@ double fight(const Row* r, int* status) {
     if (moment == next_attack) {
       recover(r, &s, moment);
       double swing = 2.0 * ((r->mask & S_GALA) ? 1.20 : 1.0);
+      if (r->imask & I_BHOWL) swing *= 1.0 - (1.0 - hero_ratio(&s, moment)) * 0.30;
       ap_attack(&s.ap, moment, r->crit);
-      double interval = swing / (1.0 + ap_speed(r->aspd + ap_bonus(&s.ap, moment)));
-      deal(r, &s, N_AUTO, dcs(r), 0, moment, 0, r->attack_potency, r->auto_pct, 1.0, 0);
+      double speed = r->aspd + ap_bonus(&s.ap, moment);
+      if (r->imask & I_BMASK) speed += 0.28 * bm_active(&s, moment);
+      double interval = swing / (1.0 + ap_speed(speed));
+      double power = dcs(r);
+      if (r->imask & I_SERA) power += 0.01 * max_life(r, &s);
+      double dealt = deal(r, &s, N_AUTO, power, 0, moment, 0, r->attack_potency, r->auto_pct, 1.0, 0);
+      if (s.hp_on) attack_heal(r, &s, moment, dealt * r->auto_pct);
+      /* Blade of the Fallen Seraph: the attack costs 1% of max HP (a damage instance taken) */
+      if (r->imask & I_SERA) {
+        if (s.hp_on) hp_add(&s, -0.01 * max_life(r, &s));
+        taken_event(r, &s, moment, 1.0, 0.0);
+        if (s.hp_on) dinc_update(r, &s);
+      }
       double gain = r->attack_mana + r->attack_mana_pct * r->mana_max;
       if (r->attack_mana_crit != 0.0) {
         double cc = (r->crit < 100.0) ? r->crit : 100.0;
@@ -635,7 +754,10 @@ double fight(const Row* r, int* status) {
       int side = 1 % targets;
       if (r->mask & S_ORB) {
         double splash = (20.0 + 0.35 * r->str) * (double)targets * taken(r, &s, side, moment) * exec_factor(r, moment);
+        double extra = pool_extra(r, &s, side, moment);
+        if (extra != 0.0) splash *= 1.0 + extra;
         add_src(&s, N_SPLASH, splash);
+        dk_dealt(r, &s, moment, splash, (double)targets);
         note_damage_mana(r, &s, (double)targets);
       }
       if (r->mask & S_SULF) {
@@ -644,11 +766,16 @@ double fight(const Row* r, int* status) {
           s.armed = 0;
           double ty = typed(r, &s, 1, moment);
           double splash = r->str * ty * s.spell_critf * taken(r, &s, side, moment) * execute * (double)targets;
+          double extra = pool_extra(r, &s, side, moment);
+          if (extra != 0.0) splash *= 1.0 + extra;
           add_src(&s, N_SULF, splash);
+          dk_dealt(r, &s, moment, splash, (double)targets);
           note_damage_mana(r, &s, (double)targets);
         }
-        double echo = dcs(r) * taken(r, &s, 0, moment) * execute * (0.10 * (1.0 + r->luck));
+        /* DAMAGE_TYPE_ENHANCED: no DamageIncrease */
+        double echo = power * taken(r, &s, 0, moment) * execute * (0.10 * (1.0 + r->luck));
         add_src(&s, N_ECHO, echo);
+        dk_dealt(r, &s, moment, echo, 0.10 * (1.0 + r->luck));
       }
       next_attack = moment + interval;
       continue;
@@ -671,7 +798,7 @@ typedef struct {
   __global const long* dp0; __global const long* dp1; long count_without; long total;
   int npieces; __global const int* pkind; __global const int* pamp;
   __global const double* fold; __global const double* uniq; __global const ulong* pmask; __global const int* psrc;
-  __global const double* pal; __global const double* base;
+  __global const double* pal; __global const double* base; __global const ulong* pimask; __global const double* pinc;
 } Tab;
 
 int unrank(Tab* T, long index, int* chosen) {
@@ -730,6 +857,7 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   mana_flat += 20.0 * (double)pts[1];
   ulong mask = 0;
   int n_core = 0, n_sulg = 0, has_shop = 0, has_drop = 0, nexec = 0;
+  inc_sheet_init(r);
   for (int si = 0; si < 6; si++) {
     int p = chosen[si];
     if (p < 0) { first[si] = 0; continue; }
@@ -753,6 +881,7 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
     aspd += f[14];
     ulong m = T->pmask[p];
     mask |= m;
+    r->imask |= T->pimask[p];
     if (m & S_CORE) n_core++;
     if (m & S_SULG) n_sulg++;
     if (T->psrc[p] == 1) has_shop = 1;
@@ -775,6 +904,8 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
       mana_flat += f[10];
       for (int j = 0; j < 4; j++) luck += a[5 + j];
       for (int j = 0; j < 4; j++) health_flat += a[9 + j];
+      __global const double* ia = T->pinc + (long)p * NINC;
+      INC_FOLD(r, ia);
     }
   }
   r->tmask = tmask; r->gmask = gmask; r->mask = mask;
@@ -832,6 +963,13 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   r->attack_mana = aflat; r->attack_mana_pct = apct; r->attack_mana_crit = acrit ? 1.0 : 0.0; r->damage_mana_pct = dpct;
   r->nexec = nexec; r->targets = targets;
   r->glass = (GM(r, G_GLASS) || (mask & S_GLAS)) ? 1 : 0;
+  r->bfeast = (TM(r, T_BFEAST) || (mask & S_BHUNG)) ? 1 : 0;
+  r->pool_on = ((r->imask & (I_GIANT | I_CRIM | I_IGM | I_FURN | I_BLS)) || r->pool_flat != 0.0 || r->voodoo != 0.0) ? 1 : 0;
+  /* incoming layer: regeneration stat (Primalist Ring: 0.4% Physical Type per point for Strength heroes),
+   * hero armour for Dragon Figurine / Bloodforged healing (Marrowrend bone shield as in the damage formula) */
+  r->armor_hero = r->armor + (TM(r, T_MARROW) ? 4.0 : 0.0);
+  double regen_stat = inc_sheet_finish(r, hp);
+  if (r->imask & I_PRIM) r->phys_add += 0.004 * regen_stat;
 }
 
 #if !REPORT
@@ -848,12 +986,12 @@ double row_value(Tab* T, long index, uint tmask, uint gmask, const int* pts, int
     __global const long* dp0, __global const long* dp1, const long count_without, const long total, \
     const int npieces, __global const int* pkind, __global const int* pamp, \
     __global const double* fold, __global const double* uniq, __global const ulong* pmask, __global const int* psrc, \
-    __global const double* pal, __global const double* base
+    __global const double* pal, __global const double* base, __global const ulong* pimask, __global const double* pinc
 
 #define TAB_INIT \
   Tab T; T.dp0 = dp0; T.dp1 = dp1; T.count_without = count_without; T.total = total; \
   T.npieces = npieces; T.pkind = pkind; T.pamp = pamp; T.fold = fold; T.uniq = uniq; T.pmask = pmask; T.psrc = psrc; \
-  T.pal = pal; T.base = base;
+  T.pal = pal; T.base = base; T.pimask = pimask; T.pinc = pinc;
 
 #if !REPORT
 __kernel void cls_bare(const long start, const int n, const int targets, TAB_ARGS,
@@ -959,18 +1097,21 @@ __kernel void cls_report(const int n, const int targets, __global const int* pic
 }
 #endif
 """
+KERNEL = (KERNEL.replace("@INC_HEAD@", INC.INC_HEAD + "#define NINC %d\n" % INC.NINC)
+          .replace("@INC_ROW_FIELDS@", INC.INC_ROW_FIELDS).replace("@INC_ST_FIELDS@", INC.INC_ST_FIELDS)
+          .replace("@INC_C1@", INC.INC_C1).replace("@INC_C2@", INC.INC_C2))
 KERNEL = KERNEL.replace("#pragma OPENCL FP_CONTRACT OFF\n", "#pragma OPENCL FP_CONTRACT OFF\n" + AP.C, 1)
 
 SPECIAL_BITS = {
     "I0BR": 0, "I07O": 1, "I0JO": 2, "I0QT": 3, "tlum": 4, "I0JA": 5, "I096": 6, "I03C": 7, "I00L": 8,
     "I00Y": 9, "I07P": 10, "I048": 11, "I0FW": 12, "I0AV": 13, "I07T": 14, "I0NM": 15, "I0NK": 16, "I0RZ": 17,
-    "I0QN": 18,
+    "I0QN": 18, "I0NJ": 19,
 }
 TALENT_BITS = {
     "I0CS": 0, "I0E3": 1, "I0CR": 2, "I09S": 3, "I0GP": 4, "I09T": 5, "I0IZ": 6, "I0EV": 7, "I03X": 8,
-    "I0CV": 9, "I0IY": 10, "I0DS": 11, "I07Z": 12, "I03W": 13, "I05O": 14,
-    # death_knight.IGNORED_TALENTS: no effect on the fight
-    "I0CU": 20, "I0G9": 21, "I03G": 22, "I0MD": 23, "I0MC": 24,
+    "I0CV": 9, "I0IY": 10, "I0DS": 11, "I07Z": 12, "I03W": 13, "I05O": 14, "I0CU": 15,
+    # IGNORED_TALENTS: no effect on the fight (Will of the Necropolis, Anti-Magic Zone only reduce damage taken)
+    "I0G9": 21, "I03G": 22, "I0MD": 23, "I0MC": 24,
 }
 GLYPH_BITS = {"I0AV": 0, "I0JA": 1, "I07B": 2, "I0EK": 3, "I0HC": 4, "I0OF": 5, "I0EJ": 6, "I0GZ": 7, "I0H0": 8}
 NO_EFFECT = {"I0H3", "I0H5", "I0H6", "I0EN"}
@@ -993,7 +1134,7 @@ TALENT_NAMES = {
     "I0G9": "Will of the Necropolis", "I03G": "Anti-Magic Zone", "I0IY": "Pestilence", "I0DS": "Razorice",
     "I07Z": "Grim Reaper", "I03W": "Bloodworms", "I05O": "Death Presence", "I0MC": "Previous Page",
 }
-IGNORED_TALENTS = frozenset({"I03G", "I0MD", "I0MC", "I0G9", "I0CU"})
+IGNORED_TALENTS = frozenset({"I03G", "I0MD", "I0MC", "I0G9"})  # Blood Feast I0CU heals: counts since 2026-11-27
 
 
 def death_knight_tables(space, items, sources) -> dict:
@@ -1039,6 +1180,7 @@ def death_knight_tables(space, items, sources) -> dict:
         ]
     t["fold"] = np.ascontiguousarray(fold.reshape(-1))
     t["pal"] = np.ascontiguousarray(pal.reshape(-1))
+    t.update(INC.inc_tables(space, items))
     return t
 
 
@@ -1052,17 +1194,18 @@ class DeathKnightCL(C.ExactCL):
     NO_EFFECT = NO_EFFECT
     KEY_FREE = ()  # no timeline cache: every ESC trial is its own fight
     TABLE_KEYS = ("dp0", "dp1", "count_without", "total", "npieces", "pkind", "pamp", "fold", "uniq", "pmask", "psrc",
-                  "pal", "base")
+                  "pal", "base", "pimask", "pinc")
     SCALARS = {"count_without": np.int64, "total": np.int64, "npieces": np.int32}
 
     SOURCE_NAMES = ("Автоатака", "Death Grip", "Blood Strike", "Unholy Fury", "Frost Strike", "Outbreak", "Plaguebearer",
                     "Unholy Strikes", "Breath of Sindragosa", "Army of the Dead", "Bloodworms", "Всплеск огня",
-                    "Sulfuras", "Sulfuras (удар)")
+                    "Sulfuras", "Sulfuras (удар)", "Отражение урона", "Sunstrider Crown", "Shield of Death",
+                    "Shado-Pan Faceguard", "Bloodlord's Regalia")
     ACTION_NAMES = ("Unholy Fury", "Frost Strike", "Blood Strike", "Death Grip", "Empower Rune Weapon")
     STAT_KEYS = ("str", "agi", "int", "damage", "potency", "mastery", "crit", "rating", "haste", "attack_speed", "luck",
                  "magic_add", "phys_add", "hp", "armor", "mana_max", "mana_regen", "galactic", "cd_temp", "flat_cdr",
                  "armor_pen")
-    NSRC, MAXA = 14, 160
+    NSRC, MAXA = 19, 160
 
     @staticmethod
     def module():
@@ -1083,3 +1226,10 @@ parity = C.parity
 parity_full = C.parity_full
 random_builds = C.random_builds
 self_check = C.self_check
+
+
+# Builds whose fight can depend on the incoming hits / hero health (docs/defense-model.md, Death Knight): the
+# frozen fixtures whose value changed with the 2026-11-27 model are marked "incoming" (486 of 2760, all with an
+# item of this set) and are checked by farm/hybrid/test_incoming.py instead.
+INCOMING_TALENTS = frozenset({"I0CU", "I03W", "I03X", "I05O"})
+INCOMING_ITEMS = INC.INCOMING_ITEMS | {"I0NJ", "I0NM"}

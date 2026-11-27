@@ -72,7 +72,7 @@ ERW почти всегда сбрасывает Unholy Fury — это дубл
 
 ## IGNORED
 
-Не дают урона по манекену и в прогоне не участвуют: Blood Feast I0CU (лечение, и Mask of the Blood Hungerer I0NJ — только её статы), Will of the Necropolis I0G9 (защита), Anti-Magic Zone I03G (защита), страницы I0MD / I0MC. Также не моделируются: лечение Blood-спека и Presence, таунт Death Grip, стоимость HP, −18% урона от Outbreak (Cri3), замедление Chill.
+Не дают урона по манекену и в прогоне не участвуют: Will of the Necropolis I0G9 (защита), Anti-Magic Zone I03G (защита), страницы I0MD / I0MC. Blood Feast I0CU (и Mask of the Blood Hungerer I0NJ) с 2026-11-27 лечит на каждый экземпляр урона; влияет на урон только вместе с Bloodlord's Regalia или предметами от здоровья героя. Лечение Blood-спека, Blood Strike, Presence, червей и стоимость HP заклинаний моделируются (входящий урон, `docs/defense-model.md`). Не моделируются: таунт Death Grip, −18% урона от Outbreak (Cri3), замедление Chill.
 
 ## Пробелы модели
 

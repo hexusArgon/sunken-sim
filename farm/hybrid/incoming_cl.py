@@ -9,9 +9,11 @@ the DamageIncrease pool are the same for every class, so they live here. A class
     INC_C2           after it defines the hooks below (hit stream, heals on attacks / casts)
 
 and provides, before INC_C2:
-    void item_dmg(const Row* r, St* s, int name, double raw, int i, double when, int magical);
+    void item_dmg(const Row* r, St* s, int name, double raw, int i, double when, int magical, double count);
+                                                                            count = expected damage instances
     void cls_taken(const Row* r, St* s, double now, double m, double axe);   class effects of one damage instance
     double cls_buffs(const Row* r, St* s, int i, double now);               buffs on dummy i (Ancient Voodoo Doll)
+    double cls_heal_mod(const Row* r, St* s);                               class healing-received modifiers
     double cls_primary(const Row* r);                                       primary attribute
     N_REFL, N_SUNS, N_SOD, N_EVADE, N_BLOOD source ids, MAXT, LEVEL, CLS_INT_HERO (1 = Intelligence hero),
     recover(r, s, now), chance01(v), s->lm, s->mana, r->mana_max, r->intel, r->potency, r->targets.
@@ -144,7 +146,7 @@ INC_ST_FIELDS = r"""
   double rg_t, bl_store, ida_end, ida_next;
 """
 
-INC_HEAD = "#define INC_NG 8\n#define INC_NBM 96\n" + _defines() + r"""
+INC_HEAD = "#define INC_NG 8\n#define INC_NBM 160\n" + _defines() + r"""
 /* incoming-hit effects that make the hit stream matter (class kernels add their own) */
 #define I_HP_DEP (I_ALE | I_CRIM | I_IGM | I_FURN | I_BLS | I_BHOWL | I_BLOOD | I_ICE)
 #define I_HIT_DEP (I_SPIKE | I_THORN | I_DSCALE | I_SUN | I_SOD | I_BMASK | I_SEAL | I_PCB | I_ICE | I_EVD | I_CHAOS)
@@ -242,18 +244,27 @@ double hit_chance(const Row* r, St* s) {
   return h;
 }
 
-/* Healing (trigger Healing): Healing Type amount x (1 + received modifiers [+ own Healing Power when the hero
- * heals itself]); Bloodlord's Regalia stores 100% of own and 20% of allies' Healing Type healing. */
-void heal_ht(const Row* r, St* s, double amount, int self) {
-  if (!s->hp_on || amount <= 0.0) return;
-  if (self) amount += r->heal_flat + r->heal_flat_int * r->intel + r->heal_pot * r->potency;
-  double m = r->recv_mod + (self ? r->heal_power + r->own_extra : 0.0);
+/* Healing (trigger Healing): Healing Type amount (+ the healer's flat item adds) x (1 + received modifiers
+ * [+ the healer owner's Healing Power] [+ Husk's own-heal extra] + class modifiers); Bloodlord's Regalia
+ * stores 100% of own (healer == target) and 20% of other Healing Type healing. count = expected number of
+ * such heals (each one gets the flat adds and the >= 1 check). flat: the healer is the hero (its items);
+ * power: the healer belongs to the hero's player; own: healer == target. */
+double cls_heal_mod(const Row* r, St* s);
+void heal_mod(const Row* r, St* s, double amount, double count, int flat, int power, int own) {
+  if (!s->hp_on || amount <= 0.0 || count <= 0.0) return;
+  if (flat) amount += r->heal_flat + r->heal_flat_int * r->intel + r->heal_pot * r->potency;
+  double m = (power && own) ? r->recv_mod + (r->heal_power + r->own_extra)
+           : power ? r->recv_mod + r->heal_power : r->recv_mod + 0.0;
   if (r->imask & I_FIGUR) m += 0.01 * r->armor_hero;
+  m += cls_heal_mod(r, s);
   if (m < -1.0) return;
   amount *= 1.0 + m;
-  if (r->imask & I_BLOOD) s->bl_store += (self ? 1.0 : 0.20) * amount;
-  if (amount >= 1.0) hp_add(s, amount);
+  double total = amount * count;
+  if (r->imask & I_BLOOD) s->bl_store += (own ? 1.0 : 0.20) * total;
+  if (amount >= 1.0) hp_add(s, total);
 }
+
+void heal_ht(const Row* r, St* s, double amount, int self) { heal_mod(r, s, amount, 1.0, self, self, self); }
 
 void heal_plain(St* s, double amount) {
   if (s->hp_on && amount > 0.0) hp_add(s, amount);
@@ -319,9 +330,13 @@ void taken_event(const Row* r, St* s, double now, double m, double axe) {
   }
   cls_taken(r, s, now, m, axe);
   if (r->imask & I_BMASK) {
-    if (s->bm_n >= INC_NBM) bm_active(s, now);
-    if (s->bm_n < INC_NBM) { s->bm_t[s->bm_n] = now; s->bm_q[s->bm_n] = 1.0 - m * chance01(0.08 * s->lm); s->bm_n++; }
-    else if (!s->status) s->status = 2;
+    /* same moment: one window, the misses multiply (exact) */
+    if (s->bm_n > 0 && s->bm_t[s->bm_n - 1] == now) s->bm_q[s->bm_n - 1] *= 1.0 - m * chance01(0.08 * s->lm);
+    else {
+      if (s->bm_n >= INC_NBM) bm_active(s, now);
+      if (s->bm_n < INC_NBM) { s->bm_t[s->bm_n] = now; s->bm_q[s->bm_n] = 1.0 - m * chance01(0.08 * s->lm); s->bm_n++; }
+      else if (!s->status) s->status = 2;
+    }
   }
   if (r->imask & I_SEAL) {
     double p = m * chance01(0.25 * s->lm);
@@ -340,25 +355,25 @@ void dummy_attack(const Row* r, St* s, int j, double m, double now) {
   if (gain > 0.0) { double v = s->mana + m * gain; s->mana = (v < r->mana_max) ? v : r->mana_max; }
   if (r->imask & I_EVD) heal_plain(s, m * chance01(0.05 * s->lm) * 0.08 * r->mana_max);
   if (r->imask & I_MASO) heal_plain(s, m * 0.003 * s->hp_max);
-  if (r->imask & I_SOD) item_dmg(r, s, N_SOD, 125.0 * m * chance01(0.08 * s->lm), j, now, 0);
-  if (r->imask & I_CHAOS) item_dmg(r, s, N_REFL, 12.0 * m, j, now, 0);
+  if (r->imask & I_SOD) item_dmg(r, s, N_SOD, 125.0 * m * chance01(0.08 * s->lm), j, now, 0, m * chance01(0.08 * s->lm));
+  if (r->imask & I_CHAOS) item_dmg(r, s, N_REFL, 12.0 * m, j, now, 0, m);
   taken_event(r, s, now, m, chance01(0.05 * s->lm));
   double land = m * hit_chance(r, s);
   double evaded = m - land;
-  if ((r->imask & I_EV13) && evaded > 0.0) item_dmg(r, s, N_EVADE, 100.0 * evaded, j, now, 0);
-  if ((r->imask & I_PATH) && evaded > 0.0) item_dmg(r, s, N_EVADE, 50.0 * evaded, j, now, 1);
+  if ((r->imask & I_EV13) && evaded > 0.0) item_dmg(r, s, N_EVADE, 100.0 * evaded, j, now, 0, evaded);
+  if ((r->imask & I_PATH) && evaded > 0.0) item_dmg(r, s, N_EVADE, 50.0 * evaded, j, now, 1, evaded);
   if ((r->imask & I_EV16A) && evaded > 0.0) heal_ht(r, s, evaded * 0.025 * s->hp_max, 1);
   if (land > 0.0) {
     if (melee) {
-      double back = 0.0;
-      if (r->imask & I_SPIKE) back += 0.10;
-      if (r->imask & I_THORN) back += 0.10;
-      if (back > 0.0) item_dmg(r, s, N_REFL, back * hit * land, j, now, 0);
+      double back = 0.0, nb = 0.0;
+      if (r->imask & I_SPIKE) { back += 0.10; nb += 1.0; }
+      if (r->imask & I_THORN) { back += 0.10; nb += 1.0; }
+      if (back > 0.0) item_dmg(r, s, N_REFL, back * hit * land, j, now, 0, nb * land);
     }
-    if (r->imask & I_DSCALE) item_dmg(r, s, N_REFL, 0.10 * hit * land, j, now, 0);
+    if (r->imask & I_DSCALE) item_dmg(r, s, N_REFL, 0.10 * hit * land, j, now, 0, land);
     if (r->imask & I_SUN) {
       double each = 0.15 * hit * land / (double)r->targets;
-      for (int i = 0; i < r->targets; i++) item_dmg(r, s, N_SUNS, each, i, now, 1);
+      for (int i = 0; i < r->targets; i++) item_dmg(r, s, N_SUNS, each, i, now, 1, land / (double)r->targets);
     }
     if (s->hp_on) hp_add(s, -land * hit);
     if (r->imask & I_JADE) heal_ht(r, s, land * chance01(0.20 * s->lm) * 0.40 * hit, 1);
@@ -447,7 +462,7 @@ void inc_event(const Row* r, St* s, double moment, int hit_j, int hit_k, int tar
     /* Bloodlord's Regalia: every 3 s, 20% of the stored healing x (1 + 0.06 x level) to every enemy in 500 */
     if (r->imask & I_BLOOD) {
       double dmg = 0.20 * s->bl_store * (1.0 + 0.06 * LEVEL);
-      if (dmg >= 1.0) for (int i = 0; i < targets; i++) item_dmg(r, s, N_BLOOD, dmg, i, moment, 0);
+      if (dmg >= 1.0) for (int i = 0; i < targets; i++) item_dmg(r, s, N_BLOOD, dmg, i, moment, 0, 1.0);
       s->bl_store = 0.0;
     }
   }

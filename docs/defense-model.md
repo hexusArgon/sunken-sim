@@ -94,3 +94,37 @@ Bloodlord's Regalia changes the damage.
   tracks no other Berserker debuff windows).
 - Approximations: Cursed Skull regeneration damage is not a damage instance; Axe Mastery's 0.2 s cooldown is not
   modelled; Icecrown's freeze timer restarts on the first attack after it is ready, whatever that attack's share.
+
+## Death Knight: incoming hits and healing (inventory 2026-11-27, map 2.5.2c)
+
+Item pool: 336 items (`full_space`), all screened by `tools/one_slot_gpu.py death_knight`. The shared layer
+(farm/hybrid/incoming_cl.py) brings every generic item above; class integration in farm/hybrid/death_knight_cl.py.
+Strength hero: the model heal comes from an ally (`CLS_INT_HERO 0`); Primalist Ring 0.4% Physical Type per point
+of HP regeneration; hero armour for Dragon Figurine / Bloodforged = 3 + 0.1 AGI + item armour (+4 bone shield with
+Marrowrend, as in the damage formula).
+
+| Effect | Trigger / rule (war3map_norm.j) | Value | Modelled |
+|---|---|---|---|
+| Spell health cost | Death Grip, Blood Strike, Frost Strike 10%, Unholy Fury 15% of current HP; `UnitDamageTargetBJ(negm_0344, ...)` | a damage instance taken (PreDamage_Enemies: Battlemask, Seal, Idrassil); lowers HP | yes |
+| Blood specialisation heal | `Blood_Specialization` on every DK spell (A0I0 level 2) | 20 + 3% max HP x Blood Tap, own Healing Type | yes |
+| Blood Strike heal | `Blood_Strike` | (60 x rank - 40) + 10% max HP x Blood Tap, x2 Siphoning Sword I0NM, own Healing Type | yes |
+| Blood Presence | `Presence` every 0.25 s while mana >= drain, HP < 100%, Blood or Death Presence I05O | (8 + 0.25% max HP x max mana / 100) / 4, own | yes |
+| Blood Feast I0CU (or Mask of the Blood Hungerer I0NJ) | PreDamage_Heroes, any damage of the DK player | 2 + 0.2% max HP x Blood Tap per instance, own | yes (talent now active) |
+| Bloodworms I03W | OnDamage_Heroes, source o01U | heal 50% of the worm hit; healer = the worm (DK player's Healing Power, Bloodlord 20%) | yes |
+| Healing received | trigger Healing | Blood glyph level 2: +8% + 0.7% per Mastery; Bloodforged Armor I03X: +5% + 1% per armor | yes |
+| Max HP growth | Blood Strike +1 max HP (not after ERW rest) | hits are 5% of the current max HP | yes |
+| Presence mana | Plasma-Core Belt / Icecrown Ring mana on hits | Frost / Unholy presence turn mana into damage | yes (shared layer) |
+| DamageIncrease pool | PreDamage_Increase, all damage of the DK player except ENHANCED / UNIVERSAL | chill / freeze / Grim Reaper + hero-health entries + Voodoo Dolls + Giantsbane, one additive pool | yes |
+| Will of the Necropolis I0G9, Anti-Magic Zone I03G, Maw's 5% spell reduction, bone shield armour | ArmorDamage_Reduce | damage reduction | no (no reduction modelled) |
+
+Notes: Sulfuras echo is DAMAGE_TYPE_ENHANCED and gets no pool (Berserker fixed the same way); Ancient Voodoo
+Doll counts the debuffs the kernel tracks (Outbreak, Blood Plague, Chill, Freeze, Marrowrend). Seal of the Black
+Empire Mastery feeds Tlum, Frost Strike (Frost), the Outbreak tick rate (Unholy) and the Blood healing bonus.
+Approximations: health is the expected health; max HP growth does not raise current HP; the Orb splash gets the
+pool entries above but (as before) not chill / freeze / Grim Reaper.
+
+One-slot changes (5 targets, top-150 by spec): entered Frost and Blood — Blade of the Fallen Seraph, The Furnace,
+Shield of Death, Giantsbane, Ursal's Mighty Plate, Immortal Gladiator's Mask, Ancient Voodoo Doll, Volcanic Shield;
+Unholy — the same without Immortal Gladiator's Mask, plus Icecrown Ring, Warlord's Battlemask, Belt of Living
+Strength. Talent pools unchanged (14 / 14 / 15): Blood Feast gains only together with Bloodlord's Regalia or
+health-dependent items, so a lone-talent screen never shows it.
