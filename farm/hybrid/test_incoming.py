@@ -363,5 +363,58 @@ class DragonSentinelIncoming(unittest.TestCase):
         self.assertEqual([c["items"] for c, d, s in zip(cases, dps, status) if s or float(d).hex() != c["dps"]], [])
 
 
+class DruidIncoming(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        from farm import runner as R
+        from farm.hybrid import class_cl as C, druid_cl as DR
+
+        space, items = C.full_space("druid", "Druid", DR.TALENT_NAMES)
+        src = R.source_map(items)
+        cls.DR = DR
+        cls.engines = {spec: DR.DruidCL(space, items, src, 5, None, spec) for spec in ("restoration", "balance")}
+
+        class Off(DR.DruidCL):
+            KERNEL = "#define INC_OFF 1\n" + DR.KERNEL
+
+        cls.off = Off(space, items, src, 5, None, "balance")
+
+    def test_penetration_only_on_the_auto_attack(self) -> None:
+        bare = self.engines["balance"].report(())
+        pen = self.engines["balance"].report(("I0QN",))
+        self.assertGreater(pen["stats"]["armor_pen"], 0.0)
+        for name in ("Starfire", "Starfall", "Mass Entanglement", "Wisp Guardian"):
+            self.assertEqual(pen["sources"][name], bare["sources"][name], name)
+        self.assertGreater(pen["sources"]["Автоатака"], bare["sources"]["Автоатака"])
+
+    def test_mana_from_own_heals(self) -> None:
+        e = self.engines["balance"]
+        base, k5 = e.report(()), e.report((), ("I0K5",))
+        both = e.report((), ("I0K5", "I08Q"))
+        self.assertGreater(k5["mana_left"], base["mana_left"])
+        self.assertGreaterEqual(both["mana_left"], k5["mana_left"])
+        self.assertEqual(e.report((), ("I08Q",))["dps"], base["dps"])  # heals without I0K5 / health items: nothing
+
+    def test_bloodlord_stores_own_model_heal(self) -> None:
+        rep = self.engines["restoration"].report(("I05V",))
+        self.assertGreater(rep["sources"].get("Bloodlord's Regalia", 0.0), 0.0)
+
+    def test_inc_off_replays_part_a_fixtures(self) -> None:
+        import json
+        from pathlib import Path
+
+        from sunken_sim.esc import ESC_ATTRS
+
+        data = json.loads((Path(__file__).resolve().parent / "fixtures" / "druid.json").read_text(encoding="utf-8"))
+        skip = self.DR.MODEL_FIX_ITEMS | self.DR.INCOMING_ITEMS
+        cases = [c for c in data["cases"] if c["spec"] == "balance" and c["targets"] == 5
+                 and not set(c["items"]) & skip and not set(c["talents"]) & self.DR.INCOMING_TALENTS]
+        e = self.off
+        dps, _g, status = e.pick([e.picks_of(c["items"]) for c in cases], [e.talent_mask(c["talents"]) for c in cases],
+                                 [e.glyph_mask(c["glyphs"]) for c in cases], [[c["points"][a] for a in ESC_ATTRS] for c in cases])
+        self.assertGreater(len(cases), 50)
+        self.assertEqual([c["items"] for c, d, s in zip(cases, dps, status) if s or float(d).hex() != c["dps"]], [])
+
+
 if __name__ == "__main__":
     unittest.main()

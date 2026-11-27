@@ -14,10 +14,13 @@ sheet, unrank and kernels are shared with farm.hybrid.shaman_cl.
 
 from __future__ import annotations
 
+import re
+
 import numpy as np
 
 from farm.hybrid import attack_procs_cl as AP
 from farm.hybrid import class_cl as C
+from farm.hybrid import incoming_cl as INC
 from farm.hybrid import shaman_cl as _S
 
 
@@ -39,7 +42,31 @@ _SHEET = _SHEET.replace("""    int p = chosen[si];
     if (p < 0) { first[si] = 0; continue; }  /* explicit pieces: empty slot */
     int f1 = 1;""")
 assert "11.0 + 0.75 * intel" in _SHEET and "2.0 * ((mask & S_GALA)" in _SHEET and "empty slot" in _SHEET
+# incoming layer (druid only): Row fields, the item tables and the hero health / armour in the sheet
+_ROW = _ROW.replace("  ulong mask;\n} Row;", "  ulong mask;\n  double hp; int pool_on;\n@INC_ROW_FIELDS@\n} Row;")
+_SHEET = (_SHEET
+          .replace("  __global const double* base;\n} Tab;",
+                   "  __global const double* base; __global const ulong* pimask; __global const double* pinc;\n"
+                   "  __global const double* phealth;\n} Tab;")
+          .replace("  ulong mask = 0;\n", "  ulong mask = 0;\n  inc_sheet_init(r);\n  double health_flat = 0.0;\n", 1)
+          .replace("    ulong m = T->pmask[p];\n    mask |= m;\n", "    ulong m = T->pmask[p];\n    mask |= m;\n    r->imask |= T->pimask[p];\n", 1)
+          .replace("    cast_lock += u[1];\n", "    cast_lock += u[1];\n    health_flat += T->phealth[chosen[si]];\n"
+                   "    INC_FOLD(r, T->pinc + (long)chosen[si] * NINC);\n", 1)
+          .replace("  r->spell_crit = sc; r->nexec = nexec; r->targets = targets;\n}",
+                   "  r->spell_crit = sc; r->nexec = nexec; r->targets = targets;\n"
+                   "  /* incoming layer: E009 230 HP + 15 STR + items, armour 5 + 0.1 AGI + items (Dragon Figurine) */\n"
+                   "  double hp = (230.0 + 15.0 * strength) + health_flat;\n"
+                   "  r->hp = hp;\n"
+                   "  r->armor_hero = (5.0 + 0.1 * agility) + r->item_armor;\n"
+                   "  (void)inc_sheet_finish(r, hp);  /* Primalist Ring: Physical Type only, no druid damage has it */\n"
+                   "  r->pool_on = ((r->imask & (I_GIANT | I_CRIM | I_IGM | I_FURN | I_BLS)) || r->pool_flat != 0.0"
+                   " || r->voodoo != 0.0) ? 1 : 0;\n}", 1))
+assert "INC_FOLD(r, T->pinc" in _SHEET and "r->imask |= T->pimask[p]" in _SHEET and "r->pool_on" in _SHEET and "phealth;" in _SHEET
 _KERNELS = _cut(_S.KERNEL, "#define TAB_ARGS", "SENTINEL") if "SENTINEL" in _S.KERNEL else _S.KERNEL[_S.KERNEL.index("#define TAB_ARGS"):]
+_KERNELS = (_KERNELS.replace("    __global const double* base\n", "    __global const double* base, __global const ulong* pimask, __global const double* pinc, \\\n"
+                             "    __global const double* phealth\n", 1)
+            .replace("T.base = base;", "T.base = base; T.pimask = pimask; T.pinc = pinc; T.phealth = phealth;", 1))
+assert "T.phealth = phealth" in _KERNELS
 
 KERNEL = r"""
 #pragma OPENCL EXTENSION cl_khr_fp64 : enable
@@ -53,6 +80,14 @@ KERNEL = r"""
 #define SPEC 0
 #endif
 #define SP_BAL (SPEC == 1)
+#define MAXT 8
+#define CLS_INT_HERO 1  /* Intelligence hero: the model heal is the druid's own (healer E009) */
+#define LEVEL 15
+@INC_HEAD@
+/* INC_OFF 1 (tests only): no incoming hits and no hero health, as before 2026-11-27 */
+#ifndef INC_OFF
+#define INC_OFF 0
+#endif
 /* REPORT 1: the report kernel also keeps the final fight state (sources in Ledger order, casts, mana) */
 #ifndef REPORT
 #define REPORT 0
@@ -69,7 +104,7 @@ KERNEL = r"""
 #define MAXQ 256
 #define MAXF 160
 #define MAXW 200
-#define NSRC 10
+#define NSRC 16
 
 #define S_RING (1UL<<0)
 #define S_SULF (1UL<<1)
@@ -89,6 +124,8 @@ KERNEL = r"""
 #define S_WISPI (1UL<<15)
 #define S_TREANTI (1UL<<16)
 #define S_SILM (1UL<<20)
+#define S_VOID (1UL<<21)   /* Voidseeker Hood I07Y: Magical Type damage ignores 2 armour */
+#define S_ICLV (1UL<<22)   /* Iron Cleaver I055: Physical Type damage ignores 3 armour */
 
 #define T_SURGE (1u<<0)
 #define T_WRATH (1u<<1)
@@ -100,6 +137,10 @@ KERNEL = r"""
 #define T_ECHO (1u<<7)
 #define T_MISSILE (1u<<8)
 #define T_DRUIDISM (1u<<9)
+#define T_MANAHEAL (1u<<10)  /* I0K5: Healing Type heals by the druid restore 2.5% of the amount as mana */
+#define T_REGEN (1u<<11)     /* I0P4: heals 12% x Luck Regenesis 6 s, +25% healing taken */
+#define T_HEALTWICE (1u<<12) /* I08S: heals 12% x Luck trigger an additional time */
+#define T_DMGHEAL (1u<<13)   /* I08Q: damage dealt heals the most wounded hero 3 + 0.2% max mana (x Starsurge) */
 
 #define G_FORT  (1u<<0)
 #define G_UNSL  (1u<<1)
@@ -142,12 +183,27 @@ KERNEL = r"""
 #define N_SPLASH 7
 #define N_SULF 8
 #define N_SULF_ECHO 9
+/* incoming-hit sources (farm/hybrid/incoming_cl.py) */
+#define N_REFL 10
+#define N_SUNS 11
+#define N_SOD 12
+#define N_EVADE 13
+#define N_BLOOD 14
+#define N_ICE 15
+
+/* armour kinds (ArmorDamage_Increase): item penetration only on the auto attack; every druid spell is
+ * ATTACK_TYPE_NORMAL (Spells); summons get no item penetration */
+#define P_PLAIN 0   /* untyped, ENHANCED, summons */
+#define P_MAG 1     /* Magical Type spells: Voidseeker Hood */
+#define P_ATK 2     /* the auto attack: item penetration + Iron Cleaver */
+#define P_PHYS 3    /* Physical Type, not an attack: Iron Cleaver */
+#define BS 8
 
 """ + _ROW + r"""
 
 typedef struct {
   double src[NSRC]; int ord[NSRC]; int nord; uint seen;
-  double taken_plain, taken_wisp, echo_ch;
+  double tk[4][2], echo_ch;  /* armour factor by kind, [0] armour 15, [1] Wisp Guardian armour 12 */
 } Sco;
 
 typedef struct {
@@ -160,6 +216,11 @@ typedef struct {
   int qn, nf, nw, status, bound, targets, armed;
   double surge, wisp_life;
   AP ap;
+  double lm;
+  double rn_e[BS + 1], rn_m[BS + 1]; int rn_n; double rn_t, rn_lo;          /* Regenesis on the druid */
+  double ch_e[MAXT][BS + 1], ch_m[MAXT][BS + 1]; int ch_n[MAXT]; double ch_t[MAXT], ch_lo[MAXT];  /* Chill */
+  const Row* sc; Sco* q;
+@INC_ST_FIELDS@
 #if REPORT
   double act_t[MAXA]; int act_id[MAXA]; int nact;
 #endif
@@ -173,6 +234,47 @@ void act(St* s, double now, int id) {
 #else
   (void)s; (void)now; (void)id;
 #endif
+}
+
+/* ---- expiry_buff._Buff (Regenesis, Chill) ---- */
+double bmass(const double* e, const double* m, int n, double tot, double lo, double now) {
+  if (now <= lo) return tot;
+  double total = 0.0;
+  for (int k = 0; k < n; k++)
+    if (now <= e[k]) total += m[k];
+  return total;
+}
+
+void bcache(const double* e, const double* m, int n, double* tot, double* lo) {
+  double t = 0.0, l = INFINITY;
+  for (int k = 0; k < n; k++) { t += m[k]; if (e[k] < l) l = e[k]; }
+  *tot = t; *lo = l;
+}
+
+void bsure(double* e, double* m, int* n, double* tot, double* lo, double now, double dur) {
+  e[0] = now + dur; m[0] = 1.0; *n = 1;
+  *tot = 0.0 + 1.0; *lo = e[0];
+}
+
+void bmaybe(double* e, double* m, int* n, double* tot, double* lo, double now, double dur, double p_on, double p_off) {
+  double active = bmass(e, m, *n, *tot, *lo, now);
+  int c = 0;
+  for (int k = 0; k < *n; k++) {
+    if (now <= e[k]) { e[c] = e[k]; m[c] = m[k] * (1.0 - p_on); c++; }
+  }
+  double added = p_on * active + p_off * (1.0 - active);
+  double until = now + dur;
+  if (c > 0 && e[c - 1] == until) m[c - 1] = m[c - 1] + added;
+  else { e[c] = until; m[c] = added; c++; }
+  while (c > BS) {
+    int k = 0;
+    for (int j = 1; j < c - 1; j++) if (m[j] < m[k]) k = j;
+    m[k + 1] = m[k + 1] + m[k];
+    for (int j = k; j < c - 1; j++) { e[j] = e[j + 1]; m[j] = m[j + 1]; }
+    c--;
+  }
+  *n = c;
+  bcache(e, m, c, tot, lo);
 }
 
 inline double target_hp(double t) {
@@ -191,6 +293,14 @@ inline double armor_taken(double armor, int* status) {
   if (armor > 0.0) return 1.0 - (armor * 0.04) / (1.0 + 0.04 * armor);
   if (armor < 0.0) return 2.0 - pow(1.0 - 0.04, -armor);  /* shadow.armor_taken */
   return 1.0;
+}
+
+/* CalculateArmorPenetration: p1 item penetration, p2 Voidseeker / Iron Cleaver: x m(A-p1) x m(A-p2) / m(A) */
+double pen_taken(double armor, double p1, double p2) {
+  int st = 0;
+  if (p2 <= 0.0) return armor_taken(armor - p1, &st);
+  double m = (p1 > 0.0) ? armor_taken(armor - p1, &st) : armor_taken(armor, &st);
+  return m / armor_taken(armor, &st) * armor_taken(armor - p2, &st);
 }
 
 inline double exec_factor(const Row* r, double t) {
@@ -264,7 +374,7 @@ inline double proc(const Row* tl, double percent) {
   return (v < 1.0) ? v : 1.0;
 }
 
-inline void recover(St* s, const Row* tl, double now) {
+inline void drecover(St* s, const Row* tl, double now) {
   if (now > s->mana_time && s->mana < tl->mana_max) {
     double v = s->mana + tl->mana_regen * (now - s->mana_time);
     s->mana = (v < tl->mana_max) ? v : tl->mana_max;
@@ -272,11 +382,16 @@ inline void recover(St* s, const Row* tl, double now) {
   s->mana_time = (s->mana_time >= now) ? s->mana_time : now;
 }
 
+void recover(const Row* r, St* s, double now) { drecover(s, r, now); }
+double chance01(double v) { return (v < 1.0) ? v : 1.0; }
+
+@INC_C1@
+
 int pay(St* s, const Row* tl, double cost, double now) {
-  recover(s, tl, now);
+  drecover(s, tl, now);
   if (s->mana < cost) return 0;
   s->mana -= cost;
-  double back = cost * tl->cast_refund + tl->cast_refund_flat + tl->cast_refund_mastery * tl->mastery;
+  double back = cost * tl->cast_refund + tl->cast_refund_flat + tl->cast_refund_mastery * MAST(tl, s);
   double v = s->mana + back;
   s->mana = (v < tl->mana_max) ? v : tl->mana_max;
   return 1;
@@ -297,15 +412,48 @@ inline double wisp_count(const St* s, double now) {
 
 inline int rooted(const St* s, double now) { return now < s->root_until; }
 
-/* druid.score_events, normal event */
-void score_ev(const Row* sc, Sco* q, int name, double raw, double now, double count, double mscale, int attack,
-              int has_wisp, double extra) {
-  double amount = (raw * mscale + sc->potency) * magical(sc, now, sc->mastery, extra);
-  amount *= has_wisp ? q->taken_wisp : q->taken_plain;
+#define CH_ARGS(s, t) (s)->ch_e[t], (s)->ch_m[t], &(s)->ch_n[t], &(s)->ch_t[t], &(s)->ch_lo[t]
+#define CH_MASS(s, t, now) bmass((s)->ch_e[t], (s)->ch_m[t], (s)->ch_n[t], (s)->ch_t[t], (s)->ch_lo[t], now)
+
+/* Ancient Voodoo Doll: the debuffs on dummy t the kernel tracks (Wisp Guardian, Entangling Roots, Chill) */
+double cls_buffs(const Row* r, St* s, int t, double now) {
+  double n = (t == 0) ? main_wisp(s, now) : wisp_count(s, now) / (double)s->targets;
+  if (rooted(s, now)) n += 1.0;
+  if (r->imask & (I_FORB | I_ICLE)) n += CH_MASS(s, t, now);
+  return n;
+}
+
+/* DamageIncrease_Amount entries of the incoming layer for a share with / without Wisp Guardian (armour 12 / 15) */
+double pool_share(const Row* r, St* s, double now, int has_wisp) {
+  if (!r->pool_on) return 1.0;
+  double d = s->dinc + r->pool_flat;
+  if (r->imask & I_GIANT) d += (0.03 / 4.0) * (has_wisp ? 12.0 : 15.0);
+  if (r->voodoo != 0.0) d += 0.04 + 0.02 * ((has_wisp ? 1.0 : 0.0) + (rooted(s, now) ? 1.0 : 0.0) + CH_MASS(s, 0, now));
+  return 1.0 + d;
+}
+
+/* druid.score_events, normal event; pk = armour kind */
+double score_ev(St* s, const Row* sc, Sco* q, int name, double raw, double now, double count, double mscale, int attack,
+                int has_wisp, double extra) {
+  double amount = (raw * mscale + sc->potency) * magical(sc, now, MAST(sc, s), extra);
+  amount *= q->tk[attack ? P_ATK : P_MAG][has_wisp];
   if (attack) amount *= crit_factor(sc->crit, 2.0 + sc->rating);
   else if (sc->spell_crit) amount *= crit_factor(sc->crit, sc->spell_mult + sc->rating);
   amount *= exec_factor(sc, now) * count;
+  if (sc->pool_on) amount *= pool_share(sc, s, now, has_wisp);
   if (amount != 0.0) add_src(q, name, amount);
+  return amount;
+}
+
+void heal_druid(const Row* r, St* s, double now, double amount, double count);
+
+/* every damage instance of the druid's player: damage mana, I08Q heal, Sanguine / Seal of Vampirism */
+void after_damage(St* s, const Row* tl, double now, double count) {
+  if (tl->damage_mana_pct != 0.0) {
+    double v = s->mana + tl->damage_mana_pct * tl->mana_max * count;
+    s->mana = (v < tl->mana_max) ? v : tl->mana_max;
+  }
+  if (s->hp_on && TM(tl, T_DMGHEAL)) heal_druid(tl, s, now, 3.0 + 0.002 * tl->mana_max * s->surge, count);
 }
 
 void deal(St* s, const Row* tl, const Row* sc, Sco* q, int name, double raw, double now, double count, int attack,
@@ -314,6 +462,7 @@ void deal(St* s, const Row* tl, const Row* sc, Sco* q, int name, double raw, dou
   double ws = (1.0 <= wisp_share) ? 1.0 : wisp_share;
   ws = (0.0 >= ws) ? 0.0 : ws;
   double shares[2] = {ws, 1.0 - ws};
+  double dealt = 0.0;
   for (int k = 0; k < 2; k++) {
     double share = shares[k];
     if (share <= 0.0) continue;
@@ -323,15 +472,74 @@ void deal(St* s, const Row* tl, const Row* sc, Sco* q, int name, double raw, dou
       extra += has_wisp ? 0.15 : 0.0;
       extra += rooted(s, now) ? 0.10 : 0.0;
     }
-    score_ev(sc, q, name, raw, now, count * share, mscale, attack, has_wisp, extra);
+    dealt += score_ev(s, sc, q, name, raw, now, count * share, mscale, attack, has_wisp, extra);
   }
-  if (tl->damage_mana_pct != 0.0) {
-    double v = s->mana + tl->damage_mana_pct * tl->mana_max * count;
-    s->mana = (v < tl->mana_max) ? v : tl->mana_max;
-  }
+  after_damage(s, tl, now, count);
+  if (s->hp_on) inc_dealt(tl, s, now, dealt / count, count);
 }
 
-inline double balance_scale(const Row* tl) { return SP_BAL ? (1.05 + 0.007 * tl->mastery) : 1.0; }
+/* item_dmg of the incoming layer: a damage instance of the druid per count on dummy t (Potency per instance;
+ * magical: the Magical Type multiplier, Voidseeker, spell crit; else untyped: Glass Cannon only) */
+void item_dmg(const Row* r, St* s, int name, double raw, int t, double when, int magical_type, double count) {
+  if (count <= 0.0 || when >= FIGHT) return;
+  const Row* sc = s->sc;
+  double ws = (t == 0) ? main_wisp(s, when) : wisp_count(s, when) / (double)s->targets;
+  double dealt = 0.0;
+  for (int k = 0; k < 2; k++) {
+    double share = (k == 0) ? ws : 1.0 - ws;
+    if (share <= 0.0) continue;
+    double amount = raw / count + sc->potency;
+    if (magical_type) {
+      double extra = 0.0;
+      if (TM(sc, T_WRATH)) extra += ((k == 0) ? 0.15 : 0.0) + (rooted(s, when) ? 0.10 : 0.0);
+      amount *= magical(sc, when, MAST(sc, s), extra);
+      if (sc->spell_crit) amount *= crit_factor(sc->crit, sc->spell_mult + sc->rating);
+    } else if (GM(sc, G_GLASS)) amount *= 1.15;
+    amount *= s->q->tk[magical_type ? P_MAG : P_PLAIN][k == 0] * exec_factor(sc, when) * count * share;
+    if (sc->pool_on) amount *= pool_share(sc, s, when, k == 0);
+    if (amount != 0.0) add_src(s->q, name, amount);
+    dealt += amount;
+  }
+  after_damage(s, r, when, count);
+  if (s->hp_on) inc_dealt(r, s, when, dealt / count, count);
+}
+
+void cls_taken(const Row* r, St* s, double now, double m, double axe) { (void)r; (void)s; (void)now; (void)m; (void)axe; }
+double cls_hit(const Row* r, St* s, double now) { (void)r; (void)s; (void)now; return 1.0; }
+void cls_attacked(const Row* r, St* s, int j, double now, double m) { (void)r; (void)s; (void)j; (void)now; (void)m; }
+void cls_evade(const Row* r, St* s, int j, double now, double evaded) { (void)r; (void)s; (void)j; (void)now; (void)evaded; }
+double cls_primary(const Row* r) { return r->intel; }
+void cls_lifesteal(const Row* r, St* s, double amount) { (void)r; (void)s; (void)amount; }
+/* every heal in the fight is the druid's (healer E009, not regeneration): +5 + 3% INT (Trig_Healing) */
+double cls_heal_flat(const Row* r, St* s) { (void)s; return 5.0 + 0.03 * (double)(int)r->intel; }
+/* I0P4 Regenesis on the druid: +25% healing taken while it lasts */
+double cls_heal_mod(const Row* r, St* s) {
+  if (!TM(r, T_REGEN)) return 0.0;
+  return 0.25 * bmass(s->rn_e, s->rn_m, s->rn_n, s->rn_t, s->rn_lo, s->tnow);
+}
+/* Trig_Healing with healer the druid: I0K5 mana 2.5% of the amount, I0P4 Regenesis 12% x Luck, I08S 12% x Luck one
+ * more application (the druid below 100% health) */
+void cls_own_heal(const Row* r, St* s, double total) {
+  if (TM(r, T_MANAHEAL)) {
+    drecover(s, r, s->tnow);
+    double v = s->mana + 0.025 * total;
+    s->mana = (v < r->mana_max) ? v : r->mana_max;
+  }
+  if (TM(r, T_REGEN)) {
+    double c = chance01(0.12 * s->lm);
+    if (c > 0.0) bmaybe(s->rn_e, s->rn_m, &s->rn_n, &s->rn_t, &s->rn_lo, s->tnow, 6.0, c, c);
+  }
+  if (TM(r, T_HEALTWICE) && s->hp_health < s->hp_max) hp_add(s, chance01(0.12 * s->lm) * total);
+}
+
+@INC_C2@
+
+void heal_druid(const Row* r, St* s, double now, double amount, double count) {
+  s->tnow = now;
+  heal_mod(r, s, amount, count, 1, 1, 1);
+}
+
+inline double balance_scale(const Row* tl, St* s) { return SP_BAL ? (1.05 + 0.007 * MAST(tl, s)) : 1.0; }
 inline double spread_share(const St* s, double now) { return wisp_count(s, now) / (double)s->targets; }
 
 void root_tick(St* s, const Row* tl, const Row* sc, Sco* q, double now, double count, double share) {
@@ -357,7 +565,7 @@ inline int active_starfalls(const St* s, double now) {
 void star_hit(St* s, const Row* tl, const Row* sc, Sco* q, double now) {
   double raw = 10.0 + 0.30 * tl->intel;
   if (TM(tl, T_STARL)) raw *= 1.15;
-  deal(s, tl, sc, q, N_STARFALL, raw, now, 1.0, 0, spread_share(s, now), balance_scale(tl));
+  deal(s, tl, sc, q, N_STARFALL, raw, now, 1.0, 0, spread_share(s, now), balance_scale(tl, s));
 }
 
 void add_wisp(St* s, double end, double w, int main) {
@@ -426,7 +634,7 @@ void resolve(St* s, const Row* tl, const Row* sc, Sco* q, int name, double now) 
     if (SP_BAL) spawn_starfall(s, tl, now, 0.5 * (7.0 + 0.002 * tl->mana_max * s->surge));
     double raw = 120.0 + 1.5 * tl->intel + 0.05 * tl->mana_max * s->surge;
     raw *= 1.0 + 0.12 * (double)active_starfalls(s, now);
-    deal(s, tl, sc, q, N_STARFIRE, raw, now, 1.0, 0, main_wisp(s, now), balance_scale(tl));
+    deal(s, tl, sc, q, N_STARFIRE, raw, now, 1.0, 0, main_wisp(s, now), balance_scale(tl, s));
     if (TM(tl, T_ECHO)) push(s, now + 1.5, K_ECHO, raw * 0.35, 0);
   } else {
     double share = spread_share(s, now);
@@ -445,9 +653,19 @@ void resolve(St* s, const Row* tl, const Row* sc, Sco* q, int name, double now) 
 }
 
 void on_attack(St* s, const Row* tl, const Row* sc, Sco* q, double now) {
-  recover(s, tl, now);
+  drecover(s, tl, now);
+  s->tnow = now;
   double auto_count = (tl->auto_pct != 1.0) ? tl->auto_pct : 1.0;
-  deal(s, tl, sc, q, N_AUTO, tl->ad, now, auto_count, 1, main_wisp(s, now), 1.0);
+  /* Blade of the Fallen Seraph: +1% max HP attack damage */
+  double ad = tl->ad + ((tl->imask & I_SERA) ? 0.01 * s->hp_max : 0.0);
+  double before = q->src[N_AUTO] * ((q->seen & (1u << N_AUTO)) ? 1.0 : 0.0);
+  deal(s, tl, sc, q, N_AUTO, ad, now, auto_count, 1, main_wisp(s, now), 1.0);
+  if (s->hp_on) attack_heal(tl, s, now, q->src[N_AUTO] - before);
+  if (tl->imask & I_SERA) {
+    if (s->hp_on) hp_add(s, -0.01 * s->hp_max);
+    taken_event(tl, s, now, 1.0, 0.0);
+    if (s->hp_on) dinc_update(tl, s);
+  }
   double gain = tl->attack_mana + tl->attack_mana_pct * tl->mana_max;
   if (tl->attack_mana_crit != 0.0) {
     double cc = (tl->crit < 100.0) ? tl->crit : 100.0;
@@ -456,27 +674,47 @@ void on_attack(St* s, const Row* tl, const Row* sc, Sco* q, double now) {
   double v = s->mana + gain;
   s->mana = (v < tl->mana_max) ? v : tl->mana_max;
   int tg = s->targets;
-  if (tl->mask & S_ORB) {
-    double raw = (20.0 + 0.35 * tl->intel) * (double)tg;
-    if (raw != 0.0) {
-      double amount = raw * 1.0 * q->taken_plain * exec_factor(sc, now);
-      if (amount != 0.0) add_src(q, N_SPLASH, amount);
+  /* Frost Orb chills the attacked dummy (4 s), Ice Cleaver's Ice Nova (18% x Luck) every dummy */
+  if (tl->imask & I_FORB) { bsure(CH_ARGS(s, 0), now, 4.0); inc_ice(tl, s, 0, now, 1.0, 0); }
+  if (tl->imask & I_ICLE) {
+    double c = chance01(0.18 * s->lm);
+    for (int t = 0; t < tg; t++) {
+      if (c > 0.0) bmaybe(CH_ARGS(s, t), now, 4.0, c, c);
+      inc_ice(tl, s, t, now, c, 0);
     }
+  }
+  if (tl->mask & S_ORB) {
+    /* Fire Orb splash (DAMAGE_TYPE_NORMAL, Spells, no type): Potency per dummy, Glass Cannon, the DamageIncrease pool,
+     * Wisp Guardian armour, damage procs; no type bonus, no crit */
+    double ws = wisp_count(s, now) / (double)tg;
+    double dealt = 0.0;
+    for (int k = 0; k < 2; k++) {
+      double share = (k == 0) ? ws : 1.0 - ws;
+      if (share <= 0.0) continue;
+      double amount = (20.0 + 0.35 * tl->intel + sc->potency) * (GM(sc, G_GLASS) ? 1.15 : 1.0);
+      amount *= q->tk[P_PLAIN][k == 0] * exec_factor(sc, now) * (double)tg * share;
+      if (sc->pool_on) amount *= pool_share(sc, s, now, k == 0);
+      if (amount != 0.0) add_src(q, N_SPLASH, amount);
+      dealt += amount;
+    }
+    after_damage(s, tl, now, (double)tg);
+    if (s->hp_on) inc_dealt(tl, s, now, dealt / (double)tg, (double)tg);
   }
   if (tl->mask & S_SULF) {
     if (s->armed) {
       s->armed = 0;
       double raw = tl->intel;
       if (raw != 0.0) {
-        double amount = raw * (double)tg * magical(sc, now, sc->mastery, 0.0);
+        double amount = raw * (double)tg * magical(sc, now, MAST(sc, s), 0.0);
         if (sc->spell_crit) amount *= crit_factor(sc->crit, sc->spell_mult + sc->rating);
-        amount *= q->taken_plain * exec_factor(sc, now);
+        amount *= q->tk[P_MAG][0] * exec_factor(sc, now);
         if (amount != 0.0) add_src(q, N_SULF, amount);
       }
     }
-    double raw = tl->ad;
+    double raw = ad;
     if (raw != 0.0) {
-      double amount = raw * 1.0 * q->taken_plain * exec_factor(sc, now) * q->echo_ch;
+      /* DAMAGE_TYPE_ENHANCED: no penetration, no DamageIncrease pool */
+      double amount = raw * 1.0 * q->tk[P_PLAIN][0] * exec_factor(sc, now) * q->echo_ch;
       if (amount != 0.0) add_src(q, N_SULF_ECHO, amount);
     }
   }
@@ -493,8 +731,13 @@ double fight(const Row* tl, const Row* sc, int bound, int* status_out) {
   s.nact = 0;
 #endif
   int st = 0;
-  q.taken_plain = armor_taken(15.0 - sc->armor_pen, &st);
-  q.taken_wisp = armor_taken(15.0 - sc->armor_pen - 3.0, &st);
+  for (int w = 0; w < 2; w++) {
+    double a = 15.0 - (w ? 3.0 : 0.0);  /* Wisp Guardian: -3 armour on the target */
+    q.tk[P_PLAIN][w] = armor_taken(a, &st);
+    q.tk[P_MAG][w] = (sc->mask & S_VOID) ? pen_taken(a, 0.0, 2.0) : q.tk[P_PLAIN][w];
+    q.tk[P_ATK][w] = pen_taken(a, sc->armor_pen, (sc->mask & S_ICLV) ? 3.0 : 0.0);
+    q.tk[P_PHYS][w] = (sc->mask & S_ICLV) ? pen_taken(a, 0.0, 3.0) : q.tk[P_PLAIN][w];
+  }
   if (st) { *status_out = st; return 0.0; }
   q.echo_ch = 0.10 * (1.0 + sc->luck);
   q.nord = 0; q.seen = 0u;
@@ -502,6 +745,14 @@ double fight(const Row* tl, const Row* sc, int bound, int* status_out) {
   s.qn = 0; s.seq = 0u; s.nf = 0; s.nw = 0;
   s.mana = tl->mana_max; s.mana_time = 0.0; s.root_until = -1.0;
   s.surge = TM(tl, T_SURGE) ? 1.5 : 1.0;
+  s.lm = 1.0 + tl->luck; s.tnow = 0.0; s.sc = sc; s.q = &q;
+  s.rn_n = 0; s.rn_t = 0.0; s.rn_lo = INFINITY;
+  for (int t = 0; t < MAXT; t++) { s.ch_n[t] = 0; s.ch_t[t] = 0.0; s.ch_lo[t] = INFINITY; }
+  /* incoming hits: I0K5 turns the druid's own heals (the model heal from itself, I08Q) into mana */
+  inc_init(tl, &s, tl->targets, TM(tl, T_MANAHEAL) != 0, 0);
+#if INC_OFF
+  s.hits_on = 0; s.hp_on = 0;
+#endif
   s.wisp_life = 8.0 + (TM(tl, T_WISP) ? 4.0 : 0.0);
   for (int b = 0; b < 4; b++) { s.ready[b] = 0.0; s.has[b] = 1; }
   if (!SP_BAL) s.has[B_STARFALL] = 0;
@@ -515,11 +766,16 @@ double fight(const Row* tl, const Row* sc, int bound, int* status_out) {
     if (s.status) break;
     double pk = peek(&s);
     double moment = (pk < next_attack) ? pk : next_attack;
+    int hit_j = -1, hit_k = -1;
+    double next_inc = (s.hits_on || s.hp_on) ? inc_next(&s, s.targets, &hit_j, &hit_k) : 1.0e9;
+    if (next_inc < moment) moment = next_inc;
     if (hero_ready <= moment && hero_ready < FIGHT) {
       int spell = choose(&s, hero_ready);
       if (spell >= 0) {
         if (!pay(&s, tl, cast_cost(spell), hero_ready)) { s.ready[spell] = hero_ready + 0.25; continue; }
         act(&s, hero_ready, spell);
+        s.tnow = hero_ready;
+        cast_heal(tl, &s, hero_ready, cast_cost(spell));
         s.ready[spell] = hero_ready + cast_cd(&s, tl, spell);
         if (tl->mask & S_SULF) s.armed = 1;
         push(&s, hero_ready + CAST_POINT, K_CAST, 0.0, spell);
@@ -543,14 +799,25 @@ double fight(const Row* tl, const Row* sc, int bound, int* status_out) {
       hero_ready = (hero_ready >= mw) ? hero_ready : mw;
     }
     if (moment >= FIGHT) break;
+    s.tnow = moment;
+    if (s.hp_on) regen_adv(tl, &s, moment);
+    if (moment == next_inc) {
+      inc_event(tl, &s, moment, hit_j, hit_k, s.targets);
+      continue;
+    }
     if (moment == next_attack && (s.qn == 0 || next_attack < peek(&s))) {
       on_attack(&s, tl, sc, &q, moment);
+      double base = tl->attack_base;
+      if (tl->imask & I_BHOWL) base *= 1.0 - (1.0 - hero_ratio(&s, moment)) * 0.30;
+      double bm = (tl->imask & I_BMASK) ? 0.28 * bm_active(&s, moment) : 0.0;
       if (s.ap.p > 0.0 || s.ap.cas > 0.0) {
         ap_attack(&s.ap, moment, tl->crit);
-        double sp = ap_speed(tl->aspd + ap_bonus(&s.ap, moment));
-        next_attack = moment + tl->attack_base / (1.0 + sp);
+        double sp = ap_speed(tl->aspd + ap_bonus(&s.ap, moment) + bm);
+        next_attack = moment + base / (1.0 + sp);
+      } else if (bm != 0.0) {
+        next_attack = moment + base / (1.0 + ap_speed(tl->aspd + bm));
       } else {
-        next_attack = moment + tl->attack_base / (1.0 + tl->aspd);
+        next_attack = moment + base / (1.0 + tl->aspd);
       }
       continue;
     }
@@ -559,7 +826,7 @@ double fight(const Row* tl, const Row* sc, int bound, int* status_out) {
     if (kind == K_CAST) {
       resolve(&s, tl, sc, &q, pi, now);
     } else if (kind == K_ECHO) {
-      deal(&s, tl, sc, &q, N_ECHO_SF, pd, now, 1.0, 0, main_wisp(&s, now), balance_scale(tl));
+      deal(&s, tl, sc, &q, N_ECHO_SF, pd, now, 1.0, 0, main_wisp(&s, now), balance_scale(tl, &s));
     } else if (kind == K_STAR || kind == K_MISSILE) {
       double end = s.f_end[pi];
       if (now < end + 1e-9) {
@@ -575,7 +842,8 @@ double fight(const Row* tl, const Row* sc, int bound, int* status_out) {
     } else {
       double expire = pd;
       if (now <= expire + 1e-9) {
-        double amount = 12.0 * 1.0 * q.taken_plain * exec_factor(sc, now);
+        /* summons: no item penetration */
+        double amount = 12.0 * 1.0 * q.tk[P_PLAIN][0] * exec_factor(sc, now);
         if (amount != 0.0) add_src(&q, N_TREANTS, amount);
         if (rooted(&s, now)) root_tick(&s, tl, sc, &q, now, 1.0, main_wisp(&s, now));
         if (now + 1.65 <= expire + 1e-9) push(&s, now + 1.65, K_TREANT, expire, 0);
@@ -586,7 +854,7 @@ double fight(const Row* tl, const Row* sc, int bound, int* status_out) {
   double total = 0.0;
   for (int i = 0; i < q.nord; i++) total += q.src[q.ord[i]];
 #if REPORT
-  recover(&s, tl, FIGHT);
+  drecover(&s, tl, FIGHT);
   *keep_s = s; *keep_q = q;
 #endif
   return total / FIGHT;
@@ -734,18 +1002,23 @@ __kernel void cls_report(const int n, const int targets, __global const int* pic
 }
 #endif
 """
+KERNEL = (KERNEL.replace("@INC_HEAD@", INC.INC_HEAD + "#define NINC %d\n" % INC.NINC)
+          .replace("@INC_ROW_FIELDS@", INC.INC_ROW_FIELDS).replace("@INC_ST_FIELDS@", INC.INC_ST_FIELDS)
+          .replace("@INC_C1@", INC.INC_C1).replace("@INC_C2@", INC.INC_C2))
 KERNEL = KERNEL.replace("#pragma OPENCL FP_CONTRACT OFF\n", "#pragma OPENCL FP_CONTRACT OFF\n" + AP.C, 1)
 
 SPECIAL_BITS = {
     "I00D": 0, "I0BR": 1, "I07O": 2, "I0JO": 3, "I0QT": 4, "I096": 5, "I03C": 6, "I00L": 7,
     "I00Y": 8, "I07P": 9, "I048": 10, "I03L": 11, "tlum": 12, "I0FW": 13,
     "I0R1": 14, "I0R3": 15, "I0R4": 16,
-    "I0QN": 20,
+    "I0QN": 20, "I07Y": 21, "I055": 22,
 }
 TALENT_BITS = {
     "I0K0": 0, "I0P8": 1, "I0JY": 2, "I0P5": 3, "I0JZ": 4, "I0P7": 5, "I08O": 6, "I0K4": 7, "I0K1": 8, "I0MS": 9,
-    # druid.IGNORED_TALENTS (healing / survivability): no effect on the fight
-    "I0K5": 16, "I0K2": 17, "I02F": 18, "I0K3": 19, "I0ML": 20, "I0P4": 21, "I08Q": 22, "I08S": 23,
+    # healing talents that act through the druid's own heals (2026-11-27: the model heal is the druid's own)
+    "I0K5": 10, "I0P4": 11, "I08S": 12, "I08Q": 13,
+    # IGNORED_TALENTS (Wild Growth / Nourish / allies, never cast in the fight): no effect on the fight
+    "I0K2": 17, "I02F": 18, "I0K3": 19, "I0ML": 20,
 }
 GLYPH_BITS = _S.GLYPH_BITS
 NO_EFFECT = {"I0EN"}
@@ -760,13 +1033,13 @@ DRUID_WHITE = 11.0
 DRUID_SWING = 2.0
 HERO_CLASS = "Druid"  # item pool class for E009
 TALENT_NAMES = {
-    "I0K5": "I0K5 (лечение)", "I0K2": "I0K2 (лечение)", "I02F": "I02F (при получении урона)",
+    "I0K5": "Mana from Healing (I0K5)", "I0K2": "I0K2 (лечение)", "I02F": "I02F (при получении урона)",
     "I0K4": "Starfire Echo (I0K4)", "I0K3": "I0K3 (лечение)", "I0K1": "Starfall Missile (I0K1)",
     "I0K0": "Starsurge (I0K0)", "I0P8": "Nature's Wrath (I0P8)", "I0JZ": "Entangle (I0JZ)", "I0P5": "Wisp (I0P5)",
-    "I0ML": "I0ML (союзники)", "I0MS": "Druidism (I0MS)", "I0JY": "Starlight (I0JY)", "I0P4": "I0P4 (лечение)",
-    "I0P7": "Force of Nature (I0P7)", "I08O": "Wisp Spread (I08O)", "I08Q": "I08Q (лечение)", "I08S": "I08S (лечение)",
+    "I0ML": "I0ML (союзники)", "I0MS": "Druidism (I0MS)", "I0JY": "Starlight (I0JY)", "I0P4": "Regenesis (I0P4)",
+    "I0P7": "Force of Nature (I0P7)", "I08O": "Wisp Spread (I08O)", "I08Q": "Healing from Damage (I08Q)", "I08S": "Double Heal (I08S)",
 }
-IGNORED_TALENTS = frozenset({"I0K5", "I0K2", "I02F", "I0K3", "I0ML", "I0P4", "I08Q", "I08S"})
+IGNORED_TALENTS = frozenset({"I0K2", "I02F", "I0K3", "I0ML"})
 DIAMOND = "I00D"
 # B_* order of the kernel; druid.BOUND_NAME
 BUTTON_NAMES = ("Starfire", "Starfall", "Mass Entanglement", "Wisp Guardian")
@@ -781,15 +1054,17 @@ class DruidCL(C.ExactCL):
     GLYPH_BITS = GLYPH_BITS
     NO_EFFECT = NO_EFFECT
     KEY_FREE = ("health", "healing_power")  # ESC points left out of the timeline key
-    TABLE_KEYS = _S.ShamanCL.TABLE_KEYS
+    TABLE_KEYS = _S.ShamanCL.TABLE_KEYS + ("pimask", "pinc", "phealth")
     SCALARS = _S.ShamanCL.SCALARS
     SOURCE_NAMES = ("Автоатака", "Starfire", "Starfire (эхо)", "Starfall", "Mass Entanglement", "Treants",
-                    "Wisp Guardian", "Всплеск огня", "Sulfuras", "Sulfuras (удар)")
+                    "Wisp Guardian", "Всплеск огня", "Sulfuras", "Sulfuras (удар)",
+                    "Отражение урона", "Sunstrider Crown", "Shield of Death", "Shado-Pan Faceguard",
+                    "Bloodlord's Regalia", "Ice Cleaver")
     ACTION_NAMES = BUTTON_NAMES
     STAT_KEYS = ("int", "str", "agi", "ad", "potency", "mastery", "crit", "rating", "haste", "attack_speed", "luck",
                  "mana_max", "mana_regen", "swing", "cd_temp", "flat_cdr", "armor_pen", "bound", "spell_crit")
     BOOL_STATS = ("spell_crit",)
-    NSRC, MAXA = 10, 160
+    NSRC, MAXA = 16, 160
 
     def report(self, codes, talents=(), glyphs=(), points: dict | None = None) -> dict:
         """class_cl report plus the Elemental Orb mode, the Diamond Ring binding and the ESC-only sheet lines."""
@@ -808,8 +1083,12 @@ class DruidCL(C.ExactCL):
         raise RuntimeError("druid: the Python fight model was removed (2026-11-27)")
 
     def tables(self, space, items, sources):
-        return C.character_tables(space, items, sources, SPECIAL_BITS, TALENT_BITS, GLYPH_BITS, NO_EFFECT,
-                                  [float(DRUID_INT), float(DRUID_STR), float(DRUID_AGI)], "Druid")
+        t = C.character_tables(space, items, sources, SPECIAL_BITS, TALENT_BITS, GLYPH_BITS, NO_EFFECT,
+                               [float(DRUID_INT), float(DRUID_STR), float(DRUID_AGI)], "Druid")
+        t.update(INC.inc_tables(space, items))
+        t["phealth"] = np.array([float(sum(int(v) for v in re.findall(r"\+(\d+) Health\b", items[p.code].tip)))
+                                 for p in space.pieces], dtype=np.float64)
+        return t
 
     def timeline_key(self, build):
         # druid.simulate replayed a fight only across Health / Healing Power points, which never change it:
@@ -826,3 +1105,11 @@ parity = C.parity
 parity_full = C.parity_full
 random_builds = C.random_builds
 self_check = C.self_check
+
+
+# Talents / items whose effect depends on the incoming-hit model (docs/defense-model.md)
+INCOMING_TALENTS = frozenset({"I0K5", "I0P4", "I08S", "I08Q"})
+INCOMING_ITEMS = INC.INCOMING_ITEMS
+# map fixes after the Python model was removed: penetration only on the auto attack (Wisp armour kept), Voidseeker /
+# Iron Cleaver, Fire Orb splash through the class damage, Ice Cleaver
+MODEL_FIX_ITEMS = frozenset({"I031", "I0DU", "I0IU", "I0JU", "I0NT", "I0QN", "I0QV", "I07Y", "I055", "I07O", "lgdh"})

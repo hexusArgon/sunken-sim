@@ -216,3 +216,34 @@ entered: Earthen Crust, Backfire (all specs), Ysera's Gift (Emerald). Speed (CPU
 35k -> 13k, Obsidian 26k -> 11k, Emerald 25k -> 12k rows/s.
 Approximations: health is the expected health; the Emerald Dragon Form group heal is taken as 25% max HP; Ysera's Gift
 ticks at 0.5 s multiples; Lifebinder's own cast heal and the Cleansing Fire centre bonus (x1.5) are not counted.
+
+## Druid: incoming hits and healing (inventory 2026-11-27, map 2.5.2c)
+
+The caster Druid E009 only (the Feral Druid O00R is another class). Item pool: 336 items, all screened
+(`tools/one_slot_gpu.py druid`). Intelligence hero: the 75% model heal is the druid's own Healing Type heal (healer
+E009). Hero health 230 + 15 STR + item Health, armour 5 + 0.1 AGI + items (unit data E009: uhpm 230, udef 5). The druid
+has no Physical Type damage, so the Primalist Ring gives nothing. Class integration in farm/hybrid/druid_cl.py.
+
+| Effect | Trigger / rule (war3map_norm.j) | Value | Modelled |
+|---|---|---|---|
+| Druid heals (Trig_Healing, healer E009, not regeneration) | every heal of the druid | + 5 + 0.03 INT | yes |
+| I0K5 Mana from Healing | Trig_Healing Func014, healer the druid | mana 2.5% of the heal amount on the target (the druid) | yes: the model heal and I08Q heals give mana (needs the health: on with the talent) |
+| I0P4 Regenesis | Trig_Healing Func014, 12% x Luck | Regenesis 6 s on the target: +25% healing taken | yes (expected buffer) |
+| I08S | Trig_Healing Func018, 12% x Luck, the target below 100% | the heal applies once more | yes (health only) |
+| I08Q | PreDamage_Heroes: any damage of the druid's player | heals the most wounded hero (the druid) 3 + 0.2% max mana x Starsurge | yes |
+| I02F Aggressive Growth, I0K2 / I0K3 (Wild Growth / Nourish), I0ML (allies) | need Wild Growth / Nourish targets or allies | | no: never cast in the fight |
+| Wisp Guardian | -3 armour on the target | real armour: Giantsbane reads 12 | yes |
+
+Map fixes with this class (GPU only): every druid spell is ATTACK_TYPE_NORMAL (Spells), so item penetration only reaches
+the auto attack (with Iron Cleaver); Voidseeker Hood reaches the Magical Type spells; treants (summons) get no item
+penetration. Fire Orb splash: 20 + 0.35 INT + Potency per dummy, Glass Cannon, the DamageIncrease pool, Wisp armour,
+damage procs (mana, I08Q), no type bonus, no crit. Sulfuras echo: no penetration, no pool. Frost Orb / Ice Cleaver chills
+(Ancient Voodoo Doll counts Wisp Guardian, Entangling Roots and Chill). Seal Mastery feeds the Magical multiplier
+(Tlum slope), the Balance scale and cast refunds.
+
+Fixtures: 1352 of 1840 frozen fights unchanged (still checked), 274 marked "incoming", 214 "model_fix"; 5 of 12
+refinements re-frozen from the GPU (Shadow Orb top builds about 15% lower: penetration only on attacks). `-DINC_OFF=1`
+replays the Part-A fights bit for bit (test_incoming). One-slot bare unchanged (83.6 / 116.0); entered the top 150:
+Shield of Death, Sunstrider Crown, Crimson Fury, Ice Cleaver, Ursal's Plate, The Furnace, Volcanic Shield / Giantsbane,
+Voidseeker, Bloodhowl. Speed (CPU pocl, 2^14 top-150 rows): Restoration 32k -> 19k, Balance 30k -> 19k rows/s.
+Approximations: health is the expected health; Regenesis / I08S chances use one trial per heal call.
