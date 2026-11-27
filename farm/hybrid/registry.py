@@ -31,7 +31,6 @@ STATUSES = (LOCKED, TIMELINE, COMPILE, GPU_TIMELINE, CPU)
 
 # hero name in jobs -> sunken_sim module
 MODULES = {
-    "death_knight": "death_knight",
     "demon_hunter": "demon_hunter",
     "dragon_sentinel": "dragon_sentinel",
     "druid": "druid",
@@ -62,7 +61,6 @@ ROGUE_SPECS = ("subtlety", "combat")
 WARLOCK_SPECS = ("demonology", "destruction", "affliction")
 FERAL_DRUID_SPECS = ("primal", "guardian", "savage")
 BERSERKER_SPECS = ("headhunter", "poison", "fury")
-DEATH_KNIGHT_SPECS = ("frost", "blood", "unholy")
 DEMON_HUNTER_SPECS = ("havoc", "vengeance", "devourer")
 DRAGON_SENTINEL_SPECS = ("ruby", "obsidian", "emerald")
 MONK_SPECS = ("windwalker", "brewmaster", "mistweaver")
@@ -83,7 +81,6 @@ GPU_TIMELINE_SPECS = frozenset(
     | {("hunter", "marksmanship"), ("hunter", "beast_mastery"), ("hunter", "survival")}
     | {("warlock", spec) for spec in WARLOCK_SPECS}
     | {("feral_druid", spec) for spec in FERAL_DRUID_SPECS}
-    | {("death_knight", spec) for spec in DEATH_KNIGHT_SPECS}
     | {("demon_hunter", spec) for spec in DEMON_HUNTER_SPECS}
     | {("dragon_sentinel", spec) for spec in DRAGON_SENTINEL_SPECS}
     | {("monk", spec) for spec in MONK_SPECS}
@@ -103,7 +100,6 @@ COMPILE_SPECS = frozenset(
 # Ledger kind-score heroes (sunken_sim/ledger.py + farm/hybrid/kindscore.py):
 # hero -> (specs, engine class in farm/hybrid/<hero>.py)
 KIND_HEROES = {
-    "death_knight": (('frost', 'blood', 'unholy'), "DeathKnightFights"),
     "demon_hunter": (('havoc', 'vengeance', 'devourer'), "DemonHunterFights"),
     "dragon_sentinel": (('ruby', 'obsidian', 'emerald'), "DragonSentinelFights"),
     "monk": (('windwalker', 'brewmaster', 'mistweaver'), "MonkFights"),

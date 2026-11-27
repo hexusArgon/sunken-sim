@@ -328,6 +328,92 @@ class ExactCL:
         self.counts["rows"] += n
         return out
 
+    # -- explicit pieces and the report (kernels cls_pick / cls_report) ---
+    # A class with these kernels sets SOURCE_NAMES (Ledger ids), ACTION_NAMES, STAT_KEYS, NSRC and MAXA.
+    def picks_of(self, codes) -> list[int]:
+        """Piece indices of an item list (at most 6; -1 pads empty slots)."""
+        index = {piece.code: i for i, piece in enumerate(self.space.pieces)}
+        out = [index[c] for c in codes]
+        if len(out) > 6:
+            raise ValueError("more than 6 items")
+        return out + [-1] * (6 - len(out))
+
+    def _pick_launch(self, kernel, picks, tmasks, gmasks, points, extra_out=()):
+        cl = self.cl
+        n = len(picks)
+        self._ensure(n)
+        mf = cl.mem_flags
+
+        def buf(a):
+            return cl.Buffer(self.ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=np.ascontiguousarray(a))
+
+        args = [buf(np.asarray(picks, dtype=np.int32).reshape(n, 6)), buf(np.asarray(tmasks, dtype=np.uint32)),
+                buf(np.asarray(gmasks, dtype=np.uint32)), buf(np.asarray(points, dtype=np.int32).reshape(n, NP))]
+        kernel.set_args(np.int32(n), np.int32(self.targets), *args, *self.tab_args,
+                        self.out_dps, self.out_group, self.out_status, *extra_out)
+        cl.enqueue_nd_range_kernel(self.queue, kernel, (n,), None)
+        out = self._read(n)
+        del args
+        return out
+
+    def pick(self, picks, tmasks, gmasks, points):
+        """DPS of explicit builds: picks (n, 6) piece indices, -1 = empty slot."""
+        n = len(picks)
+        if n == 0:
+            return np.empty(0), np.empty(0, np.uint8), np.empty(0, np.uint8)
+        if not hasattr(self, "_k_pick"):
+            self._k_pick = self.cl.Kernel(self.p_full, "cls_pick")
+        out = []
+        for lo in range(0, n, 1 << 16):
+            hi = min(n, lo + (1 << 16))
+            out.append(self._pick_launch(self._k_pick, np.asarray(picks[lo:hi]), np.asarray(tmasks[lo:hi]),
+                                         np.asarray(gmasks[lo:hi]), np.asarray(points[lo:hi])))
+        return tuple(np.concatenate([o[k] for o in out]) for k in range(3))
+
+    def report(self, codes, talents=(), glyphs=(), points: dict | None = None) -> dict:
+        """One fight with the sources in Ledger order, the casts, mana left and the stat sheet."""
+        from sunken_sim.esc import ESC_ATTRS
+
+        cl = self.cl
+        if not hasattr(self, "_k_report"):
+            opts = ["-cl-std=CL1.2", f"-DSPEC={self.SPECS[self.spec]}", "-DTALENTS=1", "-DREPORT=1"]
+            self._p_report = cl.Program(self.ctx, self.KERNEL).build(options=opts)
+            self._k_report = cl.Kernel(self._p_report, "cls_report")
+        mf = cl.mem_flags
+        picks = np.asarray([self.picks_of(codes)], dtype=np.int32)
+        tm = np.asarray([self.talent_mask(talents)], dtype=np.uint32)
+        gm = np.asarray([self.glyph_mask(glyphs)], dtype=np.uint32)
+        pts = np.asarray([[int((points or {}).get(k, 0)) for k in ESC_ATTRS]], dtype=np.int32)
+        outs = {
+            "src": np.empty(self.NSRC, np.float64), "ord": np.empty(self.NSRC, np.int32), "nord": np.empty(1, np.int32),
+            "mana": np.empty(1, np.float64), "act_t": np.empty(self.MAXA, np.float64),
+            "act_id": np.empty(self.MAXA, np.int32), "nact": np.empty(1, np.int32),
+            "stats": np.zeros(len(self.STAT_KEYS), np.float64),
+        }
+        bufs = {k: cl.Buffer(self.ctx, mf.WRITE_ONLY, v.nbytes) for k, v in outs.items()}
+        dps, group, status = self._pick_launch(
+            self._k_report, picks, tm, gm, pts,
+            [bufs[k] for k in ("src", "ord", "nord", "mana", "act_t", "act_id", "nact", "stats")])
+        if status[0]:
+            raise RuntimeError(f"{self.hero} report status {int(status[0])}")
+        for k, v in outs.items():
+            cl.enqueue_copy(self.queue, v, bufs[k])
+        self.queue.finish()
+        sources = {}
+        for i in range(int(outs["nord"][0])):
+            sources[self.SOURCE_NAMES[int(outs["ord"][i])]] = float(outs["src"][i])
+        total = 0.0
+        for v in sources.values():
+            total += v
+        stats = dict(zip(self.STAT_KEYS, (float(x) for x in outs["stats"])))
+        if "galactic" in stats:
+            stats["galactic"] = bool(stats["galactic"])
+        if int(outs["nact"][0]) > self.MAXA:
+            raise RuntimeError(f"{self.hero} report: more than {self.MAXA} casts")
+        actions = [(float(outs["act_t"][i]), self.ACTION_NAMES[int(outs["act_id"][i])]) for i in range(int(outs["nact"][0]))]
+        return {"dps": float(dps[0]), "total": total, "sources": sources, "actions": actions,
+                "mana_left": float(outs["mana"][0]), "stats": stats, "group": int(group[0])}
+
     # -- Python reference ----------------------------------------------
     def oracle_bare(self, chunk: int) -> float:
         return self.py_value(make_build(self.space, self.items, chunk))

@@ -1,14 +1,14 @@
 """Exact float64 OpenCL kernel for Death Knight fights (Frost, Blood, Unholy).
 
-One work-item scores one fight: unrank the six items, fold the sheet like
-``sunken_sim.death_knight.stats_of`` (strength primary, item armour, spell crit,
-Blood Strike stacks) and run ``death_knight.simulate`` with its Ledger sums in
-insertion order. The debuffs Outbreak, Blood Plague and Chill are distributions
-of expiry times per target (``death_knight._Buff``), mirrored here entry by entry.
+One work-item scores one fight: unrank the six items (or take explicit pieces, -1 = empty slot),
+fold the sheet (strength primary, item armour, spell crit, Blood Strike stacks) and run the fight
+with its Ledger sums in insertion order. The debuffs Outbreak, Blood Plague and Chill are
+distributions of expiry times per target (``sunken_sim.expiry_buff._Buff``), mirrored entry by entry.
 
-``death_knight.simulate`` has no timeline cache, so every row is its own fight.
-Rows the kernel cannot score (more summons than slots, negative armour) return a
-non-zero status and are re-scored by the Python oracle on the host.
+The Python model (sunken_sim/death_knight.py) was removed on 2026-11-27 after 2760 fights and
+18 refinements were frozen bit-exact in farm/hybrid/fixtures/death_knight.json. REPORT=1 builds
+the report kernel (sources in Ledger order, casts, mana left, stat sheet). A non-zero status
+(more summons than MAXS, more than MAXT targets) is an error: there is no oracle.
 Host side: farm.hybrid.class_cl.
 """
 
@@ -32,6 +32,10 @@ KERNEL = r"""
 #ifndef SPEC
 #define SPEC 0
 #endif
+/* REPORT 1: the report kernel also keeps the final fight state (sources in Ledger order, casts, mana) */
+#ifndef REPORT
+#define REPORT 0
+#endif
 #define SP_FROST (SPEC == 0)
 #define SP_BLOOD (SPEC == 1)
 #define SP_UNHOLY (SPEC == 2)
@@ -45,9 +49,10 @@ KERNEL = r"""
 #define NP 11
 #define NPAL 16
 #define NSRC 14
-#define MAXT 5  /* the farm runs 5 targets; more -> status 3, the host re-scores the row */
+#define MAXT 8
 #define BS 8
-#define MAXS 24
+#define MAXS 48  /* worms (7 s) + ghouls (16 s) alive at once; more -> status 2 */
+#define MAXA 160
 #define LEVEL 15.0
 #define RANK 1.0
 
@@ -146,6 +151,9 @@ typedef struct {
   double mana, mana_time, hp_bonus, frozen, marrow, lm, bt, attack_crit, spell_critf, pb_chance;
   int armed, status, army_count, last_cast, rested;
   AP ap;
+#if REPORT
+  double act_t[MAXA]; int act_id[MAXA]; int nact;
+#endif
 } St;
 
 double target_hp(double t) {
@@ -231,7 +239,7 @@ void bmaybe(double* e, double* m, int* n, double* tot, double* lo, double now, d
 
 double armor_mult(St* s, double armor) {
   if (armor > 0.0) return 1.0 - (armor * 0.04) / (1.0 + 0.04 * armor);
-  if (armor < 0.0) { if (!s->status) s->status = 4; return 1.0; }
+  if (armor < 0.0) return 2.0 - pow(1.0 - 0.04, -armor);  /* shadow.armor_taken; unreachable with the 2026-11 pool */
   return 1.0;
 }
 
@@ -390,6 +398,10 @@ void add_summon(St* s, int kind, double end, double next, double raw) {
 }
 
 void cast_spell(const Row* r, St* s, int key, double now) {
+#if REPORT
+  if (s->nact < MAXA) { s->act_t[s->nact] = now; s->act_id[s->nact] = key; }
+  s->nact++;  /* past MAXA the host refuses the report */
+#endif
   if (r->mask & S_SULF) { if (!s->armed) s->armed = 1; }
   double hit = now + CAST_POINT;
   double life = max_life(r, s);
@@ -461,12 +473,19 @@ void cast_spell(const Row* r, St* s, int key, double now) {
   }
 }
 
+#if REPORT
+double fight(const Row* r, int* status, St* keep) {
+#else
 double fight(const Row* r, int* status) {
+#endif
   St s;
+#if REPORT
+  s.nact = 0;
+#endif
   s.nord = 0; s.seen = 0u;
   for (int id = 0; id < 12; id++) { s.seen |= 1u << id; s.ord[s.nord++] = id; s.src[id] = 0.0; }
   s.status = 0;
-  if (r->targets > MAXT) { *status = 3; return 0.0; }
+  if (r->targets > MAXT || r->targets < 1) { *status = 3; return 0.0; }
   s.lm = 1.0 + r->luck;
   s.bt = TM(r, T_BTAP) ? 1.35 : 1.0;
   s.attack_crit = crit_factor(r->crit, 2.0 + r->rating);
@@ -639,6 +658,10 @@ double fight(const Row* r, int* status) {
   if (s.status) { *status = s.status; return 0.0; }
   double total = 0.0;
   for (int i = 0; i < s.nord; i++) total += s.src[s.ord[i]];
+#if REPORT
+  recover(r, &s, FIGHT);
+  *keep = s;
+#endif
   return total / FIGHT;
 }
 
@@ -709,6 +732,7 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   int n_core = 0, n_sulg = 0, has_shop = 0, has_drop = 0, nexec = 0;
   for (int si = 0; si < 6; si++) {
     int p = chosen[si];
+    if (p < 0) { first[si] = 0; continue; }
     int f1 = 1;
     for (int j = 0; j < si; j++) if (chosen[j] == p) { f1 = 0; break; }
     first[si] = f1;
@@ -810,6 +834,7 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   r->glass = (GM(r, G_GLASS) || (mask & S_GLAS)) ? 1 : 0;
 }
 
+#if !REPORT
 double row_value(Tab* T, long index, uint tmask, uint gmask, const int* pts, int targets, int* status, int* group) {
   int chosen[6];
   if (unrank(T, index, chosen)) { *status = 1; *group = 0; return 0.0; }
@@ -817,6 +842,7 @@ double row_value(Tab* T, long index, uint tmask, uint gmask, const int* pts, int
   sheet(T, &r, chosen, tmask, gmask, pts, targets, group);
   return fight(&r, status);
 }
+#endif
 
 #define TAB_ARGS \
     __global const long* dp0, __global const long* dp1, const long count_without, const long total, \
@@ -829,6 +855,7 @@ double row_value(Tab* T, long index, uint tmask, uint gmask, const int* pts, int
   T.npieces = npieces; T.pkind = pkind; T.pamp = pamp; T.fold = fold; T.uniq = uniq; T.pmask = pmask; T.psrc = psrc; \
   T.pal = pal; T.base = base;
 
+#if !REPORT
 __kernel void cls_bare(const long start, const int n, const int targets, TAB_ARGS,
     __global double* out_dps, __global uchar* out_group, __global uchar* out_status)
 {
@@ -855,6 +882,82 @@ __kernel void cls_rows(const int n, const int targets, __global const long* chun
   double d = row_value(&T, chunks[gid], tmasks[gid], gmasks[gid], pts, targets, &status, &group);
   out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status;
 }
+#endif
+
+/* Explicit pieces (-1 = empty slot): the one-slot screen and any build outside the pool's 6-item ranks. */
+int picks_ok(Tab* T, __global const int* picks, long gid, int* chosen) {
+  for (int j = 0; j < 6; j++) {
+    int p = picks[gid * 6 + j];
+    if (p >= T->npieces) return 0;
+    chosen[j] = (p < 0) ? -1 : p;
+  }
+  return 1;
+}
+
+#if !REPORT
+__kernel void cls_pick(const int n, const int targets, __global const int* picks, __global const uint* tmasks,
+    __global const uint* gmasks, __global const int* points, TAB_ARGS,
+    __global double* out_dps, __global uchar* out_group, __global uchar* out_status)
+{
+  int gid = get_global_id(0);
+  if (gid >= n) return;
+  TAB_INIT
+  int pts[NP];
+  for (int j = 0; j < NP; j++) pts[j] = points[(long)gid * NP + j];
+  int status = 0, group = 0, chosen[6];
+  double d = 0.0;
+  if (!picks_ok(&T, picks, gid, chosen)) status = 1;
+  else {
+    Row r;
+    sheet(&T, &r, chosen, tmasks[gid], gmasks[gid], pts, targets, &group);
+    d = fight(&r, &status);
+  }
+  out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status;
+}
+#else
+#define NSTAT 21
+__kernel void cls_report(const int n, const int targets, __global const int* picks, __global const uint* tmasks,
+    __global const uint* gmasks, __global const int* points, TAB_ARGS,
+    __global double* out_dps, __global uchar* out_group, __global uchar* out_status,
+    __global double* out_src, __global int* out_ord, __global int* out_nord, __global double* out_mana,
+    __global double* out_act_t, __global int* out_act_id, __global int* out_nact, __global double* out_stats)
+{
+  int gid = get_global_id(0);
+  if (gid >= n) return;
+  TAB_INIT
+  int pts[NP];
+  for (int j = 0; j < NP; j++) pts[j] = points[(long)gid * NP + j];
+  int status = 0, group = 0, chosen[6];
+  double d = 0.0;
+  St keep;
+  keep.nord = 0; keep.nact = 0; keep.mana = 0.0;
+  Row r;
+  if (!picks_ok(&T, picks, gid, chosen)) status = 1;
+  else {
+    sheet(&T, &r, chosen, tmasks[gid], gmasks[gid], pts, targets, &group);
+    d = fight(&r, &status, &keep);
+  }
+  out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status;
+  out_nord[gid] = keep.nord;
+  for (int i = 0; i < NSRC; i++) {
+    out_ord[(long)gid * NSRC + i] = (i < keep.nord) ? keep.ord[i] : -1;
+    out_src[(long)gid * NSRC + i] = (i < keep.nord) ? keep.src[keep.ord[i]] : 0.0;
+  }
+  out_mana[gid] = (status == 0 && r.mana_max > 0.0) ? 100.0 * keep.mana / r.mana_max : 0.0;
+  out_nact[gid] = keep.nact;
+  for (int i = 0; i < MAXA; i++) {
+    out_act_t[(long)gid * MAXA + i] = (i < keep.nact) ? keep.act_t[i] : 0.0;
+    out_act_id[(long)gid * MAXA + i] = (i < keep.nact) ? keep.act_id[i] : -1;
+  }
+  __global double* o = out_stats + (long)gid * NSTAT;
+  if (status == 0) {
+    o[0] = r.str; o[1] = r.agi; o[2] = r.intel; o[3] = r.damage; o[4] = r.potency; o[5] = r.mastery; o[6] = r.crit;
+    o[7] = r.rating; o[8] = r.haste; o[9] = r.aspd; o[10] = r.luck; o[11] = r.magic_add; o[12] = r.phys_add;
+    o[13] = r.hp; o[14] = r.armor; o[15] = r.mana_max; o[16] = r.mana_regen; o[17] = (r.mask & S_GALA) ? 1.0 : 0.0;
+    o[18] = r.cd_temp; o[19] = r.flat_cdr; o[20] = r.armor_pen;
+  }
+}
+#endif
 """
 KERNEL = KERNEL.replace("#pragma OPENCL FP_CONTRACT OFF\n", "#pragma OPENCL FP_CONTRACT OFF\n" + AP.C, 1)
 
@@ -873,26 +976,37 @@ GLYPH_BITS = {"I0AV": 0, "I0JA": 1, "I07B": 2, "I0EK": 3, "I0HC": 4, "I0OF": 5, 
 NO_EFFECT = {"I0H3", "I0H5", "I0H6", "I0EN"}
 SPECS = {"frost": 0, "blood": 1, "unholy": 2}
 
+# Level-15 Death Knight U002 (map 2.5.2c), moved from the removed sunken_sim.death_knight model:
+# base attributes int(base + 14 * per-level), DCS 12 + 0.75 STR, 2.0 s swing, armour 3 + 0.1 AGI, 310 health, 120 mana.
+LEVEL = 15
+BASE_STR = int(28 + (LEVEL - 1) * 2.8)
+BASE_AGI = int(9 + (LEVEL - 1) * 0.9)
+BASE_INT = int(13 + (LEVEL - 1) * 1.3)
+BASE_HP = 310.0
+WHITE_BASE = 12.0
+SWING = 2.0
+HERO_CLASS = "DeathKnight"
+TALENT_NAMES = {
+    "I0CS": "Army of the Dead", "I0E3": "Virulent Plague", "I0CR": "Breath of Sindragosa", "I09S": "Marrowrend",
+    "I0CU": "Blood Feast", "I0GP": "Obliterate", "I09T": "Blood Tap", "I0IZ": "Might of the Lich King",
+    "I0EV": "Unholy Strikes", "I0MD": "Next Page", "I03X": "Bloodforged Armor", "I0CV": "Decomposition",
+    "I0G9": "Will of the Necropolis", "I03G": "Anti-Magic Zone", "I0IY": "Pestilence", "I0DS": "Razorice",
+    "I07Z": "Grim Reaper", "I03W": "Bloodworms", "I05O": "Death Presence", "I0MC": "Previous Page",
+}
+IGNORED_TALENTS = frozenset({"I03G", "I0MD", "I0MC", "I0G9", "I0CU"})
+
 
 def death_knight_tables(space, items, sources) -> dict:
     """class_cl.character_tables with the strength primary fold and the Death Knight per-piece columns."""
     import re
 
-    from sunken_sim import death_knight as D, pressure, shadow
+    from sunken_sim import pressure, shadow
     from sunken_sim.stacking import stack_fields
 
-    if (D.WHITE_BASE, D.SWING, D.BASE_MANA, D.BASE_HP, D.BASE_ARMOR, D.AGI_ARMOR, D.RANK, D.BLOOD_STRIKE_STACKS,
-            D.DEATH_GRIP_CD, D.ERW_CD, D.BLOOD_STRIKE_CD, D.UNHOLY_FURY_CD, D.FROST_STRIKE_CD, D.OUTBREAK_TIME,
-            D.BLOOD_PLAGUE_TIME, D.MARROW_TIME, D.MARROW_ARMOR, D.BONE_SHIELD_ARMOR, D.FREEZE_TIME, D.CHILL_TIME,
-            D.GHOUL_CHILL, D.GHOUL_TIME, D.GHOUL_SWING, D.WORM_TIME, D.WORM_SWING, D.BLOOD_TAP, D.PRESENCE_STEP,
-            D.BUFF_SLOTS) != \
-            (12.0, 2.0, 120.0, 310.0, 3.0, 0.1, 1, 375, 10.0, 14.0, 7.0, 12.0, 8.0, 8.0, 4.0, 5.0, 5.0, 4.0, 1.5, 5.0,
-             4.0, 16.0, 1.65, 7.0, 1.5, 1.35, 0.25, 8):
-        raise ValueError("kernel constants assume the 2026-11-12 death knight")
     if (shadow.CAST_POINT, shadow.CAST_BACKSWING, pressure.STR_HP) != (0.15, 0.30, 15.0):
         raise ValueError("kernel constants assume cast point 0.15, backswing 0.30 and 15 health per strength")
     t = C.character_tables(space, items, sources, SPECIAL_BITS, TALENT_BITS, GLYPH_BITS, NO_EFFECT,
-                           [float(D.BASE_INT), float(D.BASE_STR), float(D.BASE_AGI), float(D.BASE_HP)], "Death Knight")
+                           [float(BASE_INT), float(BASE_STR), float(BASE_AGI), float(BASE_HP)], "Death Knight")
     pieces = space.pieces
     n = len(pieces)
     fold = t["fold"].reshape(n, 2, C.NF).copy()
@@ -930,6 +1044,7 @@ def death_knight_tables(space, items, sources) -> dict:
 
 class DeathKnightCL(C.ExactCL):
     hero = "death_knight"
+    PYTHON = False  # sunken_sim.death_knight fight model removed 2026-11-27: fixtures + report mode
     KERNEL = KERNEL
     SPECS = SPECS
     TALENT_BITS = TALENT_BITS
@@ -940,11 +1055,18 @@ class DeathKnightCL(C.ExactCL):
                   "pal", "base")
     SCALARS = {"count_without": np.int64, "total": np.int64, "npieces": np.int32}
 
+    SOURCE_NAMES = ("Автоатака", "Death Grip", "Blood Strike", "Unholy Fury", "Frost Strike", "Outbreak", "Plaguebearer",
+                    "Unholy Strikes", "Breath of Sindragosa", "Army of the Dead", "Bloodworms", "Всплеск огня",
+                    "Sulfuras", "Sulfuras (удар)")
+    ACTION_NAMES = ("Unholy Fury", "Frost Strike", "Blood Strike", "Death Grip", "Empower Rune Weapon")
+    STAT_KEYS = ("str", "agi", "int", "damage", "potency", "mastery", "crit", "rating", "haste", "attack_speed", "luck",
+                 "magic_add", "phys_add", "hp", "armor", "mana_max", "mana_regen", "galactic", "cd_temp", "flat_cdr",
+                 "armor_pen")
+    NSRC, MAXA = 14, 160
+
     @staticmethod
     def module():
-        from sunken_sim import death_knight
-
-        return death_knight
+        raise RuntimeError("death_knight: the Python fight model was removed (2026-11-27)")
 
     def tables(self, space, items, sources):
         return death_knight_tables(space, items, sources)

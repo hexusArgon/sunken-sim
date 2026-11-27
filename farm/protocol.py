@@ -19,7 +19,7 @@ POOL_LABEL = {
 }
 # Classes whose Python fight model was removed: only the exact OpenCL kernel (farm/hybrid/<hero>_cl.py) fights,
 # names and constants live there, checks replay farm/hybrid/fixtures/<hero>.json.
-GPU_ONLY = frozenset({"berserker"})
+GPU_ONLY = frozenset({"berserker", "death_knight"})
 # hero key == module name in sunken_sim; order of specs == SPECS of that module.
 SPECS = {
     "priest": PRIEST_SPECS,

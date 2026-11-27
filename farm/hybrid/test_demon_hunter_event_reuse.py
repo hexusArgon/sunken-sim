@@ -91,14 +91,6 @@ class LedgerPotencyTests(unittest.TestCase):
             assert_sources(self, score_events(first.events, other.stats), other.sources)
             self.assertTrue(any("Sulfuras" in ev[1] for ev in first.events))
 
-    def test_death_knight_virulent_is_not_affine(self):
-        # Eligibility audit: the same affine unbake would be wrong for DK.
-        from sunken_sim import death_knight as dk
-        b = Build(frozenset({dk.TALENT_VIRULENT}), frozenset(), (), 0, 0)
-        values = [dk.simulate(replace(b, potency_points=p), 5, "unholy").sources["Outbreak"]
-                  for p in (0, 10, 20)]
-        self.assertGreater(abs(values[2] - 2*values[1] + values[0]), 1e-6)
-
 
 class DemonHunterGpuReuseTests(unittest.TestCase):
     def test_gpu_raw_tapes_and_cpu_parity_all_specs(self):

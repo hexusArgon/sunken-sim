@@ -160,7 +160,7 @@ class _Window:
     Since 2026-11-14 every chance in the Hunter fight is a weight (before: _Dither, a counter that fired
     once the summed chance reached 1). A sure application collapses the window to one point; a chance
     application refreshes it for that share of the probability. At most WINDOW_SLOTS points: the
-    lightest folds into the next (later) one, like death_knight._Buff.
+    lightest folds into the next (later) one, like expiry_buff._Buff.
     """
 
     __slots__ = ("e", "m")

@@ -4,7 +4,7 @@ One work-item scores one fight: unrank the six items, fold the sheet like
 ``sunken_sim.demon_hunter.stats_of`` (agility primary, Incubus, luck and health
 from tooltips) and run ``demon_hunter.simulate`` with its Ledger sums in
 insertion order. Fallout on each target is a distribution of expiry times
-(``death_knight._Buff``), mirrored entry by entry; every chance is a weight.
+(``expiry_buff._Buff``), mirrored entry by entry; every chance is a weight.
 
 ``demon_hunter.simulate`` has no timeline cache, so every row is its own fight.
 Rows the kernel cannot score (more than 5 targets, negative armour, queue or
@@ -187,7 +187,7 @@ double armor_mult(St* s, double armor) {
   return 1.0;
 }
 
-/* ---- death_knight._Buff (Fallout per target) ---- */
+/* ---- expiry_buff._Buff (Fallout per target) ---- */
 double bmass(const double* e, const double* m, int n, double tot, double lo, double now) {
   if (now <= lo) return tot;
   double total = 0.0;
@@ -911,9 +911,9 @@ def demon_hunter_tables(space, items, sources) -> dict:
             (32.0, 1.70, 120.0, 250.0, 1, 10.0, 10.0, 25.0, 2.50, 0.03, 0.20, 10.0, 25.0, 10.0, 25.0, 0.75, 10.0,
              15.0, 6.0, 0.25, 10.0, 20.0, 6.0, 12.0, 20.0, 4.0, 4.0, 3.0, 100, 5):
         raise ValueError("kernel constants assume the 2026-11-13 demon hunter")
-    from sunken_sim import death_knight
+    from sunken_sim import expiry_buff
 
-    if (shadow.CAST_POINT, shadow.CAST_BACKSWING, pressure.STR_HP, death_knight.BUFF_SLOTS) != (0.15, 0.30, 15.0, 8):
+    if (shadow.CAST_POINT, shadow.CAST_BACKSWING, pressure.STR_HP, expiry_buff.BUFF_SLOTS) != (0.15, 0.30, 15.0, 8):
         raise ValueError("kernel constants assume cast 0.15 + 0.30, 15 health per strength and 8 buff slots")
     AP.check()
     t = C.character_tables(space, items, sources, SPECIAL_BITS, TALENT_BITS, GLYPH_BITS, NO_EFFECT,

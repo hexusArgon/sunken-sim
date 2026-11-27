@@ -39,7 +39,7 @@ import heapq
 import re
 
 from sunken_sim.attack_procs import from_stats as attack_procs
-from sunken_sim.death_knight import _Buff
+from sunken_sim.expiry_buff import _Buff
 from sunken_sim.pressure import AGI_ARMOR, max_hp
 from sunken_sim.shadow import (
     CAST_BACKSWING,

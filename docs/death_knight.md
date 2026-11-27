@@ -2,7 +2,7 @@
 
 Общие правила боя, предметов и кулдаунов — в `docs/guide.md`. Здесь Death Knight карты Sunken City v2.5.2a. Формулы сняты с триггеров `war3map.j` (DK-блок ~122749–123507, PreDamage_Increase, PreDamage_Heroes, OnDamage_Heroes, OnSpellcast_Heroes, Select_Str_Hero) и объектов `w3a/w3u/w3t` (парсер `/workspace/sunken-ref/rogue/dump_obj.py`).
 
-Сим `sunken_sim/death_knight.py` считает ожидаемый урон за 30 секунд на ранге 1, 6 уровень, 5 целей, броня 15, без очков навыков. Однослотовый прогон: `python3 extract/one_slot_death_knight.py` (пишет `extract/death_knight-one-slot.json`), быстрая проверка: `python3 extract/one_slot_death_knight.py --smoke`. Ключ класса в `search.class_item_codes()` — `DeathKnight`.
+Сим — точное float64 OpenCL-ядро `farm/hybrid/death_knight_cl.py` (Python-модель `sunken_sim/death_knight.py` удалена 2026-11-27; до удаления 2760 боёв и 18 доводок заморожены бит-в-бит в `farm/hybrid/fixtures/death_knight.json`, проверка — `python3.11 -m unittest farm.hybrid.test_fixtures`). Ожидаемый урон за 30 секунд, 5 целей, броня 15. Однослотовый прогон: `python3.11 tools/one_slot_gpu.py death_knight` (пишет `extract/death_knight-one-slot.json`). Ключ класса в `search.class_item_codes()` — `DeathKnight`.
 
 ## Лист
 

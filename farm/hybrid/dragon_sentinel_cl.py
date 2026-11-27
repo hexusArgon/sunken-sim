@@ -5,7 +5,7 @@ One work-item scores one fight: unrank the six items, fold the sheet like
 "+N Attack Damage", Dragonborn, Blazing Strikes) and run every policy of
 ``dragon_sentinel.simulate`` (Lifebinder on / off when allowed, Dragon Form used), keeping
 the best, with Ledger sums in insertion order. Dragonfire and Dragon Claw are
-distributions of expiry times per target (``death_knight._Buff``), Obsidian Branded
+distributions of expiry times per target (``expiry_buff._Buff``), Obsidian Branded
 is ``dragon_sentinel._Brand``; every chance is a weight, mirrored entry by entry.
 
 ``dragon_sentinel.simulate`` has no timeline cache, so every row is its own fight.
@@ -215,7 +215,7 @@ double armor_mult(St* s, double armor) {
   return 1.0;
 }
 
-/* ---- death_knight._Buff (Dragonfire, Dragon Claw per target) ---- */
+/* ---- expiry_buff._Buff (Dragonfire, Dragon Claw per target) ---- */
 double bmass(const double* e, const double* m, int n, double tot, double lo, double now) {
   if (now <= lo) return tot;
   double total = 0.0;
@@ -1050,7 +1050,7 @@ def dragon_sentinel_tables(space, items, sources) -> dict:
     """class_cl.character_tables with the strength primary fold and the Dragon Sentinel per-piece columns."""
     import re
 
-    from sunken_sim import death_knight, dragon_sentinel as D, pressure, shadow
+    from sunken_sim import expiry_buff, dragon_sentinel as D, pressure, shadow
     from sunken_sim.stacking import stack_fields
 
     if (D.WHITE_BASE, D.SWING, D.BASE_MANA, D.BASE_HP, D.BASE_ARMOR, pressure.AGI_ARMOR, D.OBSIDIAN_FORM_ARMOR,
@@ -1063,7 +1063,7 @@ def dragon_sentinel_tables(space, items, sources) -> dict:
              6.0, 8.0, 20.0, 4.0, 3.0, 12.0, 5.0, 3.0, 6, 5.0, 2.0, 0.5, 25.0, 1.5, 1.15, 0.75, 3,
              ((True, True), (False, True)), "I0LW", "I0LT"):
         raise ValueError("kernel constants assume the 2026-11-13 dragon sentinel")
-    if (shadow.CAST_POINT, shadow.CAST_BACKSWING, pressure.STR_HP, death_knight.BUFF_SLOTS) != (0.15, 0.30, 15.0, 8):
+    if (shadow.CAST_POINT, shadow.CAST_BACKSWING, pressure.STR_HP, expiry_buff.BUFF_SLOTS) != (0.15, 0.30, 15.0, 8):
         raise ValueError("kernel constants assume cast 0.15 + 0.30, 15 health per strength and 8 buff slots")
     AP.check()
     t = C.character_tables(space, items, sources, SPECIAL_BITS, TALENT_BITS, GLYPH_BITS, NO_EFFECT,

@@ -20,7 +20,7 @@ import heapq
 import re
 
 from sunken_sim.attack_procs import from_stats as attack_procs
-from sunken_sim.death_knight import _Buff
+from sunken_sim.expiry_buff import _Buff
 from sunken_sim.pressure import max_hp
 from sunken_sim.shadow import (
     CAST_BACKSWING,
@@ -367,7 +367,7 @@ def simulate(build: Build, targets: int = 5, spec: str = "havoc") -> Report:
 
     A hit carries a weight w (the chance that it happens). Its damage, mana, Fury and
     procs scale by w; Fallout on each target is a distribution of expiry times
-    (death_knight._Buff). Fury is the expected value; Metamorphosis ends when the
+    (expiry_buff._Buff). Fury is the expected value; Metamorphosis ends when the
     expected Fury after a drain is <= 0 (a mean-field reading of the map's integer Fury).
     """
     if spec not in SPECS:

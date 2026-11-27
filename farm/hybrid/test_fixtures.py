@@ -14,7 +14,8 @@ import unittest
 from pathlib import Path
 
 FIX = Path(__file__).resolve().parent / "fixtures"
-ENGINES = {"berserker": ("Berserker", "farm.hybrid.berserker_cl", "BerserkerCL")}
+ENGINES = {"berserker": ("Berserker", "farm.hybrid.berserker_cl", "BerserkerCL"),
+           "death_knight": ("DeathKnight", "farm.hybrid.death_knight_cl", "DeathKnightCL")}
 
 
 def replay(hero: str) -> list[str]:
@@ -88,6 +89,14 @@ class FixtureTest(unittest.TestCase):
 
     def test_berserker(self) -> None:
         errors = replay("berserker")
+        self.assertEqual(errors[:10], [], f"{len(errors)} mismatches")
+
+    def test_death_knight_refine(self) -> None:
+        errors = replay_refine("death_knight")
+        self.assertEqual(errors, [])
+
+    def test_death_knight(self) -> None:
+        errors = replay("death_knight")
         self.assertEqual(errors[:10], [], f"{len(errors)} mismatches")
 
 
