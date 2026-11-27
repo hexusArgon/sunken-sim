@@ -185,7 +185,7 @@ Parity 2026-11-05: 16 builds × 2 specs = 32/32 GPU timeline+kind vs CPU simulat
 
 
 ## Hunter Marksmanship / Beast Mastery / Survival
-GPU timeline: `farm/hybrid/hunter_gpu_timeline.py` (pending+choose, pets, dither). Parity `tools/_parity_hunter_gpu_tl.py` 16×3 ≤1e-4.
+Удалено 2026-11-27 (Hunter теперь только на `farm/hybrid/hunter_cl.py`). GPU timeline: `farm/hybrid/hunter_gpu_timeline.py` (pending+choose, pets, dither). Parity `tools/_parity_hunter_gpu_tl.py` 16×3 ≤1e-4.
 Код: `farm/hybrid/hunter.py` + `sunken_sim/hunter.py` kind-score timeline.
 Events: (when, name, weight, kind); kinds PHYS / EXEC / MAG / FLAT.
 Execute baked at pack; GPU kind-weight moments. CPU score_events = reference.
@@ -206,7 +206,7 @@ Parity smoke 2026-11-05: GPU vs CPU abs/rel ≤ 1e-4 (incl. DIAMOND).
 
 
 ## Feral Druid Primal / Guardian / Savage
-Код: `farm/hybrid/feral_druid.py` + `sunken_sim/feral_druid.py` kind-score timeline.
+Код (удалён 2026-11-27, Feral Druid теперь только на `farm/hybrid/feral_druid_cl.py`): `farm/hybrid/feral_druid.py` + `sunken_sim/feral_druid.py` kind-score timeline.
 Events: (when, name, weight, kind); kinds PHYS / MAG / EXEC / FLAT.
 PHYS: phys/crit/taken baked, ×execute; MAG: base+slope×mastery on GPU; EXEC/FLAT as usual.
 DIAMOND (I00D): timelines() picks best bound key like simulate().

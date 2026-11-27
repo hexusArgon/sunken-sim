@@ -73,18 +73,6 @@ class FlatAlgebraTest(unittest.TestCase):
         self.assertEqual(warrior._TIMELINE, before)
         self.assertNotIn("crit_points", tr.fields)
 
-    def test_hunter_all_specs_match_full_greedy(self):
-        from sunken_sim import hunter
-
-        for spec in hunter.SPECS:
-            with self.subTest(spec=spec):
-                build = _catalog_build("hunter", spec, 0)
-                many = _many("hunter", spec)
-                ref = greedy_points(lambda c: many([apply_points(build, c)])[0])
-                got = A.greedy_points_algebra(many, build, "hunter", spec, 5, skip=structural_skip_attrs("hunter"))
-                self.assertEqual(got[1], ref[1], spec)
-                self.assertAlmostEqual(got[0], ref[0], delta=1e-9 * max(1.0, abs(ref[0])))
-
     def test_mage_priest_all_specs_match_full_greedy(self):
         self.assertIn("mage", A.FLAT_SOURCE_HEROES)
         self.assertIn("shadow", A.FLAT_SOURCE_HEROES)

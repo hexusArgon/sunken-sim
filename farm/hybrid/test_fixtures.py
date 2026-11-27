@@ -19,7 +19,9 @@ ENGINES = {"berserker": ("Berserker", "farm.hybrid.berserker_cl", "BerserkerCL")
            "death_knight": ("DeathKnight", "farm.hybrid.death_knight_cl", "DeathKnightCL"),
            "demon_hunter": ("DemonHunter", "farm.hybrid.demon_hunter_cl", "DemonHunterCL"),
            "dragon_sentinel": ("DragonSentinel", "farm.hybrid.dragon_sentinel_cl", "DragonSentinelCL"),
-           "druid": ("Druid", "farm.hybrid.druid_cl", "DruidCL")}
+           "druid": ("Druid", "farm.hybrid.druid_cl", "DruidCL"),
+           "feral_druid": ("FeralDruid", "farm.hybrid.feral_druid_cl", "FeralDruidCL"),
+           "hunter": ("Hunter", "farm.hybrid.hunter_cl", "HunterCL")}
 
 
 def replay(hero: str) -> list[str]:
@@ -128,6 +130,22 @@ class FixtureTest(unittest.TestCase):
     def test_druid(self) -> None:
         errors = replay("druid")
         self.assertEqual(errors[:10], [], f"{len(errors)} mismatches")
+
+    def test_feral_druid_refine(self) -> None:
+        errors = replay_refine("feral_druid")
+        self.assertFalse(errors, errors[:3])
+
+    def test_feral_druid(self) -> None:
+        errors = replay("feral_druid")
+        self.assertFalse(errors, errors[:3])
+
+    def test_hunter_refine(self) -> None:
+        errors = replay_refine("hunter")
+        self.assertFalse(errors, errors[:3])
+
+    def test_hunter(self) -> None:
+        errors = replay("hunter")
+        self.assertFalse(errors, errors[:3])
 
 
 if __name__ == "__main__":

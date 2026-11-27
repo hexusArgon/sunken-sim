@@ -49,8 +49,8 @@ ALGEBRA_HEROES = frozenset({
 # stats_of heroes whose simulate() returns plain-dict sources (no Ledger events);
 # traced through their per-source totals (FLAT events, see trace_current).
 FLAT_SOURCE_HEROES = frozenset({
-    "paladin", "rogue", "warlock", "warrior", "hunter",
-    "shaman", "feral_druid",
+    "paladin", "rogue", "warlock", "warrior",
+    "shaman",
     "mage", "shadow",
 })
 # Farm id for sunken_sim.shadow is priest. Mage/priest traces must call

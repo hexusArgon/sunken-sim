@@ -31,8 +31,6 @@ STATUSES = (LOCKED, TIMELINE, COMPILE, GPU_TIMELINE, CPU)
 
 # hero name in jobs -> sunken_sim module
 MODULES = {
-    "feral_druid": "feral_druid",
-    "hunter": "hunter",
     "mage": "mage",
     "monk": "monk",
     "necromancer": "necromancer",
@@ -56,7 +54,6 @@ SHAMAN_SPECS = ("restoration", "enhancement", "elemental")
 WARRIOR_SPECS = ("protection", "arms", "fury")
 ROGUE_SPECS = ("subtlety", "combat")
 WARLOCK_SPECS = ("demonology", "destruction", "affliction")
-FERAL_DRUID_SPECS = ("primal", "guardian", "savage")
 BERSERKER_SPECS = ("headhunter", "poison", "fury")
 MONK_SPECS = ("windwalker", "brewmaster", "mistweaver")
 NECROMANCER_SPECS = ("bone", "blood", "essence")
@@ -72,9 +69,7 @@ GPU_TIMELINE_SPECS = frozenset(
     | {("mage", "fire"), ("mage", "frost"), ("mage", "arcane")}  # arcane: only when unlocked (lock.py)
     | {("priest", spec) for spec in PRIEST_SPECS}
     | {("rogue", spec) for spec in ROGUE_SPECS}
-    | {("hunter", "marksmanship"), ("hunter", "beast_mastery"), ("hunter", "survival")}
     | {("warlock", spec) for spec in WARLOCK_SPECS}
-    | {("feral_druid", spec) for spec in FERAL_DRUID_SPECS}
     | {("monk", spec) for spec in MONK_SPECS}
     | {("necromancer", spec) for spec in NECROMANCER_SPECS}
     | {("siren", spec) for spec in SIREN_SPECS}
@@ -83,7 +78,6 @@ GPU_TIMELINE_SPECS = frozenset(
     | {("windmaster", spec) for spec in WINDMASTER_SPECS}
     | {("witch_doctor", spec) for spec in WITCH_DOCTOR_SPECS}
 )
-HUNTER_SPECS = ("marksmanship", "beast_mastery", "survival")
 COMPILE_SPECS = frozenset(
     # feral_druid moved to GPU_TIMELINE_SPECS
 )
@@ -165,14 +159,6 @@ def make_engine(device, hero: str, spec: str, targets: int):
             from farm.hybrid.rogue import RogueFights
 
             return RogueFights(device, hero, spec, targets)
-        if hero == "hunter":
-            from farm.hybrid.hunter import HunterFights
-
-            return HunterFights(device, hero, spec, targets)
-        if hero == "feral_druid":
-            from farm.hybrid.feral_druid import FeralDruidFights
-
-            return FeralDruidFights(device, hero, spec, targets)
         if hero in KIND_HEROES:
             import importlib
 

@@ -2,7 +2,7 @@
 
 Общие правила боя, предметов и кулдаунов — в `docs/guide.md`. Здесь Feral Druid карты Sunken City v2.5.2a (отдельный герой от Druid E009). Формулы сняты с триггеров.
 
-Сим `sunken_sim/feral_druid.py` считает ожидаемый урон за 30 секунд на ранге 1, 6 уровень, 5 целей, броня 15, без очков навыков. Однослотовый прогон: `python extract/one_slot_feral_druid.py`, быстрая проверка: `python extract/one_slot_feral_druid.py --smoke`.
+Сим — точное float64 OpenCL-ядро `farm/hybrid/feral_druid_cl.py` (Python-модель `sunken_sim/feral_druid.py` удалена 2026-11-27; до удаления 2760 боёв и 18 доводок заморожены бит-в-бит в `farm/hybrid/fixtures/feral_druid.json`, проверка — `python3.11 -m unittest farm.hybrid.test_fixtures`). Ожидаемый урон за 30 секунд, 5 целей, броня 15. Однослотовый прогон: `python3.11 tools/one_slot_gpu.py feral_druid` (пишет `extract/feral-druid-one-slot.json`).
 
 ## Лист
 

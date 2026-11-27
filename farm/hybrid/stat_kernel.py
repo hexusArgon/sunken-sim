@@ -84,7 +84,6 @@ from sunken_sim.shadow import SKILL_POINTS
 
 # Heroes whose sim multiplies pet/summon damage by stats["pet_damage"].
 PET_DAMAGE_HEROES = frozenset({
-    "hunter",
     "necromancer",
     "siren",
     "tidewarrior",

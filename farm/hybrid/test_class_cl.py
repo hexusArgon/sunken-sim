@@ -1,4 +1,4 @@
-"""Exact OpenCL class fights (Shaman, Paladin, Druid, Feral Druid, Hunter, ...): parity with the Python sims and the farm span.
+"""Exact OpenCL class fights (Shaman, Paladin, Monk, Necromancer, ...): parity with the Python sims and the farm span.
 
 Runs on any OpenCL device with float64 (PoCL on CPU is fine); skips without one.
     python -m unittest farm.hybrid.test_class_cl
@@ -16,8 +16,6 @@ from farm.hybrid import mage_cl
 
 CASES = (("shaman", "restoration"), ("shaman", "enhancement"), ("shaman", "elemental"),
          ("paladin", "retribution"), ("paladin", "protection"), ("paladin", "holy"),
-         ("feral_druid", "primal"), ("feral_druid", "guardian"), ("feral_druid", "savage"),
-         ("hunter", "marksmanship"), ("hunter", "beast_mastery"), ("hunter", "survival"),
          ("monk", "windwalker"), ("monk", "brewmaster"), ("monk", "mistweaver"),
          ("necromancer", "bone"), ("necromancer", "blood"), ("necromancer", "essence"))
 _ENGINES = {}
@@ -96,8 +94,6 @@ class ClassCLTest(unittest.TestCase):
 
     def test_refine_matches_finish_sextuple(self):
         specials = {"shaman": ("I00D", "I0BR"), "paladin": ("I0BR", "I0R0"),
-                    "feral_druid": ("I00D", "I0BR", "I0RV", "I0RW", "I0RY", "I0QN"),
-                    "hunter": ("I0BR", "I0T6", "I0T7", "I0T8", "I0T9", "I06B", "I0QN"),
                     "monk": ("I0BR", "I0UA", "I0UC", "I0U9", "I0QN", "I04F"),
                     "necromancer": ("I0BR", "I0R5", "I0R6", "I0R7", "I0R8", "I0UN", "I06B", "I05W", "I0QN")}
         for hero, spec in CASES:
@@ -117,7 +113,7 @@ class ClassCLTest(unittest.TestCase):
 
     def test_span_payload_and_gate_match_cpu_runner(self):
         for hero, spec in (("shaman", "enhancement"), ("paladin", "retribution"),
-                           ("feral_druid", "savage"), ("hunter", "survival"), ("monk", "windwalker"),
+                           ("monk", "windwalker"),
                            ("necromancer", "blood")):
             _engine(hero, spec)
             from farm.catalog import load

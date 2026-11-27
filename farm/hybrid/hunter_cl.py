@@ -37,6 +37,11 @@ KERNEL = r"""
 #define SP_MM (SPEC == 0)
 #define SP_BM (SPEC == 1)
 #define SP_SV (SPEC == 2)
+/* REPORT 1: the report kernel also keeps the final fight state (sources in Ledger order, casts, mana) */
+#ifndef REPORT
+#define REPORT 0
+#endif
+#define MAXA 160
 /* pets: hunter.PETS order */
 #define P_SPIKE 0
 #define P_HUFFER 1
@@ -57,8 +62,8 @@ KERNEL = r"""
 #define NPAL 17
 #define MAXT 8
 #define WS 8
-#define MAXPET 12
-#define MAXPEND 8
+#define MAXPET 24
+#define MAXPEND 16
 #define NSRC 16
 #define NNEG 32  /* shadow.armor_taken(-k), k = 1..NNEG, filled by the host */
 
@@ -153,7 +158,7 @@ typedef struct {
   double str, agi, intel, potency, mastery, damage, crit, rating, haste, aspd;
   double magic_add, phys_add, armor_pen, auto_pct, attack_potency, cd_temp, flat_cdr;
   double luck, mana_max, mana_regen, cast_lock, pet_damage, summon_crit, summon_rating, spell_mult;
-  double cast_refund, cast_refund_flat, cast_refund_mastery, attack_mana, attack_mana_pct, attack_mana_crit, damage_mana_pct;
+  double cast_refund, cast_refund_flat, cast_refund_mastery, attack_mana, attack_mana_pct, attack_mana_crit, damage_mana_pct, hp;
   double ex_thr[MAXE], ex_pct[MAXE];
   __global const double* negt;
   int nexec, targets, glass, spell_crit;
@@ -173,7 +178,20 @@ typedef struct {
   double mana, mana_time, wrath_until, quill_until, quiver, split;
   int quill_count, howl_stacks, armed, status, targets;
   AP ap;
+#if REPORT
+  double act_t[MAXA]; int act_id[MAXA]; int nact;
+#endif
 } St;
+
+/* actions: Call Pet, Bestial Wrath, Serpent Sting, Multi-Shot, Steel Trap (host ACTION_NAMES, ids = K_*) */
+void act(St* s, double now, int id) {
+#if REPORT
+  if (s->nact < MAXA) { s->act_t[s->nact] = now; s->act_id[s->nact] = id; }
+  s->nact++;
+#else
+  (void)s; (void)now; (void)id;
+#endif
+}
 
 double target_hp(double t) {
   double v = 1.0 - t / FIGHT;
@@ -522,8 +540,15 @@ void add_pending(St* s, double t, int kind, int index) {
 }
 
 /* hunter.simulate(build, targets, spec).dps */
+#if REPORT
+double fight(const Row* r, int* status_out, St* keep) {
+#else
 double fight(const Row* r, int* status_out) {
+#endif
   St s;
+#if REPORT
+  s.nact = 0;
+#endif
   if (r->targets > MAXT) { *status_out = 3; return 0.0; }
   s.nord = 0; s.seen = 0u; s.status = 0; s.targets = r->targets;
   for (int t = 0; t < MAXT; t++) { s.stung[t].n = 0; s.wound[t].n = 0; }
@@ -536,7 +561,7 @@ double fight(const Row* r, int* status_out) {
     if (ah > 0.0) s.th[k] = 1.0 - (ah * 0.04) / (1.0 + 0.04 * ah);
     else if (ah == 0.0) s.th[k] = 1.0;
     else if (ah == (double)(long)ah && -ah <= (double)NNEG) s.th[k] = r->negt[(int)(-ah) - 1];
-    else { s.th[k] = 1.0; s.thneg[k] = 1; }
+    else s.th[k] = 2.0 - pow(1.0 - 0.04, -ah);  /* shadow.armor_taken */
     s.tp[k] = (ap > 0.0) ? 1.0 - (ap * 0.04) / (1.0 + 0.04 * ap) : 1.0;
   }
   s.np = 0; s.nd = 0;
@@ -617,6 +642,7 @@ double fight(const Row* r, int* status_out) {
       int key = choice;
       double cost = (key == K_CALL) ? 30.0 : (key == K_WRATH) ? 20.0 : (key == K_STING) ? 15.0 : (key == K_MULTI) ? 10.0 : 20.0;
       if (!pay(r, &s, cost, moment)) { s.nxt[key] = moment + 0.25; continue; }
+      act(&s, moment, key);
       double hit_at = moment + CAST_POINT;
       if ((r->mask & S_SULF) && !s.armed) s.armed = 1;
       if (TM(r, T_WIND)) s.quiver = 1.0;
@@ -715,6 +741,10 @@ double fight(const Row* r, int* status_out) {
   if (s.status) { *status_out = s.status; return 0.0; }
   double total = 0.0;
   for (int i = 0; i < s.nord; i++) total += s.src[s.ord[i]];
+#if REPORT
+  recover(r, &s, FIGHT);
+  *keep = s;
+#endif
   return total / FIGHT;
 }
 
@@ -786,6 +816,7 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   int n_core = 0, n_sulg = 0, has_shop = 0, has_drop = 0, nexec = 0;
   for (int si = 0; si < 6; si++) {
     int p = chosen[si];
+    if (p < 0) { first[si] = 0; continue; }  /* explicit pieces: empty slot */
     int f1 = 1;
     for (int j = 0; j < si; j++) if (chosen[j] == p) { f1 = 0; break; }
     first[si] = f1;
@@ -889,8 +920,10 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   r->glass = (GM(r, G_GLASS) || (mask & S_GLAS)) ? 1 : 0;
   r->negt = T->negt;
   r->spell_crit = spell_crit; r->spell_mult = spell_mult;
+  r->hp = (T->base[3] + 15.0 * strength) + health_flat;
 }
 
+#if !REPORT
 double row_value(Tab* T, long index, uint tmask, uint gmask, const int* pts, int targets, int* status, int* group) {
   int chosen[6];
   if (unrank(T, index, chosen)) { *status = 1; *group = 0; return 0.0; }
@@ -898,6 +931,7 @@ double row_value(Tab* T, long index, uint tmask, uint gmask, const int* pts, int
   sheet(T, &r, chosen, tmask, gmask, pts, targets, group);
   return fight(&r, status);
 }
+#endif
 
 #define TAB_ARGS \
     __global const long* dp0, __global const long* dp1, const long count_without, const long total, \
@@ -910,6 +944,7 @@ double row_value(Tab* T, long index, uint tmask, uint gmask, const int* pts, int
   T.npieces = npieces; T.pkind = pkind; T.pamp = pamp; T.fold = fold; T.uniq = uniq; T.pmask = pmask; T.psrc = psrc; \
   T.pal = pal; T.base = base; T.negt = negt;
 
+#if !REPORT
 __kernel void cls_bare(const long start, const int n, const int targets, TAB_ARGS,
     __global double* out_dps, __global uchar* out_group, __global uchar* out_status)
 {
@@ -936,6 +971,82 @@ __kernel void cls_rows(const int n, const int targets, __global const long* chun
   double d = row_value(&T, chunks[gid], tmasks[gid], gmasks[gid], pts, targets, &status, &group);
   out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status;
 }
+#endif
+
+/* Explicit pieces (-1 = empty slot): the one-slot screen and any build outside the pool's 6-item ranks. */
+int picks_ok(Tab* T, __global const int* picks, long gid, int* chosen) {
+  for (int j = 0; j < 6; j++) {
+    int p = picks[gid * 6 + j];
+    if (p >= T->npieces) return 0;
+    chosen[j] = (p < 0) ? -1 : p;
+  }
+  return 1;
+}
+
+#if !REPORT
+__kernel void cls_pick(const int n, const int targets, __global const int* picks, __global const uint* tmasks,
+    __global const uint* gmasks, __global const int* points, TAB_ARGS,
+    __global double* out_dps, __global uchar* out_group, __global uchar* out_status)
+{
+  int gid = get_global_id(0);
+  if (gid >= n) return;
+  TAB_INIT
+  int pts[NP];
+  for (int j = 0; j < NP; j++) pts[j] = points[(long)gid * NP + j];
+  int status = 0, group = 0, chosen[6];
+  double d = 0.0;
+  if (!picks_ok(&T, picks, gid, chosen)) status = 1;
+  else {
+    Row r;
+    sheet(&T, &r, chosen, tmasks[gid], gmasks[gid], pts, targets, &group);
+    d = fight(&r, &status);
+  }
+  out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status;
+}
+#else
+#define NSTAT 23
+__kernel void cls_report(const int n, const int targets, __global const int* picks, __global const uint* tmasks,
+    __global const uint* gmasks, __global const int* points, TAB_ARGS,
+    __global double* out_dps, __global uchar* out_group, __global uchar* out_status,
+    __global double* out_src, __global int* out_ord, __global int* out_nord, __global double* out_mana,
+    __global double* out_act_t, __global int* out_act_id, __global int* out_nact, __global double* out_stats)
+{
+  int gid = get_global_id(0);
+  if (gid >= n) return;
+  TAB_INIT
+  int pts[NP];
+  for (int j = 0; j < NP; j++) pts[j] = points[(long)gid * NP + j];
+  int status = 0, group = 0, chosen[6];
+  double d = 0.0;
+  St ks; Row r;
+  ks.nact = 0; ks.mana = 0.0; ks.nord = 0;
+  if (!picks_ok(&T, picks, gid, chosen)) status = 1;
+  else {
+    sheet(&T, &r, chosen, tmasks[gid], gmasks[gid], pts, targets, &group);
+    d = fight(&r, &status, &ks);
+  }
+  out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status;
+  out_nord[gid] = ks.nord;
+  for (int i = 0; i < NSRC; i++) {
+    out_ord[(long)gid * NSRC + i] = (i < ks.nord) ? ks.ord[i] : -1;
+    out_src[(long)gid * NSRC + i] = (i < ks.nord) ? ks.src[ks.ord[i]] : 0.0;
+  }
+  out_mana[gid] = (status == 0 && r.mana_max > 0.0) ? 100.0 * ks.mana / r.mana_max : 0.0;
+  out_nact[gid] = ks.nact;
+  for (int i = 0; i < MAXA; i++) {
+    out_act_t[(long)gid * MAXA + i] = (i < ks.nact) ? ks.act_t[i] : 0.0;
+    out_act_id[(long)gid * MAXA + i] = (i < ks.nact) ? ks.act_id[i] : -1;
+  }
+  __global double* o = out_stats + (long)gid * NSTAT;
+  if (status == 0) {
+    o[0] = r.str; o[1] = r.agi; o[2] = r.intel; o[3] = r.potency; o[4] = r.mastery; o[5] = r.damage; o[6] = r.crit;
+    o[7] = r.rating; o[8] = r.haste; o[9] = r.aspd; o[10] = r.magic_add; o[11] = r.phys_add; o[12] = r.armor_pen;
+    o[13] = r.cd_temp; o[14] = r.flat_cdr; o[15] = r.pet_damage; o[16] = r.summon_crit; o[17] = r.luck;
+    o[18] = r.mana_max; o[19] = r.mana_regen; o[20] = r.hp; o[21] = (r.mask & S_GALA) ? 1.0 : 0.0;
+    o[22] = r.spell_crit ? 1.0 : 0.0;
+  }
+}
+#endif
 """
 KERNEL = KERNEL.replace("#pragma OPENCL FP_CONTRACT OFF\n", "#pragma OPENCL FP_CONTRACT OFF\n" + AP.C, 1)
 
@@ -955,28 +1066,37 @@ GLYPH_BITS = {"I0AV": 0, "I0JA": 1, "I07B": 2, "I0EK": 3, "I0HC": 4, "I0OF": 5, 
 NO_EFFECT = {"I0H3", "I0H5", "I0H6", "I0EN"}
 SPECS = {"marksmanship": 0, "beast_mastery": 1, "survival": 2}
 
+# Level-15 Hunter H001 (map 2.5.2c), moved from the removed sunken_sim.hunter model
+LEVEL = 15
+BASE_STR = int(10 + (LEVEL - 1) * 1)
+BASE_AGI = int(28 + (LEVEL - 1) * 2.8)
+BASE_INT = int(12 + (LEVEL - 1) * 1.2)
+BASE_HP = 230.0
+HERO_CLASS = "Hunter"
+TALENT_NAMES = {
+    "I03P": "Talon Strikes", "I0K8": "Unleash the Beasts", "I092": "Traplayer", "I02X": "Hydra Shots",
+    "I0KD": "Lock and Load", "I0T3": "Howl of the Packleader", "I0K9": "Trueshot Aura", "I0KB": "Wild Power",
+    "I0KC": "Volley", "I0K6": "Windrunner's Quiver", "I03M": "Killer Instinct", "I03H": "Steel Arrowheads",
+    "I02D": "Flanking Strike", "I0KA": "Dire Beasts", "I0O3": "Mongoose Bite", "I0K7": "Scent of Blood",
+    "I0T4": "Unmatched Percision", "I0T5": "Poisoned Arrows",
+}
+IGNORED_TALENTS = frozenset({"I0MD", "I0MC"})
+
 
 def hunter_tables(space, items, sources) -> dict:
     """class_cl.character_tables with the agility primary fold and the Hunter per-piece columns."""
     import re
 
-    from sunken_sim import hunter as H, pressure, shadow
+    from sunken_sim import pressure, shadow
     from sunken_sim.stacking import stack_fields
 
-    if (H.WHITE_BASE, H.SWING, H.BASE_MANA, H.BASE_HP, H.RANK, H.STING_CD, H.STING_MANA, H.MULTI_CD, H.MULTI_MANA,
-            H.WRATH_CD, H.WRATH_MANA, H.WRATH_DUR, H.TRAP_CD, H.TRAP_MANA, H.TRAP_DELAY, H.CALL_CD, H.CALL_MANA,
-            H.STING_DUR, H.WOUND_DUR, H.WOUND_ARMOR, H.STING_PEN, H.ASPECT, H.PROWESS_DUR, H.LOCK_DUR, H.QUILL_DUR,
-            H.MULTI_SECONDARY_DELAY, H.WINDOW_SLOTS, H.PETS, H.SPEC_PET, shadow.LEVEL) != \
-            (30.0, 1.60, 120.0, 230.0, 1, 8.0, 15.0, 7.0, 10.0, 15.0, 20.0, 8.0, 7.0, 20.0, 0.5, 30.0, 30.0, 10.0,
-             5.0, 3.0, 4.0, 0.10, 3.0, 4.0, 5.0, 0.5, 8,
-             {"spike": (9, 0.50, 1.50, "Spike"), "huffer": (4, 0.30, 1.45, "Huffer"), "grylls": (17, 0.90, 1.70, "Grylls")},
-             {"marksmanship": "huffer", "beast_mastery": "spike", "survival": "grylls"}, 15):
-        raise ValueError("kernel constants assume the 2026-11-14 hunter")
+    if shadow.LEVEL != LEVEL:
+        raise ValueError("kernel constants assume the level-15 hunter")
     if (shadow.CAST_POINT, shadow.CAST_BACKSWING, pressure.STR_HP) != (0.15, 0.30, 15.0):
         raise ValueError("kernel constants assume cast 0.15 + 0.30 and 15 health per strength")
     AP.check()
     t = C.character_tables(space, items, sources, SPECIAL_BITS, TALENT_BITS, GLYPH_BITS, NO_EFFECT,
-                           [float(H.BASE_INT), float(H.BASE_STR), float(H.BASE_AGI), float(H.BASE_HP)], "Hunter")
+                           [float(BASE_INT), float(BASE_STR), float(BASE_AGI), float(BASE_HP)], "Hunter")
     pieces = space.pieces
     n = len(pieces)
     fold = t["fold"].reshape(n, 2, C.NF).copy()
@@ -1015,29 +1135,40 @@ def hunter_tables(space, items, sources) -> dict:
 
 class HunterCL(C.ExactCL):
     hero = "hunter"
+    PYTHON = False  # sunken_sim.hunter fight model removed 2026-11-27: fixtures + report mode
     KERNEL = KERNEL
+    SOURCE_NAMES = ("Автоатака", "Serpent Sting", "Serpent Sting (тики)", "Multi-Shot", "Split Shot", "Steel Trap",
+                    "Spike", "Huffer", "Grylls", "Всплеск огня", "Howl of the Packleader", "Maul", "Shred",
+                    "Marksmanship", "Sulfuras", "Sulfuras (удар)")
+    ACTION_NAMES = ("Call Pet", "Bestial Wrath", "Serpent Sting", "Multi-Shot", "Steel Trap")
+    STAT_KEYS = ("str", "agi", "int", "potency", "mastery", "damage", "crit", "rating", "haste", "attack_speed",
+                 "magic_add", "phys_add", "armor_pen", "cd_temp", "flat_cdr", "pet_damage", "summon_crit", "luck",
+                 "mana_max", "mana_regen", "hp", "galactic", "spell_crit")
+    BOOL_STATS = ()  # hunter.stats_of keeps 1.0 / 0.0
+    NSRC, MAXA = 16, 160
     SPECS = SPECS
     TALENT_BITS = TALENT_BITS
     GLYPH_BITS = GLYPH_BITS
     NO_EFFECT = NO_EFFECT
-    KEY_FREE = ()  # hunter._timeline_key holds every ESC point
+    KEY_FREE = ()  # the removed hunter._timeline_key held every ESC point
     TABLE_KEYS = ("dp0", "dp1", "count_without", "total", "npieces", "pkind", "pamp", "fold", "uniq", "pmask", "psrc",
                   "pal", "base", "negt")
     SCALARS = {"count_without": np.int64, "total": np.int64, "npieces": np.int32}
 
     @staticmethod
     def module():
-        from sunken_sim import hunter
-
-        return hunter
+        raise RuntimeError("hunter: the Python fight model was removed (2026-11-27)")
 
     def tables(self, space, items, sources):
         return hunter_tables(space, items, sources)
 
     def timeline_key(self, build):
-        from sunken_sim import hunter
+        # hunter._timeline_key held every ESC point that changes the fight (all but Health / Healing Power)
+        from dataclasses import fields
 
-        return hunter._timeline_key(build, hunter.stats_of(build), self.spec, self.targets)
+        free = {"health_points", "healing_power_points"}
+        return tuple((f.name, getattr(build, f.name)) for f in fields(build) if f.name.endswith("_points")
+                     and f.name not in free)
 
 
 oracle = C.oracle

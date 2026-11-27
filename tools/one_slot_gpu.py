@@ -28,6 +28,12 @@ HEROES = {
     # Diamond Ring rows name the binding the fight chose.
     "druid": dict(class_name="Druid", module="farm.hybrid.druid_cl", engine="DruidCL",
                   specs=(("Restoration", "restoration"), ("Balance", "balance")), all_talents=True, bind=("I00D",)),
+    # Feral Druid O00R (not the caster Druid); its sheet file keeps the old name
+    "feral_druid": dict(class_name="FeralDruid", module="farm.hybrid.feral_druid_cl", engine="FeralDruidCL",
+                        specs=(("Primal", "primal"), ("Guardian", "guardian"), ("Savage", "savage")),
+                        all_talents=True, bind=("I00D",), out="feral-druid-one-slot.json"),
+    "hunter": dict(class_name="Hunter", module="farm.hybrid.hunter_cl", engine="HunterCL",
+                   specs=(("Marksmanship", "marksmanship"), ("Beast Mastery", "beast_mastery"), ("Survival", "survival"))),
     "death_knight": dict(class_name="DeathKnight", module="farm.hybrid.death_knight_cl", engine="DeathKnightCL",
                          specs=(("Frost", "frost"), ("Blood", "blood"), ("Unholy", "unholy")),
                          # Blood Feast gains only with its partners (farm.top.TALENT_INCLUDE / ITEM_INCLUDE)
@@ -108,7 +114,7 @@ def main() -> None:
             combo_rows.append([label, f"{talent}+{item}"] + [value[t][case] for t in titles]
                               + [round(value[t][case] - value[t][alone], 1) for t in titles])
         payload["combos"] = combo_rows
-    out = Path("extract") / f"{hero}-one-slot.json"
+    out = Path("extract") / cfg.get("out", f"{hero}-one-slot.json")
     out.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
     print("wrote", out, "items", len(pool), "talents", len(talents), "glyphs", len(glyphs), "bare", bare)
 
