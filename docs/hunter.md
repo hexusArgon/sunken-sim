@@ -2,7 +2,7 @@
 
 Общие правила боя, предметов и кулдаунов — в `docs/guide.md`. Здесь Hunter карты Sunken City v2.5.2a. Формулы сняты с триггеров `war3map.j` и объектов `w3a/w3u/w3t` (свой парсер `dump_obj.py`, `library._parse_objects` для w3a сломан).
 
-Сим — точное float64 OpenCL-ядро `farm/hybrid/hunter_cl.py` (Python-модель `sunken_sim/hunter.py` удалена 2026-11-27; до удаления 2760 боёв и 18 доводок заморожены бит-в-бит в `farm/hybrid/fixtures/hunter.json`, проверка — `python3.11 -m unittest farm.hybrid.test_fixtures`). Ожидаемый урон за 30 секунд, 5 целей, броня 15. Однослотовый прогон: `python3.11 tools/one_slot_gpu.py hunter` (пишет `extract/hunter-one-slot.json`). Ключ пула классовых вещей — `"Hunter"`.
+Сим — точное float64 OpenCL-ядро `farm/hybrid/hunter_cl.py` (Python-модель `sunken_sim/hunter.py` удалена 2026-11-27; до удаления 2760 боёв и 18 доводок заморожены бит-в-бит в `farm/hybrid/fixtures/hunter.json`, проверка — `python3.11 -m unittest farm.hybrid.test_fixtures`). Ожидаемый урон за 30 секунд, 5 целей, броня 15. Однослотовый прогон: `python3.11 tools/one_slot_gpu.py hunter` (пишет `extract/hunter-one-slot.json`). Входящие удары манекенов и правки по карте — `docs/defense-model.md`. Ключ пула классовых вещей — `"Hunter"`.
 
 ## Лист
 

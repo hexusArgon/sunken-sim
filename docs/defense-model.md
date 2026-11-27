@@ -247,3 +247,71 @@ replays the Part-A fights bit for bit (test_incoming). One-slot bare unchanged (
 Shield of Death, Sunstrider Crown, Crimson Fury, Ice Cleaver, Ursal's Plate, The Furnace, Volcanic Shield / Giantsbane,
 Voidseeker, Bloodhowl. Speed (CPU pocl, 2^14 top-150 rows): Restoration 32k -> 19k, Balance 30k -> 19k rows/s.
 Approximations: health is the expected health; Regenesis / I08S chances use one trial per heal call.
+
+## Feral Druid: incoming hits and healing (inventory 2026-11-27, map 2.5.2c)
+
+The Feral Druid O00R only (the caster Druid E009 is another class). Item pool: 336 items, all screened
+(`tools/one_slot_gpu.py feral_druid`). Agility hero (model heal from an ally), health = the sheet health
+(250 + 15 STR + items, Bear Form +480), armour 1 + 0.1 AGI + items (O00R / O00J / O01B udef 1). Primalist Ring 0.5%
+Physical Type per point of HP regeneration. Class integration in farm/hybrid/feral_druid_cl.py.
+
+| Effect | Trigger / rule (war3map_norm.j) | Value | Modelled |
+|---|---|---|---|
+| Survival Instincts evasion (A0C4 learned, rank 1) | PreDamage_Reduce | hit chance x (1 - (0.02 x level + 0.01 x 10% STR)) | yes |
+| Bear Form regeneration (Guardian, O01B) | Health_Regen | + 0.2 AGI (+ 0.25 STR with Son of Ursoc I0KM / Shoulderpads I0RW) HP per second | yes (health, Primalist Ring) |
+| Guardian healing received (A0MP level 2) | trigger Healing | + 5% + 0.8% per Mastery | yes (health only) |
+| Rake in Bear Form | Rake tick, per target | heal 3 x level(A0MN) + 0.3% max HP, own Healing Type | yes (health only) |
+| Fresh Wound I0AE | PreDamage_Heroes, every attack damage instance (IsDamageAttack) | heal 2% max HP, own Healing Type | yes (health only; the +2% max HP attack damage was already in) |
+| Lifesteal on the Razor Claws shares | AfterDamage_Global on IsDamageAttack (Swipe / Rake parts dealt as ATTACK_TYPE_HERO attacks) | | yes (expected share) |
+| Guardian of Elune I0KK | PreDamage_Enemies, only IsDamageSpell | heal 1.5% max HP + mana | no: the dummies attack |
+| Survival of the Fittest I0A1 | ArmorDamage_Reduce | damage reduction | no |
+| Survival Instincts cast (heal 50 x level + 0.8 AGI + 8% max HP; Dreamwalker I0KN x1.3 and, in B05L, bloodlust A036) | active ability, Q | | no: not in the cast rotation (an open question for the user) |
+
+Map fixes with this class (GPU only): Swipe, Savage Bite and Rake are ATTACK_TYPE_NORMAL (Spells), so the item penetration
+only reaches the auto attack and the Razor Claws shares (ATTACK_TYPE_HERO, with Iron Cleaver); Physical Type spells get
+Iron Cleaver, Lunar Inspiration (Magical Type) Voidseeker. Maim lowers the real armour of the main target (Giantsbane reads
+11). Fire Orb splash: 20 + 0.35 AGI (the Python model used INT) + Potency per dummy, Glass Cannon, the DamageIncrease pool,
+damage mana, no type bonus, no crit. Sulfuras splash (Magical Type DAMAGE_TYPE_NORMAL) gets Potency per dummy and the pool
+(PreDamage_Increase skips only ENHANCED / UNIVERSAL); the echo: no penetration, no Potency, no pool. Frost Orb / Ice Cleaver
+chills (Ancient Voodoo Doll counts Rake, Maim and Chill). Seal Mastery feeds the Magical slope, Cat Form attack damage,
+Ferocity cap and rate, cast refunds and the Guardian healing.
+
+Fixtures: 1953 of 2760 frozen fights unchanged (still checked), 435 marked "incoming", 372 "model_fix"; all 18 refinements
+re-frozen from the GPU (Shadow Orb / Silent Messenger top builds 6-21% lower: penetration only on attacks; Iron Cleaver
+builds up to 8% higher: it now reaches the Physical Type spells). `-DINC_OFF=1` replays the Part-A fights without changed
+items bit for bit (test_incoming). One-slot bare unchanged (220.5 / 166.4 / 193.9); entered the top 150: Shado-Pan
+Faceguard, Shield of Death, Sunstrider Crown, Ursal's Mighty Plate, Dragonscale Chestplate, Topaz Amulet, The Furnace,
+Shoulderpads of Crimson Fury, Belt of Living Strength. Speed (CPU pocl, 2^14 top-150 rows): Primal 30k -> 18k, Guardian
+40k -> 19k, Savage 30k -> 21k rows/s.
+
+## Hunter: incoming hits and healing (inventory 2026-11-27, map 2.5.2c)
+
+Item pool: 335 items, all screened (`tools/one_slot_gpu.py hunter`). Agility hero (model heal from an ally), ranged
+(H001, base Hvwd), health 230 + 15 STR + items, armour 0.1 AGI + items (the Hvwd base armour is not in the map files:
+taken as 0; only Dragon Figurine reads it). Primalist Ring 0.5% Physical Type per point of HP regeneration. The Hunter has
+no class effect of incoming hits, evasion or healing that changes damage (the Health_Regen pet heal of Dire Beasts heals
+Grylls only); every effect comes from the shared item layer. Pets and the Serpent Sting dummy are not attacked and have
+no items: no penetration, no DamageIncrease items, no lifesteal.
+
+Map fixes with this class (GPU only): the auto attack, Split Shot and the Steel Arrowheads Multi-Shot are ATTACK_TYPE_PIERCE
+attacks (item penetration + Iron Cleaver); Serpent Sting, its ticks, Multi-Shot, Steel Trap, Howl of the Packleader and
+Maul are ATTACK_TYPE_NORMAL Physical Type (Iron Cleaver only), Marksmanship untyped (none); Sulfuras Voidseeker. Fire Orb
+splash: 20 + 0.35 AGI + Potency per dummy (each with its own Sting / wound armour), Aspect of the Eagle, Glass Cannon, the
+pool; Sulfuras splash with Potency per dummy and the pool; the echo without penetration / Potency / pool. Seal Mastery feeds
+Marksmanship, Howl, the Beast Mastery pet speed, the Survival tick cooldown cut and cast refunds.
+
+Fixtures: 1884 of 2760 unchanged, 401 "incoming", 475 "model_fix"; all 18 refinements re-frozen (Shadow Orb / Silent
+Messenger top builds 3-16% lower; one Iron Cleaver Survival build +2%). `-DINC_OFF=1` replays the Part-A fights without
+changed items bit for bit. One-slot bare unchanged (243.3 / 221.2 / 265.4); entered the top 150: Shado-Pan Faceguard,
+Dragonscale Chestplate, Shoulderpads of Crimson Fury, Shield of Death, Topaz Amulet, Sunstrider Crown, Ice Cleaver
+(Marksmanship), Primalist Ring (Beast Mastery, Survival). Speed (CPU pocl, 2^14 top-150 rows): Marksmanship 28k -> 17k,
+Beast Mastery 29k -> 17k, Survival 29k -> 18k rows/s.
+Open question: Aspect of the Eagle reads the distance to the target (+1% per 50, at most 13%); the kernel keeps the old
+500 (+10%, Marksmanship attack cooldown x 0.90). With the dummies right next to the hero it would be 0.
+
+## Shared layer fix (2026-11-27, with Feral Druid / Hunter)
+
+On-evade damage (Shado-Pan Faceguard I07C 100 untyped, I0BM 50 magical) did not switch the hit stream on: classes without
+other hit effects (Death Knight, Druid, Berserker without its talents, Demon Hunter Havoc / Devourer) never counted it.
+`I_HIT_DEP` now includes them: Death Knight 19, Demon Hunter 13, Druid 8 frozen fights marked "incoming"; Shado-Pan
+Faceguard entered the one-slot top 150 of every spec except Vengeance (it already had hits).

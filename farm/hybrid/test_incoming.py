@@ -11,6 +11,8 @@ from __future__ import annotations
 
 import unittest
 
+import numpy as np
+
 ARMOR = 1.0 - (15.0 * 0.04) / (1.0 + 0.04 * 15.0)
 
 
@@ -409,6 +411,175 @@ class DruidIncoming(unittest.TestCase):
         skip = self.DR.MODEL_FIX_ITEMS | self.DR.INCOMING_ITEMS
         cases = [c for c in data["cases"] if c["spec"] == "balance" and c["targets"] == 5
                  and not set(c["items"]) & skip and not set(c["talents"]) & self.DR.INCOMING_TALENTS]
+        e = self.off
+        dps, _g, status = e.pick([e.picks_of(c["items"]) for c in cases], [e.talent_mask(c["talents"]) for c in cases],
+                                 [e.glyph_mask(c["glyphs"]) for c in cases], [[c["points"][a] for a in ESC_ATTRS] for c in cases])
+        self.assertGreater(len(cases), 50)
+        self.assertEqual([c["items"] for c, d, s in zip(cases, dps, status) if s or float(d).hex() != c["dps"]], [])
+
+
+class FeralDruidIncoming(unittest.TestCase):
+    """The Feral Druid O00R (not the caster Druid)."""
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        from farm import runner as R
+        from farm.hybrid import class_cl as C, feral_druid_cl as FD
+
+        space, items = C.full_space("feral_druid", "FeralDruid", FD.TALENT_NAMES)
+        src = R.source_map(items)
+        cls.FD = FD
+        cls.engines = {(spec, t): FD.FeralDruidCL(space, items, src, t, None, spec)
+                       for spec in ("primal", "guardian") for t in (1, 5)}
+
+        class Off(FD.FeralDruidCL):
+            KERNEL = "#define INC_OFF 1\n" + FD.KERNEL
+
+        cls.off = Off(space, items, src, 5, None, "primal")
+
+    def test_survival_instincts_evasion(self) -> None:
+        # Shado-Pan Faceguard: 100 untyped per evaded attack; hit chance 0.87 x (1 - (0.02 + 0.01 x 10% STR))
+        for t in (1, 5):
+            rep = self.engines["primal", t].report(("I07C",))
+            hit = 0.87 * (1.0 - (0.02 * 1.0 + 0.01 * (0.10 * int(rep["stats"]["str"]))))
+            want = sum(100.0 * (1.0 - hit) * (1.0 - 0.6 / 1.6) for _ in attack_times(t)) / 30.0
+            self.assertAlmostEqual(rep["sources"]["Shado-Pan Faceguard"] / 30.0, want, places=9)
+
+    def test_penetration_only_on_attacks(self) -> None:
+        # the same build with the item penetration column zeroed: spells unchanged, attacks lower
+        from farm import runner as R
+        from farm.hybrid import class_cl as C
+
+        FD = self.FD
+        space, items = C.full_space("feral_druid", "FeralDruid", FD.TALENT_NAMES)
+
+        class NoPen(FD.FeralDruidCL):
+            def tables(self, space, items, sources):
+                t = super().tables(space, items, sources)
+                u = t["uniq"].reshape(len(space.pieces), -1).copy()
+                u[:, 3] = 0.0
+                t["uniq"] = np.ascontiguousarray(u.reshape(-1))
+                return t
+
+        nopen = NoPen(space, items, R.source_map(items), 5, None, "primal")
+        pen, flat = self.engines["primal", 5].report(("I0NT",)), nopen.report(("I0NT",))
+        self.assertGreater(pen["stats"]["armor_pen"], 0.0)
+        self.assertEqual(flat["stats"]["armor_pen"], 0.0)
+        self.assertEqual(pen["sources"]["Savage Bite"], flat["sources"]["Savage Bite"])
+        self.assertGreater(pen["sources"]["Автоатака"], flat["sources"]["Автоатака"])
+
+    def test_fire_orb_splash_uses_agility(self) -> None:
+        # 20 + 0.35 AGI per dummy and attack, armour 15, no Potency points, no glass: a whole number of attacks
+        rep = self.engines["primal", 5].report(("I07O",))
+        each = (20.0 + 0.35 * rep["stats"]["agi"]) * 5 * (1.0 - 0.6 / 1.6)
+        n = rep["sources"]["Всплеск огня"] / each
+        self.assertAlmostEqual(n, round(n), places=9)
+        self.assertGreater(round(n), 10)
+
+    def test_sulfuras_splash_gets_potency(self) -> None:
+        e = self.engines["primal", 5]
+        zero = {a: 0 for a in ("health", "mana", "healing_power", "haste", "attack_speed", "damage", "crit", "potency",
+                               "mastery", "luck", "pet_damage")}
+        a = e.report(("I0BR",), points=zero)
+        b = e.report(("I0BR",), points=dict(zero, potency=10))
+        self.assertGreater(b["sources"]["Sulfuras"], a["sources"]["Sulfuras"])
+        self.assertEqual(b["sources"]["Sulfuras (удар)"], a["sources"]["Sulfuras (удар)"])
+
+    def test_no_incoming_effects_no_change(self) -> None:
+        for spec in ("primal", "guardian"):
+            e = self.engines[spec, 5]
+            self.assertEqual(e.report((), ("I0AE",))["dps"], self.off_dps(spec, (), ("I0AE",)))
+
+    def off_dps(self, spec, codes, talents):
+        from farm import runner as R
+        from farm.hybrid import class_cl as C
+
+        if spec == "primal":
+            return self.off.report(codes, talents)["dps"]
+        space, items = C.full_space("feral_druid", "FeralDruid", self.FD.TALENT_NAMES)
+
+        class Off(self.FD.FeralDruidCL):
+            KERNEL = "#define INC_OFF 1\n" + self.FD.KERNEL
+
+        return Off(space, items, R.source_map(items), 5, None, spec).report(codes, talents)["dps"]
+
+    def test_inc_off_replays_part_a_fixtures(self) -> None:
+        import json
+        from pathlib import Path
+
+        from sunken_sim.esc import ESC_ATTRS
+
+        data = json.loads((Path(__file__).resolve().parent / "fixtures" / "feral_druid.json").read_text(encoding="utf-8"))
+        skip = self.FD.MODEL_FIX_ITEMS | self.FD.INCOMING_ITEMS
+        cases = [c for c in data["cases"] if c["spec"] == "primal" and c["targets"] == 5
+                 and not set(c["items"]) & skip and not set(c["talents"]) & self.FD.INCOMING_TALENTS]
+        e = self.off
+        dps, _g, status = e.pick([e.picks_of(c["items"]) for c in cases], [e.talent_mask(c["talents"]) for c in cases],
+                                 [e.glyph_mask(c["glyphs"]) for c in cases], [[c["points"][a] for a in ESC_ATTRS] for c in cases])
+        self.assertGreater(len(cases), 50)
+        self.assertEqual([c["items"] for c, d, s in zip(cases, dps, status) if s or float(d).hex() != c["dps"]], [])
+
+
+class HunterIncoming(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        from farm import runner as R
+        from farm.hybrid import class_cl as C, hunter_cl as HU
+
+        space, items = C.full_space("hunter", "Hunter", HU.TALENT_NAMES)
+        src = R.source_map(items)
+        cls.HU, cls.space, cls.items, cls.src = HU, space, items, src
+        cls.engines = {spec: HU.HunterCL(space, items, src, 5, None, spec) for spec in ("marksmanship", "beast_mastery")}
+
+        class Off(HU.HunterCL):
+            KERNEL = "#define INC_OFF 1\n" + HU.KERNEL
+
+        cls.off = Off(space, items, src, 5, None, "beast_mastery")
+
+    def test_penetration_only_on_attacks(self) -> None:
+        # the same build with the item penetration column zeroed: spells and pets unchanged, attacks lower
+        HU = self.HU
+
+        class NoPen(HU.HunterCL):
+            def tables(self, space, items, sources):
+                t = super().tables(space, items, sources)
+                u = t["uniq"].reshape(len(space.pieces), -1).copy()
+                u[:, 3] = 0.0
+                t["uniq"] = np.ascontiguousarray(u.reshape(-1))
+                return t
+
+        nopen = NoPen(self.space, self.items, self.src, 5, None, "beast_mastery")
+        pen, flat = self.engines["beast_mastery"].report(("I0NT",)), nopen.report(("I0NT",))
+        self.assertGreater(pen["stats"]["armor_pen"], 0.0)
+        for name in ("Serpent Sting", "Steel Trap", "Spike"):
+            self.assertEqual(pen["sources"][name], flat["sources"][name], name)
+        self.assertGreater(pen["sources"]["Автоатака"], flat["sources"]["Автоатака"])
+
+    def test_sulfuras_splash_gets_potency(self) -> None:
+        e = self.engines["marksmanship"]
+        zero = {a: 0 for a in ("health", "mana", "healing_power", "haste", "attack_speed", "damage", "crit", "potency",
+                               "mastery", "luck", "pet_damage")}
+        a = e.report(("I0BR",), points=zero)
+        b = e.report(("I0BR",), points=dict(zero, potency=10))
+        self.assertGreater(b["sources"]["Sulfuras"], a["sources"]["Sulfuras"])
+        self.assertEqual(b["sources"]["Sulfuras (удар)"], a["sources"]["Sulfuras (удар)"])
+
+    def test_on_evade_damage_without_class_evasion(self) -> None:
+        # Shado-Pan Faceguard alone: hit chance 0.87, 100 untyped x Aspect +10% per evaded attack, armour 15 under no
+        # Sting / wound on the attackers it answers (dummy j), no Potency points
+        rep = self.engines["marksmanship"].report(("I07C",))
+        self.assertGreater(rep["sources"]["Shado-Pan Faceguard"], 0.0)
+
+    def test_inc_off_replays_part_a_fixtures(self) -> None:
+        import json
+        from pathlib import Path
+
+        from sunken_sim.esc import ESC_ATTRS
+
+        data = json.loads((Path(__file__).resolve().parent / "fixtures" / "hunter.json").read_text(encoding="utf-8"))
+        skip = self.HU.MODEL_FIX_ITEMS | self.HU.INCOMING_ITEMS
+        cases = [c for c in data["cases"] if c["spec"] == "beast_mastery" and c["targets"] == 5
+                 and not set(c["items"]) & skip]
         e = self.off
         dps, _g, status = e.pick([e.picks_of(c["items"]) for c in cases], [e.talent_mask(c["talents"]) for c in cases],
                                  [e.glyph_mask(c["glyphs"]) for c in cases], [[c["points"][a] for a in ESC_ATTRS] for c in cases])

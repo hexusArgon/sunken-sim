@@ -19,6 +19,7 @@ import numpy as np
 
 from farm.hybrid import attack_procs_cl as AP
 from farm.hybrid import class_cl as C
+from farm.hybrid import incoming_cl as INC
 
 NPAL = 17
 NNEG = 32
@@ -42,6 +43,14 @@ KERNEL = r"""
 #define REPORT 0
 #endif
 #define MAXA 160
+#define CLS_INT_HERO 0  /* Agility hero: the model heal comes from an ally */
+#define LEVEL 15
+@INC_HEAD@
+/* INC_OFF 1 (tests only): no incoming hits and no hero health, as before 2026-11-27 */
+#ifndef INC_OFF
+#define INC_OFF 0
+#endif
+#define BS 8
 /* pets: hunter.PETS order */
 #define P_SPIKE 0
 #define P_HUFFER 1
@@ -64,7 +73,7 @@ KERNEL = r"""
 #define WS 8
 #define MAXPET 24
 #define MAXPEND 16
-#define NSRC 16
+#define NSRC 22
 #define NNEG 32  /* shadow.armor_taken(-k), k = 1..NNEG, filled by the host */
 
 #define S_SULF (1UL<<0)
@@ -88,6 +97,8 @@ KERNEL = r"""
 #define S_MOTW (1UL<<18)
 #define S_THORN (1UL<<19)
 #define S_BEASTI (1UL<<20)
+#define S_VOID (1UL<<21)   /* Voidseeker Hood I07Y: Magical Type damage ignores 2 armour */
+#define S_ICLV (1UL<<22)   /* Iron Cleaver I055: Physical Type damage ignores 3 armour */
 
 #define T_TALON (1u<<0)
 #define T_UNLEASH (1u<<1)
@@ -153,6 +164,21 @@ KERNEL = r"""
 #define N_MARKS 13
 #define N_SULF 14
 #define N_ECHO 15
+/* incoming-hit sources (farm/hybrid/incoming_cl.py) */
+#define N_REFL 16
+#define N_SUNS 17
+#define N_SOD 18
+#define N_EVADE 19
+#define N_BLOOD 20
+#define N_ICE 21
+
+/* armour kinds (ArmorDamage_Increase): item penetration only on attacks (the auto attack, Split Shot and the
+ * Steel Arrowheads Multi-Shot, ATTACK_TYPE_PIERCE); the hunter's spells are ATTACK_TYPE_NORMAL (Spells); pets and
+ * the Serpent Sting dummy (summons / dummies) have no items */
+#define P_PLAIN 0   /* untyped, ENHANCED, pets */
+#define P_MAG 1     /* Magical Type (Sulfuras): Voidseeker Hood */
+#define P_ATK 2     /* attacks: item penetration + Iron Cleaver */
+#define P_PHYS 3    /* Physical Type spells: Iron Cleaver */
 
 typedef struct {
   double str, agi, intel, potency, mastery, damage, crit, rating, haste, aspd;
@@ -164,6 +190,8 @@ typedef struct {
   int nexec, targets, glass, spell_crit;
   uint tmask, gmask;
   ulong mask;
+  int pool_on;
+@INC_ROW_FIELDS@
 } Row;
 
 typedef struct { double e[WS + 1], m[WS + 1]; int n; } Win;
@@ -171,13 +199,16 @@ typedef struct { double e[WS + 1], m[WS + 1]; int n; } Win;
 typedef struct {
   double src[NSRC]; int ord[NSRC]; int nord; uint seen;
   Win stung[MAXT], wound[MAXT], lock, hprow, pprow;
-  double th[4], tp[4]; int thneg[4];
+  double tk[4][4];  /* armour factor by kind and (Sting -4, trap wound -3): [sv * 2 + wv] */
   int pk[MAXPET]; double pnext[MAXPET], pend[MAXPET], pstart[MAXPET]; int np;
   double dt[MAXPEND]; int dk[MAXPEND], di[MAXPEND]; int nd;
   double nxt[5];
   double mana, mana_time, wrath_until, quill_until, quiver, split;
   int quill_count, howl_stacks, armed, status, targets;
   AP ap;
+  double lm;
+  double ch_e[MAXT][BS + 1], ch_m[MAXT][BS + 1]; int ch_n[MAXT]; double ch_t[MAXT], ch_lo[MAXT];  /* Chill */
+@INC_ST_FIELDS@
 #if REPORT
   double act_t[MAXA]; int act_id[MAXA]; int nact;
 #endif
@@ -226,7 +257,7 @@ void add_src(St* q, int id, double amount) {
 }
 
 /* hunter.score_events for one event */
-void emit(const Row* r, St* s, int name, double when, double weight, int kind) {
+double emit(const Row* r, St* s, int name, double when, double weight, int kind) {
   double amount;
   if (kind == KD_PHYS) {
     double bonus = 1.0 + r->phys_add;
@@ -240,6 +271,27 @@ void emit(const Row* r, St* s, int name, double when, double weight, int kind) {
     amount = weight * exec_factor(r, when);
   }
   if (amount != 0.0) add_src(s, name, amount);
+  return amount;
+}
+
+double pool_t(const Row* r, St* s, int t, double now);
+/* score one event with the DamageIncrease pool of dummy index (the hero's own damage) */
+double emit_pool(const Row* r, St* s, int name, double when, double weight, int kind, int index) {
+  double amount;
+  if (kind == KD_PHYS) {
+    double bonus = 1.0 + r->phys_add;
+    if (r->mask & S_SULG) bonus += 0.13 + 0.25 * target_hp(when);
+    if (r->glass) bonus *= 1.15;
+    amount = weight * bonus * exec_factor(r, when);
+  } else if (kind == KD_MAG) {
+    double ms = (1.0 + r->magic_add) * (r->glass ? 1.15 : 1.0);
+    amount = weight * ms * exec_factor(r, when);
+  } else {
+    amount = weight * exec_factor(r, when);
+  }
+  if (r->pool_on) amount *= pool_t(r, s, index, when);
+  if (amount != 0.0) add_src(s, name, amount);
+  return amount;
 }
 
 /* ---- hunter._Window ---- */
@@ -292,20 +344,59 @@ double potency_now(const Row* r, const St* s, double now) {
   return value;
 }
 
-/* expected armour factor: Sting and the trap wound as independent chances */
-double taken_for(St* s, int index, double now, int hunter) {
-  const double* a = hunter ? s->th : s->tp;
+/* expected armour factor of kind k: Sting and the trap wound as independent chances */
+double taken_for(St* s, int index, double now, int k) {
+  const double* a = s->tk[k];
   double ps = wmass(&s->stung[index], now);
   double pw = wmass(&s->wound[index], now);
-  if (ps == 0.0 && pw == 0.0) {
-    if (hunter && s->thneg[0] && !s->status) s->status = 4;
-    return a[0];
-  }
+  if (ps == 0.0 && pw == 0.0) return a[0];
   double c00 = (1.0 - ps) * (1.0 - pw), c10 = ps * (1.0 - pw), c01 = (1.0 - ps) * pw, c11 = ps * pw;
-  if (hunter && !s->status && ((s->thneg[0] && c00 != 0.0) || (s->thneg[2] && c10 != 0.0)
-                               || (s->thneg[1] && c01 != 0.0) || (s->thneg[3] && c11 != 0.0))) s->status = 4;
   return c00 * a[0] + c10 * a[2] + c01 * a[1] + c11 * a[3];
 }
+
+/* ---- expiry_buff._Buff (Chill) ---- */
+double bmass(const double* e, const double* m, int n, double tot, double lo, double now) {
+  if (now <= lo) return tot;
+  double total = 0.0;
+  for (int k = 0; k < n; k++)
+    if (now <= e[k]) total += m[k];
+  return total;
+}
+
+void bcache(const double* e, const double* m, int n, double* tot, double* lo) {
+  double t = 0.0, l = INFINITY;
+  for (int k = 0; k < n; k++) { t += m[k]; if (e[k] < l) l = e[k]; }
+  *tot = t; *lo = l;
+}
+
+void bsure(double* e, double* m, int* n, double* tot, double* lo, double now, double dur) {
+  e[0] = now + dur; m[0] = 1.0; *n = 1;
+  *tot = 0.0 + 1.0; *lo = e[0];
+}
+
+void bmaybe(double* e, double* m, int* n, double* tot, double* lo, double now, double dur, double p_on, double p_off) {
+  double active = bmass(e, m, *n, *tot, *lo, now);
+  int c = 0;
+  for (int k = 0; k < *n; k++) {
+    if (now <= e[k]) { e[c] = e[k]; m[c] = m[k] * (1.0 - p_on); c++; }
+  }
+  double added = p_on * active + p_off * (1.0 - active);
+  double until = now + dur;
+  if (c > 0 && e[c - 1] == until) m[c - 1] = m[c - 1] + added;
+  else { e[c] = until; m[c] = added; c++; }
+  while (c > BS) {
+    int k = 0;
+    for (int j = 1; j < c - 1; j++) if (m[j] < m[k]) k = j;
+    m[k + 1] = m[k + 1] + m[k];
+    for (int j = k; j < c - 1; j++) { e[j] = e[j + 1]; m[j] = m[j + 1]; }
+    c--;
+  }
+  *n = c;
+  bcache(e, m, c, tot, lo);
+}
+
+#define CH_ARGS(s, t) (s)->ch_e[t], (s)->ch_m[t], &(s)->ch_n[t], &(s)->ch_t[t], &(s)->ch_lo[t]
+#define CH_MASS(s, t, now) bmass((s)->ch_e[t], (s)->ch_m[t], (s)->ch_n[t], (s)->ch_t[t], (s)->ch_lo[t], now)
 
 double hero_crit(const Row* r, const St* s, double now) {
   double chance = r->crit;
@@ -333,12 +424,52 @@ void recover(const Row* r, St* s, double now) {
   s->mana_time = now;
 }
 
+@INC_C1@
+/* defined after the class hooks (INC_C2) */
+void attack_heal(const Row* r, St* s, double now, double dealt);
+void taken_event(const Row* r, St* s, double now, double m, double axe);
+void inc_ice(const Row* r, St* s, int t, double now, double w, int freeze);
+
 int pay(const Row* r, St* s, double cost, double now) {
   recover(r, s, now);
   if (s->mana < cost) return 0;
   s->mana -= cost;
-  gain_mana(r, s, cost * r->cast_refund + r->cast_refund_flat + r->cast_refund_mastery * r->mastery);
+  gain_mana(r, s, cost * r->cast_refund + r->cast_refund_flat + r->cast_refund_mastery * MAST(r, s));
   return 1;
+}
+
+/* Ancient Voodoo Doll: the debuffs on dummy t the kernel tracks (Serpent Sting, the trap wound, Chill) */
+double cls_buffs(const Row* r, St* s, int t, double now) {
+  double n = wmass(&s->stung[t], now) + wmass(&s->wound[t], now);
+  if (r->imask & (I_FORB | I_ICLE)) n += CH_MASS(s, t, now);
+  return n;
+}
+
+/* DamageIncrease_Amount of the incoming layer on dummy t; Giantsbane reads the expected real armour */
+double pool_t(const Row* r, St* s, int t, double now) {
+  if (!r->pool_on) return 1.0;
+  double armor = 15.0 - 4.0 * wmass(&s->stung[t], now) - 3.0 * wmass(&s->wound[t], now);
+  return pool_of(r, s, t, now, armor);
+}
+
+/* attack damage instances (IsDamageAttack: Split Shot, the Steel Arrowheads Multi-Shot): lifesteal
+ * (AfterDamage_Global), Red Court, Goredrinker; count = expected instances */
+void attack_damage_heal(const Row* r, St* s, double now, double dealt, double count) {
+  if (!s->hp_on || count <= 0.0) return;
+  s->tnow = now;
+  double ls = r->lifesteal;
+  if (r->imask & I_BREAV) ls += 0.13;
+  else if (r->imask & I_SERA) ls += 0.10;
+  double heal = ls * (dealt / count);
+  if (r->imask & I_REDC) heal += 10.0 + LEVEL;
+  if (r->imask & I_GORE) {
+    double part = (0.01 / 2.0) * 5300.0, cap = 0.03 * s->hp_max;
+    heal += (part > cap) ? cap : part;
+  }
+  if (heal >= 1.0 && hero_ratio(s, now) < 1.0) {
+    if (r->imask & I_REDC) heal_mod(r, s, heal, count, 1, 1, 1);
+    else if (!((r->imask & I_CRIM) && hero_ratio(s, now) > 0.38)) heal_plain(s, heal * count);
+  }
 }
 
 void note_damage_mana(const Row* r, St* s, double count) {
@@ -350,10 +481,14 @@ double hit(const Row* r, St* s, int name, double raw, double now, int index, dou
            double potency_scale, double count, int auto_hit) {
   double amount = raw + potency_now(r, s, now) * potency_scale;
   amount *= 1.0 + ASPECT;
-  double armor = taken_for(s, index, now, 1);
+  /* the spell part: Iron Cleaver on Physical Type, nothing on untyped; the attack part (ATTACK_TYPE_PIERCE): the item
+   * penetration and Iron Cleaver */
+  double armor_x = taken_for(s, index, now, typed ? P_PHYS : P_PLAIN);
+  double armor = (attack > 0.0) ? taken_for(s, index, now, P_ATK) : armor_x;
   double share = 0.0;
-  double pre_plain = amount * armor;
+  double pre_plain = amount * armor_x;
   double pre = pre_plain;
+  double afrac = 0.0;
   if (attack > 0.0) {
     double inc = 1.0;
     if (TM(r, T_MONG)) inc += 0.10;
@@ -366,15 +501,21 @@ double hit(const Row* r, St* s, int name, double raw, double now, int index, dou
     double attack_pre = (1.0 - armed / attack) * normal_pre + (armed / attack) * boosted_pre;
     share = attack * ((1.0 - armed / attack) * chance01(chance / 100.0) + armed / attack);
     pre = (1.0 - attack) * pre_plain + attack * attack_pre;
+    afrac = (pre != 0.0) ? attack * attack_pre / pre : 0.0;
     if (armed != 0.0) s->quiver -= armed * count;
     if (TM(r, T_POISON)) wmaybe(&s->stung[index], now, 10.0, attack * count);
   }
   double w = pre * count;
+  double dealt = 0.0;
   if (w != 0.0) {
     if (auto_hit && r->auto_pct != 1.0) w = w * r->auto_pct;
-    emit(r, s, name, now, w, typed ? KD_PHYS : KD_EXEC);
+    dealt = emit_pool(r, s, name, now, w, typed ? KD_PHYS : KD_EXEC, index);
   }
   note_damage_mana(r, s, count);
+  if (s->hp_on) {
+    inc_dealt(r, s, now, dealt / count, count);
+    if (!auto_hit && attack > 0.0) attack_damage_heal(r, s, now, dealt * afrac, count * attack);
+  }
   return share;
 }
 
@@ -384,7 +525,7 @@ double pet_hit(const Row* r, St* s, int name, double raw, double now, int kind, 
   double increase = 1.0;
   if (TM(r, T_SCENT) && target_hp(now) < 0.40) increase += 0.28;
   amount *= increase;
-  double armor = taken_for(s, index, now, 0);
+  double armor = taken_for(s, index, now, P_PLAIN);  /* summons: no item penetration, no DamageIncrease items */
   double share = 0.0;
   double pre;
   if (attack) {
@@ -446,7 +587,7 @@ void multishot(const Row* r, St* s, double now, int secondary) {
   }
 }
 
-double hunter_interval(const Row* r, const St* s, double now) {
+double hunter_interval(const Row* r, St* s, double now) {
   double swing = 1.60 * ((r->mask & S_GALA) ? 1.20 : 1.0);
   if (SP_MM) swing *= 1.0 - ASPECT;
   double speed = r->aspd;
@@ -454,18 +595,21 @@ double hunter_interval(const Row* r, const St* s, double now) {
   speed += 0.20 * wmass(&s->hprow, now);
   if ((r->mask & S_BHELM) && wrath_on(s, now)) speed += 0.25;
   speed += ap_bonus(&s->ap, now);
+  /* Warlord's Battlemask +28% attack speed 6 s; Bloodhowl base cooldown x (1 - 0.30 x missing health) */
+  if (r->imask & I_BMASK) speed += 0.28 * bm_active(s, now);
   speed = ap_speed(speed);
+  if (r->imask & I_BHOWL) swing *= 1.0 - (1.0 - hero_ratio(s, now)) * 0.30;
   return swing / (1.0 + speed);
 }
 
 double pet_swing(int kind) { return (kind == P_SPIKE) ? 1.50 : (kind == P_HUFFER) ? 1.45 : 1.70; }
 
-double pet_interval(const Row* r, const St* s, int i, double now) {
+double pet_interval(const Row* r, St* s, int i, double now) {
   int kind = s->pk[i];
   double swing = pet_swing(kind);
   if (TM(r, T_TALON)) swing *= 0.90;
   double speed = 0.0;
-  if (SP_BM) speed += 0.10 + 0.008 * r->mastery;
+  if (SP_BM) speed += 0.10 + 0.008 * MAST(r, s);
   if (kind == CUR_PET) speed += 0.40 * wmass(&s->pprow, now);
   if (kind == CUR_PET && (r->mask & S_BHELM) && wrath_on(s, now)) speed += 0.25;
   if (kind == P_HUFFER && TM(r, T_DIRE)) {
@@ -488,7 +632,7 @@ void pet_attack(const Row* r, St* s, int i, double now) {
   if (kind == P_GRYLLS && TM(r, T_DIRE)) raw *= 1.20;
   double main_raw = raw;
   if (kind == CUR_PET && s->howl_stacks > 0) {
-    double value = (20.0 + 0.25 * r->agi + 0.50 * r->mastery) * (double)s->howl_stacks;
+    double value = (20.0 + 0.25 * r->agi + 0.50 * MAST(r, s)) * (double)s->howl_stacks;
     s->howl_stacks = 0;
     if (SP_BM) main_raw += value;
     else hit(r, s, N_HOWL, value, now, 0, 0.0, 1, 1.0, 1.0, 0);
@@ -539,6 +683,41 @@ void add_pending(St* s, double t, int kind, int index) {
   s->dt[i] = t; s->dk[i] = kind; s->di[i] = index;
 }
 
+/* shadow.armor_taken(a): the host's table for whole negative armour, the formula otherwise */
+double hm(const Row* r, double a) {
+  if (a > 0.0) return 1.0 - (a * 0.04) / (1.0 + 0.04 * a);
+  if (a == 0.0) return 1.0;
+  if (a == (double)(long)a && -a <= (double)NNEG) return r->negt[(int)(-a) - 1];
+  return 2.0 - pow(1.0 - 0.04, -a);
+}
+
+/* item_dmg of the incoming layer: a damage instance of the hunter per count on dummy t (Potency per instance;
+ * magical: the Magical Type bonus, Voidseeker, spell crit; else untyped: Glass Cannon only), Aspect of the Eagle */
+void item_dmg(const Row* r, St* s, int name, double raw, int t, double when, int magical_type, double count) {
+  if (count <= 0.0 || when >= FIGHT) return;
+  double amount = (raw / count + potency_now(r, s, when)) * (1.0 + ASPECT);
+  if (magical_type && r->spell_crit) {
+    double extra = TM(r, T_UNMAT) ? (0.25 + 0.15 * hero_crit(r, s, when) / 100.0) : 0.0;
+    amount *= crit_factor(hero_crit(r, s, when), r->spell_mult + r->rating + extra);
+  } else if (!magical_type && r->glass) amount *= 1.15;  /* untyped: Glass Cannon only */
+  amount *= taken_for(s, t, when, magical_type ? P_MAG : P_PLAIN) * count;
+  double dealt = emit_pool(r, s, name, when, amount, magical_type ? KD_MAG : KD_EXEC, t);
+  note_damage_mana(r, s, count);
+  if (s->hp_on) inc_dealt(r, s, when, dealt / count, count);
+}
+
+void cls_taken(const Row* r, St* s, double now, double m, double axe) { (void)r; (void)s; (void)now; (void)m; (void)axe; }
+double cls_hit(const Row* r, St* s, double now) { (void)r; (void)s; (void)now; return 1.0; }
+void cls_attacked(const Row* r, St* s, int j, double now, double m) { (void)r; (void)s; (void)j; (void)now; (void)m; }
+void cls_evade(const Row* r, St* s, int j, double now, double evaded) { (void)r; (void)s; (void)j; (void)now; (void)evaded; }
+double cls_primary(const Row* r) { return r->agi; }
+void cls_lifesteal(const Row* r, St* s, double amount) { (void)r; (void)s; (void)amount; }
+double cls_heal_flat(const Row* r, St* s) { (void)r; (void)s; return 0.0; }
+double cls_heal_mod(const Row* r, St* s) { (void)r; (void)s; return 0.0; }
+void cls_own_heal(const Row* r, St* s, double total) { (void)r; (void)s; (void)total; }
+
+@INC_C2@
+
 /* hunter.simulate(build, targets, spec).dps */
 #if REPORT
 double fight(const Row* r, int* status_out, St* keep) {
@@ -555,20 +734,25 @@ double fight(const Row* r, int* status_out) {
   s.lock.n = 0; s.hprow.n = 0; s.pprow.n = 0;
   for (int k = 0; k < 4; k++) {
     int sv = k >> 1, wv = k & 1;
-    double ah = 15.0 - r->armor_pen - (double)sv * 4.0 - (double)wv * 3.0;
-    double ap = 15.0 - 0.0 - (double)sv * 4.0 - (double)wv * 3.0;
-    s.thneg[k] = 0;
-    if (ah > 0.0) s.th[k] = 1.0 - (ah * 0.04) / (1.0 + 0.04 * ah);
-    else if (ah == 0.0) s.th[k] = 1.0;
-    else if (ah == (double)(long)ah && -ah <= (double)NNEG) s.th[k] = r->negt[(int)(-ah) - 1];
-    else s.th[k] = 2.0 - pow(1.0 - 0.04, -ah);  /* shadow.armor_taken */
-    s.tp[k] = (ap > 0.0) ? 1.0 - (ap * 0.04) / (1.0 + 0.04 * ap) : 1.0;
+    double a = 15.0 - 0.0 - (double)sv * 4.0 - (double)wv * 3.0;  /* real armour (Sting -4, trap wound -3) */
+    double m0 = hm(r, a);
+    double ma = hm(r, 15.0 - r->armor_pen - (double)sv * 4.0 - (double)wv * 3.0);
+    s.tk[P_PLAIN][k] = m0;
+    s.tk[P_MAG][k] = (r->mask & S_VOID) ? m0 / m0 * hm(r, a - 2.0) : m0;
+    s.tk[P_ATK][k] = (r->mask & S_ICLV) ? ma / m0 * hm(r, a - 3.0) : ma;
+    s.tk[P_PHYS][k] = (r->mask & S_ICLV) ? m0 / m0 * hm(r, a - 3.0) : m0;
   }
   s.np = 0; s.nd = 0;
   for (int k = 0; k < 5; k++) s.nxt[k] = 0.0;
   s.mana = r->mana_max; s.mana_time = 0.0;
   s.wrath_until = -1.0; s.quill_until = -1.0; s.quiver = 0.0; s.split = 0.0;
   s.quill_count = 0; s.howl_stacks = 0; s.armed = 0;
+  s.lm = 1.0 + r->luck; s.tnow = 0.0;
+  for (int t = 0; t < MAXT; t++) { s.ch_n[t] = 0; s.ch_t[t] = 0.0; s.ch_lo[t] = INFINITY; }
+  inc_init(r, &s, r->targets, 0, 0);
+#if INC_OFF
+  s.hits_on = 0; s.hp_on = 0;
+#endif
   ap_init(&s.ap, GM(r, G_FREN) ? frenzy_chance(r->luck) : 0.0, (r->mask & S_SILM) ? SILENT_AS : 0.0,
           (r->mask & S_SILM) ? SILENT_DUR : 0.0);
   double next_attack = 0.0, next_tick = 1.0, busy = 0.0;
@@ -594,7 +778,16 @@ double fight(const Row* r, int* status_out) {
     if (pet_at < moment) moment = pet_at;
     if (pending_at < moment) moment = pending_at;
     if (next_tick < moment) moment = next_tick;
+    int hit_j = -1, hit_k = -1;
+    double next_inc = (s.hits_on || s.hp_on) ? inc_next(&s, s.targets, &hit_j, &hit_k) : 1.0e9;
+    if (next_inc < moment) moment = next_inc;
     if (moment >= FIGHT) break;
+    s.tnow = moment;
+    if (s.hp_on) regen_adv(r, &s, moment);
+    if (moment == next_inc) {
+      inc_event(r, &s, moment, hit_j, hit_k, s.targets);
+      continue;
+    }
     if (moment == pending_at) {
       int b = -1;
       for (int i = 0; i < s.nd; i++) {
@@ -615,7 +808,7 @@ double fight(const Row* r, int* status_out) {
         if (on <= 0.0) continue;
         if (SP_BM) pet_hit(r, &s, N_TICKS, raw, moment, CUR_PET, index, 0, on);
         else hit(r, &s, N_TICKS, raw, moment, index, 0.0, 1, 1.0, on, 0);
-        if (SP_SV) cut_cooldowns(&s, moment, 0.0, on * chance01((5.0 + 0.20 * r->mastery) / 100.0));
+        if (SP_SV) cut_cooldowns(&s, moment, 0.0, on * chance01((5.0 + 0.20 * MAST(r, &s)) / 100.0));
       }
       double interval = 1.0;
       if (TM(r, T_POISON)) interval /= 1.0 + 0.05 * r->potency;
@@ -643,6 +836,7 @@ double fight(const Row* r, int* status_out) {
       double cost = (key == K_CALL) ? 30.0 : (key == K_WRATH) ? 20.0 : (key == K_STING) ? 15.0 : (key == K_MULTI) ? 10.0 : 20.0;
       if (!pay(r, &s, cost, moment)) { s.nxt[key] = moment + 0.25; continue; }
       act(&s, moment, key);
+      cast_heal(r, &s, moment, cost);
       double hit_at = moment + CAST_POINT;
       if ((r->mask & S_SULF) && !s.armed) s.armed = 1;
       if (TM(r, T_WIND)) s.quiver = 1.0;
@@ -695,14 +889,24 @@ double fight(const Row* r, int* status_out) {
     /* hunter auto-attack */
     moment = attack_at;
     recover(r, &s, moment);
+    s.tnow = moment;
     double power = dcs(r, &s, moment);
     double raw = power;
     if (wrath_on(&s, moment)) {
       double white = WHITE_BASE + 0.75 * r->agi;
       raw = white * (1.0 + wrath_pct(r)) + r->damage;
     }
+    /* Blade of the Fallen Seraph: +1% max HP attack damage */
+    if (r->imask & I_SERA) raw += 0.01 * s.hp_max;
+    double before = s.src[N_AUTO] * ((s.seen & (1u << N_AUTO)) ? 1.0 : 0.0);
     double share = hit(r, &s, N_AUTO, raw, moment, 0, 1.0, 1, r->attack_potency, 1.0, 1);
-    if (SP_MM) hit(r, &s, N_MARKS, 40.0 + 3.0 * r->mastery, moment, 0, 0.0, 0, 0.0, share, 0);
+    if (s.hp_on) attack_heal(r, &s, moment, s.src[N_AUTO] - before);
+    if (r->imask & I_SERA) {
+      if (s.hp_on) hp_add(&s, -0.01 * s.hp_max);
+      taken_event(r, &s, moment, 1.0, 0.0);
+      if (s.hp_on) dinc_update(r, &s);
+    }
+    if (SP_MM) hit(r, &s, N_MARKS, 40.0 + 3.0 * MAST(r, &s), moment, 0, 0.0, 0, 0.0, share, 0);
     double luck_mult = 1.0 + r->luck;
     if (TM(r, T_LOCK)) wmaybe(&s.lock, moment, 4.0, chance01(share * 0.35 * luck_mult));
     wmaybe(&s.pprow, moment, 3.0, share);
@@ -713,14 +917,30 @@ double fight(const Row* r, int* status_out) {
       if (r->attack_mana_crit != 0.0) gain *= 1.0 + ((100.0 <= r->crit) ? 100.0 : r->crit) / 100.0;
       gain_mana(r, &s, gain);
     }
+    /* Frost Orb chills the attacked dummy (4 s), Ice Cleaver's Ice Nova (18% x Luck) every dummy */
+    if (r->imask & I_FORB) { bsure(CH_ARGS(&s, 0), moment, 4.0); inc_ice(r, &s, 0, moment, 1.0, 0); }
+    if (r->imask & I_ICLE) {
+      double c = chance01(0.18 * s.lm);
+      for (int t = 0; t < s.targets; t++) {
+        if (c > 0.0) bmaybe(CH_ARGS(&s, t), moment, 4.0, c, c);
+        inc_ice(r, &s, t, moment, c, 0);
+      }
+    }
     if (r->mask & S_ORB) {
-      int idx = (1 < s.targets - 1) ? 1 : s.targets - 1;
-      double splash_w = (20.0 + 0.35 * r->agi) * (double)s.targets * taken_for(&s, idx, moment, 1);
-      if (splash_w != 0.0) emit(r, &s, N_FIRE, moment, splash_w, KD_EXEC);
+      /* Fire Orb splash (DAMAGE_TYPE_NORMAL, Spells, no type): 20 + 0.35 AGI + Potency per dummy, Aspect of the
+       * Eagle, Glass Cannon, the DamageIncrease pool, the real armour; no type bonus, no crit */
+      double dealt = 0.0;
+      for (int t = 0; t < s.targets; t++) {
+        double amount = (20.0 + 0.35 * r->agi + potency_now(r, &s, moment)) * (1.0 + ASPECT) * (r->glass ? 1.15 : 1.0);
+        amount *= taken_for(&s, t, moment, P_PLAIN) * exec_factor(r, moment);
+        if (r->pool_on) amount *= pool_t(r, &s, t, moment);
+        if (amount != 0.0) add_src(&s, N_FIRE, amount);
+        dealt += amount;
+      }
       note_damage_mana(r, &s, (double)s.targets);
+      if (s.hp_on) inc_dealt(r, &s, moment, dealt / (double)s.targets, (double)s.targets);
     }
     if (r->mask & S_SULF) {
-      double taken = taken_for(&s, 0, moment, 1);
       if (s.armed) {
         s.armed = 0;
         double cf = 1.0;
@@ -728,11 +948,17 @@ double fight(const Row* r, int* status_out) {
           double extra = TM(r, T_UNMAT) ? (0.25 + 0.15 * hero_crit(r, &s, moment) / 100.0) : 0.0;
           cf = crit_factor(hero_crit(r, &s, moment), r->spell_mult + r->rating + extra);
         }
-        double splash_w = r->agi * cf * taken * (double)s.targets;
-        if (splash_w != 0.0) emit(r, &s, N_SULF, moment, splash_w, KD_MAG);
+        /* Magical Type DAMAGE_TYPE_NORMAL: AGI + Potency per dummy (PreDamage_Increase), Aspect, Voidseeker, the pool */
+        double dealt = 0.0;
+        for (int t = 0; t < s.targets; t++) {
+          double w = (r->agi + potency_now(r, &s, moment)) * (1.0 + ASPECT) * cf * taken_for(&s, t, moment, P_MAG);
+          if (w != 0.0) dealt += emit_pool(r, &s, N_SULF, moment, w, KD_MAG, t);
+        }
         note_damage_mana(r, &s, (double)s.targets);
+        if (s.hp_on) inc_dealt(r, &s, moment, dealt / (double)s.targets, (double)s.targets);
       }
-      double echo_w = power * taken * (0.10 * (1.0 + r->luck));
+      /* the echo: DAMAGE_TYPE_ENHANCED, no Potency, no penetration, no DamageIncrease pool */
+      double echo_w = power * taken_for(&s, 0, moment, P_PLAIN) * (0.10 * (1.0 + r->luck));
       if (echo_w != 0.0) emit(r, &s, N_ECHO, moment, echo_w, KD_EXEC);
     }
     ap_attack(&s.ap, moment, hero_crit(r, &s, moment));
@@ -755,6 +981,7 @@ typedef struct {
   int npieces; __global const int* pkind; __global const int* pamp;
   __global const double* fold; __global const double* uniq; __global const ulong* pmask; __global const int* psrc;
   __global const double* pal; __global const double* base; __global const double* negt;
+  __global const ulong* pimask; __global const double* pinc;
 } Tab;
 
 int unrank(Tab* T, long index, int* chosen) {
@@ -813,6 +1040,7 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   mana_flat += 20.0 * (double)pts[1];
   pet_damage += 0.015 * (double)pts[10];
   ulong mask = 0;
+  inc_sheet_init(r);
   int n_core = 0, n_sulg = 0, has_shop = 0, has_drop = 0, nexec = 0;
   for (int si = 0; si < 6; si++) {
     int p = chosen[si];
@@ -837,6 +1065,7 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
     aspd += f[14];
     ulong m = T->pmask[p];
     mask |= m;
+    r->imask |= T->pimask[p];
     if (m & S_CORE) n_core++;
     if (m & S_SULG) n_sulg++;
     if (T->psrc[p] == 1) has_shop = 1;
@@ -859,6 +1088,7 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
       for (int j = 0; j < 4; j++) luck += a[5 + j];
       for (int j = 0; j < 4; j++) health_flat += a[9 + j];
       for (int j = 0; j < 4; j++) pet_damage += a[13 + j];
+      INC_FOLD(r, T->pinc + (long)p * NINC);
     }
   }
   r->tmask = tmask; r->gmask = gmask; r->mask = mask;
@@ -921,6 +1151,13 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   r->negt = T->negt;
   r->spell_crit = spell_crit; r->spell_mult = spell_mult;
   r->hp = (T->base[3] + 15.0 * strength) + health_flat;
+  /* incoming layer: H001 (Hvwd) health 230 + 15 STR + items; armour 0.1 AGI + items (the Hvwd base armour is not in the
+   * map files: taken as 0, only Dragon Figurine reads it); Primalist Ring 0.5% Physical Type per point of HP
+   * regeneration for Agility heroes */
+  r->armor_hero = 0.1 * agility + r->item_armor;
+  double regen_stat = inc_sheet_finish(r, r->hp);
+  if (r->imask & I_PRIM) r->phys_add += 0.005 * regen_stat;
+  r->pool_on = ((r->imask & (I_GIANT | I_CRIM | I_IGM | I_FURN | I_BLS)) || r->pool_flat != 0.0 || r->voodoo != 0.0) ? 1 : 0;
 }
 
 #if !REPORT
@@ -937,12 +1174,13 @@ double row_value(Tab* T, long index, uint tmask, uint gmask, const int* pts, int
     __global const long* dp0, __global const long* dp1, const long count_without, const long total, \
     const int npieces, __global const int* pkind, __global const int* pamp, \
     __global const double* fold, __global const double* uniq, __global const ulong* pmask, __global const int* psrc, \
-    __global const double* pal, __global const double* base, __global const double* negt
+    __global const double* pal, __global const double* base, __global const double* negt, \
+    __global const ulong* pimask, __global const double* pinc
 
 #define TAB_INIT \
   Tab T; T.dp0 = dp0; T.dp1 = dp1; T.count_without = count_without; T.total = total; \
   T.npieces = npieces; T.pkind = pkind; T.pamp = pamp; T.fold = fold; T.uniq = uniq; T.pmask = pmask; T.psrc = psrc; \
-  T.pal = pal; T.base = base; T.negt = negt;
+  T.pal = pal; T.base = base; T.negt = negt; T.pimask = pimask; T.pinc = pinc;
 
 #if !REPORT
 __kernel void cls_bare(const long start, const int n, const int targets, TAB_ARGS,
@@ -1048,12 +1286,15 @@ __kernel void cls_report(const int n, const int targets, __global const int* pic
 }
 #endif
 """
+KERNEL = (KERNEL.replace("@INC_HEAD@", INC.INC_HEAD + "#define NINC %d\n" % INC.NINC)
+          .replace("@INC_ROW_FIELDS@", INC.INC_ROW_FIELDS).replace("@INC_ST_FIELDS@", INC.INC_ST_FIELDS)
+          .replace("@INC_C1@", INC.INC_C1).replace("@INC_C2@", INC.INC_C2))
 KERNEL = KERNEL.replace("#pragma OPENCL FP_CONTRACT OFF\n", "#pragma OPENCL FP_CONTRACT OFF\n" + AP.C, 1)
 
 SPECIAL_BITS = {
     "I0BR": 0, "I07O": 1, "I0JO": 2, "I0QT": 3, "I0JA": 4, "I096": 5, "I03C": 6, "I00L": 7, "I00Y": 8,
     "I07P": 9, "I048": 10, "I0FW": 11, "I0AV": 12, "I0QN": 13, "I0T6": 14, "I0T7": 15, "I0T8": 16, "I0T9": 17,
-    "I06B": 18, "I05W": 19, "I0OH": 20,
+    "I06B": 18, "I05W": 19, "I0OH": 20, "I07Y": 21, "I055": 22,
 }
 TALENT_BITS = {
     "I03P": 0, "I0K8": 1, "I092": 2, "I02X": 3, "I0KD": 4, "I0T3": 5, "I0K9": 6, "I0KB": 7, "I0KC": 8,
@@ -1130,6 +1371,7 @@ def hunter_tables(space, items, sources) -> dict:
     t["pal"] = np.ascontiguousarray(pal.reshape(-1))
     # negative armour (high armour penetration under Sting and the trap wound): the Python value itself
     t["negt"] = np.asarray([shadow.armor_taken(float(-k)) for k in range(1, NNEG + 1)], dtype=np.float64)
+    t.update(INC.inc_tables(space, items))
     return t
 
 
@@ -1139,20 +1381,21 @@ class HunterCL(C.ExactCL):
     KERNEL = KERNEL
     SOURCE_NAMES = ("Автоатака", "Serpent Sting", "Serpent Sting (тики)", "Multi-Shot", "Split Shot", "Steel Trap",
                     "Spike", "Huffer", "Grylls", "Всплеск огня", "Howl of the Packleader", "Maul", "Shred",
-                    "Marksmanship", "Sulfuras", "Sulfuras (удар)")
+                    "Marksmanship", "Sulfuras", "Sulfuras (удар)", "Отражение урона", "Sunstrider Crown",
+                    "Shield of Death", "Shado-Pan Faceguard", "Bloodlord's Regalia", "Ice Cleaver")
     ACTION_NAMES = ("Call Pet", "Bestial Wrath", "Serpent Sting", "Multi-Shot", "Steel Trap")
     STAT_KEYS = ("str", "agi", "int", "potency", "mastery", "damage", "crit", "rating", "haste", "attack_speed",
                  "magic_add", "phys_add", "armor_pen", "cd_temp", "flat_cdr", "pet_damage", "summon_crit", "luck",
                  "mana_max", "mana_regen", "hp", "galactic", "spell_crit")
     BOOL_STATS = ()  # hunter.stats_of keeps 1.0 / 0.0
-    NSRC, MAXA = 16, 160
+    NSRC, MAXA = 22, 160
     SPECS = SPECS
     TALENT_BITS = TALENT_BITS
     GLYPH_BITS = GLYPH_BITS
     NO_EFFECT = NO_EFFECT
     KEY_FREE = ()  # the removed hunter._timeline_key held every ESC point
     TABLE_KEYS = ("dp0", "dp1", "count_without", "total", "npieces", "pkind", "pamp", "fold", "uniq", "pmask", "psrc",
-                  "pal", "base", "negt")
+                  "pal", "base", "negt", "pimask", "pinc")
     SCALARS = {"count_without": np.int64, "total": np.int64, "npieces": np.int32}
 
     @staticmethod
@@ -1176,3 +1419,12 @@ parity = C.parity
 parity_full = C.parity_full
 random_builds = C.random_builds
 self_check = C.self_check
+
+
+# Items whose effect depends on the incoming-hit model (docs/defense-model.md); the Hunter has no class effects
+INCOMING_TALENTS = frozenset()
+INCOMING_ITEMS = INC.INCOMING_ITEMS
+# map fixes after the Python model was removed: penetration only on attacks, Voidseeker / Iron Cleaver, Fire Orb
+# splash per dummy with Potency, Sulfuras splash with Potency, the echo without penetration, Ice Cleaver
+MODEL_FIX_ITEMS = frozenset({"I031", "I0DU", "I0IU", "I0JU", "I0NT", "I0QN", "I0QV", "I07Y", "I055", "I07O", "lgdh",
+                             "I0BR"})

@@ -154,7 +154,8 @@ INC_ST_FIELDS = r"""
 INC_HEAD = "#define INC_NG 8\n#define INC_NBM 160\n" + _defines() + r"""
 /* incoming-hit effects that make the hit stream matter (class kernels add their own) */
 #define I_HP_DEP (I_ALE | I_CRIM | I_IGM | I_FURN | I_BLS | I_BHOWL | I_BLOOD | I_ICE)
-#define I_HIT_DEP (I_SPIKE | I_THORN | I_DSCALE | I_SUN | I_SOD | I_BMASK | I_SEAL | I_PCB | I_ICE | I_EVD | I_CHAOS | I_DVEIL)
+#define I_HIT_DEP (I_SPIKE | I_THORN | I_DSCALE | I_SUN | I_SOD | I_BMASK | I_SEAL | I_PCB | I_ICE | I_EVD | I_CHAOS | I_DVEIL \
+    | I_EV13 | I_PATH)  /* on-evade damage: Shado-Pan Faceguard, I0BM (2026-11-27: was missing) */
 #define INC_FOLD(r, a) do { (r)->regen += (a)[0]; (r)->regen_pct += (a)[1]; (r)->heal_power += (a)[2]; \
     (r)->lifesteal += (a)[3]; (r)->recv_mod += (a)[4]; (r)->own_extra += (a)[5]; (r)->ht_atk_pct += (a)[6]; \
     (r)->ht_atk_flat += (a)[7]; (r)->regen_hp += (a)[8]; (r)->heal_flat += (a)[9]; (r)->heal_flat_int += (a)[10]; \
