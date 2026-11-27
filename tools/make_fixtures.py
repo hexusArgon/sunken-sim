@@ -21,7 +21,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 CLASS = {"berserker": ("Berserker", "farm.hybrid.berserker_cl", "BerserkerCL"),
          "death_knight": ("DeathKnight", "farm.hybrid.death_knight_cl", "DeathKnightCL"),
-         "demon_hunter": ("DemonHunter", "farm.hybrid.demon_hunter_cl", "DemonHunterCL")}
+         "demon_hunter": ("DemonHunter", "farm.hybrid.demon_hunter_cl", "DemonHunterCL"),
+         "dragon_sentinel": ("DragonSentinel", "farm.hybrid.dragon_sentinel_cl", "DragonSentinelCL"),
+         "druid": ("Druid", "farm.hybrid.druid_cl", "DruidCL")}
 REFINE = 6  # HTML top builds per spec: Python finish_sextuple == GPU refine (talents, glyphs, ESC points)
 RANDOM = 400
 

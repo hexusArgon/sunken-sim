@@ -17,7 +17,9 @@ from pathlib import Path
 FIX = Path(__file__).resolve().parent / "fixtures"
 ENGINES = {"berserker": ("Berserker", "farm.hybrid.berserker_cl", "BerserkerCL"),
            "death_knight": ("DeathKnight", "farm.hybrid.death_knight_cl", "DeathKnightCL"),
-           "demon_hunter": ("DemonHunter", "farm.hybrid.demon_hunter_cl", "DemonHunterCL")}
+           "demon_hunter": ("DemonHunter", "farm.hybrid.demon_hunter_cl", "DemonHunterCL"),
+           "dragon_sentinel": ("DragonSentinel", "farm.hybrid.dragon_sentinel_cl", "DragonSentinelCL"),
+           "druid": ("Druid", "farm.hybrid.druid_cl", "DruidCL")}
 
 
 def replay(hero: str) -> list[str]:
@@ -107,6 +109,22 @@ class FixtureTest(unittest.TestCase):
 
     def test_demon_hunter(self) -> None:
         errors = replay("demon_hunter")
+        self.assertEqual(errors[:10], [], f"{len(errors)} mismatches")
+
+    def test_dragon_sentinel_refine(self) -> None:
+        errors = replay_refine("dragon_sentinel")
+        self.assertEqual(errors, [])
+
+    def test_dragon_sentinel(self) -> None:
+        errors = replay("dragon_sentinel")
+        self.assertEqual(errors[:10], [], f"{len(errors)} mismatches")
+
+    def test_druid_refine(self) -> None:
+        errors = replay_refine("druid")
+        self.assertEqual(errors, [])
+
+    def test_druid(self) -> None:
+        errors = replay("druid")
         self.assertEqual(errors[:10], [], f"{len(errors)} mismatches")
 
 

@@ -2,7 +2,7 @@
 
 Общие правила боя, предметов и кулдаунов — в `docs/guide.md`. Здесь друид карты Sunken City v2.5.2a. Формулы ниже сняты с триггеров.
 
-Этот файл и сим — только Druid (E009, интеллект), спеки Restoration и Balance. Feral Druid (O00R, ловкость) — отдельный класс, для него позже будет свой скрипт; здесь он не считается. Сим `sunken_sim/druid.py` считает ожидаемый урон за 30 секунд на ранге 1, 6 уровень, 5 целей, броня 15, без очков навыков. Однослотовый прогон: `python extract/one_slot_druid.py`, быстрая проверка: `python extract/one_slot_druid.py --smoke`.
+Этот файл и сим — только Druid (E009, интеллект), спеки Restoration и Balance. Feral Druid (O00R, ловкость) — отдельный класс, для него позже будет свой скрипт; здесь он не считается. Сим — точное float64 OpenCL-ядро `farm/hybrid/druid_cl.py` (Python-модель `sunken_sim/druid.py` удалена 2026-11-27; до удаления 1840 боёв и 12 доводок заморожены бит-в-бит в `farm/hybrid/fixtures/druid.json`, проверка — `python3.11 -m unittest farm.hybrid.test_fixtures`). Ожидаемый урон за 30 секунд, 5 целей, броня 15. Однослотовый прогон: `python3.11 tools/one_slot_gpu.py druid` (пишет `extract/druid-one-slot.json`).
 
 ## Лист
 
@@ -60,4 +60,4 @@ I0K5, I0K2, I0K3, I0P4, I08Q, I08S (лечение), I02F (только когд
 
 ## Вне этого сима: Feral Druid
 
-Feral Druid (O00R, спеки Primal / Guardian / Savage на A0MP) — отдельный класс со своим пулом вещей `FeralDruid` и своими талантами. В этом файле, в `sunken_sim/druid.py`, `extract/one_slot_druid.py` и на вкладке Druid он не участвует; для него будет отдельный скрипт.
+Feral Druid (O00R, спеки Primal / Guardian / Savage на A0MP) — отдельный класс со своим пулом вещей `FeralDruid` и своими талантами. В этом файле, в `farm/hybrid/druid_cl.py` и на вкладке Druid он не участвует; для него будет отдельный скрипт.

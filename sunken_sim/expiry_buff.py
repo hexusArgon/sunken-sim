@@ -1,7 +1,8 @@
 """Debuff as a distribution of expiry times (expected-value debuffs of the Ledger fight models).
 
 Moved from sunken_sim/death_knight.py when its Python fight model was removed (2026-11-27);
-used by sunken_sim.demon_hunter (Fallout) and sunken_sim.dragon_sentinel (Dragonfire, Dragon Claw).
+used by the removed sunken_sim.demon_hunter (Fallout) and sunken_sim.dragon_sentinel (Dragonfire, Dragon Claw);
+the GPU kernels mirror it.
 The OpenCL kernels mirror it entry by entry (bmass / bsure / bmaybe).
 """
 

@@ -31,8 +31,6 @@ STATUSES = (LOCKED, TIMELINE, COMPILE, GPU_TIMELINE, CPU)
 
 # hero name in jobs -> sunken_sim module
 MODULES = {
-    "dragon_sentinel": "dragon_sentinel",
-    "druid": "druid",
     "feral_druid": "feral_druid",
     "hunter": "hunter",
     "mage": "mage",
@@ -60,7 +58,6 @@ ROGUE_SPECS = ("subtlety", "combat")
 WARLOCK_SPECS = ("demonology", "destruction", "affliction")
 FERAL_DRUID_SPECS = ("primal", "guardian", "savage")
 BERSERKER_SPECS = ("headhunter", "poison", "fury")
-DRAGON_SENTINEL_SPECS = ("ruby", "obsidian", "emerald")
 MONK_SPECS = ("windwalker", "brewmaster", "mistweaver")
 NECROMANCER_SPECS = ("bone", "blood", "essence")
 SIREN_SPECS = ("sharpshooter", "watershaper", "seagrace")
@@ -75,11 +72,9 @@ GPU_TIMELINE_SPECS = frozenset(
     | {("mage", "fire"), ("mage", "frost"), ("mage", "arcane")}  # arcane: only when unlocked (lock.py)
     | {("priest", spec) for spec in PRIEST_SPECS}
     | {("rogue", spec) for spec in ROGUE_SPECS}
-    | {("druid", "restoration"), ("druid", "balance")}
     | {("hunter", "marksmanship"), ("hunter", "beast_mastery"), ("hunter", "survival")}
     | {("warlock", spec) for spec in WARLOCK_SPECS}
     | {("feral_druid", spec) for spec in FERAL_DRUID_SPECS}
-    | {("dragon_sentinel", spec) for spec in DRAGON_SENTINEL_SPECS}
     | {("monk", spec) for spec in MONK_SPECS}
     | {("necromancer", spec) for spec in NECROMANCER_SPECS}
     | {("siren", spec) for spec in SIREN_SPECS}
@@ -89,7 +84,6 @@ GPU_TIMELINE_SPECS = frozenset(
     | {("witch_doctor", spec) for spec in WITCH_DOCTOR_SPECS}
 )
 HUNTER_SPECS = ("marksmanship", "beast_mastery", "survival")
-DRUID_SPECS = ("restoration", "balance")
 COMPILE_SPECS = frozenset(
     # feral_druid moved to GPU_TIMELINE_SPECS
 )
@@ -97,7 +91,6 @@ COMPILE_SPECS = frozenset(
 # Ledger kind-score heroes (sunken_sim/ledger.py + farm/hybrid/kindscore.py):
 # hero -> (specs, engine class in farm/hybrid/<hero>.py)
 KIND_HEROES = {
-    "dragon_sentinel": (('ruby', 'obsidian', 'emerald'), "DragonSentinelFights"),
     "monk": (('windwalker', 'brewmaster', 'mistweaver'), "MonkFights"),
     "necromancer": (('bone', 'blood', 'essence'), "NecromancerFights"),
     "siren": (('sharpshooter', 'watershaper', 'seagrace'), "SirenFights"),
@@ -176,10 +169,6 @@ def make_engine(device, hero: str, spec: str, targets: int):
             from farm.hybrid.hunter import HunterFights
 
             return HunterFights(device, hero, spec, targets)
-        if hero == "druid":
-            from farm.hybrid.druid import DruidFights
-
-            return DruidFights(device, hero, spec, targets)
         if hero == "feral_druid":
             from farm.hybrid.feral_druid import FeralDruidFights
 

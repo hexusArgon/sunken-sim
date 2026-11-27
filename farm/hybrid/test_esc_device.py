@@ -20,7 +20,7 @@ try:
 except Exception:  # pragma: no cover
     torch = None
 
-CASES = (("dragon_sentinel", "ruby"), ("necromancer", "essence"), ("windmaster", "combat"))
+CASES = (("siren", "sharpshooter"), ("necromancer", "essence"), ("windmaster", "combat"))
 
 
 def _targets():
@@ -72,8 +72,8 @@ class DeviceProgramTests(unittest.TestCase):
                 self.assertLess(float(rel.max()), ed.ERR_LIMIT / 10, f"{hero}/{spec}/{target}")
 
     def test_cache_hit_bounds_invalidation_reset(self):
-        _m, _b, tr1 = _trace("dragon_sentinel", "ruby")
-        _m, _b, tr2 = _trace("dragon_sentinel", "ruby", points={"crit": 3})
+        _m, _b, tr1 = _trace("siren", "sharpshooter")
+        _m, _b, tr2 = _trace("siren", "sharpshooter", points={"crit": 3})
         self.assertNotEqual(tr1.token, tr2.token)  # new build -> new buffers, never stale weights
         c = ed.DeviceCache(max_entries=2)
         cpu = torch.device("cpu")
@@ -188,7 +188,7 @@ class DeviceGreedyTests(unittest.TestCase):
         ed.DeviceProgram.score = noisy
         try:
             router = ed.Router("gpu")
-            ref, got = self._run("dragon_sentinel", "ruby", 0, router, torch.device("cpu"))
+            ref, got = self._run("siren", "sharpshooter", 0, router, torch.device("cpu"))
         finally:
             ed.DeviceProgram.score = orig
         self.assertEqual(got[:2], ref)

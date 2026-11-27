@@ -1,6 +1,6 @@
 # Dragon Sentinel (O00P): модель для sunken-sim
 
-Карта Sunken City v2.5.2b. Код: `sunken_sim/dragon_sentinel.py`. Лист: `extract/one_slot_dragon_sentinel.py` → `extract/dragon_sentinel-one-slot.json`.
+Карта Sunken City v2.5.2b. Код — точное float64 OpenCL-ядро `farm/hybrid/dragon_sentinel_cl.py` (Python-модель `sunken_sim/dragon_sentinel.py` удалена 2026-11-27; до удаления 2760 боёв и 18 доводок заморожены бит-в-бит в `farm/hybrid/fixtures/dragon_sentinel.json`, проверка — `python3.11 -m unittest farm.hybrid.test_fixtures`). Лист: `python3.11 tools/one_slot_gpu.py dragon_sentinel` → `extract/dragon_sentinel-one-slot.json`.
 Все числа взяты из war3map.j и данных объектов. Аномалии описаны в `docs/dragon_sentinel-anomalies.md`.
 
 ## Лист

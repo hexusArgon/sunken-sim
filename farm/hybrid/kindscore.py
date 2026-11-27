@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """GPU kind/weight compile for the Ledger-based class sims (sunken_sim/ledger.py).
 
-Heroes: dragon_sentinel, monk, necromancer,
+Heroes: monk, necromancer,
 siren, tidewarrior, tinker, windmaster, witch_doctor. Per-hero files in
 farm/hybrid/<hero>.py only name the module.
 

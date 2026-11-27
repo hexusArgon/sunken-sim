@@ -20,7 +20,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from sunken_sim.druid import TALENTS
+from farm.hybrid.druid_cl import TALENT_NAMES as TALENTS
 from sunken_sim.library import load_items
 
 SPEC_TITLES = ("Restoration", "Balance")
@@ -51,7 +51,7 @@ def _best(row: list, start: int) -> float:
 def tables() -> dict:
     saved = json.loads((ROOT / "extract" / "druid-one-slot.json").read_text(encoding="utf-8"))
     if saved.get("specs") != list(SPEC_TITLES):
-        raise SystemExit("druid-one-slot.json is not the Druid-only 2-spec run; rerun extract/one_slot_druid.py")
+        raise SystemExit("druid-one-slot.json is not the Druid-only 2-spec run; rerun tools/one_slot_gpu.py druid")
     by_code = {item.rawcode: item for item in load_items()}
 
     items = []

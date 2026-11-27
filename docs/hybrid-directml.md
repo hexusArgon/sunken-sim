@@ -193,7 +193,7 @@ Parity smoke 2026-11-05: GPU vs CPU abs/rel ≤ 1e-4.
 2026-11-06: cut_cds no longer shortens Call Pet (CPU cut_cooldowns skips it). That extra CDR made Survival ESC mastery vs pet_damage shift Multi-Shot and sting ticks; GPU then preferred mastery=1/pet_damage=9 (743.608) over CPU's damage=20/pet_damage=10 (745.756). After the fix both maps match CPU exactly. Regression: arm/hybrid/test_hunter_gpu_timeline.py.
 
 ## Druid Restoration / Balance
-Код: `farm/hybrid/druid.py` + `druid_gpu_timeline.py` + `sunken_sim/druid.py`.
+Код (удалён 2026-11-27, Druid теперь только на `farm/hybrid/druid_cl.py`): `farm/hybrid/druid.py` + `druid_gpu_timeline.py` + `sunken_sim/druid.py`.
 Status: **gpu-timeline** (pending heap -> slots ordered (time, push order); wisps/starfalls
 as expiring slot tables; f64 clocks on CPU, kind-score on DirectML). Rows = build x bound key.
 Opt out: `FARM_HYBRID_GPU_TIMELINE=0`.

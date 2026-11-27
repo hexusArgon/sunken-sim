@@ -46,7 +46,7 @@ from sunken_sim.library import load_items  # noqa: E402
 from sunken_sim.shadow import FIGHT, LEVEL, MIND_AMPLIFIER, Build  # noqa: E402
 
 # Classes whose Python fight model was removed: reports come from the exact kernel's report mode.
-GPU_ONLY = frozenset({"berserker", "death_knight", "demon_hunter"})
+GPU_ONLY = frozenset({"berserker", "death_knight", "demon_hunter", "dragon_sentinel", "druid"})
 MOD = importlib.import_module(f"farm.hybrid.{HERO}_cl" if HERO in GPU_ONLY else f"sunken_sim.{HERO}")
 
 
@@ -106,7 +106,7 @@ def fresh_sim(build):
         if engine is None:
             raise SystemExit(f"{HERO}: no Python model, the report needs an OpenCL float64 device")
         rep = engine.report([it.rawcode for it in build.items], build.talents, build.glyphs, points_from_build(build))
-        return SimpleNamespace(orb_mode=None, bound_spell=None, **rep)
+        return SimpleNamespace(**{"orb_mode": None, "bound_spell": None, **rep})
     if not hasattr(MOD, "_TIMELINE"):  # berserker: no fight cache
         return MOD.simulate(build, TARGETS, SPEC)
     old = MOD._TIMELINE

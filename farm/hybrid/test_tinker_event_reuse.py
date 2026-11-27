@@ -237,14 +237,6 @@ class HybridPolicyTests(unittest.TestCase):
 
 
 class DeferredEligibilityTests(unittest.TestCase):
-    def test_dragon_sentinel_gift_of_life_changes_cadence(self):
-        from sunken_sim import dragon_sentinel as ds
-        b=Build(frozenset({ds.TALENT_GIFT_OF_LIFE,ds.TALENT_BURNING_HEART}),frozenset(),(),0,0)
-        a=ds._simulate(b,5,"emerald",(True,False))
-        c=ds._simulate(replace(b,potency_points=20),5,"emerald",(True,False))
-        self.assertNotEqual(a.stats["n_life_ticks"],c.stats["n_life_ticks"])
-        self.assertNotEqual([(e[0],e[1]) for e in a.events],[(e[0],e[1]) for e in c.events])
-
     def test_necromancer_call_of_grave_changes_cadence(self):
         from sunken_sim import necromancer as n
         b=Build(frozenset({n.TALENT_CALL_OF_THE_GRAVE}),frozenset(),(),0,0)

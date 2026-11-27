@@ -176,7 +176,7 @@ class RealHeroTests(unittest.TestCase):
         from farm.hybrid.stat_kernel import greedy_points_batched, structural_skip_attrs
         from farm.hybrid.test_stat_kernel_greedy import _catalog_build, cpu_dps_many
 
-        for hero, spec in (("dragon_sentinel", "ruby"), ("necromancer", "essence"), ("windmaster", "combat")):
+        for hero, spec in (("siren", "sharpshooter"), ("necromancer", "essence"), ("windmaster", "combat")):
             build = _catalog_build(hero, spec, 0)
             many = cpu_dps_many(hero, spec)
             ref = greedy_points_batched(many, build, hero=hero)
@@ -191,15 +191,15 @@ class RealHeroTests(unittest.TestCase):
             raise unittest.SkipTest("torch not installed")
         from farm.hybrid.kindscore import compile_sums, pack
         from farm.hybrid.test_stat_kernel_greedy import _catalog_build
-        from sunken_sim import dragon_sentinel as mod
+        from sunken_sim import windmaster as mod
         from sunken_sim.shadow import FIGHT
 
-        b = _catalog_build("dragon_sentinel", "ruby", 0)
-        tr = A.trace_current(mod, b, 5, "headhunter", {"crit", "potency", "luck"})
+        b = _catalog_build("windmaster", "combat", 0)
+        tr = A.trace_current(mod, b, 5, "combat", {"crit", "potency", "luck"})
         self.assertTrue(tr.ok, tr.note)
         W = A.event_weights(tr, tr.program.val[:, None])
         got = A.score_engine(tr, W, torch, torch.device("cpu"))[0]
-        r = mod.simulate(b, 5, "headhunter")
+        r = mod.simulate(b, 5, "combat")
         ref = float(compile_sums(torch, torch.device("cpu"), pack([(r.events, r.stats)]))[0].sum()) / FIGHT
         self.assertEqual(got, ref)
 

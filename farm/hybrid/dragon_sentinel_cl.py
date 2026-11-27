@@ -1,20 +1,19 @@
-"""Exact float64 OpenCL kernel for Dragon Sentinel fights (Ruby, Obsidian, Emerald).
+"""Exact float64 OpenCL kernel for Dragon Sentinel fights (Ruby, Obsidian, Emerald). GPU only.
 
-One work-item scores one fight: unrank the six items, fold the sheet like
-``sunken_sim.dragon_sentinel.stats_of`` (strength primary, item armour and
-"+N Attack Damage", Dragonborn, Blazing Strikes) and run every policy of
-``dragon_sentinel.simulate`` (Lifebinder on / off when allowed, Dragon Form used), keeping
-the best, with Ledger sums in insertion order. Dragonfire and Dragon Claw are
-distributions of expiry times per target (``expiry_buff._Buff``), Obsidian Branded
-is ``dragon_sentinel._Brand``; every chance is a weight, mirrored entry by entry.
+One work-item scores one fight: unrank the six items (or take explicit pieces), fold the sheet
+(strength primary, item armour and "+N Attack Damage", Dragonborn, Blazing Strikes) and run every
+policy (Lifebinder on / off when allowed, Dragon Form used), keeping the best, with Ledger sums in
+insertion order. Dragonfire and Dragon Claw are distributions of expiry times per target, Obsidian
+Branded a short list of (expiry, share, value); every chance is a weight.
 
-``dragon_sentinel.simulate`` has no timeline cache, so every row is its own fight.
-Rows the kernel cannot score (more than 5 targets, negative armour, event queue
-overflow) return a non-zero status and are re-scored by the Python oracle.
-Host side: farm.hybrid.class_cl.
+The Python model (sunken_sim.dragon_sentinel) was removed on 2026-11-27 after bit-exact parity:
+farm/hybrid/fixtures/dragon_sentinel.json holds the frozen fights, report mode (-DREPORT=1) gives
+sources in Ledger order, casts, mana left and the stat sheet. Host side: farm.hybrid.class_cl.
 """
 
 from __future__ import annotations
+
+import re
 
 import numpy as np
 
@@ -37,6 +36,10 @@ KERNEL = r"""
 #define SP_RUBY (SPEC == 0)
 #define SP_OBS (SPEC == 1)
 #define SP_EMER (SPEC == 2)
+/* REPORT 1: the report kernel also keeps the final fight state (sources in Ledger order, casts, mana) */
+#ifndef REPORT
+#define REPORT 0
+#endif
 
 #define FIGHT 30.0
 #define CAST_POINT 0.15
@@ -47,14 +50,11 @@ KERNEL = r"""
 #define NP 11
 #define NPAL 16
 #define NSRC 16
-#define MAXT 5  /* the farm runs 5 targets; more -> status 3, the host re-scores the row */
+#define MAXT 8
+#define MAXA 160
 #define BS 8
-/* largest queue seen on 6000 random fights per spec: Ruby 11, Obsidian 10, Emerald 4; overflow -> status 5 */
-#if SPEC == 2
-#define MAXQ 8
-#else
-#define MAXQ 16
-#endif
+/* largest queue seen on 6000 random fights per spec: Ruby 11, Obsidian 10, Emerald 4 (5 targets); overflow -> status 5 */
+#define MAXQ 32
 #define BK 3
 #define RANK 1.0
 #define FAR 300.0
@@ -175,7 +175,20 @@ typedef struct {
   double trig0, trig2, trig3, max_life, strength;
   int life_ticking, heated, bolt_target, armed, status, targets;
   AP ap;
+#if REPORT
+  double act_t[MAXA]; int act_id[MAXA]; int nact;
+#endif
 } St;
+
+/* actions (dragon_sentinel.simulate names): host ACTION_NAMES, ids = K_* order keys */
+void act(St* s, double now, int id) {
+#if REPORT
+  if (s->nact < MAXA) { s->act_t[s->nact] = now; s->act_id[s->nact] = id; }
+  s->nact++;
+#else
+  (void)s; (void)now; (void)id;
+#endif
+}
 
 double target_hp(double t) {
   double v = 1.0 - t / FIGHT;
@@ -211,7 +224,7 @@ void add_src(St* s, int id, double amount) {
 
 double armor_mult(St* s, double armor) {
   if (armor > 0.0) return 1.0 - (armor * 0.04) / (1.0 + 0.04 * armor);
-  if (armor < 0.0) { if (!s->status) s->status = 4; return 1.0; }
+  if (armor < 0.0) return 2.0 - pow(1.0 - 0.04, -armor);  /* shadow.armor_taken */
   return 1.0;
 }
 
@@ -362,9 +375,8 @@ double typed(const Row* r, int kind, double now) {
 
 double dcs(const Row* r, const St* s) { return 14.0 + 0.75 * s->strength + r->damage; }
 
-/* armor_taken(15 - pen - v) for Branded values v = 0..6, filled once per fight; negative armour -> status 4 when used */
+/* armor_taken(15 - pen - v) for Branded values v = 0..6, filled once per fight */
 double am_of(St* s, int v) {
-  if (s->am_neg[v] && !s->status) s->status = 4;
   return s->am[v];
 }
 
@@ -567,16 +579,23 @@ double attack_interval(const Row* r, const St* s, double now) {
   return swing / (1.0 + speed);
 }
 
+#if REPORT
+double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int* forms_out, St* keep) {
+#else
 double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int* forms_out) {
+#endif
   St s;
-  if (r->targets > MAXT) { *status_out = 3; return 0.0; }
+#if REPORT
+  s.nact = 0;
+#endif
+  if (r->targets > MAXT || r->targets < 1) { *status_out = 3; return 0.0; }
   s.targets = r->targets; s.status = 0; s.armed = 0;
   s.nord = 1; s.seen = 1u; s.ord[0] = N_AUTO; s.src[N_AUTO] = 0.0;
   s.strength = (double)(int)r->str;
   for (int v = 0; v <= 6; v++) {
     double armor = 15.0 - r->armor_pen - (double)v;
     s.am_neg[v] = armor < 0.0;
-    s.am[v] = (armor > 0.0) ? 1.0 - (armor * 0.04) / (1.0 + 0.04 * armor) : 1.0;
+    s.am[v] = armor_mult(&s, armor);
   }
   s.max_life = r->hp;
   s.mana = r->mana_max; s.mana_time = 0.0;
@@ -688,6 +707,7 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
       int key = choice;
       double cost = (key == K_FORM) ? 0.0 : (key == K_BURN || key == K_CLEANSE) ? 20.0 : (key == K_STRIKE || key == K_LIFE) ? 15.0 : 10.0;
       if (!pay(r, &s, cost, moment)) { s.nxt[key] = moment + 0.25; continue; }
+      act(&s, moment, key);
       double hit_at = moment + CAST_POINT;
       busy = moment + (CAST_POINT + CAST_BACKSWING) + r->cast_lock;
       if (r->mask & S_SULF) s.armed = 1;
@@ -788,11 +808,20 @@ double sim_policy(const Row* r, int use_life, int use_form, int* status_out, int
   if (s.status) { *status_out = s.status; return 0.0; }
   double total = 0.0;
   for (int i = 0; i < s.nord; i++) total += s.src[s.ord[i]];
+#if REPORT
+  recover(r, &s, FIGHT);
+  *keep = s;
+#endif
   return total / FIGHT;
 }
 
 /* dragon_sentinel.simulate: best of the two (Lifebinder on / off, Dragon Form) policies */
+#if REPORT
+double fight(const Row* r, int* status_out, St* keep) {
+  St tmp;
+#else
 double fight(const Row* r, int* status_out) {
+#endif
   double best = 0.0;
   int have = 0;
   /* dragon_sentinel.policies_for: (Lifebinder, Dragon Form) only with Burning Heart, Alexstrasza or Emerald,
@@ -800,9 +829,18 @@ double fight(const Row* r, int* status_out) {
   int life_ok = SP_EMER || TM(r, T_BHEART) || TM(r, T_ALEX);
   for (int i = life_ok ? 0 : 1; i < 2; i++) {
     int st = 0, forms = 0;
+#if REPORT
+    double d = sim_policy(r, i == 0, 1, &st, &forms, &tmp);
+#else
     double d = sim_policy(r, i == 0, 1, &st, &forms);
+#endif
     if (st) { *status_out = st; return 0.0; }
-    if (!have || d > best + 1e-9) { best = d; have = 1; }
+    if (!have || d > best + 1e-9) {
+      best = d; have = 1;
+#if REPORT
+      *keep = tmp;
+#endif
+    }
   }
   return best;
 }
@@ -874,6 +912,7 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   int n_core = 0, n_sulg = 0, has_shop = 0, has_drop = 0, nexec = 0;
   for (int si = 0; si < 6; si++) {
     int p = chosen[si];
+    if (p < 0) { first[si] = 0; continue; }
     int f1 = 1;
     for (int j = 0; j < si; j++) if (chosen[j] == p) { f1 = 0; break; }
     first[si] = f1;
@@ -982,6 +1021,7 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   r->glass = (GM(r, G_GLASS) || (mask & S_GLAS)) ? 1 : 0;
 }
 
+#if !REPORT
 double row_value(Tab* T, long index, uint tmask, uint gmask, const int* pts, int targets, int* status, int* group) {
   int chosen[6];
   if (unrank(T, index, chosen)) { *status = 1; *group = 0; return 0.0; }
@@ -989,6 +1029,7 @@ double row_value(Tab* T, long index, uint tmask, uint gmask, const int* pts, int
   sheet(T, &r, chosen, tmask, gmask, pts, targets, group);
   return fight(&r, status);
 }
+#endif
 
 #define TAB_ARGS \
     __global const long* dp0, __global const long* dp1, const long count_without, const long total, \
@@ -1001,6 +1042,7 @@ double row_value(Tab* T, long index, uint tmask, uint gmask, const int* pts, int
   T.npieces = npieces; T.pkind = pkind; T.pamp = pamp; T.fold = fold; T.uniq = uniq; T.pmask = pmask; T.psrc = psrc; \
   T.pal = pal; T.base = base;
 
+#if !REPORT
 __kernel void cls_bare(const long start, const int n, const int targets, TAB_ARGS,
     __global double* out_dps, __global uchar* out_group, __global uchar* out_status)
 {
@@ -1027,6 +1069,82 @@ __kernel void cls_rows(const int n, const int targets, __global const long* chun
   double d = row_value(&T, chunks[gid], tmasks[gid], gmasks[gid], pts, targets, &status, &group);
   out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status;
 }
+#endif
+
+/* Explicit pieces (-1 = empty slot): the one-slot screen and any build outside the pool's 6-item ranks. */
+int picks_ok(Tab* T, __global const int* picks, long gid, int* chosen) {
+  for (int j = 0; j < 6; j++) {
+    int p = picks[gid * 6 + j];
+    if (p >= T->npieces) return 0;
+    chosen[j] = (p < 0) ? -1 : p;
+  }
+  return 1;
+}
+
+#if !REPORT
+__kernel void cls_pick(const int n, const int targets, __global const int* picks, __global const uint* tmasks,
+    __global const uint* gmasks, __global const int* points, TAB_ARGS,
+    __global double* out_dps, __global uchar* out_group, __global uchar* out_status)
+{
+  int gid = get_global_id(0);
+  if (gid >= n) return;
+  TAB_INIT
+  int pts[NP];
+  for (int j = 0; j < NP; j++) pts[j] = points[(long)gid * NP + j];
+  int status = 0, group = 0, chosen[6];
+  double d = 0.0;
+  if (!picks_ok(&T, picks, gid, chosen)) status = 1;
+  else {
+    Row r;
+    sheet(&T, &r, chosen, tmasks[gid], gmasks[gid], pts, targets, &group);
+    d = fight(&r, &status);
+  }
+  out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status;
+}
+#else
+#define NSTAT 22
+__kernel void cls_report(const int n, const int targets, __global const int* picks, __global const uint* tmasks,
+    __global const uint* gmasks, __global const int* points, TAB_ARGS,
+    __global double* out_dps, __global uchar* out_group, __global uchar* out_status,
+    __global double* out_src, __global int* out_ord, __global int* out_nord, __global double* out_mana,
+    __global double* out_act_t, __global int* out_act_id, __global int* out_nact, __global double* out_stats)
+{
+  int gid = get_global_id(0);
+  if (gid >= n) return;
+  TAB_INIT
+  int pts[NP];
+  for (int j = 0; j < NP; j++) pts[j] = points[(long)gid * NP + j];
+  int status = 0, group = 0, chosen[6];
+  double d = 0.0;
+  St keep;
+  keep.nord = 0; keep.nact = 0; keep.mana = 0.0;
+  Row r;
+  if (!picks_ok(&T, picks, gid, chosen)) status = 1;
+  else {
+    sheet(&T, &r, chosen, tmasks[gid], gmasks[gid], pts, targets, &group);
+    d = fight(&r, &status, &keep);
+  }
+  out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status;
+  out_nord[gid] = keep.nord;
+  for (int i = 0; i < NSRC; i++) {
+    out_ord[(long)gid * NSRC + i] = (i < keep.nord) ? keep.ord[i] : -1;
+    out_src[(long)gid * NSRC + i] = (i < keep.nord) ? keep.src[keep.ord[i]] : 0.0;
+  }
+  out_mana[gid] = (status == 0 && r.mana_max > 0.0) ? 100.0 * keep.mana / r.mana_max : 0.0;
+  out_nact[gid] = keep.nact;
+  for (int i = 0; i < MAXA; i++) {
+    out_act_t[(long)gid * MAXA + i] = (i < keep.nact) ? keep.act_t[i] : 0.0;
+    out_act_id[(long)gid * MAXA + i] = (i < keep.nact) ? keep.act_id[i] : -1;
+  }
+  __global double* o = out_stats + (long)gid * NSTAT;
+  if (status == 0) {
+    o[0] = r.str; o[1] = r.agi; o[2] = r.intel; o[3] = r.damage; o[4] = r.potency; o[5] = r.mastery; o[6] = r.crit;
+    o[7] = r.rating; o[8] = r.haste; o[9] = r.aspd; o[10] = r.luck; o[11] = r.magic_add; o[12] = r.phys_add;
+    o[13] = r.hp; o[14] = r.armor; o[15] = r.mana_max; o[16] = r.mana_regen; o[17] = (r.mask & S_GALA) ? 1.0 : 0.0;
+    o[18] = r.cd_temp; o[19] = r.flat_cdr; o[20] = r.armor_pen; o[21] = r.spell_crit ? 1.0 : 0.0;
+  }
+}
+#endif
 """
 KERNEL = KERNEL.replace("#pragma OPENCL FP_CONTRACT OFF\n", "#pragma OPENCL FP_CONTRACT OFF\n" + AP.C, 1)
 
@@ -1045,29 +1163,49 @@ GLYPH_BITS = {"I0AV": 0, "I0JA": 1, "I07B": 2, "I0EK": 3, "I0HC": 4, "I0OF": 5, 
 NO_EFFECT = {"I0H3", "I0H5", "I0H6", "I0EN", "I0OH"}
 SPECS = {"ruby": 0, "obsidian": 1, "emerald": 2}
 
+# Level-15 Dragon Sentinel (map 2.5.2c), moved from the removed sunken_sim.dragon_sentinel model
+LEVEL = 15
+WHITE_STR = int(27 + (LEVEL - 1) * 2.7)  # O00P ustr/ustp
+WHITE_AGI = int(9 + (LEVEL - 1) * 0.9)  # uagi/uagp
+WHITE_INT = int(14 + (LEVEL - 1) * 1.4)  # uint/uinp
+BASE_STR = WHITE_STR + 4  # A0F6 L1 Istr
+BASE_AGI = WHITE_AGI
+BASE_INT = WHITE_INT + 4  # A0F6 L1 Iint
+BASE_HP = 300.0
+WHITE_BASE = 14.0  # DCS BaseDamage 13 + 1
+SWING = 2.00  # O00P ua1c
+HERO_CLASS = "DragonSentinel"
+TALENT_NAMES = {
+    "I0JE": "Ysera's Gift", "I0MF": "Pacify", "I0QJ": "Worldbreaker", "I0LV": "Dragonborn", "I0LU": "Earthen Crust",
+    "I0JF": "Draconic Scales", "I0HQ": "Backfire", "I0QH": "Gift of Life", "I0B0": "Melting Flames",
+    "I0TG": "Heated Shield", "I0QI": "Engulfing Flames", "I0LT": "Alexstrasza's Gift", "I0LW": "Burning Heart",
+    "I0QK": "Waking Dragon", "I0QL": "Explosive Impact", "I0TE": "Legacy of the Aspects", "I0TF": "Blazing Strikes",
+    "I0MQ": "Lifeblossom",
+}
+IGNORED_TALENTS = frozenset({"I0JE", "I0MF", "I0HQ", "I0MQ", "I0MD", "I0MC"})
+IGNORED_REASONS = {
+    "I0JE": "лечение самого раненого союзного героя (только если его HP < 100%, сам DS исключён)",
+    "I0MF": "контроль (CC), урона нет",
+    "I0HQ": "урон только когда враг под Dragonfire атакует — пустышка не атакует",
+    "I0MQ": "лечение / раздача Lifebinder союзникам, урона нет",
+    "I0MD": "страница талантов (UI)",
+    "I0MC": "страница талантов (UI)",
+}
+ATTACK_DAMAGE_RE = re.compile(r"(?m)^\+(\d+) Attack Damage\b")
+
 
 def dragon_sentinel_tables(space, items, sources) -> dict:
     """class_cl.character_tables with the strength primary fold and the Dragon Sentinel per-piece columns."""
     import re
 
-    from sunken_sim import expiry_buff, dragon_sentinel as D, pressure, shadow
+    from sunken_sim import expiry_buff, pressure, shadow
     from sunken_sim.stacking import stack_fields
 
-    if (D.WHITE_BASE, D.SWING, D.BASE_MANA, D.BASE_HP, D.BASE_ARMOR, pressure.AGI_ARMOR, D.OBSIDIAN_FORM_ARMOR,
-            D.SCALES_ARMOR, D.RANK, D.BURNOUT_CD, D.BURNOUT_MANA, D.BURNOUT_FORM_CDR, D.BURNOUT_DELAY, D.STRIKE_CD,
-            D.STRIKE_MANA, D.SHIELD_CD, D.SHIELD_MANA, D.LIFE_CD, D.LIFE_MANA, D.LIFE_DUR, D.CLEANSE_CD,
-            D.CLEANSE_MANA, D.CLEANSE_DUR, D.FORM_CD, D.FORM_DUR, D.DRAGONFIRE_DUR, D.BRANDED_DUR, D.BRANDED_CAP,
-            D.MOLTEN_DUR, D.MOLTEN_ARMOR, D.BOLT_EVERY, D.BOLT_DAMAGE, D.ENGULF_PERIOD, D.LEGACY, D.LEGACY_CDR,
-            D.BRAND_SLOTS, D.POLICIES, D.TALENT_BURNING_HEART, D.TALENT_ALEXSTRASZA) != \
-            (14.0, 2.00, 120.0, 300.0, 4.0, 0.1, 8.0, 3.0, 1, 8.0, 20.0, 2.0, 0.5, 7.0, 15.0, 8.0, 10.0, 7.0, 15.0,
-             6.0, 8.0, 20.0, 4.0, 3.0, 12.0, 5.0, 3.0, 6, 5.0, 2.0, 0.5, 25.0, 1.5, 1.15, 0.75, 3,
-             ((True, True), (False, True)), "I0LW", "I0LT"):
-        raise ValueError("kernel constants assume the 2026-11-13 dragon sentinel")
     if (shadow.CAST_POINT, shadow.CAST_BACKSWING, pressure.STR_HP, expiry_buff.BUFF_SLOTS) != (0.15, 0.30, 15.0, 8):
         raise ValueError("kernel constants assume cast 0.15 + 0.30, 15 health per strength and 8 buff slots")
     AP.check()
     t = C.character_tables(space, items, sources, SPECIAL_BITS, TALENT_BITS, GLYPH_BITS, NO_EFFECT,
-                           [float(D.BASE_INT), float(D.BASE_STR), float(D.BASE_AGI), float(D.BASE_HP)],
+                           [float(BASE_INT), float(BASE_STR), float(BASE_AGI), float(BASE_HP)],
                            "Dragon Sentinel")
     pieces = space.pieces
     n = len(pieces)
@@ -1085,7 +1223,7 @@ def dragon_sentinel_tables(space, items, sources) -> dict:
                 prim = bonus.get("primary", 0)
             fold[i, state, 6] = prim
             fold[i, state, 13] = cv(code, "haste", item.haste, first) / 100
-        attack_damage = float(sum(int(v) for v in D.ATTACK_DAMAGE_RE.findall(item.tip)))
+        attack_damage = float(sum(int(v) for v in ATTACK_DAMAGE_RE.findall(item.tip)))
         lucks = [shadow.item_luck(item)]
         health = [float(int(raw)) for raw in re.findall(r"\+(\d+) Health\b", item.tip)]
         pal[i] = [
@@ -1107,26 +1245,36 @@ def dragon_sentinel_tables(space, items, sources) -> dict:
 
 class DragonSentinelCL(C.ExactCL):
     hero = "dragon_sentinel"
+    PYTHON = False  # sunken_sim.dragon_sentinel fight model removed 2026-11-27: fixtures + report mode
     KERNEL = KERNEL
     SPECS = SPECS
     TALENT_BITS = TALENT_BITS
     GLYPH_BITS = GLYPH_BITS
     NO_EFFECT = NO_EFFECT
     KEY_FREE = ()  # no timeline cache: every ESC trial is its own fight
+    SOURCE_NAMES = ("Автоатака", "Burnout", "Burnout (пассив)", "Burnout (крит, Blazing Strikes)", "Dragon Strike",
+                    "Dragon Strike (Drake Sword)", "Blazing Shield", "Blazing Shield (Explosive Impact)",
+                    "Engulfing Flames", "Cleansing Fire", "Cleansing Fire (от лечения)", "Burning Heart",
+                    "Ruby Dragon Form (огненные снаряды)", "Всплеск огня", "Sulfuras", "Sulfuras (удар)")
+    ACTION_NAMES = ("Dragon Form", "Lifebinder", "Burnout", "Cleansing Fire", "Dragon Strike", "Blazing Shield")
+    STAT_KEYS = ("str", "agi", "int", "damage", "potency", "mastery", "crit", "rating", "haste", "attack_speed", "luck",
+                 "magic_add", "phys_add", "hp", "armor", "mana_max", "mana_regen", "galactic", "cd_temp", "flat_cdr",
+                 "armor_pen", "spell_crit")
+    BOOL_STATS = ()  # dragon_sentinel.stats_of keeps 1.0 / 0.0
+    NSRC, MAXA = 16, 160
     TABLE_KEYS = ("dp0", "dp1", "count_without", "total", "npieces", "pkind", "pamp", "fold", "uniq", "pmask", "psrc",
                   "pal", "base")
     SCALARS = {"count_without": np.int64, "total": np.int64, "npieces": np.int32}
 
     @staticmethod
     def module():
-        from sunken_sim import dragon_sentinel
-
-        return dragon_sentinel
+        raise RuntimeError("dragon_sentinel: the Python fight model was removed (2026-11-27)")
 
     def tables(self, space, items, sources):
         return dragon_sentinel_tables(space, items, sources)
 
     def timeline_key(self, build):
+        # dragon_sentinel.simulate had no fight cache: every trial is scored on its own points
         from dataclasses import fields
 
         return tuple((f.name, getattr(build, f.name)) for f in fields(build) if f.name.endswith("_points"))

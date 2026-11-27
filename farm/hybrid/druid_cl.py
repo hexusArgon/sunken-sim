@@ -1,15 +1,15 @@
-"""Exact float64 OpenCL kernel for Druid fights (Restoration, Balance).
+"""Exact float64 OpenCL kernel for Druid fights (Restoration, Balance). GPU only.
 
-The Druid (E009, intellect caster, ``sunken_sim.druid``) only. The Feral Druid
-(``sunken_sim.feral_druid``, O00R) is a separate class and is not modelled here.
+The Druid (E009, intellect caster) only. The Feral Druid (O00R) is a separate class
+(farm.hybrid.feral_druid_cl) and is not modelled here.
 
-One work-item scores one fight: unrank the six items, fold the sheet like
-``sunken_sim.druid.sheet`` (``shadow.character`` with the druid bases, white 11,
-no baked buffs, 2.0 s swing, Druidism potency), run the event loop of
-``druid._simulate_druid`` (every Diamond Ring binding; heap of (time, order))
-and score every event as ``druid.score_events`` the moment it is emitted.
-Host side: farm.hybrid.class_cl; the sheet, unrank and kernels are shared with
-farm.hybrid.shaman_cl.
+One work-item scores one fight: unrank the six items (or take explicit pieces), fold the sheet
+(``shadow.character`` with the druid bases, white 11, no baked buffs, 2.0 s swing, Druidism potency),
+run the event loop (every Diamond Ring binding, first wins ties; heap of (time, order)) and score every
+event the moment it is emitted. The Python model (sunken_sim.druid) was removed on 2026-11-27 after
+bit-exact parity: farm/hybrid/fixtures/druid.json holds the frozen fights, report mode (-DREPORT=1)
+gives sources, casts, mana left, the binding and the stat sheet. Host side: farm.hybrid.class_cl; the
+sheet, unrank and kernels are shared with farm.hybrid.shaman_cl.
 """
 
 from __future__ import annotations
@@ -34,7 +34,11 @@ _SHEET = (_SHEET.replace("damage = 13.0 + 0.75 * intel + damage;", "damage = 11.
                    "r->attack_base = 2.0 * ((mask & S_GALA) ? 1.20 : 1.0);")
           .replace("/* shaman.sheet(build): shadow.character(bases, white 13, bake_timed_buffs=False), 1.85 s swing */",
                    "/* druid.sheet(build): shadow.character(bases, white 11, bake_timed_buffs=False), 2.0 s swing */"))
-assert "11.0 + 0.75 * intel" in _SHEET and "2.0 * ((mask & S_GALA)" in _SHEET
+_SHEET = _SHEET.replace("""    int p = chosen[si];
+    int f1 = 1;""", """    int p = chosen[si];
+    if (p < 0) { first[si] = 0; continue; }  /* explicit pieces: empty slot */
+    int f1 = 1;""")
+assert "11.0 + 0.75 * intel" in _SHEET and "2.0 * ((mask & S_GALA)" in _SHEET and "empty slot" in _SHEET
 _KERNELS = _cut(_S.KERNEL, "#define TAB_ARGS", "SENTINEL") if "SENTINEL" in _S.KERNEL else _S.KERNEL[_S.KERNEL.index("#define TAB_ARGS"):]
 
 KERNEL = r"""
@@ -49,6 +53,11 @@ KERNEL = r"""
 #define SPEC 0
 #endif
 #define SP_BAL (SPEC == 1)
+/* REPORT 1: the report kernel also keeps the final fight state (sources in Ledger order, casts, mana) */
+#ifndef REPORT
+#define REPORT 0
+#endif
+#define MAXA 160
 
 #define FIGHT 30.0
 #define CAST_POINT 0.15
@@ -151,7 +160,20 @@ typedef struct {
   int qn, nf, nw, status, bound, targets, armed;
   double surge, wisp_life;
   AP ap;
+#if REPORT
+  double act_t[MAXA]; int act_id[MAXA]; int nact;
+#endif
 } St;
+
+/* actions: druid.BOUND_NAME of the cast button (host ACTION_NAMES, ids = B_*) */
+void act(St* s, double now, int id) {
+#if REPORT
+  if (s->nact < MAXA) { s->act_t[s->nact] = now; s->act_id[s->nact] = id; }
+  s->nact++;
+#else
+  (void)s; (void)now; (void)id;
+#endif
+}
 
 inline double target_hp(double t) {
   double v = 1.0 - t / FIGHT;
@@ -167,7 +189,7 @@ inline double crit_factor(double chance, double mult) {
 
 inline double armor_taken(double armor, int* status) {
   if (armor > 0.0) return 1.0 - (armor * 0.04) / (1.0 + 0.04 * armor);
-  if (armor < 0.0) { *status = 4; return 1.0; }
+  if (armor < 0.0) return 2.0 - pow(1.0 - 0.04, -armor);  /* shadow.armor_taken */
   return 1.0;
 }
 
@@ -461,8 +483,15 @@ void on_attack(St* s, const Row* tl, const Row* sc, Sco* q, double now) {
 }
 
 /* druid._simulate_druid(build, targets, spec, bound) on the timeline sheet, scored on the scored sheet */
+#if REPORT
+double fight(const Row* tl, const Row* sc, int bound, int* status_out, St* keep_s, Sco* keep_q) {
+#else
 double fight(const Row* tl, const Row* sc, int bound, int* status_out) {
+#endif
   St s; Sco q;
+#if REPORT
+  s.nact = 0;
+#endif
   int st = 0;
   q.taken_plain = armor_taken(15.0 - sc->armor_pen, &st);
   q.taken_wisp = armor_taken(15.0 - sc->armor_pen - 3.0, &st);
@@ -490,6 +519,7 @@ double fight(const Row* tl, const Row* sc, int bound, int* status_out) {
       int spell = choose(&s, hero_ready);
       if (spell >= 0) {
         if (!pay(&s, tl, cast_cost(spell), hero_ready)) { s.ready[spell] = hero_ready + 0.25; continue; }
+        act(&s, hero_ready, spell);
         s.ready[spell] = hero_ready + cast_cd(&s, tl, spell);
         if (tl->mask & S_SULF) s.armed = 1;
         push(&s, hero_ready + CAST_POINT, K_CAST, 0.0, spell);
@@ -555,10 +585,15 @@ double fight(const Row* tl, const Row* sc, int bound, int* status_out) {
   if (s.status) { *status_out = s.status; return 0.0; }
   double total = 0.0;
   for (int i = 0; i < q.nord; i++) total += q.src[q.ord[i]];
+#if REPORT
+  recover(&s, tl, FIGHT);
+  *keep_s = s; *keep_q = q;
+#endif
   return total / FIGHT;
 }
 
 """ + _SHEET + r"""
+#if !REPORT
 double row_value(Tab* T, long index, uint tmask, uint gmask, const int* pts, const int* tlpts, int targets,
                  int* status, int* group) {
   int chosen[6];
@@ -589,8 +624,116 @@ double row_value(Tab* T, long index, uint tmask, uint gmask, const int* pts, con
   }
   return best;
 }
+#endif
 
-""" + _KERNELS
+""" + _KERNELS.replace("__kernel void cls_bare", "#if !REPORT\n__kernel void cls_bare", 1) + r"""
+#endif
+
+/* Explicit pieces (-1 = empty slot): the one-slot screen and any build outside the pool's 6-item ranks. */
+int picks_ok(Tab* T, __global const int* picks, long gid, int* chosen) {
+  for (int j = 0; j < 6; j++) {
+    int p = picks[gid * 6 + j];
+    if (p >= T->npieces) return 0;
+    chosen[j] = (p < 0) ? -1 : p;
+  }
+  return 1;
+}
+
+/* druid.simulate: the sheet (Druidism potency), then the best Diamond Ring binding (first wins ties) */
+#if REPORT
+double pick_value(Tab* T, const int* chosen, uint tmask, uint gmask, const int* pts, int targets, int* status, int* group,
+                  Row* out, St* keep_s, Sco* keep_q, int* bound_out) {
+#else
+double pick_value(Tab* T, const int* chosen, uint tmask, uint gmask, const int* pts, int targets, int* status, int* group) {
+#endif
+  Row sc;
+  sheet(T, &sc, chosen, tmask, gmask, pts, targets, group);
+  if (TM(&sc, T_DRUIDISM)) sc.potency += 2.0 + sc.mana_max / 200.0;
+  int buttons[4];
+  int nb;
+  if (SP_BAL) { buttons[0] = B_STARFIRE; buttons[1] = B_STARFALL; buttons[2] = B_ENTANGLE; buttons[3] = B_WISP; nb = 4; }
+  else { buttons[0] = B_STARFIRE; buttons[1] = B_ENTANGLE; buttons[2] = B_WISP; nb = 3; }
+  int ring = (sc.mask & S_RING) != 0;
+  int nv = ring ? nb : 1;
+  double best = 0.0;
+#if REPORT
+  *out = sc;
+  St ts; Sco tq;
+#endif
+  for (int i = 0; i < nv; i++) {
+#if REPORT
+    double d = fight(&sc, &sc, ring ? buttons[i] : -1, status, &ts, &tq);
+#else
+    double d = fight(&sc, &sc, ring ? buttons[i] : -1, status);
+#endif
+    if (*status) return 0.0;
+    if (i == 0 || d > best) {
+      best = d;
+#if REPORT
+      *keep_s = ts; *keep_q = tq; *bound_out = ring ? buttons[i] : -1;
+#endif
+    }
+  }
+  return best;
+}
+
+#if !REPORT
+__kernel void cls_pick(const int n, const int targets, __global const int* picks, __global const uint* tmasks,
+    __global const uint* gmasks, __global const int* points, TAB_ARGS,
+    __global double* out_dps, __global uchar* out_group, __global uchar* out_status)
+{
+  int gid = get_global_id(0);
+  if (gid >= n) return;
+  TAB_INIT
+  int pts[NP];
+  for (int j = 0; j < NP; j++) pts[j] = points[(long)gid * NP + j];
+  int status = 0, group = 0, chosen[6];
+  double d = 0.0;
+  if (!picks_ok(&T, picks, gid, chosen)) status = 1;
+  else d = pick_value(&T, chosen, tmasks[gid], gmasks[gid], pts, targets, &status, &group);
+  out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status;
+}
+#else
+#define NSTAT 19
+__kernel void cls_report(const int n, const int targets, __global const int* picks, __global const uint* tmasks,
+    __global const uint* gmasks, __global const int* points, TAB_ARGS,
+    __global double* out_dps, __global uchar* out_group, __global uchar* out_status,
+    __global double* out_src, __global int* out_ord, __global int* out_nord, __global double* out_mana,
+    __global double* out_act_t, __global int* out_act_id, __global int* out_nact, __global double* out_stats)
+{
+  int gid = get_global_id(0);
+  if (gid >= n) return;
+  TAB_INIT
+  int pts[NP];
+  for (int j = 0; j < NP; j++) pts[j] = points[(long)gid * NP + j];
+  int status = 0, group = 0, chosen[6], bound = -1;
+  double d = 0.0;
+  St ks; Sco kq; Row r;
+  ks.nact = 0; ks.mana = 0.0; kq.nord = 0;
+  if (!picks_ok(&T, picks, gid, chosen)) status = 1;
+  else d = pick_value(&T, chosen, tmasks[gid], gmasks[gid], pts, targets, &status, &group, &r, &ks, &kq, &bound);
+  out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status;
+  out_nord[gid] = kq.nord;
+  for (int i = 0; i < NSRC; i++) {
+    out_ord[(long)gid * NSRC + i] = (i < kq.nord) ? kq.ord[i] : -1;
+    out_src[(long)gid * NSRC + i] = (i < kq.nord) ? kq.src[kq.ord[i]] : 0.0;
+  }
+  out_mana[gid] = (status == 0 && r.mana_max > 0.0) ? 100.0 * ks.mana / r.mana_max : 0.0;
+  out_nact[gid] = ks.nact;
+  for (int i = 0; i < MAXA; i++) {
+    out_act_t[(long)gid * MAXA + i] = (i < ks.nact) ? ks.act_t[i] : 0.0;
+    out_act_id[(long)gid * MAXA + i] = (i < ks.nact) ? ks.act_id[i] : -1;
+  }
+  __global double* o = out_stats + (long)gid * NSTAT;
+  if (status == 0) {
+    o[0] = r.intel; o[1] = r.str; o[2] = r.agi; o[3] = r.ad; o[4] = r.potency; o[5] = r.mastery; o[6] = r.crit;
+    o[7] = r.rating; o[8] = r.haste; o[9] = r.aspd; o[10] = r.luck; o[11] = r.mana_max; o[12] = r.mana_regen;
+    o[13] = r.attack_base / (1.0 + r.aspd); o[14] = r.cd_temp; o[15] = r.flat_cdr; o[16] = r.armor_pen;
+    o[17] = (double)bound; o[18] = r.spell_crit ? 1.0 : 0.0;
+  }
+}
+#endif
+"""
 KERNEL = KERNEL.replace("#pragma OPENCL FP_CONTRACT OFF\n", "#pragma OPENCL FP_CONTRACT OFF\n" + AP.C, 1)
 
 SPECIAL_BITS = {
@@ -608,9 +751,30 @@ GLYPH_BITS = _S.GLYPH_BITS
 NO_EFFECT = {"I0EN"}
 SPECS = {"restoration": 0, "balance": 1}
 
+# Level-15 Druid E009 (map 2.5.2c), moved from the removed sunken_sim.druid model
+LEVEL = 15
+DRUID_STR = int(14 + (LEVEL - 1) * 1.4)
+DRUID_AGI = int(8 + (LEVEL - 1) * 0.8)
+DRUID_INT = int(28 + (LEVEL - 1) * 2.8)
+DRUID_WHITE = 11.0
+DRUID_SWING = 2.0
+HERO_CLASS = "Druid"  # item pool class for E009
+TALENT_NAMES = {
+    "I0K5": "I0K5 (лечение)", "I0K2": "I0K2 (лечение)", "I02F": "I02F (при получении урона)",
+    "I0K4": "Starfire Echo (I0K4)", "I0K3": "I0K3 (лечение)", "I0K1": "Starfall Missile (I0K1)",
+    "I0K0": "Starsurge (I0K0)", "I0P8": "Nature's Wrath (I0P8)", "I0JZ": "Entangle (I0JZ)", "I0P5": "Wisp (I0P5)",
+    "I0ML": "I0ML (союзники)", "I0MS": "Druidism (I0MS)", "I0JY": "Starlight (I0JY)", "I0P4": "I0P4 (лечение)",
+    "I0P7": "Force of Nature (I0P7)", "I08O": "Wisp Spread (I08O)", "I08Q": "I08Q (лечение)", "I08S": "I08S (лечение)",
+}
+IGNORED_TALENTS = frozenset({"I0K5", "I0K2", "I02F", "I0K3", "I0ML", "I0P4", "I08Q", "I08S"})
+DIAMOND = "I00D"
+# B_* order of the kernel; druid.BOUND_NAME
+BUTTON_NAMES = ("Starfire", "Starfall", "Mass Entanglement", "Wisp Guardian")
+
 
 class DruidCL(C.ExactCL):
     hero = "druid"
+    PYTHON = False  # sunken_sim.druid fight model removed 2026-11-27: fixtures + report mode
     KERNEL = KERNEL
     SPECS = SPECS
     TALENT_BITS = TALENT_BITS
@@ -619,30 +783,42 @@ class DruidCL(C.ExactCL):
     KEY_FREE = ("health", "healing_power")  # ESC points left out of the timeline key
     TABLE_KEYS = _S.ShamanCL.TABLE_KEYS
     SCALARS = _S.ShamanCL.SCALARS
+    SOURCE_NAMES = ("Автоатака", "Starfire", "Starfire (эхо)", "Starfall", "Mass Entanglement", "Treants",
+                    "Wisp Guardian", "Всплеск огня", "Sulfuras", "Sulfuras (удар)")
+    ACTION_NAMES = BUTTON_NAMES
+    STAT_KEYS = ("int", "str", "agi", "ad", "potency", "mastery", "crit", "rating", "haste", "attack_speed", "luck",
+                 "mana_max", "mana_regen", "swing", "cd_temp", "flat_cdr", "armor_pen", "bound", "spell_crit")
+    BOOL_STATS = ("spell_crit",)
+    NSRC, MAXA = 10, 160
+
+    def report(self, codes, talents=(), glyphs=(), points: dict | None = None) -> dict:
+        """class_cl report plus the Elemental Orb mode, the Diamond Ring binding and the ESC-only sheet lines."""
+        from sunken_sim.shadow import ORB_MODE
+
+        rep = super().report(codes, talents, glyphs, points)
+        bound = int(rep["stats"].pop("bound"))
+        rep["bound_spell"] = BUTTON_NAMES[bound] if bound >= 0 else None
+        rep["orb_mode"] = next((name for code, name in ORB_MODE.items() if code in set(codes)), None)
+        rep["stats"]["healing_power"] = float(int((points or {}).get("healing_power", 0)))
+        rep["stats"]["pet_damage"] = 0.015 * int((points or {}).get("pet_damage", 0))
+        return rep
 
     @staticmethod
     def module():
-        from sunken_sim import druid
-
-        return druid
+        raise RuntimeError("druid: the Python fight model was removed (2026-11-27)")
 
     def tables(self, space, items, sources):
-        from sunken_sim import druid
-
-        if (druid.DRUID_WHITE, druid.DRUID_SWING, druid.STARFALL_GAP, druid.MISSILE_GAP, druid.ROOT_LIFE, druid.ROOT_GAP,
-                druid.TREANT_LIFE, druid.TREANT_SWING, druid.TREANT_HIT, druid.WISP_LIFE, druid.WISP_ARMOR) != \
-                (11.0, 2.0, 1.0, 1.5, 6.0, 1.0, 10.0, 1.65, 12.0, 8.0, 3.0):
-            raise ValueError("kernel constants assume the 2026-11-11 druid")
         return C.character_tables(space, items, sources, SPECIAL_BITS, TALENT_BITS, GLYPH_BITS, NO_EFFECT,
-                                  [druid.DRUID_INT, druid.DRUID_STR, druid.DRUID_AGI], "Druid")
+                                  [float(DRUID_INT), float(DRUID_STR), float(DRUID_AGI)], "Druid")
 
     def timeline_key(self, build):
-        from sunken_sim import druid
+        # druid.simulate replayed a fight only across Health / Healing Power points, which never change it:
+        # the key is every other ESC point (with the Diamond Ring the same key for every binding).
+        from dataclasses import fields
 
-        stats = druid.sheet(build, self.spec)
-        if druid._wears(build, druid.DIAMOND):
-            return tuple(druid._timeline_key(build, stats, self.spec, self.targets, b) for b in druid.buttons(self.spec))
-        return druid._timeline_key(build, stats, self.spec, self.targets, None)
+        free = {f"{a}_points" for a in self.KEY_FREE}
+        return tuple((f.name, getattr(build, f.name)) for f in fields(build) if f.name.endswith("_points")
+                     and f.name not in free)
 
 
 oracle = C.oracle

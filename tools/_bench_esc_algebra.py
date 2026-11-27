@@ -29,7 +29,7 @@ from farm.hybrid.esc_algebra import greedy_points_algebra, score_cpu, score_engi
 from farm.hybrid.stat_kernel import greedy_points_batched, structural_skip_attrs  # noqa: E402
 from farm.hybrid.test_stat_kernel_greedy import _catalog_build, cpu_dps_many  # noqa: E402
 
-HEROES = ("dragon_sentinel", "monk", "necromancer",
+HEROES = ("monk", "necromancer",
           "siren", "tidewarrior", "tinker", "windmaster", "witch_doctor")
 TOL = 1e-4
 

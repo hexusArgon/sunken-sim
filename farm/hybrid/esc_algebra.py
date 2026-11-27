@@ -41,7 +41,7 @@ from sunken_sim.esc import BUILD_FIELD, ESC_ATTRS, ESC_CAP, apply_points, empty_
 
 # Ledger kind-heroes: simulate() calls module.stats_of(build), events via sunken_sim.ledger.
 ALGEBRA_HEROES = frozenset({
-    "dragon_sentinel", "monk", "necromancer",
+    "monk", "necromancer",
     "siren", "tidewarrior", "tinker", "windmaster", "witch_doctor",
 })
 
@@ -50,7 +50,7 @@ ALGEBRA_HEROES = frozenset({
 # traced through their per-source totals (FLAT events, see trace_current).
 FLAT_SOURCE_HEROES = frozenset({
     "paladin", "rogue", "warlock", "warrior", "hunter",
-    "shaman", "druid", "feral_druid",
+    "shaman", "feral_druid",
     "mage", "shadow",
 })
 # Farm id for sunken_sim.shadow is priest. Mage/priest traces must call

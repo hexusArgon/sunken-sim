@@ -87,7 +87,7 @@ class StructuralGuardTests(unittest.TestCase):
                 K._attr_read_in_sources.cache_clear()
 
     def test_box_sources_keep_known_skips(self):
-        for hero in ("dragon_sentinel", "windmaster", "warrior", "priest", "mage"):
+        for hero in ("monk", "windmaster", "warrior", "priest", "mage"):
             self.assertEqual(K.structural_skip_attrs(hero), frozenset({"healing_power", "pet_damage"}), hero)
 
 
@@ -158,7 +158,7 @@ class CatalogRegressionTests(unittest.TestCase):
     differ). So assert parity with the full greedy on the *current* catalog, never
     a hardcoded DPS. The synthetic tie-then-win test above always discriminates."""
 
-    CASES = (("windmaster", "combat"), ("dragon_sentinel", "ruby"))
+    CASES = (("windmaster", "combat"), ("siren", "sharpshooter"))
 
     def test_batched_equals_full_greedy_on_current_catalog(self):
         for hero, spec in self.CASES:

@@ -21,6 +21,13 @@ HEROES = {
                       specs=(("Headhunter", "headhunter"), ("Poison", "poison"), ("Fury", "fury"))),
     "demon_hunter": dict(class_name="DemonHunter", module="farm.hybrid.demon_hunter_cl", engine="DemonHunterCL",
                          specs=(("Havoc", "havoc"), ("Vengeance", "vengeance"), ("Devourer", "devourer"))),
+    "dragon_sentinel": dict(class_name="DragonSentinel", module="farm.hybrid.dragon_sentinel_cl",
+                            engine="DragonSentinelCL",
+                            specs=(("Ruby", "ruby"), ("Obsidian", "obsidian"), ("Emerald", "emerald"))),
+    # the caster Druid (E009); Feral Druid is another class. Every talent row is kept (the old screen did),
+    # Diamond Ring rows name the binding the fight chose.
+    "druid": dict(class_name="Druid", module="farm.hybrid.druid_cl", engine="DruidCL",
+                  specs=(("Restoration", "restoration"), ("Balance", "balance")), all_talents=True, bind=("I00D",)),
     "death_knight": dict(class_name="DeathKnight", module="farm.hybrid.death_knight_cl", engine="DeathKnightCL",
                          specs=(("Frost", "frost"), ("Blood", "blood"), ("Unholy", "unholy")),
                          # Blood Feast gains only with its partners (farm.top.TALENT_INCLUDE / ITEM_INCLUDE)
@@ -47,10 +54,13 @@ def main() -> None:
     shop_ids = {i.rawcode for i in shop}
     pool = {}
     for item in shop + drop + legs:
+        if item.rawcode in pool:
+            continue
         label = f"{item.name} ({ORB_MODE[item.rawcode]})" if item.rawcode in ORB_MODE else item.name
         src = "Legendary" if item.rawcode in LEGENDARIES else "Shop" if item.rawcode in shop_ids else "Drop"
         pool[item.rawcode] = (label, src)
-    talents = sorted(((c, n) for c, n in mod.TALENT_NAMES.items() if c not in mod.IGNORED_TALENTS), key=lambda p: p[1])
+    talents = sorted(((c, n) for c, n in mod.TALENT_NAMES.items()
+                      if cfg.get("all_talents") or c not in mod.IGNORED_TALENTS), key=lambda p: p[1])
     glyphs = sorted(GLYPHS.items(), key=lambda p: p[1])
     titles = [t for t, _ in cfg["specs"]]
     zero = [0] * len(ESC_ATTRS)
@@ -60,6 +70,7 @@ def main() -> None:
     combos = [((item,), (talent,), ()) for talent, item in cfg.get("combos", ())]
     cases += combos
     value = {}
+    bound = {}
     for title, spec in cfg["specs"]:
         engine = getattr(mod, cfg["engine"])(space, items, sources, TARGETS, None, spec)
         dps, _g, status = engine.pick([engine.picks_of(i) for i, _t, _gl in cases],
@@ -68,6 +79,9 @@ def main() -> None:
         if status.any():
             raise SystemExit(f"{spec}: kernel declined {int((status != 0).sum())} rows")
         value[title] = {case: round(float(d), 1) for case, d in zip(cases, dps)}
+        for code in cfg.get("bind", ()):
+            if code in pool:
+                bound[(title, code)] = engine.report([code])["bound_spell"] or ""
     bare = {t: value[t][((), (), ())] for t in titles}
     if not all(v > 0 for v in bare.values()):
         raise SystemExit(f"bare DPS is not positive: {bare}")
@@ -76,7 +90,7 @@ def main() -> None:
     talent_rows += [[n, c] + [value[t][((), (c,), ())] for t in titles] for c, n in talents]
     item_rows = [["Предмет", "Код", "Источник"] + [f"{t} DPS" for t in titles] + [f"Привязка {t}" for t in titles],
                  ["Без предмета", "", ""] + [bare[t] for t in titles] + [""] * len(titles)]
-    body = [[label, code, src] + [value[t][((code,), (), ())] for t in titles] + [""] * len(titles)
+    body = [[label, code, src] + [value[t][((code,), (), ())] for t in titles] + [bound.get((t, code), "") for t in titles]
             for code, (label, src) in pool.items()]
     body.sort(key=lambda row: (-max(row[3:3 + len(titles)]), row[0]))
     item_rows += body
