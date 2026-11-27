@@ -75,10 +75,11 @@ INC_BITS = {
     "I0BM": 45,   # Mantle of the Pathfinder-like (PreDamage_Reduce 0.90, 50 magic damage on evade)
     "lgdh": 46,   # Ice Cleaver: 18% x Luck Ice Nova on attack; chilling 3% / freezing 6% max mana magical damage
     "I0NS": 47,   # Elemental Orb (Frost): attacks Chill the target 4 s (gg_trg_Chill)
+    "I0SU": 48,   # Dark Veil Mantle: evading an attack restores 4% max mana
 }
 
 # per-piece doubles (pinc), first copy only
-NINC = 15
+NINC = 16
 # evasion hit-chance factors of PreDamage_Reduce (multiplicative)
 HIT_FACTOR = {"I07A": 0.88, "I07C": 0.87, "I0IS": 0.84, "I0SU": 0.84, "I0DL": 0.82, "evtl": 0.95, "rwiz": 0.95,
               "rump": 0.95, "dust": 0.95, "I051": 0.92, "I0BM": 0.90, "I0U9": 0.90}
@@ -107,7 +108,8 @@ def inc_columns(item) -> list:
     flat, pct = HT_ATTACK.get(code, (0.0, 0.0))
     return [regen, regen_pct, power, steal, RECV_MOD.get(code, 0.0), OWN_EXTRA.get(code, 0.0), pct, flat,
             REGEN_MAXHP.get(code, 0.0), HEAL_FLAT.get(code, 0.0), HEAL_FLAT_INT.get(code, 0.0), HEAL_POT.get(code, 0.0),
-            POOL_FLAT.get(code, 0.0), VOODOO.get(code, 0.0), HIT_FACTOR.get(code, 1.0)]
+            POOL_FLAT.get(code, 0.0), VOODOO.get(code, 0.0), HIT_FACTOR.get(code, 1.0),
+            float(getattr(item, "armor", 0) or 0)]
 
 
 def inc_tables(space, items) -> dict:
@@ -128,14 +130,14 @@ def _defines() -> str:
              18: "SERA", 19: "EVD", 20: "BLOOD", 21: "TITAN", 22: "CSKULL", 23: "REDC", 24: "GORE", 25: "BREAV",
              26: "FIGUR", 27: "SANG", 28: "SVAMP", 29: "MASO", 30: "PRIM", 31: "IDRA", 32: "JADE", 33: "AMBER",
              34: "EARTH", 35: "MOON", 36: "HAURA", 37: "UNHOLY", 38: "CRUS", 39: "TRIBAL", 40: "SERAPH", 41: "HIGHL",
-             42: "HOLYS", 43: "GIANT", 44: "CHAOS", 45: "PATH", 46: "ICLE", 47: "FORB"}
+             42: "HOLYS", 43: "GIANT", 44: "CHAOS", 45: "PATH", 46: "ICLE", 47: "FORB", 48: "DVEIL"}
     return "\n".join(f"#define I_{name} (1UL<<{bit})" for bit, name in sorted(names.items())) + "\n"
 
 
 INC_ROW_FIELDS = r"""
   ulong imask;
   double regen, regen_pct, heal_power, lifesteal, recv_mod, own_extra, ht_atk_pct, ht_atk_flat, heal_flat, heal_flat_int;
-  double heal_pot, pool_flat, voodoo, armor_hero, regen_hp, hitmul;
+  double heal_pot, pool_flat, voodoo, armor_hero, regen_hp, hitmul, item_armor;
 """
 
 INC_ST_FIELDS = r"""
@@ -146,16 +148,18 @@ INC_ST_FIELDS = r"""
   double seal[21];
   double ice_ready;
   double rg_t, bl_store, ida_end, ida_next;
+  double tnow;  /* moment of the event being processed (class hooks without a time argument) */
 """
 
 INC_HEAD = "#define INC_NG 8\n#define INC_NBM 160\n" + _defines() + r"""
 /* incoming-hit effects that make the hit stream matter (class kernels add their own) */
 #define I_HP_DEP (I_ALE | I_CRIM | I_IGM | I_FURN | I_BLS | I_BHOWL | I_BLOOD | I_ICE)
-#define I_HIT_DEP (I_SPIKE | I_THORN | I_DSCALE | I_SUN | I_SOD | I_BMASK | I_SEAL | I_PCB | I_ICE | I_EVD | I_CHAOS)
+#define I_HIT_DEP (I_SPIKE | I_THORN | I_DSCALE | I_SUN | I_SOD | I_BMASK | I_SEAL | I_PCB | I_ICE | I_EVD | I_CHAOS | I_DVEIL)
 #define INC_FOLD(r, a) do { (r)->regen += (a)[0]; (r)->regen_pct += (a)[1]; (r)->heal_power += (a)[2]; \
     (r)->lifesteal += (a)[3]; (r)->recv_mod += (a)[4]; (r)->own_extra += (a)[5]; (r)->ht_atk_pct += (a)[6]; \
     (r)->ht_atk_flat += (a)[7]; (r)->regen_hp += (a)[8]; (r)->heal_flat += (a)[9]; (r)->heal_flat_int += (a)[10]; \
-    (r)->heal_pot += (a)[11]; (r)->pool_flat += (a)[12]; (r)->voodoo += (a)[13]; (r)->hitmul *= (a)[14]; } while (0)
+    (r)->heal_pot += (a)[11]; (r)->pool_flat += (a)[12]; (r)->voodoo += (a)[13]; (r)->hitmul *= (a)[14]; \
+    (r)->item_armor += (a)[15]; } while (0)
 """
 
 INC_C1 = r"""
@@ -170,6 +174,7 @@ void inc_sheet_init(Row* r) {
   r->imask = 0; r->regen = 0.0; r->regen_pct = 0.0; r->heal_power = 0.0; r->lifesteal = 0.0; r->recv_mod = 0.0;
   r->own_extra = 0.0; r->ht_atk_pct = 0.0; r->ht_atk_flat = 0.0; r->heal_flat = 0.0; r->heal_flat_int = 0.0;
   r->heal_pot = 0.0; r->pool_flat = 0.0; r->voodoo = 0.0; r->armor_hero = 0.0; r->regen_hp = 0.0; r->hitmul = 1.0;
+  r->item_armor = 0.0;
 }
 
 /* after the class folded hp: auras, % max HP regeneration; returns the HP regeneration stat */
@@ -240,10 +245,11 @@ void dinc_update(const Row* r, St* s) {
 }
 
 /* evasion: product of the hit-chance factors of PreDamage_Reduce */
-double hit_chance(const Row* r, St* s) {
+double cls_hit(const Row* r, St* s, double now);
+double hit_chance(const Row* r, St* s, double now) {
   double h = r->hitmul;
   if ((r->imask & I_ALE) && hero_ratio(s, 0.0) <= 0.40) h *= 0.82;
-  return h;
+  return h * cls_hit(r, s, now);
 }
 
 /* Healing (trigger Healing): Healing Type amount (+ the healer's flat item adds) x (1 + received modifiers
@@ -252,9 +258,12 @@ double hit_chance(const Row* r, St* s) {
  * such heals (each one gets the flat adds and the >= 1 check). flat: the healer is the hero (its items);
  * power: the healer belongs to the hero's player; own: healer == target. */
 double cls_heal_mod(const Row* r, St* s);
+double cls_heal_flat(const Row* r, St* s);
+void cls_own_heal(const Row* r, St* s, double total);
 void heal_mod(const Row* r, St* s, double amount, double count, int flat, int power, int own) {
   if (!s->hp_on || amount <= 0.0 || count <= 0.0) return;
   if (flat) amount += r->heal_flat + r->heal_flat_int * r->intel + r->heal_pot * r->potency;
+  amount += cls_heal_flat(r, s);
   double m = (power && own) ? r->recv_mod + (r->heal_power + r->own_extra)
            : power ? r->recv_mod + r->heal_power : r->recv_mod + 0.0;
   if (r->imask & I_FIGUR) m += 0.01 * r->armor_hero;
@@ -262,6 +271,7 @@ void heal_mod(const Row* r, St* s, double amount, double count, int flat, int po
   if (m < -1.0) return;
   amount *= 1.0 + m;
   double total = amount * count;
+  if (own) cls_own_heal(r, s, total);
   if (r->imask & I_BLOOD) s->bl_store += (own ? 1.0 : 0.20) * total;
   if (amount >= 1.0) hp_add(s, total);
 }
@@ -355,7 +365,10 @@ void taken_event(const Row* r, St* s, double now, double m, double axe) {
 }
 
 /* One attack of dummy j, mass m, at now (Hero_Attacked, PreDamage 4, evasion, landing, OnDamage). */
+void cls_attacked(const Row* r, St* s, int j, double now, double m);
+void cls_evade(const Row* r, St* s, int j, double now, double evaded);
 void dummy_attack(const Row* r, St* s, int j, double m, double now) {
+  s->tnow = now;
   int melee = j < melee_count(r->targets);
   double hit = 0.05 * s->hp_max;
   recover(r, s, now);
@@ -368,8 +381,13 @@ void dummy_attack(const Row* r, St* s, int j, double m, double now) {
   if (r->imask & I_SOD) item_dmg(r, s, N_SOD, 125.0 * m * chance01(0.08 * s->lm), j, now, 0, m * chance01(0.08 * s->lm));
   if (r->imask & I_CHAOS) item_dmg(r, s, N_REFL, 12.0 * m, j, now, 0, m);
   taken_event(r, s, now, m, chance01(0.05 * s->lm));
-  double land = m * hit_chance(r, s);
+  cls_attacked(r, s, j, now, m);
+  double land = m * hit_chance(r, s, now);
   double evaded = m - land;
+  if (evaded > 0.0) {
+    if (r->imask & I_DVEIL) { double v = s->mana + evaded * 0.04 * r->mana_max; s->mana = (v < r->mana_max) ? v : r->mana_max; }
+    cls_evade(r, s, j, now, evaded);
+  }
   if ((r->imask & I_EV13) && evaded > 0.0) item_dmg(r, s, N_EVADE, 100.0 * evaded, j, now, 0, evaded);
   if ((r->imask & I_PATH) && evaded > 0.0) item_dmg(r, s, N_EVADE, 50.0 * evaded, j, now, 1, evaded);
   if ((r->imask & I_EV16A) && evaded > 0.0) heal_ht(r, s, evaded * 0.025 * s->hp_max, 1);
@@ -424,6 +442,7 @@ void cast_heal(const Row* r, St* s, double now, double cost) {
 }
 
 /* After an auto attack that dealt `dealt` to its target: lifesteal (AfterDamage_Global) and on-attack heals. */
+void cls_lifesteal(const Row* r, St* s, double amount);
 void attack_heal(const Row* r, St* s, double now, double dealt) {
   if (!s->hp_on) return;
   double ls = r->lifesteal;
@@ -436,8 +455,13 @@ void attack_heal(const Row* r, St* s, double now, double dealt) {
     heal += (part > cap) ? cap : part;
   }
   if (heal >= 1.0 && hero_ratio(s, now) < 1.0) {
+    s->tnow = now;
     if (r->imask & I_REDC) heal_ht(r, s, heal, 1);
-    else heal_plain(s, heal);
+    else {
+      /* Crimson Fury: no lifesteal above 38% health (the trigger skips it) */
+      if (!((r->imask & I_CRIM) && hero_ratio(s, now) > 0.38)) cls_lifesteal(r, s, heal);
+      heal_plain(s, heal);
+    }
   }
   if (r->ht_atk_pct != 0.0 || r->ht_atk_flat != 0.0) heal_ht(r, s, r->ht_atk_flat + r->ht_atk_pct * s->hp_max, 1);
   if (r->imask & I_EARTH) heal_ht(r, s, 10.0 + 0.20 * cls_primary(r) + 0.03 * r->mana_max, 1);
@@ -462,6 +486,7 @@ double inc_next(St* s, int targets, int* hit_j, int* hit_k) {
 
 /* Run the incoming event at `moment` (inc_next's value). */
 void inc_event(const Row* r, St* s, double moment, int hit_j, int hit_k, int targets) {
+  s->tnow = moment;
   if (s->hp_on && s->ida_next < s->ida_end && moment == s->ida_next) {
     heal_ht(r, s, 0.02 * s->hp_max, 1);
     s->ida_next += 1.0;

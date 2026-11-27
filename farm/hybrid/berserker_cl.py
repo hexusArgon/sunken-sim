@@ -499,6 +499,15 @@ double cls_primary(const Row* r) { return r->agi; }
 /* Berserker has no class healing-received modifiers */
 double cls_heal_mod(const Row* r, St* s) { (void)r; (void)s; return 0.0; }
 
+/* incoming-layer hooks this class does not use */
+double cls_hit(const Row* r, St* s, double now) { (void)r; (void)s; (void)now; return 1.0; }
+double cls_heal_flat(const Row* r, St* s) { (void)r; (void)s; return 0.0; }
+void cls_own_heal(const Row* r, St* s, double total) { (void)r; (void)s; (void)total; }
+void cls_lifesteal(const Row* r, St* s, double amount) { (void)r; (void)s; (void)amount; }
+void cls_attacked(const Row* r, St* s, int j, double now, double m) { (void)r; (void)s; (void)j; (void)now; (void)m; }
+void cls_evade(const Row* r, St* s, int j, double now, double evaded) { (void)r; (void)s; (void)j; (void)now; (void)evaded; }
+
+
 @INC_C2@
 
 #if REPORT

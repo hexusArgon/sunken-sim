@@ -156,3 +156,31 @@ dummy) chill 4 s; every chill 3% and every freeze 6% of max mana as Magical dama
 Ice Nova, Death Knight ghouls / Sindragosa / Frost Strike, Icecrown Ring freezes of attackers (shared layer).
 Item-effect damage (reflects, Sunstrider, Shield of Death, Bloodlord, Ice Cleaver) also gets Potency (and the DK Blood
 Plague flat) per instance, like any damage of the hero (PreDamage_Increase).
+
+## Demon Hunter: incoming hits and healing (inventory 2026-11-27, map 2.5.2c)
+
+Item pool: 337 items, all screened (`tools/one_slot_gpu.py demon_hunter`). Agility hero (model heal from an ally),
+armour 1 + 0.1 AGI + items (E00A / E00B udef 1), Primalist Ring 0.5% Physical Type per point of HP regeneration.
+
+| Effect | Trigger / rule (war3map_norm.j) | Value | Modelled |
+|---|---|---|---|
+| Evasion | PreDamage_Reduce: Inner Demon A0E4 learned; Fallout I04X outside Vengeance / Meta | hit chance x 0.88; x 0.92 | yes |
+| Demon Spikes (Vengeance, A0RH) | PreDamage_Enemies on every attack against the hero (before evasion); PreDamage_Reduce on every evaded attack | 4 + 10% STR + 10% AGI to the attacker, untyped (Spells); x2 while B05N (A0RJ, 6 s after the cast) | yes (source "Demon Spikes") |
+| Vengeance healing | PreDamage_Heroes: every damage instance of the DH player; on evade 20 + Mastery | 2 + 0.3% max HP, own Healing Type | yes |
+| Vengeance in Meta | trigger Healing: every heal on the hero +4 + 0.5 x armour (before multipliers) | flat | yes |
+| Demonsurge (Vengeance) | own Healing Type and lifesteal while Fury < max: 10 + 8 x level -> GenerateFury(1) | Fury in Meta drains 5 + stacks per second and ends the form at 0 (trigger Fury) | yes: Vengeance Meta now ends and is recast |
+| Bloodlet I05S | +10% lifesteal (attacks); own Healing Type (after multipliers) + lifesteal >= 40% max HP -> Feast on Blood (A0RG, 7 s): +17 + 3 x level attack damage; the excess is lost | | yes (talent active) |
+| Demonhide Shoulderpads I0V9 | Inner Demon restores 25% max HP (own) | evasion x2 while moving: not modelled (the hero stands) | yes |
+| Fallout I04X | on evade: faerie fire A0FQ on the attacker (-3 armour, 4 s) | | yes |
+| Demonic Wards I05M, Darkness I0PA, Inner Demon reduction | armour / damage reduction | | no |
+| Metamorphosis HP % kept on form change; E00B base regeneration 0.25 / s | | | no (same max HP; 0.25 / s left out) |
+
+Shared fixes with this class: Dark Veil Mantle I0SU restores 4% max mana per evaded attack (all classes: Death Knight
+one-slot +7.7 / 0 / +9.0); item armour is a shared column; class hooks for evasion, attacked / evaded, own healing,
+lifesteal and flat healing. DH damage kinds for penetration: auto attacks, Throw Glaive and the chaos part of Eye
+Beam (ATTACK_TYPE_CHAOS) get the item penetration and Iron Cleaver; Magical Type spells Voidseeker; the rest none.
+Fire Orb splash goes through the class damage (Potency with the Havoc 1.35 modifier, DamageIncrease, Havoc Fury
+procs). One-slot: Vengeance bare 115.6 -> 151.2 (Demon Spikes 43.5 DPS, Meta ends ~every 10 s by Demonsurge);
+Bloodlet Vengeance +30; top-150 refinements with the Shadow Orb 11-15% lower (penetration only on attacks).
+Speed (CPU pocl, 2^14 builds without such items): Havoc 121k -> 117k rows/s; Vengeance (hits always on) 403k -> 83k.
+

@@ -211,5 +211,60 @@ class DeathKnightIncoming(unittest.TestCase):
             self.assertNotIn(name, rep["sources"])
 
 
+class DemonHunterIncoming(unittest.TestCase):
+    """Demon Hunter: Demon Spikes, Demonsurge, Bloodlet and the class evasion through the shared layer."""
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        from farm import runner as R
+        from farm.hybrid import class_cl as C, demon_hunter_cl as DH
+
+        space, items = C.full_space("demon_hunter", "DemonHunter", DH.TALENT_NAMES)
+        src = R.source_map(items)
+        cls.eng = {(spec, t): DH.DemonHunterCL(space, items, src, t, None, spec)
+                   for spec in ("havoc", "vengeance", "devourer") for t in (5, 1)}
+
+    def test_demon_spikes_on_every_attack(self) -> None:
+        # 4 + 10% STR + 10% AGI per attack (before evasion), x2 for 6 s after each Demon Spikes cast (B05N),
+        # once more on every evaded attack (Inner Demon learned: 12% evasion); untyped, armour 15, no talents
+        for t in (5, 1):
+            rep = self.eng["vengeance", t].report(())
+            st = rep["stats"]
+            raw = 4.0 + 0.10 * st["str"] + 0.10 * st["agi"]
+            casts = [c + 0.15 for c, n in rep["actions"] if n == "Demon Spikes"]
+            total = 0.0
+            for j in range(t):
+                when = 0.2 * (j % 5 + 1)
+                while when < 30.0 - 1e-9:
+                    on = any(c < when < c + 6.0 for c in casts)  # the spikes buff from the cast's hit
+                    total += 1.0 + (1.0 if on else 0.0) + 0.12
+                    when += 1.0
+            self.assertAlmostEqual(rep["sources"]["Demon Spikes"] / (raw * ARMOR * total), 1.0, places=9, msg=t)
+
+    def test_reflects_land_on_88_percent(self) -> None:
+        # Devourer (no Potency bonus): The Blockade 10% of 5% max HP per melee attack that lands (Inner Demon 12% evasion)
+        rep = self.eng["devourer", 5].report(("I0BC",))
+        want = hits(5, melee_only=True) * 0.10 * 0.05 * rep["stats"]["hp"] * 0.88 * ARMOR
+        self.assertAlmostEqual(rep["sources"]["Отражение урона"] / want, 1.0, places=9)
+
+    def test_demonsurge_ends_metamorphosis(self) -> None:
+        # Vengeance heals itself on every hit it deals (2 + 0.3% max HP): every 130 healed -> +1 Fury, and Fury above 0
+        # drains in Metamorphosis until the form ends (trigger Fury)
+        rep = self.eng["vengeance", 5].report(())
+        self.assertIn("Meta ends", [n for _c, n in rep["actions"]])
+
+    def test_bloodlet_feast_on_blood(self) -> None:
+        bare = self.eng["vengeance", 5].report(())
+        blood = self.eng["vengeance", 5].report((), talents=("I05S",))
+        self.assertGreater(blood["dps"], bare["dps"] + 10.0)
+        # without hits and heals (Havoc, no healing items) nothing reaches 40% max HP
+        self.assertEqual(self.eng["havoc", 5].report((), talents=("I05S",))["dps"], self.eng["havoc", 5].report(())["dps"])
+
+    def test_dh_no_incoming_effects_no_new_sources(self) -> None:
+        rep = self.eng["havoc", 5].report(("I0BR",))
+        for name in ("Отражение урона", "Sunstrider Crown", "Shield of Death", "Shado-Pan Faceguard", "Bloodlord's Regalia"):
+            self.assertNotIn(name, rep["sources"])
+
+
 if __name__ == "__main__":
     unittest.main()
