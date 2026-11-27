@@ -625,7 +625,10 @@ double fight(const Row* r, const PowT* P, int* status, ulong* miss_b, ulong* mis
       }
       if (r->mask & S_ORB) {
         double ex = exec_factor(r, moment);
-        double splash = (20.0 + 0.35 * agi) * (double)targets * taken_for(r, &s, 0, moment) * exec_factor(r, moment);
+        /* Fire Orb splash (DAMAGE_TYPE_NORMAL): PreDamage_Increase adds Potency (2026-11-27) */
+        double splash = 0.0;
+        for (int t = 0; t < targets; t++) splash += (20.0 + 0.35 * agi + r->potency) * taken_for(r, &s, t, moment);
+        splash *= exec_factor(r, moment);
         add_src(&s, N_SPLASH, splash * fury_mult);
         (void)ex;
         damage_mana(r, &s, (double)targets);

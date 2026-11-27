@@ -79,6 +79,7 @@ KERNEL = r"""
 #define S_MAW  (1UL<<17)
 #define S_SILM (1UL<<18)
 #define S_BHUNG (1UL<<19)  /* Mask of the Blood Hungerer I0NJ: Blood Feast without the talent */
+#define S_FORB (1UL<<20)   /* Elemental Orb (Frost) I0NS: attacks Chill the target for 4 s */
 
 #define T_ARMY (1u<<0)
 #define T_VIRUL (1u<<1)
@@ -737,6 +738,9 @@ double fight(const Row* r, int* status) {
       if (r->imask & I_SERA) power += 0.01 * max_life(r, &s);
       double dealt = deal(r, &s, N_AUTO, power, 0, moment, 0, r->attack_potency, r->auto_pct, 1.0, 0);
       if (s.hp_on) attack_heal(r, &s, moment, dealt * r->auto_pct);
+      /* Frost Orb (PreDamage_Items_Glyphs, gg_trg_Chill): the dummy's Frost Nova chills the attacked target for
+       * 4 s (buff Bfro: +8% DamageIncrease, counted by Grim Reaper); it lands after this hit. */
+      if (r->mask & S_FORB) bsure(CH_ARGS(&s, 0), moment, 4.0);
       /* Blade of the Fallen Seraph: the attack costs 1% of max HP (a damage instance taken) */
       if (r->imask & I_SERA) {
         if (s.hp_on) hp_add(&s, -0.01 * max_life(r, &s));
@@ -1111,7 +1115,7 @@ KERNEL = KERNEL.replace("#pragma OPENCL FP_CONTRACT OFF\n", "#pragma OPENCL FP_C
 SPECIAL_BITS = {
     "I0BR": 0, "I07O": 1, "I0JO": 2, "I0QT": 3, "tlum": 4, "I0JA": 5, "I096": 6, "I03C": 7, "I00L": 8,
     "I00Y": 9, "I07P": 10, "I048": 11, "I0FW": 12, "I0AV": 13, "I07T": 14, "I0NM": 15, "I0NK": 16, "I0RZ": 17,
-    "I0QN": 18, "I0NJ": 19,
+    "I0QN": 18, "I0NJ": 19, "I0NS": 20,
 }
 TALENT_BITS = {
     "I0CS": 0, "I0E3": 1, "I0CR": 2, "I09S": 3, "I0GP": 4, "I09T": 5, "I0IZ": 6, "I0EV": 7, "I03X": 8,
