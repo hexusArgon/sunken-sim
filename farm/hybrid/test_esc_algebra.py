@@ -176,7 +176,7 @@ class RealHeroTests(unittest.TestCase):
         from farm.hybrid.stat_kernel import greedy_points_batched, structural_skip_attrs
         from farm.hybrid.test_stat_kernel_greedy import _catalog_build, cpu_dps_many
 
-        for hero, spec in (("dragon_sentinel", "ruby"), ("necromancer", "essence"), ("demon_hunter", "havoc")):
+        for hero, spec in (("dragon_sentinel", "ruby"), ("necromancer", "essence"), ("windmaster", "combat")):
             build = _catalog_build(hero, spec, 0)
             many = cpu_dps_many(hero, spec)
             ref = greedy_points_batched(many, build, hero=hero)

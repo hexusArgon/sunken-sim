@@ -70,7 +70,7 @@ class LockstepTests(unittest.TestCase):
 
 class CrossAlgebraTests(unittest.TestCase):
     def test_finish_many_algebra_equals_sequential(self):
-        for hero, spec in (("demon_hunter", "havoc"), ("necromancer", "essence")):
+        for hero, spec in (("windmaster", "combat"), ("necromancer", "essence")):
             many = cpu_dps_many(hero, spec)
             calls = _calls(hero, spec, 3)
             eng = _fake(hero, spec, many)
@@ -89,7 +89,7 @@ class EvalSpanQueueTests(unittest.TestCase):
     def test_cross_queue_equals_default_path(self):
         from farm import runner as R
 
-        hero, spec = "demon_hunter", "havoc"
+        hero, spec = "windmaster", "combat"
         space, items = _space(hero, spec)
         many = cpu_dps_many(hero, spec)
         saved = {k: getattr(R, k) for k in ("_SPACE", "_ITEMS", "_SOURCES", "_HERO", "_SPEC", "_TARGETS", "_STOP", "claim_item_bars")}

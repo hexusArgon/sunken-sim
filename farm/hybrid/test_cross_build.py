@@ -81,7 +81,7 @@ class GreedyManyTests(unittest.TestCase):
         os.environ.pop("FARM_HYBRID_ESC_ALGEBRA", None)
 
     def test_lockstep_equals_sequential(self):
-        for hero, spec in (("demon_hunter", "havoc"), ("dragon_sentinel", "ruby"), ("necromancer", "essence")):
+        for hero, spec in (("windmaster", "combat"), ("dragon_sentinel", "ruby"), ("necromancer", "essence")):
             many = cpu_dps_many(hero, spec)
             builds = [_catalog_build(hero, spec, i) for i in range(3)]
             rec = Recorder(many)
@@ -90,7 +90,7 @@ class GreedyManyTests(unittest.TestCase):
             self.assertLessEqual(len(rec.sizes), 31)  # 1 base + 30 steps for all builds together
 
     def test_caps_drop_out_and_ties(self):
-        hero, spec = "demon_hunter", "havoc"
+        hero, spec = "windmaster", "combat"
         base = cpu_dps_many(hero, spec)
         tied = lambda bs: [round(x, 0) for x in base(bs)]  # noqa: E731 - coarse values force ties
         builds = [_catalog_build(hero, spec, i) for i in range(3)]
@@ -100,7 +100,7 @@ class GreedyManyTests(unittest.TestCase):
             self.assertEqual(got, ref)
 
     def test_empty(self):
-        self.assertEqual(greedy_points_many(lambda b: [], [], hero="demon_hunter"), [])
+        self.assertEqual(greedy_points_many(lambda b: [], [], hero="windmaster"), [])
 
 
 class FinishManyTests(unittest.TestCase):
@@ -108,7 +108,7 @@ class FinishManyTests(unittest.TestCase):
         os.environ.pop("FARM_HYBRID_ESC_ALGEBRA", None)
 
     def test_equals_sequential_chunks_and_isolation(self):
-        for hero, spec in (("demon_hunter", "havoc"), ("windmaster", "combat")):
+        for hero, spec in (("siren", "sharpshooter"), ("windmaster", "combat")):
             many = cpu_dps_many(hero, spec)
             calls = _calls(hero, spec, 4)
             eng = _fake(hero, spec, many)
@@ -119,7 +119,7 @@ class FinishManyTests(unittest.TestCase):
             self.assertEqual(eng.finish_many(calls[::-1]), ref[::-1])  # order-independent per call
 
     def test_failure_propagates_for_fallback(self):
-        hero, spec = "demon_hunter", "havoc"
+        hero, spec = "windmaster", "combat"
         rec = Recorder(cpu_dps_many(hero, spec), fail_over=50)
         eng = _fake(hero, spec, rec)
         with self.assertRaises(RuntimeError):
@@ -135,7 +135,7 @@ class DirectMLTests(unittest.TestCase):
         from farm.hybrid.registry import make_engine
 
         os.environ.pop("FARM_HYBRID_ESC_ALGEBRA", None)
-        for hero, spec in (("demon_hunter", "havoc"), ("necromancer", "essence")):
+        for hero, spec in (("windmaster", "combat"), ("necromancer", "essence")):
             eng = make_engine(detect(hero, spec), hero, spec, 5)
             calls = _calls(hero, spec, 3)
             raw = eng.dps_many

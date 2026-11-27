@@ -46,7 +46,7 @@ from sunken_sim.library import load_items  # noqa: E402
 from sunken_sim.shadow import FIGHT, LEVEL, MIND_AMPLIFIER, Build  # noqa: E402
 
 # Classes whose Python fight model was removed: reports come from the exact kernel's report mode.
-GPU_ONLY = frozenset({"berserker", "death_knight"})
+GPU_ONLY = frozenset({"berserker", "death_knight", "demon_hunter"})
 MOD = importlib.import_module(f"farm.hybrid.{HERO}_cl" if HERO in GPU_ONLY else f"sunken_sim.{HERO}")
 
 

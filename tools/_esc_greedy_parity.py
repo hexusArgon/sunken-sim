@@ -18,7 +18,7 @@ from farm.hybrid.stat_kernel import greedy_points_batched  # noqa: E402
 from farm.hybrid.test_stat_kernel_greedy import _catalog_build, cpu_dps_many  # noqa: E402
 from sunken_sim.esc import apply_points, greedy_points  # noqa: E402
 
-HEROES = ("demon_hunter", "dragon_sentinel", "monk", "necromancer",
+HEROES = ("dragon_sentinel", "monk", "necromancer",
           "siren", "tidewarrior", "tinker", "windmaster", "witch_doctor")
 
 

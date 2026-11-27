@@ -35,6 +35,10 @@ KERNEL = r"""
 #define SP_HAVOC (SPEC == 0)
 #define SP_VENG (SPEC == 1)
 #define SP_DEVOUR (SPEC == 2)
+/* REPORT 1: the report kernel also keeps the final fight state (sources in Ledger order, casts, mana) */
+#ifndef REPORT
+#define REPORT 0
+#endif
 
 #define FIGHT 30.0
 #define CAST_POINT 0.15
@@ -45,7 +49,8 @@ KERNEL = r"""
 #define NP 11
 #define NPAL 13
 #define NSRC 11
-#define MAXT 5  /* the farm runs 5 targets; more -> status 3, the host re-scores the row */
+#define MAXT 8
+#define MAXA 160
 #define BS 8
 #define MAXQ 64
 #define MAXC 16
@@ -147,7 +152,28 @@ typedef struct {
   double p_power, p_havoc, p_double, p_glaive_crit, p_glaive_beam, q_chaos, immo_interval, immo_dur, singularity;
   int meta, drain, armed, status, targets;
   AP ap;
+#if REPORT
+  double act_t[MAXA]; int act_id[MAXA]; int nact;
+#endif
 } St;
+
+/* actions (demon_hunter.simulate names): host ACTION_NAMES */
+#define A_META 0
+#define A_BEAM 1
+#define A_STAR 2
+#define A_SPIKES 3
+#define A_HUNT 4
+#define A_IMMO 5
+#define A_INNER 6
+#define A_MEND 7
+void act(St* s, double now, int id) {
+#if REPORT
+  if (s->nact < MAXA) { s->act_t[s->nact] = now; s->act_id[s->nact] = id; }
+  s->nact++;
+#else
+  (void)s; (void)now; (void)id;
+#endif
+}
 
 double target_hp(double t) {
   double v = 1.0 - t / FIGHT;
@@ -183,7 +209,7 @@ void add_src(St* s, int id, double amount) {
 
 double armor_mult(St* s, double armor) {
   if (armor > 0.0) return 1.0 - (armor * 0.04) / (1.0 + 0.04 * armor);
-  if (armor < 0.0) { if (!s->status) s->status = 4; return 1.0; }
+  if (armor < 0.0) return 2.0 - pow(1.0 - 0.04, -armor);  /* shadow.armor_taken */
   return 1.0;
 }
 
@@ -431,11 +457,11 @@ double attack_interval(const Row* r, const St* s, double now) {
   return swing / (1.0 + speed_stat(r, s, now));
 }
 
-void fury_tick(const Row* r, St* s) {
+void fury_tick(const Row* r, St* s, double now) {
   if (s->meta) {
     if (s->fury > 0.0) {
       s->fury -= (double)(5 + s->drain);
-      if (s->fury <= 0.0) { s->fury = 0.0; s->drain = 0; s->meta = 0; }
+      if (s->fury <= 0.0) { s->fury = 0.0; s->drain = 0; s->meta = 0; act(s, now, A_MEND); }
       else s->drain += 1;
       if ((r->mask & S_HELM) && SP_DEVOUR) s->nxt[K_F] -= 1.0;
     }
@@ -498,9 +524,16 @@ void star_land(const Row* r, St* s, double now) {
 }
 
 /* demon_hunter.simulate(build, targets, spec) */
+#if REPORT
+double fight(const Row* r, int* status_out, St* keep) {
+#else
 double fight(const Row* r, int* status_out) {
+#endif
   St s;
-  if (r->targets > MAXT) { *status_out = 3; return 0.0; }
+#if REPORT
+  s.nact = 0;
+#endif
+  if (r->targets > MAXT || r->targets < 1) { *status_out = 3; return 0.0; }
   s.targets = r->targets; s.status = 0; s.armed = 0;
   s.nord = 0; s.seen = 0u;
   for (int i = 0; i < 9; i++) { s.seen |= 1u << i; s.ord[s.nord++] = i; s.src[i] = 0.0; }
@@ -558,7 +591,7 @@ double fight(const Row* r, int* status_out) {
       continue;
     }
     if (moment == next_fury) {
-      fury_tick(r, &s);
+      fury_tick(r, &s, moment);
       next_fury += 1.0;
       continue;
     }
@@ -572,12 +605,14 @@ double fight(const Row* r, int* status_out) {
     if (choice >= 0 && cast_at <= attack_at && moment == cast_at) {
       double hit_at = moment + CAST_POINT;
       if (choice == K_META) {
+        act(&s, moment, A_META);
         busy = cast(r, &s, moment, 0.0);
         s.meta = 1;
         class_cast(r, &s, hit_at, 0);
         s.nxt[K_META] = moment + cooldown_of(10.0, r);
       } else if (choice == K_F && SP_HAVOC) {
         if (!pay(r, &s, 25.0, moment)) { s.nxt[K_F] = moment + 0.25; continue; }
+        act(&s, moment, A_BEAM);
         busy = cast(r, &s, moment, 2.50);
         class_cast(r, &s, hit_at, 0);
         double per_hit = 7.0 + 0.15 * dcs(r);
@@ -595,6 +630,7 @@ double fight(const Row* r, int* status_out) {
         s.nxt[K_F] = moment + cooldown_of(10.0, r);
       } else if (choice == K_F && SP_DEVOUR) {
         if (!pay(r, &s, 25.0, moment)) { s.nxt[K_F] = moment + 0.25; continue; }
+        act(&s, moment, A_STAR);
         busy = cast(r, &s, moment, 0.0);
         if (TM(r, T_CONSUME)) for (int i = 0; i < 3; i++) gen(&s, 5.0, 1.0);
         class_cast(r, &s, hit_at, 0);
@@ -602,11 +638,13 @@ double fight(const Row* r, int* status_out) {
         s.nxt[K_F] = moment + cooldown_of(10.0, r);
       } else if (choice == K_F) {
         if (!pay(r, &s, 25.0, moment)) { s.nxt[K_F] = moment + 0.25; continue; }
+        act(&s, moment, A_SPIKES);
         busy = cast(r, &s, moment, 0.0);
         class_cast(r, &s, hit_at, 0);
         s.nxt[K_F] = moment + cooldown_of(10.0, r);
       } else if (choice == K_HUNT) {
         if (!pay(r, &s, 15.0, moment)) { s.nxt[K_HUNT] = moment + 0.25; continue; }
+        act(&s, moment, A_HUNT);
         busy = cast(r, &s, moment, 0.0);
         class_cast(r, &s, hit_at, 1);
         s.thrill_until = hit_at + 6.0;
@@ -619,12 +657,14 @@ double fight(const Row* r, int* status_out) {
         s.nxt[K_HUNT] = moment + cooldown_of(10.0, r);
       } else if (choice == K_IMMO) {
         if (!pay(r, &s, 20.0, moment)) { s.nxt[K_IMMO] = moment + 0.25; continue; }
+        act(&s, moment, A_IMMO);
         busy = cast(r, &s, moment, 0.0);
         class_cast(r, &s, hit_at, 0);
         apply_immolation(&s, hit_at);
         s.nxt[K_IMMO] = moment + cooldown_of(10.0, r);
       } else {
         if (!pay(r, &s, 20.0, moment)) { s.nxt[K_INNER] = moment + 0.25; continue; }
+        act(&s, moment, A_INNER);
         busy = cast(r, &s, moment, 0.0);
         class_cast(r, &s, hit_at, 0);
         s.nxt[K_INNER] = moment + cooldown_of(12.0, r);
@@ -662,6 +702,10 @@ double fight(const Row* r, int* status_out) {
   if (s.status) { *status_out = s.status; return 0.0; }
   double total = 0.0;
   for (int i = 0; i < s.nord; i++) total += s.src[s.ord[i]];
+#if REPORT
+  recover(r, &s, FIGHT);
+  *keep = s;
+#endif
   return total / FIGHT;
 }
 
@@ -732,6 +776,7 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   int n_core = 0, n_sulg = 0, has_shop = 0, has_drop = 0, nexec = 0;
   for (int si = 0; si < 6; si++) {
     int p = chosen[si];
+    if (p < 0) { first[si] = 0; continue; }
     int f1 = 1;
     for (int j = 0; j < si; j++) if (chosen[j] == p) { f1 = 0; break; }
     first[si] = f1;
@@ -833,6 +878,7 @@ void sheet(Tab* T, Row* r, const int* chosen, uint tmask, uint gmask, const int*
   r->glass = (GM(r, G_GLASS) || (mask & S_GLAS)) ? 1 : 0;
 }
 
+#if !REPORT
 double row_value(Tab* T, long index, uint tmask, uint gmask, const int* pts, int targets, int* status, int* group) {
   int chosen[6];
   if (unrank(T, index, chosen)) { *status = 1; *group = 0; return 0.0; }
@@ -840,6 +886,7 @@ double row_value(Tab* T, long index, uint tmask, uint gmask, const int* pts, int
   sheet(T, &r, chosen, tmask, gmask, pts, targets, group);
   return fight(&r, status);
 }
+#endif
 
 #define TAB_ARGS \
     __global const long* dp0, __global const long* dp1, const long count_without, const long total, \
@@ -852,6 +899,7 @@ double row_value(Tab* T, long index, uint tmask, uint gmask, const int* pts, int
   T.npieces = npieces; T.pkind = pkind; T.pamp = pamp; T.fold = fold; T.uniq = uniq; T.pmask = pmask; T.psrc = psrc; \
   T.pal = pal; T.base = base;
 
+#if !REPORT
 __kernel void cls_bare(const long start, const int n, const int targets, TAB_ARGS,
     __global double* out_dps, __global uchar* out_group, __global uchar* out_status)
 {
@@ -878,6 +926,82 @@ __kernel void cls_rows(const int n, const int targets, __global const long* chun
   double d = row_value(&T, chunks[gid], tmasks[gid], gmasks[gid], pts, targets, &status, &group);
   out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status;
 }
+#endif
+
+/* Explicit pieces (-1 = empty slot): the one-slot screen and any build outside the pool's 6-item ranks. */
+int picks_ok(Tab* T, __global const int* picks, long gid, int* chosen) {
+  for (int j = 0; j < 6; j++) {
+    int p = picks[gid * 6 + j];
+    if (p >= T->npieces) return 0;
+    chosen[j] = (p < 0) ? -1 : p;
+  }
+  return 1;
+}
+
+#if !REPORT
+__kernel void cls_pick(const int n, const int targets, __global const int* picks, __global const uint* tmasks,
+    __global const uint* gmasks, __global const int* points, TAB_ARGS,
+    __global double* out_dps, __global uchar* out_group, __global uchar* out_status)
+{
+  int gid = get_global_id(0);
+  if (gid >= n) return;
+  TAB_INIT
+  int pts[NP];
+  for (int j = 0; j < NP; j++) pts[j] = points[(long)gid * NP + j];
+  int status = 0, group = 0, chosen[6];
+  double d = 0.0;
+  if (!picks_ok(&T, picks, gid, chosen)) status = 1;
+  else {
+    Row r;
+    sheet(&T, &r, chosen, tmasks[gid], gmasks[gid], pts, targets, &group);
+    d = fight(&r, &status);
+  }
+  out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status;
+}
+#else
+#define NSTAT 21
+__kernel void cls_report(const int n, const int targets, __global const int* picks, __global const uint* tmasks,
+    __global const uint* gmasks, __global const int* points, TAB_ARGS,
+    __global double* out_dps, __global uchar* out_group, __global uchar* out_status,
+    __global double* out_src, __global int* out_ord, __global int* out_nord, __global double* out_mana,
+    __global double* out_act_t, __global int* out_act_id, __global int* out_nact, __global double* out_stats)
+{
+  int gid = get_global_id(0);
+  if (gid >= n) return;
+  TAB_INIT
+  int pts[NP];
+  for (int j = 0; j < NP; j++) pts[j] = points[(long)gid * NP + j];
+  int status = 0, group = 0, chosen[6];
+  double d = 0.0;
+  St keep;
+  keep.nord = 0; keep.nact = 0; keep.mana = 0.0;
+  Row r;
+  if (!picks_ok(&T, picks, gid, chosen)) status = 1;
+  else {
+    sheet(&T, &r, chosen, tmasks[gid], gmasks[gid], pts, targets, &group);
+    d = fight(&r, &status, &keep);
+  }
+  out_dps[gid] = d; out_group[gid] = (uchar)group; out_status[gid] = (uchar)status;
+  out_nord[gid] = keep.nord;
+  for (int i = 0; i < NSRC; i++) {
+    out_ord[(long)gid * NSRC + i] = (i < keep.nord) ? keep.ord[i] : -1;
+    out_src[(long)gid * NSRC + i] = (i < keep.nord) ? keep.src[keep.ord[i]] : 0.0;
+  }
+  out_mana[gid] = (status == 0 && r.mana_max > 0.0) ? 100.0 * keep.mana / r.mana_max : 0.0;
+  out_nact[gid] = keep.nact;
+  for (int i = 0; i < MAXA; i++) {
+    out_act_t[(long)gid * MAXA + i] = (i < keep.nact) ? keep.act_t[i] : 0.0;
+    out_act_id[(long)gid * MAXA + i] = (i < keep.nact) ? keep.act_id[i] : -1;
+  }
+  __global double* o = out_stats + (long)gid * NSTAT;
+  if (status == 0) {
+    o[0] = r.agi; o[1] = r.str; o[2] = r.intel; o[3] = r.damage; o[4] = r.potency; o[5] = r.mastery; o[6] = r.crit;
+    o[7] = r.rating; o[8] = r.haste; o[9] = r.aspd; o[10] = r.luck; o[11] = r.magic_add; o[12] = r.phys_add;
+    o[13] = r.hp; o[14] = r.mana_max; o[15] = r.mana_regen; o[16] = (r.mask & S_GALA) ? 1.0 : 0.0;
+    o[17] = r.cd_temp; o[18] = r.flat_cdr; o[19] = r.armor_pen; o[20] = r.spell_crit ? 1.0 : 0.0;
+  }
+}
+#endif
 """
 KERNEL = KERNEL.replace("#pragma OPENCL FP_CONTRACT OFF\n", "#pragma OPENCL FP_CONTRACT OFF\n" + AP.C, 1)
 
@@ -896,28 +1020,40 @@ GLYPH_BITS = {"I0AV": 0, "I0JA": 1, "I07B": 2, "I0EK": 3, "I0HC": 4, "I0OF": 5, 
 NO_EFFECT = {"I0H3", "I0H5", "I0H6", "I0EN"}
 SPECS = {"havoc": 0, "vengeance": 1, "devourer": 2}
 
+# Level-15 Demon Hunter (map 2.5.2c), moved from the removed sunken_sim.demon_hunter model
+LEVEL = 15
+BASE_STR = int(12 + (LEVEL - 1) * 1.2)
+BASE_AGI = int(24 + (LEVEL - 1) * 2.4)
+BASE_INT = int(14 + (LEVEL - 1) * 1.4)
+BASE_HP = 250.0
+WHITE_BASE = 32.0  # ua1b 31 + 1d1
+SWING = 1.70
+HERO_CLASS = "DemonHunter"
+TALENT_NAMES = {
+    "I0DA": "Enduring Torment", "I0PC": "Incubus", "I07E": "Chaos Blade", "I0FL": "Cosmic Force",
+    "I05M": "Demonic Wards", "I04P": "Consume", "I04X": "Fallout", "I0PA": "Darkness", "I05S": "Bloodlet",
+    "I07H": "Soul Cleave", "I0FK": "Felfire", "I05K": "Chaos Nova", "I0V2": "Soul Immolation",
+    "I0PB": "Throw Glaive", "I08D": "Singularity", "I0V1": "Void Glaive", "I0C5": "Chains of Anguish",
+    "I0V3": "Demonic Power",
+}
+# Demonic Wards / Darkness / Bloodlet are defensive or healing. Pages are UI.
+IGNORED_TALENTS = frozenset({"I05M", "I0PA", "I05S", "I0MD", "I0MC"})
+F_NAMES = {"havoc": "Eye Beam", "vengeance": "Demon Spikes", "devourer": "Collapsing Star"}
+
 
 def demon_hunter_tables(space, items, sources) -> dict:
     """class_cl.character_tables with the agility primary fold and the Demon Hunter per-piece columns."""
     import re
 
-    from sunken_sim import demon_hunter as D, pressure, shadow
+    from sunken_sim import pressure, shadow
     from sunken_sim.stacking import stack_fields
-
-    if (D.WHITE_BASE, D.SWING, D.BASE_MANA, D.BASE_HP, D.RANK, D.META_CD, D.EYE_BEAM_CD, D.EYE_BEAM_MANA,
-            D.EYE_BEAM_DUR, D.EYE_BEAM_STEP, D.CHAOS_ICD, D.SPIKES_CD, D.SPIKES_MANA, D.STAR_CD, D.STAR_MANA,
-            D.STAR_DELAY, D.HUNT_CD, D.HUNT_MANA, D.THRILL_DUR, D.THRILL_SPEED, D.IMMO_CD, D.IMMO_MANA, D.IMMO_DUR,
-            D.INNER_CD, D.INNER_MANA, D.BLADE_DUR, D.FALLOUT_DUR, D.FALLOUT_ARMOR, D.FURY_MAX, D.FRAGMENT_FURY) != \
-            (32.0, 1.70, 120.0, 250.0, 1, 10.0, 10.0, 25.0, 2.50, 0.03, 0.20, 10.0, 25.0, 10.0, 25.0, 0.75, 10.0,
-             15.0, 6.0, 0.25, 10.0, 20.0, 6.0, 12.0, 20.0, 4.0, 4.0, 3.0, 100, 5):
-        raise ValueError("kernel constants assume the 2026-11-13 demon hunter")
     from sunken_sim import expiry_buff
 
     if (shadow.CAST_POINT, shadow.CAST_BACKSWING, pressure.STR_HP, expiry_buff.BUFF_SLOTS) != (0.15, 0.30, 15.0, 8):
         raise ValueError("kernel constants assume cast 0.15 + 0.30, 15 health per strength and 8 buff slots")
     AP.check()
     t = C.character_tables(space, items, sources, SPECIAL_BITS, TALENT_BITS, GLYPH_BITS, NO_EFFECT,
-                           [float(D.BASE_INT), float(D.BASE_STR), float(D.BASE_AGI), float(D.BASE_HP)], "Demon Hunter")
+                           [float(BASE_INT), float(BASE_STR), float(BASE_AGI), float(BASE_HP)], "Demon Hunter")
     pieces = space.pieces
     n = len(pieces)
     fold = t["fold"].reshape(n, 2, C.NF).copy()
@@ -952,6 +1088,7 @@ def demon_hunter_tables(space, items, sources) -> dict:
 
 class DemonHunterCL(C.ExactCL):
     hero = "demon_hunter"
+    PYTHON = False  # sunken_sim.demon_hunter fight model removed 2026-11-27: fixtures + report mode
     KERNEL = KERNEL
     SPECS = SPECS
     TALENT_BITS = TALENT_BITS
@@ -961,12 +1098,22 @@ class DemonHunterCL(C.ExactCL):
     TABLE_KEYS = ("dp0", "dp1", "count_without", "total", "npieces", "pkind", "pamp", "fold", "uniq", "pmask", "psrc",
                   "pal", "base")
     SCALARS = {"count_without": np.int64, "total": np.int64, "npieces": np.int32}
+    ACTION_NAMES = ("Metamorphosis", "Eye Beam", "Collapsing Star", "Demon Spikes", "The Hunt", "Immolation Aura",
+                    "Inner Demon", "Meta ends")
+    STAT_KEYS = ("agi", "str", "int", "damage", "potency", "mastery", "crit", "rating", "haste", "attack_speed", "luck",
+                 "magic_add", "phys_add", "hp", "mana_max", "mana_regen", "galactic", "cd_temp", "flat_cdr", "armor_pen",
+                 "spell_crit")
+    BOOL_STATS = ()  # demon_hunter.stats_of keeps 1.0 / 0.0
+    NSRC, MAXA = 11, 160
+
+    @property
+    def SOURCE_NAMES(self):
+        return ("Автоатака", "Immolation Aura", "The Hunt", F_NAMES[self.spec], "Chaos Blade", "Throw Glaive",
+                "Chaos Nova", "Singularity", "Всплеск огня", "Sulfuras", "Sulfuras (удар)")
 
     @staticmethod
     def module():
-        from sunken_sim import demon_hunter
-
-        return demon_hunter
+        raise RuntimeError("demon_hunter: the Python fight model was removed (2026-11-27)")
 
     def tables(self, space, items, sources):
         return demon_hunter_tables(space, items, sources)

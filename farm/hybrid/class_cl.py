@@ -406,8 +406,9 @@ class ExactCL:
         for v in sources.values():
             total += v
         stats = dict(zip(self.STAT_KEYS, (float(x) for x in outs["stats"])))
-        if "galactic" in stats:
-            stats["galactic"] = bool(stats["galactic"])
+        for key in getattr(self, "BOOL_STATS", ("galactic",)):
+            if key in stats:
+                stats[key] = bool(stats[key])
         if int(outs["nact"][0]) > self.MAXA:
             raise RuntimeError(f"{self.hero} report: more than {self.MAXA} casts")
         actions = [(float(outs["act_t"][i]), self.ACTION_NAMES[int(outs["act_id"][i])]) for i in range(int(outs["nact"][0]))]

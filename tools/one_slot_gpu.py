@@ -19,6 +19,8 @@ sys.stdout.reconfigure(encoding="utf-8")
 HEROES = {
     "berserker": dict(class_name="Berserker", module="farm.hybrid.berserker_cl", engine="BerserkerCL",
                       specs=(("Headhunter", "headhunter"), ("Poison", "poison"), ("Fury", "fury"))),
+    "demon_hunter": dict(class_name="DemonHunter", module="farm.hybrid.demon_hunter_cl", engine="DemonHunterCL",
+                         specs=(("Havoc", "havoc"), ("Vengeance", "vengeance"), ("Devourer", "devourer"))),
     "death_knight": dict(class_name="DeathKnight", module="farm.hybrid.death_knight_cl", engine="DeathKnightCL",
                          specs=(("Frost", "frost"), ("Blood", "blood"), ("Unholy", "unholy")),
                          # Blood Feast gains only with its partners (farm.top.TALENT_INCLUDE / ITEM_INCLUDE)

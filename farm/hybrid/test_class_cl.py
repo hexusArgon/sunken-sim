@@ -17,7 +17,6 @@ from farm.hybrid import mage_cl
 CASES = (("shaman", "restoration"), ("shaman", "enhancement"), ("shaman", "elemental"),
          ("paladin", "retribution"), ("paladin", "protection"), ("paladin", "holy"),
          ("druid", "restoration"), ("druid", "balance"),
-         ("demon_hunter", "havoc"), ("demon_hunter", "vengeance"), ("demon_hunter", "devourer"),
          ("dragon_sentinel", "ruby"), ("dragon_sentinel", "obsidian"), ("dragon_sentinel", "emerald"),
          ("feral_druid", "primal"), ("feral_druid", "guardian"), ("feral_druid", "savage"),
          ("hunter", "marksmanship"), ("hunter", "beast_mastery"), ("hunter", "survival"),
@@ -99,7 +98,6 @@ class ClassCLTest(unittest.TestCase):
 
     def test_refine_matches_finish_sextuple(self):
         specials = {"shaman": ("I00D", "I0BR"), "paladin": ("I0BR", "I0R0"), "druid": ("I00D", "I0BR", "I0R4"),
-                    "demon_hunter": ("I0BR", "I0V4", "I0V5", "I0V6", "I0V7"),
                     "dragon_sentinel": ("I0BR", "I0TK", "I0TL", "I0TI", "I0TH"),
                     "feral_druid": ("I00D", "I0BR", "I0RV", "I0RW", "I0RY", "I0QN"),
                     "hunter": ("I0BR", "I0T6", "I0T7", "I0T8", "I0T9", "I06B", "I0QN"),
@@ -122,7 +120,7 @@ class ClassCLTest(unittest.TestCase):
 
     def test_span_payload_and_gate_match_cpu_runner(self):
         for hero, spec in (("shaman", "enhancement"), ("paladin", "retribution"), ("druid", "balance"),
-                           ("demon_hunter", "havoc"), ("dragon_sentinel", "ruby"),
+                           ("dragon_sentinel", "ruby"),
                            ("feral_druid", "savage"), ("hunter", "survival"), ("monk", "windwalker"),
                            ("necromancer", "blood")):
             _engine(hero, spec)

@@ -20,7 +20,7 @@ try:
 except Exception:  # pragma: no cover
     torch = None
 
-CASES = (("dragon_sentinel", "ruby"), ("necromancer", "essence"), ("demon_hunter", "havoc"))
+CASES = (("dragon_sentinel", "ruby"), ("necromancer", "essence"), ("windmaster", "combat"))
 
 
 def _targets():
@@ -201,21 +201,21 @@ class StrategyRouterEngineTests(unittest.TestCase):
         from farm.hybrid.stat_kernel import greedy_points_batched
         from farm.hybrid.test_stat_kernel_greedy import _catalog_build, cpu_dps_many
 
-        many = cpu_dps_many("demon_hunter", "havoc")
+        many = cpu_dps_many("windmaster", "combat")
 
         class Fake(BatchFights):
             def dps_many(self, builds):
                 return many(builds)
 
         eng = Fake()
-        eng.hero, eng.spec, eng.targets = "demon_hunter", "havoc", 5
+        eng.hero, eng.spec, eng.targets = "windmaster", "combat", 5
         ed.reset()
         old = os.environ.get("FARM_HYBRID_ESC_ALGEBRA")
         os.environ["FARM_HYBRID_ESC_ALGEBRA"] = "auto"
         try:
             for idx in (0, 1, 0, 1, 0):
-                b = _catalog_build("demon_hunter", "havoc", idx)
-                self.assertEqual(eng.greedy_points(b), greedy_points_batched(many, b, hero="demon_hunter"))
+                b = _catalog_build("windmaster", "combat", idx)
+                self.assertEqual(eng.greedy_points(b), greedy_points_batched(many, b, hero="windmaster"))
         finally:
             if old is None:
                 os.environ.pop("FARM_HYBRID_ESC_ALGEBRA", None)

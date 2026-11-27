@@ -41,7 +41,7 @@ from sunken_sim.esc import BUILD_FIELD, ESC_ATTRS, ESC_CAP, apply_points, empty_
 
 # Ledger kind-heroes: simulate() calls module.stats_of(build), events via sunken_sim.ledger.
 ALGEBRA_HEROES = frozenset({
-    "demon_hunter", "dragon_sentinel", "monk", "necromancer",
+    "dragon_sentinel", "monk", "necromancer",
     "siren", "tidewarrior", "tinker", "windmaster", "witch_doctor",
 })
 

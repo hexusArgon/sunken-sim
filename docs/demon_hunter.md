@@ -2,7 +2,7 @@
 
 Общие правила боя, предметов и кулдаунов — в `docs/guide.md`. Здесь Demon Hunter карты Sunken City v2.5.2a. Формулы сняты с триггеров `war3map.j` (блок Demon Hunter: Fury, Metamorphosis, Eye Beam, Leap/The Hunt, Immolation Aura, Collapsing Star, Soul Fragments; PreDamage_Increase, PreDamage_Heroes, OnDamage_Heroes, OnSpellcast_Heroes, Potency_Tooltip) и объектов (`/workspace/sunken-ref/demon_hunter/{abil,talents,unit}_dump.txt`).
 
-Сим `sunken_sim/demon_hunter.py` считает ожидаемый урон за 30 секунд на ранге 1, 6 уровень, 5 целей, броня 15, без очков навыков. Однослотовый прогон: `python3 extract/one_slot_demon_hunter.py` (пишет `extract/demon_hunter-one-slot.json`), быстрая проверка: `python3 extract/one_slot_demon_hunter.py --smoke`. Ключ класса в `search.class_item_codes()` — `DemonHunter`.
+Сим — точное float64 OpenCL-ядро `farm/hybrid/demon_hunter_cl.py` (Python-модель `sunken_sim/demon_hunter.py` удалена 2026-11-27; до удаления 2760 боёв и 18 доводок заморожены бит-в-бит в `farm/hybrid/fixtures/demon_hunter.json`, проверка — `python3.11 -m unittest farm.hybrid.test_fixtures`). Ожидаемый урон за 30 секунд, 5 целей, броня 15. Однослотовый прогон: `python3.11 tools/one_slot_gpu.py demon_hunter` (пишет `extract/demon_hunter-one-slot.json`). Ключ класса в `search.class_item_codes()` — `DemonHunter`.
 
 ## Лист
 

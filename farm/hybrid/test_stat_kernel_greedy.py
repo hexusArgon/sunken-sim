@@ -40,7 +40,7 @@ class SyntheticGreedyTests(unittest.TestCase):
         def score(p):
             return 10.0 * p["potency"] + (5.0 * p["mastery"] if p["potency"] >= 20 else 0.0) + 1.0 * p["damage"]
 
-        got = K.greedy_points_batched(_many(score), _bare(), hero="demon_hunter")
+        got = K.greedy_points_batched(_many(score), _bare(), hero="windmaster")
         ref = _ref(score, _bare())
         self.assertEqual(got, ref)
         self.assertEqual(got[1]["mastery"], 10)
@@ -49,7 +49,7 @@ class SyntheticGreedyTests(unittest.TestCase):
         # flat DPS: full greedy spends health 20, mana 20, healing_power 10;
         # healing_power is not fought but must still be picked in order.
         score = lambda p: 100.0  # noqa: E731
-        got = K.greedy_points_batched(_many(score), _bare(), hero="demon_hunter", total=50)
+        got = K.greedy_points_batched(_many(score), _bare(), hero="windmaster", total=50)
         ref = _ref(score, _bare(), total=50)
         self.assertEqual(got, ref)
         self.assertEqual(got[1]["healing_power"], 10)
@@ -61,7 +61,7 @@ class SyntheticGreedyTests(unittest.TestCase):
             calls.extend(points_from_build(b) for b in builds)
             return [100.0 + p["potency"] for p in (points_from_build(b) for b in builds)]
 
-        K.greedy_points_batched(many, _bare(), hero="demon_hunter", total=3)
+        K.greedy_points_batched(many, _bare(), hero="windmaster", total=3)
         self.assertTrue(all(p["healing_power"] == 0 and p["pet_damage"] == 0 for p in calls))
 
 
@@ -87,7 +87,7 @@ class StructuralGuardTests(unittest.TestCase):
                 K._attr_read_in_sources.cache_clear()
 
     def test_box_sources_keep_known_skips(self):
-        for hero in ("dragon_sentinel", "demon_hunter", "warrior", "priest", "mage"):
+        for hero in ("dragon_sentinel", "windmaster", "warrior", "priest", "mage"):
             self.assertEqual(K.structural_skip_attrs(hero), frozenset({"healing_power", "pet_damage"}), hero)
 
 
@@ -158,7 +158,7 @@ class CatalogRegressionTests(unittest.TestCase):
     differ). So assert parity with the full greedy on the *current* catalog, never
     a hardcoded DPS. The synthetic tie-then-win test above always discriminates."""
 
-    CASES = (("demon_hunter", "havoc"), ("dragon_sentinel", "ruby"))
+    CASES = (("windmaster", "combat"), ("dragon_sentinel", "ruby"))
 
     def test_batched_equals_full_greedy_on_current_catalog(self):
         for hero, spec in self.CASES:
