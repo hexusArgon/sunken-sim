@@ -107,7 +107,11 @@ def _parts(hero: str, spec: str, pool: str, preset: str | None = None, top: int 
     catalog = load_items()
     by_code = {item.rawcode: item for item in catalog}
     if top:
-        return _top_parts(hero, spec, pool, int(top), by_code)
+        # "add:CODE+CODE": the top-N pool plus these items, for one run only
+        extra = ()
+        if preset and preset.startswith("add:"):
+            extra = tuple(code for code in preset[len("add:"):].split("+") if code)
+        return _top_parts(hero, spec, pool, int(top), by_code, extra)
     if preset:
         return _preset_parts(hero, spec, preset, by_code)
     if hero not in ("priest", "mage", "paladin", "shaman"):
@@ -167,13 +171,17 @@ def _parts(hero: str, spec: str, pool: str, preset: str | None = None, top: int 
     return pieces, talents, glyphs, talent_names, dict(GLYPHS), items, picks_with
 
 
-def _top_parts(hero: str, spec: str, pool: str, top: int, by_code: dict):
+def _top_parts(hero: str, spec: str, pool: str, top: int, by_code: dict, extra: tuple = ()):
     from farm.top import MIND_AMPLIFIER, top_items, top_talents
     from sunken_sim.search import GLYPHS, _item_kind
 
     if MIND_AMPLIFIER not in by_code:
         raise RuntimeError("в карте нет Mind Amplifier X-8000")
     codes = top_items(hero, spec, top, pool, known=set(by_code))
+    missing = [code for code in extra if code not in by_code]
+    if missing:
+        raise RuntimeError("нет предметов: " + ", ".join(missing))
+    codes += [code for code in extra if code not in codes]
     talents = top_talents(hero, spec)
     if not talents:
         raise RuntimeError(f"у {hero} {spec} нет талантов выше голого героя")

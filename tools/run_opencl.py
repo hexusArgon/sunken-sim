@@ -32,7 +32,8 @@ def main() -> int:
     ap.add_argument("--spec", required=True)
     ap.add_argument("--top", type=int, default=80)
     ap.add_argument("--preset", default="",
-                    help="catalog preset, e.g. force:I0BR+I04F = the top-N pool with these items always worn")
+                    help="catalog preset, e.g. force:I0BR+I04F = the top-N pool with these items always worn; "
+                         "add:CODE+CODE = the top-N pool plus these items (one run only)")
     ap.add_argument("--workers", type=int, default=4, help="worker processes, each with its own OpenCL context")
     ap.add_argument("--span", type=int, default=16384,
                     help="chunks per span; admitted chunks bunch at the start, small spans share their refinement")
