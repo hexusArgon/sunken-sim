@@ -70,6 +70,7 @@ def _from_disk(hero: str, spec: str, pool: str, preset: str | None = None, top: 
     picks_with = min(picks_with, len(talents))
     digest = _digest(pieces, talents, glyphs, picks_with, items)
     label = preset or (f"{pool}-top{top}" if top else pool)
+    label = label.replace(":", "-").replace("+", "-")  # Windows file names
     path = data_dir() / "cache" / f"{hero}-{spec}-{label}-{digest}.pkl"
     if path.exists():
         try:
